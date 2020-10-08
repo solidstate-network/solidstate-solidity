@@ -33,6 +33,7 @@
   },
   "files": [
     "/contracts/**/*.sol",
-    "!/contracts/**/*Mock.sol"
+    "!/contracts/**/*Mock.sol",
+    "/test/**/*.behavior.js"
   ]
 }
