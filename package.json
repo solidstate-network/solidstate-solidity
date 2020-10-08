@@ -1,0 +1,35 @@
+{
+  "name": "@solidstate/contracts",
+  "version": "0.0.0",
+  "author": "Nick Barry",
+  "license": "MIT",
+  "description": "Solidity library for flexible smart contract development",
+  "keywords": [
+    "solidity",
+    "smart-contracts",
+    "ethereum",
+    "ether",
+    "eth",
+    "cryptocurrency",
+    "crypto",
+    "wow",
+    "library"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solidstate-network/solidstate-contracts.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@nomiclabs/buidler": "^1.4.7",
+    "@nomiclabs/buidler-ethers": "^2.0.2",
+    "@nomiclabs/buidler-waffle": "^2.1.0",
+    "@openzeppelin/contracts": "3.2.0-solc-0.7",
+    "chai": "^4.2.0",
+    "ethereum-waffle": "^3.1.1"
+  },
+  "files": [
+    "/contracts/**/*.sol",
+    "!/contracts/**/*Mock.sol"
+  ]
+}
