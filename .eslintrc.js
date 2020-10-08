@@ -1,7 +1,6 @@
 module.exports = {
   'env': {
-    'browser': true,
-    'commonjs': true,
+    'node': true,
     'es6': true,
     'mocha': true,
   },
@@ -13,7 +12,6 @@ module.exports = {
     'plugin:mocha/recommended',
   ],
   'globals': {
-    'process': 'readonly',
     'usePlugin': 'readonly',
     'task': 'readonly',
     'ethers': 'readonly',
