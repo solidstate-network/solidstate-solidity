@@ -27,6 +27,8 @@
     "@openzeppelin/contracts": "3.2.0-solc-0.7",
     "buidler-spdx-license-identifier": "^1.0.4",
     "chai": "^4.2.0",
+    "eslint": "^7.10.0",
+    "eslint-plugin-mocha": "^8.0.0",
     "ethereum-waffle": "^3.1.1"
   },
   "files": [

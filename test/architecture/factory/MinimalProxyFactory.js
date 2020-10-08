@@ -8,20 +8,21 @@ const assertBehaviorOfMinimalProxyFactory = function (instance, skips) {
 
 module.exports = { assertBehaviorOfMinimalProxyFactory };
 
+let deploy = async function () {
+  let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');
+  let instance = await factory.deploy();
+  await instance.deployed();
+  return instance;
+};
+
 describe('MinimalProxyFactory', function () {
   let instance;
 
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');
-    let instance = await factory.deploy();
-    await instance.deployed();
-    return instance;
-  };
-
   beforeEach(async function () {
     instance = await deploy();
-  })
+  });
 
+  // eslint-disable-next-line mocha/no-setup-in-describe
   assertBehaviorOfMinimalProxyFactory(deploy);
 
   describe('__internal', function () {
@@ -89,7 +90,7 @@ describe('MinimalProxyFactory', function () {
           '0x' + [
             '3d602d80600a3d3981f3363d3d373d3d3d363d73',
             instance.address.replace('0x', '').toLowerCase(),
-            '5af43d82803e903d91602b57fd5bf3'
+            '5af43d82803e903d91602b57fd5bf3',
           ].join('')
         );
       });

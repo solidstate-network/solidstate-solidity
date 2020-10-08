@@ -4,20 +4,21 @@ const assertBehaviorOfFactory = function (deploy, skips) {};
 
 module.exports = { assertBehaviorOfFactory };
 
+let deploy = async function () {
+  let factory = await ethers.getContractFactory('FactoryMock');
+  let instance = await factory.deploy();
+  await instance.deployed();
+  return instance;
+};
+
 describe('Factory', function () {
   let instance;
-
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('FactoryMock');
-    let instance = await factory.deploy();
-    await instance.deployed();
-    return instance;
-  };
 
   beforeEach(async function () {
     instance = await deploy();
   });
 
+  // eslint-disable-next-line mocha/no-setup-in-describe
   assertBehaviorOfFactory(deploy);
 
   describe('__internal', function () {

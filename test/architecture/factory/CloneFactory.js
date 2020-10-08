@@ -8,20 +8,21 @@ const assertBehaviorOfCloneFactory = function (instance, skips) {
 
 module.exports = { assertBehaviorOfCloneFactory };
 
+let deploy = async function () {
+  let factory = await ethers.getContractFactory('CloneFactoryMock');
+  let instance = await factory.deploy();
+  await instance.deployed();
+  return instance;
+};
+
 describe('CloneFactory', function () {
   let instance;
-
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('CloneFactoryMock');
-    let instance = await factory.deploy();
-    await instance.deployed();
-    return instance;
-  };
 
   beforeEach(async function () {
     instance = await deploy();
   });
 
+  // eslint-disable-next-line mocha/no-setup-in-describe
   assertBehaviorOfCloneFactory(deploy);
 
   describe('__internal', function () {

@@ -1,4 +1,4 @@
-usePlugin("@nomiclabs/buidler-waffle");
+usePlugin('@nomiclabs/buidler-waffle');
 usePlugin('buidler-spdx-license-identifier');
 
 module.exports = {
@@ -23,5 +23,5 @@ module.exports = {
   spdxLicenseIdentifier: {
     overwrite: false,
     runOnCompile: true,
-  }
+  },
 };

@@ -5,6 +5,7 @@ const { assertBehaviorOfFactory } = require('./Factory.js');
 const assertBehaviorOfMetamorphicFactory = function (deploy, skips) {
   let instance;
 
+  // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(async function () {
     instance = await deploy();
   });
@@ -25,20 +26,21 @@ const assertBehaviorOfMetamorphicFactory = function (deploy, skips) {
 
 module.exports = { assertBehaviorOfMetamorphicFactory };
 
+let deploy = async function () {
+  let factory = await ethers.getContractFactory('MetamorphicFactoryMock');
+  let instance = await factory.deploy();
+  await instance.deployed();
+  return instance;
+};
+
 describe('MetamorphicFactory', function () {
   let instance;
-
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('MetamorphicFactoryMock');
-    let instance = await factory.deploy();
-    await instance.deployed();
-    return instance;
-  }
 
   beforeEach(async function () {
     instance = await deploy();
   });
 
+  // eslint-disable-next-line mocha/no-setup-in-describe
   assertBehaviorOfMetamorphicFactory(deploy);
 
   describe('__internal', function () {
