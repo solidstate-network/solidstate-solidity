@@ -11,13 +11,18 @@ module.exports = { assertBehaviorOfCloneFactory };
 describe('CloneFactory', function () {
   let instance;
 
-  beforeEach(async function () {
+  let deploy = async function () {
     let factory = await ethers.getContractFactory('CloneFactoryMock');
-    instance = await factory.deploy();
+    let instance = await factory.deploy();
     await instance.deployed();
+    return instance;
+  };
+
+  beforeEach(async function () {
+    instance = await deploy();
   });
 
-  assertBehaviorOfCloneFactory(instance);
+  assertBehaviorOfCloneFactory(deploy);
 
   describe('__internal', function () {
     describe('#_clone', function () {

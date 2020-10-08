@@ -11,13 +11,18 @@ module.exports = { assertBehaviorOfMinimalProxyFactory };
 describe('MinimalProxyFactory', function () {
   let instance;
 
-  beforeEach(async function () {
+  let deploy = async function () {
     let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');
-    instance = await factory.deploy();
+    let instance = await factory.deploy();
     await instance.deployed();
-  });
+    return instance;
+  };
 
-  assertBehaviorOfMinimalProxyFactory(instance);
+  beforeEach(async function () {
+    instance = await deploy();
+  })
+
+  assertBehaviorOfMinimalProxyFactory(deploy);
 
   describe('__internal', function () {
     describe('#_deployMinimalProxyContract', function () {

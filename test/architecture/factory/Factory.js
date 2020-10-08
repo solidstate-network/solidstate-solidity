@@ -1,19 +1,24 @@
 const { expect } = require('chai');
 
-const assertBehaviorOfFactory = function (instance, skips) {};
+const assertBehaviorOfFactory = function (deploy, skips) {};
 
 module.exports = { assertBehaviorOfFactory };
 
 describe('Factory', function () {
   let instance;
 
-  beforeEach(async function () {
+  let deploy = async function () {
     let factory = await ethers.getContractFactory('FactoryMock');
-    instance = await factory.deploy();
+    let instance = await factory.deploy();
     await instance.deployed();
+    return instance;
+  };
+
+  beforeEach(async function () {
+    instance = await deploy();
   });
 
-  assertBehaviorOfFactory(instance);
+  assertBehaviorOfFactory(deploy);
 
   describe('__internal', function () {
     describe('#_deploy', function () {

@@ -30,7 +30,7 @@ describe('MetamorphicFactory', function () {
 
   let deploy = async function () {
     let factory = await ethers.getContractFactory('MetamorphicFactoryMock');
-    instance = await factory.deploy();
+    let instance = await factory.deploy();
     await instance.deployed();
     return instance;
   }
