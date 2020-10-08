@@ -18,8 +18,9 @@ describe('Factory', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  assertBehaviorOfFactory(deploy);
+  before(function () {
+    assertBehaviorOfFactory(deploy);
+  });
 
   describe('__internal', function () {
     describe('#_deploy', function () {

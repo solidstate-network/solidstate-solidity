@@ -40,8 +40,9 @@ describe('MetamorphicFactory', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  assertBehaviorOfMetamorphicFactory(deploy);
+  before(function() {
+    assertBehaviorOfMetamorphicFactory(deploy);
+  });
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract', function () {
