@@ -1,12 +1,6 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfFactory } = require('./Factory.js');
-
-const assertBehaviorOfMinimalProxyFactory = function (instance, skips) {
-  assertBehaviorOfFactory(instance, skips);
-};
-
-module.exports = { assertBehaviorOfMinimalProxyFactory };
+const { assertBehaviorOfMinimalProxyFactory } = require('./MinimalProxyFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');

@@ -1,8 +1,6 @@
 const { expect } = require('chai');
 
-const assertBehaviorOfFactory = function (deploy, skips) {};
-
-module.exports = { assertBehaviorOfFactory };
+const { assertBehaviorOfFactory } = require('./Factory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('FactoryMock');
