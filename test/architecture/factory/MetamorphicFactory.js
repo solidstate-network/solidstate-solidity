@@ -44,7 +44,7 @@ describe('MetamorphicFactory', function () {
   describe('__internal', function () {
     describe('#_deployMetamorphicContract', function () {
       it('deploys metamorphic contract and returns deployment address', async function () {
-        let salt = ethers.constants.HashZero;
+        let salt = ethers.utils.randomBytes(32);
 
         let address = await instance.callStatic.deployMetamorphicContract(instance.address, salt);
         expect(address).to.be.properAddress;
@@ -56,7 +56,7 @@ describe('MetamorphicFactory', function () {
 
       describe('reverts if', function () {
         it('salt has already been used', async function () {
-          let salt = ethers.constants.HashZero;
+          let salt = ethers.utils.randomBytes(32);
 
           await instance.deployMetamorphicContract(instance.address, salt);
 

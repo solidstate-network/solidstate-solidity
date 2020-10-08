@@ -28,8 +28,6 @@ describe('MinimalProxyFactory', function () {
     describe('#_deployMinimalProxyContract', function () {
       describe('(address)', function () {
         it('deploys minimal proxy and returns deployment address', async function () {
-          let salt = ethers.constants.HashZero;
-
           let address = await instance.callStatic['deployMinimalProxy(address)'](instance.address);
           expect(address).to.be.properAddress;
 
@@ -41,7 +39,7 @@ describe('MinimalProxyFactory', function () {
 
       describe('(address,bytes32)', function () {
         it('deploys minimal proxy and returns deployment address', async function () {
-          let salt = ethers.constants.HashZero;
+          let salt = ethers.utils.randomBytes(32);
 
           let address = await instance.callStatic['deployMinimalProxy(address,bytes32)'](instance.address, salt);
           expect(address).to.be.properAddress;
@@ -53,7 +51,7 @@ describe('MinimalProxyFactory', function () {
 
         describe('reverts if', function () {
           it('salt has already been used', async function () {
-            let salt = ethers.constants.HashZero;
+            let salt = ethers.utils.randomBytes(32);
 
             await instance['deployMinimalProxy(address,bytes32)'](instance.address, salt);
 

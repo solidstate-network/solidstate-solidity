@@ -28,8 +28,6 @@ describe('CloneFactory', function () {
     describe('#_clone', function () {
       describe('()', function () {
         it('deploys clone and returns deployment address', async function () {
-          let salt = ethers.constants.HashZero;
-
           let address = await instance.callStatic['deployClone()']();
           expect(address).to.be.properAddress;
 
@@ -41,7 +39,7 @@ describe('CloneFactory', function () {
 
       describe('(bytes32)', function () {
         it('deploys clone and returns deployment address', async function () {
-          let salt = ethers.constants.HashZero;
+          let salt = ethers.utils.randomBytes(32);
 
           let address = await instance.callStatic['deployClone(bytes32)'](salt);
           expect(address).to.be.properAddress;
@@ -53,7 +51,7 @@ describe('CloneFactory', function () {
 
         describe('reverts if', function () {
           it('salt has already been used', async function () {
-            let salt = ethers.constants.HashZero;
+            let salt = ethers.utils.randomBytes(32);
 
             await instance['deployClone(bytes32)'](salt);
 

@@ -39,7 +39,7 @@ describe('Factory', function () {
         it('deploys bytecode and returns deployment address', async function () {
           let initCode = await instance.deployTransaction.data;
           let initCodeHash = ethers.utils.keccak256(initCode);
-          let salt = ethers.constants.HashZero;
+          let salt = ethers.utils.randomBytes(32);
 
           let address = await instance.callStatic['deploy(bytes,bytes32)'](initCode, salt);
           expect(address).to.equal(await instance.calculateDeploymentAddress(initCodeHash, salt));
@@ -52,7 +52,7 @@ describe('Factory', function () {
         describe('reverts if', function () {
           it('salt has already been used', async function () {
             let initCode = instance.deployTransaction.data;
-            let salt = ethers.constants.HashZero;
+            let salt = ethers.utils.randomBytes(32);
 
             await instance['deploy(bytes,bytes32)'](initCode, salt);
 
@@ -70,7 +70,7 @@ describe('Factory', function () {
       it('returns address of not-yet-deployed contract', async function () {
         let initCode = instance.deployTransaction.data;
         let initCodeHash = ethers.utils.keccak256(initCode);
-        let salt = ethers.constants.HashZero;
+        let salt = ethers.utils.randomBytes(32);
 
         expect(
           await instance.callStatic.calculateDeploymentAddress(initCodeHash, salt)
