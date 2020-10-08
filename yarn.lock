@@ -1786,6 +1786,11 @@ bufferutil@^4.0.1:
   dependencies:
     node-gyp-build "~3.7.0"
 
+buidler-spdx-license-identifier@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/buidler-spdx-license-identifier/-/buidler-spdx-license-identifier-1.0.4.tgz#0935d65be9b8c61572e34d26ac6ec4361fb63ebc"
+  integrity sha512-09sD1xD4pGTe4nv91fgkfsKSoYJbk1mpsBb/Faotwud/1RH2d9d3LOrJjZ28C/dqPTgFWmF0IPDjYok+uk44Qg==
+
 bytes@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
