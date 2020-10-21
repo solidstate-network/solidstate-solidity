@@ -2,6 +2,8 @@
 
 Upgradable-first Solidity smart contract development library.
 
+> Warning: this library is in a pre-release state; contracts are not sufficiently tested for production use, documentation may be missing or inaccurate, and the API may change at any time.
+
 ## Usage
 
 Install the package as a development dependency:
