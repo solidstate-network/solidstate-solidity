@@ -3,7 +3,7 @@
 pragma solidity ^0.7.0;
 
 library LibOwnable {
-  bytes32 private constant _slot = keccak256(
+  bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.Ownable'
   );
 
@@ -24,7 +24,7 @@ library LibOwnable {
   }
 
   function layout () internal pure returns (Layout storage l) {
-    bytes32 slot = _slot;
+    bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
 }

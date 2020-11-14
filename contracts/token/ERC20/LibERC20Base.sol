@@ -3,7 +3,7 @@
 pragma solidity ^0.7.0;
 
 library LibERC20Base {
-  bytes32 private constant _slot = keccak256(
+  bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.ERC20Base'
   );
 
@@ -14,7 +14,7 @@ library LibERC20Base {
   }
 
   function layout () internal pure returns (Layout storage l) {
-    bytes32 slot = _slot;
+    bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
 }
