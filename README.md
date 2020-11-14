@@ -57,26 +57,26 @@ Install dependencies via Yarn:
 yarn install
 ```
 
-Compile contracts via Buidler:
+Compile contracts via Hardhat:
 
 ```bash
-yarn run buidler compile
+yarn run hardhat compile
 ```
 
 ### Networks
 
-By default, Buidler uses the BuidlerEVM in-process.  To connect to an out-of process network such as a local instance of Ganache, specify the `localhost` or `generic` network:
+By default, Hardhat uses the Hardhat Network in-process.
+
+To use an external network via URL, set the `URL` environment variable and append commands with `--network generic`:
 
 ```bash
-yarn run buidler test --network localhost
-# or
-URL=[NODE_URL] yarn run buidler test --network generic
+URL="[NODE_URL]" yarn run hardhat test --network generic
 ```
 
 ### Testing
 
-Test contracts via Buidler:
+Test contracts via Hardhat:
 
 ```bash
-yarn run buidler test
+yarn run hardhat test
 ```

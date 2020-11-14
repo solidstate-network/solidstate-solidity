@@ -1,18 +1,20 @@
-usePlugin('@nomiclabs/buidler-waffle');
-usePlugin('buidler-spdx-license-identifier');
+require('@nomiclabs/hardhat-waffle');
+require('hardhat-spdx-license-identifier');
 
 module.exports = {
-  solc: {
-    version: '0.7.2',
-    optimizer: {
-      enabled: true,
-      runs: 200,
+  solidity: {
+    version: '0.7.4',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
     },
   },
 
   networks: {
     generic: {
-      // set URL for external network, such as Infura
+      // set URL for external network
       url: `${ process.env.URL }`,
       accounts: {
         mnemonic: `${ process.env.MNEMONIC }`,

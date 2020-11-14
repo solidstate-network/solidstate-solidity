@@ -13,7 +13,9 @@
     "cryptocurrency",
     "crypto",
     "wow",
-    "library"
+    "library",
+    "hardhat",
+    "buidler"
   ],
   "repository": {
     "type": "git",
@@ -21,15 +23,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@nomiclabs/buidler": "^1.4.7",
-    "@nomiclabs/buidler-ethers": "^2.0.2",
-    "@nomiclabs/buidler-waffle": "^2.1.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.0",
     "@openzeppelin/contracts": "3.2.0-solc-0.7",
-    "buidler-spdx-license-identifier": "^1.0.4",
     "chai": "^4.2.0",
-    "eslint": "^7.10.0",
+    "eslint": "^7.13.0",
     "eslint-plugin-mocha": "^8.0.0",
-    "ethereum-waffle": "^3.1.1"
+    "ethereum-waffle": "^3.2.0",
+    "hardhat": "^2.0.3",
+    "hardhat-spdx-license-identifier": "^2.0.1"
   },
   "files": [
     "/contracts/**/*.sol",
