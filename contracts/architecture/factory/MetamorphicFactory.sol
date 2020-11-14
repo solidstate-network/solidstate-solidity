@@ -3,12 +3,12 @@
 pragma solidity ^0.7.0;
 
 import './Factory.sol';
-import './MetamorphicFactoryStorage.sol';
+import './LibMetamorphicFactory.sol';
 
 /**
  * @dev derived from https://github.com/0age/metamorphic (MIT license)
  */
-abstract contract MetamorphicFactory is Factory, MetamorphicFactoryStorage {
+abstract contract MetamorphicFactory is Factory {
   bytes private constant _metamorphicInitCode = hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
   bytes32 private constant _metamorphicInitCodeHash = keccak256(abi.encodePacked(_metamorphicInitCode));
 
@@ -18,7 +18,7 @@ abstract contract MetamorphicFactory is Factory, MetamorphicFactoryStorage {
    * @return implementation address of metamorphic implementation
    */
   function getMetamorphicImplementation () external view returns (address implementation) {
-    return _ds_MetamorphicFactory().metamorphicImplementation;
+    return LibMetamorphicFactory.layout().metamorphicImplementation;
   }
 
   /**
@@ -28,10 +28,10 @@ abstract contract MetamorphicFactory is Factory, MetamorphicFactoryStorage {
    * @return metamorphicContract address of deployed metamorphic implementation
    */
   function _deployMetamorphicContract (address target, bytes32 salt) internal returns (address metamorphicContract) {
-    MetamorphicFactoryStorageLayout storage ds = _ds_MetamorphicFactory();
-    ds.metamorphicImplementation = target;
+    LibMetamorphicFactory.Layout storage l = LibMetamorphicFactory.layout();
+    l.metamorphicImplementation = target;
     metamorphicContract = _deploy(_metamorphicInitCode, salt);
-    ds.metamorphicImplementation = address(0);
+    l.metamorphicImplementation = address(0);
   }
 
   /**

@@ -3,15 +3,16 @@
 pragma solidity ^0.7.0;
 
 import './IERC173.sol';
-import './OwnableStorage.sol';
+import './LibOwnable.sol';
 
-contract Ownable is IERC173, OwnableStorage {
+contract Ownable is IERC173 {
   function owner () override external view returns (address) {
-    return _getOwner();
+    return LibOwnable.getOwner();
   }
 
-  function transferOwnership (address account) virtual override external onlyOwner {
-    _setOwner(account);
+  function transferOwnership (address account) virtual override external {
+    LibOwnable.requireOwner();
+    LibOwnable.setOwner(account);
     emit OwnershipTransferred(msg.sender, account);
   }
 }
