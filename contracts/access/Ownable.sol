@@ -6,13 +6,17 @@ import './IERC173.sol';
 import './LibOwnable.sol';
 
 contract Ownable is IERC173 {
-  function owner () override external view returns (address) {
-    return LibOwnable.getOwner();
+  modifier onlyOwner {
+    require(msg.sender == owner(), 'Ownable: sender must be owner');
+    _;
   }
 
-  function transferOwnership (address account) virtual override external {
-    LibOwnable.requireOwner();
-    LibOwnable.setOwner(account);
+  function owner () override public view returns (address) {
+    return LibOwnable.layout().owner;
+  }
+
+  function transferOwnership (address account) virtual override external onlyOwner {
+    LibOwnable.layout().owner = account;
     emit OwnershipTransferred(msg.sender, account);
   }
 }
