@@ -2,7 +2,7 @@ const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfCloneFactory = function (deploy, skips) {
+const describeBehaviorOfCloneFactory = function (deploy, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::CloneFactory', function () {
