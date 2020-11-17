@@ -1,18 +1,22 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfFactory } = require('./Factory.behavior.js');
+const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const assertBehaviorOfMetamorphicFactory = function (deploy, skips) {
-  let instance;
+const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
-  // eslint-disable-next-line mocha/no-top-level-hooks
-  beforeEach(async function () {
-    instance = await deploy();
-  });
-
-  assertBehaviorOfFactory(instance, skips);
+const describeBehaviorOfMetamorphicFactory = function (deploy, skips) {
+  const describe = describeFilter(skips);
 
   describe('::MetamorphicFactory', function () {
+    let instance;
+
+    beforeEach(async function () {
+      instance = await deploy();
+    });
+
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    describeBehaviorOfFactory(() => instance, skips);
+
     describe('#getMetamorphicImplementation', function () {
       // behavior changes during internal call but cannot be tested independently
       it('returns zero address', async function () {
@@ -25,4 +29,4 @@ const assertBehaviorOfMetamorphicFactory = function (deploy, skips) {
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { assertBehaviorOfMetamorphicFactory };
+module.exports = { describeBehaviorOfMetamorphicFactory };

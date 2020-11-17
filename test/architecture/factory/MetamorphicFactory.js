@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfMetamorphicFactory } = require('./MetamorphicFactory.behavior.js');
+const { describeBehaviorOfMetamorphicFactory } = require('./MetamorphicFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MetamorphicFactoryMock');
@@ -16,9 +16,8 @@ describe('MetamorphicFactory', function () {
     instance = await deploy();
   });
 
-  before(function() {
-    assertBehaviorOfMetamorphicFactory(deploy);
-  });
+  // eslint-disable-next-line mocha/no-setup-in-describe
+  describeBehaviorOfMetamorphicFactory(() => instance);
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract', function () {

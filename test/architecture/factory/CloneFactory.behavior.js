@@ -1,7 +1,14 @@
-const { assertBehaviorOfFactory } = require('./Factory.behavior.js');
+const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
-const assertBehaviorOfCloneFactory = function (instance, skips) {
-  assertBehaviorOfFactory(instance, skips);
+const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
+
+const describeBehaviorOfCloneFactory = function (deploy, skips) {
+  const describe = describeFilter(skips);
+
+  describe('::CloneFactory', function () {
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    describeBehaviorOfFactory(deploy, skips);
+  });
 };
 
-module.exports = { assertBehaviorOfCloneFactory };
+module.exports = { describeBehaviorOfCloneFactory };

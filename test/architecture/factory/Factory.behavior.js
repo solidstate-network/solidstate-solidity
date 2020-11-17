@@ -1,3 +1,11 @@
-const assertBehaviorOfFactory = function (deploy, skips) {};
+const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-module.exports = { assertBehaviorOfFactory };
+const describeBehaviorOfFactory = function (deploy, skips) {
+  const describe = describeFilter(skips);
+
+  describe('::Factory', function () {
+    // no behavior
+  });
+};
+
+module.exports = { describeBehaviorOfFactory };

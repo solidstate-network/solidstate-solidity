@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfCloneFactory } = require('./CloneFactory.behavior.js');
+const { describeBehaviorOfCloneFactory } = require('./CloneFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('CloneFactoryMock');
@@ -16,9 +16,8 @@ describe('CloneFactory', function () {
     instance = await deploy();
   });
 
-  before(function () {
-    assertBehaviorOfCloneFactory(deploy);
-  });
+  // eslint-disable-next-line mocha/no-setup-in-describe
+  describeBehaviorOfCloneFactory(() => instance);
 
   describe('__internal', function () {
     describe('#_clone', function () {

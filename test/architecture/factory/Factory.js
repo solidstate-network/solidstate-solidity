@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfFactory } = require('./Factory.behavior.js');
+const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('FactoryMock');
@@ -16,9 +16,8 @@ describe('Factory', function () {
     instance = await deploy();
   });
 
-  before(function () {
-    assertBehaviorOfFactory(deploy);
-  });
+  // eslint-disable-next-line mocha/no-setup-in-describe
+  describeBehaviorOfFactory(() => instance);
 
   describe('__internal', function () {
     describe('#_deploy', function () {

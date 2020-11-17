@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { assertBehaviorOfMinimalProxyFactory } = require('./MinimalProxyFactory.behavior.js');
+const { describeBehaviorOfMinimalProxyFactory } = require('./MinimalProxyFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');
@@ -16,9 +16,8 @@ describe('MinimalProxyFactory', function () {
     instance = await deploy();
   });
 
-  before(function () {
-    assertBehaviorOfMinimalProxyFactory(deploy);
-  });
+  // eslint-disable-next-line mocha/no-setup-in-describe
+  describeBehaviorOfMinimalProxyFactory(() => instance);
 
   describe('__internal', function () {
     describe('#_deployMinimalProxyContract', function () {

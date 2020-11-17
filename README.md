@@ -43,7 +43,7 @@ describe('CustomToken', function () {
     return instance;
   }
 
-  assertBehaviorOfERC20Base(deploy);
+  describeBehaviorOfERC20Base(() => instance);
 
   // custom tests...
 });
