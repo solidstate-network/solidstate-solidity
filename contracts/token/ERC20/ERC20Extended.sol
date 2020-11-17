@@ -7,7 +7,7 @@ import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 import './ERC20Base.sol';
 
-contract ERC20Extended is ERC20Base {
+abstract contract ERC20Extended is ERC20Base {
   using SafeMath for uint;
 
   function increaseAllowance (address spender, uint amount) virtual public returns (bool) {
