@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20Base = function ({ deploy }, skips = []) {
+const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Base', function () {
@@ -19,14 +19,14 @@ const describeBehaviorOfERC20Base = function ({ deploy }, skips = []) {
 
     describe('#totalSupply', function () {
       it('returns the total supply of tokens', async function () {
-        expect(await instance.callStatic['totalSupply()']()).to.equal(0);
+        expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
         // TODO: test delta
       });
     });
 
     describe('#balanceOf', function () {
       it('returns the token balance of given address', async function () {
-        expect(await instance.callStatic['balanceOf(address)'](holder.address)).to.equal(0);
+        expect(await instance.callStatic['balanceOf(address)'](ethers.constants.AddressZero)).to.equal(0);
         // TODO: test delta
       });
     });

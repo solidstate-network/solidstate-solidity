@@ -4,7 +4,7 @@ const { describeBehaviorOfERC20Base } = require('./ERC20Base.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20Extended = function ({ deploy }, skips = []) {
+const describeBehaviorOfERC20Extended = function ({ deploy, supply }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Extended', function () {
@@ -20,7 +20,7 @@ const describeBehaviorOfERC20Extended = function ({ deploy }, skips = []) {
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base({ deploy: () => instance }, skips);
+    describeBehaviorOfERC20Base({ deploy: () => instance, supply }, skips);
 
     describe('#increaseAllowance', function () {
       it('increases approval of spender with respect to holder by given amount', async function () {

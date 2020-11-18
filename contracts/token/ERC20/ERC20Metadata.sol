@@ -2,9 +2,10 @@
 
 pragma solidity ^0.7.0;
 
+import './ERC20Base.sol';
 import './LibERC20Metadata.sol';
 
-contract ERC20Metadata {
+contract ERC20Metadata is ERC20Base {
   constructor (string memory name, string memory symbol, uint8 decimals) {
     _initialize(name, symbol, decimals);
   }
