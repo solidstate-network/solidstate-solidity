@@ -16,7 +16,7 @@ describe('Factory', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfFactory({ deploy: () => instance });
+  describeBehaviorOfFactory({});
 
   describe('__internal', function () {
     describe('#_deploy', function () {

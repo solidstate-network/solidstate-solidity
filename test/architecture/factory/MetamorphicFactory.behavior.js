@@ -15,7 +15,7 @@ const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips = []) {
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfFactory(() => instance, skips);
+    describeBehaviorOfFactory({}, skips);
 
     describe('#getMetamorphicImplementation', function () {
       // behavior changes during internal call but cannot be tested independently

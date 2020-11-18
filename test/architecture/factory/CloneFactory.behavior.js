@@ -2,12 +2,13 @@ const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfCloneFactory = function ({ deploy }, skips = []) {
+// eslint-disable-next-line no-empty-pattern
+const describeBehaviorOfCloneFactory = function ({}, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::CloneFactory', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfFactory(deploy, skips);
+    describeBehaviorOfFactory({}, skips);
   });
 };
 
