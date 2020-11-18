@@ -5,8 +5,7 @@ const { describeBehaviorOfMetamorphicFactory } = require('./MetamorphicFactory.b
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MetamorphicFactoryMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('MetamorphicFactory', function () {

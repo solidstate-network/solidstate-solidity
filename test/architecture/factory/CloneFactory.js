@@ -5,8 +5,7 @@ const { describeBehaviorOfCloneFactory } = require('./CloneFactory.behavior.js')
 let deploy = async function () {
   let factory = await ethers.getContractFactory('CloneFactoryMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('CloneFactory', function () {

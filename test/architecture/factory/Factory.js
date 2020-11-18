@@ -5,8 +5,7 @@ const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 let deploy = async function () {
   let factory = await ethers.getContractFactory('FactoryMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('Factory', function () {

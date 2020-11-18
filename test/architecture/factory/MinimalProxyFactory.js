@@ -5,8 +5,7 @@ const { describeBehaviorOfMinimalProxyFactory } = require('./MinimalProxyFactory
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('MinimalProxyFactory', function () {
