@@ -43,7 +43,8 @@ describe('CustomToken', function () {
     return instance;
   }
 
-  describeBehaviorOfERC20Base(deploy);
+  // eslint-disable-next-line mocha/no-setup-in-describe
+  describeBehaviorOfERC20Base({ deploy });
 
   // custom tests...
 });

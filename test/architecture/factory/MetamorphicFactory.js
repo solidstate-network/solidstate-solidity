@@ -16,7 +16,7 @@ describe('MetamorphicFactory', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfMetamorphicFactory(() => instance);
+  describeBehaviorOfMetamorphicFactory({ deploy: () => instance });
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract', function () {

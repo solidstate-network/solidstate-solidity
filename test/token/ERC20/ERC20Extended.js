@@ -9,5 +9,5 @@ let deploy = async function () {
 
 describe('ERC20Extended', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Extended(deploy);
+  describeBehaviorOfERC20Extended({ deploy });
 });

@@ -4,7 +4,7 @@ const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
 const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
 
-const describeBehaviorOfMetamorphicFactory = function (deploy, skips = []) {
+const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::MetamorphicFactory', function () {

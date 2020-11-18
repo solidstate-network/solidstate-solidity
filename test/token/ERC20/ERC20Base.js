@@ -19,7 +19,7 @@ describe('ERC20Base', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Base(() => instance);
+  describeBehaviorOfERC20Base({ deploy: () => instance });
 
   describe('__internal', function () {
     describe('#_mint', function () {

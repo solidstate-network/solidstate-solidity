@@ -16,7 +16,7 @@ describe('CloneFactory', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfCloneFactory(() => instance);
+  describeBehaviorOfCloneFactory({ deploy: () => instance });
 
   describe('__internal', function () {
     describe('#_clone', function () {
