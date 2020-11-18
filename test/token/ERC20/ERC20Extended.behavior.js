@@ -20,7 +20,7 @@ const describeBehaviorOfERC20Extended = function (deploy, skips = []) {
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base(deploy, skips);
+    describeBehaviorOfERC20Base(() => instance, skips);
 
     describe('#increaseAllowance', function () {
       it('increases approval of spender with respect to holder by given amount', async function () {
@@ -70,7 +70,6 @@ const describeBehaviorOfERC20Extended = function (deploy, skips = []) {
         await expect(
           await instance.callStatic['allowance(address,address)'](holder.address, spender.address)
         ).to.equal(ethers.constants.Zero);
-
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
