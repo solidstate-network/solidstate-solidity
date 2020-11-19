@@ -7,9 +7,8 @@ import './ERC20Extended.sol';
 import './ERC20Metadata.sol';
 
 contract ERC20 is ERC20Base, ERC20Extended, ERC20Metadata {
-  constructor (string memory name, string memory symbol, uint supply)
-  ERC20Metadata(name, symbol, 18)
-  {
+  constructor (string memory name, string memory symbol, uint supply) {
+    LibERC20Metadata.initialize(name, symbol, 18);
     _mint(msg.sender, supply);
   }
 }

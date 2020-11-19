@@ -5,18 +5,7 @@ pragma solidity ^0.7.0;
 import './ERC20Base.sol';
 import './LibERC20Metadata.sol';
 
-contract ERC20Metadata is ERC20Base {
-  constructor (string memory name, string memory symbol, uint8 decimals) {
-    _initialize(name, symbol, decimals);
-  }
-
-  function _initialize (string memory name, string memory symbol, uint8 decimals) internal {
-    LibERC20Metadata.Layout storage l = LibERC20Metadata.layout();
-    l.name = name;
-    l.symbol = symbol;
-    l.decimals = decimals;
-  }
-
+abstract contract ERC20Metadata is ERC20Base {
   function name () virtual public view returns (string memory) {
     return LibERC20Metadata.layout().name;
   }

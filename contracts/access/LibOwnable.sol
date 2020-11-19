@@ -15,4 +15,8 @@ library LibOwnable {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
+
+  function initialize (address owner) internal {
+    layout().owner = owner;
+  }
 }

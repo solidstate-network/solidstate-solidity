@@ -17,4 +17,13 @@ library LibERC20Metadata {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
+
+  function initialize (
+    string memory name, string memory symbol, uint8 decimals
+  ) internal {
+    Layout storage l = layout();
+    l.name = name;
+    l.symbol = symbol;
+    l.decimals = decimals;
+  }
 }
