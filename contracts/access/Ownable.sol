@@ -5,7 +5,7 @@ pragma solidity ^0.7.0;
 import './IERC173.sol';
 import './LibOwnable.sol';
 
-contract Ownable is IERC173 {
+abstract contract Ownable is IERC173 {
   modifier onlyOwner {
     require(msg.sender == owner(), 'Ownable: sender must be owner');
     _;
