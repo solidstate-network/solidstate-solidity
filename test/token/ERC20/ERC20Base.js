@@ -5,8 +5,7 @@ const { describeBehaviorOfERC20Base } = require('./ERC20Base.behavior.js');
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20BaseMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('ERC20Base', function () {

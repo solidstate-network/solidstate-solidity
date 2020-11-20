@@ -3,8 +3,7 @@ const { describeBehaviorOfERC20Extended } = require('./ERC20Extended.behavior.js
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20ExtendedMock');
   let instance = await factory.deploy();
-  await instance.deployed();
-  return instance;
+  return await instance.deployed();
 };
 
 describe('ERC20Extended', function () {

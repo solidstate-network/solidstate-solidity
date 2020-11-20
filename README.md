@@ -39,8 +39,7 @@ describe('CustomToken', function () {
   let deploy = async function () {
     let factory = await ethers.getContractFactory('CustomToken');
     let instance = await factory.deploy();
-    await instance.deployed();
-    return instance;
+    return await instance.deployed();
   }
 
   // eslint-disable-next-line mocha/no-setup-in-describe
