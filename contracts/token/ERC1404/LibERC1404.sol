@@ -8,7 +8,7 @@ library LibERC1404 {
   );
 
   struct Layout {
-    mapping (uint8 => string) messages;
+    mapping (uint8 => string) errors;
   }
 
   function layout () internal pure returns (Layout storage l) {
@@ -20,10 +20,10 @@ library LibERC1404 {
     uint8[] memory errorCodes, string[] memory errorMessages
   ) internal {
     require(errorCodes.length == errorMessages.length, 'TODO');
-    mapping (uint8 => string) storage messages = LibERC1404.layout().messages;
+    mapping (uint8 => string) storage errors = LibERC1404.layout().errors;
 
     for (uint i; i < errorCodes.length; i++) {
-      messages[errorCodes[i]] = errorMessages[i];
+      errors[errorCodes[i]] = errorMessages[i];
     }
   }
 }

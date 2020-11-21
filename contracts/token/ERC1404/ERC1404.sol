@@ -14,7 +14,7 @@ abstract contract ERC1404 is IERC1404, ERC20Base {
   function messageForTransferRestriction (
     uint8 restrictionCode
   ) virtual override public view returns (string memory) {
-    return LibERC1404.layout().messages[restrictionCode];
+    return LibERC1404.layout().errors[restrictionCode];
   }
 
   function _beforeTokenTransfer (
