@@ -11,7 +11,7 @@ abstract contract Ownable is IERC173 {
     _;
   }
 
-  function owner () override public view returns (address) {
+  function owner () virtual override public view returns (address) {
     return LibOwnable.layout().owner;
   }
 

@@ -11,15 +11,15 @@ contract SafeOwnable is Ownable {
     _;
   }
 
-  function nomineeOwner () public view returns (address) {
+  function nomineeOwner () virtual public view returns (address) {
     return LibSafeOwnable.layout().nomineeOwner;
   }
 
-  function transferOwnership (address account) override external onlyOwner {
+  function transferOwnership (address account) virtual override external onlyOwner {
     LibSafeOwnable.layout().nomineeOwner = account;
   }
 
-  function acceptOwnership () external onlyNomineeOwner {
+  function acceptOwnership () virtual external onlyNomineeOwner {
     emit OwnershipTransferred(owner(), msg.sender);
     LibOwnable.layout().owner = msg.sender;
     LibSafeOwnable.layout().nomineeOwner = address(0);
