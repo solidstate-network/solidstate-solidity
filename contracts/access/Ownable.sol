@@ -15,7 +15,7 @@ abstract contract Ownable is IERC173 {
     return LibOwnable.layout().owner;
   }
 
-  function transferOwnership (address account) virtual override external onlyOwner {
+  function transferOwnership (address account) virtual override public onlyOwner {
     LibOwnable.layout().owner = account;
     emit OwnershipTransferred(msg.sender, account);
   }
