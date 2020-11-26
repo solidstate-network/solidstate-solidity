@@ -8,7 +8,7 @@ library LibERC1404 {
   );
 
   struct Layout {
-    mapping (uint8 => string) errors;
+    mapping (uint8 => string) restrictions;
   }
 
   function layout () internal pure returns (Layout storage l) {
@@ -17,13 +17,14 @@ library LibERC1404 {
   }
 
   function initialize (
-    uint8[] memory errorCodes, string[] memory errorMessages
+    uint8[] memory restrictionCodes,
+    string[] memory restrictionMessages
   ) internal {
-    require(errorCodes.length == errorMessages.length, 'TODO');
-    mapping (uint8 => string) storage errors = LibERC1404.layout().errors;
+    require(restrictionCodes.length == restrictionMessages.length, 'TODO');
+    mapping (uint8 => string) storage restrictions = layout().restrictions;
 
-    for (uint i; i < errorCodes.length; i++) {
-      errors[errorCodes[i]] = errorMessages[i];
+    for (uint i; i < restrictionCodes.length; i++) {
+      restrictions[restrictionCodes[i]] = restrictionMessages[i];
     }
   }
 }

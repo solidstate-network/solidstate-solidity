@@ -8,17 +8,21 @@ import '../ERC20/ERC20Base.sol';
 
 abstract contract ERC1404 is IERC1404, ERC20Base {
   function detectTransferRestriction (
-    address from, address to, uint amount
+    address from,
+    address to,
+    uint amount
   ) virtual override public view returns (uint8);
 
   function messageForTransferRestriction (
     uint8 restrictionCode
   ) virtual override public view returns (string memory) {
-    return LibERC1404.layout().errors[restrictionCode];
+    return LibERC1404.layout().restrictions[restrictionCode];
   }
 
   function _beforeTokenTransfer (
-    address from, address to, uint amount
+    address from,
+    address to,
+    uint amount
   ) virtual override internal {
     super._beforeTokenTransfer(from, to, amount);
 
