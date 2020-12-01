@@ -25,18 +25,11 @@ describe('ERC20Base', function () {
       it('increases balance of given account by given amount', async function () {
         let amount = ethers.constants.Two;
 
-        // TODO: changeTokenBalance matcher broken by @nomiclabs/hardhat-waffle
-        // await expect(
-        //   () => instance['mint(address,uint256)'](receiver.address, amount)
-        // ).to.changeTokenBalance(
-        //   instance, receiver.address, amount
-        // );
-
-        let initialBalance = await instance.callStatic.balanceOf(receiver.address);
-        await instance['mint(address,uint256)'](receiver.address, amount);
-        let finalBalance = await instance.callStatic.balanceOf(receiver.address);
-
-        expect(finalBalance.sub(initialBalance)).to.equal(amount);
+        await expect(
+          () => instance['mint(address,uint256)'](receiver.address, amount)
+        ).to.changeTokenBalance(
+          instance, receiver, amount
+        );
       });
 
       it('increases total supply by given amount', async function () {
@@ -67,18 +60,11 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
         await instance['mint(address,uint256)'](receiver.address, amount);
 
-        // TODO: changeTokenBalance matcher broken by @nomiclabs/hardhat-waffle
-        // await expect(
-        //   () => instance['burn(address,uint256)'](receiver.address, amount)
-        // ).to.changeTokenBalance(
-        //   instance, receiver.address, amount
-        // );
-
-        let initialBalance = await instance.callStatic.balanceOf(receiver.address);
-        await instance['burn(address,uint256)'](receiver.address, amount);
-        let finalBalance = await instance.callStatic.balanceOf(receiver.address);
-
-        expect(initialBalance.sub(finalBalance)).to.equal(amount);
+        await expect(
+          () => instance['burn(address,uint256)'](receiver.address, amount)
+        ).to.changeTokenBalance(
+          instance, receiver, amount.mul(ethers.constants.NegativeOne)
+        );
       });
 
       it('decreases total supply by given amount', async function () {
@@ -111,16 +97,11 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
         await instance['mint(address,uint256)'](sender.address, amount);
 
-        // TODO: changeTokenBalances matcher broken by @nomiclabs/hardhat-waffle
-
-        let initialBalanceSender = await instance.callStatic.balanceOf(sender.address);
-        let initialBalanceReceiver = await instance.callStatic.balanceOf(receiver.address);
-        await instance['transfer(address,address,uint256)'](sender.address, receiver.address, amount);
-        let finalBalanceSender = await instance.callStatic.balanceOf(sender.address);
-        let finalBalanceReceiver = await instance.callStatic.balanceOf(receiver.address);
-
-        expect(initialBalanceSender.sub(finalBalanceSender)).to.equal(amount);
-        expect(finalBalanceReceiver.sub(initialBalanceReceiver)).to.equal(amount);
+        await expect(
+          () => instance['transfer(address,address,uint256)'](sender.address, receiver.address, amount)
+        ).to.changeTokenBalances(
+          instance, [sender, receiver], [amount.mul(ethers.constants.NegativeOne), amount]
+        );
       });
 
       it('does not modify total supply', async function () {
