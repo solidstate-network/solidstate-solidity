@@ -21,6 +21,7 @@ library LibDiamondBase {
   struct Layout {
     address fallbackAddress;
     EnumerableSet.AddressSet facets;
+    EnumerableSet.UintSet selectors;
     mapping (address => EnumerableSet.UintSet) facetSelectors;
     mapping (bytes4 => address) selectorFacet;
   }
@@ -37,6 +38,12 @@ library LibDiamondBase {
     address oldFacet = l.selectorFacet[cut.selector];
 
     l.facetSelectors[oldFacet].remove(uint256(uint32(cut.selector)));
+
+    if (cut.facet == address(0)) {
+      l.selectors.remove(uint256(uint32(cut.selector)));
+    } else {
+      l.selectors.add(uint256(uint32(cut.selector)));
+    }
 
     if (l.facetSelectors[oldFacet].length() == 0) {
       l.facets.remove(oldFacet);
