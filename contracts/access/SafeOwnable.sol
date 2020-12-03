@@ -4,18 +4,16 @@ pragma solidity ^0.7.0;
 
 import './Ownable.sol';
 import './LibSafeOwnable.sol';
+import './SafeOwnableStorage.sol';
 
-contract SafeOwnable is Ownable {
-  modifier onlyNomineeOwner () {
-    require(msg.sender == nomineeOwner(), 'SafeOwnable: sender must be nominee owner');
-    _;
-  }
-
+contract SafeOwnable is Ownable, SafeOwnableStorage {
   function nomineeOwner () virtual public view returns (address) {
     return LibSafeOwnable.layout().nomineeOwner;
   }
 
-  function transferOwnership (address account) virtual override public onlyOwner {
+  function transferOwnership (
+    address account
+  ) virtual override public onlyOwner {
     LibSafeOwnable.layout().nomineeOwner = account;
   }
 

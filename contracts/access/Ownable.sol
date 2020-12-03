@@ -4,18 +4,16 @@ pragma solidity ^0.7.0;
 
 import './IERC173.sol';
 import './LibOwnable.sol';
+import './OwnableStorage.sol';
 
-abstract contract Ownable is IERC173 {
-  modifier onlyOwner {
-    require(msg.sender == owner(), 'Ownable: sender must be owner');
-    _;
-  }
-
+abstract contract Ownable is IERC173, OwnableStorage {
   function owner () virtual override public view returns (address) {
     return LibOwnable.layout().owner;
   }
 
-  function transferOwnership (address account) virtual override public onlyOwner {
+  function transferOwnership (
+    address account
+  ) virtual override public onlyOwner {
     LibOwnable.layout().owner = account;
     emit OwnershipTransferred(msg.sender, account);
   }
