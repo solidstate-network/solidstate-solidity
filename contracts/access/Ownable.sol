@@ -6,7 +6,7 @@ import './IERC173.sol';
 import './LibOwnable.sol';
 import './OwnableStorage.sol';
 
-abstract contract Ownable is IERC173, OwnableStorage {
+contract Ownable is IERC173, OwnableStorage {
   function owner () virtual override public view returns (address) {
     return LibOwnable.layout().owner;
   }

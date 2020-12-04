@@ -12,10 +12,8 @@ describe('DiamondLoupe', function () {
 
   // eslint-disable-next-line mocha/no-hooks-for-single-case
   before(async function () {
-    let [signer] = await ethers.getSigners();
-
-    let facetFactory = await ethers.getContractFactory('OwnableMock');
-    facetInstance = await facetFactory.deploy(signer.address);
+    let facetFactory = await ethers.getContractFactory('Ownable');
+    facetInstance = await facetFactory.deploy();
     await facetInstance.deployed();
 
     facetCuts.push(

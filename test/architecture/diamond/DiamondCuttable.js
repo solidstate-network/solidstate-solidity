@@ -7,10 +7,8 @@ let deploy = async function () {
 };
 
 let deployFacet = async function () {
-  let [signer] = await ethers.getSigners();
-
-  let facetFactory = await ethers.getContractFactory('OwnableMock');
-  let facetInstance = await facetFactory.deploy(signer.address);
+  let facetFactory = await ethers.getContractFactory('Ownable');
+  let facetInstance = await facetFactory.deploy();
   return await facetInstance.deployed();
 };
 
