@@ -22,8 +22,6 @@ const describeBehaviorOfDiamondBase = function ({ deploy, facetFunction, facetFu
           (await ethers.getSigners())[0]
         );
 
-        await contract.callStatic[facetFunction](...facetFunctionArgs);
-
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).not.to.be.reverted;
