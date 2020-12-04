@@ -10,4 +10,9 @@ contract DiamondLoupeMock is DiamondBase, DiamondLoupe {
   constructor (LibDiamondBase.FacetCut[] memory cuts) {
     LibDiamondBase.initialize(cuts);
   }
+
+  /**
+   * @dev suppress compiler warning
+   */
+  receive () external payable {}
 }

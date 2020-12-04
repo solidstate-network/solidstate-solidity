@@ -11,4 +11,9 @@ contract DiamondCuttableMock is DiamondBase, DiamondCuttable {
   constructor () {
     LibOwnable.layout().owner = msg.sender;
   }
+
+  /**
+   * @dev suppress compiler warning
+   */
+  receive () external payable {}
 }
