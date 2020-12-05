@@ -2,34 +2,15 @@
 
 pragma solidity ^0.7.0;
 
-import './IERC1404.sol';
-import './LibERC1404.sol';
-import '../ERC20/ERC20Base.sol';
+import './ERC1404Base.sol';
+import '../ERC20/ERC20.sol';
 
-abstract contract ERC1404 is IERC1404, ERC20Base {
-  function detectTransferRestriction (
-    address from,
-    address to,
-    uint amount
-  ) virtual override public view returns (uint8);
-
-  function messageForTransferRestriction (
-    uint8 restrictionCode
-  ) virtual override public view returns (string memory) {
-    return LibERC1404.layout().restrictions[restrictionCode];
-  }
-
+abstract contract ERC1404 is ERC1404Base, ERC20 {
   function _beforeTokenTransfer (
     address from,
     address to,
     uint amount
-  ) virtual override internal {
+  ) virtual override(ERC1404Base, ERC20Base) internal {
     super._beforeTokenTransfer(from, to, amount);
-
-    uint8 restrictionCode = detectTransferRestriction(from, to, amount);
-
-    if (restrictionCode > 0) {
-      revert(messageForTransferRestriction(restrictionCode));
-    }
   }
 }

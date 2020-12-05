@@ -1,4 +1,4 @@
-const { describeBehaviorOfERC1404 } = require('./ERC1404.behavior.js');
+const { describeBehaviorOfERC1404Base } = require('./ERC1404Base.behavior.js');
 
 let errors = [
   { code: ethers.BigNumber.from(1), message: 'one' },
@@ -6,12 +6,12 @@ let errors = [
 ];
 
 let deploy = async function () {
-  let factory = await ethers.getContractFactory('ERC1404Mock');
+  let factory = await ethers.getContractFactory('ERC1404BaseMock');
   let instance = await factory.deploy(errors.map(e => e.code), errors.map(e => e.message));
   return await instance.deployed();
 };
 
-describe('ERC1404', function () {
+describe('ERC1404Base', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC1404({ deploy, errors, name: '', symbol: '', decimals: 0, supply: 0 });
+  describeBehaviorOfERC1404Base({ deploy, errors, supply: 0 });
 });
