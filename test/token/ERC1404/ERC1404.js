@@ -13,5 +13,5 @@ let deploy = async function () {
 
 describe('ERC1404', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC1404({ deploy, errors });
+  describeBehaviorOfERC1404({ deploy, errors, supply: 0 });
 });
