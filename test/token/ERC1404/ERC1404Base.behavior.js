@@ -4,7 +4,7 @@ const { describeBehaviorOfERC20Base } = require('../ERC20/ERC20Base.behavior.js'
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC1404Base = function ({ deploy, errors, supply }, skips = []) {
+const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, supply }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::ERC1404Base', function () {
@@ -32,17 +32,17 @@ const describeBehaviorOfERC1404Base = function ({ deploy, errors, supply }, skip
     });
 
     describe('#messageForTransferRestriction', function () {
-      it('returns empty string for unknown error code', async function () {
+      it('returns empty string for unknown restriction code', async function () {
         expect(
           await instance.callStatic['messageForTransferRestriction(uint8)'](255)
         ).to.equal('');
       });
 
-      for (let error of errors) {
-        it(`returns "${ error.message }" for code ${ error.code }`, async function () {
+      for (let restriction of restrictions) {
+        it(`returns "${ restriction.message }" for code ${ restriction.code }`, async function () {
           expect(
-            await instance.callStatic['messageForTransferRestriction(uint8)'](error.code)
-          ).to.equal(error.message);
+            await instance.callStatic['messageForTransferRestriction(uint8)'](restriction.code)
+          ).to.equal(restriction.message);
         });
       }
     });
