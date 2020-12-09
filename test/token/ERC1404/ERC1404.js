@@ -7,7 +7,7 @@ let restrictions = [
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC1404Mock');
-  let instance = await factory.deploy(restrictions.map(e => e.code), restrictions.map(e => e.message));
+  let instance = await factory.deploy(restrictions.map(r => r.code), restrictions.map(r => r.message));
   return await instance.deployed();
 };
 
