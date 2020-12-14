@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeBehaviorOfERC20Base } = require('../ERC20/ERC20Base.behavior.js');
+const describeBehaviorOfERC20Base = require('../ERC20/ERC20Base.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
@@ -50,4 +50,4 @@ const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, supply }
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfERC1404Base };
+module.exports = describeBehaviorOfERC1404Base;

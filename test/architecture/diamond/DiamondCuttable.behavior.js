@@ -108,4 +108,4 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfDiamondCuttable };
+module.exports = describeBehaviorOfDiamondCuttable;

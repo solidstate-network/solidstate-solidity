@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const { describeBehaviorOfFactory } = require('./Factory.behavior.js');
+const describeBehaviorOfFactory = require('./Factory.behavior.js');
 
 const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips = []) {
   const describe = describeFilter(skips);
@@ -29,4 +29,4 @@ const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips = []) {
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfMetamorphicFactory };
+module.exports = describeBehaviorOfMetamorphicFactory;

@@ -1,4 +1,4 @@
-const { describeBehaviorOfERC165 } = require('./ERC165.behavior.js');
+const describeBehaviorOfERC165 = require('./ERC165.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC165Mock');

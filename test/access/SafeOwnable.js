@@ -1,4 +1,4 @@
-const { describeBehaviorOfSafeOwnable } = require('./SafeOwnable.behavior.js');
+const describeBehaviorOfSafeOwnable = require('./SafeOwnable.behavior.js');
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();
@@ -6,7 +6,7 @@ let getOwner = async function () {
 };
 
 let getNomineeOwner = async function () {
-  let [,signer] = await ethers.getSigners();
+  let [, signer] = await ethers.getSigners();
   return signer;
 };
 

@@ -9,4 +9,4 @@ const describeBehaviorOfFactory = function ({}, skips = []) {
   });
 };
 
-module.exports = { describeBehaviorOfFactory };
+module.exports = describeBehaviorOfFactory;

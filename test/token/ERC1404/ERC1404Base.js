@@ -1,4 +1,4 @@
-const { describeBehaviorOfERC1404Base } = require('./ERC1404Base.behavior.js');
+const describeBehaviorOfERC1404Base = require('./ERC1404Base.behavior.js');
 
 let restrictions = [
   { code: ethers.BigNumber.from(1), message: 'one' },

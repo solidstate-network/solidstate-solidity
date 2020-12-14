@@ -40,4 +40,4 @@ const describeBehaviorOfOwnable = function ({ deploy, getOwner }, skips = []) {
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfOwnable };
+module.exports = describeBehaviorOfOwnable;

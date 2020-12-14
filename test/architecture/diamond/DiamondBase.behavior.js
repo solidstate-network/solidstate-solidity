@@ -49,4 +49,4 @@ const describeBehaviorOfDiamondBase = function ({ deploy, facetFunction, facetFu
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfDiamondBase };
+module.exports = describeBehaviorOfDiamondBase;

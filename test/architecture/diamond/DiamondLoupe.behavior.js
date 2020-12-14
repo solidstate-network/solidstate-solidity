@@ -83,4 +83,4 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips = 
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfDiamondLoupe };
+module.exports = describeBehaviorOfDiamondLoupe;

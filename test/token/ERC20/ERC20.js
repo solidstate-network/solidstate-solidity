@@ -1,4 +1,4 @@
-const { describeBehaviorOfERC20 } = require('./ERC20.behavior.js');
+const describeBehaviorOfERC20 = require('./ERC20.behavior.js');
 
 let name = 'ERC20Metadata.name';
 let symbol = 'ERC20Metadata.symbol';

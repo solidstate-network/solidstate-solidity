@@ -1,4 +1,4 @@
-const { describeBehaviorOfDiamondLoupe } = require('./DiamondLoupe.behavior.js');
+const describeBehaviorOfDiamondLoupe = require('./DiamondLoupe.behavior.js');
 
 describe('DiamondLoupe', function () {
   let facetInstance;

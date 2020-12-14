@@ -76,4 +76,4 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfERC20Base };
+module.exports = describeBehaviorOfERC20Base;

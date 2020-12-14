@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeBehaviorOfOwnable } = require('./Ownable.behavior.js');
+const describeBehaviorOfOwnable = require('./Ownable.behavior.js');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
@@ -60,4 +60,4 @@ const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOw
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfSafeOwnable };
+module.exports = describeBehaviorOfSafeOwnable;

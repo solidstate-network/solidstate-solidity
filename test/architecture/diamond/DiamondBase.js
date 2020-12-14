@@ -1,4 +1,4 @@
-const { describeBehaviorOfDiamondBase } = require('./DiamondBase.behavior.js');
+const describeBehaviorOfDiamondBase = require('./DiamondBase.behavior.js');
 
 let deploy = async function () {
   let facetFactory = await ethers.getContractFactory('Ownable');

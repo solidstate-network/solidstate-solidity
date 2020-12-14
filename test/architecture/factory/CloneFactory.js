@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeBehaviorOfCloneFactory } = require('./CloneFactory.behavior.js');
+const describeBehaviorOfCloneFactory = require('./CloneFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('CloneFactoryMock');

@@ -35,4 +35,4 @@ const describeBehaviorOfERC165 = function ({ deploy }, skips = []) {
 };
 
 // eslint-disable-next-line mocha/no-exports
-module.exports = { describeBehaviorOfERC165 };
+module.exports = describeBehaviorOfERC165;

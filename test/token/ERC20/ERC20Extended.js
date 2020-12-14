@@ -1,4 +1,4 @@
-const { describeBehaviorOfERC20Extended } = require('./ERC20Extended.behavior.js');
+const describeBehaviorOfERC20Extended = require('./ERC20Extended.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20ExtendedMock');
