@@ -1,4 +1,5 @@
 require('@nomiclabs/hardhat-waffle');
+require('hardhat-gas-reporter');
 require('hardhat-spdx-license-identifier');
 
 module.exports = {
@@ -20,6 +21,10 @@ module.exports = {
         mnemonic: `${ process.env.MNEMONIC }`,
       },
     },
+  },
+
+  gasReporter: {
+    enabled: process.env.REPORT_GAS === 'true',
   },
 
   spdxLicenseIdentifier: {

@@ -32,6 +32,7 @@
     "eslint-plugin-mocha": "^8.0.0",
     "ethereum-waffle": "^3.2.0",
     "hardhat": "^2.0.3",
+    "hardhat-gas-reporter": "^1.0.3",
     "hardhat-spdx-license-identifier": "^2.0.1"
   },
   "files": [
