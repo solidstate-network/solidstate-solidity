@@ -5,6 +5,7 @@ pragma solidity ^0.7.0;
 import './Factory.sol';
 
 /**
+ * @title Factory for contract self-replication
  * @dev derived from https://github.com/ItsNickBarry/solidity-auto-deployer (MIT license)
  */
 abstract contract CloneFactory is Factory {

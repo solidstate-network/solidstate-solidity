@@ -5,6 +5,7 @@ pragma solidity ^0.7.0;
 import './Factory.sol';
 
 /**
+ * @title Factory for the deployment of EIP1167 minimal proxies
  * @dev derived from https://github.com/optionality/clone-factory (MIT license)
  */
 abstract contract MinimalProxyFactory is Factory {

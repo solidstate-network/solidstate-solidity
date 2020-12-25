@@ -6,6 +6,7 @@ import './Factory.sol';
 import './LibMetamorphicFactory.sol';
 
 /**
+ * @title Factory for the deployment of metamorphic contracts
  * @dev derived from https://github.com/0age/metamorphic (MIT license)
  */
 abstract contract MetamorphicFactory is Factory {

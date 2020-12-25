@@ -2,9 +2,12 @@
 
 pragma solidity ^0.7.0;
 
+/**
+ * @title Factory for arbitrary code deployment using the "CREATE" and "CREATE2" opcodes
+ */
 abstract contract Factory {
   /**
-  * @notice deploy contract code using "CREATE" opcode
+   * @notice deploy contract code using "CREATE" opcode
    * @param initCode contract initialization code
    * @return deployment address of deployed contract
    */
