@@ -258,6 +258,47 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           );
         });
 
+        it('duplicate signer is found', async function () {
+          let [signer] = await ethers.getSigners();
+
+          let target = ethers.constants.AddressZero;
+          let value = ethers.constants.Zero;
+          let data = ethers.utils.randomBytes(32);
+          let nonces = [ethers.constants.Zero, ethers.constants.One];
+
+          let signatures = [
+            await signAuthorization(signer, {
+              target,
+              value,
+              data,
+              delegatecall: false,
+              nonce: nonces[0],
+              address: instance.address,
+            }),
+            await signAuthorization(signer, {
+              target,
+              value,
+              data,
+              delegatecall: false,
+              nonce: nonces[1],
+              address: instance.address,
+            }),
+          ];
+
+          await expect(
+            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
+              target,
+              data,
+              value,
+              [...nonces],
+              [...signatures],
+              { value }
+            )
+          ).to.be.revertedWith(
+            'ECDSAMultisigWallet: duplicate signer found'
+          );
+        });
+
         it('recovered signer is not authorized', async function () {
           let [, signer] = await ethers.getSigners();
 
@@ -525,6 +566,46 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             )
           ).to.be.revertedWith(
             'ECDSAMultisigWallet: quorum not reached'
+          );
+        });
+
+        it('duplicate signer is found', async function () {
+          let [signer] = await ethers.getSigners();
+
+          let target = ethers.constants.AddressZero;
+          let value = ethers.constants.Zero;
+          let data = ethers.utils.randomBytes(32);
+          let nonces = [ethers.constants.Zero, ethers.constants.One];
+
+          let signatures = [
+            await signAuthorization(signer, {
+              target,
+              value,
+              data,
+              delegatecall: true,
+              nonce: nonces[0],
+              address: instance.address,
+            }),
+            await signAuthorization(signer, {
+              target,
+              value,
+              data,
+              delegatecall: true,
+              nonce: nonces[1],
+              address: instance.address,
+            }),
+          ];
+
+          await expect(
+            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
+              target,
+              data,
+              [...nonces],
+              [...signatures],
+              { value }
+            )
+          ).to.be.revertedWith(
+            'ECDSAMultisigWallet: duplicate signer found'
           );
         });
 

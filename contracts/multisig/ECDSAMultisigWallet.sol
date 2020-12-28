@@ -131,7 +131,7 @@ contract ECDSAMultisigWallet {
     bytes[] calldata signatures,
     bool delegatecall
   ) internal {
-    // TODO: assert no duplicate signers
+    address[] memory signers = new address[](nonces.length);
 
     require(
       nonces.length == signatures.length,
@@ -163,6 +163,12 @@ contract ECDSAMultisigWallet {
       );
 
       _invalidateNonce(signer, nonce);
+
+      for (uint j; j < i; j++) {
+        require(signer != signers[j], 'ECDSAMultisigWallet: duplicate signer found');
+      }
+
+      signers[i] = signer;
     }
   }
 }
