@@ -47,13 +47,13 @@ contract ECDSAMultisigWallet {
   function callWithSignatures (
     address payable target,
     bytes memory data,
+    uint value,
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
-    // TODO: enable call value greater than msg.value
     _verifySignatures(target, data, nonces, signatures, false);
 
-    (bool success, bytes memory returndata) = target.call{ value: msg.value }(data);
+    (bool success, bytes memory returndata) = target.call{ value: value }(data);
 
     if (success) {
       return returndata;
