@@ -50,13 +50,19 @@ contract ECDSAMultisigWallet {
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
+    // TODO: enable call value greater than msg.value
     _verifySignatures(target, data, nonces, signatures, false);
 
     (bool success, bytes memory returndata) = target.call{ value: msg.value }(data);
 
-    require(success, string(returndata));
-
-    return returndata;
+    if (success) {
+      return returndata;
+    } else {
+      assembly {
+        returndatacopy(0, 0, returndatasize())
+        revert(0, returndatasize())
+      }
+    }
   }
 
   /**
@@ -75,15 +81,15 @@ contract ECDSAMultisigWallet {
   ) external payable returns (bytes memory) {
     _verifySignatures(target, data, nonces, signatures, true);
 
-    uint length = data.length;
+    (bool success, bytes memory returndata) = target.delegatecall(data);
 
-    assembly {
-      let result := delegatecall(gas(), target, add(data, 32), length, 0, 0)
-      returndatacopy(0, 0, returndatasize())
-
-      switch result
-        case 0 { revert(0, returndatasize()) }
-        default { return(0, returndatasize()) }
+    if (success) {
+      return returndata;
+    } else {
+      assembly {
+        returndatacopy(0, 0, returndatasize())
+        revert(0, returndatasize())
+      }
     }
   }
 
@@ -125,6 +131,8 @@ contract ECDSAMultisigWallet {
     bytes[] calldata signatures,
     bool delegatecall
   ) internal {
+    // TODO: assert no duplicate signers
+
     require(
       nonces.length == signatures.length,
       'ECDSAMultisigWallet: signature and nonce array lengths do not match'

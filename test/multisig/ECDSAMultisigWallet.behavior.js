@@ -420,7 +420,38 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
         );
       });
 
-      it('forwards return data from called function');
+      it('forwards return data from called function', async function () {
+        let [signer] = await ethers.getSigners();
+
+        let target = instance.address;
+        let value = ethers.constants.Zero;
+        let nonce = ethers.constants.Zero;
+        let { data } = await instance.populateTransaction.isInvalidNonce(signer.address, nonce);
+
+        let signature = await signAuthorization(signer, {
+          target,
+          value,
+          data,
+          delegatecall: true,
+          nonce,
+          address: instance.address,
+        });
+
+        // nonce should be invalidated before delegatecall is made
+
+        expect(
+          ethers.utils.defaultAbiCoder.decode(
+            instance.interface.functions['isInvalidNonce(address,uint256)'].outputs,
+            await instance.callStatic['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
+              target,
+              data,
+              [nonce],
+              [signature],
+              { value }
+            )
+          )[0]
+        ).to.be.true;
+      });
 
       describe('reverts if', function () {
         it('target contract reverts', async function () {
