@@ -10,7 +10,7 @@ import './LibECDSAMultisigWallet.sol';
 /**
  * @title ECDSA-verified multisig wallet contract
  */
-contract ECDSAMultisigWallet {
+abstract contract ECDSAMultisigWallet {
   using ECDSA for bytes32;
 
   /**
