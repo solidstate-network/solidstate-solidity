@@ -4,6 +4,7 @@ pragma solidity ^0.7.0;
 pragma abicoder v2;
 
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
 import './LibECDSAMultisigWallet.sol';
 
@@ -12,6 +13,7 @@ import './LibECDSAMultisigWallet.sol';
  */
 abstract contract ECDSAMultisigWallet {
   using ECDSA for bytes32;
+  using EnumerableSet for EnumerableSet.AddressSet;
 
   /**
    * @notice get invalidation status of nonce for given account
@@ -101,7 +103,7 @@ abstract contract ECDSAMultisigWallet {
   function _isSigner (
     address signer
   ) virtual internal returns (bool) {
-    return LibECDSAMultisigWallet.layout().signers[signer];
+    return LibECDSAMultisigWallet.layout().signers.contains(signer);
   }
 
   /**
