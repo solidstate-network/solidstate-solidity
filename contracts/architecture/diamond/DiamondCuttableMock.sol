@@ -8,8 +8,10 @@ import './DiamondBase.sol';
 import './DiamondCuttable.sol';
 
 contract DiamondCuttableMock is DiamondBase, DiamondCuttable {
+  using LibOwnable for LibOwnable.Layout;
+
   constructor () {
-    LibOwnable.layout().owner = msg.sender;
+    LibOwnable.layout().setOwner(msg.sender);
   }
 
   /**

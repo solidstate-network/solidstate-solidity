@@ -9,7 +9,7 @@ contract ERC1404BaseMock is ERC1404Base {
   constructor (
     uint8[] memory errorCodes, string[] memory errorMessages
   ) {
-    LibERC1404.initialize(errorCodes, errorMessages);
+    LibERC1404.setRestrictions(errorCodes, errorMessages);
   }
 
   function detectTransferRestriction (

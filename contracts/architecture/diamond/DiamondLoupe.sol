@@ -3,43 +3,21 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import '@openzeppelin/contracts/utils/EnumerableSet.sol';
-
 import './LibDiamondBase.sol';
 
 contract DiamondLoupe {
-  using EnumerableSet for EnumerableSet.AddressSet;
-  using EnumerableSet for EnumerableSet.UintSet;
+  using LibDiamondBase for LibDiamondBase.Layout;
 
   function readFacetCuts () external view returns (
     LibDiamondBase.FacetCut[] memory cuts
   ) {
-    LibDiamondBase.Layout storage l = LibDiamondBase.layout();
-    EnumerableSet.AddressSet storage facets = l.facets;
-    cuts = new LibDiamondBase.FacetCut[](l.selectors.length());
-
-    for (uint i; i < facets.length(); i++) {
-      address facet = facets.at(i);
-      EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
-
-      for (uint j; j < facetSelectors.length(); j++) {
-        cuts[i + j] = LibDiamondBase.FacetCut({
-          facet: facet,
-          selector: bytes4(uint32(facetSelectors.at(j)))
-        });
-      }
-    }
+    return LibDiamondBase.layout().getFacetCuts();
   }
 
   function readFacets () external view returns (
     address[] memory facets
   ) {
-    EnumerableSet.AddressSet storage allFacets = LibDiamondBase.layout().facets;
-    facets = new address[](allFacets.length());
-
-    for (uint i; i < facets.length; i++) {
-      facets[i] = allFacets.at(i);
-    }
+    return LibDiamondBase.layout().getFacets();
   }
 
   function readFacetSelectors (
@@ -47,12 +25,7 @@ contract DiamondLoupe {
   ) external view returns (
     bytes4[] memory selectors
   ) {
-    EnumerableSet.UintSet storage facetSelectors = LibDiamondBase.layout().facetSelectors[facet];
-    selectors = new bytes4[](facetSelectors.length());
-
-    for (uint i; i < selectors.length; i++) {
-      selectors[i] = bytes4(uint32(facetSelectors.at(i)));
-    }
+    return LibDiamondBase.layout().getFacetSelectors(facet);
   }
 
   function readSelectorFacet (
@@ -60,6 +33,6 @@ contract DiamondLoupe {
   ) external view returns (
     address facet
   ) {
-    return LibDiamondBase.layout().selectorFacet[selector];
+    return LibDiamondBase.layout().getSelectorFacet(selector);
   }
 }

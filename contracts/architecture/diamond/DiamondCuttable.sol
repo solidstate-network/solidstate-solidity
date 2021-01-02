@@ -9,11 +9,11 @@ import './LibDiamondBase.sol';
 // TODO: do not include public Ownable functions
 
 contract DiamondCuttable is OwnableStorage {
+  using LibDiamondBase for LibDiamondBase.Layout;
+
   function diamondCut (
     LibDiamondBase.FacetCut[] calldata cuts
   ) external onlyOwner {
-    for (uint i; i < cuts.length; i++) {
-      LibDiamondBase.diamondCut(cuts[i]);
-    }
+    LibDiamondBase.layout().diamondCut(cuts);
   }
 }

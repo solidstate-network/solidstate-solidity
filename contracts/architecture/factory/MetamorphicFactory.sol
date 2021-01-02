@@ -10,6 +10,8 @@ import './LibMetamorphicFactory.sol';
  * @dev derived from https://github.com/0age/metamorphic (MIT license)
  */
 abstract contract MetamorphicFactory is Factory {
+  using LibMetamorphicFactory for LibMetamorphicFactory.Layout;
+
   bytes private constant _metamorphicInitCode = hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
   bytes32 private constant _metamorphicInitCodeHash = keccak256(abi.encodePacked(_metamorphicInitCode));
 
@@ -30,9 +32,9 @@ abstract contract MetamorphicFactory is Factory {
    */
   function _deployMetamorphicContract (address target, bytes32 salt) internal returns (address metamorphicContract) {
     LibMetamorphicFactory.Layout storage l = LibMetamorphicFactory.layout();
-    l.metamorphicImplementation = target;
+    l.setMetamorphicImplementation(target);
     metamorphicContract = _deploy(_metamorphicInitCode, salt);
-    l.metamorphicImplementation = address(0);
+    l.setMetamorphicImplementation(address(0));
   }
 
   /**

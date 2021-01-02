@@ -16,7 +16,10 @@ library LibOwnable {
     assembly { l.slot := slot }
   }
 
-  function initialize (address owner) internal {
-    layout().owner = owner;
+  function setOwner (
+    Layout storage l,
+    address owner
+  ) internal {
+    l.owner = owner;
   }
 }

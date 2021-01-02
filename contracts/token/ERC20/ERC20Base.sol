@@ -14,31 +14,49 @@ abstract contract ERC20Base is IERC20 {
     return LibERC20Base.layout().totalSupply;
   }
 
-  function balanceOf (address account) override virtual public view returns (uint) {
+  function balanceOf (
+    address account
+  ) override virtual public view returns (uint) {
     return LibERC20Base.layout().balances[account];
   }
 
-  function allowance (address holder, address spender) override virtual public view returns (uint) {
+  function allowance (
+    address holder,
+    address spender
+  ) override virtual public view returns (uint) {
     return LibERC20Base.layout().allowances[holder][spender];
   }
 
-  function transfer (address recipient, uint amount) override virtual public returns (bool) {
+  function transfer (
+    address recipient,
+    uint amount
+  ) override virtual public returns (bool) {
     _transfer(msg.sender, recipient, amount);
     return true;
   }
 
-  function transferFrom (address sender, address recipient, uint amount) override virtual public returns (bool) {
+  function transferFrom (
+    address sender,
+    address recipient,
+    uint amount
+  ) override virtual public returns (bool) {
     _approve(sender, msg.sender, LibERC20Base.layout().allowances[sender][msg.sender].sub(amount, 'ERC20: transfer amount exceeds allowance'));
     _transfer(sender, recipient, amount);
     return true;
   }
 
-  function approve (address spender, uint amount) override virtual public returns (bool) {
+  function approve (
+    address spender,
+    uint amount
+  ) override virtual public returns (bool) {
     _approve(msg.sender, spender, amount);
     return true;
   }
 
-  function _mint (address account, uint amount) virtual internal {
+  function _mint (
+    address account,
+    uint amount
+  ) virtual internal {
     require(account != address(0), 'ERC20: mint to the zero address');
 
     _beforeTokenTransfer(address(0), account, amount);
@@ -50,7 +68,10 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(address(0), account, amount);
   }
 
-  function _burn (address account, uint amount) virtual internal {
+  function _burn (
+    address account,
+    uint amount
+  ) virtual internal {
     require(account != address(0), 'ERC20: burn from the zero address');
 
     _beforeTokenTransfer(account, address(0), amount);
@@ -62,7 +83,11 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(account, address(0), amount);
   }
 
-  function _transfer (address sender, address recipient, uint amount) virtual internal {
+  function _transfer (
+    address sender,
+    address recipient,
+    uint amount
+  ) virtual internal {
     require(sender != address(0), 'ERC20: transfer from the zero address');
     require(recipient != address(0), 'ERC20: transfer to the zero address');
 
@@ -75,7 +100,11 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(sender, recipient, amount);
   }
 
-  function _approve (address holder, address spender, uint amount) virtual internal {
+  function _approve (
+    address holder,
+    address spender,
+    uint amount
+  ) virtual internal {
     require(holder != address(0), 'ERC20: approve from the zero address');
     require(spender != address(0), 'ERC20: approve to the zero address');
 
@@ -84,5 +113,9 @@ abstract contract ERC20Base is IERC20 {
     emit Approval(holder, spender, amount);
   }
 
-  function _beforeTokenTransfer (address from, address to, uint amount) virtual internal {}
+  function _beforeTokenTransfer (
+    address from,
+    address to,
+    uint amount
+  ) virtual internal {}
 }

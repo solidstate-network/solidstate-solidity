@@ -16,7 +16,7 @@ library LibERC1404 {
     assembly { l.slot := slot }
   }
 
-  function initialize (
+  function setRestrictions (
     uint8[] memory restrictionCodes,
     string[] memory restrictionMessages
   ) internal {
@@ -26,5 +26,12 @@ library LibERC1404 {
     for (uint i; i < restrictionCodes.length; i++) {
       restrictions[restrictionCodes[i]] = restrictionMessages[i];
     }
+  }
+
+  function getRestrictionMessage (
+    Layout storage l,
+    uint8 restrictionCode
+  ) internal view returns (string memory) {
+    return l.restrictions[restrictionCode];
   }
 }

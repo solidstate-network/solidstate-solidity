@@ -15,4 +15,11 @@ library LibMetamorphicFactory {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
+
+  function setMetamorphicImplementation (
+    Layout storage l,
+    address metamorphicImplementation
+  ) internal {
+    l.metamorphicImplementation = metamorphicImplementation;
+  }
 }

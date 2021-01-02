@@ -2,8 +2,6 @@
 
 pragma solidity ^0.7.0;
 
-import './LibOwnable.sol';
-
 library LibSafeOwnable {
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.SafeOwnable'
@@ -18,7 +16,10 @@ library LibSafeOwnable {
     assembly { l.slot := slot }
   }
 
-  function initialize (address owner) internal {
-    LibOwnable.layout().owner = owner;
+  function setNomineeOwner (
+    Layout storage l,
+    address nomineeOwner
+  ) internal {
+    l.nomineeOwner = nomineeOwner;
   }
 }

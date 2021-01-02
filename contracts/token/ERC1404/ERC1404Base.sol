@@ -7,6 +7,8 @@ import './LibERC1404.sol';
 import '../ERC20/ERC20Base.sol';
 
 abstract contract ERC1404Base is IERC1404, ERC20Base {
+  using LibERC1404 for LibERC1404.Layout;
+
   function detectTransferRestriction (
     address from,
     address to,
@@ -16,7 +18,7 @@ abstract contract ERC1404Base is IERC1404, ERC20Base {
   function messageForTransferRestriction (
     uint8 restrictionCode
   ) virtual override public view returns (string memory) {
-    return LibERC1404.layout().restrictions[restrictionCode];
+    return LibERC1404.layout().getRestrictionMessage(restrictionCode);
   }
 
   function _beforeTokenTransfer (

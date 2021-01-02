@@ -26,15 +26,24 @@ library LibDiamondBase {
     mapping (bytes4 => address) selectorFacet;
   }
 
-  function initialize (FacetCut[] memory cuts) internal {
+  function layout () internal pure returns (Layout storage l) {
+    bytes32 slot = STORAGE_SLOT;
+    assembly { l.slot := slot }
+  }
+
+  function diamondCut (
+    Layout storage l,
+    FacetCut[] memory cuts
+  ) internal {
     for (uint i; i < cuts.length; i++) {
-      diamondCut(cuts[i]);
+      diamondCut(l, cuts[i]);
     }
   }
 
-  function diamondCut (FacetCut memory cut) internal {
-    Layout storage l = LibDiamondBase.layout();
-
+  function diamondCut (
+    Layout storage l,
+    FacetCut memory cut
+  ) internal {
     address oldFacet = l.selectorFacet[cut.selector];
 
     l.facetSelectors[oldFacet].remove(uint256(uint32(cut.selector)));
@@ -54,13 +63,63 @@ library LibDiamondBase {
     l.selectorFacet[cut.selector] = cut.facet;
   }
 
-  function setFallbackAddress (address fallbackAddress) internal {
-    require(fallbackAddress != address(this), 'DiamondBase: fallback address cannot be self');
-    LibDiamondBase.layout().fallbackAddress = fallbackAddress;
+  function setFallbackAddress (
+    Layout storage l,
+    address fallbackAddress
+  ) internal {
+    require(
+      fallbackAddress != address(this),
+      'DiamondBase: fallback address cannot be self'
+    );
+    l.fallbackAddress = fallbackAddress;
   }
 
-  function layout () internal pure returns (Layout storage l) {
-    bytes32 slot = STORAGE_SLOT;
-    assembly { l.slot := slot }
+  function getFacetCuts (
+    Layout storage l
+  ) internal view returns (FacetCut[] memory cuts) {
+    EnumerableSet.AddressSet storage facets = l.facets;
+    cuts = new LibDiamondBase.FacetCut[](l.selectors.length());
+
+    for (uint i; i < facets.length(); i++) {
+      address facet = facets.at(i);
+      EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
+
+      for (uint j; j < facetSelectors.length(); j++) {
+        cuts[i + j] = LibDiamondBase.FacetCut({
+          facet: facet,
+          selector: bytes4(uint32(facetSelectors.at(j)))
+        });
+      }
+    }
+  }
+
+  function getFacets (
+    Layout storage l
+  ) internal view returns (address[] memory facets) {
+    EnumerableSet.AddressSet storage allFacets = l.facets;
+    facets = new address[](allFacets.length());
+
+    for (uint i; i < facets.length; i++) {
+      facets[i] = allFacets.at(i);
+    }
+  }
+
+  function getFacetSelectors (
+    Layout storage l,
+    address facet
+  ) internal view returns (bytes4[] memory selectors) {
+    EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
+    selectors = new bytes4[](facetSelectors.length());
+
+    for (uint i; i < selectors.length; i++) {
+      selectors[i] = bytes4(uint32(facetSelectors.at(i)));
+    }
+  }
+
+  function getSelectorFacet (
+    Layout storage l,
+    bytes4 selector
+  ) internal view returns (address) {
+    return l.selectorFacet[selector];
   }
 }

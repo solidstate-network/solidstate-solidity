@@ -17,16 +17,19 @@ library LibERC165 {
     assembly { l.slot := slot }
   }
 
-  function initialize () internal {
-    registerInterface(0x01ffc9a7);
+  function isSupportedInterface (
+    Layout storage l,
+    bytes4 interfaceId
+  ) internal view returns (bool) {
+    return l.supportedInterfaces[interfaceId];
   }
 
-  function registerInterface (bytes4 interfaceId) internal {
+  function setSupportedInterface (
+    Layout storage l,
+    bytes4 interfaceId,
+    bool status
+  ) internal {
     require(interfaceId != 0xffffffff, 'ERC165: invalid interface id');
-    LibERC165.layout().supportedInterfaces[interfaceId] = true;
-  }
-
-  function deregisterInterface (bytes4 interfaceId) internal {
-    delete LibERC165.layout().supportedInterfaces[interfaceId];
+    l.supportedInterfaces[interfaceId] = status;
   }
 }

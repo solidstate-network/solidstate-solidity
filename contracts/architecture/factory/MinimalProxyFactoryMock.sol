@@ -17,7 +17,7 @@ contract MinimalProxyFactoryMock is MinimalProxyFactory {
     return _calculateMinimalProxyDeploymentAddress(target, salt);
   }
 
-  function generateMinimalProxyInitCode (address target) external view returns (bytes memory) {
+  function generateMinimalProxyInitCode (address target) external pure returns (bytes memory) {
     return _generateMinimalProxyInitCode(target);
   }
 }

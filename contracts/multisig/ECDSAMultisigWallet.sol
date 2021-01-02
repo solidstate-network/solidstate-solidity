@@ -14,6 +14,7 @@ import './LibECDSAMultisigWallet.sol';
 abstract contract ECDSAMultisigWallet {
   using ECDSA for bytes32;
   using EnumerableSet for EnumerableSet.AddressSet;
+  using LibECDSAMultisigWallet for LibECDSAMultisigWallet.Layout;
 
   /**
    * @notice get invalidation status of nonce for given account
@@ -25,7 +26,7 @@ abstract contract ECDSAMultisigWallet {
     address account,
     uint nonce
   ) public view returns (bool) {
-    return LibECDSAMultisigWallet.layout().nonces[account][nonce];
+    return LibECDSAMultisigWallet.layout().isInvalidNonce(account, nonce);
   }
 
   /**
@@ -35,7 +36,7 @@ abstract contract ECDSAMultisigWallet {
   function invalidateNonce (
     uint nonce
   ) external {
-    LibECDSAMultisigWallet.layout().nonces[msg.sender][nonce] = true;
+    LibECDSAMultisigWallet.layout().setInvalidNonce(msg.sender, nonce);
   }
 
   /**
@@ -110,19 +111,22 @@ abstract contract ECDSAMultisigWallet {
       ).toEthSignedMessageHash().recover(signatures[i]);
 
       require(
-        l.signers.contains(signer),
+        l.isSigner(signer),
         'ECDSAMultisigWallet: recovered signer is not authorized'
       );
 
       require(
-        !l.nonces[signer][nonce],
+        !l.isInvalidNonce(signer, nonce),
         'ECDSAMultisigWallet: invalid nonce'
       );
 
-      l.nonces[signer][nonce] = true;
+      l.setInvalidNonce(signer, nonce);
 
       for (uint j; j < i; j++) {
-        require(signer != signers[j], 'ECDSAMultisigWallet: duplicate signer found');
+        require(
+          signer != signers[j],
+          'ECDSAMultisigWallet: duplicate signer found'
+        );
       }
 
       signers[i] = signer;
