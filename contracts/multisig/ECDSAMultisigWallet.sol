@@ -35,7 +35,7 @@ abstract contract ECDSAMultisigWallet {
   function invalidateNonce (
     uint nonce
   ) external {
-    _invalidateNonce(msg.sender, nonce);
+    LibECDSAMultisigWallet.layout().nonces[msg.sender][nonce] = true;
   }
 
   /**
@@ -53,18 +53,7 @@ abstract contract ECDSAMultisigWallet {
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
-    _verifySignatures(target, data, nonces, signatures, false);
-
-    (bool success, bytes memory returndata) = target.call{ value: value }(data);
-
-    if (success) {
-      return returndata;
-    } else {
-      assembly {
-        returndatacopy(0, 0, returndatasize())
-        revert(0, returndatasize())
-      }
-    }
+    return _executeCall(target, data, value, nonces, signatures, false);
   }
 
   /**
@@ -81,41 +70,7 @@ abstract contract ECDSAMultisigWallet {
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
-    _verifySignatures(target, data, nonces, signatures, true);
-
-    (bool success, bytes memory returndata) = target.delegatecall(data);
-
-    if (success) {
-      return returndata;
-    } else {
-      assembly {
-        returndatacopy(0, 0, returndatasize())
-        revert(0, returndatasize())
-      }
-    }
-  }
-
-  /**
-   * @notice query whether given address is authorized signer
-   * @param signer address to query
-   * @return whether signer is authorized
-   */
-  function _isSigner (
-    address signer
-  ) virtual internal returns (bool) {
-    return LibECDSAMultisigWallet.layout().signers.contains(signer);
-  }
-
-  /**
-   * @notice invalidate nonce for given account to prevent use of signed data payload
-   * @param account address whose nonce to invalidate
-   * @param nonce nonce to invalidate
-   */
-  function _invalidateNonce (
-    address account,
-    uint nonce
-  ) internal {
-    LibECDSAMultisigWallet.layout().nonces[account][nonce] = true;
+    return _executeCall(target, data, 0, nonces, signatures, true);
   }
 
   /**
@@ -132,7 +87,7 @@ abstract contract ECDSAMultisigWallet {
     uint[] calldata nonces,
     bytes[] calldata signatures,
     bool delegatecall
-  ) internal {
+  ) virtual internal {
     address[] memory signers = new address[](nonces.length);
 
     require(
@@ -155,7 +110,7 @@ abstract contract ECDSAMultisigWallet {
       ).toEthSignedMessageHash().recover(signatures[i]);
 
       require(
-        _isSigner(signer),
+        l.signers.contains(signer),
         'ECDSAMultisigWallet: recovered signer is not authorized'
       );
 
@@ -164,13 +119,51 @@ abstract contract ECDSAMultisigWallet {
         'ECDSAMultisigWallet: invalid nonce'
       );
 
-      _invalidateNonce(signer, nonce);
+      l.nonces[signer][nonce] = true;
 
       for (uint j; j < i; j++) {
         require(signer != signers[j], 'ECDSAMultisigWallet: duplicate signer found');
       }
 
       signers[i] = signer;
+    }
+  }
+
+  /**
+   * @notice verify and execute low-level "call" or "delegatecall"
+   * @param target address
+   * @param data data payload
+   * @param value call value
+   * @param nonces array of nonces associated with each signature
+   * @param signatures array of signatures
+   * @param delegate whether call type is "delegatecall"
+   */
+  function _executeCall (
+    address payable target,
+    bytes memory data,
+    uint value,
+    uint[] calldata nonces,
+    bytes[] calldata signatures,
+    bool delegate
+  ) internal returns (bytes memory) {
+    _verifySignatures(target, data, nonces, signatures, delegate);
+
+    bool success;
+    bytes memory returndata;
+
+    if (delegate) {
+      (success, returndata) = target.delegatecall(data);
+    } else {
+      (success, returndata) = target.call{ value: value }(data);
+    }
+
+    if (success) {
+      return returndata;
+    } else {
+      assembly {
+        returndatacopy(0, 0, returndatasize())
+        revert(0, returndatasize())
+      }
     }
   }
 }
