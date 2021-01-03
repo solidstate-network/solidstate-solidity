@@ -6,12 +6,12 @@ pragma abicoder v2;
 import './ECDSAMultisigWallet.sol';
 
 contract ECDSAMultisigWalletMock is ECDSAMultisigWallet {
-  using LibECDSAMultisigWallet for LibECDSAMultisigWallet.Layout;
+  using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
   constructor (
     uint quorum
   ) {
-    LibECDSAMultisigWallet.Layout storage l = LibECDSAMultisigWallet.layout();
+    ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage.layout();
     l.setQuorum(quorum);
     l.addSigner(msg.sender);
   }

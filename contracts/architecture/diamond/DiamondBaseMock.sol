@@ -6,9 +6,9 @@ pragma abicoder v2;
 import './DiamondBase.sol';
 
 contract DiamondBaseMock is DiamondBase {
-  using LibDiamondBase for LibDiamondBase.Layout;
+  using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
-  constructor (LibDiamondBase.FacetCut[] memory cuts) {
-    LibDiamondBase.layout().diamondCut(cuts);
+  constructor (DiamondBaseStorage.FacetCut[] memory cuts) {
+    DiamondBaseStorage.layout().diamondCut(cuts);
   }
 }

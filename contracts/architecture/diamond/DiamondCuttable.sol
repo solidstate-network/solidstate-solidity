@@ -3,17 +3,17 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import '../../access/OwnableStorage.sol';
-import './LibDiamondBase.sol';
+import '../../access/OwnableInternal.sol';
+import './DiamondBaseStorage.sol';
 
 // TODO: do not include public Ownable functions
 
-contract DiamondCuttable is OwnableStorage {
-  using LibDiamondBase for LibDiamondBase.Layout;
+contract DiamondCuttable is OwnableInternal {
+  using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
   function diamondCut (
-    LibDiamondBase.FacetCut[] calldata cuts
+    DiamondBaseStorage.FacetCut[] calldata cuts
   ) external onlyOwner {
-    LibDiamondBase.layout().diamondCut(cuts);
+    DiamondBaseStorage.layout().diamondCut(cuts);
   }
 }

@@ -4,15 +4,15 @@ pragma solidity ^0.7.0;
 pragma abicoder v2;
 
 import '@openzeppelin/contracts/utils/EnumerableSet.sol';
-import './LibDiamondBase.sol';
+import './DiamondBaseStorage.sol';
 
 contract DiamondBase {
   // TODO: selector aliases
 
   fallback () external payable {
     // storage layout is not retrieved via function call due to gas considerations
-    LibDiamondBase.Layout storage l;
-    bytes32 slot = LibDiamondBase.STORAGE_SLOT;
+    DiamondBaseStorage.Layout storage l;
+    bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
     assembly { l.slot := slot }
 
     address facet = l.selectorFacet[msg.sig];

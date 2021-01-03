@@ -4,7 +4,7 @@ pragma solidity ^0.7.0;
 
 import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
-library LibECDSAMultisigWallet {
+library ECDSAMultisigWalletStorage {
   using EnumerableSet for EnumerableSet.AddressSet;
 
   bytes32 internal constant STORAGE_SLOT = keccak256(

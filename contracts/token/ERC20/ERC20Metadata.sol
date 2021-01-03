@@ -3,18 +3,18 @@
 pragma solidity ^0.7.0;
 
 import './ERC20Base.sol';
-import './LibERC20Metadata.sol';
+import './ERC20MetadataStorage.sol';
 
 abstract contract ERC20Metadata is ERC20Base {
   function name () virtual public view returns (string memory) {
-    return LibERC20Metadata.layout().name;
+    return ERC20MetadataStorage.layout().name;
   }
 
   function symbol () virtual public view returns (string memory) {
-    return LibERC20Metadata.layout().symbol;
+    return ERC20MetadataStorage.layout().symbol;
   }
 
   function decimals () virtual public view returns (uint8) {
-    return LibERC20Metadata.layout().decimals;
+    return ERC20MetadataStorage.layout().decimals;
   }
 }

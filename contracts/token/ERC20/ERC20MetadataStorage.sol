@@ -2,7 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-library LibERC20Metadata {
+library ERC20MetadataStorage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.ERC20Metadata'
   );

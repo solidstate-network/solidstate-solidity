@@ -3,27 +3,27 @@
 pragma solidity ^0.7.0;
 
 import './Ownable.sol';
-import './LibSafeOwnable.sol';
+import './SafeOwnableInternal.sol';
 import './SafeOwnableStorage.sol';
 
-contract SafeOwnable is Ownable, SafeOwnableStorage {
-  using LibOwnable for LibOwnable.Layout;
-  using LibSafeOwnable for LibSafeOwnable.Layout;
+contract SafeOwnable is Ownable, SafeOwnableInternal {
+  using OwnableStorage for OwnableStorage.Layout;
+  using SafeOwnableStorage for SafeOwnableStorage.Layout;
 
   function nomineeOwner () virtual public view returns (address) {
-    return LibSafeOwnable.layout().nomineeOwner;
+    return SafeOwnableStorage.layout().nomineeOwner;
   }
 
   function transferOwnership (
     address account
   ) virtual override public onlyOwner {
-    LibSafeOwnable.layout().setNomineeOwner(account);
+    SafeOwnableStorage.layout().setNomineeOwner(account);
   }
 
   function acceptOwnership () virtual public onlyNomineeOwner {
-    LibOwnable.Layout storage l = LibOwnable.layout();
+    OwnableStorage.Layout storage l = OwnableStorage.layout();
     emit OwnershipTransferred(l.owner, msg.sender);
     l.setOwner(msg.sender);
-    LibSafeOwnable.layout().setNomineeOwner(address(0));
+    SafeOwnableStorage.layout().setNomineeOwner(address(0));
   }
 }

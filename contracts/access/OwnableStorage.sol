@@ -2,16 +2,24 @@
 
 pragma solidity ^0.7.0;
 
-import './LibOwnable.sol';
+library OwnableStorage {
+  bytes32 internal constant STORAGE_SLOT = keccak256(
+    'solidstate.contracts.storage.Ownable'
+  );
 
-abstract contract OwnableStorage {
-  using LibOwnable for LibOwnable.Layout;
+  struct Layout {
+    address owner;
+  }
 
-  modifier onlyOwner {
-    require(
-      msg.sender == LibOwnable.layout().owner,
-      'Ownable: sender must be owner'
-    );
-    _;
+  function layout () internal pure returns (Layout storage l) {
+    bytes32 slot = STORAGE_SLOT;
+    assembly { l.slot := slot }
+  }
+
+  function setOwner (
+    Layout storage l,
+    address owner
+  ) internal {
+    l.owner = owner;
   }
 }

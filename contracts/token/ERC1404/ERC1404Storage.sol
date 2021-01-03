@@ -2,7 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-library LibERC1404 {
+library ERC1404Storage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.ERC1404'
   );

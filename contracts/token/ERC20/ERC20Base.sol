@@ -5,26 +5,26 @@ pragma solidity ^0.7.0;
 import '@openzeppelin/contracts/math/SafeMath.sol';
 
 import './IERC20.sol';
-import './LibERC20Base.sol';
+import './ERC20BaseStorage.sol';
 
 abstract contract ERC20Base is IERC20 {
   using SafeMath for uint;
 
   function totalSupply () override virtual public view returns (uint) {
-    return LibERC20Base.layout().totalSupply;
+    return ERC20BaseStorage.layout().totalSupply;
   }
 
   function balanceOf (
     address account
   ) override virtual public view returns (uint) {
-    return LibERC20Base.layout().balances[account];
+    return ERC20BaseStorage.layout().balances[account];
   }
 
   function allowance (
     address holder,
     address spender
   ) override virtual public view returns (uint) {
-    return LibERC20Base.layout().allowances[holder][spender];
+    return ERC20BaseStorage.layout().allowances[holder][spender];
   }
 
   function transfer (
@@ -40,7 +40,7 @@ abstract contract ERC20Base is IERC20 {
     address recipient,
     uint amount
   ) override virtual public returns (bool) {
-    _approve(sender, msg.sender, LibERC20Base.layout().allowances[sender][msg.sender].sub(amount, 'ERC20: transfer amount exceeds allowance'));
+    _approve(sender, msg.sender, ERC20BaseStorage.layout().allowances[sender][msg.sender].sub(amount, 'ERC20: transfer amount exceeds allowance'));
     _transfer(sender, recipient, amount);
     return true;
   }
@@ -61,7 +61,7 @@ abstract contract ERC20Base is IERC20 {
 
     _beforeTokenTransfer(address(0), account, amount);
 
-    LibERC20Base.Layout storage l = LibERC20Base.layout();
+    ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     l.totalSupply = l.totalSupply.add(amount);
     l.balances[account] = l.balances[account].add(amount);
 
@@ -76,7 +76,7 @@ abstract contract ERC20Base is IERC20 {
 
     _beforeTokenTransfer(account, address(0), amount);
 
-    LibERC20Base.Layout storage l = LibERC20Base.layout();
+    ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     l.balances[account] = l.balances[account].sub(amount);
     l.totalSupply = l.totalSupply.sub(amount);
 
@@ -93,7 +93,7 @@ abstract contract ERC20Base is IERC20 {
 
     _beforeTokenTransfer(sender, recipient, amount);
 
-    LibERC20Base.Layout storage l = LibERC20Base.layout();
+    ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     l.balances[sender] = l.balances[sender].sub(amount, 'ERC20: transfer amount exceeds balance');
     l.balances[recipient] = l.balances[recipient].add(amount);
 
@@ -108,7 +108,7 @@ abstract contract ERC20Base is IERC20 {
     require(holder != address(0), 'ERC20: approve from the zero address');
     require(spender != address(0), 'ERC20: approve to the zero address');
 
-    LibERC20Base.layout().allowances[holder][spender] = amount;
+    ERC20BaseStorage.layout().allowances[holder][spender] = amount;
 
     emit Approval(holder, spender, amount);
   }

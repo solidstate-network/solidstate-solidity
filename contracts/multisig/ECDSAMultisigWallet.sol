@@ -6,7 +6,7 @@ pragma abicoder v2;
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
-import './LibECDSAMultisigWallet.sol';
+import './ECDSAMultisigWalletStorage.sol';
 
 /**
  * @title ECDSA-verified multisig wallet contract
@@ -14,7 +14,7 @@ import './LibECDSAMultisigWallet.sol';
 abstract contract ECDSAMultisigWallet {
   using ECDSA for bytes32;
   using EnumerableSet for EnumerableSet.AddressSet;
-  using LibECDSAMultisigWallet for LibECDSAMultisigWallet.Layout;
+  using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
   /**
    * @notice get invalidation status of nonce for given account
@@ -26,7 +26,7 @@ abstract contract ECDSAMultisigWallet {
     address account,
     uint nonce
   ) public view returns (bool) {
-    return LibECDSAMultisigWallet.layout().isInvalidNonce(account, nonce);
+    return ECDSAMultisigWalletStorage.layout().isInvalidNonce(account, nonce);
   }
 
   /**
@@ -36,7 +36,7 @@ abstract contract ECDSAMultisigWallet {
   function invalidateNonce (
     uint nonce
   ) external {
-    LibECDSAMultisigWallet.layout().setInvalidNonce(msg.sender, nonce);
+    ECDSAMultisigWalletStorage.layout().setInvalidNonce(msg.sender, nonce);
   }
 
   /**
@@ -96,7 +96,7 @@ abstract contract ECDSAMultisigWallet {
       'ECDSAMultisigWallet: signature and nonce array lengths do not match'
     );
 
-    LibECDSAMultisigWallet.Layout storage l = LibECDSAMultisigWallet.layout();
+    ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage.layout();
 
     require(
       nonces.length >= l.quorum,

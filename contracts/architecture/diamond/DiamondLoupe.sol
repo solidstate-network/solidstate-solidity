@@ -3,21 +3,21 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import './LibDiamondBase.sol';
+import './DiamondBaseStorage.sol';
 
 contract DiamondLoupe {
-  using LibDiamondBase for LibDiamondBase.Layout;
+  using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
   function readFacetCuts () external view returns (
-    LibDiamondBase.FacetCut[] memory cuts
+    DiamondBaseStorage.FacetCut[] memory cuts
   ) {
-    return LibDiamondBase.layout().getFacetCuts();
+    return DiamondBaseStorage.layout().getFacetCuts();
   }
 
   function readFacets () external view returns (
     address[] memory facets
   ) {
-    return LibDiamondBase.layout().getFacets();
+    return DiamondBaseStorage.layout().getFacets();
   }
 
   function readFacetSelectors (
@@ -25,7 +25,7 @@ contract DiamondLoupe {
   ) external view returns (
     bytes4[] memory selectors
   ) {
-    return LibDiamondBase.layout().getFacetSelectors(facet);
+    return DiamondBaseStorage.layout().getFacetSelectors(facet);
   }
 
   function readSelectorFacet (
@@ -33,6 +33,6 @@ contract DiamondLoupe {
   ) external view returns (
     address facet
   ) {
-    return LibDiamondBase.layout().getSelectorFacet(selector);
+    return DiamondBaseStorage.layout().getSelectorFacet(selector);
   }
 }

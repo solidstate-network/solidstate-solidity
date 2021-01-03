@@ -5,7 +5,7 @@ pragma solidity ^0.7.0;
 import './ERC20.sol';
 
 contract ERC20Mock is ERC20 {
-  using LibERC20Metadata for LibERC20Metadata.Layout;
+  using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
 
   constructor (
     string memory name,
@@ -13,7 +13,7 @@ contract ERC20Mock is ERC20 {
     uint8 decimals,
     uint supply
   ) {
-    LibERC20Metadata.Layout storage l = LibERC20Metadata.layout();
+    ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage.layout();
 
     l.setName(name);
     l.setSymbol(symbol);

@@ -5,9 +5,9 @@ pragma solidity ^0.7.0;
 import './ERC165.sol';
 
 contract ERC165Mock is ERC165 {
-  using LibERC165 for LibERC165.Layout;
+  using ERC165Storage for ERC165Storage.Layout;
 
   constructor () {
-    LibERC165.layout().setSupportedInterface(type(IERC165).interfaceId, true);
+    ERC165Storage.layout().setSupportedInterface(type(IERC165).interfaceId, true);
   }
 }

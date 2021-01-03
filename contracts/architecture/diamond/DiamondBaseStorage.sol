@@ -4,7 +4,7 @@ pragma solidity ^0.7.0;
 
 import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
-library LibDiamondBase {
+library DiamondBaseStorage {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
@@ -78,14 +78,14 @@ library LibDiamondBase {
     Layout storage l
   ) internal view returns (FacetCut[] memory cuts) {
     EnumerableSet.AddressSet storage facets = l.facets;
-    cuts = new LibDiamondBase.FacetCut[](l.selectors.length());
+    cuts = new DiamondBaseStorage.FacetCut[](l.selectors.length());
 
     for (uint i; i < facets.length(); i++) {
       address facet = facets.at(i);
       EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
 
       for (uint j; j < facetSelectors.length(); j++) {
-        cuts[i + j] = LibDiamondBase.FacetCut({
+        cuts[i + j] = DiamondBaseStorage.FacetCut({
           facet: facet,
           selector: bytes4(uint32(facetSelectors.at(j)))
         });

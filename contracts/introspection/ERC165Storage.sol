@@ -2,7 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-library LibERC165 {
+library ERC165Storage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.ERC165'
   );

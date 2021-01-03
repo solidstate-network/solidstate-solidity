@@ -2,24 +2,19 @@
 
 pragma solidity ^0.7.0;
 
-library LibSafeOwnable {
+library ERC20BaseStorage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
-    'solidstate.contracts.storage.SafeOwnable'
+    'solidstate.contracts.storage.ERC20Base'
   );
 
   struct Layout {
-    address nomineeOwner;
+    mapping (address => uint) balances;
+    mapping (address => mapping (address => uint)) allowances;
+    uint totalSupply;
   }
 
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
-  }
-
-  function setNomineeOwner (
-    Layout storage l,
-    address nomineeOwner
-  ) internal {
-    l.nomineeOwner = nomineeOwner;
   }
 }

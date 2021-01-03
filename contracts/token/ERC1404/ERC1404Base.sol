@@ -3,11 +3,11 @@
 pragma solidity ^0.7.0;
 
 import './IERC1404.sol';
-import './LibERC1404.sol';
+import './ERC1404Storage.sol';
 import '../ERC20/ERC20Base.sol';
 
 abstract contract ERC1404Base is IERC1404, ERC20Base {
-  using LibERC1404 for LibERC1404.Layout;
+  using ERC1404Storage for ERC1404Storage.Layout;
 
   function detectTransferRestriction (
     address from,
@@ -18,7 +18,7 @@ abstract contract ERC1404Base is IERC1404, ERC20Base {
   function messageForTransferRestriction (
     uint8 restrictionCode
   ) virtual override public view returns (string memory) {
-    return LibERC1404.layout().getRestrictionMessage(restrictionCode);
+    return ERC1404Storage.layout().getRestrictionMessage(restrictionCode);
   }
 
   function _beforeTokenTransfer (

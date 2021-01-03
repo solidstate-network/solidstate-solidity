@@ -3,15 +3,15 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import '../../access/LibOwnable.sol';
+import '../../access/OwnableStorage.sol';
 import './DiamondBase.sol';
 import './DiamondCuttable.sol';
 
 contract DiamondCuttableMock is DiamondBase, DiamondCuttable {
-  using LibOwnable for LibOwnable.Layout;
+  using OwnableStorage for OwnableStorage.Layout;
 
   constructor () {
-    LibOwnable.layout().setOwner(msg.sender);
+    OwnableStorage.layout().setOwner(msg.sender);
   }
 
   /**
