@@ -17,11 +17,12 @@ library ERC1404Storage {
   }
 
   function setRestrictions (
+    Layout storage l,
     uint8[] memory restrictionCodes,
     string[] memory restrictionMessages
   ) internal {
     require(restrictionCodes.length == restrictionMessages.length, 'TODO');
-    mapping (uint8 => string) storage restrictions = layout().restrictions;
+    mapping (uint8 => string) storage restrictions = l.restrictions;
 
     for (uint i; i < restrictionCodes.length; i++) {
       restrictions[restrictionCodes[i]] = restrictionMessages[i];

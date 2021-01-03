@@ -12,7 +12,7 @@ contract ERC1404Mock is ERC1404 {
     uint8[] memory errorCodes,
     string[] memory errorMessages
   ) {
-    ERC1404Storage.setRestrictions(errorCodes, errorMessages);
+    ERC1404Storage.layout().setRestrictions(errorCodes, errorMessages);
   }
 
   function detectTransferRestriction (
