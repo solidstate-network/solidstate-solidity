@@ -23,6 +23,11 @@ abstract contract ECDSAMultisigWallet {
     bool delegate;
   }
 
+  struct Signature {
+    bytes data;
+    uint nonce;
+  }
+
   /**
    * @notice get invalidation status of nonce for given account
    * @param account address whose nonce to query
@@ -50,44 +55,38 @@ abstract contract ECDSAMultisigWallet {
    * @notice execute "call" to target address with given payload
    * @dev message parameters must be included in signature
    * @param parameters structured call parameters (target, data, value, delegate)
-   * @param nonces array of nonces associated with each signature
-   * @param signatures array of signatures
+   * @param signatures array of structured signature data (signature, nonce)
    */
   function callWithSignatures (
     Parameters memory parameters,
-    uint[] calldata nonces,
-    bytes[] calldata signatures
+    Signature[] memory signatures
   ) external payable returns (bytes memory) {
-    return _executeCall(parameters, nonces, signatures);
+    return _executeCall(parameters, signatures);
   }
 
   /**
    * @notice execute "delegatecall" to target address with given payload
    * @dev message parameters must be included in signature
    * @param parameters structured call parameters (target, data, value, delegate)
-   * @param nonces array of nonces associated with each signature
-   * @param signatures array of signatures
+   * @param signatures array of structured signature data (signature, nonce)
    */
   function delegatecallWithSignatures (
     Parameters memory parameters,
-    uint[] calldata nonces,
-    bytes[] calldata signatures
+    Signature[] memory signatures
   ) external payable returns (bytes memory) {
-    return _executeCall(parameters, nonces, signatures);
+    return _executeCall(parameters, signatures);
   }
 
   /**
    * @notice verify and execute low-level "call" or "delegatecall"
    * @param parameters structured call parameters (target, data, value, delegate)
-   * @param nonces array of nonces associated with each signature
-   * @param signatures array of signatures
+   * @param signatures array of structured signature data (signature, nonce)
    */
   function _executeCall (
     Parameters memory parameters,
-    uint[] calldata nonces,
-    bytes[] calldata signatures
+    Signature[] memory signatures
   ) internal returns (bytes memory) {
-    _verifySignatures(parameters, nonces, signatures);
+    _verifySignatures(parameters, signatures);
 
     bool success;
     bytes memory returndata;
@@ -116,19 +115,12 @@ abstract contract ECDSAMultisigWallet {
    * @notice verify eligibility of set of signatures to execute transaction
    * @dev message value and call type must be included in signature
    * @param parameters structured call parameters (target, data, value, delegate)
-   * @param nonces array of nonces associated with each signature
-   * @param signatures array of signatures
+   * @param signatures array of structured signature data (signature, nonce)
    */
   function _verifySignatures (
     Parameters memory parameters,
-    uint[] calldata nonces,
-    bytes[] calldata signatures
+    Signature[] memory signatures
   ) virtual internal {
-    require(
-      nonces.length == signatures.length,
-      'ECDSAMultisigWallet: signature and nonce array lengths do not match'
-    );
-
     ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage.layout();
 
     require(
@@ -138,8 +130,8 @@ abstract contract ECDSAMultisigWallet {
 
     address[] memory signers = new address[](signatures.length);
 
-    for (uint i; i < nonces.length; i++) {
-      uint nonce = nonces[i];
+    for (uint i; i < signatures.length; i++) {
+      Signature memory signature = signatures[i];
 
       address signer = keccak256(
         abi.encodePacked(
@@ -147,10 +139,10 @@ abstract contract ECDSAMultisigWallet {
           parameters.value,
           parameters.data,
           parameters.delegate,
-          nonce,
+          signature.nonce,
           address(this)
         )
-      ).toEthSignedMessageHash().recover(signatures[i]);
+      ).toEthSignedMessageHash().recover(signature.data);
 
       require(
         l.isSigner(signer),
@@ -158,11 +150,11 @@ abstract contract ECDSAMultisigWallet {
       );
 
       require(
-        !l.isInvalidNonce(signer, nonce),
+        !l.isInvalidNonce(signer, signature.nonce),
         'ECDSAMultisigWallet: invalid nonce'
       );
 
-      l.setInvalidNonce(signer, nonce);
+      l.setInvalidNonce(signer, signature.nonce);
 
       for (uint j; j < i; j++) {
         require(
