@@ -52,42 +52,26 @@ abstract contract ECDSAMultisigWallet {
   }
 
   /**
-   * @notice execute "call" to target address with given payload
+   * @notice verify signatures and execute "call" or "delegatecall" with given parameters
    * @dev message parameters must be included in signature
    * @param parameters structured call parameters (target, data, value, delegate)
    * @param signatures array of structured signature data (signature, nonce)
    */
-  function callWithSignatures (
+  function verifyAndExecute (
     Parameters memory parameters,
     Signature[] memory signatures
-  ) external payable returns (bytes memory) {
-    return _executeCall(parameters, signatures);
+  ) virtual public payable returns (bytes memory) {
+    _verifySignatures(parameters, signatures);
+    return _executeCall(parameters);
   }
 
   /**
-   * @notice execute "delegatecall" to target address with given payload
-   * @dev message parameters must be included in signature
+   * @notice execute low-level "call" or "delegatecall"
    * @param parameters structured call parameters (target, data, value, delegate)
-   * @param signatures array of structured signature data (signature, nonce)
-   */
-  function delegatecallWithSignatures (
-    Parameters memory parameters,
-    Signature[] memory signatures
-  ) external payable returns (bytes memory) {
-    return _executeCall(parameters, signatures);
-  }
-
-  /**
-   * @notice verify and execute low-level "call" or "delegatecall"
-   * @param parameters structured call parameters (target, data, value, delegate)
-   * @param signatures array of structured signature data (signature, nonce)
    */
   function _executeCall (
-    Parameters memory parameters,
-    Signature[] memory signatures
-  ) internal returns (bytes memory) {
-    _verifySignatures(parameters, signatures);
-
+    Parameters memory parameters
+  ) virtual internal returns (bytes memory) {
     bool success;
     bytes memory returndata;
 
