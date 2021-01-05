@@ -112,7 +112,7 @@ abstract contract ECDSAMultisigWallet {
       'ECDSAMultisigWallet: quorum not reached'
     );
 
-    address[] memory signers = new address[](signatures.length);
+    address lastSigner;
 
     for (uint i; i < signatures.length; i++) {
       Signature memory signature = signatures[i];
@@ -140,14 +140,12 @@ abstract contract ECDSAMultisigWallet {
 
       l.setInvalidNonce(signer, signature.nonce);
 
-      for (uint j; j < i; j++) {
-        require(
-          signer != signers[j],
-          'ECDSAMultisigWallet: duplicate signer found'
-        );
-      }
+      require(
+        signer > lastSigner,
+        'ECDSAMultisigWallet: signatures must be ordered by signer address'
+      );
 
-      signers[i] = signer;
+      lastSigner = signer;
     }
   }
 }

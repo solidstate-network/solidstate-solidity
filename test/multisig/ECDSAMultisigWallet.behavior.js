@@ -274,7 +274,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: duplicate signer found'
+              'ECDSAMultisigWallet: signatures must be ordered by signer address'
             );
           });
 
@@ -529,7 +529,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: duplicate signer found'
+              'ECDSAMultisigWallet: signatures must be ordered by signer address'
             );
           });
 
