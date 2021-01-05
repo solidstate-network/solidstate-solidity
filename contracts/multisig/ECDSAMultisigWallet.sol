@@ -16,6 +16,13 @@ abstract contract ECDSAMultisigWallet {
   using EnumerableSet for EnumerableSet.AddressSet;
   using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
+  struct Parameters {
+    address payable target;
+    bytes data;
+    uint value;
+    bool delegate;
+  }
+
   /**
    * @notice get invalidation status of nonce for given account
    * @param account address whose nonce to query
@@ -41,56 +48,82 @@ abstract contract ECDSAMultisigWallet {
 
   /**
    * @notice execute "call" to target address with given payload
-   * @dev message value and call type must be included in signature
-   * @param target address to call
-   * @param data data payload
+   * @dev message parameters must be included in signature
+   * @param parameters structured call parameters (target, data, value, delegate)
    * @param nonces array of nonces associated with each signature
    * @param signatures array of signatures
    */
   function callWithSignatures (
-    address payable target,
-    bytes memory data,
-    uint value,
+    Parameters memory parameters,
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
-    return _executeCall(target, data, value, nonces, signatures, false);
+    return _executeCall(parameters, nonces, signatures);
   }
 
   /**
    * @notice execute "delegatecall" to target address with given payload
-   * @dev message value and call type must be included in signature
-   * @param target address to delegatecall
-   * @param data data payload
+   * @dev message parameters must be included in signature
+   * @param parameters structured call parameters (target, data, value, delegate)
    * @param nonces array of nonces associated with each signature
    * @param signatures array of signatures
    */
   function delegatecallWithSignatures (
-    address payable target,
-    bytes memory data,
+    Parameters memory parameters,
     uint[] calldata nonces,
     bytes[] calldata signatures
   ) external payable returns (bytes memory) {
-    return _executeCall(target, data, 0, nonces, signatures, true);
+    return _executeCall(parameters, nonces, signatures);
+  }
+
+  /**
+   * @notice verify and execute low-level "call" or "delegatecall"
+   * @param parameters structured call parameters (target, data, value, delegate)
+   * @param nonces array of nonces associated with each signature
+   * @param signatures array of signatures
+   */
+  function _executeCall (
+    Parameters memory parameters,
+    uint[] calldata nonces,
+    bytes[] calldata signatures
+  ) internal returns (bytes memory) {
+    _verifySignatures(parameters, nonces, signatures);
+
+    bool success;
+    bytes memory returndata;
+
+    if (parameters.delegate) {
+      require(
+        parameters.value == msg.value,
+        'ECDSAMultisigWallet: delegatecall value must match signed amount'
+      );
+      (success, returndata) = parameters.target.delegatecall(parameters.data);
+    } else {
+      (success, returndata) = parameters.target.call{ value: parameters.value }(parameters.data);
+    }
+
+    if (success) {
+      return returndata;
+    } else {
+      assembly {
+        returndatacopy(0, 0, returndatasize())
+        revert(0, returndatasize())
+      }
+    }
   }
 
   /**
    * @notice verify eligibility of set of signatures to execute transaction
    * @dev message value and call type must be included in signature
-   * @param target address to delegatecall
-   * @param data data payload
+   * @param parameters structured call parameters (target, data, value, delegate)
    * @param nonces array of nonces associated with each signature
    * @param signatures array of signatures
    */
   function _verifySignatures (
-    address payable target,
-    bytes memory data,
+    Parameters memory parameters,
     uint[] calldata nonces,
-    bytes[] calldata signatures,
-    bool delegatecall
+    bytes[] calldata signatures
   ) virtual internal {
-    address[] memory signers = new address[](nonces.length);
-
     require(
       nonces.length == signatures.length,
       'ECDSAMultisigWallet: signature and nonce array lengths do not match'
@@ -99,15 +132,24 @@ abstract contract ECDSAMultisigWallet {
     ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage.layout();
 
     require(
-      nonces.length >= l.quorum,
+      signatures.length >= l.quorum,
       'ECDSAMultisigWallet: quorum not reached'
     );
+
+    address[] memory signers = new address[](signatures.length);
 
     for (uint i; i < nonces.length; i++) {
       uint nonce = nonces[i];
 
       address signer = keccak256(
-        abi.encodePacked(target, msg.value, data, delegatecall, nonce, address(this))
+        abi.encodePacked(
+          parameters.target,
+          parameters.value,
+          parameters.data,
+          parameters.delegate,
+          nonce,
+          address(this)
+        )
       ).toEthSignedMessageHash().recover(signatures[i]);
 
       require(
@@ -130,44 +172,6 @@ abstract contract ECDSAMultisigWallet {
       }
 
       signers[i] = signer;
-    }
-  }
-
-  /**
-   * @notice verify and execute low-level "call" or "delegatecall"
-   * @param target address
-   * @param data data payload
-   * @param value call value
-   * @param nonces array of nonces associated with each signature
-   * @param signatures array of signatures
-   * @param delegate whether call type is "delegatecall"
-   */
-  function _executeCall (
-    address payable target,
-    bytes memory data,
-    uint value,
-    uint[] calldata nonces,
-    bytes[] calldata signatures,
-    bool delegate
-  ) internal returns (bytes memory) {
-    _verifySignatures(target, data, nonces, signatures, delegate);
-
-    bool success;
-    bytes memory returndata;
-
-    if (delegate) {
-      (success, returndata) = target.delegatecall(data);
-    } else {
-      (success, returndata) = target.call{ value: value }(data);
-    }
-
-    if (success) {
-      return returndata;
-    } else {
-      assembly {
-        returndatacopy(0, 0, returndatasize())
-        revert(0, returndatasize())
-      }
     }
   }
 }

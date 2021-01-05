@@ -3,9 +3,9 @@ const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
-let signAuthorization = async function (signer, { target, value, data, delegatecall, nonce, address }) {
+let signAuthorization = async function (signer, { target, value, data, delegate, nonce, address }) {
   let types = ['address', 'uint256', 'bytes', 'bool', 'uint256', 'address'];
-  let values = [target, value, data, delegatecall, nonce, address];
+  let values = [target, value, data, delegate, nonce, address];
 
   let hash = ethers.utils.solidityKeccak256(
     types, values
@@ -47,15 +47,13 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           target,
           value,
           data,
-          delegatecall: false,
+          delegate: false,
           nonce,
           address: instance.address,
         });
 
-        await instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-          target,
-          data,
-          value,
+        await instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+          [target, data, value, false],
           [nonce],
           [signature],
           { value }
@@ -129,17 +127,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           target,
           value,
           data,
-          delegatecall: false,
+          delegate: false,
           nonce,
           address: instance.address,
         });
 
         await expect(
           async function () {
-            return instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            return instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
@@ -170,7 +166,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           target,
           value,
           data,
-          delegatecall: false,
+          delegate: false,
           nonce,
           address: instance.address,
         });
@@ -178,10 +174,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
         expect(
           ethers.utils.defaultAbiCoder.decode(
             mock.interface.functions['fn()'].outputs,
-            await instance.callStatic['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            await instance.callStatic['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
@@ -213,16 +207,14 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: false,
+            delegate: false,
             nonce,
             address: instance.address,
           });
 
           await expect(
-            instance.callStatic['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            instance.callStatic['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
@@ -232,10 +224,13 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
 
         it('signature and nonce array lengths do not match', async function () {
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              ethers.constants.AddressZero,
-              ethers.utils.randomBytes(0),
-              ethers.constants.Zero,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [
+                ethers.constants.AddressZero,
+                ethers.utils.randomBytes(0),
+                ethers.constants.Zero,
+                false,
+              ],
               [ethers.constants.Zero],
               []
             )
@@ -246,10 +241,13 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
 
         it('quorum is not reached', async function () {
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              ethers.constants.AddressZero,
-              ethers.utils.randomBytes(0),
-              ethers.constants.Zero,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [
+                ethers.constants.AddressZero,
+                ethers.utils.randomBytes(0),
+                ethers.constants.Zero,
+                false,
+              ],
               [],
               []
             )
@@ -271,7 +269,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
               target,
               value,
               data,
-              delegatecall: false,
+              delegate: false,
               nonce: nonces[0],
               address: instance.address,
             }),
@@ -279,17 +277,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
               target,
               value,
               data,
-              delegatecall: false,
+              delegate: false,
               nonce: nonces[1],
               address: instance.address,
             }),
           ];
 
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [...nonces],
               [...signatures],
               { value }
@@ -311,50 +307,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: false,
+            delegate: false,
             nonce,
             address: instance.address,
           });
 
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
-            )
-          ).to.be.revertedWith(
-            'ECDSAMultisigWallet: recovered signer is not authorized'
-          );
-        });
-
-        it('message value is incorrect', async function () {
-          let [signer] = await ethers.getSigners();
-
-          let target = ethers.constants.AddressZero;
-          let value = ethers.constants.Zero;
-          let data = ethers.utils.randomBytes(32);
-          let nonce = ethers.constants.Zero;
-
-          let signature = await signAuthorization(signer, {
-            target,
-            value,
-            data,
-            delegatecall: false,
-            nonce,
-            address: instance.address,
-          });
-
-          await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
-              [nonce],
-              [signature],
-              { value: value.add(ethers.constants.One) }
             )
           ).to.be.revertedWith(
             'ECDSAMultisigWallet: recovered signer is not authorized'
@@ -373,25 +336,21 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: false,
+            delegate: false,
             nonce,
             address: instance.address,
           });
 
-          await instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-            target,
-            data,
-            value,
+          await instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+            [target, data, value, false],
             [nonce],
             [signature],
             { value }
           );
 
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
@@ -413,7 +372,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: false,
+            delegate: false,
             nonce,
             address: instance.address,
           });
@@ -421,10 +380,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           await instance.connect(signer)['invalidateNonce(uint256)'](nonce);
 
           await expect(
-            instance['callWithSignatures(address,bytes,uint256,uint256[],bytes[])'](
-              target,
-              data,
-              value,
+            instance['callWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, false],
               [nonce],
               [signature],
               { value }
@@ -451,16 +408,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           target,
           value,
           data,
-          delegatecall: true,
+          delegate: true,
           nonce,
           address: instance.address,
         });
 
         await expect(
           async function () {
-            return instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            return instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [nonce],
               [signature],
               { value }
@@ -484,19 +440,18 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           target,
           value,
           data,
-          delegatecall: true,
+          delegate: true,
           nonce,
           address: instance.address,
         });
 
-        // nonce should be invalidated before delegatecall is made
+        // nonce should be invalidated before delegated call is made
 
         expect(
           ethers.utils.defaultAbiCoder.decode(
             instance.interface.functions['isInvalidNonce(address,uint256)'].outputs,
-            await instance.callStatic['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            await instance.callStatic['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, ethers.constants.Zero, true],
               [nonce],
               [signature],
               { value }
@@ -523,7 +478,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: true,
+            delegate: true,
             nonce,
             address: instance.address,
           });
@@ -531,9 +486,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           // revert message depends on waffle mock implementation
 
           await expect(
-            instance.callStatic['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance.callStatic['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, ethers.constants.Zero, true],
               [nonce],
               [signature],
               { value }
@@ -545,9 +499,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
 
         it('signature and nonce array lengths do not match', async function () {
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              ethers.constants.AddressZero,
-              ethers.utils.randomBytes(0),
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [ethers.constants.AddressZero, ethers.utils.randomBytes(0), ethers.constants.Zero, true],
               [ethers.constants.Zero],
               []
             )
@@ -558,9 +511,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
 
         it('quorum is not reached', async function () {
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              ethers.constants.AddressZero,
-              ethers.utils.randomBytes(0),
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [ethers.constants.AddressZero, ethers.utils.randomBytes(0), ethers.constants.Zero, true],
               [],
               []
             )
@@ -582,7 +534,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
               target,
               value,
               data,
-              delegatecall: true,
+              delegate: true,
               nonce: nonces[0],
               address: instance.address,
             }),
@@ -590,16 +542,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
               target,
               value,
               data,
-              delegatecall: true,
+              delegate: true,
               nonce: nonces[1],
               address: instance.address,
             }),
           ];
 
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [...nonces],
               [...signatures],
               { value }
@@ -621,15 +572,14 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: true,
+            delegate: true,
             nonce,
             address: instance.address,
           });
 
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [nonce],
               [signature],
               { value }
@@ -651,21 +601,20 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: true,
+            delegate: true,
             nonce,
             address: instance.address,
           });
 
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [nonce],
               [signature],
               { value: value.add(ethers.constants.One) }
             )
           ).to.be.revertedWith(
-            'ECDSAMultisigWallet: recovered signer is not authorized'
+            'ECDSAMultisigWallet: delegatecall value must match signed amount'
           );
         });
 
@@ -681,23 +630,21 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: true,
+            delegate: true,
             nonce,
             address: instance.address,
           });
 
-          await instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-            target,
-            data,
+          await instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+            [target, data, value, true],
             [nonce],
             [signature],
             { value }
           );
 
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [nonce],
               [signature],
               { value }
@@ -719,7 +666,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
             target,
             value,
             data,
-            delegatecall: true,
+            delegate: true,
             nonce,
             address: instance.address,
           });
@@ -727,9 +674,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy }, skips = []) 
           await instance.connect(signer)['invalidateNonce(uint256)'](nonce);
 
           await expect(
-            instance['delegatecallWithSignatures(address,bytes,uint256[],bytes[])'](
-              target,
-              data,
+            instance['delegatecallWithSignatures((address,bytes,uint256,bool),uint256[],bytes[])'](
+              [target, data, value, true],
               [nonce],
               [signature],
               { value }
