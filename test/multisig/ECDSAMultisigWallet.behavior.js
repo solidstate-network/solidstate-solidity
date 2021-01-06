@@ -106,7 +106,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
 
       it('returns true for invalidated nonce', async function () {
         let [signer] = signers;
-        let nonce = ethers.constants.Zero;
+        let nonce = nextNonce();
 
         await instance.connect(signer)['invalidateNonce(uint256)'](nonce);
 
@@ -122,7 +122,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
     describe('#invalidateNonce', function () {
       it('sets nonce as invalid', async function () {
         let [signer] = signers;
-        let nonce = ethers.constants.Zero;
+        let nonce = nextNonce();
 
         expect(
           await instance.callStatic['isInvalidNonce(address,uint256)'](
@@ -477,7 +477,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let target = instance.address;
           let value = ethers.constants.Zero;
 
-          let nonce = ethers.constants.Zero;
+          let nonce = nextNonce();
           let { data } = await instance.populateTransaction.isInvalidNonce(signers[0].address, ethers.constants.Zero);
 
           let signatures = [];
