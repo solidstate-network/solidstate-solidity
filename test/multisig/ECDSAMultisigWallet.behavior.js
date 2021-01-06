@@ -478,7 +478,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let value = ethers.constants.Zero;
 
           let nonce = nextNonce();
-          let { data } = await instance.populateTransaction.isInvalidNonce(signers[0].address, ethers.constants.Zero);
+          let { data } = await instance.populateTransaction.isInvalidNonce(signers[0].address, nextNonce());
 
           let signatures = [];
 
