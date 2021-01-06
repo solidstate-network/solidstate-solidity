@@ -6,8 +6,11 @@ const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 // TODO: test revert if signer order is incorrect
 // TODO: test with multiple signers
 
-const random = function () {
-  return ethers.BigNumber.from(Math.floor(Math.random() * 1e9));
+let currentNonce = ethers.constants.Zero;
+
+const nextNonce = function () {
+  currentNonce = currentNonce.add(ethers.constants.One);
+  return currentNonce;
 };
 
 const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum, signAuthorization }, skips = []) {
@@ -70,7 +73,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
         let signatures = [];
 
         for (let signer of signers) {
-          let nonce = random();
+          let nonce = nextNonce();
           let sig = await signAuthorization(signer, {
             target,
             data,
@@ -159,7 +162,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let signatures = [];
 
           for (let signer of signers) {
-            let nonce = random();
+            let nonce = nextNonce();
             let sig = await signAuthorization(signer, {
               target,
               data,
@@ -200,7 +203,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let signatures = [];
 
           for (let signer of signers) {
-            let nonce = random();
+            let nonce = nextNonce();
             let sig = await signAuthorization(signer, {
               target,
               data,
@@ -243,7 +246,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -272,7 +275,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([signers[0]])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -302,7 +305,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([signers[0]])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -333,7 +336,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([nonSigner])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -364,7 +367,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -401,7 +404,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -443,7 +446,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let signatures = [];
 
           for (let signer of signers) {
-            let nonce = random();
+            let nonce = nextNonce();
             let sig = await signAuthorization(signer, {
               target,
               data,
@@ -519,7 +522,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -552,7 +555,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([signers[0]])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -582,7 +585,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([signers[0]])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -613,7 +616,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers.concat([nonSigner])) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -645,7 +648,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -677,7 +680,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
@@ -714,7 +717,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let signatures = [];
 
             for (let signer of signers) {
-              let nonce = random();
+              let nonce = nextNonce();
               let sig = await signAuthorization(signer, {
                 target,
                 data,
