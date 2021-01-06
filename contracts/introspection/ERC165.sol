@@ -2,8 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-import '@openzeppelin/contracts/introspection/IERC165.sol';
-
+import './IERC165.sol';
 import './ERC165Storage.sol';
 
 abstract contract ERC165 is IERC165 {
