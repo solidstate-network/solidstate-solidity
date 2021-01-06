@@ -120,8 +120,8 @@ abstract contract ECDSAMultisigWallet {
       address signer = keccak256(
         abi.encodePacked(
           parameters.target,
-          parameters.value,
           parameters.data,
+          parameters.value,
           parameters.delegate,
           signature.nonce,
           address(this)
