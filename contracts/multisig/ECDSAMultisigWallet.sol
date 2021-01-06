@@ -39,7 +39,7 @@ abstract contract ECDSAMultisigWallet {
   function isInvalidNonce (
     address account,
     uint nonce
-  ) public view returns (bool) {
+  ) virtual external view returns (bool) {
     return ECDSAMultisigWalletStorage.layout().isInvalidNonce(account, nonce);
   }
 
@@ -49,7 +49,7 @@ abstract contract ECDSAMultisigWallet {
    */
   function invalidateNonce (
     uint nonce
-  ) external {
+  ) virtual external {
     ECDSAMultisigWalletStorage.layout().setInvalidNonce(msg.sender, nonce);
   }
 
