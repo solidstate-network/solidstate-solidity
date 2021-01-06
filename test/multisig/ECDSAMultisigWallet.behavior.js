@@ -41,6 +41,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
       instance = await deploy();
     });
 
+    describe('receive', function () {
+      it('accepts ether transfer', async function () {
+        let [signer] = signers;
+        let value = ethers.constants.One;
+
+        await expect(
+          () => signer.sendTransaction({ to: instance.address, value })
+        ).to.changeEtherBalance(instance, value);
+      });
+    });
+
     describe('#isInvalidNonce', function () {
       it('returns false for unused nonce', async function () {
         expect(

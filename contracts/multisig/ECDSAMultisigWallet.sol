@@ -28,6 +28,8 @@ abstract contract ECDSAMultisigWallet {
     uint nonce;
   }
 
+  receive () virtual external payable {}
+
   /**
    * @notice get invalidation status of nonce for given account
    * @param account address whose nonce to query
