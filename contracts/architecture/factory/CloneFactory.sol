@@ -10,7 +10,7 @@ import './Factory.sol';
  */
 abstract contract CloneFactory is Factory {
   bytes private constant _cloneInitCode = hex'58333b90818180333cf3';
-  bytes32 private constant _cloneInitCodeHash = keccak256(abi.encodePacked(_cloneInitCode));
+  bytes32 private constant _cloneInitCodeHash = keccak256(_cloneInitCode);
 
   /**
    * @notice deploy a clone of the calling contract using "CREATE" opcode

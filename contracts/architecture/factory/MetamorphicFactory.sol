@@ -13,7 +13,7 @@ abstract contract MetamorphicFactory is Factory {
   using MetamorphicFactoryStorage for MetamorphicFactoryStorage.Layout;
 
   bytes private constant _metamorphicInitCode = hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
-  bytes32 private constant _metamorphicInitCodeHash = keccak256(abi.encodePacked(_metamorphicInitCode));
+  bytes32 private constant _metamorphicInitCodeHash = keccak256(_metamorphicInitCode);
 
   /**
    * @notice get metamorphic prototype deployment location for copying
