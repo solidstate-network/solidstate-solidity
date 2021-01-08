@@ -10,6 +10,7 @@ import './ECDSAMultisigWalletStorage.sol';
 
 /**
  * @title ECDSA-verified multisig wallet contract
+ * @dev inheriting contract should provide functions to read and write nonce invalidation status
  */
 abstract contract ECDSAMultisigWallet {
   using ECDSA for bytes32;
@@ -29,29 +30,6 @@ abstract contract ECDSAMultisigWallet {
   }
 
   receive () virtual external payable {}
-
-  /**
-   * @notice get invalidation status of nonce for given account
-   * @param account address whose nonce to query
-   * @param nonce nonce to query
-   * @return nonce invalidation status
-   */
-  function isInvalidNonce (
-    address account,
-    uint nonce
-  ) virtual external view returns (bool) {
-    return ECDSAMultisigWalletStorage.layout().isInvalidNonce(account, nonce);
-  }
-
-  /**
-   * @notice invalidate nonce to prevent use of signed data payload
-   * @param nonce nonce to invalidate
-   */
-  function invalidateNonce (
-    uint nonce
-  ) virtual external {
-    ECDSAMultisigWalletStorage.layout().setInvalidNonce(msg.sender, nonce);
-  }
 
   /**
    * @notice verify signatures and execute "call" or "delegatecall" with given parameters
