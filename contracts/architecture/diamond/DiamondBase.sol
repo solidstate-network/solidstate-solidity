@@ -19,9 +19,8 @@ contract DiamondBase {
 
     if (facet == address(0)) {
       facet = l.fallbackAddress;
+      require(facet != address(0), 'DiamondBase: no facet found for function signature');
     }
-
-    require(facet != address(0), 'DiamondBase: no facet found for function signature');
 
     assembly {
       calldatacopy(0, 0, calldatasize())
