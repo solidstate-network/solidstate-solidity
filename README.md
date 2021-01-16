@@ -95,4 +95,4 @@ yarn run hardhat coverage
 
 ## Sponsor
 
-[![frexa.io](./frexa-logo.png)](frexa.io)
+[![frexa.io](./frexa-logo.png)](http://frexa.io)
