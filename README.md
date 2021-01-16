@@ -92,3 +92,7 @@ Generate a code coverage report using `solidity-coverage`:
 ```bash
 yarn run hardhat coverage
 ```
+
+## Sponsor
+
+[![frexa.io](./frexa-logo.png)](frexa.io)
