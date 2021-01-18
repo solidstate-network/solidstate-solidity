@@ -9,11 +9,11 @@ const describeBehaviorOfERC20 = function ({ deploy, name, symbol, decimals, supp
 
   describe('::ERC20', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base({ deploy, supply });
+    describeBehaviorOfERC20Base({ deploy, supply }, skips);
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Extended({ deploy }, ['::ERC20Base']);
+    describeBehaviorOfERC20Extended({ deploy }, ['::ERC20Base', ...skips]);
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Metadata({ deploy, name, symbol, decimals, supply }, ['::ERC20Base']);
+    describeBehaviorOfERC20Metadata({ deploy, name, symbol, decimals, supply }, ['::ERC20Base', ...skips]);
   });
 };
 
