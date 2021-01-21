@@ -43,11 +43,11 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
     });
 
     describe('#transfer', function () {
-      it('is tested');
+      it('todo');
     });
 
     describe('#transferFrom', function () {
-      it('is tested');
+      it('todo');
     });
 
     describe('#approve', function () {

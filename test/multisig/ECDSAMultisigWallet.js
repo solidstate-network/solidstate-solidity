@@ -47,7 +47,7 @@ describe('ECDSAMultisigWallet', function () {
 
   describe('__internal', function () {
     describe('#_verifySignatures', function () {
-      it('is tested');
+      it('todo');
     });
   });
 });

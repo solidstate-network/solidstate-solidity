@@ -155,7 +155,7 @@ describe('ERC20Base', function () {
     });
 
     describe('#_beforeTokenTransfer', function () {
-      it('is tested');
+      it('todo');
     });
   });
 });
