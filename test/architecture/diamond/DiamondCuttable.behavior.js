@@ -2,11 +2,18 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facetFunction, facetFunctionArgs }, skips = []) {
+const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOwner, getNonOwner, facetFunction, facetFunctionArgs }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::DiamondCuttable', function () {
+    let owner, nonOwner;
+
     let instance;
+
+    before(async function () {
+      owner = await getOwner();
+      nonOwner = await getNonOwner();
+    });
 
     beforeEach(async function () {
       instance = await deploy();
@@ -30,7 +37,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).to.be.reverted;
 
-        await instance.diamondCut([{
+        await instance.connect(owner).diamondCut([{
           facet: facetInstance.address, selector },
         ]);
 
@@ -52,7 +59,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
           (await ethers.getSigners())[0]
         );
 
-        await instance.diamondCut([{
+        await instance.connect(owner).diamondCut([{
           facet: facetInstance.address, selector },
         ]);
 
@@ -60,7 +67,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).not.to.be.reverted;
 
-        await instance.diamondCut([{
+        await instance.connect(owner).diamondCut([{
           facet: ethers.constants.AddressZero, selector },
         ]);
 
@@ -82,7 +89,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
           (await ethers.getSigners())[0]
         );
 
-        await instance.diamondCut([
+        await instance.connect(owner).diamondCut([
           { facet: facetInstance.address, selector },
         ]);
 
@@ -95,13 +102,23 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, facet
 
         expect(facetInstanceReplacement[facetFunction]).not.to.be.undefined;
 
-        await instance.diamondCut([{
+        await instance.connect(owner).diamondCut([{
           facet: facetInstanceReplacement.address, selector },
         ]);
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).not.to.be.reverted;
+      });
+
+      describe('reverts if', function () {
+        it('sender is not owner', async function () {
+          await expect(
+            instance.connect(nonOwner).diamondCut([])
+          ).to.be.revertedWith(
+            'Ownable: sender must be owner'
+          );
+        });
       });
     });
   });

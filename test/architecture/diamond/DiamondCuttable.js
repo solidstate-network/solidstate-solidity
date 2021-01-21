@@ -13,10 +13,18 @@ let deployFacet = async function () {
 };
 
 describe('DiamondCuttable', function () {
+  let owner, nonOwner;
+
+  before(async function () {
+    [owner, nonOwner] = await ethers.getSigners();
+  });
+
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamondCuttable({
     deploy,
     deployFacet,
+    getOwner: () => owner,
+    getNonOwner: () => nonOwner,
     facetFunction: 'owner()',
     facetFunctionArgs: [],
   });
