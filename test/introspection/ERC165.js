@@ -8,5 +8,8 @@ let deploy = async function () {
 
 describe('ERC165', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC165({ deploy });
+  describeBehaviorOfERC165({
+    deploy,
+    interfaceIds: [],
+  });
 });
