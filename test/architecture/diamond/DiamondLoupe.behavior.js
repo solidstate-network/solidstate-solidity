@@ -13,7 +13,7 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips = 
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('DiamondLoupe', (await deploy()).address);
     });
 
     describe('#readFacetCuts', function () {

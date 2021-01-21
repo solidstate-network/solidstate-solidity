@@ -11,7 +11,7 @@ const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips = []) {
     let instance;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('MetamorphicFactory', (await deploy()).address);
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

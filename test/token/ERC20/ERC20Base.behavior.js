@@ -14,7 +14,7 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC20Base', (await deploy()).address);
     });
 
     describe('#totalSupply', function () {

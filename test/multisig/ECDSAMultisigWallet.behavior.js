@@ -41,7 +41,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ECDSAMultisigWallet', (await deploy()).address);
     });
 
     describe('receive', function () {

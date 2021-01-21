@@ -16,7 +16,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy }, skips = []) {
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC1155Base', (await deploy()).address);
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

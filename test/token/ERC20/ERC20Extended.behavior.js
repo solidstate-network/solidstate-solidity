@@ -16,7 +16,7 @@ const describeBehaviorOfERC20Extended = function ({ deploy, supply }, skips = []
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC20Extended', (await deploy()).address);
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

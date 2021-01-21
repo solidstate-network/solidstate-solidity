@@ -9,7 +9,7 @@ const describeBehaviorOfERC165 = function ({ deploy, interfaceIds }, skips = [])
     let instance;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC165', (await deploy()).address);
     });
 
     describe('#supportsInterface', function () {

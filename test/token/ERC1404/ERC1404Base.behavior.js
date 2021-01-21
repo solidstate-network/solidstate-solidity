@@ -11,7 +11,7 @@ const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, supply }
     let instance;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC1404Base', (await deploy()).address);
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

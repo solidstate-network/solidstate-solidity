@@ -16,7 +16,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
     });
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('DiamondCuttable', (await deploy()).address);
     });
 
     describe('#diamondCut', function () {

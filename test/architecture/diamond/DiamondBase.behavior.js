@@ -9,7 +9,7 @@ const describeBehaviorOfDiamondBase = function ({ deploy, facetFunction, facetFu
     let instance;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('DiamondBase', (await deploy()).address);
     });
 
     describe('fallback', function () {

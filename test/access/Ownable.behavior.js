@@ -10,7 +10,7 @@ const describeBehaviorOfOwnable = function ({ deploy, getOwner }, skips = []) {
     let owner;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('Ownable', (await deploy()).address);
       owner = await getOwner();
     });
 

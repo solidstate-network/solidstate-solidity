@@ -13,7 +13,7 @@ const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOw
     let nomineeOwner;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('SafeOwnable', (await deploy()).address);
       owner = await getOwner();
       nomineeOwner = await getNomineeOwner();
     });

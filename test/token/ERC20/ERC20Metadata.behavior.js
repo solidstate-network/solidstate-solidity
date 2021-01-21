@@ -11,7 +11,7 @@ const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decima
     let instance;
 
     beforeEach(async function () {
-      instance = await deploy();
+      instance = await ethers.getContractAt('ERC20Metadata', (await deploy()).address);
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
