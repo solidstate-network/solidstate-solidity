@@ -19,26 +19,34 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
 
     describe('#totalSupply', function () {
       it('returns the total supply of tokens', async function () {
-        expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
+        expect(
+          await instance.callStatic['totalSupply()']()
+        ).to.equal(supply);
         // TODO: test delta
       });
     });
 
     describe('#balanceOf', function () {
       it('returns the token balance of given address', async function () {
-        expect(await instance.callStatic['balanceOf(address)'](ethers.constants.AddressZero)).to.equal(0);
+        expect(
+          await instance.callStatic['balanceOf(address)'](ethers.constants.AddressZero)
+        ).to.equal(ethers.constants.Zero);
         // TODO: test delta
       });
     });
 
     describe('#allowance', function () {
       it('returns the allowance given holder has granted to given spender', async function () {
-        expect(await instance.callStatic['allowance(address,address)'](holder.address, spender.address)).to.equal(0);
+        expect(
+          await instance.callStatic['allowance(address,address)'](holder.address, spender.address)
+        ).to.equal(ethers.constants.Zero);
 
         let amount = ethers.constants.Two;
         await instance.connect(holder)['approve(address,uint256)'](spender.address, amount);
 
-        expect(await instance.callStatic['allowance(address,address)'](holder.address, spender.address)).to.equal(amount);
+        expect(
+          await instance.callStatic['allowance(address,address)'](holder.address, spender.address)
+        ).to.equal(amount);
       });
     });
 
@@ -55,7 +63,9 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips = []) {
         let amount = ethers.constants.Two;
         await instance.connect(holder)['approve(address,uint256)'](spender.address, amount);
 
-        expect(await instance.callStatic['allowance(address,address)'](holder.address, spender.address)).to.equal(amount);
+        expect(
+          await instance.callStatic['allowance(address,address)'](holder.address, spender.address)
+        ).to.equal(amount);
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });

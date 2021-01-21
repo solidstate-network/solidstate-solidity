@@ -18,7 +18,10 @@ describe('ERC20Base', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Base({ deploy: () => instance, supply: 0 });
+  describeBehaviorOfERC20Base({
+    deploy: () => instance,
+    supply: 0,
+  });
 
   describe('__internal', function () {
     describe('#_mint', function () {
@@ -52,6 +55,16 @@ describe('ERC20Base', function () {
         ).withArgs(
           ethers.constants.AddressZero, receiver.address, amount
         );
+      });
+
+      describe('reverts if', function () {
+        it('given account is zero address', async function () {
+          await expect(
+            instance['mint(address,uint256)'](ethers.constants.AddressZero, ethers.constants.Zero)
+          ).to.be.revertedWith(
+            'ERC20: mint to the zero address'
+          );
+        });
       });
     });
 
@@ -90,6 +103,16 @@ describe('ERC20Base', function () {
           receiver.address, ethers.constants.AddressZero, amount
         );
       });
+
+      describe('reverts if', function () {
+        it('given account is zero address', async function () {
+          await expect(
+            instance['burn(address,uint256)'](ethers.constants.AddressZero, ethers.constants.Zero)
+          ).to.be.revertedWith(
+            'ERC20: burn from the zero address'
+          );
+        });
+      });
     });
 
     describe('#_transfer', function () {
@@ -127,6 +150,32 @@ describe('ERC20Base', function () {
           sender.address, receiver.address, amount
         );
       });
+
+      describe('reverts if', function () {
+        it('sender is the zero address', async function () {
+          await expect(
+            instance['transfer(address,address,uint256)'](
+              ethers.constants.AddressZero,
+              receiver.address,
+              ethers.constants.Zero
+            )
+          ).to.be.revertedWith(
+            'ERC20: transfer from the zero address'
+          );
+        });
+
+        it('receiver is the zero address', async function () {
+          await expect(
+            instance['transfer(address,address,uint256)'](
+              sender.address,
+              ethers.constants.AddressZero,
+              ethers.constants.Zero
+            )
+          ).to.be.revertedWith(
+            'ERC20: transfer to the zero address'
+          );
+        });
+      });
     });
 
     describe('#_approve', function () {
@@ -151,6 +200,32 @@ describe('ERC20Base', function () {
         ).withArgs(
           holder.address, spender.address, amount
         );
+      });
+
+      describe('reverts if', function () {
+        it('holder is the zero address', async function () {
+          await expect(
+            instance['approve(address,address,uint256)'](
+              ethers.constants.AddressZero,
+              spender.address,
+              ethers.constants.Zero
+            )
+          ).to.be.revertedWith(
+            'ERC20: approve from the zero address'
+          );
+        });
+
+        it('spender is the zero address', async function () {
+          await expect(
+            instance['approve(address,address,uint256)'](
+              holder.address,
+              ethers.constants.AddressZero,
+              ethers.constants.Zero
+            )
+          ).to.be.revertedWith(
+            'ERC20: approve to the zero address'
+          );
+        });
       });
     });
 
