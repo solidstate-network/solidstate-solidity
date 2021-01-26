@@ -3,9 +3,9 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
+import '../cryptography/ECDSA.sol';
 import './ECDSAMultisigWalletStorage.sol';
 
 /**
