@@ -2,8 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-import '@openzeppelin/contracts/math/SafeMath.sol';
-
+import '../../utils/SafeMath.sol';
 import './ERC20Base.sol';
 
 abstract contract ERC20Extended is ERC20Base {

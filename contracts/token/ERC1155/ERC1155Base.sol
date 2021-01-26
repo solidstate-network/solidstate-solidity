@@ -2,8 +2,6 @@
 
 pragma solidity ^0.7.0;
 
-import '@openzeppelin/contracts/math/SafeMath.sol';
-
 // TODO: remove ERC165
 
 import './IERC1155.sol';
@@ -11,6 +9,7 @@ import './IERC1155Receiver.sol';
 import './ERC1155BaseStorage.sol';
 import '../../introspection/ERC165.sol';
 import '../../utils/AddressUtils.sol';
+import '../../utils/SafeMath.sol';
 
 abstract contract ERC1155Base is IERC1155, ERC165 {
   using AddressUtils for address;
