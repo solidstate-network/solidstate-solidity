@@ -1,0 +1,92 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.7.0;
+
+import '../../utils/Array.sol';
+import '../../utils/Counter.sol';
+import '../../utils/SafeMath.sol';
+import './ERC20Base.sol';
+import './ERC20SnapshotStorage.sol';
+
+contract ERC20Snapshot is ERC20Base {
+  using SafeMath for uint;
+  using Array for uint[];
+  using Counter for Counter.Counter;
+
+  event Snapshot (uint id);
+
+  function balanceOfAt (address account, uint snapshotId) public view returns (uint) {
+    (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]);
+    return snapshotted ? value : balanceOf(account);
+  }
+
+  function totalSupplyAt (uint snapshotId) public view returns (uint) {
+    (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().totalSupplySnapshots);
+    return snapshotted ? value : totalSupply();
+  }
+
+  function _snapshot () virtual internal returns (uint) {
+    ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
+
+    l.snapshotId.increment();
+
+    uint current = l.snapshotId.current();
+    emit Snapshot(current);
+    return current;
+  }
+
+  function _valueAt (uint snapshotId, ERC20SnapshotStorage.Snapshots storage snapshots) private view returns (bool, uint) {
+    require(snapshotId > 0, 'ERC20Snapshot: snapshot id must not be zero');
+    ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
+    require(snapshotId <= l.snapshotId.current(), 'ERC20Snapshot: snapshot id does not exist');
+
+    uint index = snapshots.ids.findUpperBound(snapshotId);
+    return index == snapshots.ids.length ? (false, 0) : (true, snapshots.values[index]);
+  }
+
+  function _updateAccountSnapshot (address account) private {
+    _updateSnapshot(ERC20SnapshotStorage.layout().accountBalanceSnapshots[account], balanceOf(account));
+  }
+
+  function _updateTotalSupplySnapshot () private {
+    _updateSnapshot(ERC20SnapshotStorage.layout().totalSupplySnapshots, totalSupply());
+  }
+
+  function _updateSnapshot (ERC20SnapshotStorage.Snapshots storage snapshots, uint value) private {
+    uint currentId = ERC20SnapshotStorage.layout().snapshotId.current();
+
+    if (_lastSnapshotId(snapshots.ids) < currentId) {
+      snapshots.ids.push(currentId);
+      snapshots.values.push(value);
+    }
+  }
+
+  function _lastSnapshotId (
+    uint[] storage ids
+  ) private view returns (uint) {
+    return ids.length == 0 ? 0 : ids[ids.length - 1];
+  }
+
+  /**
+   * @notice ERC20 hook: update snapshot data
+   * @inheritdoc ERC20Base
+   */
+  function _beforeTokenTransfer (
+    address from,
+    address to,
+    uint amount
+  ) virtual override internal {
+    super._beforeTokenTransfer(from, to, amount);
+
+    if (from == address(0)) {
+      _updateAccountSnapshot(to);
+      _updateTotalSupplySnapshot();
+    } else if (to == address(0)) {
+      _updateAccountSnapshot(from);
+      _updateTotalSupplySnapshot();
+    } else {
+      _updateAccountSnapshot(to);
+      _updateAccountSnapshot(from);
+    }
+  }
+}
