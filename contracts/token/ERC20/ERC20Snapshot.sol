@@ -15,12 +15,17 @@ contract ERC20Snapshot is ERC20Base {
 
   event Snapshot (uint id);
 
-  function balanceOfAt (address account, uint snapshotId) public view returns (uint) {
+  function balanceOfAt (
+    address account,
+    uint snapshotId
+  ) public view returns (uint) {
     (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]);
     return snapshotted ? value : balanceOf(account);
   }
 
-  function totalSupplyAt (uint snapshotId) public view returns (uint) {
+  function totalSupplyAt (
+    uint snapshotId
+  ) public view returns (uint) {
     (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().totalSupplySnapshots);
     return snapshotted ? value : totalSupply();
   }
@@ -35,7 +40,10 @@ contract ERC20Snapshot is ERC20Base {
     return current;
   }
 
-  function _valueAt (uint snapshotId, ERC20SnapshotStorage.Snapshots storage snapshots) private view returns (bool, uint) {
+  function _valueAt (
+    uint snapshotId,
+    ERC20SnapshotStorage.Snapshots storage snapshots
+  ) private view returns (bool, uint) {
     require(snapshotId > 0, 'ERC20Snapshot: snapshot id must not be zero');
     ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
     require(snapshotId <= l.snapshotId.current(), 'ERC20Snapshot: snapshot id does not exist');
@@ -44,7 +52,9 @@ contract ERC20Snapshot is ERC20Base {
     return index == snapshots.ids.length ? (false, 0) : (true, snapshots.values[index]);
   }
 
-  function _updateAccountSnapshot (address account) private {
+  function _updateAccountSnapshot (
+    address account
+  ) private {
     _updateSnapshot(ERC20SnapshotStorage.layout().accountBalanceSnapshots[account], balanceOf(account));
   }
 
@@ -52,7 +62,10 @@ contract ERC20Snapshot is ERC20Base {
     _updateSnapshot(ERC20SnapshotStorage.layout().totalSupplySnapshots, totalSupply());
   }
 
-  function _updateSnapshot (ERC20SnapshotStorage.Snapshots storage snapshots, uint value) private {
+  function _updateSnapshot (
+    ERC20SnapshotStorage.Snapshots storage snapshots,
+    uint value
+  ) private {
     uint currentId = ERC20SnapshotStorage.layout().snapshotId.current();
 
     if (_lastSnapshotId(snapshots.ids) < currentId) {
