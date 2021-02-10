@@ -6,6 +6,9 @@ import '../access/OwnableStorage.sol';
 import '../cryptography/ECDSA.sol';
 import './ERC1271Base.sol';
 
+/**
+ * @title ERC1271 implementation which delegates signing authority to ERC173 contract owner
+ */
 abstract contract ERC1271Ownable is ERC1271Base {
   using ECDSA for bytes32;
 

@@ -5,6 +5,9 @@ pragma solidity ^0.7.0;
 import './ERC1271Base.sol';
 import './ERC1271StoredStorage.sol';
 
+/**
+ * @title ERC1271 implementation which validates signatures against internal storage
+ */
 abstract contract ERC1271Stored is ERC1271Base {
   function _isValidSignature (
     bytes32 hash,
