@@ -2,7 +2,7 @@
 
 pragma solidity ^0.7.0;
 
-import '@openzeppelin/contracts/utils/EnumerableSet.sol';
+import '../../utils/EnumerableSet.sol';
 
 library DiamondBaseStorage {
   using EnumerableSet for EnumerableSet.AddressSet;
