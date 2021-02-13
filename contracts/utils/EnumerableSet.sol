@@ -71,21 +71,21 @@ library EnumerableSet {
   function indexOf (
     Bytes32Set storage set,
     bytes32 value
-  ) internal view returns (bool) {
+  ) internal view returns (uint) {
     return _indexOf(set._inner, value);
   }
 
   function indexOf (
     AddressSet storage set,
     address value
-  ) internal view returns (bool) {
+  ) internal view returns (uint) {
     return _indexOf(set._inner, bytes32(uint(uint160(value))));
   }
 
   function indexOf (
     UintSet storage set,
     uint value
-  ) internal view returns (bool) {
+  ) internal view returns (uint) {
     return _indexOf(set._inner, bytes32(value));
   }
 
