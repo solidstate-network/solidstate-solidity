@@ -26,7 +26,7 @@ describe('MinimalProxyFactory', function () {
           expect(address).to.be.properAddress;
 
           // await instance.callStatic['deployMinimalProxy(address)'](instance.address);
-          // let deployed = await ethers.getContractAt('MetamorphicFactoryMock', address);
+          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
           // TODO: assert code at address is correct
         });
       });
@@ -39,7 +39,7 @@ describe('MinimalProxyFactory', function () {
           expect(address).to.be.properAddress;
 
           // await instance.callStatic['deployMinimalProxy(address,bytes32)'](instance.address, salt);
-          // let deployed = await ethers.getContractAt('MetamorphicFactoryMock', address);
+          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
           // TODO: assert code at address is correct
         });
 

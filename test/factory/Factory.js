@@ -28,7 +28,7 @@ describe('Factory', function () {
           expect(address).to.be.properAddress;
 
           // await instance['deploy(bytes)'](initCode);
-          // let deployed = await ethers.getContractAt('FactoryMock', address);
+          // let deployed = await ethers.getContractAt('Factory', address);
           // TODO: assert code at address is correct
         });
       });
@@ -43,7 +43,7 @@ describe('Factory', function () {
           expect(address).to.equal(await instance.calculateDeploymentAddress(initCodeHash, salt));
 
           // await instance['deploy(bytes)'](initCode);
-          // let deployed = await ethers.getContractAt('FactoryMock', address);
+          // let deployed = await ethers.getContractAt('Factory', address);
           // TODO: assert code at address is correct
         });
 

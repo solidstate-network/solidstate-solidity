@@ -27,7 +27,7 @@ describe('MetamorphicFactory', function () {
         expect(address).to.be.properAddress;
 
         // await instance.callStatic.deployMetamorphicContract(instance.address, salt);
-        // let deployed = await ethers.getContractAt('MetamorphicFactoryMock', address);
+        // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
         // TODO: assert code at address is correct
       });
 

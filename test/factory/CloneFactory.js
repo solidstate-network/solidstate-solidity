@@ -26,7 +26,7 @@ describe('CloneFactory', function () {
           expect(address).to.be.properAddress;
 
           // await instance.callStatic['deployClone(bytes32)'](salt);
-          // let deployed = await ethers.getContractAt('MetamorphicFactoryMock', address);
+          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
           // TODO: assert code at address is correct
         });
       });
@@ -39,7 +39,7 @@ describe('CloneFactory', function () {
           expect(address).to.be.properAddress;
 
           // await instance.callStatic['deployClone(bytes32)'](salt);
-          // let deployed = await ethers.getContractAt('MetamorphicFactoryMock', address);
+          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
           // TODO: assert code at address is correct
         });
 

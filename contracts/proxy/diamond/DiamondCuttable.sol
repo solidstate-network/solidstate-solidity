@@ -6,8 +6,6 @@ pragma abicoder v2;
 import '../../access/OwnableInternal.sol';
 import './DiamondBaseStorage.sol';
 
-// TODO: do not include public Ownable functions
-
 contract DiamondCuttable is OwnableInternal {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
