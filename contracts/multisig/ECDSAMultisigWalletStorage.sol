@@ -52,6 +52,13 @@ library ECDSAMultisigWalletStorage {
     return l.signers.contains(account);
   }
 
+  function indexOfSigner (
+    Layout storage l,
+    address account
+  ) internal view returns (uint) {
+    return l.signers.indexOf(account);
+  }
+
   function addSigner (
     Layout storage l,
     address account
