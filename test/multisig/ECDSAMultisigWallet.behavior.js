@@ -238,7 +238,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signatures must be ordered by signer address'
+              'ECDSAMultisigWallet: signer can not sign more than once'
             );
           });
 
@@ -479,7 +479,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signatures must be ordered by signer address'
+              'ECDSAMultisigWallet: signer can not sign more than once'
             );
           });
 
