@@ -46,7 +46,9 @@ library DiamondBaseStorage {
   ) internal {
     address oldFacet = l.selectorFacet[cut.selector];
 
-    l.facetSelectors[oldFacet].remove(uint256(uint32(cut.selector)));
+    if (oldFacet != address(0)) {
+      l.facetSelectors[oldFacet].remove(uint256(uint32(cut.selector)));
+    }
 
     if (cut.facet == address(0)) {
       l.selectors.remove(uint256(uint32(cut.selector)));
@@ -77,19 +79,13 @@ library DiamondBaseStorage {
   function getFacetCuts (
     Layout storage l
   ) internal view returns (FacetCut[] memory cuts) {
-    EnumerableSet.AddressSet storage facets = l.facets;
     cuts = new DiamondBaseStorage.FacetCut[](l.selectors.length());
 
-    for (uint i; i < facets.length(); i++) {
-      address facet = facets.at(i);
-      EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
-
-      for (uint j; j < facetSelectors.length(); j++) {
-        cuts[i + j] = DiamondBaseStorage.FacetCut({
-          facet: facet,
-          selector: bytes4(uint32(facetSelectors.at(j)))
-        });
-      }
+    for (uint i; i < l.selectors.length(); i++) {
+      cuts[i] = DiamondBaseStorage.FacetCut({
+        facet: l.selectorFacet[bytes4(uint32(l.selectors.at(i)))],
+        selector: bytes4(uint32(l.selectors.at(i)))
+      });
     }
   }
 
