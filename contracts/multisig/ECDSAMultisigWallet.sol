@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.7.0;
-pragma abicoder v2;
+pragma experimental ABIEncoderV2;
 
 import '../cryptography/ECDSA.sol';
 import '../utils/EnumerableSet.sol';
@@ -91,7 +91,7 @@ abstract contract ECDSAMultisigWallet {
       'ECDSAMultisigWallet: quorum not reached'
     );
 
-    address lastSigner;
+    uint signerBitmap;
 
     for (uint i; i < signatures.length; i++) {
       Signature memory signature = signatures[i];
@@ -119,12 +119,14 @@ abstract contract ECDSAMultisigWallet {
 
       l.setInvalidNonce(signer, signature.nonce);
 
+      uint signerBit = 2 ** (l.indexOfSigner(signer) - 1);
+
       require(
-        signer > lastSigner,
-        'ECDSAMultisigWallet: signatures must be ordered by signer address'
+        signerBitmap & signerBit == 0,
+        'ECDSAMultisigWallet: signer can not sign more than once'
       );
 
-      lastSigner = signer;
+      signerBitmap = signerBitmap + signerBit;
     }
   }
 }
