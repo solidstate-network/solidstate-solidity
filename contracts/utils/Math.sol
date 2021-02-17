@@ -20,13 +20,13 @@ library Math {
    * @notice estimate square root of number
    * @dev uses Babylonian method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method)
    * @param x input number
-   * @return square root
+   * @return y square root
    */
   function sqrt (
     uint x
   ) internal pure returns (uint y) {
     uint z = (x + 1) / 2;
-    y = x
+    y = x;
     while (z < y) {
       y = z;
       z = (x / z + z) / 2;
