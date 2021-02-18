@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
 import '../cryptography/ECDSA.sol';
@@ -119,7 +119,7 @@ abstract contract ECDSAMultisigWallet {
 
       l.setInvalidNonce(signer, signature.nonce);
 
-      uint signerBit = 2 ** (l.indexOfSigner(signer) - 1);
+      uint signerBit = 2 ** l.indexOfSigner(signer);
 
       require(
         signerBitmap & signerBit == 0,

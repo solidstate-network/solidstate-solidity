@@ -52,6 +52,24 @@ const describeBehaviorOfERC20Extended = function ({ deploy, supply }, skips = []
           holder.address, spender.address, amount
         );
       });
+
+      describe('reverts if', function () {
+        it('approval amount overflows uint256', async function () {
+          await instance.connect(holder)['increaseAllowance(address,uint256)'](
+            spender.address,
+            ethers.constants.MaxUint256
+          );
+
+          await expect(
+            instance.connect(holder)['increaseAllowance(address,uint256)'](
+              spender.address,
+              ethers.constants.One
+            )
+          ).to.be.revertedWith(
+            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+          );
+        });
+      });
     });
 
     describe('#decreaseAllowance', function () {
@@ -85,6 +103,19 @@ const describeBehaviorOfERC20Extended = function ({ deploy, supply }, skips = []
         ).withArgs(
           holder.address, spender.address, ethers.constants.Zero
         );
+      });
+
+      describe('reverts if', function () {
+        it('approval amount underflows uint256', async function () {
+          await expect(
+            instance.connect(holder)['decreaseAllowance(address,uint256)'](
+              spender.address,
+              ethers.constants.One
+            )
+          ).to.be.revertedWith(
+            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+          );
+        });
       });
     });
   });
