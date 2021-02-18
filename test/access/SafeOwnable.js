@@ -10,6 +10,11 @@ let getNomineeOwner = async function () {
   return signer;
 };
 
+let getNonOwner = async function () {
+  let [, , signer] = await ethers.getSigners();
+  return signer;
+};
+
 let deploy = async function () {
   let factory = await ethers.getContractFactory('SafeOwnableMock');
   let instance = await factory.deploy((await getOwner()).address);
@@ -18,5 +23,10 @@ let deploy = async function () {
 
 describe('SafeOwnable', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfSafeOwnable({ deploy, getOwner, getNomineeOwner });
+  describeBehaviorOfSafeOwnable({
+    deploy,
+    getOwner,
+    getNomineeOwner,
+    getNonOwner,
+  });
 });

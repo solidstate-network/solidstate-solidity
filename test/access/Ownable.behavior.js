@@ -2,16 +2,18 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfOwnable = function ({ deploy, getOwner }, skips = []) {
+const describeBehaviorOfOwnable = function ({ deploy, getOwner, getNonOwner }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::Ownable', function () {
     let instance;
     let owner;
+    let nonOwner;
 
     beforeEach(async function () {
       instance = await ethers.getContractAt('Ownable', (await deploy()).address);
       owner = await getOwner();
+      nonOwner = await getNonOwner();
     });
 
     describe('#owner', function () {
@@ -34,6 +36,16 @@ const describeBehaviorOfOwnable = function ({ deploy, getOwner }, skips = []) {
         ).withArgs(
           owner.address, ethers.constants.AddressZero
         );
+      });
+
+      describe('reverts if', function () {
+        it('sender is not owner', async function () {
+          await expect(
+            instance.connect(nonOwner)['transferOwnership(address)'](nonOwner.address)
+          ).to.be.revertedWith(
+            'Ownable: sender must be owner'
+          );
+        });
       });
     });
   });
