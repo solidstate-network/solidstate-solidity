@@ -119,7 +119,7 @@ abstract contract ECDSAMultisigWallet {
 
       l.setInvalidNonce(signer, signature.nonce);
 
-      uint signerBit = 2 ** (l.indexOfSigner(signer) - 1);
+      uint signerBit = 2 ** l.indexOfSigner(signer);
 
       require(
         signerBitmap & signerBit == 0,
