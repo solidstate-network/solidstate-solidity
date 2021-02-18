@@ -19,14 +19,20 @@ contract ERC20Snapshot is ERC20Base {
     address account,
     uint snapshotId
   ) public view returns (uint) {
-    (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]);
+    (bool snapshotted, uint value) = _valueAt(
+      snapshotId,
+      ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]
+    );
     return snapshotted ? value : balanceOf(account);
   }
 
   function totalSupplyAt (
     uint snapshotId
   ) public view returns (uint) {
-    (bool snapshotted, uint value) = _valueAt(snapshotId, ERC20SnapshotStorage.layout().totalSupplySnapshots);
+    (bool snapshotted, uint value) = _valueAt(
+      snapshotId,
+      ERC20SnapshotStorage.layout().totalSupplySnapshots
+    );
     return snapshotted ? value : totalSupply();
   }
 
@@ -46,20 +52,35 @@ contract ERC20Snapshot is ERC20Base {
   ) private view returns (bool, uint) {
     require(snapshotId > 0, 'ERC20Snapshot: snapshot id must not be zero');
     ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
-    require(snapshotId <= l.snapshotId.current(), 'ERC20Snapshot: snapshot id does not exist');
+
+    require(
+      snapshotId <= l.snapshotId.current(),
+      'ERC20Snapshot: snapshot id does not exist'
+    );
 
     uint index = snapshots.ids.findUpperBound(snapshotId);
-    return index == snapshots.ids.length ? (false, 0) : (true, snapshots.values[index]);
+
+    if (index == snapshots.ids.length) {
+      return (false, 0);
+    } else {
+      return (true, snapshots.values[index]);
+    }
   }
 
   function _updateAccountSnapshot (
     address account
   ) private {
-    _updateSnapshot(ERC20SnapshotStorage.layout().accountBalanceSnapshots[account], balanceOf(account));
+    _updateSnapshot(
+      ERC20SnapshotStorage.layout().accountBalanceSnapshots[account],
+      balanceOf(account)
+    );
   }
 
   function _updateTotalSupplySnapshot () private {
-    _updateSnapshot(ERC20SnapshotStorage.layout().totalSupplySnapshots, totalSupply());
+    _updateSnapshot(
+      ERC20SnapshotStorage.layout().totalSupplySnapshots,
+      totalSupply()
+    );
   }
 
   function _updateSnapshot (
