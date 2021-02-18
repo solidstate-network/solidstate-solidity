@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 import '../../utils/Array.sol';
 import '../../utils/Counter.sol';
-import '../../utils/SafeMath.sol';
 import './ERC20Base.sol';
 import './ERC20SnapshotStorage.sol';
 
 contract ERC20Snapshot is ERC20Base {
-  using SafeMath for uint;
   using Array for uint[];
   using Counter for Counter.Counter;
 

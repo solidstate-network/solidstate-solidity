@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 // TODO: remove ERC165
 
@@ -9,11 +9,9 @@ import './IERC1155Receiver.sol';
 import './ERC1155BaseStorage.sol';
 import '../../introspection/ERC165.sol';
 import '../../utils/AddressUtils.sol';
-import '../../utils/SafeMath.sol';
 
 abstract contract ERC1155Base is IERC1155, ERC165 {
   using AddressUtils for address;
-  using SafeMath for uint;
 
   function balanceOf (
     address account,
@@ -70,8 +68,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(msg.sender, from, to, _asSingletonArray(id), _asSingletonArray(amount), data);
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    balances[from] = balances[from].sub(amount, 'ERC1155: insufficient balance for transfer');
-    balances[to] = balances[to].add(amount);
+    // TODO: error message
+    // balances[from] = balances[from].sub(amount, 'ERC1155: insufficient balance for transfer');
+    balances[from] -= amount;
+    balances[to] += amount;
 
     emit TransferSingle(msg.sender, from, to, id, amount);
 
@@ -97,8 +97,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
       uint id = ids[i];
       uint amount = amounts[i];
 
-      balances[id][from] = balances[id][from].sub(amount, 'ERC1155: insufficient balances for transfer');
-      balances[id][to] = balances[id][to].add(amount);
+      // TODO: error message
+      // balances[id][from] = balances[id][from].sub(amount, 'ERC1155: insufficient balances for transfer');
+      balances[id][from] -= amount;
+      balances[id][to] += amount;
     }
 
     emit TransferBatch(msg.sender, from, to, ids, amounts);
@@ -117,7 +119,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(msg.sender, address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    balances[account] = balances[account].add(amount);
+    balances[account] += amount;
 
     emit TransferSingle(msg.sender, address(0), account, id, amount);
 
@@ -139,7 +141,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     for (uint i; i < ids.length; i++) {
       uint id = ids[i];
-      balances[id][account] = balances[id][account].add(amounts[i]);
+      balances[id][account] += amounts[i];
     }
 
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
@@ -157,7 +159,9 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    balances[account] = balances[account].sub(amount, 'ERC1155: burn amount exceeds balance');
+    // TODO: error message
+    // balances[account] = balances[account].sub(amount, 'ERC1155: burn amount exceeds balance');
+    balances[account] -= amount;
 
     emit TransferSingle(msg.sender, account, address(0), id, amount);
   }
@@ -176,7 +180,9 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     for (uint i; i < ids.length; i++) {
       uint id = ids[i];
-      balances[id][account] = balances[id][account].sub(amounts[i], 'ERC1155: burn amount exceeds balance');
+      // TODO: error message
+      // balances[id][account] = balances[id][account].sub(amounts[i], 'ERC1155: burn amount exceeds balance');
+      balances[id][account] -= amounts[i];
     }
 
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);

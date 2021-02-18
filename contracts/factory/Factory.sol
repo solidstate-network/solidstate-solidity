@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 /**
  * @title Factory for arbitrary code deployment using the "CREATE" and "CREATE2" opcodes
@@ -43,11 +43,11 @@ abstract contract Factory {
    * @return deployment address
    */
   function _calculateDeploymentAddress (bytes32 initCodeHash, bytes32 salt) internal view returns (address) {
-    return address(uint(keccak256(abi.encodePacked(
+    return address(uint160(uint256(keccak256(abi.encodePacked(
       hex'ff',
       address(this),
       salt,
       initCodeHash
-    ))));
+    )))));
   }
 }

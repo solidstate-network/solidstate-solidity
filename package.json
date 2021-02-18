@@ -22,16 +22,16 @@
     "url": "git+https://github.com/solidstate-network/solidstate-contracts.git"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "chai": "^4.2.0",
-    "eslint": "^7.13.0",
+    "chai": "^4.3.0",
+    "eslint": "^7.20.0",
     "eslint-plugin-mocha": "^8.0.0",
-    "ethereum-waffle": "^3.2.0",
-    "hardhat": "^2.0.8",
-    "hardhat-gas-reporter": "^1.0.3",
-    "hardhat-spdx-license-identifier": "^2.0.1",
-    "solidity-coverage": "^0.7.13"
+    "ethereum-waffle": "^3.2.2",
+    "hardhat": "^2.0.10",
+    "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-spdx-license-identifier": "^2.0.3",
+    "solidity-coverage": "^0.7.15"
   },
   "files": [
     "/contracts/**/*.sol",

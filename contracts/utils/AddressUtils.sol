@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 library AddressUtils {
   function toString (address account) internal pure returns (string memory) {
-    bytes32 value = bytes32(uint256(account));
+    bytes32 value = bytes32(uint256(uint160(account)));
     bytes memory alphabet = '0123456789abcdef';
     bytes memory chars = new bytes(42);
 
