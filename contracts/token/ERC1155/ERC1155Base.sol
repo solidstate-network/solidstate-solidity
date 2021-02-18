@@ -159,8 +159,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    // TODO: error message
-    // balances[account] = balances[account].sub(amount, 'ERC1155: burn amount exceeds balance');
+    require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
     balances[account] -= amount;
 
     emit TransferSingle(msg.sender, account, address(0), id, amount);
@@ -180,8 +179,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     for (uint i; i < ids.length; i++) {
       uint id = ids[i];
-      // TODO: error message
-      // balances[id][account] = balances[id][account].sub(amounts[i], 'ERC1155: burn amount exceeds balance');
+      require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
       balances[id][account] -= amounts[i];
     }
 
