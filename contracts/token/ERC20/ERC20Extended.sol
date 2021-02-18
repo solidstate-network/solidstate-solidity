@@ -11,7 +11,7 @@ abstract contract ERC20Extended is ERC20Base {
       spender,
       // TODO: error message
       // ERC20BaseStorage.layout().allowances[msg.sender][spender].add(amount)
-      ERC20BaseStorage.layout().allowances[msg.sender][spender] - amount
+      ERC20BaseStorage.layout().allowances[msg.sender][spender] += amount
     );
     return true;
   }
@@ -22,7 +22,7 @@ abstract contract ERC20Extended is ERC20Base {
       spender,
       // TODO: error message
       // ERC20BaseStorage.layout().allowances[msg.sender][spender].sub(amount)
-      ERC20BaseStorage.layout().allowances[msg.sender][spender] - amount
+      ERC20BaseStorage.layout().allowances[msg.sender][spender] -= amount
     );
     return true;
   }
