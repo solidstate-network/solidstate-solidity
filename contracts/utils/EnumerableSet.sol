@@ -168,7 +168,9 @@ library EnumerableSet {
     Set storage set,
     bytes32 value
   ) private view returns (uint) {
-    return set._indexes[value] - 1;
+    unchecked {
+      return set._indexes[value] - 1;
+    }
   }
 
   function _length (

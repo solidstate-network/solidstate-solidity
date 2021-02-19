@@ -106,9 +106,11 @@ abstract contract ECDSAMultisigWallet {
         )
       ).toEthSignedMessageHash().recover(signature.data);
 
+      uint index = l.signers.indexOf(signer);
+
       require(
-        l.isSigner(signer),
-        'ECDSAMultisigWallet: recovered signer is not authorized'
+        index < 256,
+        'ECDSAMultisigWallet: recovered signer not authorized'
       );
 
       require(
@@ -118,14 +120,12 @@ abstract contract ECDSAMultisigWallet {
 
       l.setInvalidNonce(signer, signature.nonce);
 
-      uint signerBit = 2 ** l.indexOfSigner(signer);
-
       require(
-        signerBitmap & signerBit == 0,
+        signerBitmap & (2 ** index) == 0,
         'ECDSAMultisigWallet: signer can not sign more than once'
       );
 
-      signerBitmap = signerBitmap + signerBit;
+      signerBitmap += 2 ** index;
     }
   }
 }

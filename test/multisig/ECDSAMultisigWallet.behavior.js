@@ -269,7 +269,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer is not authorized'
+              'ECDSAMultisigWallet: recovered signer not authorized'
             );
           });
 
@@ -510,7 +510,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer is not authorized'
+              'ECDSAMultisigWallet: recovered signer not authorized'
             );
           });
 
