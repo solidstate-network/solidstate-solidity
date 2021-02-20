@@ -13,7 +13,17 @@ const nextNonce = function () {
   return currentNonce;
 };
 
-const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum, signAuthorization }, skips = []) {
+const signAuthorization = async function (signer, { target, data, value, delegate, nonce, address }) {
+  const types = ['address', 'bytes', 'uint256', 'bool', 'uint256', 'address'];
+  const values = [target, data, value, delegate, nonce, address];
+
+  const hash = ethers.utils.solidityKeccak256(types, values);
+
+  const signature = await signer.signMessage(ethers.utils.arrayify(hash));
+  return ethers.utils.arrayify(signature);
+};
+
+const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum }, skips = []) {
   const describe = describeFilter(skips);
 
   describe('::ECDSAMultisigWallet', function () {

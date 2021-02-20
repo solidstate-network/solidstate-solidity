@@ -56,11 +56,11 @@ library ECDSAMultisigWalletStorage {
     Layout storage l,
     address account
   ) internal {
-    l.signers.add(account);
     require(
-      l.signers.length() <= 256,
+      l.signers.length() < 256,
       'ECDSAMultisigWallet: signer limit reached'
     );
+    l.signers.add(account);
   }
 
   function removeSigner (

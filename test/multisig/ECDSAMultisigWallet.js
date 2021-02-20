@@ -1,32 +1,22 @@
 const describeBehaviorOfECDSAMultisigWallet = require('./ECDSAMultisigWallet.behavior.js');
 
-let quorum = ethers.constants.One;
+const quorum = ethers.constants.One;
 
-let getSigners = async function () {
+const getSigners = async function () {
   return (await ethers.getSigners()).slice(0, 3);
 };
 
-let getNonSigner = async function () {
+const getNonSigner = async function () {
   return (await ethers.getSigners())[3];
 };
 
-let deploy = async function () {
-  let facetFactory = await ethers.getContractFactory('ECDSAMultisigWalletMock');
-  let facetInstance = await facetFactory.deploy(
+const deploy = async function () {
+  const factory = await ethers.getContractFactory('ECDSAMultisigWalletMock');
+  const instance = await factory.deploy(
     (await getSigners()).map(s => s.address),
-    (await getSigners()).length
+    quorum
   );
-  return await facetInstance.deployed();
-};
-
-let signAuthorization = async function (signer, { target, data, value, delegate, nonce, address }) {
-  let types = ['address', 'bytes', 'uint256', 'bool', 'uint256', 'address'];
-  let values = [target, data, value, delegate, nonce, address];
-
-  let hash = ethers.utils.solidityKeccak256(types, values);
-
-  let signature = await signer.signMessage(ethers.utils.arrayify(hash));
-  return ethers.utils.arrayify(signature);
+  return await instance.deployed();
 };
 
 describe('ECDSAMultisigWallet', function () {
@@ -42,7 +32,6 @@ describe('ECDSAMultisigWallet', function () {
     getSigners,
     getNonSigner,
     quorum,
-    signAuthorization,
   });
 
   describe('__internal', function () {
