@@ -39,7 +39,16 @@ abstract contract ECDSAMultisigWallet {
     Parameters memory parameters,
     Signature[] memory signatures
   ) virtual public payable returns (bytes memory) {
-    _verifySignatures(parameters, signatures);
+    _verifySignatures(
+      abi.encodePacked(
+        parameters.target,
+        parameters.data,
+        parameters.value,
+        parameters.delegate
+      ),
+      signatures
+    );
+
     return _executeCall(parameters);
   }
 
@@ -76,11 +85,11 @@ abstract contract ECDSAMultisigWallet {
   /**
    * @notice verify eligibility of set of signatures to execute transaction
    * @dev message value and call type must be included in signature
-   * @param parameters structured call parameters (target, data, value, delegate)
+   * @param data packed data payload
    * @param signatures array of structured signature data (signature, nonce)
    */
   function _verifySignatures (
-    Parameters memory parameters,
+    bytes memory data,
     Signature[] memory signatures
   ) virtual internal {
     ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage.layout();
@@ -97,10 +106,7 @@ abstract contract ECDSAMultisigWallet {
 
       address signer = keccak256(
         abi.encodePacked(
-          parameters.target,
-          parameters.data,
-          parameters.value,
-          parameters.delegate,
+          data,
           signature.nonce,
           address(this)
         )
