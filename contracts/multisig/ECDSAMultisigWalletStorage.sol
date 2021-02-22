@@ -42,6 +42,10 @@ library ECDSAMultisigWalletStorage {
     Layout storage l,
     uint quorum
   ) internal {
+    require(
+      quorum <= l.signers.length(),
+      'ECDSAMultisigWallet: insufficient signers to meet quorum'
+    );
     l.quorum = quorum;
   }
 
