@@ -42,8 +42,8 @@ struct Proposal {
   // / @notice Flag marking whether the proposal has been executed
   bool executed;
 
-  // / @notice Receipts of ballots for the entire set of voters
-  mapping (address => Receipt) receipts;
+  // // / @notice Receipts of ballots for the entire set of voters
+  // mapping (address => Receipt) receipts;
 }
 
 /// @notice Ballot receipt record for a voter
@@ -55,7 +55,7 @@ struct Receipt {
   bool support;
 
   // / @notice The number of votes the voter had, which were cast
-  uint96 votes;
+  uint votes;
 }
 
 /// @notice Possible states that a proposal may be in

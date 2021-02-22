@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-interface TimelockInterface {
+interface ITimelock {
     function delay() external view returns (uint);
     function GRACE_PERIOD() external view returns (uint);
     function acceptAdmin() external;

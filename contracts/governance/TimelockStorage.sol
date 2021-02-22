@@ -8,15 +8,11 @@ library TimelockStorage {
   );
 
   struct Layout {
-    uint public constant GRACE_PERIOD = 14 days;
-    uint public constant MINIMUM_DELAY = 2 days;
-    uint public constant MAXIMUM_DELAY = 30 days;
+    address admin;
+    address pendingAdmin;
+    uint delay;
 
-    address public admin;
-    address public pendingAdmin;
-    uint public delay;
-
-    mapping (bytes32 => bool) public queuedTransactions;
+    mapping (bytes32 => bool) queuedTransactions;
   }
 
   function layout () internal pure returns (Layout storage l) {

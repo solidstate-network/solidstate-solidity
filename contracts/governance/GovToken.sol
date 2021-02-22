@@ -10,18 +10,20 @@ import "./GovTokenTypes.sol";
 
 contract GovToken is ERC20Metadata {
     
-    /// @notice A record of each accounts delegate
-    mapping (address => address) public delegates;
+    // /// @notice A record of each accounts delegate
+    // function delegates () override virtual public view returns (mapping (address => address)) {
+    //     return GovTokenStorage.layout().delegates;
+    // }
 
-    /// @notice A record of votes checkpoints for each account, by index
-    function checkpoints () override virtual public view returns (mapping (address => mapping (uint32 => Checkpoint))) {
-        return GovTokenStorage.layout().checkpoints;
-    }
+    // /// @notice A record of votes checkpoints for each account, by index
+    // function checkpoints () override virtual public view returns (mapping (address => mapping (uint32 => Checkpoint))) {
+    //     return GovTokenStorage.layout().checkpoints;
+    // }
 
-    /// @notice The number of checkpoints for each account
-    function numCheckpoints () override virtual public view returns (mapping (address => uint32)) {
-        return GovTokenStorage.layout().numCheckpoints;
-    }
+    // /// @notice The number of checkpoints for each account
+    // function numCheckpoints () override virtual public view returns (mapping (address => uint32)) {
+    //     return GovTokenStorage.layout().numCheckpoints;
+    // }
 
     /// @notice The EIP-712 typehash for the contract's domain
     bytes32 public constant DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,uint256 chainId,address verifyingContract)");
@@ -29,10 +31,10 @@ contract GovToken is ERC20Metadata {
     /// @notice The EIP-712 typehash for the delegation struct used by the contract
     bytes32 public constant DELEGATION_TYPEHASH = keccak256("Delegation(address delegatee,uint256 nonce,uint256 expiry)");
 
-    /// @notice A record of states for signing / validating signatures
-    function nonces () override virtual public view returns (mapping (address => uint)) {
-        return GovTokenStorage.layout().nonces;
-    }
+    // /// @notice A record of states for signing / validating signatures
+    // function nonces () override virtual public view returns (mapping (address => uint)) {
+    //     return GovTokenStorage.layout().nonces;
+    // }
 
     /// @notice An event thats emitted when an account changes its delegate
     event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
@@ -48,28 +50,28 @@ contract GovToken is ERC20Metadata {
         return _delegate(msg.sender, delegatee);
     }
 
-    /**
-     * @notice Delegates votes from signatory to `delegatee`
-     * @param delegatee The address to delegate votes to
-     * @param nonce The contract state required to match the signature
-     * @param expiry The time at which to expire the signature
-     * @param v The recovery byte of the signature
-     * @param r Half of the ECDSA signature pair
-     * @param s Half of the ECDSA signature pair
-     */
-    function delegateBySig(address delegatee, uint nonce, uint expiry, uint8 v, bytes32 r, bytes32 s) public {
-        bytes32 domainSeparator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name)), getChainId(), address(this)));
-        bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
-        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
-        address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), string(abi.encodePacked(name(), "::delegateBySig: invalid signature")));
+    // /**
+    //  * @notice Delegates votes from signatory to `delegatee`
+    //  * @param delegatee The address to delegate votes to
+    //  * @param nonce The contract state required to match the signature
+    //  * @param expiry The time at which to expire the signature
+    //  * @param v The recovery byte of the signature
+    //  * @param r Half of the ECDSA signature pair
+    //  * @param s Half of the ECDSA signature pair
+    //  */
+    // function delegateBySig(address delegatee, uint nonce, uint expiry, uint8 v, bytes32 r, bytes32 s) public {
+    //     bytes32 domainSeparator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name())), getChainId(), address(this)));
+    //     bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
+    //     bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
+    //     address signatory = ecrecover(digest, v, r, s);
+    //     require(signatory != address(0), string(abi.encodePacked(name(), "::delegateBySig: invalid signature")));
 
-        GovTokenStorage.Layout storage l = GovTokenStorage.layout();
+    //     GovTokenStorage.Layout storage l = GovTokenStorage.layout();
 
-        require(nonce == l.nonces[signatory]++, string(abi.encodePacked(name(), "::delegateBySig: invalid nonce")));
-        require(now <= expiry, string(abi.encodePacked(name(), "::delegateBySig: signature expired")));
-        return _delegate(signatory, delegatee);
-    }
+    //     require(nonce == l.nonces[signatory]++, string(abi.encodePacked(name(), "::delegateBySig: invalid nonce")));
+    //     require(block.timestamp <= expiry, string(abi.encodePacked(name(), "::delegateBySig: signature expired")));
+    //     return _delegate(signatory, delegatee);
+    // }
 
     /**
      * @notice Gets the current votes balance for `account`
@@ -126,10 +128,10 @@ contract GovToken is ERC20Metadata {
     }
 
     function _delegate(address delegator, address delegatee) internal {
-        address currentDelegate = delegates[delegator];
+        GovTokenStorage.Layout storage l = GovTokenStorage.layout();
+        address currentDelegate = l.delegates[delegator];
         uint delegatorBalance = ERC20Base(this).balanceOf(delegator);
         
-        GovTokenStorage.Layout storage l = GovTokenStorage.layout();
         l.delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -172,11 +174,11 @@ contract GovToken is ERC20Metadata {
         emit DelegateVotesChanged(delegatee, oldVotes, newVotes);
     }
 
-    function getChainId() internal pure returns (uint) {
-        uint256 chainId;
-        assembly { chainId := chainid() }
-        return chainId;
-    }
+    // function getChainId() internal pure returns (uint) {
+    //     uint256 chainId;
+    //     assembly { chainId := chainid() }
+    //     return chainId;
+    // }
 
     /**
     * @notice ERC20 hook: update snapshot data
@@ -188,8 +190,6 @@ contract GovToken is ERC20Metadata {
         uint amount
     ) virtual override internal {
         super._beforeTokenTransfer(from, to, amount);
-        _updateAccountSnapshot(to);
-        _updateAccountSnapshot(from);
 
         GovTokenStorage.Layout storage l = GovTokenStorage.layout();
 

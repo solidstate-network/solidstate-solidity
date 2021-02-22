@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./GovTokenTypes.sol"
+import "./GovTokenTypes.sol";
 
 library GovTokenStorage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
@@ -10,12 +10,13 @@ library GovTokenStorage {
   );
 
   struct Layout {
-    mapping (address => mapping (uint32 => Checkpoint)) public checkpoints;
-    mapping (address => uint32) public numCheckpoints;
+    mapping (address => mapping (uint32 => Checkpoint)) checkpoints;
+    mapping (address => uint32) numCheckpoints;
 
 
-    mapping (address => uint) public nonces;
+    mapping (address => uint) nonces;
 
+    mapping (address => address) delegates;
   }
 
   function layout () internal pure returns (Layout storage l) {

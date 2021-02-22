@@ -24,7 +24,7 @@ library GovernorAlphaStorage {
     uint proposalCount;
 
     mapping (uint => Proposal) proposals;
-    // mapping (uint => mapping(uint => Receipt)) receipts;
+    mapping (uint => mapping(address => Receipt)) receipts;
     mapping (address => uint) latestProposalIds;
   }
 
@@ -33,19 +33,19 @@ library GovernorAlphaStorage {
     assembly { l.slot := slot }
   }
 
-  function getProposal returns (Proposal) (
+  function getProposal (
     Layout storage l,
     uint proposalId
-  ) internal {
-    return l.proposals[proposalId]
+  ) internal view returns (Proposal storage) {
+    return l.proposals[proposalId];
   }
 
-  function getReceipt returns (Receipt) (
+  function getReceipt (
     Layout storage l,
     uint proposalId,
     address voter
-  ) internal {
-    return l.receipts[proposalId][voter]
+  ) internal view returns (Receipt storage) {
+    return l.receipts[proposalId][voter];
   }
 
   function setQuorumVotes (

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 pragma abicoder v2;
 
@@ -18,7 +20,7 @@ contract GovernorAlphaMock is GovernorAlpha {
   ) {
     GovernorAlphaStorage.Layout storage l = GovernorAlphaStorage.layout();
 
-    l.setQuorumVotes(quorum);
+    l.setQuorumVotes(quorumVotes);
     l.setProposalThreshold(proposalThreshold);
     l.setProposalMaxOperations(proposalMaxOperations);
     l.setVotingDelay(votingDelay);
