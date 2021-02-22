@@ -3,13 +3,11 @@
 pragma solidity ^0.8.0;
 
 import '../../utils/Array.sol';
-import '../../utils/Counter.sol';
 import './ERC20Base.sol';
 import './ERC20SnapshotStorage.sol';
 
 contract ERC20Snapshot is ERC20Base {
   using Array for uint[];
-  using Counter for Counter.Counter;
 
   event Snapshot (uint id);
 
@@ -37,9 +35,9 @@ contract ERC20Snapshot is ERC20Base {
   function _snapshot () virtual internal returns (uint) {
     ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
 
-    l.snapshotId.increment();
+    l.snapshotId++;
 
-    uint current = l.snapshotId.current();
+    uint current = l.snapshotId;
     emit Snapshot(current);
     return current;
   }
@@ -52,7 +50,7 @@ contract ERC20Snapshot is ERC20Base {
     ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
 
     require(
-      snapshotId <= l.snapshotId.current(),
+      snapshotId <= l.snapshotId,
       'ERC20Snapshot: snapshot id does not exist'
     );
 
@@ -85,10 +83,10 @@ contract ERC20Snapshot is ERC20Base {
     ERC20SnapshotStorage.Snapshots storage snapshots,
     uint value
   ) private {
-    uint currentId = ERC20SnapshotStorage.layout().snapshotId.current();
+    uint current = ERC20SnapshotStorage.layout().snapshotId;
 
-    if (_lastSnapshotId(snapshots.ids) < currentId) {
-      snapshots.ids.push(currentId);
+    if (_lastSnapshotId(snapshots.ids) < current) {
+      snapshots.ids.push(current);
       snapshots.values.push(value);
     }
   }

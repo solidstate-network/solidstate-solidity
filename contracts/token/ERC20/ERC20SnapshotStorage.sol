@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import '../../utils/Counter.sol';
-
 library ERC20SnapshotStorage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.ERC20Snapshot'
@@ -17,7 +15,7 @@ library ERC20SnapshotStorage {
   struct Layout {
     mapping (address => Snapshots) accountBalanceSnapshots;
     Snapshots totalSupplySnapshots;
-    Counter.Counter snapshotId;
+    uint snapshotId;
   }
 
   function layout () internal pure returns (Layout storage l) {
