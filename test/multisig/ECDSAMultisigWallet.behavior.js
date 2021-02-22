@@ -2,9 +2,7 @@ const { expect } = require('chai');
 const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
-
-// TODO: test revert if signer order is incorrect
-// TODO: test with multiple signers
+const signData = require('../../lib/sign_data.js');
 
 let currentNonce = ethers.constants.Zero;
 
@@ -14,13 +12,15 @@ const nextNonce = function () {
 };
 
 const signAuthorization = async function (signer, { target, data, value, delegate, nonce, address }) {
-  const types = ['address', 'bytes', 'uint256', 'bool', 'uint256', 'address'];
-  const values = [target, data, value, delegate, nonce, address];
-
-  const hash = ethers.utils.solidityKeccak256(types, values);
-
-  const signature = await signer.signMessage(ethers.utils.arrayify(hash));
-  return ethers.utils.arrayify(signature);
+  return signData(
+    signer,
+    {
+      values: [target, data, value, delegate],
+      types: ['address', 'bytes', 'uint256', 'bool'],
+      nonce,
+      address,
+    }
+  );
 };
 
 const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum }, skips = []) {
