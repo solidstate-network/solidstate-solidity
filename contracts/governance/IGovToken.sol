@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.7.6;
 
-interface GovTokenInterface {
+interface IGovToken {
     function getPriorVotes(address account, uint blockNumber) external view returns (uint96);
 }

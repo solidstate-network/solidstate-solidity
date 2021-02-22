@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
-import '../utils/SafeMath.sol';
 // import './IERC20.sol';
 import './GovernorAlphaStorage.sol';
-import './TimelockInterface.sol';
-import './GovTokenInterface.sol';
+import './ITimelock.sol';
+import './IGovToken.sol';
 import './GovernanceTypes.sol';
 
 contract GovernorAlpha {
@@ -39,13 +38,13 @@ contract GovernorAlpha {
     }
 
     /// @notice The address of the Compound Protocol Timelock
-    function timelock () override virtual public view returns (TimelockInterface) {
-        return TimelockInterface(GovernorAlphaStorage.layout().timelock);
+    function timelock () override virtual public view returns (ITimelock) {
+        return ITimelock(GovernorAlphaStorage.layout().timelock);
     }
 
     /// @notice The address of the Compound governance token
-    function govtoken () override virtual public view returns (GovTokenInterface) {
-        return GovTokenInterface(GovernorAlphaStorage.layout().govtoken);
+    function govtoken () override virtual public view returns (IGovToken) {
+        return IGovToken(GovernorAlphaStorage.layout().govtoken);
     }
 
     /// @notice The address of the Governor Guardian
@@ -151,8 +150,8 @@ contract GovernorAlpha {
 
     // completed
     function _queueOrRevert(address target, uint value, string memory signature, bytes memory data, uint eta) internal {
-        require(!timelock.queuedTransactions(keccak256(abi.encode(target, value, signature, data, eta))), "GovernorAlpha::_queueOrRevert: proposal action already queued at eta");
-        timelock.queueTransaction(target, value, signature, data, eta);
+        require(!timelock().queuedTransactions(keccak256(abi.encode(target, value, signature, data, eta))), "GovernorAlpha::_queueOrRevert: proposal action already queued at eta");
+        timelock().queueTransaction(target, value, signature, data, eta);
     }
 
     // completed
@@ -161,7 +160,7 @@ contract GovernorAlpha {
         Proposal storage proposal = proposals[proposalId];
         proposal.executed = true;
         for (uint i = 0; i < proposal.targets.length; i++) {
-            timelock.executeTransaction.value(proposal.values[i])(proposal.targets[i], proposal.values[i], proposal.signatures[i], proposal.calldatas[i], proposal.eta);
+            timelock().executeTransaction.value(proposal.values[i])(proposal.targets[i], proposal.values[i], proposal.signatures[i], proposal.calldatas[i], proposal.eta);
         }
         emit ProposalExecuted(proposalId);
     }
@@ -178,7 +177,7 @@ contract GovernorAlpha {
 
         proposal.canceled = true;
         for (uint i = 0; i < proposal.targets.length; i++) {
-            timelock.cancelTransaction(proposal.targets[i], proposal.values[i], proposal.signatures[i], proposal.calldatas[i], proposal.eta);
+            timelock().cancelTransaction(proposal.targets[i], proposal.values[i], proposal.signatures[i], proposal.calldatas[i], proposal.eta);
         }
 
         emit ProposalCanceled(proposalId);
@@ -214,7 +213,7 @@ contract GovernorAlpha {
             return ProposalState.Succeeded;
         } else if (proposal.executed) {
             return ProposalState.Executed;
-        } else if (block.timestamp >= add256(proposal.eta, timelock.GRACE_PERIOD())) {
+        } else if (block.timestamp >= add256(proposal.eta, timelock().GRACE_PERIOD())) {
             return ProposalState.Expired;
         } else {
             return ProposalState.Queued;
@@ -261,7 +260,7 @@ contract GovernorAlpha {
     // completed
     function __acceptAdmin() public {
         require(msg.sender == guardian(), "GovernorAlpha::__acceptAdmin: sender must be gov guardian");
-        timelock.acceptAdmin();
+        timelock().acceptAdmin();
     }
 
     // completed
@@ -274,13 +273,13 @@ contract GovernorAlpha {
     // completed
     function __queueSetTimelockPendingAdmin(address newPendingAdmin, uint eta) public {
         require(msg.sender == guardian(), "GovernorAlpha::__queueSetTimelockPendingAdmin: sender must be gov guardian");
-        timelock.queueTransaction(address(timelock()), 0, "setPendingAdmin(address)", abi.encode(newPendingAdmin), eta);
+        timelock().queueTransaction(address(timelock()), 0, "setPendingAdmin(address)", abi.encode(newPendingAdmin), eta);
     }
 
     // completed
     function __executeSetTimelockPendingAdmin(address newPendingAdmin, uint eta) public {
         require(msg.sender == guardian(), "GovernorAlpha::__executeSetTimelockPendingAdmin: sender must be gov guardian");
-        timelock.executeTransaction(address(timelock()), 0, "setPendingAdmin(address)", abi.encode(newPendingAdmin), eta);
+        timelock().executeTransaction(address(timelock()), 0, "setPendingAdmin(address)", abi.encode(newPendingAdmin), eta);
     }
 
     // completed
