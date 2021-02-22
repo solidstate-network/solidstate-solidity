@@ -4,7 +4,7 @@ const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
 const describeBehaviorOfERC165 = require('../../introspection/ERC165.behavior.js');
 
-const describeBehaviorOfERC1155Base = function ({ deploy }, skips = []) {
+const describeBehaviorOfERC1155Base = function ({ deploy }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC1155Base', function () {
@@ -23,7 +23,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy }, skips = []) {
     describeBehaviorOfERC165({
       deploy: () => instance,
       interfaceIds: ['0xd9b67a26'],
-    });
+    }, skips);
 
     describe('#balanceOf', function () {
       it('returns the balance of given token held by given address', async function () {

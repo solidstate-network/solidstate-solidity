@@ -13,5 +13,11 @@ let deploy = async function () {
 
 describe('ERC20', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20({ deploy, name, symbol, decimals, supply });
+  describeBehaviorOfERC20({
+    deploy,
+    name,
+    symbol,
+    decimals,
+    supply,
+  }, []);
 });

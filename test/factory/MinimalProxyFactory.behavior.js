@@ -3,7 +3,7 @@ const describeBehaviorOfFactory = require('./Factory.behavior.js');
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
 // eslint-disable-next-line no-empty-pattern
-const describeBehaviorOfMinimalProxyFactory = function ({}, skips = []) {
+const describeBehaviorOfMinimalProxyFactory = function ({}, skips) {
   const describe = describeFilter(skips);
 
   describe('::MinimalProxyFactory', function () {

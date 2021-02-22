@@ -23,7 +23,7 @@ const signAuthorization = async function (signer, { target, data, value, delegat
   );
 };
 
-const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum }, skips = []) {
+const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ECDSAMultisigWallet', function () {

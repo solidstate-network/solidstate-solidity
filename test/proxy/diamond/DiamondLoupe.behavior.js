@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips = []) {
+const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
   const describe = describeFilter(skips);
 
   describe('::DiamondLoupe', function () {

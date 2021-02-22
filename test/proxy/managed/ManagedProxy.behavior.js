@@ -2,7 +2,7 @@ const describeBehaviorOfProxy = require('../Proxy.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfManagedProxy = function ({ deploy, implementationFunction, implementationFunctionArgs }, skips = []) {
+const describeBehaviorOfManagedProxy = function ({ deploy, implementationFunction, implementationFunctionArgs }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ManagedProxy', function () {

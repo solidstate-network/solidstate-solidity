@@ -4,7 +4,7 @@ const describeBehaviorOfOwnable = require('./Ownable.behavior.js');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOwner, getNonOwner }, skips = []) {
+const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOwner, getNonOwner }, skips) {
   const describe = describeFilter(skips);
 
   describe('::SafeOwnable', function () {
@@ -25,7 +25,7 @@ const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOw
       deploy,
       getOwner,
       getNonOwner,
-    }, ['#transferOwnership']);
+    }, ['#transferOwnership', ...skips]);
 
     describe('#nomineeOwner', function () {
       it('returns address of nominee owner', async function () {

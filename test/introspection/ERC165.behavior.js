@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC165 = function ({ deploy, interfaceIds }, skips = []) {
+const describeBehaviorOfERC165 = function ({ deploy, interfaceIds }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC165', function () {

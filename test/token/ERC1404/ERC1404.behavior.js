@@ -3,7 +3,7 @@ const describeBehaviorOfERC1404Base = require('./ERC1404Base.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC1404 = function ({ deploy, restrictions, name, symbol, decimals, supply }, skips = []) {
+const describeBehaviorOfERC1404 = function ({ deploy, restrictions, name, symbol, decimals, supply }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC1404', function () {

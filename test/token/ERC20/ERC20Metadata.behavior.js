@@ -4,7 +4,7 @@ const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
 
 const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decimals, supply }, skips = []) {
+const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decimals, supply }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Metadata', function () {

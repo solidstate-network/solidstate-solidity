@@ -28,5 +28,5 @@ describe('SafeOwnable', function () {
     getOwner,
     getNomineeOwner,
     getNonOwner,
-  });
+  }, []);
 });

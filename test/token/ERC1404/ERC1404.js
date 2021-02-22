@@ -20,5 +20,5 @@ describe('ERC1404', function () {
     symbol: '',
     decimals: 0,
     supply: 0,
-  });
+  }, []);
 });
