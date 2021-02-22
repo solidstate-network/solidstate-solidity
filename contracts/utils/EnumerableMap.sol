@@ -18,8 +18,24 @@ library EnumerableMap {
     mapping (bytes32 => uint256) _indexes;
   }
 
+  struct AddressToAddressMap {
+    Map _inner;
+  }
+
   struct UintToAddressMap {
     Map _inner;
+  }
+
+  function at (
+    AddressToAddressMap storage map,
+    uint256 index
+  ) internal view returns (address, address) {
+    (bytes32 key, bytes32 value) = _at(map._inner, index);
+    address addressKey;
+    assembly {
+      addressKey := mload(add(key, 20))
+    }
+    return (addressKey, address(uint160(uint256(value))));
   }
 
   function at (
@@ -31,6 +47,13 @@ library EnumerableMap {
   }
 
   function contains (
+    AddressToAddressMap storage map,
+    address key
+  ) internal view returns (bool) {
+    return _contains(map._inner, bytes32(uint256(uint160(key))));
+  }
+
+  function contains (
     UintToAddressMap storage map,
     uint256 key
   ) internal view returns (bool) {
@@ -38,9 +61,22 @@ library EnumerableMap {
   }
 
   function length (
+    AddressToAddressMap storage map
+  ) internal view returns (uint256) {
+    return _length(map._inner);
+  }
+
+  function length (
     UintToAddressMap storage map
   ) internal view returns (uint256) {
     return _length(map._inner);
+  }
+
+  function get (
+    AddressToAddressMap storage map,
+    address key
+  ) internal view returns (address) {
+    return address(uint160(uint256(_get(map._inner, bytes32(uint256(uint160(key)))))));
   }
 
   function get (
@@ -51,11 +87,26 @@ library EnumerableMap {
   }
 
   function set (
+    AddressToAddressMap storage map,
+    address key,
+    address value
+  ) internal returns (bool) {
+    return _set(map._inner, bytes32(uint256(uint160(key))), bytes32(uint256(uint160(value))));
+  }
+
+  function set (
     UintToAddressMap storage map,
     uint256 key,
     address value
   ) internal returns (bool) {
     return _set(map._inner, bytes32(key), bytes32(uint256(uint160(value))));
+  }
+
+  function remove (
+    AddressToAddressMap storage map,
+    address key
+  ) internal returns (bool) {
+    return _remove(map._inner, bytes32(uint256(uint160(key))));
   }
 
   function remove (
