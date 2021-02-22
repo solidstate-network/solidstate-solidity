@@ -3,8 +3,8 @@
 pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
-import "../token/ERC20/ERC20Base.sol";
-import "../token/ERC20/ERC20Metadata.sol";
+import "../../token/ERC20/ERC20Base.sol";
+import "../../token/ERC20/ERC20Metadata.sol";
 import "./GovTokenStorage.sol";
 import "./GovTokenTypes.sol";
 

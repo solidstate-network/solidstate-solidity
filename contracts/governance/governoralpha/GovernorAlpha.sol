@@ -3,10 +3,10 @@
 pragma solidity ^0.8.0;
 
 // import './IERC20.sol';
+import './GovernorAlphaTypes.sol';
 import './GovernorAlphaStorage.sol';
-import './ITimelock.sol';
-import './IGovToken.sol';
-import './GovernanceTypes.sol';
+import '../timelock/ITimelock.sol';
+import '../govtoken/IGovToken.sol';
 
 contract GovernorAlpha {
     /// @notice The name of this contract TODO

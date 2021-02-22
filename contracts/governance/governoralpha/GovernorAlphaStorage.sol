@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './GovernanceTypes.sol';
+import './GovernorAlphaTypes.sol';
 
 library GovernorAlphaStorage {
   bytes32 internal constant STORAGE_SLOT = keccak256(
