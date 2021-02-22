@@ -50,28 +50,28 @@ contract GovToken is ERC20Metadata {
         return _delegate(msg.sender, delegatee);
     }
 
-    // /**
-    //  * @notice Delegates votes from signatory to `delegatee`
-    //  * @param delegatee The address to delegate votes to
-    //  * @param nonce The contract state required to match the signature
-    //  * @param expiry The time at which to expire the signature
-    //  * @param v The recovery byte of the signature
-    //  * @param r Half of the ECDSA signature pair
-    //  * @param s Half of the ECDSA signature pair
-    //  */
-    // function delegateBySig(address delegatee, uint nonce, uint expiry, uint8 v, bytes32 r, bytes32 s) public {
-    //     bytes32 domainSeparator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name())), getChainId(), address(this)));
-    //     bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
-    //     bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
-    //     address signatory = ecrecover(digest, v, r, s);
-    //     require(signatory != address(0), string(abi.encodePacked(name(), "::delegateBySig: invalid signature")));
+    /**
+     * @notice Delegates votes from signatory to `delegatee`
+     * @param delegatee The address to delegate votes to
+     * @param nonce The contract state required to match the signature
+     * @param expiry The time at which to expire the signature
+     * @param v The recovery byte of the signature
+     * @param r Half of the ECDSA signature pair
+     * @param s Half of the ECDSA signature pair
+     */
+    function delegateBySig(address delegatee, uint nonce, uint expiry, uint8 v, bytes32 r, bytes32 s) public {
+        bytes32 domainSeparator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name())), getChainId(), address(this)));
+        bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
+        address signatory = ecrecover(digest, v, r, s);
+        require(signatory != address(0), string(abi.encodePacked(name(), "::delegateBySig: invalid signature")));
 
-    //     GovTokenStorage.Layout storage l = GovTokenStorage.layout();
+        GovTokenStorage.Layout storage l = GovTokenStorage.layout();
 
-    //     require(nonce == l.nonces[signatory]++, string(abi.encodePacked(name(), "::delegateBySig: invalid nonce")));
-    //     require(block.timestamp <= expiry, string(abi.encodePacked(name(), "::delegateBySig: signature expired")));
-    //     return _delegate(signatory, delegatee);
-    // }
+        require(nonce == l.nonces[signatory]++, string(abi.encodePacked(name(), "::delegateBySig: invalid nonce")));
+        require(block.timestamp <= expiry, string(abi.encodePacked(name(), "::delegateBySig: signature expired")));
+        return _delegate(signatory, delegatee);
+    }
 
     /**
      * @notice Gets the current votes balance for `account`
@@ -174,14 +174,14 @@ contract GovToken is ERC20Metadata {
         emit DelegateVotesChanged(delegatee, oldVotes, newVotes);
     }
 
-    // function getChainId() internal pure returns (uint) {
-    //     uint256 chainId;
-    //     assembly { chainId := chainid() }
-    //     return chainId;
-    // }
+    function getChainId() internal view returns (uint) {
+        uint256 chainId;
+        assembly { chainId := chainid() }
+        return chainId;
+    }
 
     /**
-    * @notice ERC20 hook: update snapshot data
+    * @notice ERC20 hook: update checkpoint data
     * @inheritdoc ERC20Base
     */
     function _beforeTokenTransfer (
