@@ -3,13 +3,12 @@
 pragma solidity ^0.8.0;
 
 /**
- * @title Set implementation
+ * @title Set implementation with enumeration functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableSet {
   struct Set {
     bytes32[] _values;
-
     // 1-indexed to allow 0 to signify nonexistence
     mapping (bytes32 => uint) _indexes;
   }
