@@ -55,6 +55,12 @@ Install dependencies via Yarn:
 yarn install
 ```
 
+Link local packages and install remaining dependencies via Lerna:
+
+```bash
+yarn run lerna bootstrap
+```
+
 Compile contracts via Hardhat:
 
 ```bash
