@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "author": "Nick Barry",
   "license": "MIT",
-  "description": "SolidState library functions",
+  "description": "SolidState utility library",
   "keywords": [
     "solidity",
     "smart-contracts",

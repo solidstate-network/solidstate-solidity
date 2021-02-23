@@ -1,26 +1,24 @@
-# SolidState Contracts
-
-Upgradable-first Solidity smart contract development library.
+# SolidState Solidity
 
 > Warning: this library is in a pre-release state; contracts are not sufficiently tested for production use, documentation may be missing or inaccurate, and the API may change at any time.
 
-## Usage
+SolidState is an upgradeable-first Solidity smart contract development library.
 
-Install the package as a development dependency:
+It consists of the following packages:
 
-```bash
-npm install --save-dev @solidstate/contracts
-# or
-yarn add --dev @solidstate/contracts
-```
+| package | description | 📕 |
+|-|-|-|-|
+| 📦&nbsp;`@solidstate/contracts` | core contracts | [📖](./contracts/README.md) |
+| 📦&nbsp;`@solidstate/spec` | portable tests which may be run against third-party implementations of core contracts | [📖](./test/README.md) |
+| 📦&nbsp;`@solidstate/library` | functions for interacting with and validating contracts | [📖](./lib/README.md) |
 
 ### Contracts
 
 All contracts are designed to either be deployed through the standard `constructor` method, or referenced by a proxy.  To this end, the [diamond storage](https://medium.com/1milliondevs/new-storage-layout-for-proxy-contracts-and-diamonds-98d01d0eadb) pattern is employed exclusively.
 
-### Portable Tests
+### Spec
 
-Where possible, automated tests are designed to be imported by repositories which make use of SolidState and run against any derived contracts.  This is to help prevent unintended changes to to the base contract behavior.
+Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts.  This is to help prevent unintended changes to to the base contract behavior.
 
 For example, consider a custom `ERC20Base` implementation:
 
@@ -36,9 +34,9 @@ Rather than rewrite the `ERC20Base` tests or assume that all core behavior remai
 
 ```javascript
 describe('CustomToken', function () {
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('CustomToken');
-    let instance = await factory.deploy();
+  const deploy = async function () {
+    const factory = await ethers.getContractFactory('CustomToken');
+    const instance = await factory.deploy();
     return await instance.deployed();
   }
 
