@@ -17,5 +17,5 @@
     "hardhat",
     "buidler"
   ],
-  "repository": "github:solidstate-network/solidstate/contracts"
+  "repository": "github:solidstate-network/solidstate-solidity"
 }
