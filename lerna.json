@@ -1,8 +1,13 @@
 {
+  "version": "0.0.0",
   "packages": [
     "contracts",
     "lib",
     "test"
   ],
-  "version": "0.0.0"
+  "command": {
+    "publish": {
+      "forcePublish": "*"
+    }
+  }
 }
