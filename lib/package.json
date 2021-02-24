@@ -1,0 +1,21 @@
+{
+  "name": "@solidstate/library",
+  "version": "0.0.0",
+  "author": "Nick Barry",
+  "license": "MIT",
+  "description": "SolidState utility library",
+  "keywords": [
+    "solidity",
+    "smart-contracts",
+    "ethereum",
+    "ether",
+    "eth",
+    "cryptocurrency",
+    "crypto",
+    "wow",
+    "library",
+    "hardhat",
+    "buidler"
+  ],
+  "repository": "github:solidstate-network/solidstate-solidity"
+}
