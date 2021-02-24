@@ -77,6 +77,14 @@ To use an external network via URL, set the `URL` environment variable and appen
 URL="[NODE_URL]" yarn run hardhat test --network generic
 ```
 
+### Publication
+
+Publish packages via Lerna:
+
+```bash
+yarn run lerna publish
+```
+
 ### Testing
 
 Test contracts via Hardhat:
