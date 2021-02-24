@@ -32,6 +32,7 @@ describe('ECDSAMultisigWallet', function () {
     getSigners,
     getNonSigner,
     quorum,
+    getVerificationAddress: () => instance.address,
   });
 
   describe('__internal', function () {

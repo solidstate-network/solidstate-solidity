@@ -23,13 +23,15 @@ const signAuthorization = async function (signer, { target, data, value, delegat
   );
 };
 
-const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum }, skips) {
+const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum, getVerificationAddress }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ECDSAMultisigWallet', function () {
     let instance;
     let signers;
     let nonSigner;
+
+    let verificationAddress;
 
     before(async function () {
       signers = await getSigners();
@@ -52,6 +54,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
 
     beforeEach(async function () {
       instance = await ethers.getContractAt('ECDSAMultisigWallet', (await deploy()).address);
+      verificationAddress = await getVerificationAddress();
     });
 
     describe('receive', function () {
@@ -92,7 +95,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               value,
               delegate,
               nonce,
-              address: instance.address,
+              address: verificationAddress,
             });
 
             signatures.push([sig, nonce]);
@@ -133,7 +136,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               value,
               delegate,
               nonce,
-              address: instance.address,
+              address: verificationAddress,
             });
 
             signatures.push([sig, nonce]);
@@ -176,7 +179,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -205,7 +208,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -235,7 +238,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -266,7 +269,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -297,7 +300,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -343,7 +346,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               value,
               delegate,
               nonce,
-              address: instance.address,
+              address: verificationAddress,
             });
 
             signatures.push([sig, nonce]);
@@ -378,7 +381,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               value,
               delegate,
               nonce,
-              address: instance.address,
+              address: verificationAddress,
             });
 
             signatures.push([sig, nonce]);
@@ -413,7 +416,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -446,7 +449,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -476,7 +479,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -507,7 +510,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -539,7 +542,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
@@ -571,7 +574,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 value,
                 delegate,
                 nonce,
-                address: instance.address,
+                address: verificationAddress,
               });
 
               signatures.push([sig, nonce]);
