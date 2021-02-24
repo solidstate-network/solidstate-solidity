@@ -8,9 +8,9 @@ It consists of the following packages:
 
 | package | description | 📕 |
 |-|-|-|
-| 📦&nbsp;`@solidstate/contracts` | core contracts | [📖](./contracts/README.md) |
-| 📦&nbsp;`@solidstate/spec` | portable tests which may be run against third-party implementations of core contracts | [📖](./test/README.md) |
-| 📦&nbsp;`@solidstate/library` | functions for interacting with and validating contracts | [📖](./lib/README.md) |
+| <span>📦&nbsp;`@solidstate/contracts`</span> | core contracts | [📖](./contracts/README.md) |
+| <span>📦&nbsp;`@solidstate/spec`</span> | portable tests which may be run against third-party implementations of core contracts | [📖](./test/README.md) |
+| <span>📦&nbsp;`@solidstate/library`</span> | functions for interacting with and validating contracts | [📖](./lib/README.md) |
 
 ### Contracts
 
