@@ -21,5 +21,8 @@
   "files": [
     "/**/*.sol",
     "!/**/*Mock.sol"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

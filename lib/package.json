@@ -17,5 +17,8 @@
     "hardhat",
     "buidler"
   ],
-  "repository": "github:solidstate-network/solidstate-solidity"
+  "repository": "github:solidstate-network/solidstate-solidity",
+  "publishConfig": {
+    "access": "public"
+  }
 }

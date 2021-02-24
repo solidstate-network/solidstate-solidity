@@ -23,5 +23,8 @@
   },
   "files": [
     "/**/*.behavior.js"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
