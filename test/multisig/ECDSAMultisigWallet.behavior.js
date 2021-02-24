@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
-const signData = require('../../lib/sign_data.js');
+const signData = require('@solidstate/library/sign_data.js');
 
 let currentNonce = ethers.constants.Zero;
 
