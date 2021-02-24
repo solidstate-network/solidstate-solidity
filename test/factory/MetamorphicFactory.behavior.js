@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeFilter } = require('../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfFactory = require('./Factory.behavior.js');
 

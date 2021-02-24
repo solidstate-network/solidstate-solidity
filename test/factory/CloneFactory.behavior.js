@@ -1,6 +1,6 @@
 const describeBehaviorOfFactory = require('./Factory.behavior.js');
 
-const { describeFilter } = require('../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 // eslint-disable-next-line no-empty-pattern
 const describeBehaviorOfCloneFactory = function ({}, skips) {

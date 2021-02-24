@@ -1,4 +1,4 @@
-const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
 const describeBehaviorOfERC20Extended = require('./ERC20Extended.behavior.js');

@@ -21,6 +21,9 @@
   "scripts": {
     "test": "echo spec"
   },
+  "dependencies": {
+    "@solidstate/library": "^0.0.1"
+  },
   "files": [
     "/**/*.behavior.js"
   ],

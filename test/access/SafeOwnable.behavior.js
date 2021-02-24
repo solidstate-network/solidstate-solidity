@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const describeBehaviorOfOwnable = require('./Ownable.behavior.js');
 
-const { describeFilter } = require('../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfSafeOwnable = function ({ deploy, getOwner, getNomineeOwner, getNonOwner }, skips) {
   const describe = describeFilter(skips);

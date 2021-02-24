@@ -1,6 +1,6 @@
 const describeBehaviorOfERC1271Base = require('./ERC1271Base.behavior.js');
 
-const { describeFilter } = require('../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfERC1271Ownable = function ({ deploy, getOwner, getNonOwner }, skips) {
   const describe = describeFilter(skips);

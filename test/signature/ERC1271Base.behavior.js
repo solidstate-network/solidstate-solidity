@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeFilter } = require('../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 // eslint-disable-next-line no-empty-pattern
 const describeBehaviorOfERC1271Base = function ({ deploy, getValidParams, getInvalidParams }, skips) {

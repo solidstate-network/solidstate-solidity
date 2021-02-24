@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
 
-const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfERC20ImplicitApproval = function ({ deploy, supply, getImplicitlyApprovedSpender }, skips) {
   const describe = describeFilter(skips);

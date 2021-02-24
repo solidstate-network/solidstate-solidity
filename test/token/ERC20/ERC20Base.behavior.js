@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { describeFilter } = require('../../../lib/mocha_describe_filter.js');
+const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
 const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips) {
   const describe = describeFilter(skips);
