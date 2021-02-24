@@ -128,7 +128,7 @@ abstract contract ECDSAMultisigWallet {
 
       require(
         signerBitmap & (2 ** index) == 0,
-        'ECDSAMultisigWallet: signer can not sign more than once'
+        'ECDSAMultisigWallet: signer cannot sign more than once'
       );
 
       signerBitmap += 2 ** index;

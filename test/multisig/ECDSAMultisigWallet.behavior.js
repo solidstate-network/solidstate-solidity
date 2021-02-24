@@ -251,7 +251,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer can not sign more than once'
+              'ECDSAMultisigWallet: signer cannot sign more than once'
             );
           });
 
@@ -492,7 +492,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 { value }
               )
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer can not sign more than once'
+              'ECDSAMultisigWallet: signer cannot sign more than once'
             );
           });
 
