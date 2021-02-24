@@ -18,9 +18,6 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
-  "scripts": {
-    "test": "echo spec"
-  },
   "dependencies": {
     "@solidstate/library": "^0.0.3"
   },
