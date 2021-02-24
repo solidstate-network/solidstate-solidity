@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Portable specifications for SolidState contracts",
@@ -22,7 +22,7 @@
     "test": "echo spec"
   },
   "dependencies": {
-    "@solidstate/library": "^0.0.1"
+    "@solidstate/library": "^0.0.2"
   },
   "files": [
     "/**/*.behavior.js"
