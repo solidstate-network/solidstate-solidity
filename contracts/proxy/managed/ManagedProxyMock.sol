@@ -11,7 +11,7 @@ import './ManagedProxy.sol';
      address manager,
      bytes4 managerSelector
    ) ManagedProxy(managerSelector) {
-     _manager = manager;
+     setManager(manager);
    }
 
    function _getManager () override internal view returns (address) {
@@ -24,7 +24,7 @@ import './ManagedProxy.sol';
 
    function setManager (
      address manager
-   ) external {
+   ) public {
      _manager = manager;
    }
  }
