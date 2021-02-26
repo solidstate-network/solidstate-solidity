@@ -35,17 +35,6 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
 
     before(async function () {
       signers = await getSigners();
-
-      signers.sort(function (a, b) {
-        if (ethers.BigNumber.from(a.address).gt(ethers.BigNumber.from(b.address))) {
-          return 1;
-        } else if (ethers.BigNumber.from(a.address).lt(ethers.BigNumber.from(b.address))) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-
       nonSigner = await getNonSigner();
 
       expect(quorum).to.be.at.least(1);
