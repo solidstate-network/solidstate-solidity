@@ -11,13 +11,7 @@ import './IDiamondCuttable.sol';
  * @title EIP-2535 "Diamond" proxy base contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondBase is Proxy {
-  constructor(
-    IDiamondCuttable.FacetCut[] memory _diamondCut
-  ) payable {
-    DiamondBaseStorage.diamondCut(_diamondCut, address(0), new bytes(0));
-  }
-
+abstract contract DiamondBase is Proxy {
   // TODO: selector aliases
 
   function _getImplementation () override internal view returns (address) {
