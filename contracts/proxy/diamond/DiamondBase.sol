@@ -18,7 +18,6 @@ contract DiamondBase is Proxy{
     IDiamondCut.FacetCut[] memory _diamondCut
   ) payable {
     LibDiamond.diamondCut(_diamondCut, address(0), new bytes(0));
-    LibDiamond.setContractOwner(msg.sender);
 
     LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
 
