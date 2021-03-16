@@ -3,14 +3,14 @@
 pragma solidity ^0.8.0;
 
 import '../../access/OwnableInternal.sol';
-import './IDiamondCut.sol';
+import './IDiamondCuttable.sol';
 import './DiamondBaseStorage.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondCutFacet is IDiamondCut, OwnableInternal {
+contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
   /// @notice Add/replace/remove any number of functions and optionally execute
   ///         a function with delegatecall
   /// @param _diamondCut Contains the facet addresses and function selectors

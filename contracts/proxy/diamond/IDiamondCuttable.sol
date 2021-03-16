@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-interface IDiamondCut {
+interface IDiamondCuttable {
   enum FacetCutAction { ADD, REPLACE, REMOVE }
 
   event DiamondCut (FacetCut[] _diamondCut, address _init, bytes _calldata);

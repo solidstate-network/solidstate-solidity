@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './IDiamondCut.sol';
+import './IDiamondCuttable.sol';
 
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
@@ -35,7 +35,7 @@ library DiamondBaseStorage {
     assembly { l.slot := slot }
   }
 
-  event DiamondCut(IDiamondCut.FacetCut[] _diamondCut, address _init, bytes _calldata);
+  event DiamondCut (IDiamondCuttable.FacetCut[] _diamondCut, address _init, bytes _calldata);
 
   bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
   bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
@@ -47,7 +47,7 @@ library DiamondBaseStorage {
   // The code is duplicated to prevent copying calldata to memory which
   // causes an error for a two dimensional array.
   function diamondCut(
-    IDiamondCut.FacetCut[] memory _diamondCut,
+    IDiamondCuttable.FacetCut[] memory _diamondCut,
     address _init,
     bytes memory _calldata
   ) internal {
@@ -85,12 +85,12 @@ library DiamondBaseStorage {
     uint256 _selectorCount,
     bytes32 _selectorSlot,
     address _newFacetAddress,
-    IDiamondCut.FacetCutAction _action,
+    IDiamondCuttable.FacetCutAction _action,
     bytes4[] memory _selectors
   ) internal returns (uint256, bytes32) {
     Layout storage ds = layout();
     require(_selectors.length > 0, 'LibDiamondCut: No selectors in facet to cut');
-    if (_action == IDiamondCut.FacetCutAction.ADD) {
+    if (_action == IDiamondCuttable.FacetCutAction.ADD) {
       require(_newFacetAddress != address(0), 'LibDiamondCut: Add facet cannot be address(0)');
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Add facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
@@ -109,7 +109,7 @@ library DiamondBaseStorage {
         }
         _selectorCount++;
       }
-    } else if (_action == IDiamondCut.FacetCutAction.REPLACE) {
+    } else if (_action == IDiamondCuttable.FacetCutAction.REPLACE) {
       require(_newFacetAddress != address(0), 'LibDiamondCut: Replace facet cannot be address(0)');
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Replace facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
@@ -123,7 +123,7 @@ library DiamondBaseStorage {
         // replace old facet address
         ds.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);
       }
-    } else if (_action == IDiamondCut.FacetCutAction.REMOVE) {
+    } else if (_action == IDiamondCuttable.FacetCutAction.REMOVE) {
       require(_newFacetAddress == address(0), 'LibDiamondCut: Remove facet address must be address(0)');
       uint256 selectorSlotCount = _selectorCount / 8;
       uint256 selectorInSlotIndex = (_selectorCount % 8) - 1;

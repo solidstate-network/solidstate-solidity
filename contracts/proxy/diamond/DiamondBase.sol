@@ -7,7 +7,7 @@ import '../../introspection/IERC165.sol';
 import '../Proxy.sol';
 import './DiamondBaseStorage.sol';
 import './IDiamondLoupe.sol';
-import './IDiamondCut.sol';
+import './IDiamondCuttable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy base contract
@@ -15,7 +15,7 @@ import './IDiamondCut.sol';
  */
 contract DiamondBase is Proxy{
   constructor(
-    IDiamondCut.FacetCut[] memory _diamondCut
+    IDiamondCuttable.FacetCut[] memory _diamondCut
   ) payable {
     DiamondBaseStorage.diamondCut(_diamondCut, address(0), new bytes(0));
 
@@ -23,7 +23,7 @@ contract DiamondBase is Proxy{
 
     // adding ERC165 data
     ds.supportedInterfaces[type(IERC165).interfaceId] = true;
-    ds.supportedInterfaces[type(IDiamondCut).interfaceId] = true;
+    ds.supportedInterfaces[type(IDiamondCuttable).interfaceId] = true;
     ds.supportedInterfaces[type(IDiamondLoupe).interfaceId] = true;
     ds.supportedInterfaces[type(IERC173).interfaceId] = true;
   }
