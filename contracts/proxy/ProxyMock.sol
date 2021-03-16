@@ -13,7 +13,7 @@ contract ProxyMock is Proxy {
     _impl = implementation;
   }
 
-  function _getImplementation () override internal returns (address) {
+  function _getImplementation () override internal view returns (address) {
     return _impl;
   }
 }

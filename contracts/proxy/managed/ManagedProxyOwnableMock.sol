@@ -29,4 +29,9 @@ import './ManagedProxyOwnable.sol';
    ) public {
      OwnableStorage.layout().setOwner(owner);
    }
+
+   /**
+    * @dev suppress compiler warning
+    */
+   receive () external payable {}
  }
