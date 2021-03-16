@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import '../../access/OwnableInternal.sol';
 import './IDiamondCut.sol';
-import './LibDiamond.sol';
+import './DiamondBaseStorage.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract
@@ -22,7 +22,7 @@ contract DiamondCutFacet is IDiamondCut, OwnableInternal {
     address _init,
     bytes calldata _calldata
   ) external override onlyOwner {
-    LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
 
     uint256 originalSelectorCount = ds.selectorCount;
     uint256 selectorCount = originalSelectorCount;
@@ -35,7 +35,7 @@ contract DiamondCutFacet is IDiamondCut, OwnableInternal {
     }
 
     for (uint i; i < _diamondCut.length; i++) {
-      (selectorCount, selectorSlot) = LibDiamond.addReplaceRemoveFacetSelectors(
+      (selectorCount, selectorSlot) = DiamondBaseStorage.addReplaceRemoveFacetSelectors(
         selectorCount,
         selectorSlot,
         _diamondCut[i].facetAddress,
@@ -54,6 +54,6 @@ contract DiamondCutFacet is IDiamondCut, OwnableInternal {
     }
 
     emit DiamondCut(_diamondCut, _init, _calldata);
-    LibDiamond.initializeDiamondCut(_init, _calldata);
+    DiamondBaseStorage.initializeDiamondCut(_init, _calldata);
   }
 }

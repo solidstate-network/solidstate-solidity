@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import '../../access/IERC173.sol';
 import '../../introspection/IERC165.sol';
 import '../Proxy.sol';
-import './LibDiamond.sol';
+import './DiamondBaseStorage.sol';
 import './IDiamondLoupe.sol';
 import './IDiamondCut.sol';
 
@@ -17,9 +17,9 @@ contract DiamondBase is Proxy{
   constructor(
     IDiamondCut.FacetCut[] memory _diamondCut
   ) payable {
-    LibDiamond.diamondCut(_diamondCut, address(0), new bytes(0));
+    DiamondBaseStorage.diamondCut(_diamondCut, address(0), new bytes(0));
 
-    LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
 
     // adding ERC165 data
     ds.supportedInterfaces[type(IERC165).interfaceId] = true;
@@ -32,8 +32,8 @@ contract DiamondBase is Proxy{
 
   function _getImplementation () override internal view returns (address) {
     // storage layout is not retrieved via function call due to gas considerations
-    LibDiamond.DiamondStorage storage l;
-    bytes32 slot = LibDiamond.DIAMOND_STORAGE_POSITION;
+    DiamondBaseStorage.Layout storage l;
+    bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
     assembly { l.slot := slot }
 
     address implementation = address(bytes20(l.facets[msg.sig]));
