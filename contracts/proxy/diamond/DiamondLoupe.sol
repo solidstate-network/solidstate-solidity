@@ -11,8 +11,7 @@ import './IDiamondLoupe.sol';
  */
 contract DiamondLoupe is IDiamondLoupe {
   /**
-   * @notice get all facets and their selectors
-   * @return facets_ array of structured facet data
+   * @inheritdoc IDiamondLoupe
    */
   function facets () external override view returns (Facet[] memory facets_) {
     DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
@@ -75,9 +74,7 @@ contract DiamondLoupe is IDiamondLoupe {
   }
 
   /**
-   * @notice get all selectors for given facet address
-   * @param _facet address of facet to query
-   * @return _facetFunctionSelectors array of function selectors
+   * @inheritdoc IDiamondLoupe
    */
   function facetFunctionSelectors (
     address _facet
@@ -115,8 +112,7 @@ contract DiamondLoupe is IDiamondLoupe {
   }
 
   /**
-   * @notice get addresses of all facets used by diamond
-   * @return facetAddresses_ array of facet addresses
+   * @inheritdoc IDiamondLoupe
    */
   function facetAddresses () external override view returns (address[] memory facetAddresses_) {
     DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
@@ -161,9 +157,7 @@ contract DiamondLoupe is IDiamondLoupe {
   }
 
   /**
-   * @notice get the address of the facet associated with given selector
-   * @param selector function selector to query
-   * @return facetAddress_ facet address (zero address if not found)
+   * @inheritdoc IDiamondLoupe
    */
   function facetAddress (
     bytes4 selector
