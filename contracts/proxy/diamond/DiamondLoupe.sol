@@ -10,7 +10,7 @@ import './IDiamondLoupe.sol';
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
+contract DiamondLoupe is IDiamondLoupe, IERC165 {
   /**
    * @notice get all facets and their selectors
    * @return facets_ array of structured facet data
