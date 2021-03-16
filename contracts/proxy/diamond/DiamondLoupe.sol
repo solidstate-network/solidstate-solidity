@@ -14,27 +14,27 @@ contract DiamondLoupe is IDiamondLoupe {
    * @inheritdoc IDiamondLoupe
    */
   function facets () external override view returns (Facet[] memory facets_) {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
+    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
-    facets_ = new Facet[](ds.selectorCount);
+    facets_ = new Facet[](l.selectorCount);
 
-    uint8[] memory numFacetSelectors = new uint8[](ds.selectorCount);
+    uint8[] memory numFacetSelectors = new uint8[](l.selectorCount);
     uint256 numFacets;
     uint256 selectorIndex;
 
     // loop through function selectors
-    for (uint256 slotIndex; selectorIndex < ds.selectorCount; slotIndex++) {
-      bytes32 slot = ds.selectorSlots[slotIndex];
+    for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
+      bytes32 slot = l.selectorSlots[slotIndex];
 
       for (uint256 selectorSlotIndex; selectorSlotIndex < 8; selectorSlotIndex++) {
         selectorIndex++;
 
-        if (selectorIndex > ds.selectorCount) {
+        if (selectorIndex > l.selectorCount) {
           break;
         }
 
         bytes4 selector = bytes4(slot << (selectorSlotIndex * 32));
-        address facetAddress_ = address(bytes20(ds.facets[selector]));
+        address facetAddress_ = address(bytes20(l.facets[selector]));
         bool continueLoop = false;
 
         for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
@@ -54,7 +54,7 @@ contract DiamondLoupe is IDiamondLoupe {
         }
 
         facets_[numFacets].facetAddress = facetAddress_;
-        facets_[numFacets].functionSelectors = new bytes4[](ds.selectorCount);
+        facets_[numFacets].functionSelectors = new bytes4[](l.selectorCount);
         facets_[numFacets].functionSelectors[0] = selector;
         numFacetSelectors[numFacets] = 1;
         numFacets++;
@@ -79,26 +79,26 @@ contract DiamondLoupe is IDiamondLoupe {
   function facetFunctionSelectors (
     address _facet
   ) external override view returns (bytes4[] memory _facetFunctionSelectors) {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
+    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
-    _facetFunctionSelectors = new bytes4[](ds.selectorCount);
+    _facetFunctionSelectors = new bytes4[](l.selectorCount);
 
     uint256 numSelectors;
     uint256 selectorIndex;
 
     // loop through function selectors
-    for (uint256 slotIndex; selectorIndex < ds.selectorCount; slotIndex++) {
-      bytes32 slot = ds.selectorSlots[slotIndex];
+    for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
+      bytes32 slot = l.selectorSlots[slotIndex];
 
       for (uint256 selectorSlotIndex; selectorSlotIndex < 8; selectorSlotIndex++) {
         selectorIndex++;
 
-        if (selectorIndex > ds.selectorCount) {
+        if (selectorIndex > l.selectorCount) {
           break;
         }
 
         bytes4 selector = bytes4(slot << (selectorSlotIndex * 32));
-        address facet = address(bytes20(ds.facets[selector]));
+        address facet = address(bytes20(l.facets[selector]));
 
         if (_facet == facet) {
           _facetFunctionSelectors[numSelectors] = selector;
@@ -115,24 +115,24 @@ contract DiamondLoupe is IDiamondLoupe {
    * @inheritdoc IDiamondLoupe
    */
   function facetAddresses () external override view returns (address[] memory facetAddresses_) {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
+    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
-    facetAddresses_ = new address[](ds.selectorCount);
+    facetAddresses_ = new address[](l.selectorCount);
     uint256 numFacets;
     uint256 selectorIndex;
 
-    for (uint256 slotIndex; selectorIndex < ds.selectorCount; slotIndex++) {
-      bytes32 slot = ds.selectorSlots[slotIndex];
+    for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
+      bytes32 slot = l.selectorSlots[slotIndex];
 
       for (uint256 selectorSlotIndex; selectorSlotIndex < 8; selectorSlotIndex++) {
         selectorIndex++;
 
-        if (selectorIndex > ds.selectorCount) {
+        if (selectorIndex > l.selectorCount) {
           break;
         }
 
         bytes4 selector = bytes4(slot << (selectorSlotIndex * 32));
-        address facetAddress_ = address(bytes20(ds.facets[selector]));
+        address facetAddress_ = address(bytes20(l.facets[selector]));
         bool continueLoop = false;
 
         for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
@@ -162,7 +162,7 @@ contract DiamondLoupe is IDiamondLoupe {
   function facetAddress (
     bytes4 selector
   ) external override view returns (address facetAddress_) {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
-    facetAddress_ = address(bytes20(ds.facets[selector]));
+    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
+    facetAddress_ = address(bytes20(l.facets[selector]));
   }
 }

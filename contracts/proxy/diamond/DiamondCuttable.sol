@@ -22,16 +22,16 @@ contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
     address _init,
     bytes calldata _calldata
   ) external override onlyOwner {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
+    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
-    uint256 originalSelectorCount = ds.selectorCount;
+    uint256 originalSelectorCount = l.selectorCount;
     uint256 selectorCount = originalSelectorCount;
     bytes32 selectorSlot;
 
     // check if last selector slot is not full
     if (selectorCount % 8 > 0) {
       // get last selectorSlot
-      selectorSlot = ds.selectorSlots[selectorCount / 8];
+      selectorSlot = l.selectorSlots[selectorCount / 8];
     }
 
     for (uint i; i < _diamondCut.length; i++) {
@@ -45,12 +45,12 @@ contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
     }
 
     if (selectorCount != originalSelectorCount) {
-      ds.selectorCount = uint16(selectorCount);
+      l.selectorCount = uint16(selectorCount);
     }
 
     // If last selector slot is not full
     if (selectorCount % 8 > 0) {
-      ds.selectorSlots[selectorCount / 8] = selectorSlot;
+      l.selectorSlots[selectorCount / 8] = selectorSlot;
     }
 
     emit DiamondCut(_diamondCut, _init, _calldata);

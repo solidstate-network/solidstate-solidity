@@ -48,14 +48,14 @@ library DiamondBaseStorage {
     address _init,
     bytes memory _calldata
   ) internal {
-    Layout storage ds = layout();
-    uint256 originalSelectorCount = ds.selectorCount;
+    Layout storage l = layout();
+    uint256 originalSelectorCount = l.selectorCount;
     uint256 selectorCount = originalSelectorCount;
     bytes32 selectorSlot;
     // Check if last selector slot is not full
     if (selectorCount % 8 > 0) {
       // get last selectorSlot
-      selectorSlot = ds.selectorSlots[selectorCount / 8];
+      selectorSlot = l.selectorSlots[selectorCount / 8];
     }
     // loop through diamond cut
     for (uint256 facetIndex; facetIndex < _diamondCut.length; facetIndex++) {
@@ -68,11 +68,11 @@ library DiamondBaseStorage {
       );
     }
     if (selectorCount != originalSelectorCount) {
-      ds.selectorCount = uint16(selectorCount);
+      l.selectorCount = uint16(selectorCount);
     }
     // If last selector slot is not full
     if (selectorCount % 8 > 0) {
-      ds.selectorSlots[selectorCount / 8] = selectorSlot;
+      l.selectorSlots[selectorCount / 8] = selectorSlot;
     }
     emit DiamondCut(_diamondCut, _init, _calldata);
     initializeDiamondCut(_init, _calldata);
@@ -85,23 +85,23 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCutAction _action,
     bytes4[] memory _selectors
   ) internal returns (uint256, bytes32) {
-    Layout storage ds = layout();
+    Layout storage l = layout();
     require(_selectors.length > 0, 'LibDiamondCut: No selectors in facet to cut');
     if (_action == IDiamondCuttable.FacetCutAction.ADD) {
       require(_newFacetAddress != address(0), 'LibDiamondCut: Add facet cannot be address(0)');
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Add facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
         bytes4 selector = _selectors[selectorIndex];
-        bytes32 oldFacet = ds.facets[selector];
+        bytes32 oldFacet = l.facets[selector];
         require(address(bytes20(oldFacet)) == address(0), 'LibDiamondCut: cannot add function that already exists');
         // add facet for selector
-        ds.facets[selector] = bytes20(_newFacetAddress) | bytes32(_selectorCount);
+        l.facets[selector] = bytes20(_newFacetAddress) | bytes32(_selectorCount);
         uint256 selectorInSlotPosition = (_selectorCount % 8) * 32;
         // clear selector position in slot and add selector
         _selectorSlot = (_selectorSlot & ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)) | (bytes32(selector) >> selectorInSlotPosition);
         // if slot is full then write it to storage
         if (selectorInSlotPosition == 224) {
-          ds.selectorSlots[_selectorCount / 8] = _selectorSlot;
+          l.selectorSlots[_selectorCount / 8] = _selectorSlot;
           _selectorSlot = 0;
         }
         _selectorCount++;
@@ -111,14 +111,14 @@ library DiamondBaseStorage {
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Replace facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
         bytes4 selector = _selectors[selectorIndex];
-        bytes32 oldFacet = ds.facets[selector];
+        bytes32 oldFacet = l.facets[selector];
         address oldFacetAddress = address(bytes20(oldFacet));
         // only useful if immutable functions exist
         require(oldFacetAddress != address(this), 'LibDiamondCut: cannot replace immutable function');
         require(oldFacetAddress != _newFacetAddress, 'LibDiamondCut: cannot replace function with same function');
         require(oldFacetAddress != address(0), 'LibDiamondCut: cannot replace function that does not exist');
         // replace old facet address
-        ds.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);
+        l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);
       }
     } else if (_action == IDiamondCuttable.FacetCutAction.REMOVE) {
       require(_newFacetAddress == address(0), 'LibDiamondCut: Remove facet address must be address(0)');
@@ -128,7 +128,7 @@ library DiamondBaseStorage {
         if (_selectorSlot == 0) {
           // get last selectorSlot
           selectorSlotCount--;
-          _selectorSlot = ds.selectorSlots[selectorSlotCount];
+          _selectorSlot = l.selectorSlots[selectorSlotCount];
           selectorInSlotIndex = 7;
         }
         bytes4 lastSelector;
@@ -137,30 +137,30 @@ library DiamondBaseStorage {
         // adding a block here prevents stack too deep error
         {
           bytes4 selector = _selectors[selectorIndex];
-          bytes32 oldFacet = ds.facets[selector];
+          bytes32 oldFacet = l.facets[selector];
           require(address(bytes20(oldFacet)) != address(0), 'LibDiamondCut: cannot remove function that does not exist');
           // only useful if immutable functions exist
           require(address(bytes20(oldFacet)) != address(this), 'LibDiamondCut: cannot remove immutable function');
-          // replace selector with last selector in ds.facets
+          // replace selector with last selector in l.facets
           // gets the last selector
           lastSelector = bytes4(_selectorSlot << (selectorInSlotIndex * 32));
           if (lastSelector != selector) {
             // update last selector slot position info
-            ds.facets[lastSelector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(ds.facets[lastSelector]);
+            l.facets[lastSelector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(l.facets[lastSelector]);
           }
-          delete ds.facets[selector];
+          delete l.facets[selector];
           uint256 oldSelectorCount = uint16(uint256(oldFacet));
           oldSelectorsSlotCount = oldSelectorCount / 8;
           oldSelectorInSlotPosition = (oldSelectorCount % 8) * 32;
         }
         if (oldSelectorsSlotCount != selectorSlotCount) {
-          bytes32 oldSelectorSlot = ds.selectorSlots[oldSelectorsSlotCount];
+          bytes32 oldSelectorSlot = l.selectorSlots[oldSelectorsSlotCount];
           // clears the selector we are deleting and puts the last selector in its place.
           oldSelectorSlot =
           (oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |
           (bytes32(lastSelector) >> oldSelectorInSlotPosition);
           // update storage with the modified slot
-          ds.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
+          l.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
         } else {
           // clears the selector we are deleting and puts the last selector in its place.
           _selectorSlot =
@@ -168,7 +168,7 @@ library DiamondBaseStorage {
           (bytes32(lastSelector) >> oldSelectorInSlotPosition);
         }
         if (selectorInSlotIndex == 0) {
-          delete ds.selectorSlots[selectorSlotCount];
+          delete l.selectorSlots[selectorSlotCount];
           _selectorSlot = 0;
         }
         selectorInSlotIndex--;
