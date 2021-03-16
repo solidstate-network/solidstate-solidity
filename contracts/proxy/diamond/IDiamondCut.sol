@@ -2,32 +2,29 @@
 
 pragma solidity ^0.8.0;
 
-/******************************************************************************\
-* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
-* EIP-2535 Diamond Standard: https://eips.ethereum.org/EIPS/eip-2535
-/******************************************************************************/
-
+/**
+ * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
+ */
 interface IDiamondCut {
-  enum FacetCutAction {Add, Replace, Remove}
-  // Add=0, Replace=1, Remove=2
+  enum FacetCutAction { ADD, REPLACE, REMOVE }
+
+  event DiamondCut (FacetCut[] _diamondCut, address _init, bytes _calldata);
 
   struct FacetCut {
-    address facetAddress;
+    address target;
     FacetCutAction action;
-    bytes4[] functionSelectors;
+    bytes4[] selectors;
   }
 
-  /// @notice Add/replace/remove any number of functions and optionally execute
-  ///         a function with delegatecall
-  /// @param _diamondCut Contains the facet addresses and function selectors
-  /// @param _init The address of the contract or facet to execute _calldata
-  /// @param _calldata A function call, including function selector and arguments
-  ///                  _calldata is executed with delegatecall on _init
+  /**
+   * @notice update diamond facets and optionally execute arbitrary initialization function
+   * @param facetCuts facet addresses, actions, and function selectors
+   * @param target initialization function target
+   * @param data initialization function call data
+   */
   function diamondCut(
-    FacetCut[] calldata _diamondCut,
-    address _init,
-    bytes calldata _calldata
+    FacetCut[] calldata facetCuts,
+    address target,
+    bytes calldata data
   ) external;
-
-  event DiamondCut(FacetCut[] _diamondCut, address _init, bytes _calldata);
 }

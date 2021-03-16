@@ -65,9 +65,9 @@ library DiamondBaseStorage {
       (selectorCount, selectorSlot) = addReplaceRemoveFacetSelectors(
         selectorCount,
         selectorSlot,
-        _diamondCut[facetIndex].facetAddress,
+        _diamondCut[facetIndex].target,
         _diamondCut[facetIndex].action,
-        _diamondCut[facetIndex].functionSelectors
+        _diamondCut[facetIndex].selectors
       );
     }
     if (selectorCount != originalSelectorCount) {
@@ -90,7 +90,7 @@ library DiamondBaseStorage {
   ) internal returns (uint256, bytes32) {
     Layout storage ds = layout();
     require(_selectors.length > 0, 'LibDiamondCut: No selectors in facet to cut');
-    if (_action == IDiamondCut.FacetCutAction.Add) {
+    if (_action == IDiamondCut.FacetCutAction.ADD) {
       require(_newFacetAddress != address(0), 'LibDiamondCut: Add facet cannot be address(0)');
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Add facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
@@ -109,7 +109,7 @@ library DiamondBaseStorage {
         }
         _selectorCount++;
       }
-    } else if (_action == IDiamondCut.FacetCutAction.Replace) {
+    } else if (_action == IDiamondCut.FacetCutAction.REPLACE) {
       require(_newFacetAddress != address(0), 'LibDiamondCut: Replace facet cannot be address(0)');
       enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Replace facet has no code');
       for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
@@ -123,7 +123,7 @@ library DiamondBaseStorage {
         // replace old facet address
         ds.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);
       }
-    } else if (_action == IDiamondCut.FacetCutAction.Remove) {
+    } else if (_action == IDiamondCut.FacetCutAction.REMOVE) {
       require(_newFacetAddress == address(0), 'LibDiamondCut: Remove facet address must be address(0)');
       uint256 selectorSlotCount = _selectorCount / 8;
       uint256 selectorInSlotIndex = (_selectorCount % 8) - 1;

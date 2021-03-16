@@ -38,9 +38,9 @@ contract DiamondCutFacet is IDiamondCut, OwnableInternal {
       (selectorCount, selectorSlot) = DiamondBaseStorage.addReplaceRemoveFacetSelectors(
         selectorCount,
         selectorSlot,
-        _diamondCut[i].facetAddress,
+        _diamondCut[i].target,
         _diamondCut[i].action,
-        _diamondCut[i].functionSelectors
+        _diamondCut[i].selectors
       );
     }
 
