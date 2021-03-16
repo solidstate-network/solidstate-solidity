@@ -11,6 +11,8 @@ import './DiamondBaseStorage.sol';
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
+  using DiamondBaseStorage for DiamondBaseStorage.Layout;
+
   /// @notice Add/replace/remove any number of functions and optionally execute
   ///         a function with delegatecall
   /// @param _diamondCut Contains the facet addresses and function selectors
@@ -35,7 +37,7 @@ contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
     }
 
     for (uint i; i < _diamondCut.length; i++) {
-      (selectorCount, selectorSlot) = DiamondBaseStorage.addReplaceRemoveFacetSelectors(
+      (selectorCount, selectorSlot) = l.updateFacetSelectors(
         selectorCount,
         selectorSlot,
         _diamondCut[i].target,
