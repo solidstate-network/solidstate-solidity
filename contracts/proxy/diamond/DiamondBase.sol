@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import '../../access/IERC173.sol';
-import '../../introspection/IERC165.sol';
 import '../Proxy.sol';
 import './DiamondBaseStorage.sol';
 import './IDiamondLoupe.sol';
@@ -13,19 +11,11 @@ import './IDiamondCuttable.sol';
  * @title EIP-2535 "Diamond" proxy base contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondBase is Proxy{
+contract DiamondBase is Proxy {
   constructor(
     IDiamondCuttable.FacetCut[] memory _diamondCut
   ) payable {
     DiamondBaseStorage.diamondCut(_diamondCut, address(0), new bytes(0));
-
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
-
-    // adding ERC165 data
-    ds.supportedInterfaces[type(IERC165).interfaceId] = true;
-    ds.supportedInterfaces[type(IDiamondCuttable).interfaceId] = true;
-    ds.supportedInterfaces[type(IDiamondLoupe).interfaceId] = true;
-    ds.supportedInterfaces[type(IERC173).interfaceId] = true;
   }
 
   // TODO: selector aliases

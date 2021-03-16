@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import '../../introspection/IERC165.sol';
 import './DiamondBaseStorage.sol';
 import './IDiamondLoupe.sol';
 
@@ -10,7 +9,7 @@ import './IDiamondLoupe.sol';
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondLoupe is IDiamondLoupe, IERC165 {
+contract DiamondLoupe is IDiamondLoupe {
   /**
    * @notice get all facets and their selectors
    * @return facets_ array of structured facet data
@@ -171,11 +170,5 @@ contract DiamondLoupe is IDiamondLoupe, IERC165 {
   ) external override view returns (address facetAddress_) {
     DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
     facetAddress_ = address(bytes20(ds.facets[selector]));
-  }
-
-  // This implements ERC-165.
-  function supportsInterface(bytes4 _interfaceId) external override view returns (bool) {
-    DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
-    return ds.supportedInterfaces[_interfaceId];
   }
 }
