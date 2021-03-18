@@ -10,7 +10,7 @@ import './DiamondBaseStorage.sol';
  * @title EIP-2535 "Diamond" proxy update contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
+contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
   /// @notice Add/replace/remove any number of functions and optionally execute
@@ -19,7 +19,7 @@ contract DiamondCuttableFacet is IDiamondCuttable, OwnableInternal {
   /// @param _init The address of the contract or facet to execute _calldata
   /// @param _calldata A function call, including function selector and arguments
   ///                  _calldata is executed with delegatecall on _init
-  function diamondCut(
+  function diamondCut (
     FacetCut[] calldata _diamondCut,
     address _init,
     bytes calldata _calldata
