@@ -19,14 +19,11 @@ describe('DiamondLoupe', function () {
     facetCuts.push(
       [
         facetInstance.address,
-        facetInstance.interface.getSighash('owner()'),
-      ]
-    );
-
-    facetCuts.push(
-      [
-        facetInstance.address,
-        facetInstance.interface.getSighash('transferOwnership(address)'),
+        0,
+        [
+          facetInstance.interface.getSighash('owner()'),
+          facetInstance.interface.getSighash('transferOwnership(address)'),
+        ],
       ]
     );
   });

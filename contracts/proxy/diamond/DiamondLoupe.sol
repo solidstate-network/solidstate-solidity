@@ -162,7 +162,8 @@ contract DiamondLoupe is IDiamondLoupe {
   function facetAddress (
     bytes4 selector
   ) external override view returns (address facetAddress_) {
-    DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
-    facetAddress_ = address(bytes20(l.facets[selector]));
+    facetAddress_ = address(bytes20(
+      DiamondBaseStorage.layout().facets[selector]
+    ));
   }
 }

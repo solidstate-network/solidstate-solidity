@@ -37,9 +37,13 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).to.be.reverted;
 
-        await instance.connect(owner).diamondCut([{
-          facet: facetInstance.address, selector },
-        ]);
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facetInstance.address, action: 0, selectors: [selector] },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
@@ -59,17 +63,25 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
           (await ethers.getSigners())[0]
         );
 
-        await instance.connect(owner).diamondCut([{
-          facet: facetInstance.address, selector },
-        ]);
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facetInstance.address, action: 0, selectors: [selector] },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
         ).not.to.be.reverted;
 
-        await instance.connect(owner).diamondCut([{
-          facet: ethers.constants.AddressZero, selector },
-        ]);
+        await instance.connect(owner).diamondCut(
+          [
+            { target: ethers.constants.AddressZero, action: 2, selectors: [selector] },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
@@ -89,9 +101,13 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
           (await ethers.getSigners())[0]
         );
 
-        await instance.connect(owner).diamondCut([
-          { facet: facetInstance.address, selector },
-        ]);
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facetInstance.address, action: 0, selectors: [selector] },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
@@ -102,9 +118,13 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
 
         expect(facetInstanceReplacement[facetFunction]).not.to.be.undefined;
 
-        await instance.connect(owner).diamondCut([{
-          facet: facetInstanceReplacement.address, selector },
-        ]);
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facetInstanceReplacement.address, action: 1, selectors: [selector] },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
 
         await expect(
           contract.callStatic[facetFunction](...facetFunctionArgs)
@@ -114,7 +134,7 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, deployFacet, getOw
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance.connect(nonOwner).diamondCut([])
+            instance.connect(nonOwner).diamondCut([], ethers.constants.AddressZero, '0x')
           ).to.be.revertedWith(
             'Ownable: sender must be owner'
           );

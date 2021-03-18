@@ -9,7 +9,10 @@ let deploy = async function () {
   let instance = await factory.deploy([
     [
       facetInstance.address,
-      facetInstance.interface.getSighash('owner()'),
+      0,
+      [
+        facetInstance.interface.getSighash('owner()'),
+      ],
     ],
   ]);
   return await instance.deployed();

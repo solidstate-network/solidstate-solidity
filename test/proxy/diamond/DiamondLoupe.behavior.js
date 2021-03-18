@@ -16,64 +16,66 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
       instance = await ethers.getContractAt('DiamondLoupe', (await deploy()).address);
     });
 
-    describe('#readFacetCuts', function () {
+    // // eslint-disable-next-line mocha/no-setup-in-describe
+    // describeBehaviorOfERC165({
+    //   deploy: () => instance,
+    //   interfaceIds: ['TODO: selector'],
+    // }, skips);
+
+    describe('#facets', function () {
       it('returns facet cuts', async function () {
         expect(
-          await instance.callStatic['readFacetCuts()']()
+          await instance.callStatic['facets()']()
         ).to.deep.include.members(
-          facetCuts
+          facetCuts.map(fc => [fc[0], fc[2]])
         );
       });
     });
 
-    describe('#readFacets', function () {
+    describe('#facetAddresses', function () {
       it('returns facets', async function () {
         expect(
-          await instance.callStatic['readFacets()']()
+          await instance.callStatic['facetAddresses()']()
         ).to.have.members(
           Array.from(new Set(facetCuts.map(fc => fc[0])))
         );
       });
     });
 
-    describe('#readFacetSelectors', function () {
+    describe('#facetFunctionSelectors', function () {
       it('returns selectors for given facet', async function () {
-        let facetSelectors = facetCuts.reduce(function (acc, el) {
-          acc[el[0]] = acc[el[0]] || [];
-          acc[el[0]].push(el[1]);
-          return acc;
-        }, new Object());
-
-        for (let facet in facetSelectors) {
+        for (let facet of facetCuts) {
           expect(
-            await instance.callStatic['readFacetSelectors(address)'](facet)
+            await instance.callStatic['facetFunctionSelectors(address)'](facet[0])
           ).to.have.members(
-            facetSelectors[facet]
+            facet[2]
           );
         }
       });
 
       it('returns empty array for unrecognized facet', async function () {
         expect(
-          await instance.callStatic['readFacetSelectors(address)'](ethers.constants.AddressZero)
+          await instance.callStatic['facetFunctionSelectors(address)'](ethers.constants.AddressZero)
         ).to.have.lengthOf(0);
       });
     });
 
-    describe('#readSelectorFacet', function () {
+    describe('#facetAddress', function () {
       it('returns facet for given selector', async function () {
-        for (let facetCut of facetCuts) {
-          expect(
-            await instance.callStatic['readSelectorFacet(bytes4)'](facetCut[1])
-          ).to.equal(
-            facetCut[0]
-          );
+        for (let facet of facetCuts) {
+          for (let selector of facet[2]) {
+            expect(
+              await instance.callStatic['facetAddress(bytes4)'](selector)
+            ).to.equal(
+              facet[0]
+            );
+          }
         }
       });
 
       it('returns zero address for unrecognized selector', async function () {
         expect(
-          await instance.callStatic['readSelectorFacet(bytes4)']('0x00000000')
+          await instance.callStatic['facetAddress(bytes4)']('0x00000000')
         ).to.equal(
           ethers.constants.AddressZero
         );
