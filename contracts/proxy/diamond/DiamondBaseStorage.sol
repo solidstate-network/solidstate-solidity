@@ -34,22 +34,23 @@ library DiamondBaseStorage {
     assembly { l.slot := slot }
   }
 
-  event DiamondCut (IDiamondCuttable.FacetCut[] _diamondCut, address _init, bytes _calldata);
+  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
 
   bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
   bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
 
-  // Internal function version of diamondCut
-  // This code is almost the same as the external diamondCut,
-  // except it is using 'Facet[] memory _diamondCut' instead of
-  // 'Facet[] calldata _diamondCut'.
-  // The code is duplicated to prevent copying calldata to memory which
-  // causes an error for a two dimensional array.
+  /**
+   * @notice update functions callable on Diamond proxy
+   * @param l storage layout
+   * @param facetCuts array of structured Diamond facet update data
+   * @param target optional recipient of initialization delegatecall
+   * @param data optional initialization call data
+   */
   function diamondCut(
     Layout storage l,
-    IDiamondCuttable.FacetCut[] memory _diamondCut,
-    address _init,
-    bytes memory _calldata
+    IDiamondCuttable.FacetCut[] memory facetCuts,
+    address target,
+    bytes memory data
   ) internal {
     uint256 originalSelectorCount = l.selectorCount;
     uint256 selectorCount = originalSelectorCount;
@@ -62,13 +63,13 @@ library DiamondBaseStorage {
     }
 
     // loop through diamond cut
-    for (uint256 i; i < _diamondCut.length; i++) {
+    for (uint256 i; i < facetCuts.length; i++) {
       (selectorCount, selectorSlot) = l.updateFacetSelectors(
         selectorCount,
         selectorSlot,
-        _diamondCut[i].target,
-        _diamondCut[i].action,
-        _diamondCut[i].selectors
+        facetCuts[i].target,
+        facetCuts[i].action,
+        facetCuts[i].selectors
       );
     }
 
@@ -81,8 +82,8 @@ library DiamondBaseStorage {
       l.selectorSlots[selectorCount / 8] = selectorSlot;
     }
 
-    emit DiamondCut(_diamondCut, _init, _calldata);
-    initializeDiamondCut(_init, _calldata);
+    emit DiamondCut(facetCuts, target, data);
+    initialize(target, data);
   }
 
   function updateFacetSelectors(
@@ -242,10 +243,10 @@ library DiamondBaseStorage {
     }
   }
 
-  function initializeDiamondCut (
+  function initialize (
     address target,
     bytes memory data
-  ) internal {
+  ) private {
     require(
       (target == address(0)) == (data.length == 0),
       'DiamondBase: invalid initialization parameters'
