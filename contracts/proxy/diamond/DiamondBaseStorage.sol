@@ -60,9 +60,11 @@ library DiamondBaseStorage {
     for (uint256 i; i < facetCuts.length; i++) {
       IDiamondCuttable.FacetCut memory facetCut = facetCuts[i];
       IDiamondCuttable.FacetCutAction action = facetCut.action;
-      bytes4[] memory selectors = facetCut.selectors;
 
-      require(selectors.length > 0, 'DiamondBase: No selectors in facet to cut');
+      require(
+        facetCut.selectors.length > 0,
+        'DiamondBase: No selectors in facet to cut'
+      );
 
       if (action == IDiamondCuttable.FacetCutAction.ADD) {
         (selectorCount, selectorSlot) = l.addFacetSelectors(
@@ -104,7 +106,11 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCut memory facetCut
   ) internal returns (uint256, bytes32) {
     unchecked {
-      require(facetCut.target != address(0), 'DiamondBase: Add facet cannot be zero address');
+      require(
+        facetCut.target != address(0),
+        'DiamondBase: Add facet cannot be zero address'
+      );
+
       enforceHasContractCode(facetCut.target, 'DiamondBase: Add facet has no code');
 
       for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
