@@ -8,7 +8,7 @@ pragma solidity ^0.8.0;
 interface IDiamondCuttable {
   enum FacetCutAction { ADD, REPLACE, REMOVE }
 
-  event DiamondCut (FacetCut[] _diamondCut, address _init, bytes _calldata);
+  event DiamondCut (FacetCut[] facetCuts, address target, bytes data);
 
   struct FacetCut {
     address target;
