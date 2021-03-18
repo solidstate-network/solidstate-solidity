@@ -93,7 +93,7 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCutAction _action,
     bytes4[] memory _selectors
   ) internal returns (uint256, bytes32) {
-    require(_selectors.length > 0, 'LibDiamondCut: No selectors in facet to cut');
+    require(_selectors.length > 0, 'DiamondBase: No selectors in facet to cut');
 
     if (_action == IDiamondCuttable.FacetCutAction.ADD) {
       return l.addFacetSelectors(_selectorCount, _selectorSlot, _newFacetAddress, _selectors);
@@ -103,7 +103,7 @@ library DiamondBaseStorage {
     } else if (_action == IDiamondCuttable.FacetCutAction.REMOVE) {
       return l.removeFacetSelectors(_selectorCount, _selectorSlot, _newFacetAddress, _selectors);
     } else {
-      revert('LibDiamondCut: Incorrect FacetCutAction');
+      revert('DiamondBase: Incorrect FacetCutAction');
     }
   }
 
@@ -114,13 +114,13 @@ library DiamondBaseStorage {
     address _newFacetAddress,
     bytes4[] memory _selectors
   ) internal returns (uint256, bytes32) {
-    require(_newFacetAddress != address(0), 'LibDiamondCut: Add facet cannot be address(0)');
-    enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Add facet has no code');
+    require(_newFacetAddress != address(0), 'DiamondBase: Add facet cannot be address(0)');
+    enforceHasContractCode(_newFacetAddress, 'DiamondBase: Add facet has no code');
 
     for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
       bytes4 selector = _selectors[selectorIndex];
       bytes32 oldFacet = l.facets[selector];
-      require(address(bytes20(oldFacet)) == address(0), 'LibDiamondCut: cannot add function that already exists');
+      require(address(bytes20(oldFacet)) == address(0), 'DiamondBase: cannot add function that already exists');
       // add facet for selector
       l.facets[selector] = bytes20(_newFacetAddress) | bytes32(_selectorCount);
       uint256 selectorInSlotPosition = (_selectorCount % 8) * 32;
@@ -144,8 +144,8 @@ library DiamondBaseStorage {
     address _newFacetAddress,
     bytes4[] memory _selectors
   ) internal {
-    require(_newFacetAddress != address(0), 'LibDiamondCut: Replace facet cannot be address(0)');
-    enforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Replace facet has no code');
+    require(_newFacetAddress != address(0), 'DiamondBase: Replace facet cannot be address(0)');
+    enforceHasContractCode(_newFacetAddress, 'DiamondBase: Replace facet has no code');
 
     for (uint256 selectorIndex; selectorIndex < _selectors.length; selectorIndex++) {
       bytes4 selector = _selectors[selectorIndex];
@@ -153,9 +153,9 @@ library DiamondBaseStorage {
       address oldFacetAddress = address(bytes20(oldFacet));
 
       // only useful if immutable functions exist
-      require(oldFacetAddress != address(this), 'LibDiamondCut: cannot replace immutable function');
-      require(oldFacetAddress != _newFacetAddress, 'LibDiamondCut: cannot replace function with same function');
-      require(oldFacetAddress != address(0), 'LibDiamondCut: cannot replace function that does not exist');
+      require(oldFacetAddress != address(this), 'DiamondBase: cannot replace immutable function');
+      require(oldFacetAddress != _newFacetAddress, 'DiamondBase: cannot replace function with same function');
+      require(oldFacetAddress != address(0), 'DiamondBase: cannot replace function that does not exist');
 
       // replace old facet address
       l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);
@@ -169,7 +169,7 @@ library DiamondBaseStorage {
     address _newFacetAddress,
     bytes4[] memory _selectors
   ) internal returns (uint256, bytes32) {
-    require(_newFacetAddress == address(0), 'LibDiamondCut: Remove facet address must be address(0)');
+    require(_newFacetAddress == address(0), 'DiamondBase: Remove facet address must be address(0)');
     uint256 selectorSlotCount = _selectorCount / 8;
     uint256 selectorInSlotIndex = (_selectorCount % 8) - 1;
 
@@ -189,9 +189,10 @@ library DiamondBaseStorage {
       {
         bytes4 selector = _selectors[selectorIndex];
         bytes32 oldFacet = l.facets[selector];
-        require(address(bytes20(oldFacet)) != address(0), 'LibDiamondCut: cannot remove function that does not exist');
+
+        require(address(bytes20(oldFacet)) != address(0), 'DiamondBase: cannot remove function that does not exist');
         // only useful if immutable functions exist
-        require(address(bytes20(oldFacet)) != address(this), 'LibDiamondCut: cannot remove immutable function');
+        require(address(bytes20(oldFacet)) != address(this), 'DiamondBase: cannot remove immutable function');
         // replace selector with last selector in l.facets
         // gets the last selector
         lastSelector = bytes4(_selectorSlot << (selectorInSlotIndex * 32));
@@ -209,10 +210,12 @@ library DiamondBaseStorage {
 
       if (oldSelectorsSlotCount != selectorSlotCount) {
         bytes32 oldSelectorSlot = l.selectorSlots[oldSelectorsSlotCount];
+
         // clears the selector we are deleting and puts the last selector in its place.
         oldSelectorSlot =
         (oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |
         (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+
         // update storage with the modified slot
         l.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
       } else {
@@ -240,12 +243,12 @@ library DiamondBaseStorage {
     bytes memory data
   ) internal {
     if (target == address(0)) {
-      require(data.length == 0, 'LibDiamondCut: target is address(0) butdata is not empty');
+      require(data.length == 0, 'DiamondBase: target is address(0) butdata is not empty');
     } else {
-      require(data.length > 0, 'LibDiamondCut: data is empty but target is not address(0)');
+      require(data.length > 0, 'DiamondBase: data is empty but target is not address(0)');
 
       if (target != address(this)) {
-        enforceHasContractCode(target, 'LibDiamondCut: target address has no code');
+        enforceHasContractCode(target, 'DiamondBase: target address has no code');
       }
 
       (bool success, bytes memory error) = target.delegatecall(data);
@@ -255,7 +258,7 @@ library DiamondBaseStorage {
           // bubble up the error
           revert(string(error));
         } else {
-          revert('LibDiamondCut: initialization function reverted');
+          revert('DiamondBase: initialization function reverted');
         }
       }
     }
