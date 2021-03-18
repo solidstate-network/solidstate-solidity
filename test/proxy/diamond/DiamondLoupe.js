@@ -17,14 +17,14 @@ describe('DiamondLoupe', function () {
     await facetInstance.deployed();
 
     facetCuts.push(
-      [
-        facetInstance.address,
-        0,
-        [
+      {
+        target: facetInstance.address,
+        action: 0,
+        selectors: [
           facetInstance.interface.getSighash('owner()'),
           facetInstance.interface.getSighash('transferOwnership(address)'),
         ],
-      ]
+      }
     );
   });
 

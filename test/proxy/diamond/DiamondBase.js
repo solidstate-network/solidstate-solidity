@@ -7,13 +7,13 @@ let deploy = async function () {
 
   let factory = await ethers.getContractFactory('DiamondBaseMock');
   let instance = await factory.deploy([
-    [
-      facetInstance.address,
-      0,
-      [
+    {
+      target: facetInstance.address,
+      action: 0,
+      selectors: [
         facetInstance.interface.getSighash('owner()'),
       ],
-    ],
+    },
   ]);
   return await instance.deployed();
 };
