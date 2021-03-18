@@ -111,14 +111,19 @@ library DiamondBaseStorage {
         bytes4 selector = facetCut.selectors[selectorIndex];
         bytes32 oldFacet = l.facets[selector];
 
-        require(address(bytes20(oldFacet)) == address(0), 'DiamondBase: cannot add function that already exists');
+        require(
+          address(bytes20(oldFacet)) == address(0),
+          'DiamondBase: cannot add function that already exists'
+        );
 
         // add facet for selector
         l.facets[selector] = bytes20(facetCut.target) | bytes32(selectorCount);
         uint256 selectorInSlotPosition = (selectorCount % 8) * 32;
 
         // clear selector position in slot and add selector
-        selectorSlot = (selectorSlot & ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)) | (bytes32(selector) >> selectorInSlotPosition);
+        selectorSlot = (
+          selectorSlot & ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)
+        ) | (bytes32(selector) >> selectorInSlotPosition);
 
         // if slot is full then write it to storage
         if (selectorInSlotPosition == 224) {
@@ -128,16 +133,20 @@ library DiamondBaseStorage {
 
         selectorCount++;
       }
-    }
 
-    return (selectorCount, selectorSlot);
+      return (selectorCount, selectorSlot);
+    }
   }
 
   function replaceFacetSelectors (
     Layout storage l,
     IDiamondCuttable.FacetCut memory facetCut
   ) internal {
-    require(facetCut.target != address(0), 'DiamondBase: Replace facet cannot be zero address');
+    require(
+      facetCut.target != address(0),
+      'DiamondBase: Replace facet cannot be zero address'
+    );
+
     enforceHasContractCode(facetCut.target, 'DiamondBase: Replace facet has no code');
 
     for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
@@ -145,10 +154,21 @@ library DiamondBaseStorage {
       bytes32 oldFacet = l.facets[selector];
       address oldFacetAddress = address(bytes20(oldFacet));
 
+      require(
+        oldFacetAddress != address(0),
+        'DiamondBase: cannot replace function that does not exist'
+      );
+
       // only useful if immutable functions exist
-      require(oldFacetAddress != address(this), 'DiamondBase: cannot replace immutable function');
-      require(oldFacetAddress != facetCut.target, 'DiamondBase: cannot replace function with same function');
-      require(oldFacetAddress != address(0), 'DiamondBase: cannot replace function that does not exist');
+      require(
+        oldFacetAddress != address(this),
+        'DiamondBase: cannot replace immutable function'
+      );
+
+      require(
+        oldFacetAddress != facetCut.target,
+        'DiamondBase: cannot replace function with same function'
+      );
 
       // replace old facet address
       l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(facetCut.target);
@@ -162,7 +182,11 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCut memory facetCut
   ) internal returns (uint256, bytes32) {
     unchecked {
-      require(facetCut.target == address(0), 'DiamondBase: Remove facet address must be zero address');
+      require(
+        facetCut.target == address(0),
+        'DiamondBase: Remove facet address must be zero address'
+      );
+
       uint256 selectorSlotCount = selectorCount / 8;
       uint256 selectorInSlotIndex = (selectorCount % 8) - 1;
 
@@ -183,16 +207,26 @@ library DiamondBaseStorage {
           bytes4 selector = facetCut.selectors[selectorIndex];
           bytes32 oldFacet = l.facets[selector];
 
-          require(address(bytes20(oldFacet)) != address(0), 'DiamondBase: cannot remove function that does not exist');
+          require(
+            address(bytes20(oldFacet)) != address(0),
+            'DiamondBase: cannot remove function that does not exist'
+          );
+
           // only useful if immutable functions exist
-          require(address(bytes20(oldFacet)) != address(this), 'DiamondBase: cannot remove immutable function');
+          require(
+            address(bytes20(oldFacet)) != address(this),
+            'DiamondBase: cannot remove immutable function'
+          );
+
           // replace selector with last selector in l.facets
           // gets the last selector
           lastSelector = bytes4(selectorSlot << (selectorInSlotIndex * 32));
 
           if (lastSelector != selector) {
             // update last selector slot position info
-            l.facets[lastSelector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(l.facets[lastSelector]);
+            l.facets[lastSelector] = (
+              oldFacet & CLEAR_ADDRESS_MASK
+            ) | bytes20(l.facets[lastSelector]);
           }
 
           delete l.facets[selector];
@@ -205,17 +239,17 @@ library DiamondBaseStorage {
           bytes32 oldSelectorSlot = l.selectorSlots[oldSelectorsSlotCount];
 
           // clears the selector we are deleting and puts the last selector in its place.
-          oldSelectorSlot =
-          (oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |
-          (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+          oldSelectorSlot = (
+            oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)
+          ) | (bytes32(lastSelector) >> oldSelectorInSlotPosition);
 
           // update storage with the modified slot
           l.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
         } else {
           // clears the selector we are deleting and puts the last selector in its place.
-          selectorSlot =
-          (selectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |
-          (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+          selectorSlot = (
+            selectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)
+          ) | (bytes32(lastSelector) >> oldSelectorInSlotPosition);
         }
 
         if (selectorInSlotIndex == 0) {
