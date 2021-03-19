@@ -2,12 +2,14 @@
 
 pragma solidity ^0.8.0;
 
+import '../../utils/AddressUtils.sol';
 import './IDiamondCuttable.sol';
 
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 library DiamondBaseStorage {
+  using AddressUtils for address;
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
   bytes32 internal constant STORAGE_SLOT = keccak256(
@@ -106,11 +108,9 @@ library DiamondBaseStorage {
   ) internal returns (uint256, bytes32) {
     unchecked {
       require(
-        facetCut.target != address(0),
-        'DiamondBase: Add facet cannot be zero address'
+        facetCut.target.isContract(),
+        'DiamondBase: added facet has not code'
       );
-
-      enforceHasContractCode(facetCut.target, 'DiamondBase: Add facet has no code');
 
       for (uint256 i; i < facetCut.selectors.length; i++) {
         bytes4 selector = facetCut.selectors[i];
@@ -148,11 +148,9 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCut memory facetCut
   ) internal {
     require(
-      facetCut.target != address(0),
-      'DiamondBase: Replace facet cannot be zero address'
+      facetCut.target.isContract(),
+      'DiamondBase: replacement facet has no code'
     );
-
-    enforceHasContractCode(facetCut.target, 'DiamondBase: Replace facet has no code');
 
     for (uint256 i; i < facetCut.selectors.length; i++) {
       bytes4 selector = facetCut.selectors[i];
@@ -279,7 +277,10 @@ library DiamondBaseStorage {
 
     if (target != address(0)) {
       if (target != address(this)) {
-        enforceHasContractCode(target, 'DiamondBase: target address has no code');
+        require(
+          target.isContract(),
+          'DiamondBase: target address has no code'
+        );
       }
 
       (bool success, bytes memory error) = target.delegatecall(data);
@@ -293,14 +294,5 @@ library DiamondBaseStorage {
         }
       }
     }
-  }
-
-  function enforceHasContractCode (
-    address target,
-    string memory errorMessage
-  ) private view {
-    uint256 size;
-    assembly { size := extcodesize(target) }
-    require(size > 0, errorMessage);
   }
 }
