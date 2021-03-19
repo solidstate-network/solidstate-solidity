@@ -65,7 +65,7 @@ library DiamondBaseStorage {
 
       require(
         facetCut.selectors.length > 0,
-        'DiamondBase: No selectors in facet to cut'
+        'DiamondBase: no selectors specified'
       );
 
       if (action == IDiamondCuttable.FacetCutAction.ADD) {
@@ -106,7 +106,7 @@ library DiamondBaseStorage {
   ) internal returns (uint256, bytes32) {
     require(
       facetCut.target.isContract(),
-      'DiamondBase: added facet has no code'
+      'DiamondBase: ADD target has no code'
     );
 
     for (uint256 i; i < facetCut.selectors.length; i++) {
@@ -115,7 +115,7 @@ library DiamondBaseStorage {
 
       require(
         address(bytes20(oldFacet)) == address(0),
-        'DiamondBase: cannot add function that already exists'
+        'DiamondBase: selector already added'
       );
 
       // add facet for selector
@@ -147,15 +147,27 @@ library DiamondBaseStorage {
   ) internal returns (uint256, bytes32) {
     require(
       facetCut.target == address(0),
-      'DiamondBase: Remove facet address must be zero address'
+      'DiamondBase: REMOVE target must be zero address'
     );
 
     uint256 selectorSlotCount = selectorCount >> 3;
     uint256 selectorInSlotIndex = selectorCount & 7;
 
     for (uint256 i; i < facetCut.selectors.length; i++) {
+      bytes4 selector = facetCut.selectors[i];
+      bytes32 oldFacet = l.facets[selector];
+
+      require(
+        address(bytes20(oldFacet)) != address(0),
+        'DiamondBase: selector not found'
+      );
+
+      require(
+        address(bytes20(oldFacet)) != address(this),
+        'DiamondBase: selector is immutable'
+      );
+
       if (selectorSlot == 0) {
-        // get last selectorSlot
         selectorSlotCount--;
         selectorSlot = l.selectorSlots[selectorSlotCount];
         selectorInSlotIndex = 7;
@@ -169,20 +181,6 @@ library DiamondBaseStorage {
 
       // adding a block here prevents stack too deep error
       {
-        bytes4 selector = facetCut.selectors[i];
-        bytes32 oldFacet = l.facets[selector];
-
-        require(
-          address(bytes20(oldFacet)) != address(0),
-          'DiamondBase: cannot remove function that does not exist'
-        );
-
-        // only useful if immutable functions exist
-        require(
-          address(bytes20(oldFacet)) != address(this),
-          'DiamondBase: cannot remove immutable function'
-        );
-
         // replace selector with last selector in l.facets
         lastSelector = bytes4(selectorSlot << (selectorInSlotIndex << 5));
 
@@ -233,7 +231,7 @@ library DiamondBaseStorage {
   ) internal {
     require(
       facetCut.target.isContract(),
-      'DiamondBase: replacement facet has no code'
+      'DiamondBase: REPLACE target has no code'
     );
 
     for (uint256 i; i < facetCut.selectors.length; i++) {
@@ -243,18 +241,17 @@ library DiamondBaseStorage {
 
       require(
         oldFacetAddress != address(0),
-        'DiamondBase: cannot replace function that does not exist'
+        'DiamondBase: selector not found'
       );
 
-      // only useful if immutable functions exist
       require(
         oldFacetAddress != address(this),
-        'DiamondBase: cannot replace immutable function'
+        'DiamondBase: selector is immutable'
       );
 
       require(
         oldFacetAddress != facetCut.target,
-        'DiamondBase: cannot replace function with same function'
+        'DiamondBase: REPLACE target is identical'
       );
 
       // replace old facet address
@@ -275,18 +272,16 @@ library DiamondBaseStorage {
       if (target != address(this)) {
         require(
           target.isContract(),
-          'DiamondBase: target address has no code'
+          'DiamondBase: initialization target has no code'
         );
       }
 
       (bool success, bytes memory error) = target.delegatecall(data);
 
       if (!success) {
-        if (error.length > 0) {
-          // bubble up the error
-          revert(string(error));
-        } else {
-          revert('DiamondBase: initialization function reverted');
+        assembly {
+          returndatacopy(0, 0, returndatasize())
+          revert(0, returndatasize())
         }
       }
     }
