@@ -112,8 +112,8 @@ library DiamondBaseStorage {
 
       enforceHasContractCode(facetCut.target, 'DiamondBase: Add facet has no code');
 
-      for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
-        bytes4 selector = facetCut.selectors[selectorIndex];
+      for (uint256 i; i < facetCut.selectors.length; i++) {
+        bytes4 selector = facetCut.selectors[i];
         bytes32 oldFacet = l.facets[selector];
 
         require(
@@ -154,8 +154,8 @@ library DiamondBaseStorage {
 
     enforceHasContractCode(facetCut.target, 'DiamondBase: Replace facet has no code');
 
-    for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
-      bytes4 selector = facetCut.selectors[selectorIndex];
+    for (uint256 i; i < facetCut.selectors.length; i++) {
+      bytes4 selector = facetCut.selectors[i];
       bytes32 oldFacet = l.facets[selector];
       address oldFacetAddress = address(bytes20(oldFacet));
 
@@ -194,7 +194,7 @@ library DiamondBaseStorage {
     uint256 selectorSlotCount = selectorCount >> 3;
     uint256 selectorInSlotIndex = selectorCount % 8;
 
-    for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
+    for (uint256 i; i < facetCut.selectors.length; i++) {
       if (selectorSlot == 0) {
         // get last selectorSlot
         selectorSlotCount--;
@@ -210,7 +210,7 @@ library DiamondBaseStorage {
 
       // adding a block here prevents stack too deep error
       {
-        bytes4 selector = facetCut.selectors[selectorIndex];
+        bytes4 selector = facetCut.selectors[i];
         bytes32 oldFacet = l.facets[selector];
 
         require(
