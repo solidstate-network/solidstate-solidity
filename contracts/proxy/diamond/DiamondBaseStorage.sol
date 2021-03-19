@@ -54,7 +54,7 @@ library DiamondBaseStorage {
     // Check if last selector slot is not full
     if (selectorCount % 8 > 0) {
       // get last selectorSlot
-      selectorSlot = l.selectorSlots[selectorCount / 8];
+      selectorSlot = l.selectorSlots[selectorCount >> 3];
     }
 
     for (uint256 i; i < facetCuts.length; i++) {
@@ -91,7 +91,7 @@ library DiamondBaseStorage {
 
     // If last selector slot is not full
     if (selectorCount % 8 > 0) {
-      l.selectorSlots[selectorCount / 8] = selectorSlot;
+      l.selectorSlots[selectorCount >> 3] = selectorSlot;
     }
 
     emit DiamondCut(facetCuts, target, data);
@@ -132,7 +132,7 @@ library DiamondBaseStorage {
 
         // if slot is full then write it to storage
         if (selectorInSlotPosition == 224) {
-          l.selectorSlots[selectorCount / 8] = selectorSlot;
+          l.selectorSlots[selectorCount >> 3] = selectorSlot;
           selectorSlot = 0;
         }
 
@@ -191,7 +191,7 @@ library DiamondBaseStorage {
       'DiamondBase: Remove facet address must be zero address'
     );
 
-    uint256 selectorSlotCount = selectorCount / 8;
+    uint256 selectorSlotCount = selectorCount >> 3;
     uint256 selectorInSlotIndex = selectorCount % 8;
 
     for (uint256 selectorIndex; selectorIndex < facetCut.selectors.length; selectorIndex++) {
@@ -236,7 +236,7 @@ library DiamondBaseStorage {
 
         delete l.facets[selector];
         uint256 oldSelectorCount = uint16(uint256(oldFacet));
-        oldSelectorsSlotCount = oldSelectorCount / 8;
+        oldSelectorsSlotCount = oldSelectorCount >> 3;
         oldSelectorInSlotPosition = (oldSelectorCount % 8) * 32;
       }
 
