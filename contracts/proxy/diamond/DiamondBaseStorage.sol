@@ -82,8 +82,6 @@ library DiamondBaseStorage {
           selectorSlot,
           facetCut
         );
-      } else {
-        revert('DiamondBase: invalid action');
       }
     }
 
