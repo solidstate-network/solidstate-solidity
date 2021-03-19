@@ -74,14 +74,14 @@ library DiamondBaseStorage {
           selectorSlot,
           facetCut
         );
-      } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
-        l.replaceFacetSelectors(facetCut);
       } else if (action == IDiamondCuttable.FacetCutAction.REMOVE) {
         (selectorCount, selectorSlot) = l.removeFacetSelectors(
           selectorCount,
           selectorSlot,
           facetCut
         );
+      } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
+        l.replaceFacetSelectors(facetCut);
       }
     }
 
@@ -106,7 +106,7 @@ library DiamondBaseStorage {
   ) internal returns (uint256, bytes32) {
     require(
       facetCut.target.isContract(),
-      'DiamondBase: added facet has not code'
+      'DiamondBase: added facet has no code'
     );
 
     for (uint256 i; i < facetCut.selectors.length; i++) {
@@ -137,41 +137,6 @@ library DiamondBaseStorage {
     }
 
     return (selectorCount, selectorSlot);
-  }
-
-  function replaceFacetSelectors (
-    Layout storage l,
-    IDiamondCuttable.FacetCut memory facetCut
-  ) internal {
-    require(
-      facetCut.target.isContract(),
-      'DiamondBase: replacement facet has no code'
-    );
-
-    for (uint256 i; i < facetCut.selectors.length; i++) {
-      bytes4 selector = facetCut.selectors[i];
-      bytes32 oldFacet = l.facets[selector];
-      address oldFacetAddress = address(bytes20(oldFacet));
-
-      require(
-        oldFacetAddress != address(0),
-        'DiamondBase: cannot replace function that does not exist'
-      );
-
-      // only useful if immutable functions exist
-      require(
-        oldFacetAddress != address(this),
-        'DiamondBase: cannot replace immutable function'
-      );
-
-      require(
-        oldFacetAddress != facetCut.target,
-        'DiamondBase: cannot replace function with same function'
-      );
-
-      // replace old facet address
-      l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(facetCut.target);
-    }
   }
 
   function removeFacetSelectors (
@@ -260,6 +225,41 @@ library DiamondBaseStorage {
     selectorCount = (selectorSlotCount << 3) + selectorInSlotIndex;
 
     return (selectorCount, selectorSlot);
+  }
+
+  function replaceFacetSelectors (
+    Layout storage l,
+    IDiamondCuttable.FacetCut memory facetCut
+  ) internal {
+    require(
+      facetCut.target.isContract(),
+      'DiamondBase: replacement facet has no code'
+    );
+
+    for (uint256 i; i < facetCut.selectors.length; i++) {
+      bytes4 selector = facetCut.selectors[i];
+      bytes32 oldFacet = l.facets[selector];
+      address oldFacetAddress = address(bytes20(oldFacet));
+
+      require(
+        oldFacetAddress != address(0),
+        'DiamondBase: cannot replace function that does not exist'
+      );
+
+      // only useful if immutable functions exist
+      require(
+        oldFacetAddress != address(this),
+        'DiamondBase: cannot replace immutable function'
+      );
+
+      require(
+        oldFacetAddress != facetCut.target,
+        'DiamondBase: cannot replace function with same function'
+      );
+
+      // replace old facet address
+      l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(facetCut.target);
+    }
   }
 
   function initialize (
