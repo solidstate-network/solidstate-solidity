@@ -123,7 +123,7 @@ library DiamondBaseStorage {
 
         // add facet for selector
         l.facets[selector] = bytes20(facetCut.target) | bytes32(selectorCount);
-        uint256 selectorInSlotPosition = (selectorCount & 7) * 32;
+        uint256 selectorInSlotPosition = (selectorCount & 7) << 5;
 
         // clear selector position in slot and add selector
         selectorSlot = (
@@ -225,7 +225,7 @@ library DiamondBaseStorage {
         );
 
         // replace selector with last selector in l.facets
-        lastSelector = bytes4(selectorSlot << (selectorInSlotIndex * 32));
+        lastSelector = bytes4(selectorSlot << (selectorInSlotIndex << 5));
 
         if (lastSelector != selector) {
           // update last selector slot position info
@@ -237,7 +237,7 @@ library DiamondBaseStorage {
         delete l.facets[selector];
         uint256 oldSelectorCount = uint16(uint256(oldFacet));
         oldSelectorsSlotCount = oldSelectorCount >> 3;
-        oldSelectorInSlotPosition = (oldSelectorCount & 7) * 32;
+        oldSelectorInSlotPosition = (oldSelectorCount & 7) << 5;
       }
 
       if (oldSelectorsSlotCount != selectorSlotCount) {
@@ -263,7 +263,7 @@ library DiamondBaseStorage {
       }
     }
 
-    selectorCount = selectorSlotCount * 8 + selectorInSlotIndex;
+    selectorCount = (selectorSlotCount << 3) + selectorInSlotIndex;
 
     return (selectorCount, selectorSlot);
   }
