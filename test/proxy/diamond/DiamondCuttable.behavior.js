@@ -83,11 +83,13 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             ethers.provider
           );
 
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature'
-          );
+          for (let fn of functions) {
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'DiamondBase: no facet found for function signature'
+            );
+          }
 
           await instance.connect(owner).diamondCut(
             [
@@ -97,12 +99,14 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             '0x'
           );
 
-          // call reverts, but with mock-specific message
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'Mock on the method is not initialized'
-          );
+          for (let fn of functions) {
+            // call reverts, but with mock-specific message
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
         });
 
         describe('reverts if', function () {
@@ -168,12 +172,14 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             '0x'
           );
 
-          // call reverts, but with mock-specific message
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'Mock on the method is not initialized'
-          );
+          for (let fn of functions) {
+            // call reverts, but with mock-specific message
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
 
           await instance.connect(owner).diamondCut(
             [
@@ -183,11 +189,13 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             '0x'
           );
 
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature'
-          );
+          for (let fn of functions) {
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'DiamondBase: no facet found for function signature'
+            );
+          }
         });
 
         describe('reverts if', function () {
@@ -277,16 +285,20 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             '0x'
           );
 
-          // call reverts, but with mock-specific message
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'Mock on the method is not initialized'
-          );
+          for (let fn of functions) {
+            // call reverts, but with mock-specific message
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
 
           const facetReplacement = await deployMockContract(owner, abi);
 
-          expect(facetReplacement[functions[0]]).not.to.be.undefined;
+          for (let fn of functions) {
+            expect(facetReplacement[fn]).not.to.be.undefined;
+          }
 
           await instance.connect(owner).diamondCut(
             [
@@ -296,13 +308,14 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
             '0x'
           );
 
-          // call reverts, but with mock-specific message
-          await expect(
-            contract.callStatic[functions[0]]()
-          ).to.be.revertedWith(
-            'Mock on the method is not initialized'
-
-          );
+          for (let fn of functions) {
+            // call reverts, but with mock-specific message
+            await expect(
+              contract.callStatic[fn]()
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
         });
 
         describe('reverts if', function () {
