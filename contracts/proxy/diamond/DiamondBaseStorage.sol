@@ -118,7 +118,7 @@ library DiamondBaseStorage {
     IDiamondCuttable.FacetCut memory facetCut
   ) internal returns (uint256, bytes32) {
     require(
-      facetCut.target.isContract(),
+      facetCut.target == address(this) || facetCut.target.isContract(),
       'DiamondBase: ADD target has no code'
     );
 

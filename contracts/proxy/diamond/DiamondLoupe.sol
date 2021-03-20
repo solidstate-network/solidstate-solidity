@@ -38,8 +38,8 @@ contract DiamondLoupe is IDiamondLoupe {
         bool continueLoop = false;
 
         for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
-          if (diamondFacets[facetIndex].facetAddress == facet) {
-            diamondFacets[facetIndex].functionSelectors[numFacetSelectors[facetIndex]] = selector;
+          if (diamondFacets[facetIndex].target == facet) {
+            diamondFacets[facetIndex].selectors[numFacetSelectors[facetIndex]] = selector;
             // probably will never have more than 256 functions from one facet contract
             require(numFacetSelectors[facetIndex] < 255);
             numFacetSelectors[facetIndex]++;
@@ -53,9 +53,9 @@ contract DiamondLoupe is IDiamondLoupe {
           continue;
         }
 
-        diamondFacets[numFacets].facetAddress = facet;
-        diamondFacets[numFacets].functionSelectors = new bytes4[](l.selectorCount);
-        diamondFacets[numFacets].functionSelectors[0] = selector;
+        diamondFacets[numFacets].target = facet;
+        diamondFacets[numFacets].selectors = new bytes4[](l.selectorCount);
+        diamondFacets[numFacets].selectors[0] = selector;
         numFacetSelectors[numFacets] = 1;
         numFacets++;
       }
@@ -63,7 +63,7 @@ contract DiamondLoupe is IDiamondLoupe {
 
     for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
       uint256 numSelectors = numFacetSelectors[facetIndex];
-      bytes4[] memory selectors = diamondFacets[facetIndex].functionSelectors;
+      bytes4[] memory selectors = diamondFacets[facetIndex].selectors;
 
       // setting the number of selectors
       assembly { mstore(selectors, numSelectors) }

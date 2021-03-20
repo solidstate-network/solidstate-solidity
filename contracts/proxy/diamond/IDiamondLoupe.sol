@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 interface IDiamondLoupe {
   struct Facet {
-    address facetAddress;
-    bytes4[] functionSelectors;
+    address target;
+    bytes4[] selectors;
   }
 
   /**

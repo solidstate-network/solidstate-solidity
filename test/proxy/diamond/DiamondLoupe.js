@@ -30,13 +30,11 @@ describe('DiamondLoupe', function () {
     const [owner] = await ethers.getSigners();
     facet = await deployMockContract(owner, abi);
 
-    facetCuts.push(
-      {
-        target: facet.address,
-        action: 0,
-        selectors,
-      }
-    );
+    facetCuts.push({
+      target: facet.address,
+      action: 0,
+      selectors,
+    });
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
