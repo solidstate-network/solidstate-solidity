@@ -289,7 +289,7 @@ library DiamondBaseStorage {
         );
       }
 
-      (bool success, bytes memory error) = target.delegatecall(data);
+      (bool success, ) = target.delegatecall(data);
 
       if (!success) {
         assembly {
