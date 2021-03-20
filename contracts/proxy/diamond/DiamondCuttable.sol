@@ -8,7 +8,6 @@ import './DiamondBaseStorage.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract
- * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;

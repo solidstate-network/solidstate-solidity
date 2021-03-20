@@ -2,9 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-/**
- * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
- */
 interface IDiamondCuttable {
   enum FacetCutAction { ADD, REPLACE, REMOVE }
 

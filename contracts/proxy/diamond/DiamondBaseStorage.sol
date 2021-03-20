@@ -12,6 +12,11 @@ library DiamondBaseStorage {
   using AddressUtils for address;
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
+  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
+
+  bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
+  bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
+
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.DiamondBase'
   );
@@ -31,11 +36,6 @@ library DiamondBaseStorage {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
   }
-
-  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
-
-  bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
-  bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
 
   /**
    * @notice set address of fallback contract

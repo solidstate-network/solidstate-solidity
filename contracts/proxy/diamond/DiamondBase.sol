@@ -12,10 +12,8 @@ import './IDiamondCuttable.sol';
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 abstract contract DiamondBase is Proxy {
-  // TODO: selector aliases
-
   function _getImplementation () override internal view returns (address) {
-    // storage layout is not retrieved via function call due to gas considerations
+    // inline storage layout retrieval uses less gas
     DiamondBaseStorage.Layout storage l;
     bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
     assembly { l.slot := slot }
