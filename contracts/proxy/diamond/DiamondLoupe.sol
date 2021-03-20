@@ -35,7 +35,8 @@ contract DiamondLoupe is IDiamondLoupe {
 
         bytes4 selector = bytes4(slot << (selectorSlotIndex * 32));
         address facet = address(bytes20(l.facets[selector]));
-        bool continueLoop = false;
+
+        bool continueLoop;
 
         for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
           if (diamondFacets[facetIndex].target == facet) {
@@ -49,7 +50,6 @@ contract DiamondLoupe is IDiamondLoupe {
         }
 
         if (continueLoop) {
-          continueLoop = false;
           continue;
         }
 
@@ -132,7 +132,8 @@ contract DiamondLoupe is IDiamondLoupe {
 
         bytes4 selector = bytes4(slot << (selectorSlotIndex * 32));
         address facet = address(bytes20(l.facets[selector]));
-        bool continueLoop = false;
+
+        bool continueLoop;
 
         for (uint256 facetIndex; facetIndex < numFacets; facetIndex++) {
           if (facet == addresses[facetIndex]) {
@@ -142,7 +143,6 @@ contract DiamondLoupe is IDiamondLoupe {
         }
 
         if (continueLoop) {
-          continueLoop = false;
           continue;
         }
 
