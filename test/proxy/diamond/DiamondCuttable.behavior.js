@@ -3,6 +3,8 @@ const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
+const describeBehaviorOfERC165 = require('../../introspection/ERC165.behavior.js');
+
 const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOwner }, skips) {
   const describe = describeFilter(skips);
 
@@ -36,6 +38,12 @@ const describeBehaviorOfDiamondCuttable = function ({ deploy, getOwner, getNonOw
     beforeEach(async function () {
       instance = await ethers.getContractAt('DiamondCuttable', (await deploy()).address);
     });
+
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    describeBehaviorOfERC165({
+      deploy: () => instance,
+      interfaceIds: ['0x1f931c1c'],
+    }, skips);
 
     describe('#diamondCut', function () {
       it('emits DiamondCut event', async function () {

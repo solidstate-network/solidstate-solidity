@@ -2,6 +2,8 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
+const describeBehaviorOfERC165 = require('../../introspection/ERC165.behavior.js');
+
 const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
   const describe = describeFilter(skips);
 
@@ -16,11 +18,11 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
       instance = await ethers.getContractAt('DiamondLoupe', (await deploy()).address);
     });
 
-    // // eslint-disable-next-line mocha/no-setup-in-describe
-    // describeBehaviorOfERC165({
-    //   deploy: () => instance,
-    //   interfaceIds: ['TODO: selector'],
-    // }, skips);
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    describeBehaviorOfERC165({
+      deploy: () => instance,
+      interfaceIds: ['0x48e2b093'],
+    }, skips);
 
     describe('#facets', function () {
       it('returns facet cuts', async function () {
