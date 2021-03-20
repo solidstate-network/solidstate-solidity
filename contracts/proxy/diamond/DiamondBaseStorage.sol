@@ -43,7 +43,7 @@ library DiamondBaseStorage {
    * @param fallbackAddress address of fallback contract
    */
   function setFallbackAddress (
-    Layotu storage l,
+    Layout storage l,
     address fallbackAddress
   ) internal {
     l.fallbackAddress = fallbackAddress;
