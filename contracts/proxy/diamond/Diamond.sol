@@ -86,4 +86,6 @@ contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC
 
     OwnableStorage.layout().setOwner(msg.sender);
   }
+
+  receive () external payable {}
 }

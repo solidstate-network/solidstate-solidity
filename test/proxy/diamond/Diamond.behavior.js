@@ -43,6 +43,17 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
       getNomineeOwner,
       getNonOwner,
     }, skips);
+
+    describe('receive', function () {
+      it('accepts ether transfer', async function () {
+        let [signer] = await ethers.getSigners();
+        let value = ethers.constants.One;
+
+        await expect(
+          () => signer.sendTransaction({ to: instance.address, value })
+        ).to.changeEtherBalance(instance, value);
+      });
+    });
   });
 };
 
