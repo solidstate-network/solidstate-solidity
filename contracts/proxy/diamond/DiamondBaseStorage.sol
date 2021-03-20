@@ -19,10 +19,11 @@ library DiamondBaseStorage {
   struct Layout {
     // function selector => (facet address, selector slot position)
     mapping (bytes4 => bytes32) facets;
+    // total number of selectors registered
+    uint16 selectorCount;
     // array of selector slots with 8 selectors per slot
     mapping (uint256 => bytes32) selectorSlots;
-    uint16 selectorCount;
-    // TODO: fallback address
+
     address fallbackAddress;
   }
 
@@ -35,6 +36,18 @@ library DiamondBaseStorage {
 
   bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
   bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
+
+  /**
+   * @notice set address of fallback contract
+   * @param l storage layout
+   * @param fallbackAddress address of fallback contract
+   */
+  function setFallbackAddress (
+    Layotu storage l,
+    address fallbackAddress
+  ) internal {
+    l.fallbackAddress = fallbackAddress;
+  }
 
   /**
    * @notice update functions callable on Diamond proxy

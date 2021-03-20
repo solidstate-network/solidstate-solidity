@@ -22,7 +22,7 @@ interface IDiamondCuttable {
    * @param target initialization function target
    * @param data initialization function call data
    */
-  function diamondCut(
+  function diamondCut (
     FacetCut[] calldata facetCuts,
     address target,
     bytes calldata data
