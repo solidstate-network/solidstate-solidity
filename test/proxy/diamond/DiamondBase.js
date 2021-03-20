@@ -1,12 +1,12 @@
 const describeBehaviorOfDiamondBase = require('./DiamondBase.behavior.js');
 
-let deploy = async function () {
-  let facetFactory = await ethers.getContractFactory('Ownable');
-  let facetInstance = await facetFactory.deploy();
+const deploy = async function () {
+  const facetFactory = await ethers.getContractFactory('Ownable');
+  const facetInstance = await facetFactory.deploy();
   await facetInstance.deployed();
 
-  let factory = await ethers.getContractFactory('DiamondBaseMock');
-  let instance = await factory.deploy([
+  const factory = await ethers.getContractFactory('DiamondBaseMock');
+  const instance = await factory.deploy([
     {
       target: facetInstance.address,
       action: 0,
