@@ -28,7 +28,7 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
       it('returns facet cuts', async function () {
         expect(
           await instance.callStatic['facets()']()
-        ).to.deep.include.members(
+        ).to.deep.have.members(
           facetCuts.map(fc => [fc.target, fc.selectors])
         );
       });
@@ -39,7 +39,7 @@ const describeBehaviorOfDiamondLoupe = function ({ deploy, facetCuts }, skips) {
         expect(
           await instance.callStatic['facetAddresses()']()
         ).to.have.members(
-          Array.from(new Set(facetCuts.map(fc => fc.target)))
+          facetCuts.map(fc => fc.target)
         );
       });
     });

@@ -22,6 +22,8 @@ describe('Diamond', function () {
 
     const facets = await instance.callStatic.facets();
 
+    expect(facets).to.have.lengthOf(1);
+
     facetCuts[0] = {
       target: instance.address,
       action: 0,
