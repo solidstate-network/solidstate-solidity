@@ -71,6 +71,10 @@ library ECDSAMultisigWalletStorage {
     Layout storage l,
     address account
   ) internal {
+    require(
+      l.quorum <= l.signers.length() - 1,
+      'ECDSAMultisigWallet: insufficient signers to meet quorum'
+    );
     l.signers.remove(account);
   }
 }
