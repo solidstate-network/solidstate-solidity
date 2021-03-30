@@ -5,10 +5,10 @@ pragma solidity ^0.8.0;
 import './ERC721Base.sol';
 import './ERC721MetadataStorage.sol';
 import './IERC721Metadata.sol';
-import '../../utils/Uint.sol';
+import '../../utils/UintUtils.sol';
 
 abstract contract ERC721Metadata is IERC721Metadata, ERC721Base {
-  using Uint for uint;
+  using UintUtils for uint;
 
   function name () override public view returns (string memory) {
     return ERC721MetadataStorage.layout().name;
