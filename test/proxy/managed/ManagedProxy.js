@@ -41,7 +41,11 @@ describe('ManagedProxy', function () {
 
   describe('__internal', function () {
     describe('#_getImplementation', function () {
-      it('returns implementation address');
+      it('returns implementation address', async function () {
+        expect(
+          await instance.callStatic['getImplementation()']()
+        ).to.be.properAddress;
+      });
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {

@@ -27,4 +27,9 @@ import './ManagedProxy.sol';
    ) public {
      _manager = manager;
    }
+
+   /**
+    * @dev suppress compiler warning
+    */
+   receive () external payable {}
  }
