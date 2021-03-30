@@ -39,21 +39,25 @@ abstract contract ERC721Base is IERC721, ERC165 {
     return ERC721BaseStorage.layout().operatorApprovals[owner][operator];
   }
 
-  function transferFrom (address from, address to, uint tokenId) override public {
+  function transferFrom (address from, address to, uint tokenId) override public payable {
+    // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _transfer(from, to, tokenId);
   }
 
-  function safeTransferFrom (address from, address to, uint tokenId) override public {
+  function safeTransferFrom (address from, address to, uint tokenId) override public payable {
+    // TODO: handle payment
     safeTransferFrom(from, to, tokenId, '');
   }
 
-  function safeTransferFrom (address from, address to, uint tokenId, bytes memory data) override public {
+  function safeTransferFrom (address from, address to, uint tokenId, bytes memory data) override public payable {
+    // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _safeTransfer(from, to, tokenId, data);
   }
 
-  function approve (address to, uint tokenId) override public {
+  function approve (address to, uint tokenId) override public payable {
+    // TODO: handle payment
     address owner = ownerOf(tokenId);
     require(to != owner, 'ERC721: approval to current owner');
     require(msg.sender == owner || isApprovedForAll(owner, msg.sender), 'ERC721: approve caller is not owner nor approved for all');
