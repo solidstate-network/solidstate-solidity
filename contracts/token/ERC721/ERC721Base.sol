@@ -25,8 +25,9 @@ abstract contract ERC721Base is IERC721, ERC165 {
   }
 
   function ownerOf (uint tokenId) override public view returns (address) {
-    // TODO: get(uint,string) removed
-    // return ERC721BaseStorage.layout().tokenOwners.get(tokenId, 'ERC721: owner query for nonexistent token');
+    address owner = ERC721BaseStorage.layout().tokenOwners.get(tokenId, 'ERC721: owner query for nonexistent token');
+    require(owner != address(0), 'ERC721: invalid owner');
+    return owner;
   }
 
   function getApproved (uint tokenId) override public view returns (address) {
