@@ -12,7 +12,15 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
   const describe = describeFilter(skips);
 
   describe('::Diamond', function () {
+    let owner;
+    let nonOwner;
+
     let instance;
+
+    before(async function () {
+      owner = await getOwner();
+      nonOwner = await getNonOwner();
+    });
 
     beforeEach(async function () {
       instance = await ethers.getContractAt('Diamond', (await deploy()).address);
@@ -21,8 +29,8 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfDiamondCuttable({
       deploy: () => instance,
-      getOwner,
-      getNonOwner,
+      getOwner: () => owner,
+      getNonOwner: () => nonOwner,
     }, skips);
 
     // eslint-disable-next-line mocha/no-setup-in-describe
@@ -40,9 +48,9 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfSafeOwnable({
       deploy: () => instance,
-      getOwner,
+      getOwner: () => owner,
       getNomineeOwner,
-      getNonOwner,
+      getNonOwner: () => nonOwner,
     }, skips);
 
     describe('receive', function () {
@@ -56,26 +64,20 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
       });
     });
 
-    describe('#diamondCut', function () {
-      let owner;
 
-      const functions = [];
+    describe('#diamondCut', function () {
       const selectors = [];
-      let abi;
+      const abi = [];
       let facet;
 
       before(async function () {
-        owner = await getOwner();
-
         for (let i = 0; i < 24; i++) {
           const fn = `fn${ i }()`;
-          functions.push(fn);
+          abi.push(`function ${ fn }`);
           selectors.push(ethers.utils.hexDataSlice(
             ethers.utils.solidityKeccak256(['string'], [fn]), 0, 4
           ));
         }
-
-        abi = functions.map(fn => `function ${ fn }`);
 
         facet = await deployMockContract(owner, abi);
       });
@@ -83,16 +85,23 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
       it('adds selectors one-by-one', async function () {
         const expectedSelectors = [];
 
-        for (let i = 0; i < selectors.length; i++) {
+        for (let selector of selectors) {
           await instance.connect(owner).diamondCut(
             [
-              { target: facet.address, action: 0, selectors: [selectors[i]] },
+              { target: facet.address, action: 0, selectors: [selector] },
             ],
             ethers.constants.AddressZero,
             '0x'
           );
 
-          expectedSelectors.push(selectors[i]);
+          expectedSelectors.push(selector);
+
+          // call reverts, but with mock-specific message
+          await expect(
+            owner.call({ to: instance.address, data: selector })
+          ).to.be.revertedWith(
+            'Mock on the method is not initialized'
+          );
 
           expect(
             await instance.callStatic['facets()']()
@@ -113,27 +122,14 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
           );
 
           expect(
-            await instance.callStatic['facetAddress(bytes4)'](selectors[i])
+            await instance.callStatic['facetAddress(bytes4)'](selector)
           ).to.equal(
             facet.address
-          );
-
-          const contract = new ethers.Contract(
-            instance.address,
-            abi,
-            ethers.provider
-          );
-
-          // call reverts, but with mock-specific message
-          await expect(
-            contract.callStatic[functions[i]]()
-          ).to.be.revertedWith(
-            'Mock on the method is not initialized'
           );
         }
       });
 
-      it('removes selectors one-by-one', async function () {
+      it('removes selectors one-by-one in ascending order of addition', async function () {
         await instance.connect(owner).diamondCut(
           [
             { target: facet.address, action: 0, selectors },
@@ -142,12 +138,12 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
           '0x'
         );
 
-        let expectedSelectors = [...selectors];
+        const expectedSelectors = [...selectors];
 
-        for (let i = 0; i < selectors.length; i++) {
+        for (let selector of selectors) {
           await instance.connect(owner).diamondCut(
             [
-              { target: ethers.constants.AddressZero, action: 2, selectors: [selectors[i]] },
+              { target: ethers.constants.AddressZero, action: 2, selectors: [selector] },
             ],
             ethers.constants.AddressZero,
             '0x'
@@ -155,9 +151,22 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
 
           const last = expectedSelectors.pop();
 
-          if (last !== selectors[i]) {
-            expectedSelectors.splice(expectedSelectors.indexOf(selectors[i]), 1, last);
+          if (last !== selector) {
+            expectedSelectors.splice(expectedSelectors.indexOf(selector), 1, last);
+
+            // call reverts, but with mock-specific message
+            await expect(
+              owner.call({ to: instance.address, data: last })
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
           }
+
+          await expect(
+            owner.call({ to: instance.address, data: selector })
+          ).to.be.revertedWith(
+            'DiamondBase: no facet found for function signature'
+          );
 
           expect(
             await instance.callStatic['facets()']()
@@ -178,21 +187,139 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
           );
 
           expect(
-            await instance.callStatic['facetAddress(bytes4)'](selectors[i])
+            await instance.callStatic['facetAddress(bytes4)'](selector)
           ).to.equal(
             ethers.constants.AddressZero
           );
+        }
+      });
 
-          const contract = new ethers.Contract(
-            instance.address,
-            abi,
-            ethers.provider
+      it('removes selectors one-by-one in descending order of addition', async function () {
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facet.address, action: 0, selectors },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
+
+        const expectedSelectors = [...selectors];
+
+        for (let selector of [...selectors].reverse()) {
+          await instance.connect(owner).diamondCut(
+            [
+              { target: ethers.constants.AddressZero, action: 2, selectors: [selector] },
+            ],
+            ethers.constants.AddressZero,
+            '0x'
           );
 
+          const last = expectedSelectors.pop();
+
+          if (last !== selector) {
+            expectedSelectors.splice(expectedSelectors.indexOf(selector), 1, last);
+
+            // call reverts, but with mock-specific message
+            await expect(
+              owner.call({ to: instance.address, data: last })
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
+
           await expect(
-            contract.callStatic[functions[i]]()
+            owner.call({ to: instance.address, data: selector })
           ).to.be.revertedWith(
             'DiamondBase: no facet found for function signature'
+          );
+
+          expect(
+            await instance.callStatic['facets()']()
+          ).to.deep.have.members(
+            [
+              ...facetCuts.map(fc => [fc.target, fc.selectors]),
+              [
+                facet.address,
+                expectedSelectors,
+              ],
+            ].filter(f => f[1].length)
+          );
+
+          expect(
+            await instance.callStatic['facetFunctionSelectors(address)'](facet.address)
+          ).to.deep.have.members(
+            expectedSelectors
+          );
+
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector)
+          ).to.equal(
+            ethers.constants.AddressZero
+          );
+        }
+      });
+
+      it('removes selectors one-by-one in random order', async function () {
+        await instance.connect(owner).diamondCut(
+          [
+            { target: facet.address, action: 0, selectors },
+          ],
+          ethers.constants.AddressZero,
+          '0x'
+        );
+
+        const expectedSelectors = [...selectors];
+
+        for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
+          await instance.connect(owner).diamondCut(
+            [
+              { target: ethers.constants.AddressZero, action: 2, selectors: [selector] },
+            ],
+            ethers.constants.AddressZero,
+            '0x'
+          );
+
+          const last = expectedSelectors.pop();
+
+          if (last !== selector) {
+            expectedSelectors.splice(expectedSelectors.indexOf(selector), 1, last);
+
+            // call reverts, but with mock-specific message
+            await expect(
+              owner.call({ to: instance.address, data: last })
+            ).to.be.revertedWith(
+              'Mock on the method is not initialized'
+            );
+          }
+
+          await expect(
+            owner.call({ to: instance.address, data: selector })
+          ).to.be.revertedWith(
+            'DiamondBase: no facet found for function signature'
+          );
+
+          expect(
+            await instance.callStatic['facets()']()
+          ).to.deep.have.members(
+            [
+              ...facetCuts.map(fc => [fc.target, fc.selectors]),
+              [
+                facet.address,
+                expectedSelectors,
+              ],
+            ].filter(f => f[1].length)
+          );
+
+          expect(
+            await instance.callStatic['facetFunctionSelectors(address)'](facet.address)
+          ).to.deep.have.members(
+            expectedSelectors
+          );
+
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector)
+          ).to.equal(
+            ethers.constants.AddressZero
           );
         }
       });
