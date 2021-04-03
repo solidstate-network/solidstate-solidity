@@ -1,3 +1,5 @@
+const { expect } = require('chai');
+
 const describeBehaviorOfDiamond = require('./Diamond.behavior.js');
 
 const deploy = async function () {
