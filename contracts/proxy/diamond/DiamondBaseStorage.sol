@@ -38,18 +38,6 @@ library DiamondBaseStorage {
   }
 
   /**
-   * @notice set address of fallback contract
-   * @param l storage layout
-   * @param fallbackAddress address of fallback contract
-   */
-  function setFallbackAddress (
-    Layout storage l,
-    address fallbackAddress
-  ) internal {
-    l.fallbackAddress = fallbackAddress;
-  }
-
-  /**
    * @notice update functions callable on Diamond proxy
    * @param l storage layout
    * @param facetCuts array of structured Diamond facet update data

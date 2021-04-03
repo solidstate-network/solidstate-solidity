@@ -40,5 +40,6 @@ describe('Diamond', function () {
     getNomineeOwner: () => getNomineeOwner,
     getNonOwner: () => getNonOwner,
     facetCuts,
+    fallbackAddress: ethers.constants.AddressZero,
   }, []);
 });

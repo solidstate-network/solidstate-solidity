@@ -8,7 +8,7 @@ const describeBehaviorOfDiamondLoupe = require('./DiamondLoupe.behavior.js');
 const describeBehaviorOfERC165 = require('../../introspection/ERC165.behavior.js');
 const describeBehaviorOfSafeOwnable = require('../../access/SafeOwnable.behavior.js');
 
-const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner, getNonOwner, facetCuts }, skips) {
+const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner, getNonOwner, facetCuts, fallbackAddress }, skips) {
   const describe = describeFilter(skips);
 
   describe('::Diamond', function () {
@@ -64,6 +64,46 @@ const describeBehaviorOfDiamond = function ({ deploy, getOwner, getNomineeOwner,
       });
     });
 
+    describe('#getFallbackAddress', function () {
+      it('returns the fallback address', async function () {
+        expect(
+          await instance.callStatic.getFallbackAddress()
+        ).to.equal(
+          fallbackAddress
+        );
+      });
+    });
+
+    describe('#setFallbackAddress', function () {
+      it('updates the fallback address', async function () {
+        const fallback = await deployMockContract(owner, []);
+
+        await instance.connect(owner).setFallbackAddress(fallback.address);
+
+        expect(
+          await instance.callStatic.getFallbackAddress()
+        ).to.equal(
+          fallback.address
+        );
+
+        // call reverts, but with mock-specific message
+        await expect(
+          owner.call({ to: instance.address, data: ethers.utils.randomBytes(4) })
+        ).to.be.revertedWith(
+          'Mock on the method is not initialized'
+        );
+      });
+
+      describe('reverts if', function () {
+        it('sender is not owner', async function () {
+          await expect(
+            instance.connect(nonOwner).setFallbackAddress(ethers.constants.AddressZero)
+          ).to.be.revertedWith(
+            'Ownable: sender must be owner'
+          );
+        });
+      });
+    });
 
     describe('#diamondCut', function () {
       const selectors = [];

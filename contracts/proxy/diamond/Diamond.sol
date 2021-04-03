@@ -18,7 +18,7 @@ contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC
 
   constructor () {
     ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
-    bytes4[] memory selectors = new bytes4[](10);
+    bytes4[] memory selectors = new bytes4[](12);
 
     // register DiamondCuttable
 
@@ -50,6 +50,11 @@ contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC
 
     erc165.setSupportedInterface(type(IERC173).interfaceId, true);
 
+    // register Diamond
+
+    selectors[10] = Diamond.getFallbackAddress.selector;
+    selectors[11] = Diamond.setFallbackAddress.selector;
+
     // diamond cut
 
     FacetCut[] memory facetCuts = new FacetCut[](1);
@@ -68,4 +73,22 @@ contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC
   }
 
   receive () external payable {}
+
+  /**
+   * @notice get the address of the fallback contract
+   * @return fallback address
+   */
+  function getFallbackAddress () external view returns (address) {
+    return DiamondBaseStorage.layout().fallbackAddress;
+  }
+
+  /**
+   * @notice set the address of the fallback contract
+   * @param fallbackAddress fallback address
+   */
+  function setFallbackAddress (
+    address fallbackAddress
+  ) external onlyOwner {
+    DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
+  }
 }
