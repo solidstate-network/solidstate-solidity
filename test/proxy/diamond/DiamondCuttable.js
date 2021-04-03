@@ -6,12 +6,6 @@ let deploy = async function () {
   return await instance.deployed();
 };
 
-let deployFacet = async function () {
-  let facetFactory = await ethers.getContractFactory('Ownable');
-  let facetInstance = await facetFactory.deploy();
-  return await facetInstance.deployed();
-};
-
 describe('DiamondCuttable', function () {
   let owner, nonOwner;
 
@@ -22,10 +16,7 @@ describe('DiamondCuttable', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamondCuttable({
     deploy,
-    deployFacet,
     getOwner: () => owner,
     getNonOwner: () => nonOwner,
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
   });
 });

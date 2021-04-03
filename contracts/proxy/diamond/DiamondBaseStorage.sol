@@ -2,28 +2,34 @@
 
 pragma solidity ^0.8.0;
 
-import '../../utils/EnumerableSet.sol';
+import '../../utils/AddressUtils.sol';
+import './IDiamondCuttable.sol';
 
+/**
+ * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
+ */
 library DiamondBaseStorage {
-  using EnumerableSet for EnumerableSet.AddressSet;
-  using EnumerableSet for EnumerableSet.UintSet;
+  using AddressUtils for address;
+  using DiamondBaseStorage for DiamondBaseStorage.Layout;
+
+  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
+
+  bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
+  bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
 
   bytes32 internal constant STORAGE_SLOT = keccak256(
     'solidstate.contracts.storage.DiamondBase'
   );
 
-  struct FacetCut {
-    // TODO: use standard
-    address facet;
-    bytes4 selector;
-  }
-
   struct Layout {
+    // function selector => (facet address, selector slot position)
+    mapping (bytes4 => bytes32) facets;
+    // total number of selectors registered
+    uint16 selectorCount;
+    // array of selector slots with 8 selectors per slot
+    mapping (uint256 => bytes32) selectorSlots;
+
     address fallbackAddress;
-    EnumerableSet.AddressSet facets;
-    EnumerableSet.UintSet selectors;
-    mapping (address => EnumerableSet.UintSet) facetSelectors;
-    mapping (bytes4 => address) selectorFacet;
   }
 
   function layout () internal pure returns (Layout storage l) {
@@ -31,91 +37,262 @@ library DiamondBaseStorage {
     assembly { l.slot := slot }
   }
 
-  function diamondCut (
+  /**
+   * @notice update functions callable on Diamond proxy
+   * @param l storage layout
+   * @param facetCuts array of structured Diamond facet update data
+   * @param target optional recipient of initialization delegatecall
+   * @param data optional initialization call data
+   */
+  function diamondCut(
     Layout storage l,
-    FacetCut[] memory cuts
+    IDiamondCuttable.FacetCut[] memory facetCuts,
+    address target,
+    bytes memory data
   ) internal {
-    for (uint i; i < cuts.length; i++) {
-      diamondCut(l, cuts[i]);
+    unchecked {
+      uint256 originalSelectorCount = l.selectorCount;
+      uint256 selectorCount = originalSelectorCount;
+      bytes32 selectorSlot;
+
+      // Check if last selector slot is not full
+      if (selectorCount & 7 > 0) {
+        // get last selectorSlot
+        selectorSlot = l.selectorSlots[selectorCount >> 3];
+      }
+
+      for (uint256 i; i < facetCuts.length; i++) {
+        IDiamondCuttable.FacetCut memory facetCut = facetCuts[i];
+        IDiamondCuttable.FacetCutAction action = facetCut.action;
+
+        require(
+          facetCut.selectors.length > 0,
+          'DiamondBase: no selectors specified'
+        );
+
+        if (action == IDiamondCuttable.FacetCutAction.ADD) {
+          (selectorCount, selectorSlot) = l.addFacetSelectors(
+            selectorCount,
+            selectorSlot,
+            facetCut
+          );
+        } else if (action == IDiamondCuttable.FacetCutAction.REMOVE) {
+          (selectorCount, selectorSlot) = l.removeFacetSelectors(
+            selectorCount,
+            selectorSlot,
+            facetCut
+          );
+        } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
+          l.replaceFacetSelectors(facetCut);
+        }
+      }
+
+      if (selectorCount != originalSelectorCount) {
+        l.selectorCount = uint16(selectorCount);
+      }
+
+      // If last selector slot is not full
+      if (selectorCount & 7 > 0) {
+        l.selectorSlots[selectorCount >> 3] = selectorSlot;
+      }
+
+      emit DiamondCut(facetCuts, target, data);
+      initialize(target, data);
     }
   }
 
-  function diamondCut (
+  function addFacetSelectors (
     Layout storage l,
-    FacetCut memory cut
-  ) internal {
-    address oldFacet = l.selectorFacet[cut.selector];
+    uint256 selectorCount,
+    bytes32 selectorSlot,
+    IDiamondCuttable.FacetCut memory facetCut
+  ) internal returns (uint256, bytes32) {
+    unchecked {
+      require(
+        facetCut.target == address(this) || facetCut.target.isContract(),
+        'DiamondBase: ADD target has no code'
+      );
 
-    if (oldFacet != address(0)) {
-      l.facetSelectors[oldFacet].remove(uint256(uint32(cut.selector)));
+      for (uint256 i; i < facetCut.selectors.length; i++) {
+        bytes4 selector = facetCut.selectors[i];
+        bytes32 oldFacet = l.facets[selector];
+
+        require(
+          address(bytes20(oldFacet)) == address(0),
+          'DiamondBase: selector already added'
+        );
+
+        // add facet for selector
+        l.facets[selector] = bytes20(facetCut.target) | bytes32(selectorCount);
+        uint256 selectorInSlotPosition = (selectorCount & 7) << 5;
+
+        // clear selector position in slot and add selector
+        selectorSlot = (
+          selectorSlot & ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)
+        ) | (bytes32(selector) >> selectorInSlotPosition);
+
+        // if slot is full then write it to storage
+        if (selectorInSlotPosition == 224) {
+          l.selectorSlots[selectorCount >> 3] = selectorSlot;
+          selectorSlot = 0;
+        }
+
+        selectorCount++;
+      }
+
+      return (selectorCount, selectorSlot);
     }
-
-    if (cut.facet == address(0)) {
-      l.selectors.remove(uint256(uint32(cut.selector)));
-    } else {
-      l.selectors.add(uint256(uint32(cut.selector)));
-    }
-
-    if (l.facetSelectors[oldFacet].length() == 0) {
-      l.facets.remove(oldFacet);
-    }
-
-    l.facets.add(cut.facet);
-    l.facetSelectors[cut.facet].add(uint256(uint32(cut.selector)));
-    l.selectorFacet[cut.selector] = cut.facet;
   }
 
-  function setFallbackAddress (
+  function removeFacetSelectors (
     Layout storage l,
-    address fallbackAddress
+    uint256 selectorCount,
+    bytes32 selectorSlot,
+    IDiamondCuttable.FacetCut memory facetCut
+  ) internal returns (uint256, bytes32) {
+    unchecked {
+      require(
+        facetCut.target == address(0),
+        'DiamondBase: REMOVE target must be zero address'
+      );
+
+      uint256 selectorSlotCount = selectorCount >> 3;
+      uint256 selectorInSlotIndex = selectorCount & 7;
+
+      for (uint256 i; i < facetCut.selectors.length; i++) {
+        bytes4 selector = facetCut.selectors[i];
+        bytes32 oldFacet = l.facets[selector];
+
+        require(
+          address(bytes20(oldFacet)) != address(0),
+          'DiamondBase: selector not found'
+        );
+
+        require(
+          address(bytes20(oldFacet)) != address(this),
+          'DiamondBase: selector is immutable'
+        );
+
+        if (selectorSlot == 0) {
+          selectorSlotCount--;
+          selectorSlot = l.selectorSlots[selectorSlotCount];
+          selectorInSlotIndex = 7;
+        } else {
+          selectorInSlotIndex--;
+        }
+
+        bytes4 lastSelector;
+        uint256 oldSelectorsSlotCount;
+        uint256 oldSelectorInSlotPosition;
+
+        // adding a block here prevents stack too deep error
+        {
+          // replace selector with last selector in l.facets
+          lastSelector = bytes4(selectorSlot << (selectorInSlotIndex << 5));
+
+          if (lastSelector != selector) {
+            // update last selector slot position info
+            l.facets[lastSelector] = (
+              oldFacet & CLEAR_ADDRESS_MASK
+            ) | bytes20(l.facets[lastSelector]);
+          }
+
+          delete l.facets[selector];
+          uint256 oldSelectorCount = uint16(uint256(oldFacet));
+          oldSelectorsSlotCount = oldSelectorCount >> 3;
+          oldSelectorInSlotPosition = (oldSelectorCount & 7) << 5;
+        }
+
+        if (oldSelectorsSlotCount != selectorSlotCount) {
+          bytes32 oldSelectorSlot = l.selectorSlots[oldSelectorsSlotCount];
+
+          // clears the selector we are deleting and puts the last selector in its place.
+          oldSelectorSlot = (
+            oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)
+          ) | (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+
+          // update storage with the modified slot
+          l.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
+        } else {
+          // clears the selector we are deleting and puts the last selector in its place.
+          selectorSlot = (
+            selectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)
+          ) | (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+        }
+
+        if (selectorInSlotIndex == 0) {
+          delete l.selectorSlots[selectorSlotCount];
+          selectorSlot = 0;
+        }
+      }
+
+      selectorCount = (selectorSlotCount << 3) | selectorInSlotIndex;
+
+      return (selectorCount, selectorSlot);
+    }
+  }
+
+  function replaceFacetSelectors (
+    Layout storage l,
+    IDiamondCuttable.FacetCut memory facetCut
   ) internal {
+    unchecked {
+      require(
+        facetCut.target.isContract(),
+        'DiamondBase: REPLACE target has no code'
+      );
+
+      for (uint256 i; i < facetCut.selectors.length; i++) {
+        bytes4 selector = facetCut.selectors[i];
+        bytes32 oldFacet = l.facets[selector];
+        address oldFacetAddress = address(bytes20(oldFacet));
+
+        require(
+          oldFacetAddress != address(0),
+          'DiamondBase: selector not found'
+        );
+
+        require(
+          oldFacetAddress != address(this),
+          'DiamondBase: selector is immutable'
+        );
+
+        require(
+          oldFacetAddress != facetCut.target,
+          'DiamondBase: REPLACE target is identical'
+        );
+
+        // replace old facet address
+        l.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(facetCut.target);
+      }
+    }
+  }
+
+  function initialize (
+    address target,
+    bytes memory data
+  ) private {
     require(
-      fallbackAddress != address(this),
-      'DiamondBase: fallback address cannot be self'
+      (target == address(0)) == (data.length == 0),
+      'DiamondBase: invalid initialization parameters'
     );
-    l.fallbackAddress = fallbackAddress;
-  }
 
-  function getFacetCuts (
-    Layout storage l
-  ) internal view returns (FacetCut[] memory cuts) {
-    cuts = new DiamondBaseStorage.FacetCut[](l.selectors.length());
+    if (target != address(0)) {
+      if (target != address(this)) {
+        require(
+          target.isContract(),
+          'DiamondBase: initialization target has no code'
+        );
+      }
 
-    for (uint i; i < l.selectors.length(); i++) {
-      cuts[i] = DiamondBaseStorage.FacetCut({
-        facet: l.selectorFacet[bytes4(uint32(l.selectors.at(i)))],
-        selector: bytes4(uint32(l.selectors.at(i)))
-      });
+      (bool success, ) = target.delegatecall(data);
+
+      if (!success) {
+        assembly {
+          returndatacopy(0, 0, returndatasize())
+          revert(0, returndatasize())
+        }
+      }
     }
-  }
-
-  function getFacets (
-    Layout storage l
-  ) internal view returns (address[] memory facets) {
-    EnumerableSet.AddressSet storage allFacets = l.facets;
-    facets = new address[](allFacets.length());
-
-    for (uint i; i < facets.length; i++) {
-      facets[i] = allFacets.at(i);
-    }
-  }
-
-  function getFacetSelectors (
-    Layout storage l,
-    address facet
-  ) internal view returns (bytes4[] memory selectors) {
-    EnumerableSet.UintSet storage facetSelectors = l.facetSelectors[facet];
-    selectors = new bytes4[](facetSelectors.length());
-
-    for (uint i; i < selectors.length; i++) {
-      selectors[i] = bytes4(uint32(facetSelectors.at(i)));
-    }
-  }
-
-  function getSelectorFacet (
-    Layout storage l,
-    bytes4 selector
-  ) internal view returns (address) {
-    return l.selectorFacet[selector];
   }
 }

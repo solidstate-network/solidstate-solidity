@@ -3,14 +3,26 @@
 pragma solidity ^0.8.0;
 
 import '../../access/OwnableInternal.sol';
+import './IDiamondCuttable.sol';
 import './DiamondBaseStorage.sol';
 
-contract DiamondCuttable is OwnableInternal {
+/**
+ * @title EIP-2535 "Diamond" proxy update contract
+ */
+contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
+  /**
+   * @notice update functions callable on Diamond proxy
+   * @param facetCuts array of structured Diamond facet update data
+   * @param target optional recipient of initialization delegatecall
+   * @param data optional initialization call data
+   */
   function diamondCut (
-    DiamondBaseStorage.FacetCut[] calldata cuts
-  ) external onlyOwner {
-    DiamondBaseStorage.layout().diamondCut(cuts);
+    FacetCut[] calldata facetCuts,
+    address target,
+    bytes calldata data
+  ) external override onlyOwner {
+    DiamondBaseStorage.layout().diamondCut(facetCuts, target, data);
   }
 }
