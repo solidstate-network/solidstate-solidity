@@ -238,7 +238,7 @@ library DiamondBaseStorage {
         }
       }
 
-      selectorCount = (selectorSlotCount << 3) + selectorInSlotIndex;
+      selectorCount = (selectorSlotCount << 3) | selectorInSlotIndex;
 
       return (selectorCount, selectorSlot);
     }
