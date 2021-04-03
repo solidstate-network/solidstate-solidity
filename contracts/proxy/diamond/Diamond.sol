@@ -18,67 +18,47 @@ contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC
 
   constructor () {
     ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
-    FacetCut[] memory facetCuts = new FacetCut[](4);
+    bytes4[] memory selectors = new bytes4[](10);
 
     // register DiamondCuttable
 
-    bytes4[] memory selectorsDiamondCuttable = new bytes4[](1);
-    selectorsDiamondCuttable[0] = IDiamondCuttable.diamondCut.selector;
-
-    facetCuts[0] = FacetCut({
-      target: address(this),
-      action: IDiamondCuttable.FacetCutAction.ADD,
-      selectors: selectorsDiamondCuttable
-    });
+    selectors[0] = IDiamondCuttable.diamondCut.selector;
 
     erc165.setSupportedInterface(type(IDiamondCuttable).interfaceId, true);
 
     // register DiamondLoupe
 
-    bytes4[] memory selectorsDiamondLoupe = new bytes4[](4);
-    selectorsDiamondLoupe[0] = IDiamondLoupe.facets.selector;
-    selectorsDiamondLoupe[1] = IDiamondLoupe.facetFunctionSelectors.selector;
-    selectorsDiamondLoupe[2] = IDiamondLoupe.facetAddresses.selector;
-    selectorsDiamondLoupe[3] = IDiamondLoupe.facetAddress.selector;
-
-    facetCuts[1] = FacetCut({
-      target: address(this),
-      action: IDiamondCuttable.FacetCutAction.ADD,
-      selectors: selectorsDiamondLoupe
-    });
+    selectors[1] = IDiamondLoupe.facets.selector;
+    selectors[2] = IDiamondLoupe.facetFunctionSelectors.selector;
+    selectors[3] = IDiamondLoupe.facetAddresses.selector;
+    selectors[4] = IDiamondLoupe.facetAddress.selector;
 
     erc165.setSupportedInterface(type(IDiamondLoupe).interfaceId, true);
 
     // register ERC165
 
-    bytes4[] memory selectorsERC165 = new bytes4[](1);
-    selectorsERC165[0] = IERC165.supportsInterface.selector;
-
-    facetCuts[2] = FacetCut({
-      target: address(this),
-      action: IDiamondCuttable.FacetCutAction.ADD,
-      selectors: selectorsERC165
-    });
+    selectors[5] = IERC165.supportsInterface.selector;
 
     erc165.setSupportedInterface(type(IERC165).interfaceId, true);
 
     // register SafeOwnable
 
-    bytes4[] memory selectorsSafeOwnable = new bytes4[](4);
-    selectorsSafeOwnable[0] = Ownable.owner.selector;
-    selectorsSafeOwnable[1] = SafeOwnable.nomineeOwner.selector;
-    selectorsSafeOwnable[2] = SafeOwnable.transferOwnership.selector;
-    selectorsSafeOwnable[3] = SafeOwnable.acceptOwnership.selector;
-
-    facetCuts[3] = FacetCut({
-      target: address(this),
-      action: IDiamondCuttable.FacetCutAction.ADD,
-      selectors: selectorsSafeOwnable
-    });
+    selectors[6] = Ownable.owner.selector;
+    selectors[7] = SafeOwnable.nomineeOwner.selector;
+    selectors[8] = SafeOwnable.transferOwnership.selector;
+    selectors[9] = SafeOwnable.acceptOwnership.selector;
 
     erc165.setSupportedInterface(type(IERC173).interfaceId, true);
 
     // diamond cut
+
+    FacetCut[] memory facetCuts = new FacetCut[](1);
+
+    facetCuts[0] = FacetCut({
+      target: address(this),
+      action: IDiamondCuttable.FacetCutAction.ADD,
+      selectors: selectors
+    });
 
     DiamondBaseStorage.layout().diamondCut(facetCuts, address(0), '');
 
