@@ -2,11 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20Base.sol';
 import './ERC20MetadataStorage.sol';
 import './IERC20Metadata.sol';
 
-abstract contract ERC20Metadata is IERC20Metadata, ERC20Base {
+abstract contract ERC20Metadata is IERC20Metadata {
   function name () virtual override public view returns (string memory) {
     return ERC20MetadataStorage.layout().name;
   }

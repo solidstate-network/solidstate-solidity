@@ -1,10 +1,8 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
-
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decimals, supply }, skips) {
+const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decimals }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Metadata', function () {
@@ -13,9 +11,6 @@ const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decima
     beforeEach(async function () {
       instance = await ethers.getContractAt('ERC20Metadata', (await deploy()).address);
     });
-
-    // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base({ deploy: () => instance, supply }, skips);
 
     describe('#name', function () {
       it('returns token name', async function () {
