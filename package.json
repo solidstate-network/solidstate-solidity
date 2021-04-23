@@ -4,16 +4,16 @@
   "author": "Nick Barry",
   "license": "MIT",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "chai": "^4.3.0",
-    "eslint": "^7.20.0",
-    "eslint-plugin-mocha": "^8.0.0",
-    "ethereum-waffle": "^3.2.2",
-    "hardhat": "^2.0.10",
+    "chai": "^4.3.4",
+    "eslint": "^7.24.0",
+    "eslint-plugin-mocha": "^8.1.0",
+    "ethereum-waffle": "^3.3.0",
+    "hardhat": "^2.2.1",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
-    "lerna": "^3.22.1",
-    "solidity-coverage": "^0.7.15"
+    "lerna": "^4.0.0",
+    "solidity-coverage": "^0.7.16"
   }
 }
