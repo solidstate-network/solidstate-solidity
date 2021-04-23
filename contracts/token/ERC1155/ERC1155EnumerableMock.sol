@@ -11,4 +11,13 @@ contract ERC1155EnumerableMock is ERC1155Enumerable {
     ERC165Storage.layout().setSupportedInterface(type(IERC165).interfaceId, true);
     ERC165Storage.layout().setSupportedInterface(type(IERC1155).interfaceId, true);
   }
+
+  function mint (
+    address account,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) external {
+    _mint(account, id, amount, data);
+  }
 }
