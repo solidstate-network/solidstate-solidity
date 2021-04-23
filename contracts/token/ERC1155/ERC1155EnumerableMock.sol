@@ -15,9 +15,16 @@ contract ERC1155EnumerableMock is ERC1155Enumerable {
   function mint (
     address account,
     uint id,
-    uint amount,
-    bytes memory data
+    uint amount
   ) external {
-    _mint(account, id, amount, data);
+    _mint(account, id, amount, '');
+  }
+
+  function burn (
+    address account,
+    uint id,
+    uint amount
+  ) external {
+    _burn(account, id, amount);
   }
 }
