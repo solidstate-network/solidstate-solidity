@@ -2,12 +2,6 @@ const { expect } = require('chai');
 
 const describeBehaviorOfERC1155Base = require('./ERC1155Base.behavior.js');
 
-let deploy = async function () {
-  let factory = await ethers.getContractFactory('ERC1155BaseMock');
-  let instance = await factory.deploy();
-  return await instance.deployed();
-};
-
 describe('ERC1155Base', function () {
   let holder;
   let instance;
@@ -18,14 +12,18 @@ describe('ERC1155Base', function () {
   });
 
   beforeEach(async function () {
-    instance = await deploy();
+    const factory = await ethers.getContractFactory('ERC1155BaseMock');
+    instance = await factory.deploy();
+    await instance.deployed();
     invalidReceiver = instance;
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1155Base({
     deploy: () => instance,
-  });
+    mint: (recipient, tokenId, amount) => instance.mint(recipient, tokenId, amount),
+    burn: (recipient, tokenId, amount) => instance.burn(recipient, tokenId, amount),
+  }, []);
 
   describe('__internal', function () {
     describe('#_mint', function () {
