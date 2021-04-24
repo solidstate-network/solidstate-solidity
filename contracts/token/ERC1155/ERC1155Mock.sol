@@ -11,4 +11,20 @@ contract ERC1155Mock is ERC1155 {
     ERC165Storage.layout().setSupportedInterface(type(IERC165).interfaceId, true);
     ERC165Storage.layout().setSupportedInterface(type(IERC1155).interfaceId, true);
   }
+
+  function mint (
+    address account,
+    uint id,
+    uint amount
+  ) external {
+    _mint(account, id, amount, '');
+  }
+
+  function burn (
+    address account,
+    uint id,
+    uint amount
+  ) external {
+    _burn(account, id, amount);
+  }
 }

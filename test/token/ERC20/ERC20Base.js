@@ -21,7 +21,9 @@ describe('ERC20Base', function () {
   describeBehaviorOfERC20Base({
     deploy: () => instance,
     supply: 0,
-  });
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
+  }, []);
 
   describe('__internal', function () {
     describe('#_mint', function () {
