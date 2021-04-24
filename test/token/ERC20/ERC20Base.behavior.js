@@ -2,15 +2,15 @@ const { expect } = require('chai');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips) {
+const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Base', function () {
-    let holder, spender;
+    let holder, spender, receiver;
     let instance;
 
     before(async function () {
-      [holder, spender] = await ethers.getSigners();
+      [holder, spender, receiver] = await ethers.getSigners();
     });
 
     beforeEach(async function () {
@@ -51,11 +51,46 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply }, skips) {
     });
 
     describe('#transfer', function () {
-      it('todo');
+      it('transfers amount from a to b', async function(){
+        const amount = ethers.constants.Two;
+        await mint(spender.address, amount);
+        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(amount);
+
+        await instance.connect(spender).transfer(holder.address, amount);
+        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
+        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
+      });
     });
 
     describe('#transferFrom', function () {
-      it('todo');
+      it('transfers amount from spender on behalf of sender', async function(){
+        const amount = ethers.constants.Two;
+        await mint(holder.address, amount);
+        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
+
+        await instance.connect(holder).approve(spender.address, amount);
+        await instance.connect(spender).transferFrom(holder.address, receiver.address, amount);
+        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(amount);
+
+        await burn(receiver.address, amount);
+      });
+
+      describe('reverts if', function (){
+        it('spender not approved', async function(){
+          const amount = ethers.constants.Two;
+          await mint(holder.address, amount);
+          expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
+          expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
+          expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
+  
+          await expect(instance.connect(spender).transferFrom(holder.address, receiver.address, amount)).to.be.reverted();
+        })
+      })
     });
 
     describe('#approve', function () {
