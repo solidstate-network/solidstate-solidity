@@ -26,7 +26,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
     }, skips);
 
     describe('#balanceOf', function () {
-      it.only('returns the balance of given token held by given address', async function () {
+      it('returns the balance of given token held by given address', async function () {
         
         const id = ethers.constants.Zero;
         expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(0);
