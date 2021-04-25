@@ -4,7 +4,7 @@ const describeBehaviorOfERC20Base = require('../ERC20/ERC20Base.behavior.js');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
-const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, supply }, skips) {
+const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, mint, burn, supply }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC1404Base', function () {
@@ -15,7 +15,11 @@ const describeBehaviorOfERC1404Base = function ({ deploy, restrictions, supply }
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base({ deploy: () => instance, supply }, skips);
+    describeBehaviorOfERC20Base({
+      deploy: () => instance, supply,
+      mint,
+      burn,
+    }, skips);
 
     // TODO: transfers blocked if restriction exists
 

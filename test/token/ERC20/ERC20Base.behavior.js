@@ -88,7 +88,7 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
           expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
           expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
   
-          await expect(instance.connect(spender).transferFrom(holder.address, receiver.address, amount)).to.be.reverted();
+          await expect(instance.connect(spender).transferFrom(holder.address, receiver.address, amount)).to.be.reverted;
         })
       })
     });

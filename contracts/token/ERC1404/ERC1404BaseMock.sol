@@ -18,4 +18,18 @@ contract ERC1404BaseMock is ERC1404Base {
   ) override public pure returns (uint8) {
     return 0;
   }
+
+  function mint (
+    address account,
+    uint amount
+  ) external {
+    _mint(account, amount);
+  }
+
+  function burn (
+    address account,
+    uint amount
+  ) external {
+    _burn(account, amount);
+  }
 }

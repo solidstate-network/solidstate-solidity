@@ -12,6 +12,17 @@ let deploy = async function () {
 };
 
 describe('ERC1404Base', function () {
+  let instance;
+
+  beforeEach(async function () {
+    instance = await deploy();
+  });
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC1404Base({ deploy, restrictions, supply: 0 });
+  describeBehaviorOfERC1404Base({
+    deploy: () => instance,
+    restrictions,
+    supply: 0,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
+  }, []);
 });
