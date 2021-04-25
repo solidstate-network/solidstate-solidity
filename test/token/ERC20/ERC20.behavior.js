@@ -4,16 +4,31 @@ const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
 const describeBehaviorOfERC20Extended = require('./ERC20Extended.behavior.js');
 const describeBehaviorOfERC20Metadata = require('./ERC20Metadata.behavior.js');
 
-const describeBehaviorOfERC20 = function ({ deploy, name, symbol, decimals, supply }, skips) {
+const describeBehaviorOfERC20 = function ({ deploy, mint, burn, name, symbol, decimals, supply }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC20', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Base({ deploy, supply }, skips);
+    describeBehaviorOfERC20Base({
+      deploy,
+      mint,
+      burn,
+      supply,
+    }, skips);
+
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Extended({ deploy }, ['::ERC20Base', ...skips]);
+    describeBehaviorOfERC20Extended({
+      deploy,
+    }, ['::ERC20Base', ...skips]);
+
     // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC20Metadata({ deploy, name, symbol, decimals, supply }, ['::ERC20Base', ...skips]);
+    describeBehaviorOfERC20Metadata({
+      deploy,
+      name,
+      symbol,
+      decimals,
+      supply,
+    }, skips);
   });
 };
 
