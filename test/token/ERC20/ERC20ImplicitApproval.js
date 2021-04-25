@@ -26,8 +26,10 @@ describe('ERC20ImplicitApproval', function () {
   describeBehaviorOfERC20ImplicitApproval({
     deploy: () => instance,
     supply: 0,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
     getImplicitlyApprovedSpender,
-  });
+  }, []);
 
   describe('__internal', function () {
     describe('#_isImplicitlyApproved', function () {

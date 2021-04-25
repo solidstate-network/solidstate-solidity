@@ -7,6 +7,17 @@ let deploy = async function () {
 };
 
 describe('ERC20Extended', function () {
+  let instance;
+
+  beforeEach(async function () {
+    instance = await deploy();
+  });
+  
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Extended({ deploy, supply: 0 });
+  describeBehaviorOfERC20Extended({
+    deploy: () => instance,
+    supply: 0,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
+  }, []);
 });
