@@ -1,23 +1,40 @@
-const describeBehaviorOfReentrancyGuard = require('./ReentrancyGuard.behavior.js');
+const { expect } = require('chai');
 
-let deploy = async function () {
-  let factory = await ethers.getContractFactory('ReentrancyGuard');
-  let instance = await factory.deploy();
-  return await instance.deployed();
-};
+const describeBehaviorOfReentrancyGuard = require('./ReentrancyGuard.behavior.js');
 
 describe('ReentrancyGuard', function () {
   let instance;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const factory = await ethers.getContractFactory('ReentrancyGuardMock');
+    instance = await factory.deploy();
+    await instance.deployed();
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfReentrancyGuard({ deploy: () => instance });
+  describeBehaviorOfReentrancyGuard({
+    deploy: () => instance,
+  }, []);
 
   describe('__internal', function () {
-    // TODO: modifier
-    it('todo');
+    describe('nonReentrant modifier', function () {
+      describe('reverts if', function () {
+        it('call is reentrant', async function () {
+          await expect(
+            instance.reentrancyTest()
+          ).to.be.revertedWith(
+            'ReentrancyGuard: reentrant call'
+          );
+        });
+
+        it('call is cross-function reentrant', async function () {
+          await expect(
+            instance.reentrancyTest()
+          ).to.be.revertedWith(
+            'ReentrancyGuard: reentrant call'
+          );
+        });
+      });
+    });
   });
 });
