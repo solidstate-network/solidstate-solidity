@@ -8,8 +8,9 @@ describe('ERC1155', function () {
     instance = await factory.deploy();
     await instance.deployed();
   });
+
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC1155({ 
+  describeBehaviorOfERC1155({
     deploy: () => instance,
     mint: (recipient, tokenId, amount) => instance.mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) => instance.burn(recipient, tokenId, amount),
