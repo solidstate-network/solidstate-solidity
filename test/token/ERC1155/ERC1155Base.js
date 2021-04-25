@@ -33,7 +33,7 @@ describe('ERC1155Base', function () {
 
         let initialBalance = await instance['balanceOf(address,uint256)'](holder.address, id);
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -50,7 +50,7 @@ describe('ERC1155Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance.connect(holder)['mint(address,uint256,uint256,bytes)'](
+          instance.connect(holder)['mint(address,uint256,uint256)'](
             holder.address,
             id,
             amount,
@@ -70,7 +70,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mint(address,uint256,uint256,bytes)'](
+            instance['mint(address,uint256,uint256)'](
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -83,7 +83,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['mint(address,uint256,uint256,bytes)'](
+            instance['mint(address,uint256,uint256)'](
               invalidReceiver.address,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -103,7 +103,7 @@ describe('ERC1155Base', function () {
 
         let initialBalance = await instance['balanceOf(address,uint256)'](holder.address, id);
 
-        await instance['mintBatch(address,uint256[],uint256[],bytes)'](
+        await instance['mintBatch(address,uint256[],uint256[])'](
           holder.address,
           [id],
           [amount],
@@ -120,7 +120,7 @@ describe('ERC1155Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance.connect(holder)['mintBatch(address,uint256[],uint256[],bytes)'](
+          instance.connect(holder)['mintBatch(address,uint256[],uint256[])'](
             holder.address,
             [id],
             [amount],
@@ -140,7 +140,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               ethers.constants.AddressZero,
               [],
               [],
@@ -153,7 +153,7 @@ describe('ERC1155Base', function () {
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               holder.address,
               [ethers.constants.Zero],
               [],
@@ -166,7 +166,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               instance.address,
               [],
               [],
@@ -184,7 +184,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -208,7 +208,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -264,7 +264,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -288,7 +288,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[],bytes)'](
+        await instance['mintBatch(address,uint256[],uint256[])'](
           holder.address,
           [id],
           [amount],

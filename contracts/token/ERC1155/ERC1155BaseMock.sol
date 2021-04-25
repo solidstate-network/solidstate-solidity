@@ -15,19 +15,17 @@ contract ERC1155BaseMock is ERC1155Base {
   function mint (
     address account,
     uint id,
-    uint amount,
-    bytes memory data
+    uint amount
   ) external {
-    _mint(account, id, amount, data);
+    _mint(account, id, amount, '');
   }
 
   function mintBatch (
     address account,
     uint[] memory ids,
-    uint[] memory amounts,
-    bytes memory data
+    uint[] memory amounts
   ) external {
-    _mintBatch(account, ids, amounts, data);
+    _mintBatch(account, ids, amounts, '');
   }
 
   function burn (
