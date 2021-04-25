@@ -6,11 +6,12 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
   const describe = describeFilter(skips);
 
   describe('::ERC20Base', function () {
-    let holder, spender, receiver;
+    // note: holder gets supply (1e18) amount of tokens so use spender/receiver for easier testing
+    let holder, spender, receiver, sender;
     let instance;
 
     before(async function () {
-      [holder, spender, receiver] = await ethers.getSigners();
+      [holder, spender, receiver, sender] = await ethers.getSigners();
     });
 
     beforeEach(async function () {
@@ -53,27 +54,28 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
     describe('#transfer', function () {
       it('transfers amount from a to b', async function(){
         const amount = ethers.constants.Two;
+        const zero = ethers.constants.Zero;
         await mint(spender.address, amount);
-        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(zero);
         expect(await instance.callStatic.balanceOf(spender.address)).to.equal(amount);
 
-        await instance.connect(spender).transfer(holder.address, amount);
-        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
-        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
+        await instance.connect(spender).transfer(receiver.address, amount);
+        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(amount);
+        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(zero);
       });
     });
 
     describe('#transferFrom', function () {
       it('transfers amount from spender on behalf of sender', async function(){
         const amount = ethers.constants.Two;
-        await mint(holder.address, amount);
+        await mint(sender.address, amount);
         expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
         expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
-        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
+        expect(await instance.callStatic.balanceOf(sender.address)).to.equal(amount);
 
-        await instance.connect(holder).approve(spender.address, amount);
-        await instance.connect(spender).transferFrom(holder.address, receiver.address, amount);
-        expect(await instance.callStatic.balanceOf(holder.address)).to.equal(ethers.constants.Zero);
+        await instance.connect(sender).approve(spender.address, amount);
+        await instance.connect(spender).transferFrom(sender.address, receiver.address, amount);
+        expect(await instance.callStatic.balanceOf(sender.address)).to.equal(ethers.constants.Zero);
         expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
         expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(amount);
 
@@ -83,12 +85,12 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
       describe('reverts if', function (){
         it('spender not approved', async function(){
           const amount = ethers.constants.Two;
-          await mint(holder.address, amount);
+          await mint(sender.address, amount);
           expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
           expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
-          expect(await instance.callStatic.balanceOf(holder.address)).to.equal(amount);
+          expect(await instance.callStatic.balanceOf(sender.address)).to.equal(amount);
   
-          await expect(instance.connect(spender).transferFrom(holder.address, receiver.address, amount)).to.be.reverted;
+          await expect(instance.connect(spender).transferFrom(sender.address, receiver.address, amount)).to.be.reverted;
         })
       })
     });
