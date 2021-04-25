@@ -21,8 +21,6 @@ const describeBehaviorOfERC1404 = function ({ deploy, mint, burn, restrictions, 
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1404Base({
       deploy,
-      mint,
-      burn,
       restrictions,
       supply,
     }, ['::ERC20Base', ...skips]);

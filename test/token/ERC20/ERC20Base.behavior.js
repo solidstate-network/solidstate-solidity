@@ -54,14 +54,19 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
     describe('#transfer', function () {
       it('transfers amount from a to b', async function(){
         const amount = ethers.constants.Two;
-        const zero = ethers.constants.Zero;
         await mint(spender.address, amount);
-        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(zero);
-        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(amount);
 
-        await instance.connect(spender).transfer(receiver.address, amount);
-        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(amount);
-        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(zero);
+        await expect(() => 
+          instance.connect(spender).transfer(holder.address, amount))
+          .to.changeTokenBalances(instance, [spender, holder], [-amount, amount])
+      });
+
+      describe('reverts if', function (){
+        it('has insufficient balance', async function(){
+          const amount = ethers.constants.Two;
+
+          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.reverted;
+        });
       });
     });
 
@@ -69,30 +74,28 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
       it('transfers amount from spender on behalf of sender', async function(){
         const amount = ethers.constants.Two;
         await mint(sender.address, amount);
-        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
-        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
-        expect(await instance.callStatic.balanceOf(sender.address)).to.equal(amount);
 
         await instance.connect(sender).approve(spender.address, amount);
-        await instance.connect(spender).transferFrom(sender.address, receiver.address, amount);
-        expect(await instance.callStatic.balanceOf(sender.address)).to.equal(ethers.constants.Zero);
-        expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
-        expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(amount);
 
-        await burn(receiver.address, amount);
+        await expect(() => 
+          instance.connect(spender).transferFrom(sender.address, receiver.address, amount))
+          .to.changeTokenBalances(instance, [sender, receiver], [-amount, amount]);
       });
 
       describe('reverts if', function (){
+        it('has insufficient balance', async function(){
+          const amount = ethers.constants.Two;
+
+          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.reverted;
+        });
+
         it('spender not approved', async function(){
           const amount = ethers.constants.Two;
           await mint(sender.address, amount);
-          expect(await instance.callStatic.balanceOf(spender.address)).to.equal(ethers.constants.Zero);
-          expect(await instance.callStatic.balanceOf(receiver.address)).to.equal(ethers.constants.Zero);
-          expect(await instance.callStatic.balanceOf(sender.address)).to.equal(amount);
   
           await expect(instance.connect(spender).transferFrom(sender.address, receiver.address, amount)).to.be.reverted;
-        })
-      })
+        });
+      });
     });
 
     describe('#approve', function () {

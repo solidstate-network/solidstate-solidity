@@ -120,16 +120,14 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
         const id = ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
-        expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(0);
+        await mint(spender.address, id, amount);
 
-        await mint(holder.address, id, amount);
-
-        expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(amount);
-
-        await instance.connect(holder).safeTransferFrom(holder.address, spender.address, id, amount, ethers.utils.randomBytes(0));
-
-        expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(0);
         expect(await instance.callStatic.balanceOf(spender.address, id)).to.equal(amount);
+
+        await instance.connect(spender).safeTransferFrom(spender.address, holder.address, id, amount, ethers.utils.randomBytes(0));
+
+        expect(await instance.callStatic.balanceOf(spender.address, id)).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(amount);
       });
     });
 
@@ -138,16 +136,14 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
         const id = ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
-        expect(await instance.callStatic.balanceOfBatch([holder.address], [id])).to.deep.have.members([ethers.constants.Zero]);
+        await mint(spender.address, id, amount);
 
-        await mint(holder.address, id, amount);
-
-        expect(await instance.callStatic.balanceOfBatch([holder.address], [id])).to.deep.have.members([amount]);
-
-        await instance.connect(holder).safeBatchTransferFrom(holder.address, spender.address, [id], [amount], ethers.utils.randomBytes(0));
-
-        expect(await instance.callStatic.balanceOfBatch([holder.address], [id])).to.deep.have.members([ethers.constants.Zero]);
         expect(await instance.callStatic.balanceOfBatch([spender.address], [id])).to.deep.have.members([amount]);
+
+        await instance.connect(spender).safeBatchTransferFrom(spender.address, holder.address, [id], [amount], ethers.utils.randomBytes(0));
+
+        expect(await instance.callStatic.balanceOfBatch([spender.address], [id])).to.deep.have.members([ethers.constants.Zero]);
+        expect(await instance.callStatic.balanceOfBatch([holder.address], [id])).to.deep.have.members([amount]);
       });
     });
   });
