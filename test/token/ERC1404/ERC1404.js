@@ -5,16 +5,20 @@ let restrictions = [
   { code: ethers.BigNumber.from(3), message: 'three' },
 ];
 
-let deploy = async function () {
-  let factory = await ethers.getContractFactory('ERC1404Mock');
-  let instance = await factory.deploy(restrictions.map(r => r.code), restrictions.map(r => r.message));
-  return await instance.deployed();
-};
-
 describe('ERC1404', function () {
+  let instance;
+
+  beforeEach(async function(){
+    let factory = await ethers.getContractFactory('ERC1404Mock');
+    instance = await factory.deploy(restrictions.map(r => r.code), restrictions.map(r => r.message));
+    await instance.deployed();
+  });
+
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1404({
-    deploy,
+    deploy: () => instance,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
     restrictions,
     name: '',
     symbol: '',

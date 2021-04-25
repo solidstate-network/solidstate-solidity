@@ -2,12 +2,6 @@ const { expect } = require('chai');
 
 const describeBehaviorOfERC1155Base = require('./ERC1155Base.behavior.js');
 
-let deploy = async function () {
-  let factory = await ethers.getContractFactory('ERC1155BaseMock');
-  let instance = await factory.deploy();
-  return await instance.deployed();
-};
-
 describe('ERC1155Base', function () {
   let holder;
   let instance;
@@ -18,14 +12,18 @@ describe('ERC1155Base', function () {
   });
 
   beforeEach(async function () {
-    instance = await deploy();
+    const factory = await ethers.getContractFactory('ERC1155BaseMock');
+    instance = await factory.deploy();
+    await instance.deployed();
     invalidReceiver = instance;
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1155Base({
     deploy: () => instance,
-  });
+    mint: (recipient, tokenId, amount) => instance.mint(recipient, tokenId, amount),
+    burn: (recipient, tokenId, amount) => instance.burn(recipient, tokenId, amount),
+  }, []);
 
   describe('__internal', function () {
     describe('#_mint', function () {
@@ -35,7 +33,7 @@ describe('ERC1155Base', function () {
 
         let initialBalance = await instance['balanceOf(address,uint256)'](holder.address, id);
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -52,7 +50,7 @@ describe('ERC1155Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance.connect(holder)['mint(address,uint256,uint256,bytes)'](
+          instance.connect(holder)['mint(address,uint256,uint256)'](
             holder.address,
             id,
             amount,
@@ -72,7 +70,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mint(address,uint256,uint256,bytes)'](
+            instance['mint(address,uint256,uint256)'](
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -85,7 +83,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['mint(address,uint256,uint256,bytes)'](
+            instance['mint(address,uint256,uint256)'](
               invalidReceiver.address,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -105,7 +103,7 @@ describe('ERC1155Base', function () {
 
         let initialBalance = await instance['balanceOf(address,uint256)'](holder.address, id);
 
-        await instance['mintBatch(address,uint256[],uint256[],bytes)'](
+        await instance['mintBatch(address,uint256[],uint256[])'](
           holder.address,
           [id],
           [amount],
@@ -122,7 +120,7 @@ describe('ERC1155Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance.connect(holder)['mintBatch(address,uint256[],uint256[],bytes)'](
+          instance.connect(holder)['mintBatch(address,uint256[],uint256[])'](
             holder.address,
             [id],
             [amount],
@@ -142,7 +140,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               ethers.constants.AddressZero,
               [],
               [],
@@ -155,7 +153,7 @@ describe('ERC1155Base', function () {
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               holder.address,
               [ethers.constants.Zero],
               [],
@@ -168,7 +166,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[],bytes)'](
+            instance['mintBatch(address,uint256[],uint256[])'](
               instance.address,
               [],
               [],
@@ -186,7 +184,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -210,7 +208,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -266,7 +264,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256,bytes)'](
+        await instance['mint(address,uint256,uint256)'](
           holder.address,
           id,
           amount,
@@ -290,7 +288,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[],bytes)'](
+        await instance['mintBatch(address,uint256[],uint256[])'](
           holder.address,
           [id],
           [amount],

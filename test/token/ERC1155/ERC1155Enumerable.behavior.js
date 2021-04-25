@@ -17,6 +17,8 @@ const describeBehaviorOfERC1155Enumerable = function ({ deploy, mint, burn }, sk
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1155Base({
       deploy: () => instance,
+      mint: mint,
+      burn: burn,
     }, skips);
 
     describe('#totalSupply', function () {

@@ -4,7 +4,7 @@ const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
-const describeBehaviorOfERC20ImplicitApproval = function ({ deploy, supply, getImplicitlyApprovedSpender }, skips) {
+const describeBehaviorOfERC20ImplicitApproval = function ({ deploy, supply, getImplicitlyApprovedSpender, burn, mint }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC20ImplicitApproval', function () {
@@ -22,6 +22,8 @@ const describeBehaviorOfERC20ImplicitApproval = function ({ deploy, supply, getI
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Base({
       deploy: () => instance,
+      mint,
+      burn,
       supply,
     }, skips);
 
