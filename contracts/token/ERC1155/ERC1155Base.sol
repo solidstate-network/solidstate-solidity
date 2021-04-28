@@ -218,12 +218,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
     _doSafeBatchTransferAcceptanceCheck(operator, sender, recipient, ids, amounts, data);
 
-    ERC1155BaseStorage.Layout storage l = ERC1155BaseStorage.layout();
+    mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
     for (uint i=0; i < ids.length; i++) {
       uint token = ids[i];
       uint amount = amounts[i];
-      l.balances[token][sender] -= amount;
-      l.balances[token][recipient] += amount;
+      balances[token][sender] -= amount;
+      balances[token][recipient] += amount;
     }
 
     emit TransferBatch(operator, sender, recipient, ids, amounts);
