@@ -72,6 +72,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory amounts,
     bytes memory data
   ) override public {
+    require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
     _transferBatch(msg.sender, from, to, ids, amounts, data);
   }
 
@@ -211,7 +212,6 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory amounts,
     bytes memory data
   ) virtual internal {
-    require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
     require(recipient != address(0), 'ERC1155: transfer to the zero address');
     require(sender == msg.sender || isApprovedForAll(sender, msg.sender), 'ERC1155: caller is not owner nor approved');
 
