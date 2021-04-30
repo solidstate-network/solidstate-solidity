@@ -351,6 +351,14 @@ describe('ERC1155Base', function () {
       });
     });
 
+    describe('#_transfer', function () {
+      it('todo');
+    });
+
+    describe('#_transferBatch', function () {
+      it('todo');
+    });
+
     describe('#_beforeTokenTransfer', function () {
       it('todo');
     });

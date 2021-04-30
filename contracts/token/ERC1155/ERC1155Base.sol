@@ -63,9 +63,8 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     bytes memory data
   ) override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
-
     _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, amount, data);
-    _transferBatch(msg.sender, from, to, _asSingletonArray(id), _asSingletonArray(amount), data);
+    _transfer(msg.sender, from, to, id, amount, data);
   }
 
   function safeBatchTransferFrom (
@@ -77,7 +76,6 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
   ) override public {
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
-
     _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, amounts, data);
     _transferBatch(msg.sender, from, to, ids, amounts, data);
   }
@@ -160,6 +158,54 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);
   }
 
+  function _transfer (
+    address operator,
+    address sender,
+    address recipient,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) virtual internal {
+    require(recipient != address(0), 'ERC1155: transfer to the zero address');
+
+    _beforeTokenTransfer(operator, sender, recipient, _asSingletonArray(id), _asSingletonArray(amount), data);
+
+    mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
+
+    // TODO: error message
+    // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
+    balances[id][sender] -= amount;
+    balances[id][recipient] += amount;
+
+    emit TransferSingle(operator, sender, recipient, id, amount);
+  }
+
+  function _transferBatch (
+    address operator,
+    address sender,
+    address recipient,
+    uint[] memory ids,
+    uint[] memory amounts,
+    bytes memory data
+  ) virtual internal {
+    require(recipient != address(0), 'ERC1155: transfer to the zero address');
+
+    _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
+
+    mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
+
+    for (uint i; i < ids.length; i++) {
+      uint token = ids[i];
+      uint amount = amounts[i];
+      // TODO: error message
+      // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
+      balances[token][sender] -= amount;
+      balances[token][recipient] += amount;
+    }
+
+    emit TransferBatch(operator, sender, recipient, ids, amounts);
+  }
+
   function _asSingletonArray (
     uint element
   ) private pure returns (uint[] memory) {
@@ -208,33 +254,6 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
         revert('ERC1155: transfer to non ERC1155Receiver implementer');
       }
     }
-  }
-
-  function _transferBatch (
-    address operator,
-    address sender,
-    address recipient,
-    uint[] memory ids,
-    uint[] memory amounts,
-    bytes memory data
-  ) virtual internal {
-    require(recipient != address(0), 'ERC1155: transfer to the zero address');
-
-    _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
-
-    mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
-
-    for (uint i=0; i < ids.length; i++) {
-      uint token = ids[i];
-      uint amount = amounts[i];
-      balances[token][sender] -= amount;
-      balances[token][recipient] += amount;
-    }
-
-    // TODO: error message
-    // balances[id][from] = balances[id][from].sub(amount, 'ERC1155: insufficient balances for transfer');
-
-    emit TransferBatch(operator, sender, recipient, ids, amounts);
   }
 
   function _beforeTokenTransfer (
