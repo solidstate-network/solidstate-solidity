@@ -63,8 +63,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     bytes memory data
   ) override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
-    _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, amount, data);
-    _transfer(msg.sender, from, to, id, amount, data);
+    _safeTransfer(msg.sender, from, to, id, amount, data);
   }
 
   function safeBatchTransferFrom (
@@ -74,10 +73,8 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory amounts,
     bytes memory data
   ) override public {
-    require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
-    _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, amounts, data);
-    _transferBatch(msg.sender, from, to, ids, amounts, data);
+    _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
   }
 
   function _mint (
@@ -94,8 +91,16 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     balances[account] += amount;
 
     emit TransferSingle(msg.sender, address(0), account, id, amount);
+  }
 
+  function _safeMint (
+    address account,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) internal {
     _doSafeTransferAcceptanceCheck(msg.sender, address(0), account, id, amount, data);
+    _mint(account, id, amount, data);
   }
 
   function _mintBatch (
@@ -117,8 +122,16 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     }
 
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
+  }
 
+  function _safeMintBatch (
+    address account,
+    uint[] memory ids,
+    uint[] memory amounts,
+    bytes memory data
+  ) internal {
     _doSafeBatchTransferAcceptanceCheck(msg.sender, address(0), account, ids, amounts, data);
+    _mintBatch(account, ids, amounts, data);
   }
 
   function _burn (
@@ -180,6 +193,18 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferSingle(operator, sender, recipient, id, amount);
   }
 
+  function _safeTransfer (
+    address operator,
+    address sender,
+    address recipient,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) virtual internal {
+    _doSafeTransferAcceptanceCheck(operator, sender, recipient, id, amount, data);
+    _transfer(operator, sender, recipient, id, amount, data);
+  }
+
   function _transferBatch (
     address operator,
     address sender,
@@ -189,6 +214,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     bytes memory data
   ) virtual internal {
     require(recipient != address(0), 'ERC1155: transfer to the zero address');
+    require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
     _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
 
@@ -204,6 +230,18 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     }
 
     emit TransferBatch(operator, sender, recipient, ids, amounts);
+  }
+
+  function _safeTransferBatch (
+    address operator,
+    address sender,
+    address recipient,
+    uint[] memory ids,
+    uint[] memory amounts,
+    bytes memory data
+  ) virtual internal {
+    _doSafeBatchTransferAcceptanceCheck(operator, sender, recipient, ids, amounts, data);
+    _transferBatch(operator, sender, recipient, ids, amounts, data);
   }
 
   function _asSingletonArray (
