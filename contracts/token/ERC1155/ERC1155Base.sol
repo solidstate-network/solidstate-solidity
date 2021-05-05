@@ -10,9 +10,19 @@ import './ERC1155BaseStorage.sol';
 import '../../introspection/ERC165.sol';
 import '../../utils/AddressUtils.sol';
 
+/**
+ * @title Base ERC1155 contract
+ * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
+ */
 abstract contract ERC1155Base is IERC1155, ERC165 {
   using AddressUtils for address;
 
+  /**
+   * @notice query the balance of given token held by given address
+   * @param account address to query
+   * @param id token to query
+   * @return token balance
+   */
   function balanceOf (
     address account,
     uint id
@@ -21,6 +31,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     return ERC1155BaseStorage.layout().balances[id][account];
   }
 
+  /**
+   * @notice query the balances of given tokens held by given addresses
+   * @param accounts addresss to query
+   * @param ids tokens to query
+   * @return token balances
+   */
   function balanceOfBatch (
     address[] memory accounts,
     uint[] memory ids
@@ -39,6 +55,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     return batchBalances;
   }
 
+  /**
+   * @notice query approval status of given operator with respect to given address
+   * @param account address to query for approval granted
+   * @param operator address to query for approval received
+   * @return whether operator is approved to spend tokens held by account
+   */
   function isApprovedForAll (
     address account,
     address operator
@@ -46,6 +68,11 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
   }
 
+  /**
+   * @notice grant approval to or revoke approval from given operator to spend held tokens
+   * @param operator address whose approval status to update
+   * @param status whether operator should be considered approved
+   */
   function setApprovalForAll (
     address operator,
     bool status
@@ -55,6 +82,14 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit ApprovalForAll(msg.sender, operator, status);
   }
 
+  /**
+   * @notice transfer tokens between given addresses, checking for ERC1155Receiver implementation if applicable
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param id token ID
+   * @param amount quantity of tokens to transfer
+   * @param data data payload
+   */
   function safeTransferFrom (
     address from,
     address to,
@@ -66,6 +101,14 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _safeTransfer(msg.sender, from, to, id, amount, data);
   }
 
+  /**
+   * @notice transfer batch of tokens between given addresses, checking for ERC1155Receiver implementation if applicable
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param ids list of token IDs
+   * @param amounts list of quantities of tokens to transfer
+   * @param data data payload
+   */
   function safeBatchTransferFrom (
     address from,
     address to,
@@ -77,6 +120,14 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
   }
 
+  /**
+   * @notice mint given quantity of tokens for given address
+   * @dev ERC1155Receiver implemenation is not checked
+   * @param account beneficiary of minting
+   * @param id token ID
+   * @param amount quantity of tokens to mint
+   * @param data data payload
+   */
   function _mint (
     address account,
     uint id,
@@ -93,6 +144,13 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferSingle(msg.sender, address(0), account, id, amount);
   }
 
+  /**
+   * @notice mint given quantity of tokens for given address
+   * @param account beneficiary of minting
+   * @param id token ID
+   * @param amount quantity of tokens to mint
+   * @param data data payload
+   */
   function _safeMint (
     address account,
     uint id,
@@ -103,6 +161,14 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _mint(account, id, amount, data);
   }
 
+  /**
+   * @notice mint batch of tokens for given address
+   * @dev ERC1155Receiver implemenation is not checked
+   * @param account beneficiary of minting
+   * @param ids list of token IDs
+   * @param amounts list of quantities of tokens to mint
+   * @param data data payload
+   */
   function _mintBatch (
     address account,
     uint[] memory ids,
@@ -124,6 +190,13 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
   }
 
+  /**
+   * @notice mint batch of tokens for given address
+   * @param account beneficiary of minting
+   * @param ids list of token IDs
+   * @param amounts list of quantities of tokens to mint
+   * @param data data payload
+   */
   function _safeMintBatch (
     address account,
     uint[] memory ids,
@@ -134,6 +207,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _mintBatch(account, ids, amounts, data);
   }
 
+  /**
+   * @notice burn given quantity of tokens held by given address
+   * @param account holder of tokens to burn
+   * @param id token ID
+   * @param amount quantity of tokens to burn
+   */
   function _burn (
     address account,
     uint id,
@@ -150,6 +229,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferSingle(msg.sender, account, address(0), id, amount);
   }
 
+  /**
+   * @notice burn given batch of tokens held by given address
+   * @param account holder of tokens to burn
+   * @param ids token IDs
+   * @param amounts quantities of tokens to burn
+   */
   function _burnBatch (
     address account,
     uint[] memory ids,
@@ -171,6 +256,16 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);
   }
 
+  /**
+   * @notice transfer tokens between given addresses
+   * @dev ERC1155Receiver implemenation is not checked
+   * @param operator executor of transfer
+   * @param sender sender of tokens
+   * @param recipient receiver of tokens
+   * @param id token ID
+   * @param amount quantity of tokens to transfer
+   * @param data data payload
+   */
   function _transfer (
     address operator,
     address sender,
@@ -193,6 +288,15 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferSingle(operator, sender, recipient, id, amount);
   }
 
+  /**
+   * @notice transfer tokens between given addresses
+   * @param operator executor of transfer
+   * @param sender sender of tokens
+   * @param recipient receiver of tokens
+   * @param id token ID
+   * @param amount quantity of tokens to transfer
+   * @param data data payload
+   */
   function _safeTransfer (
     address operator,
     address sender,
@@ -205,6 +309,16 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _transfer(operator, sender, recipient, id, amount, data);
   }
 
+  /**
+   * @notice transfer batch of tokens between given addresses
+   * @dev ERC1155Receiver implemenation is not checked
+   * @param operator executor of transfer
+   * @param sender sender of tokens
+   * @param recipient receiver of tokens
+   * @param ids token IDs
+   * @param amounts quantities of tokens to transfer
+   * @param data data payload
+   */
   function _transferBatch (
     address operator,
     address sender,
@@ -232,6 +346,15 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     emit TransferBatch(operator, sender, recipient, ids, amounts);
   }
 
+  /**
+   * @notice transfer batch of tokens between given addresses
+   * @param operator executor of transfer
+   * @param sender sender of tokens
+   * @param recipient receiver of tokens
+   * @param ids token IDs
+   * @param amounts quantities of tokens to transfer
+   * @param data data payload
+   */
   function _safeTransferBatch (
     address operator,
     address sender,
@@ -244,6 +367,11 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _transferBatch(operator, sender, recipient, ids, amounts, data);
   }
 
+  /**
+   * @notice wrap given element in array of length 1
+   * @param element element to wrap
+   * @return singleton array
+   */
   function _asSingletonArray (
     uint element
   ) private pure returns (uint[] memory) {
@@ -252,6 +380,15 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     return array;
   }
 
+  /**
+   * @notice revert if applicable transfer recipient is not valid ERC1155Receiver
+   * @param operator executor of transfer
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param id token ID
+   * @param amount quantity of tokens to transfer
+   * @param data data payload
+   */
   function _doSafeTransferAcceptanceCheck (
     address operator,
     address from,
@@ -273,6 +410,15 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     }
   }
 
+  /**
+  * @notice revert if applicable transfer recipient is not valid ERC1155Receiver
+   * @param operator executor of transfer
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param ids token IDs
+   * @param amounts quantities of tokens to transfer
+   * @param data data payload
+   */
   function _doSafeBatchTransferAcceptanceCheck (
     address operator,
     address from,
@@ -294,6 +440,17 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     }
   }
 
+  /**
+   * @notice ERC1155 hook, called before all transfers including mint and burn
+   * @dev function should be overridden and new implemenation must call super
+   * @dev called for both single and batch transfers
+   * @param operator executor of transfer
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param ids token IDs
+   * @param amounts quantities of tokens to transfer
+   * @param data data payload
+   */
   function _beforeTokenTransfer (
     address operator,
     address from,
