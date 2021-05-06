@@ -27,7 +27,6 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
 
     describe('#balanceOf', function () {
       it('returns the balance of given token held by given address', async function () {
-        
         const id = ethers.constants.Zero;
         expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(0);
 
@@ -37,7 +36,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
         expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(amount);
 
         await burn(holder.address, id, amount);
-        
+
         expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(0);
       });
 
@@ -124,10 +123,53 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
 
         expect(await instance.callStatic.balanceOf(spender.address, id)).to.equal(amount);
 
-        await instance.connect(spender).safeTransferFrom(spender.address, holder.address, id, amount, ethers.utils.randomBytes(0));
+        await instance.connect(spender).safeTransferFrom(
+          spender.address,
+          holder.address,
+          id,
+          amount,
+          ethers.utils.randomBytes(0)
+        );
 
         expect(await instance.callStatic.balanceOf(spender.address, id)).to.equal(ethers.constants.Zero);
         expect(await instance.callStatic.balanceOf(holder.address, id)).to.equal(amount);
+      });
+
+      describe('reverts if', function () {
+        it('sender has insufficient balance', async function () {
+          const id = ethers.constants.Zero;
+          const amount = ethers.constants.Two;
+
+          await expect(
+            instance.connect(spender).safeTransferFrom(
+              spender.address,
+              holder.address,
+              id,
+              amount,
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+          );
+        });
+
+        it('operator is not approved to act on behalf of sender', async function () {
+          await expect(
+            instance.connect(holder).safeTransferFrom(
+              spender.address,
+              holder.address,
+              ethers.constants.Zero,
+              ethers.constants.Zero,
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'ERC1155: caller is not owner nor approved'
+          );
+        });
+
+        it('receiver is invalid ERC1155Receiver');
+
+        it('receiver rejects transfer');
       });
     });
 
@@ -140,10 +182,53 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
 
         expect(await instance.callStatic.balanceOfBatch([spender.address], [id])).to.deep.have.members([amount]);
 
-        await instance.connect(spender).safeBatchTransferFrom(spender.address, holder.address, [id], [amount], ethers.utils.randomBytes(0));
+        await instance.connect(spender).safeBatchTransferFrom(
+          spender.address,
+          holder.address,
+          [id],
+          [amount],
+          ethers.utils.randomBytes(0)
+        );
 
         expect(await instance.callStatic.balanceOfBatch([spender.address], [id])).to.deep.have.members([ethers.constants.Zero]);
         expect(await instance.callStatic.balanceOfBatch([holder.address], [id])).to.deep.have.members([amount]);
+      });
+
+      describe('reverts if', function () {
+        it('sender has insufficient balance', async function () {
+          const id = ethers.constants.Zero;
+          const amount = ethers.constants.Two;
+
+          await expect(
+            instance.connect(spender).safeBatchTransferFrom(
+              spender.address,
+              holder.address,
+              [id],
+              [amount],
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+          );
+        });
+
+        it('operator is not approved to act on behalf of sender', async function () {
+          await expect(
+            instance.connect(holder).safeBatchTransferFrom(
+              spender.address,
+              holder.address,
+              [],
+              [],
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'ERC1155: caller is not owner nor approved'
+          );
+        });
+
+        it('receiver is invalid ERC1155Receiver');
+
+        it('receiver rejects transfer');
       });
     });
   });
