@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfMetamorphicFactory = require('./MetamorphicFactory.behavior.js');
+const describeBehaviorOfMetamorphicFactory = require('@solidstate/spec/factory/MetamorphicFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MetamorphicFactoryMock');

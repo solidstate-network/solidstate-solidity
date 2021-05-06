@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
+const describeBehaviorOfERC20Base = require('@solidstate/spec/token/ERC20/ERC20Base.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20BaseMock');
@@ -20,8 +20,10 @@ describe('ERC20Base', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Base({
     deploy: () => instance,
-    supply: 0,
-  });
+    supply: ethers.constants.Zero,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
+  }, []);
 
   describe('__internal', function () {
     describe('#_mint', function () {

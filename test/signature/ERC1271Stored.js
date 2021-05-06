@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC1271Stored = require('./ERC1271Stored.behavior.js');
+const describeBehaviorOfERC1271Stored = require('@solidstate/spec/signature/ERC1271Stored.behavior.js');
 
 let validParams = [ethers.utils.randomBytes(32), ethers.utils.randomBytes(0)];
 

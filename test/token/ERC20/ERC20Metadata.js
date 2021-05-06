@@ -1,4 +1,4 @@
-const describeBehaviorOfERC20Metadata = require('./ERC20Metadata.behavior.js');
+const describeBehaviorOfERC20Metadata = require('@solidstate/spec/token/ERC20/ERC20Metadata.behavior.js');
 
 let name = 'ERC20Metadata.name';
 let symbol = 'ERC20Metadata.symbol';
@@ -12,5 +12,11 @@ let deploy = async function () {
 
 describe('ERC20Metadata', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Metadata({ deploy, name, symbol, decimals, supply: 0 });
+  describeBehaviorOfERC20Metadata({
+    deploy,
+    name,
+    symbol,
+    decimals,
+    supply: ethers.constants.Zero,
+  }, []);
 });

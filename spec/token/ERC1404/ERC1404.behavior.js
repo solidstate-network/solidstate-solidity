@@ -3,13 +3,15 @@ const describeBehaviorOfERC1404Base = require('./ERC1404Base.behavior.js');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
-const describeBehaviorOfERC1404 = function ({ deploy, restrictions, name, symbol, decimals, supply }, skips) {
+const describeBehaviorOfERC1404 = function ({ deploy, mint, burn, restrictions, name, symbol, decimals, supply }, skips) {
   const describe = describeFilter(skips);
 
   describe('::ERC1404', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20({
       deploy,
+      mint,
+      burn,
       name,
       symbol,
       decimals,

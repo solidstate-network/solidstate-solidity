@@ -19,7 +19,7 @@ const describeBehaviorOfDiamondBase = function ({ deploy, facetFunction, facetFu
         let contract = new ethers.Contract(
           instance.address,
           [`function ${ facetFunction }`],
-          (await ethers.getSigners())[0]
+          ethers.provider
         );
 
         await expect(
@@ -34,7 +34,7 @@ const describeBehaviorOfDiamondBase = function ({ deploy, facetFunction, facetFu
           let contract = new ethers.Contract(
             instance.address,
             ['function function()'],
-            (await ethers.getSigners())[0]
+            ethers.provider
           );
 
           await expect(

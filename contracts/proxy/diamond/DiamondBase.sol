@@ -2,24 +2,30 @@
 
 pragma solidity ^0.8.0;
 
-import '../../proxy/Proxy.sol';
-import '../../utils/EnumerableSet.sol';
+import '../Proxy.sol';
 import './DiamondBaseStorage.sol';
+import './IDiamondLoupe.sol';
+import './IDiamondCuttable.sol';
 
-contract DiamondBase is Proxy {
-  // TODO: selector aliases
-
+/**
+ * @title EIP-2535 "Diamond" proxy base contract
+ * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
+ */
+abstract contract DiamondBase is Proxy {
   function _getImplementation () override internal view returns (address) {
-    // storage layout is not retrieved via function call due to gas considerations
+    // inline storage layout retrieval uses less gas
     DiamondBaseStorage.Layout storage l;
     bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
     assembly { l.slot := slot }
 
-    address implementation = l.selectorFacet[msg.sig];
+    address implementation = address(bytes20(l.facets[msg.sig]));
 
     if (implementation == address(0)) {
       implementation = l.fallbackAddress;
-      require(implementation != address(0), 'DiamondBase: no facet found for function signature');
+      require(
+        implementation != address(0),
+        'DiamondBase: no facet found for function signature'
+      );
     }
 
     return implementation;

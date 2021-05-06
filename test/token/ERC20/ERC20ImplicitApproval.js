@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC20ImplicitApproval = require('./ERC20ImplicitApproval.behavior.js');
+const describeBehaviorOfERC20ImplicitApproval = require('@solidstate/spec/token/ERC20/ERC20ImplicitApproval.behavior.js');
 
 const getImplicitlyApprovedSpender = async function () {
   const [signer] = await ethers.getSigners();
@@ -25,9 +25,11 @@ describe('ERC20ImplicitApproval', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20ImplicitApproval({
     deploy: () => instance,
-    supply: 0,
+    supply: ethers.constants.Zero,
+    mint: (recipient, amount) => instance.mint(recipient, amount),
+    burn: (recipient, amount) => instance.burn(recipient, amount),
     getImplicitlyApprovedSpender,
-  });
+  }, []);
 
   describe('__internal', function () {
     describe('#_isImplicitlyApproved', function () {

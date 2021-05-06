@@ -15,19 +15,33 @@ contract ERC1155BaseMock is ERC1155Base {
   function mint (
     address account,
     uint id,
-    uint amount,
-    bytes memory data
+    uint amount
   ) external {
-    _mint(account, id, amount, data);
+    _mint(account, id, amount, '');
+  }
+
+  function safeMint (
+    address account,
+    uint id,
+    uint amount
+  ) external {
+    _safeMint(account, id, amount, '');
   }
 
   function mintBatch (
     address account,
     uint[] memory ids,
-    uint[] memory amounts,
-    bytes memory data
+    uint[] memory amounts
   ) external {
-    _mintBatch(account, ids, amounts, data);
+    _mintBatch(account, ids, amounts, '');
+  }
+
+  function safeMintBatch (
+    address account,
+    uint[] memory ids,
+    uint[] memory amounts
+  ) external {
+    _safeMintBatch(account, ids, amounts, '');
   }
 
   function burn (
@@ -44,5 +58,49 @@ contract ERC1155BaseMock is ERC1155Base {
     uint[] memory amounts
   ) external {
     _burnBatch(account, ids, amounts);
+  }
+
+  function transfer (
+    address operator,
+    address sender,
+    address recipient,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) external {
+    _transfer(operator, sender, recipient, id, amount, data);
+  }
+
+  function safeTransfer (
+    address operator,
+    address sender,
+    address recipient,
+    uint id,
+    uint amount,
+    bytes memory data
+  ) external {
+    _safeTransfer(operator, sender, recipient, id, amount, data);
+  }
+
+  function transferBatch (
+    address operator,
+    address sender,
+    address recipient,
+    uint[] memory ids,
+    uint[] memory amounts,
+    bytes memory data
+  ) external {
+    _transferBatch(operator, sender, recipient, ids, amounts, data);
+  }
+
+  function safeTransferBatch (
+    address operator,
+    address sender,
+    address recipient,
+    uint[] memory ids,
+    uint[] memory amounts,
+    bytes memory data
+  ) external {
+    _safeTransferBatch(operator, sender, recipient, ids, amounts, data);
   }
 }

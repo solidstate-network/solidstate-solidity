@@ -1,34 +1,40 @@
-const describeBehaviorOfDiamondLoupe = require('./DiamondLoupe.behavior.js');
+const { deployMockContract } = require('@ethereum-waffle/mock-contract');
+
+const describeBehaviorOfDiamondLoupe = require('@solidstate/spec/proxy/diamond/DiamondLoupe.behavior.js');
 
 describe('DiamondLoupe', function () {
-  let facetInstance;
-  let facetCuts = [];
+  let facet;
+  const facetCuts = [];
 
-  let deploy = async function () {
-    let factory = await ethers.getContractFactory('DiamondLoupeMock');
-    let instance = await factory.deploy(facetCuts);
+  const deploy = async function () {
+    const factory = await ethers.getContractFactory('DiamondLoupeMock');
+    const instance = await factory.deploy(facetCuts);
     return await instance.deployed();
   };
 
   // eslint-disable-next-line mocha/no-hooks-for-single-case
   before(async function () {
-    let facetFactory = await ethers.getContractFactory('Ownable');
-    facetInstance = await facetFactory.deploy();
-    await facetInstance.deployed();
+    const functions = [];
+    const selectors = [];
 
-    facetCuts.push(
-      [
-        facetInstance.address,
-        facetInstance.interface.getSighash('owner()'),
-      ]
-    );
+    for (let i = 0; i < 24; i++) {
+      const fn = `fn${ i }()`;
+      functions.push(fn);
+      selectors.push(ethers.utils.hexDataSlice(
+        ethers.utils.solidityKeccak256(['string'], [fn]), 0, 4
+      ));
+    }
 
-    facetCuts.push(
-      [
-        facetInstance.address,
-        facetInstance.interface.getSighash('transferOwnership(address)'),
-      ]
-    );
+    const abi = functions.map(fn => `function ${ fn }`);
+
+    const [owner] = await ethers.getSigners();
+    facet = await deployMockContract(owner, abi);
+
+    facetCuts.push({
+      target: facet.address,
+      action: 0,
+      selectors,
+    });
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe

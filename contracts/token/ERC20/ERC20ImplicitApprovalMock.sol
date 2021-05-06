@@ -20,4 +20,12 @@ contract ERC20ImplicitApprovalMock is ERC20ImplicitApproval {
   ) external view returns (bool) {
     return _isImplicitlyApproved(account);
   }
+
+  function mint (address account, uint amount) external {
+    _mint(account, amount);
+  }
+
+  function burn (address account, uint amount) external {
+    _burn(account, amount);
+  }
 }
