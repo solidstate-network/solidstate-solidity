@@ -1538,10 +1538,9 @@
   resolved "https://registry.yarnpkg.com/@solidstate/library/-/library-0.0.11.tgz#4a5a0c879dca3962676b0a059f63c535fd8a2cc4"
   integrity sha512-/bAFfIg1wshUXP3WRs46Cxjl5vFv4XjWhtYNZ7K8tyNe+acsLBmjmer4C64DzoIc8TeQjfWEhBN2jXzOEdUDFQ==
 
-"@solidstate/spec@file:spec":
-  version "0.0.11"
-  dependencies:
-    "@solidstate/library" "^0.0.11"
+"@solidstate/spec@link:spec":
+  version "0.0.0"
+  uid ""
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
