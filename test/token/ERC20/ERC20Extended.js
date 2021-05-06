@@ -1,4 +1,4 @@
-const describeBehaviorOfERC20Extended = require('./ERC20Extended.behavior.js');
+const describeBehaviorOfERC20Extended = require('@solidstate/spec/token/ERC20/ERC20Extended.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20ExtendedMock');
@@ -12,7 +12,7 @@ describe('ERC20Extended', function () {
   beforeEach(async function () {
     instance = await deploy();
   });
-  
+
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Extended({
     deploy: () => instance,

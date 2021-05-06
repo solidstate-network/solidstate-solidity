@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfDiamond = require('./Diamond.behavior.js');
+const describeBehaviorOfDiamond = require('@solidstate/spec/proxy/diamond/Diamond.behavior.js');
 
 const deploy = async function () {
   const factory = await ethers.getContractFactory('Diamond');

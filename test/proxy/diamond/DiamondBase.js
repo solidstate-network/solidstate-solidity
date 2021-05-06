@@ -1,4 +1,4 @@
-const describeBehaviorOfDiamondBase = require('./DiamondBase.behavior.js');
+const describeBehaviorOfDiamondBase = require('@solidstate/spec/proxy/diamond/DiamondBase.behavior.js');
 
 const deploy = async function () {
   const facetFactory = await ethers.getContractFactory('Ownable');

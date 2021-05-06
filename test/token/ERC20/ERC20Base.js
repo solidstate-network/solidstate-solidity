@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC20Base = require('./ERC20Base.behavior.js');
+const describeBehaviorOfERC20Base = require('@solidstate/spec/token/ERC20/ERC20Base.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('ERC20BaseMock');

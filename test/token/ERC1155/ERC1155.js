@@ -1,4 +1,4 @@
-const describeBehaviorOfERC1155 = require('./ERC1155.behavior.js');
+const describeBehaviorOfERC1155 = require('@solidstate/spec/token/ERC1155/ERC1155.behavior.js');
 
 describe('ERC1155', function () {
   let instance;

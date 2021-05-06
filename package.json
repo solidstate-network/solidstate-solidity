@@ -3,9 +3,13 @@
   "private": true,
   "author": "Nick Barry",
   "license": "MIT",
+  "scripts": {
+    "version": "yarn install && git stage yarn.lock"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@solidstate/spec": "file:spec",
     "chai": "^4.3.4",
     "eslint": "^7.24.0",
     "eslint-plugin-mocha": "^8.1.0",

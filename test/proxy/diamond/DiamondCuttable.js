@@ -1,4 +1,4 @@
-const describeBehaviorOfDiamondCuttable = require('./DiamondCuttable.behavior.js');
+const describeBehaviorOfDiamondCuttable = require('@solidstate/spec/proxy/diamond/DiamondCuttable.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('DiamondCuttableMock');

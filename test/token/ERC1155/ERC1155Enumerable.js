@@ -1,4 +1,4 @@
-const describeBehaviorOfERC1155Enumerable = require('./ERC1155Enumerable.behavior.js');
+const describeBehaviorOfERC1155Enumerable = require('@solidstate/spec/token/ERC1155/ERC1155Enumerable.behavior.js');
 
 describe('ERC1155Enumerable', function () {
   let instance;

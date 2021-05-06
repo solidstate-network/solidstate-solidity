@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfMinimalProxyFactory = require('./MinimalProxyFactory.behavior.js');
+const describeBehaviorOfMinimalProxyFactory = require('@solidstate/spec/factory/MinimalProxyFactory.behavior.js');
 
 let deploy = async function () {
   let factory = await ethers.getContractFactory('MinimalProxyFactoryMock');

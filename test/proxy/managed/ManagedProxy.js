@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
-const describeBehaviorOfManagedProxy = require('./ManagedProxy.behavior.js');
+const describeBehaviorOfManagedProxy = require('@solidstate/spec/proxy/managed/ManagedProxy.behavior.js');
 
 const deploy = async function () {
   const implementationFactory = await ethers.getContractFactory('Ownable');

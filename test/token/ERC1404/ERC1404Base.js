@@ -1,4 +1,4 @@
-const describeBehaviorOfERC1404Base = require('./ERC1404Base.behavior.js');
+const describeBehaviorOfERC1404Base = require('@solidstate/spec/token/ERC1404/ERC1404Base.behavior.js');
 
 let restrictions = [
   { code: ethers.BigNumber.from(1), message: 'one' },
@@ -17,7 +17,7 @@ describe('ERC1404Base', function () {
   beforeEach(async function () {
     instance = await deploy();
   });
-  
+
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1404Base({
     deploy: () => instance,

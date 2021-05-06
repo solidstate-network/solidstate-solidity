@@ -3,7 +3,7 @@
   "packages": [
     "contracts",
     "lib",
-    "test"
+    "spec"
   ],
   "command": {
     "publish": {

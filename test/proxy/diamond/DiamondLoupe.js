@@ -1,6 +1,6 @@
 const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
-const describeBehaviorOfDiamondLoupe = require('./DiamondLoupe.behavior.js');
+const describeBehaviorOfDiamondLoupe = require('@solidstate/spec/proxy/diamond/DiamondLoupe.behavior.js');
 
 describe('DiamondLoupe', function () {
   let facet;

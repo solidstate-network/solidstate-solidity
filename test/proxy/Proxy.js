@@ -1,4 +1,4 @@
-const describeBehaviorOfProxy = require('./Proxy.behavior.js');
+const describeBehaviorOfProxy = require('@solidstate/spec/proxy/Proxy.behavior.js');
 
 let deploy = async function () {
   const implementationFactory = await ethers.getContractFactory('Ownable');

@@ -1,4 +1,4 @@
-const describeBehaviorOfERC20Metadata = require('./ERC20Metadata.behavior.js');
+const describeBehaviorOfERC20Metadata = require('@solidstate/spec/token/ERC20/ERC20Metadata.behavior.js');
 
 let name = 'ERC20Metadata.name';
 let symbol = 'ERC20Metadata.symbol';

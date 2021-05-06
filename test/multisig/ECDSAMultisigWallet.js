@@ -1,4 +1,4 @@
-const describeBehaviorOfECDSAMultisigWallet = require('./ECDSAMultisigWallet.behavior.js');
+const describeBehaviorOfECDSAMultisigWallet = require('@solidstate/spec/multisig/ECDSAMultisigWallet.behavior.js');
 
 const quorum = ethers.constants.One;
 

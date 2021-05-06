@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC1271Ownable = require('./ERC1271Ownable.behavior.js');
+const describeBehaviorOfERC1271Ownable = require('@solidstate/spec/signature/ERC1271Ownable.behavior.js');
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();

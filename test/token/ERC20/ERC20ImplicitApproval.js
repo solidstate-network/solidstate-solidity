@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC20ImplicitApproval = require('./ERC20ImplicitApproval.behavior.js');
+const describeBehaviorOfERC20ImplicitApproval = require('@solidstate/spec/token/ERC20/ERC20ImplicitApproval.behavior.js');
 
 const getImplicitlyApprovedSpender = async function () {
   const [signer] = await ethers.getSigners();

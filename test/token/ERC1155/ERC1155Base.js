@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC1155Base = require('./ERC1155Base.behavior.js');
+const describeBehaviorOfERC1155Base = require('@solidstate/spec/token/ERC1155/ERC1155Base.behavior.js');
 
 describe('ERC1155Base', function () {
   let holder;

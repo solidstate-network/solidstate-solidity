@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfReentrancyGuard = require('./ReentrancyGuard.behavior.js');
+const describeBehaviorOfReentrancyGuard = require('@solidstate/spec/utils/ReentrancyGuard.behavior.js');
 
 describe('ReentrancyGuard', function () {
   let instance;
