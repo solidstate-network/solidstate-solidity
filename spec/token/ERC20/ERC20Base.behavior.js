@@ -23,7 +23,20 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         expect(
           await instance.callStatic['totalSupply()']()
         ).to.equal(supply);
-        // TODO: test delta
+
+        const amount = ethers.constants.Two;
+
+        await mint(holder.address, amount);
+
+        expect(
+          await instance.callStatic['totalSupply()']()
+        ).to.equal(supply.add(amount));
+
+        await burn(holder.address, amount);
+
+        expect(
+          await instance.callStatic['totalSupply()']()
+        ).to.equal(supply);
       });
     });
 
@@ -32,7 +45,16 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         expect(
           await instance.callStatic['balanceOf(address)'](ethers.constants.AddressZero)
         ).to.equal(ethers.constants.Zero);
-        // TODO: test delta
+
+        const amount = ethers.constants.Two;
+
+        await expect(
+          () => mint(holder.address, amount)
+        ).to.changeTokenBalance(instance, holder, amount);
+
+        await expect(
+          () => burn(holder.address, amount)
+        ).to.changeTokenBalance(instance, holder, -amount);
       });
     });
 
@@ -56,9 +78,9 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         const amount = ethers.constants.Two;
         await mint(spender.address, amount);
 
-        await expect(() => 
-          instance.connect(spender).transfer(holder.address, amount))
-          .to.changeTokenBalances(instance, [spender, holder], [-amount, amount])
+        await expect(
+          () => instance.connect(spender).transfer(holder.address, amount)
+        ).to.changeTokenBalances(instance, [spender, holder], [-amount, amount]);
       });
 
       describe('reverts if', function (){
@@ -77,9 +99,9 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
 
         await instance.connect(sender).approve(spender.address, amount);
 
-        await expect(() => 
-          instance.connect(spender).transferFrom(sender.address, receiver.address, amount))
-          .to.changeTokenBalances(instance, [sender, receiver], [-amount, amount]);
+        await expect(
+          () => instance.connect(spender).transferFrom(sender.address, receiver.address, amount)
+        ).to.changeTokenBalances(instance, [sender, receiver], [-amount, amount]);
       });
 
       describe('reverts if', function (){
@@ -92,7 +114,7 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         it('spender not approved', async function(){
           const amount = ethers.constants.Two;
           await mint(sender.address, amount);
-  
+
           await expect(instance.connect(spender).transferFrom(sender.address, receiver.address, amount)).to.be.reverted;
         });
       });

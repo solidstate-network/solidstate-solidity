@@ -22,7 +22,7 @@ describe('ERC1404Base', function () {
   describeBehaviorOfERC1404Base({
     deploy: () => instance,
     restrictions,
-    supply: 0,
+    supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.mint(recipient, amount),
     burn: (recipient, amount) => instance.burn(recipient, amount),
   }, []);

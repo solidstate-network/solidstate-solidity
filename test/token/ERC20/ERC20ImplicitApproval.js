@@ -25,7 +25,7 @@ describe('ERC20ImplicitApproval', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20ImplicitApproval({
     deploy: () => instance,
-    supply: 0,
+    supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.mint(recipient, amount),
     burn: (recipient, amount) => instance.burn(recipient, amount),
     getImplicitlyApprovedSpender,

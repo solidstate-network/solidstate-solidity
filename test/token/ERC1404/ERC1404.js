@@ -23,6 +23,6 @@ describe('ERC1404', function () {
     name: '',
     symbol: '',
     decimals: 0,
-    supply: 0,
+    supply: ethers.constants.Zero,
   }, []);
 });

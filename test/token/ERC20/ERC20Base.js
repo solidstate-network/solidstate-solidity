@@ -20,7 +20,7 @@ describe('ERC20Base', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Base({
     deploy: () => instance,
-    supply: 0,
+    supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.mint(recipient, amount),
     burn: (recipient, amount) => instance.burn(recipient, amount),
   }, []);
