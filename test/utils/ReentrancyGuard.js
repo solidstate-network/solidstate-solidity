@@ -29,7 +29,7 @@ describe('ReentrancyGuard', function () {
 
         it('call is cross-function reentrant', async function () {
           await expect(
-            instance.reentrancyTest()
+            instance.crossFunctionReentrancyTest()
           ).to.be.revertedWith(
             'ReentrancyGuard: reentrant call'
           );
