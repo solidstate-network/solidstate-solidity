@@ -133,7 +133,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint id,
     uint amount,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: mint to the zero address');
 
     _beforeTokenTransfer(msg.sender, address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
@@ -156,7 +156,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint id,
     uint amount,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     _doSafeTransferAcceptanceCheck(msg.sender, address(0), account, id, amount, data);
     _mint(account, id, amount, data);
   }
@@ -174,7 +174,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: mint to the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
@@ -202,7 +202,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     _doSafeBatchTransferAcceptanceCheck(msg.sender, address(0), account, ids, amounts, data);
     _mintBatch(account, ids, amounts, data);
   }
@@ -217,7 +217,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     address account,
     uint id,
     uint amount
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: burn from the zero address');
 
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
@@ -239,7 +239,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     address account,
     uint[] memory ids,
     uint[] memory amounts
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: burn from the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
