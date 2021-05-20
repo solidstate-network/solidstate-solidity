@@ -2,16 +2,26 @@
 
 pragma solidity ^0.8.0;
 
+import '../utils/AddressUtils.sol';
+
 /**
  * @title Base proxy contract
  */
 abstract contract Proxy {
+  using AddressUtils for address;
+
   /**
    * @notice delegate all calls to implementation contract
+   * @dev reverts if implementation address contains no code, for compatibility with metamorphic contracts
    * @dev memory location in use by assembly may be unsafe in other contexts
    */
-  fallback () external payable {
+  fallback () virtual external payable {
     address implementation = _getImplementation();
+
+    require(
+      implementation.isContract(),
+      'Proxy: implementation must be contract'
+    );
 
     assembly {
       calldatacopy(0, 0, calldatasize())
