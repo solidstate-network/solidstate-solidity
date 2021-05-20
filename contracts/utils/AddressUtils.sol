@@ -20,7 +20,6 @@ library AddressUtils {
   }
 
   function isContract (address account) internal view returns (bool) {
-    // TODO: validate against extcodehash method used by OpenZeppelin
     uint size;
     assembly { size := extcodesize(account) }
     return size > 0;
