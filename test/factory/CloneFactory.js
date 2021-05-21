@@ -2,17 +2,13 @@ const { expect } = require('chai');
 
 const describeBehaviorOfCloneFactory = require('@solidstate/spec/factory/CloneFactory.behavior.js');
 
-let deploy = async function () {
-  let factory = await ethers.getContractFactory('CloneFactoryMock');
-  let instance = await factory.deploy();
-  return await instance.deployed();
-};
-
 describe('CloneFactory', function () {
   let instance;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const factory = await ethers.getContractFactory('CloneFactoryMock');
+    instance = await factory.deploy();
+    await instance.deployed();
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
@@ -22,30 +18,38 @@ describe('CloneFactory', function () {
     describe('#_clone', function () {
       describe('()', function () {
         it('deploys clone and returns deployment address', async function () {
-          let address = await instance.callStatic['deployClone()']();
+          const address = await instance.callStatic['deployClone()']();
           expect(address).to.be.properAddress;
 
-          // await instance.callStatic['deployClone(bytes32)'](salt);
-          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
-          // TODO: assert code at address is correct
+          await instance['deployClone()']();
+
+          expect(
+            await ethers.provider.getCode(address)
+          ).to.equal(
+            await ethers.provider.getCode(instance.address)
+          );
         });
       });
 
       describe('(bytes32)', function () {
         it('deploys clone and returns deployment address', async function () {
-          let salt = ethers.utils.randomBytes(32);
+          const salt = ethers.utils.randomBytes(32);
 
-          let address = await instance.callStatic['deployClone(bytes32)'](salt);
+          const address = await instance.callStatic['deployClone(bytes32)'](salt);
           expect(address).to.be.properAddress;
 
-          // await instance.callStatic['deployClone(bytes32)'](salt);
-          // let deployed = await ethers.getContractAt('MetamorphicFactory', address);
-          // TODO: assert code at address is correct
+          await instance['deployClone(bytes32)'](salt);
+
+          expect(
+            await ethers.provider.getCode(address)
+          ).to.equal(
+            await ethers.provider.getCode(instance.address)
+          );
         });
 
         describe('reverts if', function () {
           it('salt has already been used', async function () {
-            let salt = ethers.utils.randomBytes(32);
+            const salt = ethers.utils.randomBytes(32);
 
             await instance['deployClone(bytes32)'](salt);
 
@@ -61,9 +65,9 @@ describe('CloneFactory', function () {
 
     describe('#_calculateCloneDeploymentAddress', function () {
       it('returns address of not-yet-deployed contract', async function () {
-        let initCode = '0x58333b90818180333cf3';
-        let initCodeHash = ethers.utils.keccak256(initCode);
-        let salt = ethers.utils.randomBytes(32);
+        const initCode = '0x58333b90818180333cf3';
+        const initCodeHash = ethers.utils.keccak256(initCode);
+        const salt = ethers.utils.randomBytes(32);
 
         expect(
           await instance.callStatic.calculateCloneDeploymentAddress(salt)
