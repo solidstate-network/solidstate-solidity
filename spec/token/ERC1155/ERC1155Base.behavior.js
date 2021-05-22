@@ -168,7 +168,24 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
           );
         });
 
-        it('receiver is invalid ERC1155Receiver');
+        it('receiver is invalid ERC1155Receiver', async function () {
+          const mock = await deployMockContract(
+            holder,
+            [/* no functions */]
+          );
+
+          await expect(
+            instance.connect(spender).safeTransferFrom(
+              spender.address,
+              mock.address,
+              ethers.constants.Zero,
+              ethers.constants.Zero,
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'Mock on the method is not initialized'
+          );
+        });
 
         it('receiver rejects transfer', async function () {
           const mock = await deployMockContract(
@@ -246,7 +263,24 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
           );
         });
 
-        it('receiver is invalid ERC1155Receiver');
+        it('receiver is invalid ERC1155Receiver', async function () {
+          const mock = await deployMockContract(
+            holder,
+            [/* no functions */]
+          );
+
+          await expect(
+            instance.connect(spender).safeBatchTransferFrom(
+              spender.address,
+              mock.address,
+              [],
+              [],
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'Mock on the method is not initialized'
+          );
+        });
 
         it('receiver rejects transfer', async function () {
           const mock = await deployMockContract(
