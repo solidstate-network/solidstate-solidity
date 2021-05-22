@@ -34,16 +34,34 @@ Rather than rewrite the `ERC20Base` tests or assume that all core behavior remai
 
 ```javascript
 describe('CustomToken', function () {
-  const deploy = async function () {
+  let instance;
+
+  beforeEach(async function () {
     const factory = await ethers.getContractFactory('CustomToken');
-    const instance = await factory.deploy();
-    return await instance.deployed();
-  }
+    instance = await factory.deploy();
+    await instance.deployed();
+  });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC20Base({ deploy });
+  describeBehaviorOfERC20Base({
+    deploy: () => instance,
+  }, []);
 
   // custom tests...
+});
+```
+
+If parts of the base implementation are changed intentionally, tests can be selectively skipped:
+
+
+```javascript
+// eslint-disable-next-line mocha/no-setup-in-describe
+describeBehaviorOfERC20Base({
+  deploy: () => instance,
+}, ['#balanceOf']);
+
+describe('#balanceOf', function () {
+  // custom tests
 });
 ```
 
