@@ -280,9 +280,9 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    // TODO: error message
-    // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
-    balances[id][sender] -= amount;
+    uint256 senderBalance = balances[id][sender];
+    require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
+    balances[id][sender] = senderBalance - amount;
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -337,9 +337,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     for (uint i; i < ids.length; i++) {
       uint token = ids[i];
       uint amount = amounts[i];
-      // TODO: error message
-      // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
-      balances[token][sender] -= amount;
+
+      uint256 senderBalance = balances[token][sender];
+      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
+      balances[token][sender] = senderBalance - amount;
       balances[token][recipient] += amount;
     }
 
