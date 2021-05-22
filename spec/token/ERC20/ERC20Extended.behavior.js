@@ -66,7 +66,7 @@ const describeBehaviorOfERC20Extended = function ({ deploy, mint, burn, supply }
               ethers.constants.One
             )
           ).to.be.revertedWith(
-            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+            'ERC20Extended: excessive allowance'
           );
         });
       });
@@ -113,7 +113,7 @@ const describeBehaviorOfERC20Extended = function ({ deploy, mint, burn, supply }
               ethers.constants.One
             )
           ).to.be.revertedWith(
-            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+            'ERC20Extended: insufficient allowance'
           );
         });
       });
