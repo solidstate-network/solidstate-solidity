@@ -399,9 +399,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
   ) private {
     if (to.isContract()) {
       try IERC1155Receiver(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
-        if (response != IERC1155Receiver(to).onERC1155Received.selector) {
-          revert('ERC1155: ERC1155Receiver rejected tokens');
-        }
+        require(
+          response == IERC1155Receiver.onERC1155Received.selector,
+          'ERC1155: ERC1155Receiver rejected tokens'
+        );
       } catch Error(string memory reason) {
         revert(reason);
       } catch {
@@ -429,9 +430,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
   ) private {
     if (to.isContract()) {
       try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, amounts, data) returns (bytes4 response) {
-        if (response != IERC1155Receiver(to).onERC1155BatchReceived.selector) {
-          revert('ERC1155: ERC1155Receiver rejected tokens');
-        }
+        require(
+          response == IERC1155Receiver.onERC1155BatchReceived.selector,
+          'ERC1155: ERC1155Receiver rejected tokens'
+        );
       } catch Error(string memory reason) {
         revert(reason);
       } catch {
