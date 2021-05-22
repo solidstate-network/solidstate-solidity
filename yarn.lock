@@ -1533,10 +1533,10 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.12.0.tgz#18a0fb2a9d2484b23176f63b16093c64794fc323"
   integrity sha512-DT3f/Aa4tQysZwUsuqBwvr8YRJzKkvPUKV/9o2/o5EVw3xqlbzmtx4O60lTUcZdCawL+N8bBLNUyOGpHjGlJVQ==
 
-"@solidstate/library@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@solidstate/library/-/library-0.0.11.tgz#4a5a0c879dca3962676b0a059f63c535fd8a2cc4"
-  integrity sha512-/bAFfIg1wshUXP3WRs46Cxjl5vFv4XjWhtYNZ7K8tyNe+acsLBmjmer4C64DzoIc8TeQjfWEhBN2jXzOEdUDFQ==
+"@solidstate/library@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@solidstate/library/-/library-0.0.12.tgz#41d23c91f282fb63cd3eda9cabd0bf1fdf589ad1"
+  integrity sha512-b3rJqxhr+j6YEgszkqovxkZH9PBv0TM7znPuifehEUkA2XLQs1Z5vbNxqcBaqWGALM+Pj6cAhvu/9Pxje/MNcQ==
 
 "@solidstate/spec@link:spec":
   version "0.0.0"
@@ -5867,6 +5867,11 @@ hard-rejection@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/hard-rejection/-/hard-rejection-2.1.0.tgz#1c6eda5c1685c63942766d79bb40ae773cecd883"
   integrity sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==
+
+hardhat-abi-exporter@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/hardhat-abi-exporter/-/hardhat-abi-exporter-2.2.1.tgz#98ad242d08987d34416c6315729f36f9d544e4fa"
+  integrity sha512-Um7+RPvJEj+OqWjPoPKlTTkO1Akr10pqpgMk8Pw2jz2wrGv5XQBGNW5aQgGVDUosYktUIWDaEhcwwFKbFsir9A==
 
 hardhat-gas-reporter@^1.0.4:
   version "1.0.4"

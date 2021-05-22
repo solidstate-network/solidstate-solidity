@@ -1,6 +1,7 @@
 {
   "version": "0.0.12",
   "packages": [
+    "abi",
     "contracts",
     "lib",
     "spec"

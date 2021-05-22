@@ -1,0 +1,15 @@
+[
+  {
+    "inputs": [],
+    "name": "getMetamorphicImplementation",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

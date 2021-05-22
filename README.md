@@ -8,9 +8,10 @@ It consists of the following packages:
 
 | package | description | 📕 |
 |-|-|-|
+| `@solidstate/abi` | contract ABIs | [📖](./abi/README.md) |
 | `@solidstate/contracts` | core contracts | [📖](./contracts/README.md) |
-| `@solidstate/spec` | portable tests which may be run against third-party implementations of core contracts | [📖](./spec/README.md) |
 | `@solidstate/library` | functions for interacting with and validating contracts | [📖](./lib/README.md) |
+| `@solidstate/spec` | portable tests which may be run against third-party implementations of core contracts | [📖](./spec/README.md) |
 
 ### Contracts
 

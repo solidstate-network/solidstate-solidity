@@ -12,6 +12,7 @@
     "eslint-plugin-mocha": "^8.1.0",
     "ethereum-waffle": "^3.3.0",
     "hardhat": "^2.2.1",
+    "hardhat-abi-exporter": "^2.2.1",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
     "lerna": "^4.0.0",
