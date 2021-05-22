@@ -87,7 +87,9 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         it('has insufficient balance', async function(){
           const amount = ethers.constants.Two;
 
-          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.reverted;
+          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.revertedWith(
+              'ERC20: transfer amount exceeds balance'
+          );
         });
       });
     });
@@ -108,14 +110,18 @@ const describeBehaviorOfERC20Base = function ({ deploy, supply, mint, burn }, sk
         it('has insufficient balance', async function(){
           const amount = ethers.constants.Two;
 
-          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.reverted;
+          await expect(instance.connect(spender).transfer(holder.address, amount)).to.be.revertedWith(
+              'ERC20: transfer amount exceeds balance'
+          );
         });
 
         it('spender not approved', async function(){
           const amount = ethers.constants.Two;
           await mint(sender.address, amount);
 
-          await expect(instance.connect(spender).transferFrom(sender.address, receiver.address, amount)).to.be.reverted;
+          await expect(instance.connect(spender).transferFrom(sender.address, receiver.address, amount)).to.be.revertedWith(
+              'ERC20: transfer amount exceeds allowance'
+          );
         });
       });
     });
