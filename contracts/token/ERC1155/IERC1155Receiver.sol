@@ -11,7 +11,7 @@ interface IERC1155Receiver is IERC165 {
     uint256 id,
     uint256 value,
     bytes calldata data
-  ) external returns(bytes4);
+  ) external returns (bytes4);
 
   function onERC1155BatchReceived (
     address operator,
@@ -19,5 +19,5 @@ interface IERC1155Receiver is IERC165 {
     uint256[] calldata ids,
     uint256[] calldata values,
     bytes calldata data
-  ) external returns(bytes4);
+  ) external returns (bytes4);
 }

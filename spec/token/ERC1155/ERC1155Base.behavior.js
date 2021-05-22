@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { deployMockContract } = require('@ethereum-waffle/mock-contract');
 
 const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
 
@@ -169,7 +170,26 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
 
         it('receiver is invalid ERC1155Receiver');
 
-        it('receiver rejects transfer');
+        it('receiver rejects transfer', async function () {
+          const mock = await deployMockContract(
+            holder,
+            ['function onERC1155Received (address, address, uint, uint, bytes) external view returns (bytes4)']
+          );
+
+          await mock.mock.onERC1155Received.returns('0x00000000');
+
+          await expect(
+            instance.connect(spender).safeTransferFrom(
+              spender.address,
+              mock.address,
+              ethers.constants.Zero,
+              ethers.constants.Zero,
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'ERC1155: ERC1155Receiver rejected tokens'
+          );
+        });
       });
     });
 
@@ -228,7 +248,26 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
 
         it('receiver is invalid ERC1155Receiver');
 
-        it('receiver rejects transfer');
+        it('receiver rejects transfer', async function () {
+          const mock = await deployMockContract(
+            holder,
+            ['function onERC1155BatchReceived (address, address, uint[], uint[], bytes) external view returns (bytes4)']
+          );
+
+          await mock.mock.onERC1155BatchReceived.returns('0x00000000');
+
+          await expect(
+            instance.connect(spender).safeBatchTransferFrom(
+              spender.address,
+              mock.address,
+              [],
+              [],
+              ethers.utils.randomBytes(0)
+            )
+          ).to.be.revertedWith(
+            'ERC1155: ERC1155Receiver rejected tokens'
+          );
+        });
       });
     });
   });
