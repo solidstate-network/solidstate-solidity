@@ -150,7 +150,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
               ethers.utils.randomBytes(0)
             )
           ).to.be.revertedWith(
-            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+            'ERC1155: insufficient balances for transfer'
           );
         });
 
@@ -245,7 +245,7 @@ const describeBehaviorOfERC1155Base = function ({ deploy, mint, burn }, skips) {
               ethers.utils.randomBytes(0)
             )
           ).to.be.revertedWith(
-            'Transaction reverted and Hardhat couldn\'t infer the reason. Please report this to help us improve Hardhat'
+            'ERC1155: insufficient balances for transfer'
           );
         });
 
