@@ -38,7 +38,9 @@ abstract contract ERC20Base is IERC20 {
   ) override virtual public returns (bool) {
     uint256 currentAllowance = ERC20BaseStorage.layout().allowances[sender][msg.sender];
     require(currentAllowance >= amount, 'ERC20: transfer amount exceeds allowance');
-    _approve(sender, msg.sender, currentAllowance - amount);
+    unchecked {
+      _approve(sender, msg.sender, currentAllowance - amount);
+    }
     _transfer(sender, recipient, amount);
     return true;
   }
@@ -94,7 +96,9 @@ abstract contract ERC20Base is IERC20 {
     ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     uint256 senderBalance = l.balances[sender];
     require(senderBalance >= amount, 'ERC20: transfer amount exceeds balance');
-    l.balances[sender] = senderBalance - amount;
+    unchecked {
+      l.balances[sender] = senderBalance - amount;
+    }
     l.balances[recipient] += amount;
 
     emit Transfer(sender, recipient, amount);

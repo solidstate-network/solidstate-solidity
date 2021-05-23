@@ -282,7 +282,9 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     uint256 senderBalance = balances[id][sender];
     require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
-    balances[id][sender] = senderBalance - amount;
+    unchecked {
+      balances[id][sender] = senderBalance - amount;
+    }
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -340,7 +342,9 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
       uint256 senderBalance = balances[token][sender];
       require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
-      balances[token][sender] = senderBalance - amount;
+      unchecked {
+        balances[token][sender] = senderBalance - amount;
+      }
       balances[token][recipient] += amount;
     }
 
