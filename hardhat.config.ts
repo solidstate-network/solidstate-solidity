@@ -1,15 +1,16 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-require('@nomiclabs/hardhat-waffle');
-require('hardhat-abi-exporter');
-require('hardhat-gas-reporter');
-require('hardhat-spdx-license-identifier');
-require('solidity-coverage');
+import { task } from 'hardhat/config';
+import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
+import '@nomiclabs/hardhat-waffle';
+import 'hardhat-abi-exporter';
+import 'hardhat-gas-reporter';
+import 'hardhat-spdx-license-identifier';
+import 'solidity-coverage';
+import Dotenv from 'dotenv';
 
-const {
-  TASK_COMPILE,
-} = require('hardhat/builtin-tasks/task-names');
+Dotenv.config();
 
 task(TASK_COMPILE, async function (args, hre, runSuper) {
   // preserve @solidstate/abi package data when ABI export directory is cleared
@@ -29,7 +30,7 @@ task(TASK_COMPILE, async function (args, hre, runSuper) {
   });
 });
 
-module.exports = {
+export default {
   solidity: {
     version: '0.8.4',
     settings: {
@@ -43,9 +44,9 @@ module.exports = {
   networks: {
     generic: {
       // set URL for external network
-      url: `${ process.env.URL }`,
+      url: `${process.env.URL}`,
       accounts: {
-        mnemonic: `${ process.env.MNEMONIC }`,
+        mnemonic: `${process.env.MNEMONIC}`,
       },
     },
   },

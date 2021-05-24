@@ -8,3 +8,7 @@ coverage.json
 
 yarn.lock
 !./yarn.lock
+
+.env
+
+typechain
