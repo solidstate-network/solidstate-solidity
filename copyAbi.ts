@@ -21,6 +21,30 @@ fs.copyFileSync(
   './abi/SafeOwnable.json',
 );
 
+/////////////
+// Factory //
+/////////////
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/CloneFactory.sol/CloneFactory.json',
+  './abi/CloneFactory.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/Factory.sol/Factory.json',
+  './abi/Factory.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/MetamorphicFactory.sol/MetamorphicFactory.json',
+  './abi/MetamorphicFactory.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/MinimalProxyFactory.sol/MinimalProxyFactory.json',
+  './abi/MinimalProxyFactory.json',
+);
+
 ///////////////
 // Signature //
 ///////////////

@@ -32,7 +32,6 @@ export function describeBehaviorOfSafeOwnable(
       nonOwner = await getNonOwner();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfOwnable(
       {
         deploy,

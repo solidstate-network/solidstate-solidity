@@ -1,17 +1,24 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
+import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeBehaviorOfFactory } from './Factory.behavior';
+import { MetamorphicFactory } from '../../typechain';
+import ethers from 'ethers';
 
-const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
+interface MetaphoricFactoryBehaviorArgs {
+  deploy: () => Promise<MetamorphicFactory>;
+}
 
-const describeBehaviorOfFactory = require('./Factory.behavior.js');
-
-const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips) {
+const describeBehaviorOfMetamorphicFactory = function (
+  { deploy }: MetaphoricFactoryBehaviorArgs,
+  skips: string[],
+) {
   const describe = describeFilter(skips);
 
   describe('::MetamorphicFactory', function () {
-    let instance;
+    let instance: MetamorphicFactory;
 
     beforeEach(async function () {
-      instance = await ethers.getContractAt('MetamorphicFactory', (await deploy()).address);
+      instance = await deploy();
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
@@ -21,7 +28,7 @@ const describeBehaviorOfMetamorphicFactory = function ({ deploy }, skips) {
       // behavior changes during internal call but cannot be tested independently
       it('returns zero address', async function () {
         expect(
-          await instance.callStatic.getMetamorphicImplementation()
+          await instance.callStatic.getMetamorphicImplementation(),
         ).to.equal(ethers.constants.AddressZero);
       });
     });
