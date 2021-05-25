@@ -1,4 +1,4 @@
-const describeBehaviorOfSafeOwnable = require('@solidstate/spec/access/SafeOwnable.behavior.js');
+const describeBehaviorOfSafeOwnable = require('@solidstate/spec/access/SafeOwnable.behavior.ts');
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();
@@ -23,10 +23,13 @@ let deploy = async function () {
 
 describe('SafeOwnable', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfSafeOwnable({
-    deploy,
-    getOwner,
-    getNomineeOwner,
-    getNonOwner,
-  }, []);
+  describeBehaviorOfSafeOwnable(
+    {
+      deploy,
+      getOwner,
+      getNomineeOwner,
+      getNonOwner,
+    },
+    [],
+  );
 });

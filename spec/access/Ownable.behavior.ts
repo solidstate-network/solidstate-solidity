@@ -2,13 +2,12 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { Ownable } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { BaseContract } from 'ethers';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 
 interface OwnableBehaviorArgs {
-  deploy: () => Promise<BaseContract>;
-  getOwner: () => SignerWithAddress;
-  getNonOwner: () => SignerWithAddress;
+  deploy: () => Promise<Ownable>;
+  getOwner: () => Promise<SignerWithAddress>;
+  getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfOwnable(
@@ -23,7 +22,7 @@ export function describeBehaviorOfOwnable(
     let nonOwner: SignerWithAddress;
 
     beforeEach(async function () {
-      instance = (await deploy()) as Ownable;
+      instance = await deploy();
       owner = await getOwner();
       nonOwner = await getNonOwner();
     });

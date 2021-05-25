@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { BaseContract, ethers } from 'ethers';
+import { ethers } from 'ethers';
 
 import { describeBehaviorOfOwnable } from './Ownable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
@@ -7,10 +7,10 @@ import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { SafeOwnable } from '../../typechain';
 
 interface SafeOwnableBehaviorArgs {
-  deploy: () => Promise<BaseContract>;
-  getOwner: () => SignerWithAddress;
-  getNonOwner: () => SignerWithAddress;
-  getNomineeOwner: () => SignerWithAddress;
+  deploy: () => Promise<SafeOwnable>;
+  getOwner: () => Promise<SignerWithAddress>;
+  getNonOwner: () => Promise<SignerWithAddress>;
+  getNomineeOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfSafeOwnable(
@@ -26,7 +26,7 @@ export function describeBehaviorOfSafeOwnable(
     let nonOwner: SignerWithAddress;
 
     beforeEach(async function () {
-      instance = (await deploy()) as SafeOwnable;
+      instance = await deploy();
       owner = await getOwner();
       nomineeOwner = await getNomineeOwner();
       nonOwner = await getNonOwner();

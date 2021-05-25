@@ -1,4 +1,4 @@
-const describeBehaviorOfOwnable = require('@solidstate/spec/access/Ownable.behavior.js');
+const describeBehaviorOfOwnable = require('@solidstate/spec/access/Ownable.behavior.ts');
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();

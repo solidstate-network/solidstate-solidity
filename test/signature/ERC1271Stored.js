@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const describeBehaviorOfERC1271Stored = require('@solidstate/spec/signature/ERC1271Stored.behavior.js');
+const describeBehaviorOfERC1271Stored = require('@solidstate/spec/signature/ERC1271Stored.behavior.ts');
 
 let validParams = [ethers.utils.randomBytes(32), ethers.utils.randomBytes(0)];
 
@@ -28,8 +28,8 @@ describe('ERC1271Stored', function () {
       it('returns true if signature is stored', async function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            ...validParams
-          )
+            ...validParams,
+          ),
         ).to.be.true;
       });
 
@@ -37,8 +37,8 @@ describe('ERC1271Stored', function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             ethers.utils.randomBytes(32),
-            ethers.utils.randomBytes(0)
-          )
+            ethers.utils.randomBytes(0),
+          ),
         ).to.be.false;
       });
     });
@@ -51,8 +51,8 @@ describe('ERC1271Stored', function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             hash,
-            signature
-          )
+            signature,
+          ),
         ).to.be.false;
 
         await instance['__setValidSignature(bytes32,bool)'](hash, true);
@@ -60,8 +60,8 @@ describe('ERC1271Stored', function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             hash,
-            signature
-          )
+            signature,
+          ),
         ).to.be.true;
 
         await instance['__setValidSignature(bytes32,bool)'](hash, false);
@@ -69,8 +69,8 @@ describe('ERC1271Stored', function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             hash,
-            signature
-          )
+            signature,
+          ),
         ).to.be.false;
       });
     });
