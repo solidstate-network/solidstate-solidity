@@ -145,6 +145,21 @@ fs.copyFileSync(
   './abi/ERC20Metadata.json',
 );
 
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155.sol/ERC1155.json',
+  './abi/ERC1155.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155Base.sol/ERC1155Base.json',
+  './abi/ERC1155Base.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155Enumerable.sol/ERC1155Enumerable.json',
+  './abi/ERC1155Enumerable.json',
+);
+
 ///////////
 // Utils //
 ///////////

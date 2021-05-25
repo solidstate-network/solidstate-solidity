@@ -18,7 +18,7 @@ interface DiamondBehaviorArgs {
   fallbackAddress: string;
 }
 
-export function describeBehaviorOfDiamond (
+export function describeBehaviorOfDiamond(
   {
     deploy,
     getOwner,
@@ -174,14 +174,14 @@ export function describeBehaviorOfDiamond (
             owner.call({ to: instance.address, data: selector }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance.callStatic.facets()).to.deep.members([
+          expect(await instance.callStatic.facets()).to.have.deep.members([
             ...facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
             await instance.callStatic.facetFunctionSelectors(facet.address),
-          ).to.deep.members(expectedSelectors);
+          ).to.have.deep.members(expectedSelectors);
 
           expect(await instance.callStatic.facetAddress(selector)).to.equal(
             facet.address,
@@ -234,7 +234,7 @@ export function describeBehaviorOfDiamond (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.deep.members(
+          expect(await instance.callStatic.facets()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -243,7 +243,7 @@ export function describeBehaviorOfDiamond (
 
           expect(
             await instance.callStatic.facetFunctionSelectors(facet.address),
-          ).to.deep.members(expectedSelectors);
+          ).to.have.deep.members(expectedSelectors);
 
           expect(await instance.callStatic.facetAddress(selector)).to.equal(
             ethers.constants.AddressZero,
@@ -296,7 +296,7 @@ export function describeBehaviorOfDiamond (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.deep.members(
+          expect(await instance.callStatic.facets()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -305,7 +305,7 @@ export function describeBehaviorOfDiamond (
 
           expect(
             await instance.callStatic.facetFunctionSelectors(facet.address),
-          ).to.deep.members(expectedSelectors);
+          ).to.have.deep.members(expectedSelectors);
 
           expect(await instance.callStatic.facetAddress(selector)).to.equal(
             ethers.constants.AddressZero,
@@ -358,7 +358,7 @@ export function describeBehaviorOfDiamond (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.deep.members(
+          expect(await instance.callStatic.facets()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -367,7 +367,7 @@ export function describeBehaviorOfDiamond (
 
           expect(
             await instance.callStatic.facetFunctionSelectors(facet.address),
-          ).to.deep.members(expectedSelectors);
+          ).to.have.deep.members(expectedSelectors);
 
           expect(await instance.callStatic.facetAddress(selector)).to.equal(
             ethers.constants.AddressZero,
@@ -376,4 +376,4 @@ export function describeBehaviorOfDiamond (
       });
     });
   });
-};
+}

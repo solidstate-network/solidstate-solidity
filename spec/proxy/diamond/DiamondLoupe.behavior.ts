@@ -37,7 +37,7 @@ export function describeBehaviorOfDiamondLoupe(
 
     describe('#facets', function () {
       it('returns facet cuts', async function () {
-        expect(await instance.callStatic.facets()).to.deep.members(
+        expect(await instance.callStatic.facets()).to.have.deep.members(
           facetCuts.map((fc) => [fc.target, fc.selectors]),
         );
       });
