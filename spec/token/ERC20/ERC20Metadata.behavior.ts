@@ -1,15 +1,25 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
+import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { ERC20Metadata } from '../../../typechain';
 
-const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
+interface ERC20MetadataBehaviorArgs {
+  deploy: () => Promise<ERC20Metadata>;
+  name: string;
+  symbol: string;
+  decimals: number;
+}
 
-const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decimals }, skips) {
+export function describeBehaviorOfERC20Metadata(
+  { deploy, name, symbol, decimals }: ERC20MetadataBehaviorArgs,
+  skips: string[],
+) {
   const describe = describeFilter(skips);
 
   describe('::ERC20Metadata', function () {
-    let instance;
+    let instance: ERC20Metadata;
 
     beforeEach(async function () {
-      instance = await ethers.getContractAt('ERC20Metadata', (await deploy()).address);
+      instance = await deploy();
     });
 
     describe('#name', function () {
@@ -30,7 +40,4 @@ const describeBehaviorOfERC20Metadata = function ({ deploy, name, symbol, decima
       });
     });
   });
-};
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfERC20Metadata;
+}

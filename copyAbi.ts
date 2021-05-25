@@ -117,6 +117,35 @@ fs.copyFileSync(
 );
 
 ///////////
+// Token //
+///////////
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20.sol/ERC20.json',
+  './abi/ERC20.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20Base.sol/ERC20Base.json',
+  './abi/ERC20Base.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20Extended.sol/ERC20Extended.json',
+  './abi/ERC20Extended.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20ImplicitApproval.sol/ERC20ImplicitApproval.json',
+  './abi/ERC20ImplicitApproval.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20Metadata.sol/ERC20Metadata.json',
+  './abi/ERC20Metadata.json',
+);
+
+///////////
 // Utils //
 ///////////
 
