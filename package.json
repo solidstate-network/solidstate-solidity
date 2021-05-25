@@ -3,6 +3,11 @@
   "private": true,
   "author": "Nick Barry",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile && yarn copyAbi && yarn typechain",
+    "copyAbi": "ts-node copyAbi.ts",
+    "typechain": "typechain --target ethers-v5 --out-dir typechain \"./abi/[!package]*.json\""
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",

@@ -13,3 +13,4 @@ yarn.lock
 
 dist
 typechain
+abiTypechain
