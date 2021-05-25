@@ -1,16 +1,24 @@
-const { expect } = require('chai');
-const { deployMockContract } = require('@ethereum-waffle/mock-contract');
+import { expect } from 'chai';
+import { deployMockContract, MockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
+import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
+import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
+import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
+import { describeBehaviorOfSafeOwnable } from '../../access/SafeOwnable.behavior';
+import { Diamond } from '../../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
-const {
-  describeFilter,
-} = require('@solidstate/library/mocha_describe_filter.js');
+interface DiamondBehaviorArgs {
+  deploy: () => Promise<Diamond>;
+  getOwner: () => Promise<SignerWithAddress>;
+  getNomineeOwner: () => Promise<SignerWithAddress>;
+  getNonOwner: () => Promise<SignerWithAddress>;
+  facetCuts: any[];
+  fallbackAddress: string;
+}
 
-const describeBehaviorOfDiamondCuttable = require('./DiamondCuttable.behavior.js');
-const describeBehaviorOfDiamondLoupe = require('./DiamondLoupe.behavior.js');
-const describeBehaviorOfERC165 = require('../../introspection/ERC165.behavior.js');
-const describeBehaviorOfSafeOwnable = require('../../access/SafeOwnable.behavior.ts');
-
-const describeBehaviorOfDiamond = function (
+export function describeBehaviorOfDiamond (
   {
     deploy,
     getOwner,
@@ -18,16 +26,16 @@ const describeBehaviorOfDiamond = function (
     getNonOwner,
     facetCuts,
     fallbackAddress,
-  },
-  skips,
+  }: DiamondBehaviorArgs,
+  skips: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::Diamond', function () {
-    let owner;
-    let nonOwner;
+    let owner: SignerWithAddress;
+    let nonOwner: SignerWithAddress;
 
-    let instance;
+    let instance: Diamond;
 
     before(async function () {
       owner = await getOwner();
@@ -35,20 +43,15 @@ const describeBehaviorOfDiamond = function (
     });
 
     beforeEach(async function () {
-      instance = await ethers.getContractAt(
-        'Diamond',
-        (
-          await deploy()
-        ).address,
-      );
+      instance = await deploy();
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfDiamondCuttable(
       {
-        deploy: () => instance,
-        getOwner: () => owner,
-        getNonOwner: () => nonOwner,
+        deploy,
+        getOwner,
+        getNonOwner,
       },
       skips,
     );
@@ -56,7 +59,7 @@ const describeBehaviorOfDiamond = function (
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfDiamondLoupe(
       {
-        deploy: () => instance,
+        deploy,
         facetCuts,
       },
       skips,
@@ -65,7 +68,7 @@ const describeBehaviorOfDiamond = function (
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC165(
       {
-        deploy: () => instance,
+        deploy,
         interfaceIds: ['0x7f5828d0'],
       },
       skips,
@@ -74,10 +77,10 @@ const describeBehaviorOfDiamond = function (
     // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfSafeOwnable(
       {
-        deploy: () => instance,
-        getOwner: () => owner,
+        deploy,
+        getOwner,
         getNomineeOwner,
-        getNonOwner: () => nonOwner,
+        getNonOwner,
       },
       skips,
     );
@@ -132,9 +135,9 @@ const describeBehaviorOfDiamond = function (
     });
 
     describe('#diamondCut', function () {
-      const selectors = [];
-      const abi = [];
-      let facet;
+      const selectors: string[] = [];
+      const abi: string[] = [];
+      let facet: MockContract;
 
       before(async function () {
         for (let i = 0; i < 24; i++) {
@@ -171,20 +174,18 @@ const describeBehaviorOfDiamond = function (
             owner.call({ to: instance.address, data: selector }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance.callStatic['facets()']()).to.deep.have.members([
+          expect(await instance.callStatic.facets()).to.deep.members([
             ...facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
-            ),
-          ).to.deep.have.members(expectedSelectors);
+            await instance.callStatic.facetFunctionSelectors(facet.address),
+          ).to.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(facet.address);
+          expect(await instance.callStatic.facetAddress(selector)).to.equal(
+            facet.address,
+          );
         }
       });
 
@@ -200,23 +201,21 @@ const describeBehaviorOfDiamond = function (
         const expectedSelectors = [...selectors];
 
         for (let selector of selectors) {
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [
-                {
-                  target: ethers.constants.AddressZero,
-                  action: 2,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
+          await instance.connect(owner).diamondCut(
+            [
+              {
+                target: ethers.constants.AddressZero,
+                action: 2,
+                selectors: [selector],
+              },
+            ],
+            ethers.constants.AddressZero,
+            '0x',
+          );
 
           const last = expectedSelectors.pop();
 
-          if (last !== selector) {
+          if (last && last !== selector) {
             expectedSelectors.splice(
               expectedSelectors.indexOf(selector),
               1,
@@ -235,7 +234,7 @@ const describeBehaviorOfDiamond = function (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic['facets()']()).to.deep.have.members(
+          expect(await instance.callStatic.facets()).to.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -243,14 +242,12 @@ const describeBehaviorOfDiamond = function (
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
-            ),
-          ).to.deep.have.members(expectedSelectors);
+            await instance.callStatic.facetFunctionSelectors(facet.address),
+          ).to.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.callStatic.facetAddress(selector)).to.equal(
+            ethers.constants.AddressZero,
+          );
         }
       });
 
@@ -266,23 +263,21 @@ const describeBehaviorOfDiamond = function (
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].reverse()) {
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [
-                {
-                  target: ethers.constants.AddressZero,
-                  action: 2,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
+          await instance.connect(owner).diamondCut(
+            [
+              {
+                target: ethers.constants.AddressZero,
+                action: 2,
+                selectors: [selector],
+              },
+            ],
+            ethers.constants.AddressZero,
+            '0x',
+          );
 
           const last = expectedSelectors.pop();
 
-          if (last !== selector) {
+          if (last && last !== selector) {
             expectedSelectors.splice(
               expectedSelectors.indexOf(selector),
               1,
@@ -301,7 +296,7 @@ const describeBehaviorOfDiamond = function (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic['facets()']()).to.deep.have.members(
+          expect(await instance.callStatic.facets()).to.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -309,14 +304,12 @@ const describeBehaviorOfDiamond = function (
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
-            ),
-          ).to.deep.have.members(expectedSelectors);
+            await instance.callStatic.facetFunctionSelectors(facet.address),
+          ).to.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.callStatic.facetAddress(selector)).to.equal(
+            ethers.constants.AddressZero,
+          );
         }
       });
 
@@ -332,23 +325,21 @@ const describeBehaviorOfDiamond = function (
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [
-                {
-                  target: ethers.constants.AddressZero,
-                  action: 2,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
+          await instance.connect(owner).diamondCut(
+            [
+              {
+                target: ethers.constants.AddressZero,
+                action: 2,
+                selectors: [selector],
+              },
+            ],
+            ethers.constants.AddressZero,
+            '0x',
+          );
 
           const last = expectedSelectors.pop();
 
-          if (last !== selector) {
+          if (last && last !== selector) {
             expectedSelectors.splice(
               expectedSelectors.indexOf(selector),
               1,
@@ -367,7 +358,7 @@ const describeBehaviorOfDiamond = function (
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic['facets()']()).to.deep.have.members(
+          expect(await instance.callStatic.facets()).to.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -375,19 +366,14 @@ const describeBehaviorOfDiamond = function (
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
-            ),
-          ).to.deep.have.members(expectedSelectors);
+            await instance.callStatic.facetFunctionSelectors(facet.address),
+          ).to.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.callStatic.facetAddress(selector)).to.equal(
+            ethers.constants.AddressZero,
+          );
         }
       });
     });
   });
 };
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfDiamond;

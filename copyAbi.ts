@@ -63,6 +63,40 @@ fs.copyFileSync(
   './abi/ECDSAMultisigWallet.json',
 );
 
+///////////////////
+// Proxy //
+///////////////////
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/Diamond.sol/Diamond.json',
+  './abi/Diamond.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondBase.sol/DiamondBase.json',
+  './abi/DiamondBase.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondCuttable.sol/DiamondCuttable.json',
+  './abi/DiamondCuttable.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondLoupe.sol/DiamondLoupe.json',
+  './abi/DiamondLoupe.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/managed/ManagedProxy.sol/ManagedProxy.json',
+  './abi/ManagedProxy.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/Proxy.sol/Proxy.json',
+  './abi/Proxy.json',
+);
+
 ///////////////
 // Signature //
 ///////////////
