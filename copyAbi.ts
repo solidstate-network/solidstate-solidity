@@ -45,6 +45,24 @@ fs.copyFileSync(
   './abi/MinimalProxyFactory.json',
 );
 
+///////////////////
+// Introspection //
+///////////////////
+
+fs.copyFileSync(
+  './artifacts/contracts/introspection/ERC165.sol/ERC165.json',
+  './abi/ERC165.json',
+);
+
+//////////////
+// Multisig //
+//////////////
+
+fs.copyFileSync(
+  './artifacts/contracts/multisig/ECDSAMultisigWallet.sol/ECDSAMultisigWallet.json',
+  './abi/ECDSAMultisigWallet.json',
+);
+
 ///////////////
 // Signature //
 ///////////////

@@ -1,8 +1,10 @@
-const { expect } = require('chai');
-const { deployMockContract } = require('@ethereum-waffle/mock-contract');
-
-const { describeFilter } = require('@solidstate/library/mocha_describe_filter.js');
-const signData = require('@solidstate/library/sign_data.js');
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
+import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import signData from '@solidstate/library/sign_data.js';
+import { ethers } from 'hardhat';
+import { ECDSAMultisigWallet } from '../../typechain';
 
 let currentNonce = ethers.constants.Zero;
 
@@ -11,27 +13,58 @@ const nextNonce = function () {
   return currentNonce;
 };
 
-const signAuthorization = async function (signer, { target, data, value, delegate, nonce, address }) {
-  return signData(
-    signer,
-    {
-      values: [target, data, value, delegate],
-      types: ['address', 'bytes', 'uint256', 'bool'],
-      nonce,
-      address,
-    }
-  );
+interface SignAuthorizationArgs {
+  target: string;
+  data: ethers.BytesLike;
+  value: ethers.BigNumberish;
+  delegate: boolean;
+  nonce: ethers.BigNumberish;
+  address: any;
+}
+
+interface Signature {
+  data: Uint8Array;
+  nonce: ethers.BigNumber;
+}
+
+const signAuthorization = async function (
+  signer: SignerWithAddress,
+  { target, data, value, delegate, nonce, address }: SignAuthorizationArgs,
+) {
+  return signData(signer, {
+    values: [target, data, value, delegate],
+    types: ['address', 'bytes', 'uint256', 'bool'],
+    nonce,
+    address,
+  });
 };
 
-const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, getNonSigner, quorum, getVerificationAddress }, skips) {
+interface ECDSAMultisigWalletBehaviorArgs {
+  deploy: () => Promise<ECDSAMultisigWallet>;
+  getSigners: () => Promise<SignerWithAddress[]>;
+  getNonSigner: () => Promise<SignerWithAddress>;
+  quorum: ethers.BigNumber;
+  getVerificationAddress: () => Promise<string>;
+}
+
+const describeBehaviorOfECDSAMultisigWallet = function (
+  {
+    deploy,
+    getSigners,
+    getNonSigner,
+    quorum,
+    getVerificationAddress,
+  }: ECDSAMultisigWalletBehaviorArgs,
+  skips: string[],
+) {
   const describe = describeFilter(skips);
 
   describe('::ECDSAMultisigWallet', function () {
-    let instance;
-    let signers;
-    let nonSigner;
+    let instance: ECDSAMultisigWallet;
+    let signers: SignerWithAddress[];
+    let nonSigner: SignerWithAddress;
 
-    let verificationAddress;
+    let verificationAddress: string;
 
     before(async function () {
       signers = await getSigners();
@@ -42,7 +75,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
     });
 
     beforeEach(async function () {
-      instance = await ethers.getContractAt('ECDSAMultisigWallet', (await deploy()).address);
+      instance = await deploy();
       verificationAddress = await getVerificationAddress();
     });
 
@@ -51,8 +84,8 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
         let [signer] = signers;
         let value = ethers.constants.One;
 
-        await expect(
-          () => signer.sendTransaction({ to: instance.address, value })
+        await expect(() =>
+          signer.sendTransaction({ to: instance.address, value }),
         ).to.changeEtherBalance(instance, value);
       });
     });
@@ -64,17 +97,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
         it('calls function on target address');
 
         it('transfers value to target address', async function () {
-          let mock = await deployMockContract(
-            signers[0],
-            ['function fn () external payable returns (bool)']
-          );
+          let mock = await deployMockContract(signers[0], [
+            'function fn () external payable returns (bool)',
+          ]);
 
           await mock.mock.fn.returns(true);
 
           let target = mock.address;
-          let { data } = await mock.populateTransaction.fn();
+          let mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as ethers.BytesLike;
           let value = ethers.constants.One;
-          let signatures = [];
+          let signatures: Signature[] = [];
 
           for (let signer of signers) {
             let nonce = nextNonce();
@@ -87,35 +120,30 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               address: verificationAddress,
             });
 
-            signatures.push([sig, nonce]);
+            signatures.push({ data: sig, nonce });
           }
 
-          await expect(
-            async function () {
-              return instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
-                signatures,
-                { value }
-              );
-            }
-          ).to.changeEtherBalances(
-            [mock, instance],
-            [value, 0]
-          );
+          await expect(async function () {
+            return instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
+          }).to.changeEtherBalances([mock, instance], [value, 0]);
         });
 
         it('forwards return data from called function', async function () {
-          let mock = await deployMockContract(
-            signers[0],
-            ['function fn () external payable returns (bool)']
-          );
+          let mock = await deployMockContract(signers[0], [
+            'function fn () external payable returns (bool)',
+          ]);
 
           await mock.mock.fn.returns(true);
 
           let target = mock.address;
-          let { data } = await mock.populateTransaction.fn();
+          let mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as ethers.BytesLike;
           let value = ethers.constants.Zero;
-          let signatures = [];
+          let signatures: Signature[] = [];
 
           for (let signer of signers) {
             let nonce = nextNonce();
@@ -128,27 +156,26 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               address: verificationAddress,
             });
 
-            signatures.push([sig, nonce]);
+            signatures.push({ data: sig, nonce });
           }
 
           expect(
             ethers.utils.defaultAbiCoder.decode(
-              mock.interface.functions['fn()'].outputs,
-              await instance.callStatic['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              mock.interface.functions['fn()'].outputs ?? [],
+              await instance.callStatic.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
-            )[0]
+                { value },
+              ),
+            )[0],
           ).to.be.true;
         });
 
         describe('reverts if', function () {
           it('target contract reverts', async function () {
-            let mock = await deployMockContract(
-              signers[0],
-              ['function fn () external payable returns (bool)']
-            );
+            let mock = await deployMockContract(signers[0], [
+              'function fn () external payable returns (bool)',
+            ]);
 
             await mock.mock.fn.returns(true);
 
@@ -156,9 +183,10 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             await mock.mock.fn.revertsWithReason(reason);
 
             let target = mock.address;
-            let { data } = await mock.populateTransaction.fn();
+            let mocked = await mock.populateTransaction.fn();
+            const data = mocked.data as ethers.BytesLike;
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers) {
               let nonce = nextNonce();
@@ -171,15 +199,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance.callStatic['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.callStatic.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
+                { value },
+              ),
             ).to.be.revertedWith(reason);
           });
 
@@ -187,7 +215,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
               let nonce = nextNonce();
@@ -200,24 +228,22 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
-                signatures.slice(0, quorum.toNumber() - 1)
-              )
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: quorum not reached'
-            );
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures.slice(0, quorum.toNumber() - 1),
+              ),
+            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
           });
 
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
               let nonce = nextNonce();
@@ -230,17 +256,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
+                { value },
+              ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once'
+              'ECDSAMultisigWallet: signer cannot sign more than once',
             );
           });
 
@@ -248,7 +274,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([nonSigner])) {
               let nonce = nextNonce();
@@ -261,17 +287,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
+                { value },
+              ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized'
+              'ECDSAMultisigWallet: recovered signer not authorized',
             );
           });
 
@@ -279,7 +305,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers) {
               let nonce = nextNonce();
@@ -292,24 +318,22 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
-            await instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-              [target, data, value, delegate],
+            await instance.verifyAndExecute(
+              { target, data, value, delegate },
               signatures,
-              { value }
+              { value },
             );
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: invalid nonce'
-            );
+                { value },
+              ),
+            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
           });
         });
       });
@@ -320,12 +344,15 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
         it('delegatecalls function on target address');
 
         it('does not transfer value to target address', async function () {
-          let receiver = new ethers.VoidSigner(ethers.constants.AddressZero, ethers.provider);
+          let receiver = new ethers.VoidSigner(
+            ethers.constants.AddressZero,
+            ethers.provider,
+          );
 
           let target = receiver.address;
           let data = ethers.utils.randomBytes(0);
           let value = ethers.constants.One;
-          let signatures = [];
+          let signatures: Signature[] = [];
 
           for (let signer of signers) {
             let nonce = nextNonce();
@@ -338,21 +365,16 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               address: verificationAddress,
             });
 
-            signatures.push([sig, nonce]);
+            signatures.push({ data: sig, nonce });
           }
 
-          await expect(
-            async function () {
-              return instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
-                signatures,
-                { value }
-              );
-            }
-          ).to.changeEtherBalances(
-            [receiver, instance],
-            [0, value]
-          );
+          await expect(async function () {
+            return instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
+          }).to.changeEtherBalances([receiver, instance], [0, value]);
         });
 
         it('forwards return data from called function', async function () {
@@ -360,7 +382,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
           let target = ethers.constants.AddressZero;
           let data = ethers.utils.randomBytes(0);
           let value = ethers.constants.Zero;
-          let signatures = [];
+          let signatures: Signature[] = [];
 
           for (let signer of signers) {
             let nonce = nextNonce();
@@ -373,29 +395,29 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
               address: verificationAddress,
             });
 
-            signatures.push([sig, nonce]);
+            signatures.push({ data: sig, nonce });
           }
 
           expect(
-            await instance.callStatic['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-              [target, data, value, delegate],
+            await instance.callStatic.verifyAndExecute(
+              { target, data, value, delegate },
               signatures,
-              { value }
-            )
+              { value },
+            ),
           ).to.equal('0x');
         });
 
         describe('reverts if', function () {
           it('target contract reverts', async function () {
-            let mock = await deployMockContract(
-              signers[0],
-              ['function fn () external payable returns (bool)']
-            );
+            let mock = await deployMockContract(signers[0], [
+              'function fn () external payable returns (bool)',
+            ]);
 
             let target = mock.address;
-            let { data } = await mock.populateTransaction.fn();
+            let mocked = await mock.populateTransaction.fn();
+            const data = mocked.data as ethers.BytesLike;
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers) {
               let nonce = nextNonce();
@@ -408,19 +430,21 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             // revert message depends on waffle mock implementation
 
             await expect(
-              instance.callStatic['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, ethers.constants.Zero, true],
+              instance.verifyAndExecute(
+                { target, data, value: ethers.constants.Zero, delegate: true },
                 signatures,
-                { value }
-              )
+                {
+                  value,
+                },
+              ),
             ).to.be.revertedWith(
-              'revert Mock on the method is not initialized'
+              'revert Mock on the method is not initialized',
             );
           });
 
@@ -428,7 +452,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
               let nonce = nextNonce();
@@ -441,24 +465,22 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
-                signatures.slice(0, quorum.toNumber() - 1)
-              )
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: quorum not reached'
-            );
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures.slice(0, quorum.toNumber() - 1),
+              ),
+            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
           });
 
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
               let nonce = nextNonce();
@@ -471,17 +493,17 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
+                { value },
+              ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once'
+              'ECDSAMultisigWallet: signer cannot sign more than once',
             );
           });
 
@@ -489,7 +511,7 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers.concat([nonSigner])) {
               let nonce = nextNonce();
@@ -502,26 +524,25 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
+                { value },
+              ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized'
+              'ECDSAMultisigWallet: recovered signer not authorized',
             );
           });
 
           it('message value is incorrect', async function () {
-
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers) {
               let nonce = nextNonce();
@@ -534,26 +555,27 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value: value.add(ethers.constants.One) }
-              )
+                {
+                  value: value.add(ethers.constants.One),
+                },
+              ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: delegatecall value must match signed amount'
+              'ECDSAMultisigWallet: delegatecall value must match signed amount',
             );
           });
 
           it('nonce has been used', async function () {
-
             let target = ethers.constants.AddressZero;
             let data = ethers.utils.randomBytes(32);
             let value = ethers.constants.Zero;
-            let signatures = [];
+            let signatures: Signature[] = [];
 
             for (let signer of signers) {
               let nonce = nextNonce();
@@ -566,24 +588,22 @@ const describeBehaviorOfECDSAMultisigWallet = function ({ deploy, getSigners, ge
                 address: verificationAddress,
               });
 
-              signatures.push([sig, nonce]);
+              signatures.push({ data: sig, nonce });
             }
 
-            await instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-              [target, data, value, delegate],
+            await instance.verifyAndExecute(
+              { target, data, value, delegate },
               signatures,
-              { value }
+              { value },
             );
 
             await expect(
-              instance['verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256)[])'](
-                [target, data, value, delegate],
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
                 signatures,
-                { value }
-              )
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: invalid nonce'
-            );
+                { value },
+              ),
+            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
           });
         });
       });
