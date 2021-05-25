@@ -41,8 +41,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/factory/CloneFactoryMock.sol/CloneFactoryMock.json',
+  './abiTypechain/CloneFactoryMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/factory/Factory.sol/Factory.json',
   './abiTypechain/Factory.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/FactoryMock.sol/FactoryMock.json',
+  './abiTypechain/FactoryMock.json',
 );
 
 fs.copyFileSync(
@@ -51,8 +61,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/factory/MetamorphicFactoryMock.sol/MetamorphicFactoryMock.json',
+  './abiTypechain/MetamorphicFactoryMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/factory/MinimalProxyFactory.sol/MinimalProxyFactory.json',
   './abiTypechain/MinimalProxyFactory.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/factory/MinimalProxyFactoryMock.sol/MinimalProxyFactoryMock.json',
+  './abiTypechain/MinimalProxyFactoryMock.json',
 );
 
 ///////////////////

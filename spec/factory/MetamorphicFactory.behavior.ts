@@ -8,7 +8,7 @@ interface MetaphoricFactoryBehaviorArgs {
   deploy: () => Promise<MetamorphicFactory>;
 }
 
-const describeBehaviorOfMetamorphicFactory = function (
+export function describeBehaviorOfMetamorphicFactory(
   { deploy }: MetaphoricFactoryBehaviorArgs,
   skips: string[],
 ) {
@@ -33,7 +33,7 @@ const describeBehaviorOfMetamorphicFactory = function (
       });
     });
   });
-};
+}
 
 // eslint-disable-next-line mocha/no-exports
 module.exports = describeBehaviorOfMetamorphicFactory;

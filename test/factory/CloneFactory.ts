@@ -1,18 +1,20 @@
-const { expect } = require('chai');
-
-const describeBehaviorOfCloneFactory = require('@solidstate/spec/factory/CloneFactory.behavior.js');
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+import { describeBehaviorOfCloneFactory } from '@solidstate/spec/factory/CloneFactory.behavior';
+import { CloneFactoryMock, CloneFactoryMock__factory } from '../../typechain';
 
 describe('CloneFactory', function () {
-  let instance;
+  let instance: CloneFactoryMock;
+
+  const deploy = async () => {
+    return new CloneFactoryMock__factory().deploy();
+  };
 
   beforeEach(async function () {
-    const factory = await ethers.getContractFactory('CloneFactoryMock');
-    instance = await factory.deploy();
-    await instance.deployed();
+    instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfCloneFactory({ deploy: () => instance });
+  describeBehaviorOfCloneFactory({ deploy }, []);
 
   describe('__internal', function () {
     describe('#_clone', function () {
@@ -23,10 +25,8 @@ describe('CloneFactory', function () {
 
           await instance['deployClone()']();
 
-          expect(
-            await ethers.provider.getCode(address)
-          ).to.equal(
-            await ethers.provider.getCode(instance.address)
+          expect(await ethers.provider.getCode(address)).to.equal(
+            await ethers.provider.getCode(instance.address),
           );
         });
       });
@@ -35,15 +35,15 @@ describe('CloneFactory', function () {
         it('deploys clone and returns deployment address', async function () {
           const salt = ethers.utils.randomBytes(32);
 
-          const address = await instance.callStatic['deployClone(bytes32)'](salt);
+          const address = await instance.callStatic['deployClone(bytes32)'](
+            salt,
+          );
           expect(address).to.be.properAddress;
 
           await instance['deployClone(bytes32)'](salt);
 
-          expect(
-            await ethers.provider.getCode(address)
-          ).to.equal(
-            await ethers.provider.getCode(instance.address)
+          expect(await ethers.provider.getCode(address)).to.equal(
+            await ethers.provider.getCode(instance.address),
           );
         });
 
@@ -54,10 +54,8 @@ describe('CloneFactory', function () {
             await instance['deployClone(bytes32)'](salt);
 
             await expect(
-              instance['deployClone(bytes32)'](salt)
-            ).to.be.revertedWith(
-              'Factory: failed deployment'
-            );
+              instance['deployClone(bytes32)'](salt),
+            ).to.be.revertedWith('Factory: failed deployment');
           });
         });
       });
@@ -70,9 +68,9 @@ describe('CloneFactory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic.calculateCloneDeploymentAddress(salt)
+          await instance.callStatic.calculateCloneDeploymentAddress(salt),
         ).to.equal(
-          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash)
+          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );
       });
     });

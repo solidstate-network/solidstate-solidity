@@ -1,18 +1,20 @@
-const { expect } = require('chai');
-
-const describeBehaviorOfFactory = require('@solidstate/spec/factory/Factory.behavior.js');
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+import { FactoryMock, FactoryMock__factory } from '../../typechain';
+import { describeBehaviorOfFactory } from '@solidstate/spec/factory/Factory.behavior';
 
 describe('Factory', function () {
-  let instance;
+  let instance: FactoryMock;
+
+  const deploy = async () => {
+    return new FactoryMock__factory().deploy();
+  };
 
   beforeEach(async function () {
-    const factory = await ethers.getContractFactory('FactoryMock');
-    instance = await factory.deploy();
-    await instance.deployed();
+    await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfFactory({});
+  describeBehaviorOfFactory({ deploy }, []);
 
   describe('__internal', function () {
     describe('#_deploy', function () {
@@ -25,10 +27,8 @@ describe('Factory', function () {
 
           await instance['deploy(bytes)'](initCode);
 
-          expect(
-            await ethers.provider.getCode(address)
-          ).to.equal(
-            await ethers.provider.getCode(instance.address)
+          expect(await ethers.provider.getCode(address)).to.equal(
+            await ethers.provider.getCode(instance.address),
           );
         });
       });
@@ -39,15 +39,18 @@ describe('Factory', function () {
           const initCodeHash = ethers.utils.keccak256(initCode);
           const salt = ethers.utils.randomBytes(32);
 
-          const address = await instance.callStatic['deploy(bytes,bytes32)'](initCode, salt);
-          expect(address).to.equal(await instance.calculateDeploymentAddress(initCodeHash, salt));
+          const address = await instance.callStatic['deploy(bytes,bytes32)'](
+            initCode,
+            salt,
+          );
+          expect(address).to.equal(
+            await instance.calculateDeploymentAddress(initCodeHash, salt),
+          );
 
           await instance['deploy(bytes,bytes32)'](initCode, salt);
 
-          expect(
-            await ethers.provider.getCode(address)
-          ).to.equal(
-            await ethers.provider.getCode(instance.address)
+          expect(await ethers.provider.getCode(address)).to.equal(
+            await ethers.provider.getCode(instance.address),
           );
         });
 
@@ -59,10 +62,8 @@ describe('Factory', function () {
             await instance['deploy(bytes,bytes32)'](initCode, salt);
 
             await expect(
-              instance['deploy(bytes,bytes32)'](initCode, salt)
-            ).to.be.revertedWith(
-              'Factory: failed deployment'
-            );
+              instance['deploy(bytes,bytes32)'](initCode, salt),
+            ).to.be.revertedWith('Factory: failed deployment');
           });
         });
       });
@@ -75,9 +76,12 @@ describe('Factory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic.calculateDeploymentAddress(initCodeHash, salt)
+          await instance.callStatic.calculateDeploymentAddress(
+            initCodeHash,
+            salt,
+          ),
         ).to.equal(
-          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash)
+          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );
       });
     });
