@@ -17,8 +17,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/access/OwnableMock.sol/OwnableMock.json',
+  './abiTypechain/OwnableMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/access/SafeOwnable.sol/SafeOwnable.json',
   './abiTypechain/SafeOwnable.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/access/SafeOwnableMock.sol/SafeOwnableMock.json',
+  './abiTypechain/SafeOwnableMock.json',
 );
 
 /////////////

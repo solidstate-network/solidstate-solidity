@@ -1,4 +1,6 @@
-const describeBehaviorOfSafeOwnable = require('@solidstate/spec/access/SafeOwnable.behavior.ts');
+import { describeBehaviorOfSafeOwnable } from '../../spec/access/SafeOwnable.behavior';
+import { ethers } from 'hardhat';
+import { SafeOwnableMock__factory } from '../../typechain';
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();
@@ -16,9 +18,7 @@ let getNonOwner = async function () {
 };
 
 let deploy = async function () {
-  let factory = await ethers.getContractFactory('SafeOwnableMock');
-  let instance = await factory.deploy((await getOwner()).address);
-  return await instance.deployed();
+  return new SafeOwnableMock__factory().deploy((await getOwner()).address);
 };
 
 describe('SafeOwnable', function () {
