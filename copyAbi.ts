@@ -13,12 +13,12 @@ if (!fs.existsSync('./abiTypechain')) {
 
 fs.copyFileSync(
   './artifacts/contracts/access/Ownable.sol/Ownable.json',
-  './abi/Ownable.json',
+  './abiTypechain/Ownable.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/access/SafeOwnable.sol/SafeOwnable.json',
-  './abi/SafeOwnable.json',
+  './abiTypechain/SafeOwnable.json',
 );
 
 /////////////
@@ -27,22 +27,22 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/factory/CloneFactory.sol/CloneFactory.json',
-  './abi/CloneFactory.json',
+  './abiTypechain/CloneFactory.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/factory/Factory.sol/Factory.json',
-  './abi/Factory.json',
+  './abiTypechain/Factory.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/factory/MetamorphicFactory.sol/MetamorphicFactory.json',
-  './abi/MetamorphicFactory.json',
+  './abiTypechain/MetamorphicFactory.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/factory/MinimalProxyFactory.sol/MinimalProxyFactory.json',
-  './abi/MinimalProxyFactory.json',
+  './abiTypechain/MinimalProxyFactory.json',
 );
 
 ///////////////////
@@ -51,7 +51,7 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/introspection/ERC165.sol/ERC165.json',
-  './abi/ERC165.json',
+  './abiTypechain/ERC165.json',
 );
 
 //////////////
@@ -60,7 +60,7 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/multisig/ECDSAMultisigWallet.sol/ECDSAMultisigWallet.json',
-  './abi/ECDSAMultisigWallet.json',
+  './abiTypechain/ECDSAMultisigWallet.json',
 );
 
 ///////////////////
@@ -69,32 +69,32 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/diamond/Diamond.sol/Diamond.json',
-  './abi/Diamond.json',
+  './abiTypechain/Diamond.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/diamond/DiamondBase.sol/DiamondBase.json',
-  './abi/DiamondBase.json',
+  './abiTypechain/DiamondBase.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/diamond/DiamondCuttable.sol/DiamondCuttable.json',
-  './abi/DiamondCuttable.json',
+  './abiTypechain/DiamondCuttable.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/diamond/DiamondLoupe.sol/DiamondLoupe.json',
-  './abi/DiamondLoupe.json',
+  './abiTypechain/DiamondLoupe.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/managed/ManagedProxy.sol/ManagedProxy.json',
-  './abi/ManagedProxy.json',
+  './abiTypechain/ManagedProxy.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/proxy/Proxy.sol/Proxy.json',
-  './abi/Proxy.json',
+  './abiTypechain/Proxy.json',
 );
 
 ///////////////
@@ -103,17 +103,17 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/signature/ERC1271Base.sol/ERC1271Base.json',
-  './abi/ERC1271Base.json',
+  './abiTypechain/ERC1271Base.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/signature/ERC1271Ownable.sol/ERC1271Ownable.json',
-  './abi/ERC1271Ownable.json',
+  './abiTypechain/ERC1271Ownable.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/signature/ERC1271Stored.sol/ERC1271Stored.json',
-  './abi/ERC1271Stored.json',
+  './abiTypechain/ERC1271Stored.json',
 );
 
 ///////////
@@ -122,42 +122,52 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20.sol/ERC20.json',
-  './abi/ERC20.json',
+  './abiTypechain/ERC20.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20Base.sol/ERC20Base.json',
-  './abi/ERC20Base.json',
+  './abiTypechain/ERC20Base.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20Extended.sol/ERC20Extended.json',
-  './abi/ERC20Extended.json',
+  './abiTypechain/ERC20Extended.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20ImplicitApproval.sol/ERC20ImplicitApproval.json',
-  './abi/ERC20ImplicitApproval.json',
+  './abiTypechain/ERC20ImplicitApproval.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20Metadata.sol/ERC20Metadata.json',
-  './abi/ERC20Metadata.json',
+  './abiTypechain/ERC20Metadata.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC1155/ERC1155.sol/ERC1155.json',
-  './abi/ERC1155.json',
+  './abiTypechain/ERC1155.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC1155/ERC1155Base.sol/ERC1155Base.json',
-  './abi/ERC1155Base.json',
+  './abiTypechain/ERC1155Base.json',
 );
 
 fs.copyFileSync(
   './artifacts/contracts/token/ERC1155/ERC1155Enumerable.sol/ERC1155Enumerable.json',
-  './abi/ERC1155Enumerable.json',
+  './abiTypechain/ERC1155Enumerable.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1404/ERC1404.sol/ERC1404.json',
+  './abiTypechain/ERC1404.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1404/ERC1404Base.sol/ERC1404Base.json',
+  './abiTypechain/ERC1404Base.json',
 );
 
 ///////////
@@ -166,7 +176,7 @@ fs.copyFileSync(
 
 fs.copyFileSync(
   './artifacts/contracts/utils/ReentrancyGuard.sol/ReentrancyGuard.json',
-  './abi/ReentrancyGuard.json',
+  './abiTypechain/ReentrancyGuard.json',
 );
 
 rimraf.sync('./typechain');
