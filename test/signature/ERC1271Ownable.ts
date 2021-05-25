@@ -1,6 +1,11 @@
-const { expect } = require('chai');
-
-const describeBehaviorOfERC1271Ownable = require('@solidstate/spec/signature/ERC1271Ownable.behavior.ts');
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+import { describeBehaviorOfERC1271Ownable } from '../../spec/signature/ERC1271Ownable.behavior';
+import {
+  ERC1271OwnableMock,
+  ERC1271OwnableMock__factory,
+} from '../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 let getOwner = async function () {
   let [signer] = await ethers.getSigners();
@@ -13,15 +18,13 @@ let getNonOwner = async function () {
 };
 
 let deploy = async function () {
-  let factory = await ethers.getContractFactory('ERC1271OwnableMock');
-  let instance = await factory.deploy((await getOwner()).address);
-  return await instance.deployed();
+  return new ERC1271OwnableMock__factory().deploy((await getOwner()).address);
 };
 
 describe('ERC1271Ownable', function () {
-  let owner;
-  let nonOwner;
-  let instance;
+  let owner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
+  let instance: ERC1271OwnableMock;
 
   beforeEach(async function () {
     owner = await getOwner();
@@ -29,12 +32,14 @@ describe('ERC1271Ownable', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfERC1271Ownable({
-    deploy: () => instance,
-    getOwner: () => owner,
-    getNonOwner: () => nonOwner,
-  });
+  describeBehaviorOfERC1271Ownable(
+    {
+      deploy,
+      getOwner,
+      getNonOwner,
+    },
+    [],
+  );
 
   describe('__internal', function () {
     describe('#_isValidSignature', function () {
@@ -42,24 +47,16 @@ describe('ERC1271Ownable', function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await owner.signMessage(ethers.utils.arrayify(hash));
 
-        expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
-        ).to.be.true;
+        expect(await instance.callStatic.__isValidSignature(hash, signature)).to
+          .be.true;
       });
 
       it('returns false for signature created by non-owner', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
 
-        expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
-        ).to.be.false;
+        expect(await instance.callStatic.__isValidSignature(hash, signature)).to
+          .be.false;
       });
     });
   });

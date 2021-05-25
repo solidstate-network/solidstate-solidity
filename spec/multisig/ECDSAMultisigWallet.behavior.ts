@@ -47,7 +47,7 @@ interface ECDSAMultisigWalletBehaviorArgs {
   getVerificationAddress: () => Promise<string>;
 }
 
-const describeBehaviorOfECDSAMultisigWallet = function (
+export function describeBehaviorOfECDSAMultisigWallet(
   {
     deploy,
     getSigners,
@@ -609,7 +609,7 @@ const describeBehaviorOfECDSAMultisigWallet = function (
       });
     });
   });
-};
+}
 
 // eslint-disable-next-line mocha/no-exports
 module.exports = describeBehaviorOfECDSAMultisigWallet;

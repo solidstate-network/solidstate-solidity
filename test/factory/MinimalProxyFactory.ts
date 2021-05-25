@@ -6,12 +6,12 @@ import {
   MinimalProxyFactoryMock__factory,
 } from '../../typechain';
 
+const deploy = async () => {
+  return new MinimalProxyFactoryMock__factory().deploy();
+};
+
 describe('MinimalProxyFactory', function () {
   let instance: MinimalProxyFactoryMock;
-
-  const deploy = async () => {
-    return new MinimalProxyFactoryMock__factory().deploy();
-  };
 
   beforeEach(async function () {
     await deploy();

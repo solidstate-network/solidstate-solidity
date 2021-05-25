@@ -3,12 +3,12 @@ import { ethers } from 'hardhat';
 import { FactoryMock, FactoryMock__factory } from '../../typechain';
 import { describeBehaviorOfFactory } from '@solidstate/spec/factory/Factory.behavior';
 
+const deploy = async () => {
+  return new FactoryMock__factory().deploy();
+};
+
 describe('Factory', function () {
   let instance: FactoryMock;
-
-  const deploy = async () => {
-    return new FactoryMock__factory().deploy();
-  };
 
   beforeEach(async function () {
     await deploy();

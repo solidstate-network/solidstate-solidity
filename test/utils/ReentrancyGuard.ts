@@ -1,20 +1,24 @@
-const { expect } = require('chai');
+import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec/utils/ReentrancyGuard.behavior';
+import { expect } from 'chai';
+import {
+  ReentrancyGuardMock,
+  ReentrancyGuardMock__factory,
+} from '../../typechain';
 
-const describeBehaviorOfReentrancyGuard = require('@solidstate/spec/utils/ReentrancyGuard.behavior.ts');
+const deploy = async () => {
+  return new ReentrancyGuardMock__factory().deploy();
+};
 
 describe('ReentrancyGuard', function () {
-  let instance;
+  let instance: ReentrancyGuardMock;
 
   beforeEach(async function () {
-    const factory = await ethers.getContractFactory('ReentrancyGuardMock');
-    instance = await factory.deploy();
-    await instance.deployed();
+    await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfReentrancyGuard(
     {
-      deploy: () => instance,
+      deploy,
     },
     [],
   );

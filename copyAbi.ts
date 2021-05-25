@@ -84,6 +84,11 @@ fs.copyFileSync(
   './abiTypechain/ERC165.json',
 );
 
+fs.copyFileSync(
+  './artifacts/contracts/introspection/ERC165Mock.sol/ERC165Mock.json',
+  './abiTypechain/ERC165Mock.json',
+);
+
 //////////////
 // Multisig //
 //////////////
@@ -91,6 +96,11 @@ fs.copyFileSync(
 fs.copyFileSync(
   './artifacts/contracts/multisig/ECDSAMultisigWallet.sol/ECDSAMultisigWallet.json',
   './abiTypechain/ECDSAMultisigWallet.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/multisig/ECDSAMultisigWalletMock.sol/ECDSAMultisigWalletMock.json',
+  './abiTypechain/ECDSAMultisigWalletMock.json',
 );
 
 ///////////////////
@@ -142,8 +152,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/signature/ERC1271OwnableMock.sol/ERC1271OwnableMock.json',
+  './abiTypechain/ERC1271OwnableMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/signature/ERC1271Stored.sol/ERC1271Stored.json',
   './abiTypechain/ERC1271Stored.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/signature/ERC1271StoredMock.sol/ERC1271StoredMock.json',
+  './abiTypechain/ERC1271StoredMock.json',
 );
 
 ///////////
@@ -207,6 +227,11 @@ fs.copyFileSync(
 fs.copyFileSync(
   './artifacts/contracts/utils/ReentrancyGuard.sol/ReentrancyGuard.json',
   './abiTypechain/ReentrancyGuard.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/utils/ReentrancyGuardMock.sol/ReentrancyGuardMock.json',
+  './abiTypechain/ReentrancyGuardMock.json',
 );
 
 rimraf.sync('./typechain');

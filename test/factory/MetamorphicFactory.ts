@@ -6,12 +6,12 @@ import {
 } from '../../typechain';
 import { describeBehaviorOfMetamorphicFactory } from '../../spec/factory/MetamorphicFactory.behavior';
 
+const deploy = async () => {
+  return new MetamorphicFactoryMock__factory().deploy();
+};
+
 describe('MetamorphicFactory', function () {
   let instance: MetamorphicFactoryMock;
-
-  const deploy = async () => {
-    return new MetamorphicFactoryMock__factory().deploy();
-  };
 
   beforeEach(async function () {
     await deploy();
