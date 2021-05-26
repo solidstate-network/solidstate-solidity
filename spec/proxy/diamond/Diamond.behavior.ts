@@ -163,7 +163,7 @@ export function describeBehaviorOfDiamond(
         for (let selector of selectors) {
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: facet.address, action: 0, selectors: [selector] }],
               ethers.constants.AddressZero,
               '0x',
@@ -196,7 +196,7 @@ export function describeBehaviorOfDiamond(
       it('removes selectors one-by-one in ascending order of addition', async function () {
         await instance
           .connect(owner)
-          ['diamondCut(tuple[],address,bytes)'](
+          .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -205,7 +205,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of selectors) {
-          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+          await instance.connect(owner).diamondCut(
             [
               {
                 target: ethers.constants.AddressZero,
@@ -260,7 +260,7 @@ export function describeBehaviorOfDiamond(
       it('removes selectors one-by-one in descending order of addition', async function () {
         await instance
           .connect(owner)
-          ['diamondCut(tuple[],address,bytes)'](
+          .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -269,7 +269,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].reverse()) {
-          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+          await instance.connect(owner).diamondCut(
             [
               {
                 target: ethers.constants.AddressZero,
@@ -324,7 +324,7 @@ export function describeBehaviorOfDiamond(
       it('removes selectors one-by-one in random order', async function () {
         await instance
           .connect(owner)
-          ['diamondCut(tuple[],address,bytes)'](
+          .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -333,7 +333,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
-          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+          await instance.connect(owner).diamondCut(
             [
               {
                 target: ethers.constants.AddressZero,

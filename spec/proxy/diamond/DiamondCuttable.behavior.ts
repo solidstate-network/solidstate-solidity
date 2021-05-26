@@ -75,9 +75,7 @@ export function describeBehaviorOfDiamondCuttable(
         const target = ethers.constants.AddressZero;
         const data = '0x';
 
-        let tx = instance
-          .connect(owner)
-          ['diamondCut(tuple[],address,bytes)'](facets, target, data);
+        let tx = instance.connect(owner).diamondCut(facets, target, data);
 
         const events = (await (await tx).wait()).events;
         const argsResult: any = events![0].args!;
@@ -108,7 +106,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.constants.AddressZero,
               '0x',
@@ -125,7 +123,7 @@ export function describeBehaviorOfDiamondCuttable(
         describe('reverts if', function () {
           it('target facet is not a contract', async function () {
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: ethers.constants.AddressZero,
@@ -150,20 +148,12 @@ export function describeBehaviorOfDiamondCuttable(
 
             await instance
               .connect(owner)
-              ['diamondCut(tuple[],address,bytes)'](
-                facetCuts,
-                ethers.constants.AddressZero,
-                '0x',
-              );
+              .diamondCut(facetCuts, ethers.constants.AddressZero, '0x');
 
             await expect(
               instance
                 .connect(owner)
-                ['diamondCut(tuple[],address,bytes)'](
-                  facetCuts,
-                  ethers.constants.AddressZero,
-                  '0x',
-                ),
+                .diamondCut(facetCuts, ethers.constants.AddressZero, '0x'),
             ).to.be.revertedWith('DiamondBase: selector already added');
           });
         });
@@ -179,7 +169,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.constants.AddressZero,
               '0x',
@@ -194,7 +184,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: ethers.constants.AddressZero, action: 2, selectors }],
               ethers.constants.AddressZero,
               '0x',
@@ -210,7 +200,7 @@ export function describeBehaviorOfDiamondCuttable(
         describe('reverts if', function () {
           it('target address is not zero address', async function () {
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: instance.address,
@@ -228,7 +218,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           it('selector has not been added', async function () {
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: ethers.constants.AddressZero,
@@ -245,7 +235,7 @@ export function describeBehaviorOfDiamondCuttable(
           it('selector is immutable', async function () {
             const selector = ethers.utils.randomBytes(4);
 
-            await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+            await instance.connect(owner).diamondCut(
               [
                 {
                   target: instance.address,
@@ -258,7 +248,7 @@ export function describeBehaviorOfDiamondCuttable(
             );
 
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: ethers.constants.AddressZero,
@@ -284,7 +274,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.constants.AddressZero,
               '0x',
@@ -305,7 +295,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           await instance
             .connect(owner)
-            ['diamondCut(tuple[],address,bytes)'](
+            .diamondCut(
               [{ target: facetReplacement.address, action: 1, selectors }],
               ethers.constants.AddressZero,
               '0x',
@@ -322,7 +312,7 @@ export function describeBehaviorOfDiamondCuttable(
         describe('reverts if', function () {
           it('target facet is not a contract', async function () {
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: ethers.constants.AddressZero,
@@ -338,7 +328,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           it('selector has not been added', async function () {
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: facet.address,
@@ -355,7 +345,7 @@ export function describeBehaviorOfDiamondCuttable(
           it('selector is immutable', async function () {
             const selector = ethers.utils.randomBytes(4);
 
-            await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+            await instance.connect(owner).diamondCut(
               [
                 {
                   target: instance.address,
@@ -368,7 +358,7 @@ export function describeBehaviorOfDiamondCuttable(
             );
 
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: facet.address,
@@ -385,7 +375,7 @@ export function describeBehaviorOfDiamondCuttable(
           it('replacement facet is same as existing facet', async function () {
             const selector = ethers.utils.randomBytes(4);
 
-            await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+            await instance.connect(owner).diamondCut(
               [
                 {
                   target: facet.address,
@@ -398,7 +388,7 @@ export function describeBehaviorOfDiamondCuttable(
             );
 
             await expect(
-              instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+              instance.connect(owner).diamondCut(
                 [
                   {
                     target: facet.address,
@@ -419,17 +409,13 @@ export function describeBehaviorOfDiamondCuttable(
           await expect(
             instance
               .connect(nonOwner)
-              ['diamondCut(tuple[],address,bytes)'](
-                [],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
+              .diamondCut([], ethers.constants.AddressZero, '0x'),
           ).to.be.revertedWith('Ownable: sender must be owner');
         });
 
         it('passed FacetCutAction is invalid', async function () {
           await expect(
-            instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+            instance.connect(owner).diamondCut(
               [
                 {
                   target: ethers.constants.AddressZero,
@@ -447,7 +433,7 @@ export function describeBehaviorOfDiamondCuttable(
 
         it('passed selector array is empty', async function () {
           await expect(
-            instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
+            instance.connect(owner).diamondCut(
               [
                 {
                   target: ethers.constants.AddressZero,
@@ -463,9 +449,7 @@ export function describeBehaviorOfDiamondCuttable(
 
         it('initialization target is provided but data is not', async function () {
           await expect(
-            instance
-              .connect(owner)
-              ['diamondCut(tuple[],address,bytes)']([], facet.address, '0x'),
+            instance.connect(owner).diamondCut([], facet.address, '0x'),
           ).to.be.revertedWith(
             'DiamondBase: invalid initialization parameters',
           );
@@ -475,11 +459,7 @@ export function describeBehaviorOfDiamondCuttable(
           await expect(
             instance
               .connect(owner)
-              ['diamondCut(tuple[],address,bytes)'](
-                [],
-                ethers.constants.AddressZero,
-                '0x01',
-              ),
+              .diamondCut([], ethers.constants.AddressZero, '0x01'),
           ).to.be.revertedWith(
             'DiamondBase: invalid initialization parameters',
           );
@@ -487,9 +467,7 @@ export function describeBehaviorOfDiamondCuttable(
 
         it('initialization target has no code', async function () {
           await expect(
-            instance
-              .connect(owner)
-              ['diamondCut(tuple[],address,bytes)']([], owner.address, '0x01'),
+            instance.connect(owner).diamondCut([], owner.address, '0x01'),
           ).to.be.revertedWith(
             'DiamondBase: initialization target has no code',
           );
@@ -497,9 +475,7 @@ export function describeBehaviorOfDiamondCuttable(
 
         it('initialization function reverts', async function () {
           await expect(
-            instance
-              .connect(owner)
-              ['diamondCut(tuple[],address,bytes)']([], facet.address, '0x01'),
+            instance.connect(owner).diamondCut([], facet.address, '0x01'),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
       });

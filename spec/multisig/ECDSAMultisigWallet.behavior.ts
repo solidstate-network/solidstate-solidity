@@ -125,9 +125,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
           }
 
           await expect(async function () {
-            return instance[
-              'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-            ]({ target, data, value, delegate }, signatures, { value });
+            return instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
           }).to.changeEtherBalances([mock, instance], [value, 0]);
         });
 
@@ -161,9 +163,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
           expect(
             ethers.utils.defaultAbiCoder.decode(
               mock.interface.functions['fn()'].outputs ?? [],
-              await instance.callStatic[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              await instance.callStatic.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             )[0],
           ).to.be.true;
         });
@@ -200,9 +204,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance.callStatic[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.callStatic.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith(reason);
           });
 
@@ -227,9 +233,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ](
+              instance.verifyAndExecute(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
@@ -257,9 +261,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith(
               'ECDSAMultisigWallet: signer cannot sign more than once',
             );
@@ -286,9 +292,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith(
               'ECDSAMultisigWallet: recovered signer not authorized',
             );
@@ -314,14 +322,18 @@ export function describeBehaviorOfECDSAMultisigWallet(
               signatures.push({ data: sig, nonce });
             }
 
-            await instance[
-              'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-            ]({ target, data, value, delegate }, signatures, { value });
+            await instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
           });
         });
@@ -358,9 +370,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
           }
 
           await expect(async function () {
-            return instance[
-              'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-            ]({ target, data, value, delegate }, signatures, { value });
+            return instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
           }).to.changeEtherBalances([receiver, instance], [0, value]);
         });
 
@@ -386,9 +400,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
           }
 
           expect(
-            await instance.callStatic[
-              'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-            ]({ target, data, value, delegate }, signatures, { value }),
+            await instance.callStatic.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            ),
           ).to.equal('0x');
         });
 
@@ -421,9 +437,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             // revert message depends on waffle mock implementation
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ](
+              instance.verifyAndExecute(
                 { target, data, value: ethers.constants.Zero, delegate: true },
                 signatures,
                 {
@@ -456,9 +470,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ](
+              instance.verifyAndExecute(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
@@ -486,9 +498,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith(
               'ECDSAMultisigWallet: signer cannot sign more than once',
             );
@@ -515,9 +529,11 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith(
               'ECDSAMultisigWallet: recovered signer not authorized',
             );
@@ -544,11 +560,13 @@ export function describeBehaviorOfECDSAMultisigWallet(
             }
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, {
-                value: value.add(ethers.constants.One),
-              }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                {
+                  value: value.add(ethers.constants.One),
+                },
+              ),
             ).to.be.revertedWith(
               'ECDSAMultisigWallet: delegatecall value must match signed amount',
             );
@@ -574,14 +592,18 @@ export function describeBehaviorOfECDSAMultisigWallet(
               signatures.push({ data: sig, nonce });
             }
 
-            await instance[
-              'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-            ]({ target, data, value, delegate }, signatures, { value });
+            await instance.verifyAndExecute(
+              { target, data, value, delegate },
+              signatures,
+              { value },
+            );
 
             await expect(
-              instance[
-                'verifyAndExecute((address,bytes,uint256,bool),tuple[])'
-              ]({ target, data, value, delegate }, signatures, { value }),
+              instance.verifyAndExecute(
+                { target, data, value, delegate },
+                signatures,
+                { value },
+              ),
             ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
           });
         });
