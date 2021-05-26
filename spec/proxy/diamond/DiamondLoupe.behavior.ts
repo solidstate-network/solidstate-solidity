@@ -26,15 +26,6 @@ export function describeBehaviorOfDiamondLoupe(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC165(
-      {
-        deploy,
-        interfaceIds: ['0x48e2b093'],
-      },
-      skips,
-    );
-
     describe('#facets', function () {
       it('returns facet cuts', async function () {
         expect(await instance.callStatic.facets()).to.have.deep.members(

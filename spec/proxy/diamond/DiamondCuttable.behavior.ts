@@ -5,11 +5,25 @@ import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
 import { DiamondCuttable } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
+import { BytesLike } from '@ethersproject/bytes';
+import { CallOverrides } from 'ethers';
 
 interface DiamondCuttableBehaviorArgs {
-  deploy: () => Promise<DiamondCuttable>;
+  deploy: () => Promise<DiamondCuttableERC165>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
+}
+
+interface DiamondCuttableERC165 extends DiamondCuttable {
+  supportsInterface: (
+    interfaceId: BytesLike,
+    overrides?: CallOverrides,
+  ) => Promise<boolean>;
+
+  'supportsInterface(bytes4)': (
+    interfaceId: BytesLike,
+    overrides?: CallOverrides,
+  ) => Promise<boolean>;
 }
 
 export function describeBehaviorOfDiamondCuttable(
@@ -27,7 +41,7 @@ export function describeBehaviorOfDiamondCuttable(
     let abi: any;
     let facet: any;
 
-    let instance: DiamondCuttable;
+    let instance: DiamondCuttableERC165;
 
     before(async function () {
       owner = await getOwner();
@@ -54,18 +68,9 @@ export function describeBehaviorOfDiamondCuttable(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
-    describeBehaviorOfERC165(
-      {
-        deploy,
-        interfaceIds: ['0x1f931c1c'],
-      },
-      skips,
-    );
-
     describe('#diamondCut', function () {
       it('emits DiamondCut event', async function () {
-        const args = [
+        const args: any = [
           [
             {
               target: facet.address,
