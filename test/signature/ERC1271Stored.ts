@@ -10,7 +10,8 @@ let validParams: [Uint8Array, Uint8Array] = [
 ];
 
 let deploy = async function () {
-  return new ERC1271StoredMock__factory().deploy(
+  const [deployer] = await ethers.getSigners();
+  return new ERC1271StoredMock__factory(deployer).deploy(
     validParams[0],
     validParams[1],
   );

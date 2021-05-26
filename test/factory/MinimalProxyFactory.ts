@@ -7,7 +7,8 @@ import {
 } from '../../typechain';
 
 const deploy = async () => {
-  return new MinimalProxyFactoryMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new MinimalProxyFactoryMock__factory(deployer).deploy();
 };
 
 describe('MinimalProxyFactory', function () {

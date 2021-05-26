@@ -12,7 +12,8 @@ const getImplicitlyApprovedSpender = async function () {
 };
 
 const deploy = async function () {
-  return new ERC20ImplicitApprovalMock__factory().deploy([
+  const [deployer] = await ethers.getSigners();
+  return new ERC20ImplicitApprovalMock__factory(deployer).deploy([
     (await getImplicitlyApprovedSpender()).address,
   ]);
 };

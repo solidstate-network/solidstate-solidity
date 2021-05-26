@@ -4,7 +4,8 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { DiamondCuttableMock__factory } from '../../../typechain';
 
 let deploy = async function () {
-  return new DiamondCuttableMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new DiamondCuttableMock__factory(deployer).deploy();
 };
 
 describe('DiamondCuttable', function () {

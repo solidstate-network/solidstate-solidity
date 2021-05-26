@@ -5,7 +5,8 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ERC1155BaseMock, ERC1155BaseMock__factory } from '../../../typechain';
 
 const deploy = async () => {
-  return new ERC1155BaseMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new ERC1155BaseMock__factory(deployer).deploy();
 };
 
 describe('ERC1155Base', function () {

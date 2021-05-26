@@ -22,7 +22,8 @@ const deploy = async function () {
 
   const selector = manager.interface.getSighash('getImplementation()');
 
-  return new ManagedProxyOwnableMock__factory().deploy(
+  const [deployer] = await ethers.getSigners();
+  return new ManagedProxyOwnableMock__factory(deployer).deploy(
     manager.address,
     selector,
   );

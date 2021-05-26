@@ -4,7 +4,8 @@ import { FactoryMock, FactoryMock__factory } from '../../typechain';
 import { describeBehaviorOfFactory } from '@solidstate/spec/factory/Factory.behavior';
 
 const deploy = async () => {
-  return new FactoryMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new FactoryMock__factory(deployer).deploy();
 };
 
 describe('Factory', function () {

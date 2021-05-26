@@ -4,9 +4,11 @@ import {
   ReentrancyGuardMock,
   ReentrancyGuardMock__factory,
 } from '../../typechain';
+import { ethers } from 'hardhat';
 
 const deploy = async () => {
-  return new ReentrancyGuardMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new ReentrancyGuardMock__factory(deployer).deploy();
 };
 
 describe('ReentrancyGuard', function () {

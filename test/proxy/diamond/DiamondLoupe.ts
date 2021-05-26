@@ -8,7 +8,8 @@ describe('DiamondLoupe', function () {
   const facetCuts: any[] = [];
 
   const deploy = async function () {
-    return new DiamondLoupeMock__factory().deploy(facetCuts);
+    const [deployer] = await ethers.getSigners();
+    return new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
   };
 
   // eslint-disable-next-line mocha/no-hooks-for-single-case

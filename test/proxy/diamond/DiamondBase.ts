@@ -1,8 +1,10 @@
 import { describeBehaviorOfDiamondBase } from '../../../spec/proxy/diamond/DiamondBase.behavior';
 import { DiamondBaseMock__factory, Ownable__factory } from '../../../typechain';
+import { ethers } from 'hardhat';
 
 const deploy = async function () {
-  const facetInstance = await new Ownable__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  const facetInstance = await new Ownable__factory(deployer).deploy();
 
   return new DiamondBaseMock__factory().deploy([
     {

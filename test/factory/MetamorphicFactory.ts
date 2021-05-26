@@ -7,7 +7,8 @@ import {
 import { describeBehaviorOfMetamorphicFactory } from '../../spec/factory/MetamorphicFactory.behavior';
 
 const deploy = async () => {
-  return new MetamorphicFactoryMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new MetamorphicFactoryMock__factory(deployer).deploy();
 };
 
 describe('MetamorphicFactory', function () {

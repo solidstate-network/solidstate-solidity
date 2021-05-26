@@ -8,7 +8,8 @@ let restrictions = [
 ];
 
 const deploy = async () => {
-  return new ERC1404Mock__factory().deploy(
+  const [deployer] = await ethers.getSigners();
+  return new ERC1404Mock__factory(deployer).deploy(
     restrictions.map((r) => r.code),
     restrictions.map((r) => r.message),
   );

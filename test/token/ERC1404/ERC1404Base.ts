@@ -9,7 +9,8 @@ let restrictions = [
 ];
 
 let deploy = async function () {
-  return new ERC1404BaseMock__factory().deploy(
+  const [deployer] = await ethers.getSigners();
+  return new ERC1404BaseMock__factory(deployer).deploy(
     restrictions.map((e) => e.code),
     restrictions.map((e) => e.message),
   );

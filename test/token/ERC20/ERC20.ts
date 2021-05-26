@@ -8,7 +8,13 @@ const decimals = 18;
 const supply = ethers.utils.parseEther('1');
 
 const deploy = async () => {
-  return new ERC20Mock__factory().deploy(name, symbol, decimals, supply);
+  const [deployer] = await ethers.getSigners();
+  return new ERC20Mock__factory(deployer).deploy(
+    name,
+    symbol,
+    decimals,
+    supply,
+  );
 };
 
 describe('ERC20', function () {

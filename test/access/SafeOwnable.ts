@@ -18,7 +18,8 @@ let getNonOwner = async function () {
 };
 
 let deploy = async function () {
-  return new SafeOwnableMock__factory().deploy((await getOwner()).address);
+  const owner = await getOwner();
+  return new SafeOwnableMock__factory(owner).deploy(owner.address);
 };
 
 describe('SafeOwnable', function () {

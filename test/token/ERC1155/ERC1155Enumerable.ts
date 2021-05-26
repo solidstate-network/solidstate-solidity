@@ -3,9 +3,11 @@ import {
   ERC1155EnumerableMock,
   ERC1155EnumerableMock__factory,
 } from '../../../typechain';
+import { ethers } from 'hardhat';
 
 const deploy = async () => {
-  return new ERC1155EnumerableMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new ERC1155EnumerableMock__factory(deployer).deploy();
 };
 
 describe('ERC1155Enumerable', function () {

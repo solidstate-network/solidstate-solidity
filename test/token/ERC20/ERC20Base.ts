@@ -9,7 +9,8 @@ import {
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 let deploy = async function () {
-  return new ERC20BaseMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new ERC20BaseMock__factory(deployer).deploy();
 };
 
 describe('ERC20Base', function () {

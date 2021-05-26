@@ -1,8 +1,10 @@
 import { describeBehaviorOfERC165 } from '../../spec/introspection/ERC165.behavior';
 import { ERC165Mock__factory } from '../../typechain';
+import { ethers } from 'hardhat';
 
 let deploy = async function () {
-  return await new ERC165Mock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return await new ERC165Mock__factory(deployer).deploy();
 };
 
 describe('ERC165', function () {

@@ -18,7 +18,8 @@ let getNonOwner = async function () {
 };
 
 let deploy = async function () {
-  return new ERC1271OwnableMock__factory().deploy((await getOwner()).address);
+  const owner = await getOwner();
+  return new ERC1271OwnableMock__factory(owner).deploy(owner.address);
 };
 
 describe('ERC1271Ownable', function () {

@@ -6,7 +6,8 @@ import {
 import { ethers } from 'hardhat';
 
 let deploy = async function () {
-  return new ERC20ExtendedMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new ERC20ExtendedMock__factory(deployer).deploy();
 };
 
 describe('ERC20Extended', function () {

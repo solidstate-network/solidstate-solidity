@@ -5,7 +5,8 @@ import { ethers } from 'hardhat';
 import { describeBehaviorOfDiamond } from '../../../spec/proxy/diamond/Diamond.behavior';
 
 const deploy = async function () {
-  return new Diamond__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new Diamond__factory(deployer).deploy();
 };
 
 describe('Diamond', function () {

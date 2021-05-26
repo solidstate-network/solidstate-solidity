@@ -16,7 +16,8 @@ const getNonSigner = async function () {
 };
 
 const deploy = async function () {
-  return new ECDSAMultisigWalletMock__factory().deploy(
+  const [deployer] = await ethers.getSigners();
+  return new ECDSAMultisigWalletMock__factory(deployer).deploy(
     (await getSigners()).map((s) => s.address),
     quorum,
   );

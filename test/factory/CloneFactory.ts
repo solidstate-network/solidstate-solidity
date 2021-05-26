@@ -4,7 +4,8 @@ import { describeBehaviorOfCloneFactory } from '@solidstate/spec/factory/CloneFa
 import { CloneFactoryMock, CloneFactoryMock__factory } from '../../typechain';
 
 const deploy = async () => {
-  return new CloneFactoryMock__factory().deploy();
+  const [deployer] = await ethers.getSigners();
+  return new CloneFactoryMock__factory(deployer).deploy();
 };
 
 describe('CloneFactory', function () {
