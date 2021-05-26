@@ -176,8 +176,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20Mock.sol/ERC20Mock.json',
+  './abiTypechain/ERC20Mock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20Base.sol/ERC20Base.json',
   './abiTypechain/ERC20Base.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20BaseMock.sol/ERC20BaseMock.json',
+  './abiTypechain/ERC20BaseMock.json',
 );
 
 fs.copyFileSync(
@@ -186,13 +196,28 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20ExtendedMock.sol/ERC20ExtendedMock.json',
+  './abiTypechain/ERC20ExtendedMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20ImplicitApproval.sol/ERC20ImplicitApproval.json',
   './abiTypechain/ERC20ImplicitApproval.json',
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20ImplicitApprovalMock.sol/ERC20ImplicitApprovalMock.json',
+  './abiTypechain/ERC20ImplicitApprovalMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/token/ERC20/ERC20Metadata.sol/ERC20Metadata.json',
   './abiTypechain/ERC20Metadata.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC20/ERC20MetadataMock.sol/ERC20MetadataMock.json',
+  './abiTypechain/ERC20MetadataMock.json',
 );
 
 fs.copyFileSync(

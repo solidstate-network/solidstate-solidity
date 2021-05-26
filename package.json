@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "hardhat compile && yarn copyAbi && yarn typechain",
     "copyAbi": "ts-node copyAbi.ts",
-    "typechain": "typechain --target ethers-v5 --out-dir typechain \"./abiTypechain/[!package]*.json\""
+    "typechain": "typechain --target ethers-v5 --always-generate-overloads --out-dir typechain \"./abiTypechain/[!package]*.json\""
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
