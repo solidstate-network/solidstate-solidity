@@ -17,7 +17,7 @@ describe('ERC1155', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1155(
     {
-      deploy,
+      deploy: async () => instance,
       mint: (recipient, tokenId, amount) =>
         instance.mint(recipient, tokenId, amount),
       burn: (recipient, tokenId, amount) =>

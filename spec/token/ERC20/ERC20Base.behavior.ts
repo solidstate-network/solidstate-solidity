@@ -81,7 +81,9 @@ export function describeBehaviorOfERC20Base(
         ).to.equal(ethers.constants.Zero);
 
         let amount = ethers.constants.Two;
-        await instance.connect(holder).approve(spender.address, amount);
+        await instance
+          .connect(holder)
+          ['approve(address,uint256)'](spender.address, amount);
 
         expect(
           await instance.callStatic.allowance(holder.address, spender.address),
@@ -95,7 +97,9 @@ export function describeBehaviorOfERC20Base(
         await mint(spender.address, amount);
 
         await expect(() =>
-          instance.connect(spender).transfer(holder.address, amount),
+          instance
+            .connect(spender)
+            ['transfer(address,uint256)'](holder.address, amount),
         ).to.changeTokenBalances(
           instance,
           [spender, holder],
@@ -108,7 +112,9 @@ export function describeBehaviorOfERC20Base(
           const amount = ethers.constants.Two;
 
           await expect(
-            instance.connect(spender).transfer(holder.address, amount),
+            instance
+              .connect(spender)
+              ['transfer(address,uint256)'](holder.address, amount),
           ).to.be.revertedWith('ERC20: transfer amount exceeds balance');
         });
       });
@@ -119,7 +125,9 @@ export function describeBehaviorOfERC20Base(
         const amount = ethers.constants.Two;
         await mint(sender.address, amount);
 
-        await instance.connect(sender).approve(spender.address, amount);
+        await instance
+          .connect(sender)
+          ['approve(address,uint256)'](spender.address, amount);
 
         await expect(() =>
           instance
@@ -137,7 +145,9 @@ export function describeBehaviorOfERC20Base(
           const amount = ethers.constants.Two;
 
           await expect(
-            instance.connect(spender).transfer(holder.address, amount),
+            instance
+              .connect(spender)
+              ['transfer(address,uint256)'](holder.address, amount),
           ).to.be.revertedWith('ERC20: transfer amount exceeds balance');
         });
 
@@ -157,7 +167,9 @@ export function describeBehaviorOfERC20Base(
     describe('#approve', function () {
       it('enables given spender to spend tokens on behalf of sender', async function () {
         let amount = ethers.constants.Two;
-        await instance.connect(holder).approve(spender.address, amount);
+        await instance
+          .connect(holder)
+          ['approve(address,uint256)'](spender.address, amount);
 
         expect(
           await instance.callStatic.allowance(holder.address, spender.address),
@@ -169,7 +181,11 @@ export function describeBehaviorOfERC20Base(
       it('emits Approval event', async function () {
         let amount = ethers.constants.Two;
 
-        await expect(instance.connect(holder).approve(spender.address, amount))
+        await expect(
+          instance
+            .connect(holder)
+            ['approve(address,uint256)'](spender.address, amount),
+        )
           .to.emit(instance, 'Approval')
           .withArgs(holder.address, spender.address, amount);
       });

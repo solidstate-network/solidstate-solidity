@@ -6,7 +6,7 @@ const deploy = async function () {
   const [deployer] = await ethers.getSigners();
   const facetInstance = await new Ownable__factory(deployer).deploy();
 
-  return new DiamondBaseMock__factory().deploy([
+  return new DiamondBaseMock__factory(deployer).deploy([
     {
       target: facetInstance.address,
       action: 0,

@@ -65,23 +65,29 @@ export function describeBehaviorOfDiamondCuttable(
 
     describe('#diamondCut', function () {
       it('emits DiamondCut event', async function () {
-        const args: any = [
-          [
-            {
-              target: facet.address,
-              action: 0,
-              selectors: [ethers.utils.hexlify(ethers.utils.randomBytes(4))],
-            },
-          ],
-          ethers.constants.AddressZero,
-          '0x',
+        const facets: any = [
+          {
+            target: facet.address,
+            action: 0,
+            selectors: [ethers.utils.hexlify(ethers.utils.randomBytes(4))],
+          },
         ];
+        const target = ethers.constants.AddressZero;
+        const data = '0x';
 
-        let tx = instance.connect(owner).diamondCut(args[0], args[1], args[2]);
+        let tx = instance.connect(owner).diamondCut(facets, target, data);
 
         const events = (await (await tx).wait()).events;
+        const argsResult: any = events![0].args!;
 
-        expect(events && events[0].args).to.deep.equal(args);
+        expect(argsResult.facetCuts[0].target).to.eq(facets[0].target);
+        expect(argsResult.facetCuts[0].action).to.eq(facets[0].action);
+        expect(argsResult.facetCuts[0].selectors).to.deep.eq(
+          facets[0].selectors,
+        );
+
+        expect(argsResult.target).to.eq(target);
+        expect(argsResult.data).to.eq(data);
       });
 
       describe('using FacetCutAction ADD', function () {

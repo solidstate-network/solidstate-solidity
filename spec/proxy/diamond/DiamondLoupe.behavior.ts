@@ -73,9 +73,9 @@ export function describeBehaviorOfDiamondLoupe(
       it('returns facet for given selector', async function () {
         for (let facet of facetCuts) {
           for (let selector of facet.selectors) {
-            expect(await instance.callStatic.facetAddresses(selector)).to.equal(
-              facet.target,
-            );
+            expect(
+              await instance.callStatic['facetAddress(bytes4)'](selector),
+            ).to.equal(facet.target);
           }
         }
       });

@@ -12,7 +12,7 @@ describe('Factory', function () {
   let instance: FactoryMock;
 
   beforeEach(async function () {
-    await deploy();
+    instance = await deploy();
   });
 
   describeBehaviorOfFactory({ deploy }, []);

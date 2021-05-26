@@ -1,7 +1,7 @@
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ERC1271Stored } from '../../typechain';
 import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
-import ethers from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC1271OwnableBehaviorArgs {
   deploy: () => Promise<ERC1271Stored>;

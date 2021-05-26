@@ -15,7 +15,7 @@ describe('ReentrancyGuard', function () {
   let instance: ReentrancyGuardMock;
 
   beforeEach(async function () {
-    await deploy();
+    instance = await deploy();
   });
 
   describeBehaviorOfReentrancyGuard(

@@ -14,7 +14,7 @@ describe('Proxy', function () {
   let deployer: SignerWithAddress;
 
   before(async function () {
-    const [deployer] = await ethers.getSigners();
+    [deployer] = await ethers.getSigners();
     implementation = await new Ownable__factory(deployer).deploy();
   });
 

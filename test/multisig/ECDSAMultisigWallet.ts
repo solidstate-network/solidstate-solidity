@@ -33,7 +33,7 @@ describe('ECDSAMultisigWallet', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfECDSAMultisigWallet(
     {
-      deploy,
+      deploy: async () => instance,
       getSigners,
       getNonSigner,
       quorum,

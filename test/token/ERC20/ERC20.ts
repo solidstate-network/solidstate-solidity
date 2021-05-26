@@ -21,7 +21,7 @@ describe('ERC20', function () {
   let instance: ERC20Mock;
 
   beforeEach(async function () {
-    await deploy();
+    instance = await deploy();
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe

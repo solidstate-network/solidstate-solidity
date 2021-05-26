@@ -15,7 +15,7 @@ describe('MinimalProxyFactory', function () {
   let instance: MinimalProxyFactoryMock;
 
   beforeEach(async function () {
-    await deploy();
+    instance = await deploy();
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe

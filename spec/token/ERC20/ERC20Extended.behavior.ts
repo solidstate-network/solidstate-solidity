@@ -20,16 +20,17 @@ export function describeBehaviorOfERC20Extended(
   const describe = describeFilter(skips);
 
   describe('::ERC20Extended', function () {
+    let deployer: SignerWithAddress;
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let instance: ERC20Extended;
 
     before(async function () {
-      [holder, spender] = await ethers.getSigners();
+      [deployer, holder, spender] = await ethers.getSigners();
     });
 
     beforeEach(async function () {
-      instance = await new ERC20ExtendedMock__factory().deploy();
+      instance = await new ERC20ExtendedMock__factory(deployer).deploy();
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

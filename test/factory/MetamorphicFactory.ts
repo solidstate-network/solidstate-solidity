@@ -15,7 +15,7 @@ describe('MetamorphicFactory', function () {
   let instance: MetamorphicFactoryMock;
 
   beforeEach(async function () {
-    await deploy();
+    instance = await deploy();
   });
 
   describeBehaviorOfMetamorphicFactory({ deploy }, []);
