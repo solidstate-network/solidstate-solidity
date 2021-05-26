@@ -6,6 +6,7 @@ import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
 import { ERC1155Base } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { ContractTransaction } from 'ethers';
 
 interface ERC1155BaseBehaviorArgs {
   deploy: () => Promise<ERC1155Base>;
@@ -13,12 +14,12 @@ interface ERC1155BaseBehaviorArgs {
     address: string,
     id: ethers.BigNumber,
     amount: ethers.BigNumber,
-  ) => Promise<void>;
+  ) => Promise<ContractTransaction>;
   burn: (
     address: string,
     id: ethers.BigNumber,
     amount: ethers.BigNumber,
-  ) => Promise<void>;
+  ) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC1155Base(

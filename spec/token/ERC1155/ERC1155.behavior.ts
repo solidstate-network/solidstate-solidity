@@ -2,6 +2,7 @@ import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ERC1155 } from '../../../typechain';
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
+import { ContractTransaction } from 'ethers';
 
 interface ERC1155BehaviorArgs {
   deploy: () => Promise<ERC1155>;
@@ -9,12 +10,12 @@ interface ERC1155BehaviorArgs {
     address: string,
     id: ethers.BigNumber,
     amount: ethers.BigNumber,
-  ) => Promise<void>;
+  ) => Promise<ContractTransaction>;
   burn: (
     address: string,
     id: ethers.BigNumber,
     amount: ethers.BigNumber,
-  ) => Promise<void>;
+  ) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC1155(

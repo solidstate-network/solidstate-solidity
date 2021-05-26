@@ -4,13 +4,20 @@ import { ethers } from 'hardhat';
 import { ERC20ImplicitApproval } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
+import { ContractTransaction } from 'ethers';
 
 interface ERC20ImplicitApprovalBehaviorArgs {
   deploy: () => Promise<ERC20ImplicitApproval>;
   supply: ethers.BigNumber;
   getImplicitlyApprovedSpender: () => Promise<SignerWithAddress>;
-  mint: (address: string, amount: ethers.BigNumber) => Promise<void>;
-  burn: (address: string, amount: ethers.BigNumber) => Promise<void>;
+  mint: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20ImplicitApproval(

@@ -4,11 +4,18 @@ import { describeBehaviorOfERC20Extended } from './ERC20Extended.behavior';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
 import { ERC20 } from '../../../typechain';
 import { ethers } from 'hardhat';
+import { ContractTransaction } from 'ethers';
 
 interface ERC20BehaviorArgs {
   deploy: () => Promise<ERC20>;
-  mint: (address: string, amount: ethers.BigNumber) => Promise<void>;
-  burn: (address: string, amount: ethers.BigNumber) => Promise<void>;
+  mint: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
   name: string;
   symbol: string;
   decimals: ethers.BigNumber;

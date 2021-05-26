@@ -3,12 +3,19 @@ import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ethers } from 'hardhat';
 import { ERC20Base } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { ContractTransaction } from 'ethers';
 
 interface ERC20BaseBehaviorArgs {
   deploy: () => Promise<ERC20Base>;
   supply: ethers.BigNumber;
-  mint: (address: string, amount: ethers.BigNumber) => Promise<void>;
-  burn: (address: string, amount: ethers.BigNumber) => Promise<void>;
+  mint: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(

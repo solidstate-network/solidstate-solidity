@@ -4,11 +4,18 @@ import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ERC20Extended } from '../../../typechain';
 import { ethers } from 'hardhat';
+import { ContractTransaction } from 'ethers';
 
 interface ERC20ExtendedBehaviorArgs {
   deploy: () => Promise<ERC20Extended>;
-  mint: (address: string, amount: ethers.BigNumber) => Promise<void>;
-  burn: (address: string, amount: ethers.BigNumber) => Promise<void>;
+  mint: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
   supply: ethers.BigNumber;
 }
 

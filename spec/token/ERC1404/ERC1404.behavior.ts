@@ -3,11 +3,18 @@ import { describeBehaviorOfERC20 } from '../ERC20/ERC20.behavior';
 import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
 import { ERC1404 } from '../../../typechain';
 import { ethers } from 'hardhat';
+import { ContractTransaction } from 'ethers';
 
 interface ERC1404BehaviorArgs {
   deploy: () => Promise<ERC1404>;
-  mint: (address: string, amount: ethers.BigNumber) => Promise<void>;
-  burn: (address: string, amount: ethers.BigNumber) => Promise<void>;
+  mint: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: ethers.BigNumber,
+  ) => Promise<ContractTransaction>;
   restrictions: any;
   name: string;
   symbol: string;
