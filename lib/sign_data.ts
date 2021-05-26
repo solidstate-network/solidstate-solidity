@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ethers } from 'ethers';
+import ethers from 'ethers';
 
 export interface SignDataArgs {
   values: any[];

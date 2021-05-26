@@ -1,6 +1,7 @@
 import { ERC1404BaseMock, ERC1404BaseMock__factory } from '../../../typechain';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1404Base } from '../../../spec/token/ERC1404/ERC1404Base.behavior';
+import { BigNumber } from 'ethers';
 
 let restrictions = [
   { code: ethers.BigNumber.from(1), message: 'one' },
@@ -27,9 +28,9 @@ describe('ERC1404Base', function () {
       deploy: async () => instance,
       restrictions,
       supply: ethers.constants.Zero,
-      mint: (recipient: string, amount: ethers.BigNumber) =>
+      mint: (recipient: string, amount: BigNumber) =>
         instance.mint(recipient, amount),
-      burn: (recipient: string, amount: ethers.BigNumber) =>
+      burn: (recipient: string, amount: BigNumber) =>
         instance.burn(recipient, amount),
     },
     [],

@@ -3,23 +3,16 @@ import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { describeBehaviorOfERC20Extended } from './ERC20Extended.behavior';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
 import { ERC20 } from '../../../typechain';
-import { ethers } from 'hardhat';
-import { ContractTransaction } from 'ethers';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface ERC20BehaviorArgs {
   deploy: () => Promise<ERC20>;
-  mint: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
-  burn: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
+  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   name: string;
   symbol: string;
-  decimals: ethers.BigNumber;
-  supply: ethers.BigNumber;
+  decimals: BigNumberish;
+  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC20(

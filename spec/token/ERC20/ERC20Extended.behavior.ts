@@ -2,21 +2,15 @@ import { expect } from 'chai';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC20Extended } from '../../../typechain';
+import { ERC20Extended, ERC20ExtendedMock__factory } from '../../../typechain';
 import { ethers } from 'hardhat';
-import { ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC20ExtendedBehaviorArgs {
   deploy: () => Promise<ERC20Extended>;
-  mint: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
-  burn: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
-  supply: ethers.BigNumber;
+  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC20Extended(
@@ -35,12 +29,7 @@ export function describeBehaviorOfERC20Extended(
     });
 
     beforeEach(async function () {
-      instance = await ethers.getContractAt(
-        'ERC20Extended',
-        (
-          await deploy()
-        ).address,
-      );
+      instance = await new ERC20ExtendedMock__factory().deploy();
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe

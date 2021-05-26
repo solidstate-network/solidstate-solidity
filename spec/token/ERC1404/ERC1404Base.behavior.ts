@@ -3,20 +3,14 @@ import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { describeBehaviorOfERC20Base } from '../ERC20/ERC20Base.behavior';
 import { ERC1404Base } from '../../../typechain';
-import { ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC1404BaseBehaviorArgs {
   deploy: () => Promise<ERC1404Base>;
   restrictions: any;
-  mint: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
-  burn: (
-    address: string,
-    amount: ethers.BigNumber,
-  ) => Promise<ContractTransaction>;
-  supply: ethers.BigNumber;
+  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC1404Base(

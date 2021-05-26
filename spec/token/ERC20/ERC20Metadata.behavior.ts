@@ -1,12 +1,13 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ERC20Metadata } from '../../../typechain';
+import { BigNumberish } from 'ethers';
 
 interface ERC20MetadataBehaviorArgs {
   deploy: () => Promise<ERC20Metadata>;
   name: string;
   symbol: string;
-  decimals: number;
+  decimals: BigNumberish;
 }
 
 export function describeBehaviorOfERC20Metadata(

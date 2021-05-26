@@ -3,8 +3,9 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import signData from '@solidstate/library/sign_data.js';
-import { ethers } from 'hardhat';
 import { ECDSAMultisigWallet } from '../../typechain';
+import { ethers } from 'hardhat';
+import { BigNumber, BigNumberish, BytesLike } from 'ethers';
 
 let currentNonce = ethers.constants.Zero;
 
@@ -15,16 +16,16 @@ const nextNonce = function () {
 
 interface SignAuthorizationArgs {
   target: string;
-  data: ethers.BytesLike;
-  value: ethers.BigNumberish;
+  data: BytesLike;
+  value: BigNumberish;
   delegate: boolean;
-  nonce: ethers.BigNumberish;
+  nonce: BigNumberish;
   address: any;
 }
 
 interface Signature {
   data: Uint8Array;
-  nonce: ethers.BigNumber;
+  nonce: BigNumber;
 }
 
 const signAuthorization = async function (
@@ -43,7 +44,7 @@ interface ECDSAMultisigWalletBehaviorArgs {
   deploy: () => Promise<ECDSAMultisigWallet>;
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;
-  quorum: ethers.BigNumber;
+  quorum: BigNumber;
   getVerificationAddress: () => Promise<string>;
 }
 
@@ -105,7 +106,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           let target = mock.address;
           let mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as ethers.BytesLike;
+          const data = mocked.data as BytesLike;
           let value = ethers.constants.One;
           let signatures: Signature[] = [];
 
@@ -141,7 +142,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           let target = mock.address;
           let mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as ethers.BytesLike;
+          const data = mocked.data as BytesLike;
           let value = ethers.constants.Zero;
           let signatures: Signature[] = [];
 
@@ -184,7 +185,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
             let target = mock.address;
             let mocked = await mock.populateTransaction.fn();
-            const data = mocked.data as ethers.BytesLike;
+            const data = mocked.data as BytesLike;
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -415,7 +416,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
             let target = mock.address;
             let mocked = await mock.populateTransaction.fn();
-            const data = mocked.data as ethers.BytesLike;
+            const data = mocked.data as BytesLike;
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
