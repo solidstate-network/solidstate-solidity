@@ -10,9 +10,7 @@ const deploy = async function () {
     {
       target: facetInstance.address,
       action: 0,
-      selectors: [
-        facetInstance.interface.getSighash('owner()'),
-      ],
+      selectors: [facetInstance.interface.getSighash('owner()')],
     },
   ]);
   return await instance.deployed();

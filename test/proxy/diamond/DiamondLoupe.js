@@ -18,14 +18,18 @@ describe('DiamondLoupe', function () {
     const selectors = [];
 
     for (let i = 0; i < 24; i++) {
-      const fn = `fn${ i }()`;
+      const fn = `fn${i}()`;
       functions.push(fn);
-      selectors.push(ethers.utils.hexDataSlice(
-        ethers.utils.solidityKeccak256(['string'], [fn]), 0, 4
-      ));
+      selectors.push(
+        ethers.utils.hexDataSlice(
+          ethers.utils.solidityKeccak256(['string'], [fn]),
+          0,
+          4,
+        ),
+      );
     }
 
-    const abi = functions.map(fn => `function ${ fn }`);
+    const abi = functions.map((fn) => `function ${fn}`);
 
     const [owner] = await ethers.getSigners();
     facet = await deployMockContract(owner, abi);

@@ -226,8 +226,23 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155Mock.sol/ERC1155Mock.json',
+  './abiTypechain/ERC1155Mock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/token/ERC1155/ERC1155Base.sol/ERC1155Base.json',
   './abiTypechain/ERC1155Base.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155BaseMock.sol/ERC1155BaseMock.json',
+  './abiTypechain/ERC1155BaseMock.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1155/ERC1155EnumerableMock.sol/ERC1155EnumerableMock.json',
+  './abiTypechain/ERC1155EnumerableMock.json',
 );
 
 fs.copyFileSync(
@@ -241,8 +256,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/token/ERC1404/ERC1404Mock.sol/ERC1404Mock.json',
+  './abiTypechain/ERC1404Mock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/token/ERC1404/ERC1404Base.sol/ERC1404Base.json',
   './abiTypechain/ERC1404Base.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/token/ERC1404/ERC1404BaseMock.sol/ERC1404BaseMock.json',
+  './abiTypechain/ERC1404BaseMock.json',
 );
 
 ///////////

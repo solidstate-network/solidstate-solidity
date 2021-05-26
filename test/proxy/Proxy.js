@@ -12,9 +12,7 @@ describe('Proxy', function () {
 
   beforeEach(async function () {
     const factory = await ethers.getContractFactory('ProxyMock');
-    instance = await factory.deploy(
-      implementation.address
-    );
+    instance = await factory.deploy(implementation.address);
     return await instance.deployed();
   });
 

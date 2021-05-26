@@ -34,12 +34,15 @@ describe('Diamond', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfDiamond({
-    deploy: () => instance,
-    getOwner: () => owner,
-    getNomineeOwner: () => getNomineeOwner,
-    getNonOwner: () => getNonOwner,
-    facetCuts,
-    fallbackAddress: ethers.constants.AddressZero,
-  }, []);
+  describeBehaviorOfDiamond(
+    {
+      deploy: () => instance,
+      getOwner: () => owner,
+      getNomineeOwner: () => getNomineeOwner,
+      getNonOwner: () => getNonOwner,
+      facetCuts,
+      fallbackAddress: ethers.constants.AddressZero,
+    },
+    [],
+  );
 });
