@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
-import { Diamond } from '../../../typechain';
+import { DiamondCuttable } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 
 interface DiamondCuttableBehaviorArgs {
-  deploy: () => Promise<Diamond>;
+  deploy: () => Promise<DiamondCuttable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
@@ -27,7 +27,7 @@ export function describeBehaviorOfDiamondCuttable(
     let abi: any;
     let facet: any;
 
-    let instance: Diamond;
+    let instance: DiamondCuttable;
 
     before(async function () {
       owner = await getOwner();

@@ -34,6 +34,3 @@ export function describeBehaviorOfMetamorphicFactory(
     });
   });
 }
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfMetamorphicFactory;

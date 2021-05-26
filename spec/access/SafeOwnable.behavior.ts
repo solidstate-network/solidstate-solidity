@@ -96,6 +96,3 @@ export function describeBehaviorOfSafeOwnable(
     });
   });
 }
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfSafeOwnable;

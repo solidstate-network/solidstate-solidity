@@ -1,15 +1,14 @@
-const { deployMockContract } = require('@ethereum-waffle/mock-contract');
-
-const describeBehaviorOfDiamondLoupe = require('@solidstate/spec/proxy/diamond/DiamondLoupe.behavior.js');
+import { deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
+import { describeBehaviorOfDiamondLoupe } from '../../../spec/proxy/diamond/DiamondLoupe.behavior';
+import { DiamondLoupeMock__factory } from '../../../typechain';
 
 describe('DiamondLoupe', function () {
   let facet;
-  const facetCuts = [];
+  const facetCuts: any[] = [];
 
   const deploy = async function () {
-    const factory = await ethers.getContractFactory('DiamondLoupeMock');
-    const instance = await factory.deploy(facetCuts);
-    return await instance.deployed();
+    return new DiamondLoupeMock__factory().deploy(facetCuts);
   };
 
   // eslint-disable-next-line mocha/no-hooks-for-single-case
@@ -42,8 +41,11 @@ describe('DiamondLoupe', function () {
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfDiamondLoupe({
-    deploy,
-    facetCuts,
-  });
+  describeBehaviorOfDiamondLoupe(
+    {
+      deploy,
+      facetCuts,
+    },
+    [],
+  );
 });

@@ -145,6 +145,3 @@ export function describeBehaviorOfERC20Extended(
     });
   });
 }
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfERC20Extended;

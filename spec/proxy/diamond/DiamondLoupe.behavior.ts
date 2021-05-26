@@ -1,11 +1,11 @@
-import { Diamond } from '../../../typechain';
+import { DiamondLoupe } from '../../../typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
 
 interface DiamondLoupeBehaviorArgs {
-  deploy: () => Promise<Diamond>;
+  deploy: () => Promise<DiamondLoupe>;
   facetCuts: any[];
 }
 
@@ -16,7 +16,7 @@ export function describeBehaviorOfDiamondLoupe(
   const describe = describeFilter(skips);
 
   describe('::DiamondLoupe', function () {
-    let instance: Diamond;
+    let instance: DiamondLoupe;
 
     before(async function () {
       expect(facetCuts).to.have.lengthOf.at.least(1);

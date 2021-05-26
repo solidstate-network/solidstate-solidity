@@ -118,8 +118,18 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondBaseMock.sol/DiamondBaseMock.json',
+  './abiTypechain/DiamondBaseMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/proxy/diamond/DiamondCuttable.sol/DiamondCuttable.json',
   './abiTypechain/DiamondCuttable.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondCuttableMock.sol/DiamondCuttableMock.json',
+  './abiTypechain/DiamondCuttableMock.json',
 );
 
 fs.copyFileSync(
@@ -128,13 +138,38 @@ fs.copyFileSync(
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/proxy/diamond/DiamondLoupeMock.sol/DiamondLoupeMock.json',
+  './abiTypechain/DiamondLoupeMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/proxy/managed/ManagedProxy.sol/ManagedProxy.json',
   './abiTypechain/ManagedProxy.json',
 );
 
 fs.copyFileSync(
+  './artifacts/contracts/proxy/managed/ManagedProxyMock.sol/ManagedProxyMock.json',
+  './abiTypechain/ManagedProxyMock.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/managed/ManagedProxyOwnable.sol/ManagedProxyOwnable.json',
+  './abiTypechain/ManagedProxyOwnable.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/managed/ManagedProxyOwnableMock.sol/ManagedProxyOwnableMock.json',
+  './abiTypechain/ManagedProxyOwnableMock.json',
+);
+
+fs.copyFileSync(
   './artifacts/contracts/proxy/Proxy.sol/Proxy.json',
   './abiTypechain/Proxy.json',
+);
+
+fs.copyFileSync(
+  './artifacts/contracts/proxy/ProxyMock.sol/ProxyMock.json',
+  './abiTypechain/ProxyMock.json',
 );
 
 ///////////////

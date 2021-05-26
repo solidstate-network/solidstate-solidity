@@ -1,7 +1,6 @@
 import { ERC1404BaseMock, ERC1404BaseMock__factory } from '../../../typechain';
 import { ethers } from 'hardhat';
-
-const describeBehaviorOfERC1404Base = require('@solidstate/spec/token/ERC1404/ERC1404Base.behavior.ts');
+import { describeBehaviorOfERC1404Base } from '../../../spec/token/ERC1404/ERC1404Base.behavior';
 
 let restrictions = [
   { code: ethers.BigNumber.from(1), message: 'one' },

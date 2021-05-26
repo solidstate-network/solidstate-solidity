@@ -610,6 +610,3 @@ export function describeBehaviorOfECDSAMultisigWallet(
     });
   });
 }
-
-// eslint-disable-next-line mocha/no-exports
-module.exports = describeBehaviorOfECDSAMultisigWallet;

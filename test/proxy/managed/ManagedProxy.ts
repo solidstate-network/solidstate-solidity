@@ -1,7 +1,11 @@
-const { expect } = require('chai');
-const { deployMockContract } = require('@ethereum-waffle/mock-contract');
-
-const describeBehaviorOfManagedProxyOwnable = require('@solidstate/spec/proxy/managed/ManagedProxyOwnable.behavior.js');
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+import { deployMockContract } from 'ethereum-waffle';
+import {
+  ManagedProxyMock,
+  ManagedProxyMock__factory,
+} from '../../../typechain';
+import { describeBehaviorOfManagedProxy } from '../../../spec/proxy/managed/ManagedProxy.behavior';
 
 const deploy = async function () {
   const implementationFactory = await ethers.getContractFactory('Ownable');
@@ -18,20 +22,21 @@ const deploy = async function () {
 
   const selector = manager.interface.getSighash('getImplementation()');
 
-  const factory = await ethers.getContractFactory('ManagedProxyOwnableMock');
-  const instance = await factory.deploy(manager.address, selector);
-  return await instance.deployed();
+  return await new ManagedProxyMock__factory().deploy(
+    manager.address,
+    selector,
+  );
 };
 
-describe('ManagedProxyOwnable', function () {
-  let instance;
+describe('ManagedProxy', function () {
+  let instance: ManagedProxyMock;
 
   beforeEach(async function () {
     instance = await deploy();
   });
 
   // eslint-disable-next-line mocha/no-setup-in-describe
-  describeBehaviorOfManagedProxyOwnable({
+  describeBehaviorOfManagedProxy({
     deploy: () => instance,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
@@ -39,31 +44,26 @@ describe('ManagedProxyOwnable', function () {
 
   describe('__internal', function () {
     describe('#_getImplementation', function () {
-      it('returns implementation address');
+      it('returns implementation address', async function () {
+        expect(await instance.callStatic['getImplementation()']()).to.be
+          .properAddress;
+      });
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance.setOwner(ethers.constants.AddressZero);
+          await instance.setManager(ethers.constants.AddressZero);
 
           await expect(instance.callStatic['getImplementation()']()).to.be
             .reverted;
         });
 
         it('manager fails to return implementation', async function () {
-          await instance.setOwner(instance.address);
+          await instance.setManager(instance.address);
 
           await expect(
             instance.callStatic['getImplementation()'](),
           ).to.be.revertedWith('ManagedProxy: failed to fetch implementation');
         });
-      });
-    });
-
-    describe('#_getManager', function () {
-      it('returns address of ERC173 owner', async function () {
-        expect(await instance.callStatic.getManager()).to.equal(
-          await instance.callStatic.owner(),
-        );
       });
     });
   });

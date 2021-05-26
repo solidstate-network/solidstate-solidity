@@ -1,19 +1,21 @@
-const { expect } = require('chai');
-
-const describeBehaviorOfDiamond = require('@solidstate/spec/proxy/diamond/Diamond.behavior.js');
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { Diamond, Diamond__factory } from '../../../typechain';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+import { describeBehaviorOfDiamond } from '../../../spec/proxy/diamond/Diamond.behavior';
 
 const deploy = async function () {
-  const factory = await ethers.getContractFactory('Diamond');
-  const instance = await factory.deploy();
-  return await instance.deployed();
+  return new Diamond__factory().deploy();
 };
 
 describe('Diamond', function () {
-  let owner, getNomineeOwner, getNonOwner;
+  let owner: SignerWithAddress;
+  let getNomineeOwner: SignerWithAddress;
+  let getNonOwner: SignerWithAddress;
 
-  let instance;
+  let instance: Diamond;
 
-  let facetCuts = [];
+  let facetCuts: any[] = [];
 
   before(async function () {
     [owner, getNomineeOwner, getNonOwner] = await ethers.getSigners();
