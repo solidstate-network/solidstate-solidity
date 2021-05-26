@@ -52,7 +52,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
     describe('#allowance', function () {
       it('returns maximum uint256 for implicitly approved spender', async function () {
         expect(
-          await instance.callStatic.allowance(
+          await instance.callStatic['allowance(address,address)'](
             ethers.constants.AddressZero,
             implicitlyApprovedSpender.address,
           ),

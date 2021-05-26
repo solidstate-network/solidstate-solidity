@@ -29,7 +29,7 @@ export function describeBehaviorOfOwnable(
 
     describe('#owner', function () {
       it('returns address of owner', async function () {
-        expect(await instance.callStatic.owner()).to.equal(owner.address);
+        expect(await instance.callStatic['owner()']()).to.equal(owner.address);
       });
     });
 
@@ -38,7 +38,7 @@ export function describeBehaviorOfOwnable(
         await instance
           .connect(owner)
           .transferOwnership(ethers.constants.AddressZero);
-        expect(await instance.callStatic.owner()).to.equal(
+        expect(await instance.callStatic['owner()']()).to.equal(
           ethers.constants.AddressZero,
         );
       });
@@ -56,7 +56,9 @@ export function describeBehaviorOfOwnable(
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance.connect(nonOwner).transferOwnership(nonOwner.address),
+            instance
+              .connect(nonOwner)
+              ['transferOwnership(address)'](nonOwner.address),
           ).to.be.revertedWith('Ownable: sender must be owner');
         });
       });

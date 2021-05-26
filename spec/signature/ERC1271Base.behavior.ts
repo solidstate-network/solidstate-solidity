@@ -24,7 +24,7 @@ export function describeBehaviorOfERC1271Base(
     describe('#isValidSignature', function () {
       it('returns 0x1626ba7e for valid signature', async function () {
         expect(
-          await instance.callStatic.isValidSignature(
+          await instance.callStatic['isValidSignature(bytes32,bytes)'](
             ...(await getValidParams()),
           ),
         ).to.equal('0x1626ba7e');
@@ -32,7 +32,7 @@ export function describeBehaviorOfERC1271Base(
 
       it('returns 0x00000000 for invalid signature', async function () {
         expect(
-          await instance.callStatic.isValidSignature(
+          await instance.callStatic['isValidSignature(bytes32,bytes)'](
             ...(await getInvalidParams()),
           ),
         ).to.equal('0x00000000');

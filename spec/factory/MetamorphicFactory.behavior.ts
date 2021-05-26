@@ -28,7 +28,7 @@ export function describeBehaviorOfMetamorphicFactory(
       // behavior changes during internal call but cannot be tested independently
       it('returns zero address', async function () {
         expect(
-          await instance.callStatic.getMetamorphicImplementation(),
+          await instance.callStatic['getMetamorphicImplementation()'](),
         ).to.equal(ethers.constants.AddressZero);
       });
     });

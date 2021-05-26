@@ -98,7 +98,7 @@ export function describeBehaviorOfDiamond(
 
     describe('#getFallbackAddress', function () {
       it('returns the fallback address', async function () {
-        expect(await instance.callStatic.getFallbackAddress()).to.equal(
+        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
           fallbackAddress,
         );
       });
@@ -108,9 +108,11 @@ export function describeBehaviorOfDiamond(
       it('updates the fallback address', async function () {
         const fallback = await deployMockContract(owner, []);
 
-        await instance.connect(owner).setFallbackAddress(fallback.address);
+        await instance
+          .connect(owner)
+          ['setFallbackAddress(address)'](fallback.address);
 
-        expect(await instance.callStatic.getFallbackAddress()).to.equal(
+        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
           fallback.address,
         );
 
@@ -128,7 +130,7 @@ export function describeBehaviorOfDiamond(
           await expect(
             instance
               .connect(nonOwner)
-              .setFallbackAddress(ethers.constants.AddressZero),
+              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
           ).to.be.revertedWith('Ownable: sender must be owner');
         });
       });
@@ -161,7 +163,7 @@ export function describeBehaviorOfDiamond(
         for (let selector of selectors) {
           await instance
             .connect(owner)
-            .diamondCut(
+            ['diamondCut(tuple[],address,bytes)'](
               [{ target: facet.address, action: 0, selectors: [selector] }],
               ethers.constants.AddressZero,
               '0x',
@@ -174,25 +176,27 @@ export function describeBehaviorOfDiamond(
             owner.call({ to: instance.address, data: selector }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance.callStatic.facets()).to.have.deep.members([
+          expect(await instance.callStatic['facets()']()).to.have.deep.members([
             ...facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
-            await instance.callStatic.facetFunctionSelectors(facet.address),
+            await instance.callStatic['facetFunctionSelectors(address)'](
+              facet.address,
+            ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(await instance.callStatic.facetAddress(selector)).to.equal(
-            facet.address,
-          );
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector),
+          ).to.equal(facet.address);
         }
       });
 
       it('removes selectors one-by-one in ascending order of addition', async function () {
         await instance
           .connect(owner)
-          .diamondCut(
+          ['diamondCut(tuple[],address,bytes)'](
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -201,7 +205,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of selectors) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
             [
               {
                 target: ethers.constants.AddressZero,
@@ -234,7 +238,7 @@ export function describeBehaviorOfDiamond(
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.have.deep.members(
+          expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -242,19 +246,21 @@ export function describeBehaviorOfDiamond(
           );
 
           expect(
-            await instance.callStatic.facetFunctionSelectors(facet.address),
+            await instance.callStatic['facetFunctionSelectors(address)'](
+              facet.address,
+            ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(await instance.callStatic.facetAddress(selector)).to.equal(
-            ethers.constants.AddressZero,
-          );
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector),
+          ).to.equal(ethers.constants.AddressZero);
         }
       });
 
       it('removes selectors one-by-one in descending order of addition', async function () {
         await instance
           .connect(owner)
-          .diamondCut(
+          ['diamondCut(tuple[],address,bytes)'](
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -263,7 +269,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].reverse()) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
             [
               {
                 target: ethers.constants.AddressZero,
@@ -296,7 +302,7 @@ export function describeBehaviorOfDiamond(
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.have.deep.members(
+          expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -304,19 +310,21 @@ export function describeBehaviorOfDiamond(
           );
 
           expect(
-            await instance.callStatic.facetFunctionSelectors(facet.address),
+            await instance.callStatic['facetFunctionSelectors(address)'](
+              facet.address,
+            ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(await instance.callStatic.facetAddress(selector)).to.equal(
-            ethers.constants.AddressZero,
-          );
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector),
+          ).to.equal(ethers.constants.AddressZero);
         }
       });
 
       it('removes selectors one-by-one in random order', async function () {
         await instance
           .connect(owner)
-          .diamondCut(
+          ['diamondCut(tuple[],address,bytes)'](
             [{ target: facet.address, action: 0, selectors }],
             ethers.constants.AddressZero,
             '0x',
@@ -325,7 +333,7 @@ export function describeBehaviorOfDiamond(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(owner)['diamondCut(tuple[],address,bytes)'](
             [
               {
                 target: ethers.constants.AddressZero,
@@ -358,7 +366,7 @@ export function describeBehaviorOfDiamond(
             'DiamondBase: no facet found for function signature',
           );
 
-          expect(await instance.callStatic.facets()).to.have.deep.members(
+          expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
               ...facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -366,12 +374,14 @@ export function describeBehaviorOfDiamond(
           );
 
           expect(
-            await instance.callStatic.facetFunctionSelectors(facet.address),
+            await instance.callStatic['facetFunctionSelectors(address)'](
+              facet.address,
+            ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(await instance.callStatic.facetAddress(selector)).to.equal(
-            ethers.constants.AddressZero,
-          );
+          expect(
+            await instance.callStatic['facetAddress(bytes4)'](selector),
+          ).to.equal(ethers.constants.AddressZero);
         }
       });
     });

@@ -36,26 +36,28 @@ export function describeBehaviorOfERC20Base(
 
     describe('#totalSupply', function () {
       it('returns the total supply of tokens', async function () {
-        expect(await instance.callStatic.totalSupply()).to.equal(supply);
+        expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
 
         const amount = ethers.constants.Two;
 
         await mint(holder.address, amount);
 
-        expect(await instance.callStatic.totalSupply()).to.equal(
+        expect(await instance.callStatic['totalSupply()']()).to.equal(
           supply.add(amount),
         );
 
         await burn(holder.address, amount);
 
-        expect(await instance.callStatic.totalSupply()).to.equal(supply);
+        expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
       });
     });
 
     describe('#balanceOf', function () {
       it('returns the token balance of given address', async function () {
         expect(
-          await instance.callStatic.balanceOf(ethers.constants.AddressZero),
+          await instance.callStatic['balanceOf(address)'](
+            ethers.constants.AddressZero,
+          ),
         ).to.equal(ethers.constants.Zero);
 
         const amount = ethers.constants.Two;
@@ -77,7 +79,10 @@ export function describeBehaviorOfERC20Base(
     describe('#allowance', function () {
       it('returns the allowance given holder has granted to given spender', async function () {
         expect(
-          await instance.callStatic.allowance(holder.address, spender.address),
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
         ).to.equal(ethers.constants.Zero);
 
         let amount = ethers.constants.Two;
@@ -86,7 +91,10 @@ export function describeBehaviorOfERC20Base(
           ['approve(address,uint256)'](spender.address, amount);
 
         expect(
-          await instance.callStatic.allowance(holder.address, spender.address),
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
         ).to.equal(amount);
       });
     });
@@ -132,7 +140,11 @@ export function describeBehaviorOfERC20Base(
         await expect(() =>
           instance
             .connect(spender)
-            .transferFrom(sender.address, receiver.address, amount),
+            ['transferFrom(address,address,uint256)'](
+              sender.address,
+              receiver.address,
+              amount,
+            ),
         ).to.changeTokenBalances(
           instance,
           [sender, receiver],
@@ -158,7 +170,11 @@ export function describeBehaviorOfERC20Base(
           await expect(
             instance
               .connect(spender)
-              .transferFrom(sender.address, receiver.address, amount),
+              ['transferFrom(address,address,uint256)'](
+                sender.address,
+                receiver.address,
+                amount,
+              ),
           ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
         });
       });
@@ -172,7 +188,10 @@ export function describeBehaviorOfERC20Base(
           ['approve(address,uint256)'](spender.address, amount);
 
         expect(
-          await instance.callStatic.allowance(holder.address, spender.address),
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
         ).to.equal(amount);
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
