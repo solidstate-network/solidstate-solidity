@@ -32,6 +32,16 @@ describe('Factory', function () {
             await ethers.provider.getCode(instance.address),
           );
         });
+
+        describe('reverts if', function () {
+          it('contract creation fails', async function () {
+            const initCode = '0xfe';
+
+            await expect(instance['deploy(bytes)'](initCode)).to.revertedWith(
+              'Factory: failed deployment',
+            );
+          });
+        });
       });
 
       describe('(bytes,bytes32)', function () {
@@ -59,6 +69,15 @@ describe('Factory', function () {
         });
 
         describe('reverts if', function () {
+          it('contract creation fails', async function () {
+            const initCode = '0xfe';
+            const salt = ethers.utils.randomBytes(32);
+
+            await expect(
+              instance['deploy(bytes,bytes32)'](initCode, salt),
+            ).to.revertedWith('Factory: failed deployment');
+          });
+
           it('salt has already been used', async function () {
             const initCode = instance.deployTransaction.data;
             const salt = ethers.utils.randomBytes(32);

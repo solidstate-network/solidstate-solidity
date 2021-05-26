@@ -22,7 +22,7 @@ describe('MinimalProxyFactory', function () {
   describeBehaviorOfMinimalProxyFactory({ deploy }, []);
 
   describe('__internal', function () {
-    describe('#_deployMinimalProxyContract', function () {
+    describe('#_deployMinimalProxy', function () {
       describe('(address)', function () {
         it('deploys minimal proxy and returns deployment address', async function () {
           const target = instance.address;
@@ -42,6 +42,10 @@ describe('MinimalProxyFactory', function () {
                 '5af43d82803e903d91602b57fd5bf3',
               ].join(''),
           );
+        });
+
+        describe('reverts if', function () {
+          it('contract creation fails');
         });
       });
 
@@ -68,6 +72,8 @@ describe('MinimalProxyFactory', function () {
         });
 
         describe('reverts if', function () {
+          it('contract creation fails');
+
           it('salt has already been used', async function () {
             const target = instance.address;
             const salt = ethers.utils.randomBytes(32);

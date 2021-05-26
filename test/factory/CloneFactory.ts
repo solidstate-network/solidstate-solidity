@@ -30,6 +30,10 @@ describe('CloneFactory', function () {
             await ethers.provider.getCode(instance.address),
           );
         });
+
+        describe('reverts if', function () {
+          it('contract creation fails');
+        });
       });
 
       describe('(bytes32)', function () {
@@ -49,6 +53,8 @@ describe('CloneFactory', function () {
         });
 
         describe('reverts if', function () {
+          it('contract creation fails');
+
           it('salt has already been used', async function () {
             const salt = ethers.utils.randomBytes(32);
 
