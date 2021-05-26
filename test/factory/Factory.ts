@@ -45,7 +45,10 @@ describe('Factory', function () {
             salt,
           );
           expect(address).to.equal(
-            await instance.calculateDeploymentAddress(initCodeHash, salt),
+            await instance['calculateDeploymentAddress(bytes32,bytes32)'](
+              initCodeHash,
+              salt,
+            ),
           );
 
           await instance['deploy(bytes,bytes32)'](initCode, salt);
@@ -77,10 +80,9 @@ describe('Factory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic.calculateDeploymentAddress(
-            initCodeHash,
-            salt,
-          ),
+          await instance.callStatic[
+            'calculateDeploymentAddress(bytes32,bytes32)'
+          ](initCodeHash, salt),
         ).to.equal(
           ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );

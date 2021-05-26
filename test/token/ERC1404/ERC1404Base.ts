@@ -30,9 +30,9 @@ describe('ERC1404Base', function () {
       restrictions,
       supply: ethers.constants.Zero,
       mint: (recipient: string, amount: BigNumber) =>
-        instance.mint(recipient, amount),
+        instance['mint(address,uint256)'](recipient, amount),
       burn: (recipient: string, amount: BigNumber) =>
-        instance.burn(recipient, amount),
+        instance['burn(address,uint256)'](recipient, amount),
     },
     [],
   );

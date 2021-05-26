@@ -28,27 +28,27 @@ describe('ReentrancyGuard', function () {
   describe('__internal', function () {
     describe('nonReentrant modifier', function () {
       it('does not revert non-reentrant call', async function () {
-        await expect(instance.nonReentrancyTest()).not.to.be.reverted;
+        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
 
         // test subsequent calls
 
-        await expect(instance.nonReentrancyTest()).not.to.be.reverted;
+        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
 
-        await expect(instance.reentrancyTest()).to.be.revertedWith(
+        await expect(instance['reentrancyTest()']()).to.be.revertedWith(
           'ReentrancyGuard: reentrant call',
         );
       });
 
       describe('reverts if', function () {
         it('call is reentrant', async function () {
-          await expect(instance.reentrancyTest()).to.be.revertedWith(
+          await expect(instance['reentrancyTest()']()).to.be.revertedWith(
             'ReentrancyGuard: reentrant call',
           );
         });
 
         it('call is cross-function reentrant', async function () {
           await expect(
-            instance.crossFunctionReentrancyTest(),
+            instance['crossFunctionReentrancyTest()'](),
           ).to.be.revertedWith('ReentrancyGuard: reentrant call');
         });
       });

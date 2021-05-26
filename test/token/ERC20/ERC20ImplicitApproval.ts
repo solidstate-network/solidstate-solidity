@@ -30,8 +30,10 @@ describe('ERC20ImplicitApproval', function () {
     {
       deploy: async () => instance,
       supply: ethers.constants.Zero,
-      mint: (recipient, amount) => instance.mint(recipient, amount),
-      burn: (recipient, amount) => instance.burn(recipient, amount),
+      mint: (recipient, amount) =>
+        instance['mint(address,uint256)'](recipient, amount),
+      burn: (recipient, amount) =>
+        instance['burn(address,uint256)'](recipient, amount),
       getImplicitlyApprovedSpender,
     },
     [],

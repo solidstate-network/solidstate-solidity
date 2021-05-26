@@ -52,14 +52,14 @@ describe('ManagedProxyOwnable', function () {
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance.setOwner(ethers.constants.AddressZero);
+          await instance['setOwner(address)'](ethers.constants.AddressZero);
 
           await expect(instance.callStatic['getImplementation()']()).to.be
             .reverted;
         });
 
         it('manager fails to return implementation', async function () {
-          await instance.setOwner(instance.address);
+          await instance['setOwner(address)'](instance.address);
 
           await expect(
             instance.callStatic['getImplementation()'](),
@@ -70,8 +70,8 @@ describe('ManagedProxyOwnable', function () {
 
     describe('#_getManager', function () {
       it('returns address of ERC173 owner', async function () {
-        expect(await instance.callStatic.getManager()).to.equal(
-          await instance.callStatic.owner(),
+        expect(await instance.callStatic['getManager()']()).to.equal(
+          await instance.callStatic['owner()'](),
         );
       });
     });

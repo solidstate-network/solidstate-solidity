@@ -30,8 +30,10 @@ describe('ERC20Base', function () {
     {
       deploy: async () => instance as unknown as ERC20Base,
       supply: ethers.constants.Zero,
-      mint: (recipient, amount) => instance.mint(recipient, amount),
-      burn: (recipient, amount) => instance.burn(recipient, amount),
+      mint: (recipient, amount) =>
+        instance['mint(address,uint256)'](recipient, amount),
+      burn: (recipient, amount) =>
+        instance['burn(address,uint256)'](recipient, amount),
     },
     [],
   );
@@ -49,9 +51,9 @@ describe('ERC20Base', function () {
       it('increases total supply by given amount', async function () {
         let amount = ethers.constants.Two;
 
-        let initialSupply = await instance.callStatic.totalSupply();
+        let initialSupply = await instance.callStatic['totalSupply()']();
         await instance['mint(address,uint256)'](receiver.address, amount);
-        let finalSupply = await instance.callStatic.totalSupply();
+        let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(finalSupply.sub(initialSupply)).to.equal(amount);
       });
@@ -96,9 +98,9 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
         await instance['mint(address,uint256)'](receiver.address, amount);
 
-        let initialSupply = await instance.callStatic.totalSupply();
+        let initialSupply = await instance.callStatic['totalSupply()']();
         await instance['burn(address,uint256)'](receiver.address, amount);
-        let finalSupply = await instance.callStatic.totalSupply();
+        let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(initialSupply.sub(finalSupply)).to.equal(amount);
       });
@@ -148,13 +150,13 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
         await instance['mint(address,uint256)'](sender.address, amount);
 
-        let initialSupply = await instance.callStatic.totalSupply();
+        let initialSupply = await instance.callStatic['totalSupply()']();
         await instance['transfer(address,address,uint256)'](
           sender.address,
           receiver.address,
           amount,
         );
-        let finalSupply = await instance.callStatic.totalSupply();
+        let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(finalSupply).to.equal(initialSupply);
       });

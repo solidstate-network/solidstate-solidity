@@ -37,7 +37,7 @@ describe('ERC1271Stored', function () {
     describe('#_isValidSignature', function () {
       it('returns true if signature is stored', async function () {
         expect(
-          await instance.callStatic.__isValidSignature(
+          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             validParams[0],
             validParams[1],
           ),
@@ -46,7 +46,7 @@ describe('ERC1271Stored', function () {
 
       it('returns false if signature is not stored', async function () {
         expect(
-          await instance.callStatic.__isValidSignature(
+          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
             ethers.utils.randomBytes(32),
             ethers.utils.randomBytes(0),
           ),

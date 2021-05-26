@@ -48,16 +48,24 @@ describe('ERC1271Ownable', function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await owner.signMessage(ethers.utils.arrayify(hash));
 
-        expect(await instance.callStatic.__isValidSignature(hash, signature)).to
-          .be.true;
+        expect(
+          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+            hash,
+            signature,
+          ),
+        ).to.be.true;
       });
 
       it('returns false for signature created by non-owner', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
 
-        expect(await instance.callStatic.__isValidSignature(hash, signature)).to
-          .be.false;
+        expect(
+          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+            hash,
+            signature,
+          ),
+        ).to.be.false;
       });
     });
   });

@@ -19,9 +19,9 @@ describe('ERC1155', function () {
     {
       deploy: async () => instance,
       mint: (recipient, tokenId, amount) =>
-        instance.mint(recipient, tokenId, amount),
+        instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
       burn: (recipient, tokenId, amount) =>
-        instance.burn(recipient, tokenId, amount),
+        instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
     },
     [],
   );

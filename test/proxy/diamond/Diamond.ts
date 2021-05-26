@@ -25,7 +25,7 @@ describe('Diamond', function () {
   beforeEach(async function () {
     instance = await deploy();
 
-    const facets = await instance.callStatic.facets();
+    const facets = await instance.callStatic['facets()']();
 
     expect(facets).to.have.lengthOf(1);
 
