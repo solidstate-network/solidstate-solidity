@@ -4,6 +4,7 @@ import path from 'path';
 import { task } from 'hardhat/config';
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
 import '@nomiclabs/hardhat-waffle';
+import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
 import 'hardhat-gas-reporter';
 import 'hardhat-spdx-license-identifier';
@@ -65,4 +66,8 @@ export default {
     overwrite: false,
     runOnCompile: true,
   },
+
+  typechain: {
+    alwaysGenerateOverloads: true,
+  }
 };

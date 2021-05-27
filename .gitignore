@@ -11,6 +11,4 @@ yarn.lock
 
 .env
 
-dist
 typechain
-abiTypechain
