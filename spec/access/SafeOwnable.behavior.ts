@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { describeBehaviorOfOwnable } from './Ownable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { SafeOwnable } from '@solidstate/typechain';
+import { SafeOwnable } from '../typechain';
 
 interface SafeOwnableBehaviorArgs {
   deploy: () => Promise<SafeOwnable>;

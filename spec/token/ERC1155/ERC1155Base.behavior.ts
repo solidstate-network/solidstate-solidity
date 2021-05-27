@@ -4,7 +4,7 @@ import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfERC165 } from '../../introspection';
-import { ERC1155Base } from '@solidstate/typechain';
+import { ERC1155Base } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';
 

@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeFilter, signData } from '@solidstate/library';
-import { ECDSAMultisigWallet } from '@solidstate/typechain';
+import { ECDSAMultisigWallet } from '../typechain';
 import { ethers } from 'hardhat';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';
 

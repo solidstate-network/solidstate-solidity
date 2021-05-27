@@ -3,6 +3,6 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "files": ["./*"],
+  "files": ["hardhat.config.ts"],
   "include": ["./**/*"]
 }

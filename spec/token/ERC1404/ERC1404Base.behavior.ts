@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfERC20Base } from '../ERC20';
-import { ERC1404Base } from '@solidstate/typechain';
+import { ERC1404Base } from '../../typechain';
 import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC1404BaseBehaviorArgs {

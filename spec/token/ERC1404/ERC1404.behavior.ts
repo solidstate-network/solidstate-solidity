@@ -1,7 +1,7 @@
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfERC20 } from '../ERC20';
 import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
-import { ERC1404 } from '@solidstate/typechain';
+import { ERC1404 } from '../../typechain';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface ERC1404BehaviorArgs {

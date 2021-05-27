@@ -6,7 +6,7 @@ import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
 import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { describeBehaviorOfSafeOwnable } from '../../access';
-import { Diamond } from '@solidstate/typechain';
+import { Diamond } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 interface DiamondBehaviorArgs {
