@@ -1,10 +1,11 @@
 import { ethers } from 'hardhat';
 import { describeBehaviorOfOwnable } from '@solidstate/spec/access/Ownable.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { OwnableMock, OwnableMock__factory } from '../../typechain';
 
 describe('Ownable', function () {
-  let owner: any;
-  let nonOwner: any;
+  let owner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
   let instance: OwnableMock;
 
   before(async function () {
@@ -18,8 +19,8 @@ describe('Ownable', function () {
   describeBehaviorOfOwnable(
     {
       deploy: async () => instance,
-      getOwner: () => owner,
-      getNonOwner: () => nonOwner,
+      getOwner: async () => owner,
+      getNonOwner: async () => nonOwner,
     },
     [],
   );

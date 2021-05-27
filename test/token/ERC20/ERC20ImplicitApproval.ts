@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC20ImplicitApproval } from '@solidstate/spec/token/ERC20/ERC20ImplicitApproval.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20ImplicitApprovalMock,
   ERC20ImplicitApprovalMock__factory,
 } from '../../../typechain';
 
 describe('ERC20ImplicitApproval', function () {
-  let implicitlyApprovedSender: any;
+  let implicitlyApprovedSender: SignerWithAddress;
   let instance: ERC20ImplicitApprovalMock;
 
   before(async function () {
@@ -29,7 +30,7 @@ describe('ERC20ImplicitApproval', function () {
         instance['mint(address,uint256)'](recipient, amount),
       burn: (recipient, amount) =>
         instance['burn(address,uint256)'](recipient, amount),
-      getImplicitlyApprovedSpender: () => implicitlyApprovedSender,
+      getImplicitlyApprovedSpender: async () => implicitlyApprovedSender,
     },
     [],
   );
