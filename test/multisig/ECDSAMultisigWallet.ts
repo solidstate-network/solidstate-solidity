@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfECDSAMultisigWallet } from '../../spec/multisig/ECDSAMultisigWallet.behavior';
+import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec/multisig/ECDSAMultisigWallet.behavior';
 import {
   ECDSAMultisigWalletMock,
   ECDSAMultisigWalletMock__factory,

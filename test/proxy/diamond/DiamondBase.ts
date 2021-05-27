@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfDiamondBase } from '../../../spec/proxy/diamond/DiamondBase.behavior';
+import { describeBehaviorOfDiamondBase } from '@solidstate/spec/proxy/diamond/DiamondBase.behavior';
 import {
   DiamondBaseMock,
   DiamondBaseMock__factory,

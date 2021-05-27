@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfSafeOwnable } from '../../spec/access/SafeOwnable.behavior';
+import { describeBehaviorOfSafeOwnable } from '@solidstate/spec/access/SafeOwnable.behavior';
 import { SafeOwnableMock, SafeOwnableMock__factory } from '../../typechain';
 
 describe('SafeOwnable', function () {

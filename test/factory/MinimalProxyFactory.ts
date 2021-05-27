@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfMinimalProxyFactory } from '../../spec/factory/MinimalProxyFactory.behavior';
+import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec/factory/MinimalProxyFactory.behavior';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,

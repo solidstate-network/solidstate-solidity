@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfMetamorphicFactory } from '../../spec/factory/MetamorphicFactory.behavior';
+import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec/factory/MetamorphicFactory.behavior';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,

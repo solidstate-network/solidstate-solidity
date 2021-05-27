@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfOwnable } from '../../spec/access/Ownable.behavior';
+import { describeBehaviorOfOwnable } from '@solidstate/spec/access/Ownable.behavior';
 import { OwnableMock, OwnableMock__factory } from '../../typechain';
 
 describe('Ownable', function () {
