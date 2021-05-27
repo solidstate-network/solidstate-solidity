@@ -4,11 +4,6 @@ import { describeBehaviorOfERC1155Base } from '@solidstate/spec/token/ERC1155/ER
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ERC1155BaseMock, ERC1155BaseMock__factory } from '../../../typechain';
 
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new ERC1155BaseMock__factory(deployer).deploy();
-};
-
 describe('ERC1155Base', function () {
   let holder: SignerWithAddress;
   let recipient: SignerWithAddress;
@@ -20,7 +15,8 @@ describe('ERC1155Base', function () {
   });
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC1155BaseMock__factory(deployer).deploy();
     invalidReceiver = instance.address;
   });
 

@@ -1,34 +1,27 @@
-import { describeBehaviorOfSafeOwnable } from '../../spec/access/SafeOwnable.behavior';
 import { ethers } from 'hardhat';
-import { SafeOwnableMock__factory } from '../../typechain';
-
-let getOwner = async function () {
-  let [signer] = await ethers.getSigners();
-  return signer;
-};
-
-let getNomineeOwner = async function () {
-  let [, signer] = await ethers.getSigners();
-  return signer;
-};
-
-let getNonOwner = async function () {
-  let [, , signer] = await ethers.getSigners();
-  return signer;
-};
-
-let deploy = async function () {
-  const owner = await getOwner();
-  return new SafeOwnableMock__factory(owner).deploy(owner.address);
-};
+import { describeBehaviorOfSafeOwnable } from '../../spec/access/SafeOwnable.behavior';
+import { SafeOwnableMock, SafeOwnableMock__factory } from '../../typechain';
 
 describe('SafeOwnable', function () {
+  let owner: any;
+  let nomineeOwner: any;
+  let nonOwner: any;
+  let instance: SafeOwnableMock;
+
+  before(async function () {
+    [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
+  });
+
+  beforeEach(async function () {
+    instance = await new SafeOwnableMock__factory(owner).deploy(owner.address);
+  });
+
   describeBehaviorOfSafeOwnable(
     {
-      deploy,
-      getOwner,
-      getNomineeOwner,
-      getNonOwner,
+      deploy: async () => instance,
+      getOwner: () => owner,
+      getNomineeOwner: () => nomineeOwner,
+      getNonOwner: () => nonOwner,
     },
     [],
   );

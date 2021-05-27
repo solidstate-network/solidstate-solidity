@@ -1,16 +1,16 @@
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
+import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfDiamondLoupe } from '../../../spec/proxy/diamond/DiamondLoupe.behavior';
-import { DiamondLoupeMock__factory } from '../../../typechain';
+import {
+  DiamondLoupeMock,
+  DiamondLoupeMock__factory,
+} from '../../../typechain';
 
 describe('DiamondLoupe', function () {
   let facet;
   const facetCuts: any[] = [];
 
-  const deploy = async function () {
-    const [deployer] = await ethers.getSigners();
-    return new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
-  };
+  let instance: DiamondLoupeMock;
 
   before(async function () {
     const functions = [];
@@ -40,9 +40,14 @@ describe('DiamondLoupe', function () {
     });
   });
 
+  beforeEach(async function () {
+    const [deployer] = await ethers.getSigners();
+    instance = await new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
+  });
+
   describeBehaviorOfDiamondLoupe(
     {
-      deploy,
+      deploy: async () => instance,
       facetCuts,
     },
     [],

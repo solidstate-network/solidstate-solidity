@@ -4,11 +4,6 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfDiamond } from '../../../spec/proxy/diamond/Diamond.behavior';
 
-const deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new Diamond__factory(deployer).deploy();
-};
-
 describe('Diamond', function () {
   let owner: SignerWithAddress;
   let getNomineeOwner: SignerWithAddress;
@@ -23,7 +18,8 @@ describe('Diamond', function () {
   });
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new Diamond__factory(deployer).deploy();
 
     const facets = await instance.callStatic['facets()']();
 

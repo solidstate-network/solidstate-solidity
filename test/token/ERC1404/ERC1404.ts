@@ -7,19 +7,15 @@ let restrictions = [
   { code: ethers.BigNumber.from(3), message: 'three' },
 ];
 
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new ERC1404Mock__factory(deployer).deploy(
-    restrictions.map((r) => r.code),
-    restrictions.map((r) => r.message),
-  );
-};
-
 describe('ERC1404', function () {
   let instance: ERC1404Mock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC1404Mock__factory(deployer).deploy(
+      restrictions.map((r) => r.code),
+      restrictions.map((r) => r.message),
+    );
   });
 
   describeBehaviorOfERC1404(

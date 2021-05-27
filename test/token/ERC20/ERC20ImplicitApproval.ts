@@ -6,23 +6,19 @@ import {
   ERC20ImplicitApprovalMock__factory,
 } from '../../../typechain';
 
-const getImplicitlyApprovedSpender = async function () {
-  const [signer] = await ethers.getSigners();
-  return signer;
-};
-
-const deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new ERC20ImplicitApprovalMock__factory(deployer).deploy([
-    (await getImplicitlyApprovedSpender()).address,
-  ]);
-};
-
 describe('ERC20ImplicitApproval', function () {
+  let implicitlyApprovedSender: any;
   let instance: ERC20ImplicitApprovalMock;
 
+  before(async function () {
+    [implicitlyApprovedSender] = await ethers.getSigners();
+  });
+
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC20ImplicitApprovalMock__factory(deployer).deploy([
+      implicitlyApprovedSender.address,
+    ]);
   });
 
   describeBehaviorOfERC20ImplicitApproval(
@@ -33,7 +29,7 @@ describe('ERC20ImplicitApproval', function () {
         instance['mint(address,uint256)'](recipient, amount),
       burn: (recipient, amount) =>
         instance['burn(address,uint256)'](recipient, amount),
-      getImplicitlyApprovedSpender,
+      getImplicitlyApprovedSpender: () => implicitlyApprovedSender,
     },
     [],
   );
@@ -49,9 +45,7 @@ describe('ERC20ImplicitApproval', function () {
 
         expect(
           await instance.callStatic['isImplicitlyApproved(address)'](
-            (
-              await getImplicitlyApprovedSpender()
-            ).address,
+            implicitlyApprovedSender.address,
           ),
         ).to.be.true;
       });

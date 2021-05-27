@@ -1,32 +1,27 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1271Stored } from '../../spec/signature/ERC1271Stored.behavior';
-import { ERC1271StoredMock } from '../../typechain/ERC1271StoredMock';
-import { ERC1271StoredMock__factory } from '../../typechain';
+import { ERC1271StoredMock, ERC1271StoredMock__factory } from '../../typechain';
 
-let validParams: [Uint8Array, Uint8Array] = [
+const validParams: [Uint8Array, Uint8Array] = [
   ethers.utils.randomBytes(32),
   ethers.utils.randomBytes(0),
 ];
-
-let deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new ERC1271StoredMock__factory(deployer).deploy(
-    validParams[0],
-    validParams[1],
-  );
-};
 
 describe('ERC1271Stored', function () {
   let instance: ERC1271StoredMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC1271StoredMock__factory(deployer).deploy(
+      validParams[0],
+      validParams[1],
+    );
   });
 
   describeBehaviorOfERC1271Stored(
     {
-      deploy,
+      deploy: async () => instance,
       getValidParams: async () => validParams,
     },
     [],

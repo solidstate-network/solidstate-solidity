@@ -7,21 +7,17 @@ const symbol = 'ERC20Metadata.symbol';
 const decimals = 18;
 const supply = ethers.utils.parseEther('1');
 
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new ERC20Mock__factory(deployer).deploy(
-    name,
-    symbol,
-    decimals,
-    supply,
-  );
-};
-
 describe('ERC20', function () {
   let instance: ERC20Mock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC20Mock__factory(deployer).deploy(
+      name,
+      symbol,
+      decimals,
+      supply,
+    );
   });
 
   describeBehaviorOfERC20(

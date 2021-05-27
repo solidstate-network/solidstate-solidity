@@ -1,24 +1,30 @@
-import { describeBehaviorOfDiamondBase } from '../../../spec/proxy/diamond/DiamondBase.behavior';
-import { DiamondBaseMock__factory, Ownable__factory } from '../../../typechain';
 import { ethers } from 'hardhat';
-
-const deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  const facetInstance = await new Ownable__factory(deployer).deploy();
-
-  return new DiamondBaseMock__factory(deployer).deploy([
-    {
-      target: facetInstance.address,
-      action: 0,
-      selectors: [facetInstance.interface.getSighash('owner()')],
-    },
-  ]);
-};
+import { describeBehaviorOfDiamondBase } from '../../../spec/proxy/diamond/DiamondBase.behavior';
+import {
+  DiamondBaseMock,
+  DiamondBaseMock__factory,
+  Ownable__factory,
+} from '../../../typechain';
 
 describe('DiamondBase', function () {
+  let instance: DiamondBaseMock;
+
+  beforeEach(async function () {
+    const [deployer] = await ethers.getSigners();
+    const facetInstance = await new Ownable__factory(deployer).deploy();
+
+    instance = await new DiamondBaseMock__factory(deployer).deploy([
+      {
+        target: facetInstance.address,
+        action: 0,
+        selectors: [facetInstance.interface.getSighash('owner()')],
+      },
+    ]);
+  });
+
   describeBehaviorOfDiamondBase(
     {
-      deploy,
+      deploy: async () => instance,
       facetFunction: 'owner()',
       facetFunctionArgs: [],
     },

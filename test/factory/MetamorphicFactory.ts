@@ -1,24 +1,20 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+import { describeBehaviorOfMetamorphicFactory } from '../../spec/factory/MetamorphicFactory.behavior';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,
 } from '../../typechain';
-import { describeBehaviorOfMetamorphicFactory } from '../../spec/factory/MetamorphicFactory.behavior';
-
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new MetamorphicFactoryMock__factory(deployer).deploy();
-};
 
 describe('MetamorphicFactory', function () {
   let instance: MetamorphicFactoryMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new MetamorphicFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMetamorphicFactory({ deploy }, []);
+  describeBehaviorOfMetamorphicFactory({ deploy: async () => instance }, []);
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract', function () {

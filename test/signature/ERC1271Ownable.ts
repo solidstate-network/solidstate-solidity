@@ -1,43 +1,32 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1271Ownable } from '../../spec/signature/ERC1271Ownable.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1271OwnableMock,
   ERC1271OwnableMock__factory,
 } from '../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-
-let getOwner = async function () {
-  let [signer] = await ethers.getSigners();
-  return signer;
-};
-
-let getNonOwner = async function () {
-  let [, signer] = await ethers.getSigners();
-  return signer;
-};
-
-let deploy = async function () {
-  const owner = await getOwner();
-  return new ERC1271OwnableMock__factory(owner).deploy(owner.address);
-};
 
 describe('ERC1271Ownable', function () {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: ERC1271OwnableMock;
 
+  before(async function () {
+    [owner, nonOwner] = await ethers.getSigners();
+  });
+
   beforeEach(async function () {
-    owner = await getOwner();
-    nonOwner = await getNonOwner();
-    instance = await deploy();
+    instance = await new ERC1271OwnableMock__factory(owner).deploy(
+      owner.address,
+    );
   });
 
   describeBehaviorOfERC1271Ownable(
     {
-      deploy,
-      getOwner,
-      getNonOwner,
+      deploy: async () => instance,
+      getOwner: async () => owner,
+      getNonOwner: async () => nonOwner,
     },
     [],
   );

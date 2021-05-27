@@ -1,20 +1,16 @@
+import { ethers } from 'hardhat';
 import { describeBehaviorOfERC20Extended } from '@solidstate/spec/token/ERC20/ERC20Extended.behavior';
 import {
   ERC20ExtendedMock,
   ERC20ExtendedMock__factory,
 } from '../../../typechain';
-import { ethers } from 'hardhat';
-
-let deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new ERC20ExtendedMock__factory(deployer).deploy();
-};
 
 describe('ERC20Extended', function () {
   let instance: ERC20ExtendedMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC20ExtendedMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfERC20Extended(

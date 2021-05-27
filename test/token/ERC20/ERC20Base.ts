@@ -1,17 +1,12 @@
 import { expect } from 'chai';
-import { describeBehaviorOfERC20Base } from '@solidstate/spec/token/ERC20/ERC20Base.behavior';
 import { ethers } from 'hardhat';
+import { describeBehaviorOfERC20Base } from '@solidstate/spec/token/ERC20/ERC20Base.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20Base,
   ERC20BaseMock,
   ERC20BaseMock__factory,
 } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-
-let deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new ERC20BaseMock__factory(deployer).deploy();
-};
 
 describe('ERC20Base', function () {
   let sender: SignerWithAddress;
@@ -20,9 +15,13 @@ describe('ERC20Base', function () {
   let spender: SignerWithAddress;
   let instance: ERC20BaseMock;
 
-  beforeEach(async function () {
+  before(async function () {
     [sender, receiver, holder, spender] = await ethers.getSigners();
-    instance = await deploy();
+  });
+
+  beforeEach(async function () {
+    const [deployer] = await ethers.getSigners();
+    instance = await new ERC20BaseMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfERC20Base(

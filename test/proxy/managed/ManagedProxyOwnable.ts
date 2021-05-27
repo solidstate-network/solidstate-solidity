@@ -7,33 +7,29 @@ import {
   ManagedProxyOwnableMock__factory,
 } from '../../../typechain';
 
-const deploy = async function () {
-  const implementationFactory = await ethers.getContractFactory('Ownable');
-  const implementationInstance = await implementationFactory.deploy();
-  await implementationInstance.deployed();
-
-  const manager = await deployMockContract((await ethers.getSigners())[0], [
-    'function getImplementation () external view returns (address)',
-  ]);
-
-  await manager.mock['getImplementation()'].returns(
-    implementationInstance.address,
-  );
-
-  const selector = manager.interface.getSighash('getImplementation()');
-
-  const [deployer] = await ethers.getSigners();
-  return new ManagedProxyOwnableMock__factory(deployer).deploy(
-    manager.address,
-    selector,
-  );
-};
-
 describe('ManagedProxyOwnable', function () {
   let instance: ManagedProxyOwnableMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const implementationFactory = await ethers.getContractFactory('Ownable');
+    const implementationInstance = await implementationFactory.deploy();
+    await implementationInstance.deployed();
+
+    const manager = await deployMockContract((await ethers.getSigners())[0], [
+      'function getImplementation () external view returns (address)',
+    ]);
+
+    await manager.mock['getImplementation()'].returns(
+      implementationInstance.address,
+    );
+
+    const selector = manager.interface.getSighash('getImplementation()');
+
+    const [deployer] = await ethers.getSigners();
+    instance = await new ManagedProxyOwnableMock__factory(deployer).deploy(
+      manager.address,
+      selector,
+    );
   });
 
   describeBehaviorOfManagedProxyOwnable(

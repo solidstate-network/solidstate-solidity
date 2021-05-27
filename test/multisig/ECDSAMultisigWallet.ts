@@ -1,40 +1,33 @@
-import { describeBehaviorOfECDSAMultisigWallet } from '../../spec/multisig/ECDSAMultisigWallet.behavior';
 import { ethers } from 'hardhat';
+import { describeBehaviorOfECDSAMultisigWallet } from '../../spec/multisig/ECDSAMultisigWallet.behavior';
 import {
   ECDSAMultisigWalletMock,
   ECDSAMultisigWalletMock__factory,
 } from '../../typechain';
 
-const quorum = ethers.constants.One;
-
-const getSigners = async function () {
-  return (await ethers.getSigners()).slice(0, 3);
-};
-
-const getNonSigner = async function () {
-  return (await ethers.getSigners())[3];
-};
-
-const deploy = async function () {
-  const [deployer] = await ethers.getSigners();
-  return new ECDSAMultisigWalletMock__factory(deployer).deploy(
-    (await getSigners()).map((s) => s.address),
-    quorum,
-  );
-};
-
 describe('ECDSAMultisigWallet', function () {
+  const quorum = ethers.constants.One;
+  let signers: any[];
+  let nonSigner: any;
   let instance: ECDSAMultisigWalletMock;
 
+  before(async function () {
+    [nonSigner, ...signers] = (await ethers.getSigners()).slice(0, 4);
+  });
+
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new ECDSAMultisigWalletMock__factory(deployer).deploy(
+      signers.map((s) => s.address),
+      quorum,
+    );
   });
 
   describeBehaviorOfECDSAMultisigWallet(
     {
       deploy: async () => instance,
-      getSigners,
-      getNonSigner,
+      getSigners: async () => signers,
+      getNonSigner: async () => nonSigner,
       quorum,
       getVerificationAddress: async () => instance.address,
     },

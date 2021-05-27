@@ -1,21 +1,17 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { FactoryMock, FactoryMock__factory } from '../../typechain';
 import { describeBehaviorOfFactory } from '@solidstate/spec/factory/Factory.behavior';
-
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new FactoryMock__factory(deployer).deploy();
-};
+import { FactoryMock, FactoryMock__factory } from '../../typechain';
 
 describe('Factory', function () {
   let instance: FactoryMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new FactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfFactory({ deploy }, []);
+  describeBehaviorOfFactory({ deploy: async () => instance }, []);
 
   describe('__internal', function () {
     describe('#_deploy', function () {

@@ -6,19 +6,15 @@ import {
   MinimalProxyFactoryMock__factory,
 } from '../../typechain';
 
-const deploy = async () => {
-  const [deployer] = await ethers.getSigners();
-  return new MinimalProxyFactoryMock__factory(deployer).deploy();
-};
-
 describe('MinimalProxyFactory', function () {
   let instance: MinimalProxyFactoryMock;
 
   beforeEach(async function () {
-    instance = await deploy();
+    const [deployer] = await ethers.getSigners();
+    instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMinimalProxyFactory({ deploy }, []);
+  describeBehaviorOfMinimalProxyFactory({ deploy: async () => instance }, []);
 
   describe('__internal', function () {
     describe('#_deployMinimalProxy', function () {
