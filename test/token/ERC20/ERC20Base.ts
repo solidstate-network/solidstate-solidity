@@ -6,7 +6,7 @@ import {
   ERC20Base,
   ERC20BaseMock,
   ERC20BaseMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('ERC20Base', function () {
   let sender: SignerWithAddress;

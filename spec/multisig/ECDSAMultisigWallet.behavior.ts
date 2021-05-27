@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import signData from '@solidstate/library/sign_data.js';
-import { ECDSAMultisigWallet } from '../../typechain';
+import { ECDSAMultisigWallet } from '@solidstate/typechain';
 import { ethers } from 'hardhat';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';
 

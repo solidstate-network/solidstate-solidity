@@ -5,7 +5,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20ImplicitApprovalMock,
   ERC20ImplicitApprovalMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('ERC20ImplicitApproval', function () {
   let implicitlyApprovedSender: SignerWithAddress;

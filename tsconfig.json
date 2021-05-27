@@ -5,7 +5,11 @@
         "strict": true,
         "esModuleInterop": true,
         "outDir": "dist",
-        "declaration": true
+        "declaration": true,
+        "baseUrl": "./",
+        "paths": {
+            "@solidstate/typechain": ["spec/typechain"],
+        }
     },
     "files": ["./hardhat.config.ts"]
 }

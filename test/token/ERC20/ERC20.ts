@@ -1,6 +1,6 @@
 import { describeBehaviorOfERC20 } from '@solidstate/spec/token/ERC20/ERC20.behavior';
 import { ethers } from 'hardhat';
-import { ERC20Mock, ERC20Mock__factory } from '../../../typechain';
+import { ERC20Mock, ERC20Mock__factory } from '@solidstate/typechain';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';

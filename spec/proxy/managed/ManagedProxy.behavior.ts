@@ -1,6 +1,6 @@
 import { describeBehaviorOfProxy } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
-import { ManagedProxy } from '../../../typechain';
+import { ManagedProxy } from '@solidstate/typechain';
 
 interface ManagedProxyBehaviorArgs {
   deploy: () => Promise<ManagedProxy>;

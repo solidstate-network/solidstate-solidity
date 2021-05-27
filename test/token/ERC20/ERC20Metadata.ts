@@ -3,7 +3,7 @@ import { describeBehaviorOfERC20Metadata } from '@solidstate/spec/token/ERC20/ER
 import {
   ERC20MetadataMock,
   ERC20MetadataMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('ERC20Metadata', function () {
   const name = 'ERC20Metadata.name';

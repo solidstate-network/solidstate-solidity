@@ -5,7 +5,7 @@ import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec/proxy/ma
 import {
   ManagedProxyOwnableMock,
   ManagedProxyOwnableMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('ManagedProxyOwnable', function () {
   let instance: ManagedProxyOwnableMock;

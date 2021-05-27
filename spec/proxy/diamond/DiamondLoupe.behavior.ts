@@ -1,4 +1,4 @@
-import { DiamondLoupe } from '../../../typechain';
+import { DiamondLoupe } from '@solidstate/typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';

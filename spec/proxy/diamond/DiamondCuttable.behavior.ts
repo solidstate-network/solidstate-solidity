@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
-import { DiamondCuttable } from '../../../typechain';
+import { DiamondCuttable } from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 

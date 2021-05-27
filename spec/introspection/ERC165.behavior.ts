@@ -1,4 +1,4 @@
-import { ERC165 } from '../../typechain';
+import { ERC165 } from '@solidstate/typechain';
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 

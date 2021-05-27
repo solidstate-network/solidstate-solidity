@@ -2,7 +2,10 @@ import { expect } from 'chai';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC20Extended, ERC20ExtendedMock__factory } from '../../../typechain';
+import {
+  ERC20Extended,
+  ERC20ExtendedMock__factory,
+} from '@solidstate/typechain';
 import { ethers } from 'hardhat';
 import { BigNumber, ContractTransaction } from 'ethers';
 

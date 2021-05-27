@@ -2,7 +2,7 @@ import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ethers } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC1271Ownable } from '../../typechain';
+import { ERC1271Ownable } from '@solidstate/typechain';
 
 interface ERC1271OwnableBehaviorArgs {
   deploy: () => Promise<ERC1271Ownable>;

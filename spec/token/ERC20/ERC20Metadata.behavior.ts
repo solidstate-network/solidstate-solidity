@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
-import { ERC20Metadata } from '../../../typechain';
+import { ERC20Metadata } from '@solidstate/typechain';
 import { BigNumberish } from 'ethers';
 
 interface ERC20MetadataBehaviorArgs {

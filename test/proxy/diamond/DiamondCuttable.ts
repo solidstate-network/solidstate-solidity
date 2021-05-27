@@ -4,7 +4,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   DiamondCuttableMock,
   DiamondCuttableMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('DiamondCuttable', function () {
   let owner: SignerWithAddress;

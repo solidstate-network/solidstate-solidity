@@ -9,6 +9,7 @@ import 'hardhat-abi-exporter';
 import 'hardhat-gas-reporter';
 import 'hardhat-spdx-license-identifier';
 import 'solidity-coverage';
+import 'tsconfig-paths/register';
 import Dotenv from 'dotenv';
 
 Dotenv.config();
@@ -69,5 +70,6 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
-  }
+    outDir: './spec/typechain',
+  },
 };

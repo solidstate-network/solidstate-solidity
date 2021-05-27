@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
-import { ERC1271Base } from '../../typechain';
+import { ERC1271Base } from '@solidstate/typechain';
 
 interface ERC1271BaseBehaviorArgs {
   deploy: () => Promise<ERC1271Base>;

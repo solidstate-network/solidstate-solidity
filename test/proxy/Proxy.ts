@@ -4,7 +4,7 @@ import {
   Ownable__factory,
   ProxyMock,
   ProxyMock__factory,
-} from '../../typechain';
+} from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library/mocha_describe_filter';
 import { ethers } from 'hardhat';
-import { ERC20Base } from '../../../typechain';
+import { ERC20Base } from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';
 

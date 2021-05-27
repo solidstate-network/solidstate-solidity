@@ -4,7 +4,7 @@ import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec/utils/Reentr
 import {
   ReentrancyGuardMock,
   ReentrancyGuardMock__factory,
-} from '../../typechain';
+} from '@solidstate/typechain';
 
 describe('ReentrancyGuard', function () {
   let instance: ReentrancyGuardMock;

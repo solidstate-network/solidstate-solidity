@@ -4,7 +4,7 @@ import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec/proxy/diamond/D
 import {
   DiamondLoupeMock,
   DiamondLoupeMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('DiamondLoupe', function () {
   let facet;

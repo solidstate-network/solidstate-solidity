@@ -4,7 +4,7 @@ import {
   DiamondBaseMock,
   DiamondBaseMock__factory,
   Ownable__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain';
 
 describe('DiamondBase', function () {
   let instance: DiamondBaseMock;
