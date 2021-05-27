@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "files": ["sign_data.ts", "mocha_describe_filter.ts"]
+  "exclude": ["dist"]
 }
