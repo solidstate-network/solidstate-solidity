@@ -11,4 +11,5 @@ yarn.lock
 
 .env
 
-typechain
+typechain/
+dist/
