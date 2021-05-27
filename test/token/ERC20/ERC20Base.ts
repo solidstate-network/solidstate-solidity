@@ -25,7 +25,6 @@ describe('ERC20Base', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Base(
     {
       deploy: async () => instance as unknown as ERC20Base,

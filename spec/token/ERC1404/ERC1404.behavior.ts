@@ -31,7 +31,6 @@ export function describeBehaviorOfERC1404(
   const describe = describeFilter(skips);
 
   describe('::ERC1404', function () {
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20(
       {
         deploy,
@@ -45,7 +44,6 @@ export function describeBehaviorOfERC1404(
       skips,
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1404Base(
       {
         deploy,

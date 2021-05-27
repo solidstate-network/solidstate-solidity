@@ -16,7 +16,6 @@ let deploy = async function () {
 };
 
 describe('ERC20Metadata', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Metadata(
     {
       deploy,

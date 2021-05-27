@@ -43,7 +43,6 @@ describe('CustomToken', function () {
     await instance.deployed();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Base({
     deploy: () => instance,
   }, []);
@@ -56,7 +55,6 @@ If parts of the base implementation are changed intentionally, tests can be sele
 
 
 ```javascript
-// eslint-disable-next-line mocha/no-setup-in-describe
 describeBehaviorOfERC20Base({
   deploy: () => instance,
 }, ['#balanceOf']);

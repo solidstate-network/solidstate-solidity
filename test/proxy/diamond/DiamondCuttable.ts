@@ -16,7 +16,6 @@ describe('DiamondCuttable', function () {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamondCuttable(
     {
       deploy,

@@ -21,7 +21,6 @@ export function describeBehaviorOfMetamorphicFactory(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfFactory({}, skips);
 
     describe('#getMetamorphicImplementation', function () {

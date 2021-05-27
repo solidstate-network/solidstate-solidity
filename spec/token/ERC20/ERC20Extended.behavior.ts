@@ -33,7 +33,6 @@ export function describeBehaviorOfERC20Extended(
       instance = await new ERC20ExtendedMock__factory(deployer).deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Base({ deploy, supply, burn, mint }, skips);
 
     describe('#increaseAllowance', function () {

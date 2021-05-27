@@ -24,7 +24,6 @@ export function describeBehaviorOfERC1155(
   const describe = describeFilter(skips);
 
   describe('::ERC1155', function () {
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1155Base({ deploy, mint, burn }, skips);
   });
 }

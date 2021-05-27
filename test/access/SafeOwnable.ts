@@ -23,7 +23,6 @@ let deploy = async function () {
 };
 
 describe('SafeOwnable', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfSafeOwnable(
     {
       deploy,

@@ -18,7 +18,6 @@ describe('MinimalProxyFactory', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfMinimalProxyFactory({ deploy }, []);
 
   describe('__internal', function () {

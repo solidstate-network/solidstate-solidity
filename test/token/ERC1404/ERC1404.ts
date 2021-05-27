@@ -22,7 +22,6 @@ describe('ERC1404', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1404(
     {
       deploy: async () => instance,

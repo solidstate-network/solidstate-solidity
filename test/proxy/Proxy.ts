@@ -24,7 +24,6 @@ describe('Proxy', function () {
     );
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfProxy(
     {
       deploy: async () => instance,

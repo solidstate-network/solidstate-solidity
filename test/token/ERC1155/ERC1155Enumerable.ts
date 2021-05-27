@@ -16,7 +16,7 @@ describe('ERC1155Enumerable', function () {
   beforeEach(async function () {
     instance = await deploy();
   });
-  // eslint-disable-next-line mocha/no-setup-in-describe
+
   describeBehaviorOfERC1155Enumerable(
     {
       deploy: async () => instance,

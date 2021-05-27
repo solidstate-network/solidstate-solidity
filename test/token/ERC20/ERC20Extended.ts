@@ -17,7 +17,6 @@ describe('ERC20Extended', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20Extended(
     {
       deploy: async () => instance,

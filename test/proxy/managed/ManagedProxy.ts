@@ -36,7 +36,6 @@ describe('ManagedProxy', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfManagedProxy(
     {
       deploy: async () => instance,

@@ -22,7 +22,6 @@ export function describeBehaviorOfERC20(
   const describe = describeFilter(skips);
 
   describe('::ERC20', function () {
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Base(
       {
         deploy,
@@ -33,7 +32,6 @@ export function describeBehaviorOfERC20(
       skips,
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Extended(
       {
         deploy,
@@ -44,7 +42,6 @@ export function describeBehaviorOfERC20(
       ['::ERC20Base', ...skips],
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Metadata(
       {
         deploy,

@@ -36,7 +36,6 @@ describe('Diamond', function () {
     };
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamond(
     {
       deploy: async () => instance,

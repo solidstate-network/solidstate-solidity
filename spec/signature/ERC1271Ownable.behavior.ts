@@ -25,7 +25,6 @@ export function describeBehaviorOfERC1271Ownable(
       nonOwner = await getNonOwner();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1271Base(
       {
         deploy,

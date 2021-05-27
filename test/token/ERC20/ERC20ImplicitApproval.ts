@@ -25,7 +25,6 @@ describe('ERC20ImplicitApproval', function () {
     instance = await deploy();
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC20ImplicitApproval(
     {
       deploy: async () => instance,

@@ -54,7 +54,6 @@ export function describeBehaviorOfDiamondCuttable(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC165(
       {
         deploy: deploy as any,

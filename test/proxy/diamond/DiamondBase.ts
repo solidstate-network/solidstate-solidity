@@ -16,7 +16,6 @@ const deploy = async function () {
 };
 
 describe('DiamondBase', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamondBase(
     {
       deploy,

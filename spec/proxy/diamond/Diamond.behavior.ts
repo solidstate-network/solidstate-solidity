@@ -46,7 +46,6 @@ export function describeBehaviorOfDiamond(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfDiamondCuttable(
       {
         deploy,
@@ -56,7 +55,6 @@ export function describeBehaviorOfDiamond(
       skips,
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfDiamondLoupe(
       {
         deploy,
@@ -65,7 +63,6 @@ export function describeBehaviorOfDiamond(
       skips,
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC165(
       {
         deploy,
@@ -74,7 +71,6 @@ export function describeBehaviorOfDiamond(
       skips,
     );
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfSafeOwnable(
       {
         deploy,

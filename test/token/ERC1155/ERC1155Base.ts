@@ -24,7 +24,6 @@ describe('ERC1155Base', function () {
     invalidReceiver = instance.address;
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfERC1155Base(
     {
       deploy: async () => instance,

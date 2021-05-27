@@ -32,7 +32,6 @@ export function describeBehaviorOfERC1155Enumerable(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC1155Base(
       {
         deploy,

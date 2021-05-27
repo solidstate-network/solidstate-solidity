@@ -12,7 +12,6 @@ describe('DiamondLoupe', function () {
     return new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
   };
 
-  // eslint-disable-next-line mocha/no-hooks-for-single-case
   before(async function () {
     const functions = [];
     const selectors = [];
@@ -41,7 +40,6 @@ describe('DiamondLoupe', function () {
     });
   });
 
-  // eslint-disable-next-line mocha/no-setup-in-describe
   describeBehaviorOfDiamondLoupe(
     {
       deploy,

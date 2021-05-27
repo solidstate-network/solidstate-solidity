@@ -38,7 +38,6 @@ export function describeBehaviorOfERC20ImplicitApproval(
       instance = await deploy();
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     describeBehaviorOfERC20Base(
       {
         deploy,
