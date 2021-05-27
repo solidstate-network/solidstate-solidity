@@ -18,6 +18,8 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@solidstate/library": "^0.0.13"
   },

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfFactory } from '@solidstate/spec/factory/Factory.behavior';
+import { describeBehaviorOfFactory } from '@solidstate/spec';
 import { FactoryMock, FactoryMock__factory } from '@solidstate/typechain';
 
 describe('Factory', function () {

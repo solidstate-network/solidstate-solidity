@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1404 } from '@solidstate/spec/token/ERC1404/ERC1404.behavior';
+import { describeBehaviorOfERC1404 } from '@solidstate/spec';
 import { ERC1404Mock, ERC1404Mock__factory } from '@solidstate/typechain';
 
 let restrictions = [

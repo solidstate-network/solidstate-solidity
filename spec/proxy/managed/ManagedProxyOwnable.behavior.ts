@@ -1,5 +1,5 @@
 import { describeBehaviorOfManagedProxy } from './ManagedProxy.behavior';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { ManagedProxyOwnable } from '@solidstate/typechain';
 
 interface ManagedProxyOwnableBehaviorArgs {

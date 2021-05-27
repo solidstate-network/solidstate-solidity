@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfOwnable } from '@solidstate/spec/access/Ownable.behavior';
+import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain';
 

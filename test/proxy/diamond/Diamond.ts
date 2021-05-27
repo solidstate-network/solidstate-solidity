@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { Diamond, Diamond__factory } from '@solidstate/typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfDiamond } from '@solidstate/spec/proxy/diamond/Diamond.behavior';
+import { describeBehaviorOfDiamond } from '@solidstate/spec';
 
 describe('Diamond', function () {
   let owner: SignerWithAddress;

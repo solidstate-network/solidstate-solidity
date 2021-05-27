@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC20 } from '@solidstate/spec/token/ERC20/ERC20.behavior';
+import { describeBehaviorOfERC20 } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 import { ERC20Mock, ERC20Mock__factory } from '@solidstate/typechain';
 

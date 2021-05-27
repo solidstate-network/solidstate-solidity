@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC165 } from '@solidstate/spec/introspection/ERC165.behavior';
+import { describeBehaviorOfERC165 } from '@solidstate/spec';
 import { ERC165Mock, ERC165Mock__factory } from '@solidstate/typechain';
 
 describe('ERC165', function () {

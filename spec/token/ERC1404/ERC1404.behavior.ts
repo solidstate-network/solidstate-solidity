@@ -1,5 +1,5 @@
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
-import { describeBehaviorOfERC20 } from '../ERC20/ERC20.behavior';
+import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfERC20 } from '../ERC20';
 import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
 import { ERC1404 } from '@solidstate/typechain';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';

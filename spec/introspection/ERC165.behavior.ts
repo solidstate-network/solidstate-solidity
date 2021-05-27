@@ -1,6 +1,6 @@
 import { ERC165 } from '@solidstate/typechain';
 import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 
 interface ERC165BehaviorArgs {
   deploy: () => Promise<ERC165>;

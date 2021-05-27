@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { ethers } from 'hardhat';
 import { ERC20Base } from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';

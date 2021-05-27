@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfDiamondCuttable } from '@solidstate/spec/proxy/diamond/DiamondCuttable.behavior';
+import { describeBehaviorOfDiamondCuttable } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   DiamondCuttableMock,

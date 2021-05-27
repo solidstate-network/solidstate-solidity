@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1155 } from '@solidstate/spec/token/ERC1155/ERC1155.behavior';
+import { describeBehaviorOfERC1155 } from '@solidstate/spec';
 import { ERC1155Mock, ERC1155Mock__factory } from '@solidstate/typechain';
 
 describe('ERC1155', function () {

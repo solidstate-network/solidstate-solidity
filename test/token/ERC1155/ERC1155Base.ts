@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1155Base } from '@solidstate/spec/token/ERC1155/ERC1155Base.behavior';
+import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1155BaseMock,

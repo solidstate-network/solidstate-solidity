@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfCloneFactory } from '@solidstate/spec/factory/CloneFactory.behavior';
+import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
 import {
   CloneFactoryMock,
   CloneFactoryMock__factory,

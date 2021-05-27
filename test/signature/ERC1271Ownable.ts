@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec/signature/ERC1271Ownable.behavior';
+import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1271OwnableMock,

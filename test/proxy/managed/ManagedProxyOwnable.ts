@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec/proxy/managed/ManagedProxyOwnable.behavior';
+import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
 import {
   ManagedProxyOwnableMock,
   ManagedProxyOwnableMock__factory,

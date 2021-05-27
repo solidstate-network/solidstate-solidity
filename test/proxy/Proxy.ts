@@ -1,4 +1,4 @@
-import { describeBehaviorOfProxy } from '@solidstate/spec/proxy/Proxy.behavior';
+import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
   Ownable,
   Ownable__factory,

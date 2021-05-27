@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { ERC1155Enumerable } from '@solidstate/typechain';
 import { BigNumber, ContractTransaction } from 'ethers';

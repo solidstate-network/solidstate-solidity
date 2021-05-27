@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { ERC1271Base } from '@solidstate/typechain';
 
 interface ERC1271BaseBehaviorArgs {

@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import ethers from 'ethers';
+import { ethers } from 'hardhat';
 
 export interface SignDataArgs {
   values: any[];
@@ -8,7 +8,7 @@ export interface SignDataArgs {
   address: any;
 }
 
-export default async function (
+export async function signData(
   signer: SignerWithAddress,
   { values, types, nonce, address }: SignDataArgs,
 ) {

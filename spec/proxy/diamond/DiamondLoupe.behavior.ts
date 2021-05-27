@@ -1,8 +1,8 @@
 import { DiamondLoupe } from '@solidstate/typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
-import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
+import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfERC165 } from '../../introspection';
 
 interface DiamondLoupeBehaviorArgs {
   deploy: () => Promise<DiamondLoupe>;

@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1155Enumerable } from '@solidstate/spec/token/ERC1155/ERC1155Enumerable.behavior';
+import { describeBehaviorOfERC1155Enumerable } from '@solidstate/spec';
 import {
   ERC1155EnumerableMock,
   ERC1155EnumerableMock__factory,

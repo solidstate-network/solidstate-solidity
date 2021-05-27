@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20Extended,

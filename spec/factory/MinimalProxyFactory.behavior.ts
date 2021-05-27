@@ -1,4 +1,4 @@
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfFactory } from './Factory.behavior';
 
 export function describeBehaviorOfMinimalProxyFactory({}, skips: string[]) {

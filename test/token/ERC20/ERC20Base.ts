@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC20Base } from '@solidstate/spec/token/ERC20/ERC20Base.behavior';
+import { describeBehaviorOfERC20Base } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20Base,

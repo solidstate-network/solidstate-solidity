@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { Proxy, Proxy__factory } from '@solidstate/typechain';
 import { ethers } from 'hardhat';
 

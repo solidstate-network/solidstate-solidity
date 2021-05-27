@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
+import { describeBehaviorOfERC165 } from '../../introspection';
 import { ERC1155Base } from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';

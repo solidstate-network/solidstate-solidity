@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
 import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
-import { describeBehaviorOfERC165 } from '../../introspection/ERC165.behavior';
-import { describeBehaviorOfSafeOwnable } from '../../access/SafeOwnable.behavior';
+import { describeBehaviorOfERC165 } from '../../introspection';
+import { describeBehaviorOfSafeOwnable } from '../../access';
 import { Diamond } from '@solidstate/typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 

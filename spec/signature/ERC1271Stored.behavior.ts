@@ -1,4 +1,4 @@
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { ERC1271Stored } from '@solidstate/typechain';
 import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
 import { ethers } from 'hardhat';

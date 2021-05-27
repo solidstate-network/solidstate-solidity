@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec/utils/ReentrancyGuard.behavior';
+import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
 import {
   ReentrancyGuardMock,
   ReentrancyGuardMock__factory,

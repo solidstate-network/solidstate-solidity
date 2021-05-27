@@ -1,5 +1,5 @@
 import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
-import { describeFilter } from '@solidstate/library/mocha_describe_filter';
+import { describeFilter } from '@solidstate/library';
 import { ethers } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ERC1271Ownable } from '@solidstate/typechain';

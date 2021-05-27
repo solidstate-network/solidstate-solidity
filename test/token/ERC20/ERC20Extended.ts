@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC20Extended } from '@solidstate/spec/token/ERC20/ERC20Extended.behavior';
+import { describeBehaviorOfERC20Extended } from '@solidstate/spec';
 import {
   ERC20ExtendedMock,
   ERC20ExtendedMock__factory,
