@@ -22,7 +22,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
     burn,
     mint,
   }: ERC20ImplicitApprovalBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

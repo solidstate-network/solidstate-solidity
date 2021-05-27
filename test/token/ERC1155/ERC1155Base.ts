@@ -23,16 +23,13 @@ describe('ERC1155Base', function () {
     invalidReceiver = instance.address;
   });
 
-  describeBehaviorOfERC1155Base(
-    {
-      deploy: async () => instance,
-      mint: (recipient, tokenId, amount) =>
-        instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
-      burn: (recipient, tokenId, amount) =>
-        instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
-    },
-    [],
-  );
+  describeBehaviorOfERC1155Base({
+    deploy: async () => instance,
+    mint: (recipient, tokenId, amount) =>
+      instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
+    burn: (recipient, tokenId, amount) =>
+      instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
+  });
 
   describe('__internal', function () {
     describe('#_mint', function () {

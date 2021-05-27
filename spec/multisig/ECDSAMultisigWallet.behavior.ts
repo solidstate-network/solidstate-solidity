@@ -55,7 +55,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
     quorum,
     getVerificationAddress,
   }: ECDSAMultisigWalletBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

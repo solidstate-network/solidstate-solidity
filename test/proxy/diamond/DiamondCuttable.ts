@@ -20,12 +20,9 @@ describe('DiamondCuttable', function () {
     instance = await new DiamondCuttableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfDiamondCuttable(
-    {
-      deploy: async () => instance,
-      getOwner: async () => owner,
-      getNonOwner: async () => nonOwner,
-    },
-    [],
-  );
+  describeBehaviorOfDiamondCuttable({
+    deploy: async () => instance,
+    getOwner: async () => owner,
+    getNonOwner: async () => nonOwner,
+  });
 });

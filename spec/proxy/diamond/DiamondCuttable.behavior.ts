@@ -14,7 +14,7 @@ interface DiamondCuttableBehaviorArgs {
 
 export function describeBehaviorOfDiamondCuttable(
   { deploy, getOwner, getNonOwner }: DiamondCuttableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

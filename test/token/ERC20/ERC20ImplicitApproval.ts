@@ -22,18 +22,15 @@ describe('ERC20ImplicitApproval', function () {
     ]);
   });
 
-  describeBehaviorOfERC20ImplicitApproval(
-    {
-      deploy: async () => instance,
-      supply: ethers.constants.Zero,
-      mint: (recipient, amount) =>
-        instance['mint(address,uint256)'](recipient, amount),
-      burn: (recipient, amount) =>
-        instance['burn(address,uint256)'](recipient, amount),
-      getImplicitlyApprovedSpender: async () => implicitlyApprovedSender,
-    },
-    [],
-  );
+  describeBehaviorOfERC20ImplicitApproval({
+    deploy: async () => instance,
+    supply: ethers.constants.Zero,
+    mint: (recipient, amount) =>
+      instance['mint(address,uint256)'](recipient, amount),
+    burn: (recipient, amount) =>
+      instance['burn(address,uint256)'](recipient, amount),
+    getImplicitlyApprovedSpender: async () => implicitlyApprovedSender,
+  });
 
   describe('__internal', function () {
     describe('#_isImplicitlyApproved', function () {

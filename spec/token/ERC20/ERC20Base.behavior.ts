@@ -14,7 +14,7 @@ interface ERC20BaseBehaviorArgs {
 
 export function describeBehaviorOfERC20Base(
   { deploy, supply, mint, burn }: ERC20BaseBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

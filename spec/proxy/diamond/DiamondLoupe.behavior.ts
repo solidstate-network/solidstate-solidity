@@ -11,7 +11,7 @@ interface DiamondLoupeBehaviorArgs {
 
 export function describeBehaviorOfDiamondLoupe(
   { deploy, facetCuts }: DiamondLoupeBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

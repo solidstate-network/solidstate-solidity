@@ -13,15 +13,12 @@ describe('ERC20Extended', function () {
     instance = await new ERC20ExtendedMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC20Extended(
-    {
-      deploy: async () => instance,
-      supply: ethers.constants.Zero,
-      mint: (recipient, amount) =>
-        instance['mint(address,uint256)'](recipient, amount),
-      burn: (recipient, amount) =>
-        instance['burn(address,uint256)'](recipient, amount),
-    },
-    [],
-  );
+  describeBehaviorOfERC20Extended({
+    deploy: async () => instance,
+    supply: ethers.constants.Zero,
+    mint: (recipient, amount) =>
+      instance['mint(address,uint256)'](recipient, amount),
+    burn: (recipient, amount) =>
+      instance['burn(address,uint256)'](recipient, amount),
+  });
 });

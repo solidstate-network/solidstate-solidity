@@ -12,7 +12,7 @@ interface ERC20MetadataBehaviorArgs {
 
 export function describeBehaviorOfERC20Metadata(
   { deploy, name, symbol, decimals }: ERC20MetadataBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

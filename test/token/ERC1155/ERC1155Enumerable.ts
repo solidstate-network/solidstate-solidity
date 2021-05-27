@@ -13,14 +13,11 @@ describe('ERC1155Enumerable', function () {
     instance = await new ERC1155EnumerableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC1155Enumerable(
-    {
-      deploy: async () => instance,
-      mint: (recipient, tokenId, amount) =>
-        instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
-      burn: (recipient, tokenId, amount) =>
-        instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
-    },
-    [],
-  );
+  describeBehaviorOfERC1155Enumerable({
+    deploy: async () => instance,
+    mint: (recipient, tokenId, amount) =>
+      instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
+    burn: (recipient, tokenId, amount) =>
+      instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
+  });
 });

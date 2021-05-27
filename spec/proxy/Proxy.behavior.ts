@@ -15,7 +15,7 @@ export function describeBehaviorOfProxy(
     implementationFunction,
     implementationFunctionArgs,
   }: ProxyBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

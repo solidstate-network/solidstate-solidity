@@ -32,14 +32,11 @@ describe('ManagedProxyOwnable', function () {
     );
   });
 
-  describeBehaviorOfManagedProxyOwnable(
-    {
-      deploy: async () => instance,
-      implementationFunction: 'owner()',
-      implementationFunctionArgs: [],
-    },
-    [],
-  );
+  describeBehaviorOfManagedProxyOwnable({
+    deploy: async () => instance,
+    implementationFunction: 'owner()',
+    implementationFunctionArgs: [],
+  });
 
   describe('__internal', function () {
     describe('#_getImplementation', function () {

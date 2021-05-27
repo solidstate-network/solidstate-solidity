@@ -14,7 +14,7 @@ describe('MinimalProxyFactory', function () {
     instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMinimalProxyFactory({ deploy: async () => instance }, []);
+  describeBehaviorOfMinimalProxyFactory({ deploy: async () => instance });
 
   describe('__internal', function () {
     describe('#_deployMinimalProxy', function () {

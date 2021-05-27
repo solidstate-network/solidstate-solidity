@@ -15,7 +15,7 @@ interface ERC20ExtendedBehaviorArgs {
 
 export function describeBehaviorOfERC20Extended(
   { deploy, mint, burn, supply }: ERC20ExtendedBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

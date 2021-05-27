@@ -21,7 +21,7 @@ interface ERC1155EnumerableBehaviorArgs {
 
 export function describeBehaviorOfERC1155Enumerable(
   { deploy, mint, burn }: ERC1155EnumerableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

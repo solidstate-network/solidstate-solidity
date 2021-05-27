@@ -17,7 +17,7 @@ interface ERC20BehaviorArgs {
 
 export function describeBehaviorOfERC20(
   { deploy, mint, burn, name, symbol, decimals, supply }: ERC20BehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
@@ -39,7 +39,7 @@ export function describeBehaviorOfERC20(
         burn,
         supply,
       },
-      ['::ERC20Base', ...skips],
+      ['::ERC20Base', ...(skips ?? [])],
     );
 
     describeBehaviorOfERC20Metadata(

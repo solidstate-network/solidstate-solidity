@@ -12,7 +12,7 @@ interface OwnableBehaviorArgs {
 
 export function describeBehaviorOfOwnable(
   { deploy, getOwner, getNonOwner }: OwnableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

@@ -15,7 +15,7 @@ interface SafeOwnableBehaviorArgs {
 
 export function describeBehaviorOfSafeOwnable(
   { deploy, getOwner, getNomineeOwner, getNonOwner }: SafeOwnableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
@@ -38,7 +38,7 @@ export function describeBehaviorOfSafeOwnable(
         getOwner,
         getNonOwner,
       },
-      ['#transferOwnership', ...skips],
+      ['#transferOwnership', ...(skips ?? [])],
     );
 
     describe('#nomineeOwner', function () {

@@ -22,12 +22,9 @@ describe('DiamondBase', function () {
     ]);
   });
 
-  describeBehaviorOfDiamondBase(
-    {
-      deploy: async () => instance,
-      facetFunction: 'owner()',
-      facetFunctionArgs: [],
-    },
-    [],
-  );
+  describeBehaviorOfDiamondBase({
+    deploy: async () => instance,
+    facetFunction: 'owner()',
+    facetFunctionArgs: [],
+  });
 });

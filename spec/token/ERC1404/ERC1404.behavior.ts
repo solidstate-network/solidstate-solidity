@@ -26,7 +26,7 @@ export function describeBehaviorOfERC1404(
     decimals,
     supply,
   }: ERC1404BehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
@@ -52,7 +52,7 @@ export function describeBehaviorOfERC1404(
         burn,
         supply,
       },
-      ['::ERC20Base', ...skips],
+      ['::ERC20Base', ...(skips ?? [])],
     );
   });
 }

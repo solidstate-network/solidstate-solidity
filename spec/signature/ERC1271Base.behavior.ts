@@ -10,7 +10,7 @@ interface ERC1271BaseBehaviorArgs {
 
 export function describeBehaviorOfERC1271Base(
   { deploy, getValidParams, getInvalidParams }: ERC1271BaseBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

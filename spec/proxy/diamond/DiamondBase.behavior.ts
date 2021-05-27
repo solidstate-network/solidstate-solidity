@@ -11,7 +11,7 @@ interface DiamondBaseBehaviorArgs {
 
 export function describeBehaviorOfDiamondBase(
   { deploy, facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

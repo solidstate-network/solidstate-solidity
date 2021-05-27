@@ -22,14 +22,11 @@ describe('ERC1271Ownable', function () {
     );
   });
 
-  describeBehaviorOfERC1271Ownable(
-    {
-      deploy: async () => instance,
-      getOwner: async () => owner,
-      getNonOwner: async () => nonOwner,
-    },
-    [],
-  );
+  describeBehaviorOfERC1271Ownable({
+    deploy: async () => instance,
+    getOwner: async () => owner,
+    getNonOwner: async () => nonOwner,
+  });
 
   describe('__internal', function () {
     describe('#_isValidSignature', function () {

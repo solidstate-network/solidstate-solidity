@@ -32,15 +32,12 @@ describe('Diamond', function () {
     };
   });
 
-  describeBehaviorOfDiamond(
-    {
-      deploy: async () => instance,
-      getOwner: async () => owner,
-      getNomineeOwner: async () => getNomineeOwner,
-      getNonOwner: async () => getNonOwner,
-      facetCuts,
-      fallbackAddress: ethers.constants.AddressZero,
-    },
-    [],
-  );
+  describeBehaviorOfDiamond({
+    deploy: async () => instance,
+    getOwner: async () => owner,
+    getNomineeOwner: async () => getNomineeOwner,
+    getNonOwner: async () => getNonOwner,
+    facetCuts,
+    fallbackAddress: ethers.constants.AddressZero,
+  });
 });

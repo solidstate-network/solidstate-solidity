@@ -12,7 +12,7 @@ interface ERC1271OwnableBehaviorArgs {
 
 export function describeBehaviorOfERC1271Ownable(
   { deploy, getOwner, getNonOwner }: ERC1271OwnableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

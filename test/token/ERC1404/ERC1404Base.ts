@@ -22,16 +22,13 @@ describe('ERC1404Base', function () {
     );
   });
 
-  describeBehaviorOfERC1404Base(
-    {
-      deploy: async () => instance,
-      restrictions,
-      supply: ethers.constants.Zero,
-      mint: (recipient: string, amount: BigNumber) =>
-        instance['mint(address,uint256)'](recipient, amount),
-      burn: (recipient: string, amount: BigNumber) =>
-        instance['burn(address,uint256)'](recipient, amount),
-    },
-    [],
-  );
+  describeBehaviorOfERC1404Base({
+    deploy: async () => instance,
+    restrictions,
+    supply: ethers.constants.Zero,
+    mint: (recipient: string, amount: BigNumber) =>
+      instance['mint(address,uint256)'](recipient, amount),
+    burn: (recipient: string, amount: BigNumber) =>
+      instance['burn(address,uint256)'](recipient, amount),
+  });
 });

@@ -6,5 +6,5 @@ interface ReentrancyGuardBehaviorArgs {
 
 export function describeBehaviorOfReentrancyGuard(
   { deploy }: ReentrancyGuardBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {}

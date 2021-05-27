@@ -45,11 +45,8 @@ describe('DiamondLoupe', function () {
     instance = await new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
   });
 
-  describeBehaviorOfDiamondLoupe(
-    {
-      deploy: async () => instance,
-      facetCuts,
-    },
-    [],
-  );
+  describeBehaviorOfDiamondLoupe({
+    deploy: async () => instance,
+    facetCuts,
+  });
 });

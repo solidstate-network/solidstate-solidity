@@ -22,13 +22,10 @@ describe('ERC1271Stored', function () {
     );
   });
 
-  describeBehaviorOfERC1271Stored(
-    {
-      deploy: async () => instance,
-      getValidParams: async () => validParams,
-    },
-    [],
-  );
+  describeBehaviorOfERC1271Stored({
+    deploy: async () => instance,
+    getValidParams: async () => validParams,
+  });
 
   describe('__internal', function () {
     describe('#_isValidSignature', function () {

@@ -24,16 +24,13 @@ describe('ECDSAMultisigWallet', function () {
     );
   });
 
-  describeBehaviorOfECDSAMultisigWallet(
-    {
-      deploy: async () => instance,
-      getSigners: async () => signers,
-      getNonSigner: async () => nonSigner,
-      quorum,
-      getVerificationAddress: async () => instance.address,
-    },
-    [],
-  );
+  describeBehaviorOfECDSAMultisigWallet({
+    deploy: async () => instance,
+    getSigners: async () => signers,
+    getNonSigner: async () => nonSigner,
+    quorum,
+    getVerificationAddress: async () => instance.address,
+  });
 
   describe('__internal', function () {
     describe('#_verifySignatures', function () {

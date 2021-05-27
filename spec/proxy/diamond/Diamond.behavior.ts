@@ -27,7 +27,7 @@ export function describeBehaviorOfDiamond(
     facetCuts,
     fallbackAddress,
   }: DiamondBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

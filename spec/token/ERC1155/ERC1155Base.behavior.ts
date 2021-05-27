@@ -24,7 +24,7 @@ interface ERC1155BaseBehaviorArgs {
 
 export function describeBehaviorOfERC1155Base(
   { deploy, mint, burn }: ERC1155BaseBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

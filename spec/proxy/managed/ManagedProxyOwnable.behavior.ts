@@ -14,7 +14,7 @@ export function describeBehaviorOfManagedProxyOwnable(
     implementationFunction,
     implementationFunctionArgs,
   }: ManagedProxyOwnableBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

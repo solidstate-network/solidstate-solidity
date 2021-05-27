@@ -24,17 +24,14 @@ describe('ERC20Base', function () {
     instance = await new ERC20BaseMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC20Base(
-    {
-      deploy: async () => instance as unknown as ERC20Base,
-      supply: ethers.constants.Zero,
-      mint: (recipient, amount) =>
-        instance['mint(address,uint256)'](recipient, amount),
-      burn: (recipient, amount) =>
-        instance['burn(address,uint256)'](recipient, amount),
-    },
-    [],
-  );
+  describeBehaviorOfERC20Base({
+    deploy: async () => instance as unknown as ERC20Base,
+    supply: ethers.constants.Zero,
+    mint: (recipient, amount) =>
+      instance['mint(address,uint256)'](recipient, amount),
+    burn: (recipient, amount) =>
+      instance['burn(address,uint256)'](recipient, amount),
+  });
 
   describe('__internal', function () {
     describe('#_mint', function () {

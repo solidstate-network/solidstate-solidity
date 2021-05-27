@@ -10,7 +10,7 @@ interface MetaphoricFactoryBehaviorArgs {
 
 export function describeBehaviorOfMetamorphicFactory(
   { deploy }: MetaphoricFactoryBehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 

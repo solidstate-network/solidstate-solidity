@@ -9,7 +9,7 @@ interface ERC165BehaviorArgs {
 
 export function describeBehaviorOfERC165(
   { deploy, interfaceIds }: ERC165BehaviorArgs,
-  skips: string[],
+  skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
