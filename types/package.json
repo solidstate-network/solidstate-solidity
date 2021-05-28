@@ -1,0 +1,27 @@
+{
+  "name": "@solidstate/types",
+  "version": "0.0.13",
+  "author": "Nick Barry",
+  "license": "MIT",
+  "description": "Typescript definitions for SolidState contracts",
+  "keywords": [
+    "solidity",
+    "smart-contracts",
+    "ethereum",
+    "ether",
+    "eth",
+    "cryptocurrency",
+    "crypto",
+    "wow",
+    "library",
+    "hardhat",
+    "buidler"
+  ],
+  "repository": "github:solidstate-network/solidstate-solidity",
+  "dependencies": {
+    "@solidstate/library": "^0.0.13"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
