@@ -1,15 +1,19 @@
 node_modules/
 
+# ignore lockfiles of constituent packages but not root lockfile
+yarn.lock
+!./yarn.lock
+
+yarn-error.log
+lerna-debug.log
+
+typechain/
+dist/
+
 artifacts/
 cache/
 
 coverage/
 coverage.json
 
-yarn.lock
-!./yarn.lock
-
 .env
-
-typechain/
-dist/
