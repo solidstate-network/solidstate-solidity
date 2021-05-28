@@ -5,7 +5,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1155BaseMock,
   ERC1155BaseMock__factory,
-} from '@solidstate/typechain';
+} from '@solidstate/types';
 
 describe('ERC1155Base', function () {
   let holder: SignerWithAddress;

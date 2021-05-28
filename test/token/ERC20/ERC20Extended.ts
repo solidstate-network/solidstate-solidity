@@ -3,7 +3,7 @@ import { describeBehaviorOfERC20Extended } from '@solidstate/spec';
 import {
   ERC20ExtendedMock,
   ERC20ExtendedMock__factory,
-} from '@solidstate/typechain';
+} from '@solidstate/types';
 
 describe('ERC20Extended', function () {
   let instance: ERC20ExtendedMock;

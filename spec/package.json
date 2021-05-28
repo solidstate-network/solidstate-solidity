@@ -21,7 +21,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@solidstate/library": "^0.0.13"
+    "@solidstate/library": "^0.0.13",
+    "@solidstate/types": "^0.0.13"
   },
   "publishConfig": {
     "access": "public"

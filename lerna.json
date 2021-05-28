@@ -4,7 +4,8 @@
     "abi",
     "contracts",
     "lib",
-    "spec"
+    "spec",
+    "types"
   ],
   "command": {
     "publish": {

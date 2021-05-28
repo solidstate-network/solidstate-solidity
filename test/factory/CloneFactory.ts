@@ -4,7 +4,7 @@ import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
 import {
   CloneFactoryMock,
   CloneFactoryMock__factory,
-} from '@solidstate/typechain';
+} from '@solidstate/types';
 
 describe('CloneFactory', function () {
   let instance: CloneFactoryMock;

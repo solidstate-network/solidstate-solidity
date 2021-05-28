@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library';
-import { DiamondBase } from '../../typechain';
+import { DiamondBase } from '@solidstate/types';
 import { ethers } from 'hardhat';
 
 interface DiamondBaseBehaviorArgs {

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 
 import { task } from 'hardhat/config';
@@ -30,6 +30,31 @@ task(TASK_COMPILE, async function (args, hre, runSuper) {
   data.forEach(function ({ filePath, contents }) {
     fs.writeFileSync(filePath, contents);
   });
+});
+
+task(TASK_COMPILE, async function (args, hre, runSuper) {
+  // copy typechain output to @solidstate/types package
+
+  await runSuper();
+
+  const directory = './types';
+
+  const data = ['package.json', 'README.md'].map(function (name) {
+    const filePath = path.resolve(directory, name);
+    return {
+      filePath,
+      contents: fs.readFileSync(filePath, 'utf8'),
+    };
+  });
+
+  fs.rmdirSync(directory, { recursive: true });
+  fs.mkdirSync(directory);
+
+  data.forEach(function ({ filePath, contents }) {
+    fs.writeFileSync(filePath, contents);
+  });
+
+  fs.copySync(hre.config.typechain.outDir, directory);
 });
 
 export default {
@@ -70,6 +95,5 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
-    outDir: './spec/typechain',
   },
 };

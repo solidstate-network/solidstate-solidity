@@ -1,6 +1,6 @@
 import { describeBehaviorOfManagedProxy } from './ManagedProxy.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ManagedProxyOwnable } from '../../typechain';
+import { ManagedProxyOwnable } from '@solidstate/types';
 
 interface ManagedProxyOwnableBehaviorArgs {
   deploy: () => Promise<ManagedProxyOwnable>;
