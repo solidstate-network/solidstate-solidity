@@ -18,6 +18,7 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "main": "./typechain/index.ts",
   "dependencies": {
     "@solidstate/library": "^0.0.13"
   },

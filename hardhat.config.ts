@@ -37,24 +37,12 @@ task(TASK_COMPILE, async function (args, hre, runSuper) {
 
   await runSuper();
 
-  const directory = './types';
+  const destination = path.resolve(hre.config.paths.root, 'types/typechain');
 
-  const data = ['package.json', 'README.md'].map(function (name) {
-    const filePath = path.resolve(directory, name);
-    return {
-      filePath,
-      contents: fs.readFileSync(filePath, 'utf8'),
-    };
-  });
+  fs.rmdirSync(destination, { recursive: true });
+  fs.mkdirSync(destination);
 
-  fs.rmdirSync(directory, { recursive: true });
-  fs.mkdirSync(directory);
-
-  data.forEach(function ({ filePath, contents }) {
-    fs.writeFileSync(filePath, contents);
-  });
-
-  fs.copySync(hre.config.typechain.outDir, directory);
+  fs.copySync(hre.config.typechain.outDir, destination);
 });
 
 export default {
