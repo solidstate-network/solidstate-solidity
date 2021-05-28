@@ -1,9 +1,6 @@
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
-import {
-  ERC1404BaseMock,
-  ERC1404BaseMock__factory,
-} from '@solidstate/types';
+import { ERC1404BaseMock, ERC1404BaseMock__factory } from '@solidstate/types';
 import { BigNumber } from 'ethers';
 
 let restrictions = [

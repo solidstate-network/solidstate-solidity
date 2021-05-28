@@ -2,10 +2,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import {
-  ERC1155BaseMock,
-  ERC1155BaseMock__factory,
-} from '@solidstate/types';
+import { ERC1155BaseMock, ERC1155BaseMock__factory } from '@solidstate/types';
 
 describe('ERC1155Base', function () {
   let holder: SignerWithAddress;

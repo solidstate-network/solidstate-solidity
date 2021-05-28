@@ -2,10 +2,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
-import {
-  ManagedProxyMock,
-  ManagedProxyMock__factory,
-} from '@solidstate/types';
+import { ManagedProxyMock, ManagedProxyMock__factory } from '@solidstate/types';
 
 describe('ManagedProxy', function () {
   let instance: ManagedProxyMock;
