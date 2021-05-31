@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC1155 } from '../../typechain';
+import { ERC1155 } from '../../../typechain';
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { BigNumber, ContractTransaction } from 'ethers';
 
