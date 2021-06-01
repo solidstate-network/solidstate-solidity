@@ -1,6 +1,6 @@
 # SolidState Contracts
 
-SolidState contract library.  Part of the SolidState Solidity monorepo.
+SolidState contract library. Part of the SolidState Solidity monorepo.
 
 ## Installation
 

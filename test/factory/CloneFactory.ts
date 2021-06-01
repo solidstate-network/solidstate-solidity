@@ -1,10 +1,7 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
-import {
-  CloneFactoryMock,
-  CloneFactoryMock__factory,
-} from '@solidstate/typechain';
+import { CloneFactoryMock, CloneFactoryMock__factory } from '../../typechain';
 
 describe('CloneFactory', function () {
   let instance: CloneFactoryMock;

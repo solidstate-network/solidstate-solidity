@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC1271Stored } from '../typechain';
+import { ERC1271Stored } from '../../typechain';
 import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
 import { ethers } from 'hardhat';
 

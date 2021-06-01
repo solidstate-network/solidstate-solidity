@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library';
-import { Proxy, Proxy__factory } from '../typechain';
+import { Proxy } from '../../typechain';
 import { ethers } from 'hardhat';
 
 interface ProxyBehaviorArgs {
@@ -24,8 +24,7 @@ export function describeBehaviorOfProxy(
 
     beforeEach(async function () {
       const [deployer] = await ethers.getSigners();
-      const i = await deploy();
-      instance = Proxy__factory.connect(i.address, deployer);
+      instance = await deploy();
     });
 
     describe('fallback', function () {

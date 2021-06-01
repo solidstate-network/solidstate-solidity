@@ -5,7 +5,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1271OwnableMock,
   ERC1271OwnableMock__factory,
-} from '@solidstate/typechain';
+} from '../../typechain';
 
 describe('ERC1271Ownable', function () {
   let owner: SignerWithAddress;

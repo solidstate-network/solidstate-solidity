@@ -4,7 +4,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ECDSAMultisigWalletMock,
   ECDSAMultisigWalletMock__factory,
-} from '@solidstate/typechain';
+} from '../../typechain';
 
 describe('ECDSAMultisigWallet', function () {
   const quorum = ethers.constants.One;

@@ -70,6 +70,5 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
-    outDir: './spec/typechain',
   },
 };

@@ -20,6 +20,12 @@
   "repository": "github:solidstate-network/solidstate-solidity",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "scripts": {
+    "tsc": "tsc --build tsconfig.json"
+  },
+  "files": [
+    "/dist/"
+  ],
   "publishConfig": {
     "access": "public"
   }
