@@ -5,7 +5,7 @@ import { ManagedProxy } from '../../../typechain';
 interface ManagedProxyBehaviorArgs {
   deploy: () => Promise<ManagedProxy>;
   implementationFunction: string;
-  implementationFunctionArgs: string[];
+  implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfManagedProxy(

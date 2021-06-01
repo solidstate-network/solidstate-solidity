@@ -5,19 +5,22 @@ import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
 import {
   ManagedProxyOwnableMock,
   ManagedProxyOwnableMock__factory,
+  OwnableMock__factory,
 } from '../../../typechain';
 
 describe('ManagedProxyOwnable', function () {
   let instance: ManagedProxyOwnableMock;
 
   beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory('Ownable');
-    const implementationInstance = await implementationFactory.deploy();
-    await implementationInstance.deployed();
+    const [deployer] = await ethers.getSigners();
 
     const manager = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
     ]);
+
+    const implementationInstance = await new OwnableMock__factory(deployer).deploy(
+      deployer.address
+    );
 
     await manager.mock['getImplementation()'].returns(
       implementationInstance.address,
@@ -25,7 +28,6 @@ describe('ManagedProxyOwnable', function () {
 
     const selector = manager.interface.getSighash('getImplementation()');
 
-    const [deployer] = await ethers.getSigners();
     instance = await new ManagedProxyOwnableMock__factory(deployer).deploy(
       manager.address,
       selector,
@@ -63,7 +65,7 @@ describe('ManagedProxyOwnable', function () {
     describe('#_getManager', function () {
       it('returns address of ERC173 owner', async function () {
         expect(await instance.callStatic['getManager()']()).to.equal(
-          await instance.callStatic['owner()'](),
+          await instance.callStatic['getOwner()'](),
         );
       });
     });
