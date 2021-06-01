@@ -7,5 +7,6 @@
     "outDir": "dist",
     "declaration": true,
     "baseUrl": "./"
-  }
+  },
+  "files": ["./hardhat.config.ts"]
 }
