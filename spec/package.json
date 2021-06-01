@@ -18,9 +18,17 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "main": "./dist/spec/index.js",
+  "types": "./dist/spec/index.d.ts",
+  "scripts": {
+    "tsc": "tsc --build tsconfig.json"
+  },
   "dependencies": {
     "@solidstate/library": "^0.0.13"
   },
+  "files": [
+    "/dist/"
+  ],
   "publishConfig": {
     "access": "public"
   }

@@ -17,6 +17,8 @@ abstract contract Factory {
       let encoded_size := mload(initCode)
       deployment := create(0, encoded_data, encoded_size)
     }
+
+    require(deployment != address(0), 'Factory: failed deployment');
   }
 
   /**

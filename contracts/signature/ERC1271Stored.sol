@@ -11,7 +11,7 @@ import './ERC1271StoredStorage.sol';
 abstract contract ERC1271Stored is ERC1271Base {
   function _isValidSignature (
     bytes32 hash,
-    bytes memory
+    bytes memory signature
   ) virtual override internal view returns (bool) {
     return ERC1271StoredStorage.layout().hashes[hash];
   }
