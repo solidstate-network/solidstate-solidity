@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "./ERC20Base.sol";
 import "./ERC20PermitStorage.sol";
 import "./IERC2612Permit.sol";
+import "./ERC20Metadata.sol";
 
 // ERC20-Permit implementation from soliditylabs ( https://github.com/soliditylabs/ERC20-Permit )
 
@@ -15,7 +16,7 @@ import "./IERC2612Permit.sol";
  *
  * The {permit} signature mechanism conforms to the {IERC2612Permit} interface.
  */
-abstract contract ERC20Permit is ERC20Base, IERC2612Permit {
+abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
   /**
    * @dev See {IERC2612Permit-permit}.
    *
