@@ -24,7 +24,7 @@ export function describeBehaviorOfERC20Permit(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20ImplicitApproval', function () {
+  describe('::ERC20Permit', function () {
     let user: SignerWithAddress;
     let spender: SignerWithAddress;
     let thirdParty: SignerWithAddress;
