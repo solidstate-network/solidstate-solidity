@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "./ERC20Permit.sol";
 
-contract ERC20ExtendedMock is ERC20Permit {
+contract ERC20PermitMock is ERC20Permit {
     function mint (address account, uint amount) external {
         _mint(account, amount);
     }

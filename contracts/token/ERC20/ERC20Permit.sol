@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./ERC20.sol";
+import "./ERC20Base.sol";
 import "./ERC20PermitStorage.sol";
 import "./IERC2612Permit.sol";
 
@@ -15,11 +15,7 @@ import "./IERC2612Permit.sol";
  *
  * The {permit} signature mechanism conforms to the {IERC2612Permit} interface.
  */
-abstract contract ERC20Permit is ERC20, IERC2612Permit {
-  constructor() {
-    _updateDomainSeparator();
-  }
-
+abstract contract ERC20Permit is ERC20Base, IERC2612Permit {
   /**
    * @dev See {IERC2612Permit-permit}.
    *
