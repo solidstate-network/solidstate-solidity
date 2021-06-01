@@ -27,7 +27,7 @@
     "@solidstate/library": "^0.0.13"
   },
   "files": [
-    "/dist/"
+    "dist/"
   ],
   "publishConfig": {
     "access": "public"

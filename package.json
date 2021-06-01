@@ -4,8 +4,8 @@
   "author": "Nick Barry",
   "license": "MIT",
   "scripts": {
-    "publish": "tsc && lerna publish",
-    "tsc": "lerna run tsc"
+    "publish": "build && lerna publish",
+    "build": "lerna run tsc"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
