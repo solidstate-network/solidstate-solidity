@@ -3,36 +3,19 @@
 pragma solidity ^0.8.0;
 
 /**
- * @dev Interface of the ERC2612 standard as defined in the EIP.
- *
- * Adds the {permit} method, which can be used to change one's
- * {IERC20-allowance} without having to send a transaction, by signing a
- * message. This allows users to spend tokens without having to hold Ether.
- *
- * See https://eips.ethereum.org/EIPS/eip-2612.
+ * @notice ERC2612 interface
+ * @dev see https://eips.ethereum.org/EIPS/eip-2612.
  */
 interface IERC2612Permit {
   /**
-   * @dev Sets `amount` as the allowance of `spender` over `owner`'s tokens,
-   * given `owner`'s signed approval.
-   *
-   * IMPORTANT: The same issues {IERC20-approve} has related to transaction
-   * ordering also apply here.
-   *
-   * Emits an {Approval} event.
-   *
-   * Requirements:
-   *
-   * - `owner` cannot be the zero address.
-   * - `spender` cannot be the zero address.
-   * - `deadline` must be a timestamp in the future.
-   * - `v`, `r` and `s` must be a valid `secp256k1` signature from `owner`
-   * over the EIP712-formatted function arguments.
-   * - the signature must use ``owner``'s current nonce (see {nonces}).
-   *
-   * For more information on the signature format, see the
-   * https://eips.ethereum.org/EIPS/eip-2612#specification[relevant EIP
-   * section].
+   * @notice approve spender to transfer tokens held by owner via signature
+   * @dev this function may be vulnerable to approval replay attacks
+   * @param owner holder of tokens and signer of permit
+   * @param spender beneficiary of approval
+   * @param amount quantity of tokens to approve
+   * @param v secp256k1 'v' value
+   * @param r secp256k1 'r' value
+   * @param s secp256k1 's' value
    */
   function permit(
     address owner,
@@ -45,11 +28,8 @@ interface IERC2612Permit {
   ) external;
 
   /**
-   * @dev Returns the current ERC2612 nonce for `owner`. This value must be
-   * included whenever a signature is generated for {permit}.
-   *
-   * Every successful call to {permit} increases ``owner``'s nonce by one. This
-   * prevents a signature from being used multiple times.
+   * @notice get the current ERC2612 nonce for the given address
+   * @return current nonce
    */
-  function nonces(address owner) external view returns (uint256);
+  function nonces(address owner) external view returns (uint);
 }
