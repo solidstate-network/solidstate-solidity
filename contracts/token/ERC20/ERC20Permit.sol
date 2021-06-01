@@ -7,22 +7,15 @@ import "./IERC2612Permit.sol";
 import "./ERC20Metadata.sol";
 import {ECDSA} from '../../cryptography/ECDSA.sol';
 
-// ERC20-Permit implementation from soliditylabs ( https://github.com/soliditylabs/ERC20-Permit )
-
 /**
- * @dev Extension of {ERC20} that allows token holders to use their tokens
- * without sending any transactions by setting {IERC20-allowance} with a
- * signature using the {permit} method, and then spend them via
- * {IERC20-transferFrom}.
- *
- * The {permit} signature mechanism conforms to the {IERC2612Permit} interface.
+ * @title ERC20 extension with support for ERC2612 permits
+ * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
 abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
   using ECDSA for bytes32;
   /**
-   * @dev See {IERC2612Permit-permit}.
-   *
-   * If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
+   * @inheritdoc IERC2612Permit
+   * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
    * EIP712 Domain Separator is automatically recalculated.
    */
   function permit(
@@ -95,14 +88,18 @@ abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
   }
 
   /**
-   * @dev See {IERC2612Permit-nonces}.
+   * @dev inhertidoc IERC2612Permit
    */
   function nonces(address owner) public override view returns (uint256) {
     return ERC20PermitStorage.layout().nonces[owner];
   }
 
+  /**
+   * @notice update domain separator for new chain ID
+   * @return new domain separator
+   */
   function _updateDomainSeparator() private returns (bytes32) {
-    uint256 chainID = _chainID();
+    uint256 chainId = _chainId();
 
     // no need for assembly, running very rarely
     bytes32 newDomainSeparator = keccak256(
@@ -111,20 +108,23 @@ abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
           "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
         ),
         keccak256(bytes(name())), // ERC-20 Name
-        keccak256(bytes("1")),  // Version
-        chainID,
+        keccak256(bytes("1")), // Version
+        chainId,
         address(this)
       )
     );
 
-    ERC20PermitStorage.layout().domainSeparators[chainID] = newDomainSeparator;
+    ERC20PermitStorage.layout().domainSeparators[chainId] = newDomainSeparator;
 
     return newDomainSeparator;
   }
 
-  // Returns the domain separator, updating it if chainID changes
+  /**
+   * @notice update chain ID if changed and return domain separator
+   * @return domain separator
+   */
   function _domainSeparator() private returns (bytes32) {
-    bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[_chainID()];
+    bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[_chainId()];
 
     if (domainSeparator != 0x00) {
       return domainSeparator;
@@ -133,12 +133,13 @@ abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
     return _updateDomainSeparator();
   }
 
-  function _chainID() private view returns (uint256) {
-    uint256 chainID;
+  /**
+   * @notice get the current chain ID
+   * @return chainId chain ID
+   */
+  function _chainId() private view returns (uint256 chainId) {
     assembly {
-      chainID := chainid()
+      chainId := chainid()
     }
-
-    return chainID;
   }
 }
