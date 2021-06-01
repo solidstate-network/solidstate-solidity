@@ -5,7 +5,7 @@ jsxBracketSameLine: false
 jsxSingleQuote: true
 arrowParens: always
 overrides:
-  - files: "*.sol"
+  - files: '*.sol'
     options:
       printWidth: 80
       tabWidth: 2
