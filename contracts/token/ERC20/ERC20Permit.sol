@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./ERC20Base.sol";
 import "./ERC20PermitStorage.sol";
-import "./IERC2612Permit.sol";
+import "./IERC2612.sol";
 import "./ERC20Metadata.sol";
 import {ECDSA} from '../../cryptography/ECDSA.sol';
 
@@ -11,10 +11,10 @@ import {ECDSA} from '../../cryptography/ECDSA.sol';
  * @title ERC20 extension with support for ERC2612 permits
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
-abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
+abstract contract ERC20Permit is IERC2612, ERC20Base, ERC20Metadata {
   using ECDSA for bytes32;
   /**
-   * @inheritdoc IERC2612Permit
+   * @inheritdoc IERC2612
    * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
    * EIP712 Domain Separator is automatically recalculated.
    */
@@ -88,7 +88,7 @@ abstract contract ERC20Permit is ERC20Base, ERC20Metadata, IERC2612Permit {
   }
 
   /**
-   * @dev inhertidoc IERC2612Permit
+   * @dev inhertidoc IERC2612
    */
   function nonces(address owner) public override view returns (uint256) {
     return ERC20PermitStorage.layout().nonces[owner];

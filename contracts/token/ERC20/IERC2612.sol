@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
  * @notice ERC2612 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2612.
  */
-interface IERC2612Permit {
+interface IERC2612 {
   /**
    * @notice approve spender to transfer tokens held by owner via signature
    * @dev this function may be vulnerable to approval replay attacks
