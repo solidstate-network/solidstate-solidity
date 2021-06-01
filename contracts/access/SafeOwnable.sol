@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import './Ownable.sol';
-import './SafeOwnableInternal.sol';
-import './SafeOwnableStorage.sol';
+import {Ownable, OwnableStorage} from './Ownable.sol';
+import {SafeOwnableInternal} from './SafeOwnableInternal.sol';
+import {SafeOwnableStorage} from './SafeOwnableStorage.sol';
 
 contract SafeOwnable is Ownable, SafeOwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;

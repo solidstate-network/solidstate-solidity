@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import '../../access/Ownable.sol';
-import '../../access/OwnableStorage.sol';
-import './ManagedProxyOwnable.sol';
+import {Ownable} from '../../access/Ownable.sol';
+import {OwnableStorage} from '../../access/OwnableStorage.sol';
+import {ManagedProxy, ManagedProxyOwnable} from './ManagedProxyOwnable.sol';
 
  contract ManagedProxyOwnableMock is ManagedProxyOwnable, Ownable {
    using OwnableStorage for OwnableStorage.Layout;

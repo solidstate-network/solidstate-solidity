@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import '../cryptography/ECDSA.sol';
-import '../utils/EnumerableSet.sol';
-import './ECDSAMultisigWalletStorage.sol';
+import {ECDSA} from '../cryptography/ECDSA.sol';
+import {EnumerableSet} from '../utils/EnumerableSet.sol';
+import {ECDSAMultisigWalletStorage} from './ECDSAMultisigWalletStorage.sol';
 
 /**
  * @title ECDSA-verified multisig wallet contract

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './IERC20.sol';
-import './ERC20BaseStorage.sol';
+import {IERC20} from './IERC20.sol';
+import {ERC20BaseStorage} from './ERC20BaseStorage.sol';
 
 abstract contract ERC20Base is IERC20 {
   function totalSupply () override virtual public view returns (uint) {

@@ -4,11 +4,11 @@ pragma solidity ^0.8.0;
 
 // TODO: remove ERC165
 
-import './IERC1155.sol';
-import './IERC1155Receiver.sol';
-import './ERC1155BaseStorage.sol';
-import '../../introspection/ERC165.sol';
-import '../../utils/AddressUtils.sol';
+import {IERC1155} from './IERC1155.sol';
+import {IERC1155Receiver} from './IERC1155Receiver.sol';
+import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {AddressUtils} from '../../utils/AddressUtils.sol';
 
 /**
  * @title Base ERC1155 contract

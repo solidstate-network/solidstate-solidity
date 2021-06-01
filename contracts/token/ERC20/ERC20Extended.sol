@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20Base.sol';
+import {ERC20Base, ERC20BaseStorage} from './ERC20Base.sol';
 
 abstract contract ERC20Extended is ERC20Base {
   function increaseAllowance (address spender, uint amount) virtual public returns (bool) {

@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import '../../access/SafeOwnable.sol';
-import '../../introspection/ERC165.sol';
-import './DiamondBase.sol';
-import './DiamondCuttable.sol';
-import './DiamondLoupe.sol';
+import {SafeOwnable} from '../../access/SafeOwnable.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {DiamondBase} from './DiamondBase.sol';
+import {DiamondCuttable} from './DiamondCuttable.sol';
+import {DiamondLoupe} from './DiamondLoupe.sol';
 
 /**
  * @notice SolidState "Diamond" proxy reference implementation

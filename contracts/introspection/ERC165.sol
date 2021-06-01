@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './IERC165.sol';
-import './ERC165Storage.sol';
+import {IERC165} from './IERC165.sol';
+import {ERC165Storage} from './ERC165Storage.sol';
 
 abstract contract ERC165 is IERC165 {
   using ERC165Storage for ERC165Storage.Layout;

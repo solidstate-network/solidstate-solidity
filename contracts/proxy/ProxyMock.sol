@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './Proxy.sol';
+import {Proxy} from './Proxy.sol';
 
 contract ProxyMock is Proxy {
   address private _impl;

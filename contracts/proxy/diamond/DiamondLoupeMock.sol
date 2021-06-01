@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import '../../introspection/ERC165.sol';
-import '../../introspection/ERC165Storage.sol';
-import './DiamondBase.sol';
-import './DiamondLoupe.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
+import {DiamondBase, DiamondBaseStorage, IDiamondCuttable} from './DiamondBase.sol';
+import {DiamondLoupe} from './DiamondLoupe.sol';
 
 contract DiamondLoupeMock is DiamondBase, DiamondLoupe, ERC165 {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;

@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import '../../access/OwnableStorage.sol';
-import '../../introspection/ERC165.sol';
-import '../../introspection/ERC165Storage.sol';
-import './DiamondBase.sol';
-import './DiamondCuttable.sol';
+import {OwnableStorage} from '../../access/OwnableStorage.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
+import {DiamondBase} from './DiamondBase.sol';
+import {DiamondCuttable} from './DiamondCuttable.sol';
 
 contract DiamondCuttableMock is DiamondBase, DiamondCuttable, ERC165 {
   using OwnableStorage for OwnableStorage.Layout;

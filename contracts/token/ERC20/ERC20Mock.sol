@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20.sol';
+import {ERC20} from './ERC20.sol';
+import {ERC20MetadataStorage} from './ERC20MetadataStorage.sol';
 
 contract ERC20Mock is ERC20 {
   using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
