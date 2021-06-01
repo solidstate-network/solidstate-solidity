@@ -24,7 +24,7 @@
     "tsc": "tsc --build tsconfig.json"
   },
   "files": [
-    "/dist/"
+    "dist/"
   ],
   "publishConfig": {
     "access": "public"
