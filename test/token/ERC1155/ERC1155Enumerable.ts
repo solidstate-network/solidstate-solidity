@@ -3,7 +3,7 @@ import { describeBehaviorOfERC1155Enumerable } from '@solidstate/spec';
 import {
   ERC1155EnumerableMock,
   ERC1155EnumerableMock__factory,
-} from '@solidstate/typechain';
+} from '../../../typechain';
 
 describe('ERC1155Enumerable', function () {
   let instance: ERC1155EnumerableMock;

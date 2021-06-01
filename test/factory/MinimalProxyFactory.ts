@@ -4,7 +4,7 @@ import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,
-} from '@solidstate/typechain';
+} from '../../typechain';
 
 describe('MinimalProxyFactory', function () {
   let instance: MinimalProxyFactoryMock;

@@ -3,7 +3,7 @@ import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
 import {
   ERC1404BaseMock,
   ERC1404BaseMock__factory,
-} from '@solidstate/typechain';
+} from '../../../typechain';
 import { BigNumber } from 'ethers';
 
 let restrictions = [

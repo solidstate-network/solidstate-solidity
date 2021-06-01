@@ -4,7 +4,7 @@ import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,
-} from '@solidstate/typechain';
+} from '../../typechain';
 
 describe('MetamorphicFactory', function () {
   let instance: MetamorphicFactoryMock;

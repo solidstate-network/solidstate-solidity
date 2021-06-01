@@ -4,7 +4,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   SafeOwnableMock,
   SafeOwnableMock__factory,
-} from '@solidstate/typechain';
+} from '../../typechain';
 
 describe('SafeOwnable', function () {
   let owner: SignerWithAddress;
