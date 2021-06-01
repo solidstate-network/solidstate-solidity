@@ -99,7 +99,7 @@ URL="[NODE_URL]" yarn run hardhat test --network generic
 Publish packages via Lerna:
 
 ```bash
-yarn run lerna publish
+yarn publish
 ```
 
 ### Testing
