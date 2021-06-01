@@ -6,7 +6,7 @@ import { ethers } from 'hardhat';
 interface ProxyBehaviorArgs {
   deploy: () => Promise<Proxy>;
   implementationFunction: string;
-  implementationFunctionArgs: string[];
+  implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfProxy(
