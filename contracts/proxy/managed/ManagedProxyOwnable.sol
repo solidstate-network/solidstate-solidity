@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import '../../access/OwnableStorage.sol';
-import './ManagedProxy.sol';
+import {OwnableStorage} from '../../access/OwnableStorage.sol';
+import {ManagedProxy} from './ManagedProxy.sol';
 
 /**
  * @title Proxy with implementation controlled by ERC171 owner

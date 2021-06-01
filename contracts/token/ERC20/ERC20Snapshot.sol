@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import '../../utils/Array.sol';
-import './ERC20Base.sol';
-import './ERC20SnapshotStorage.sol';
+import {Array} from '../../utils/Array.sol';
+import {ERC20Base} from './ERC20Base.sol';
+import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 
 contract ERC20Snapshot is ERC20Base {
   using Array for uint[];

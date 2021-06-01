@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import './IERC1404.sol';
-import './ERC1404Storage.sol';
-import '../ERC20/ERC20Base.sol';
+import {IERC1404} from './IERC1404.sol';
+import {ERC1404Storage} from './ERC1404Storage.sol';
+import {ERC20Base} from '../ERC20/ERC20Base.sol';
 
 abstract contract ERC1404Base is IERC1404, ERC20Base {
   using ERC1404Storage for ERC1404Storage.Layout;

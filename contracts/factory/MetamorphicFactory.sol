@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './Factory.sol';
-import './MetamorphicFactoryStorage.sol';
+import {Factory} from './Factory.sol';
+import {MetamorphicFactoryStorage} from './MetamorphicFactoryStorage.sol';
 
 /**
  * @title Factory for the deployment of metamorphic contracts

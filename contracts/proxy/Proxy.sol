@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '../utils/AddressUtils.sol';
+import {AddressUtils} from '../utils/AddressUtils.sol';
 
 /**
  * @title Base proxy contract

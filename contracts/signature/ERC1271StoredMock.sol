@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC1271StoredStorage.sol';
-import './ERC1271Stored.sol';
+import {ERC1271StoredStorage} from './ERC1271StoredStorage.sol';
+import {ERC1271Stored} from './ERC1271Stored.sol';
 
 contract ERC1271StoredMock is ERC1271Stored {
   constructor (

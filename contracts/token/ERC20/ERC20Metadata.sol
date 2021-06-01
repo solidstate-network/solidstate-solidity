@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20MetadataStorage.sol';
-import './IERC20Metadata.sol';
+import {ERC20MetadataStorage} from './ERC20MetadataStorage.sol';
+import {IERC20Metadata} from './IERC20Metadata.sol';
 
 abstract contract ERC20Metadata is IERC20Metadata {
   function name () virtual override public view returns (string memory) {

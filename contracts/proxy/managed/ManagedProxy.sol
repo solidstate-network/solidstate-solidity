@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '../Proxy.sol';
+import {Proxy} from '../Proxy.sol';
 
 /**
  * @title Proxy with externally controlled implementation

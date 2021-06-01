@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import '../../utils/EnumerableSet.sol';
-import './ERC1155Base.sol';
-import './ERC1155EnumerableStorage.sol';
+import {EnumerableSet} from '../../utils/EnumerableSet.sol';
+import {ERC1155Base} from './ERC1155Base.sol';
+import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 
 contract ERC1155Enumerable is ERC1155Base {
   using EnumerableSet for EnumerableSet.AddressSet;

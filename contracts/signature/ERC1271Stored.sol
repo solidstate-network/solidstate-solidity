@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC1271Base.sol';
-import './ERC1271StoredStorage.sol';
+import {ERC1271Base} from './ERC1271Base.sol';
+import {ERC1271StoredStorage} from './ERC1271StoredStorage.sol';
 
 /**
  * @title ERC1271 implementation which validates signatures against internal storage

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '../ERC20/IERC20.sol';
+import {IERC20} from '../ERC20/IERC20.sol';
 
 interface IERC1404 is IERC20 {
   function detectTransferRestriction (

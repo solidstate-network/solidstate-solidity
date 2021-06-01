@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './CloneFactory.sol';
+import {CloneFactory} from './CloneFactory.sol';
 
 contract CloneFactoryMock is CloneFactory {
   function deployClone () external returns (address cloneContract) {

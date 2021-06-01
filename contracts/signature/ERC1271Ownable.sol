@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import '../access/OwnableStorage.sol';
-import '../cryptography/ECDSA.sol';
-import './ERC1271Base.sol';
+import {OwnableStorage} from '../access/OwnableStorage.sol';
+import {ECDSA} from '../cryptography/ECDSA.sol';
+import {ERC1271Base} from './ERC1271Base.sol';
 
 /**
  * @title ERC1271 implementation which delegates signing authority to ERC173 contract owner

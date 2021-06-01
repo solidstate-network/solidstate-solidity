@@ -6,6 +6,5 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "declaration": true,
-    "baseUrl": "./"
   }
 }

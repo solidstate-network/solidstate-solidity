@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './DiamondBaseStorage.sol';
-import './IDiamondLoupe.sol';
+import {DiamondBaseStorage} from './DiamondBaseStorage.sol';
+import {IDiamondLoupe} from './IDiamondLoupe.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '../../introspection/IERC165.sol';
+import {IERC165} from '../../introspection/IERC165.sol';
 
 interface IERC1155 is IERC165 {
   event TransferSingle (

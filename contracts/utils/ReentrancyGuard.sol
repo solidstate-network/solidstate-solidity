@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './ReentrancyGuardStorage.sol';
+import {ReentrancyGuardStorage} from './ReentrancyGuardStorage.sol';
 
 abstract contract ReentrancyGuard {
   modifier nonReentrant () {

@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import './IERC173.sol';
-import './OwnableInternal.sol';
-import './OwnableStorage.sol';
+import {IERC173} from './IERC173.sol';
+import {OwnableInternal} from './OwnableInternal.sol';
+import {OwnableStorage} from './OwnableStorage.sol';
 
 contract Ownable is IERC173, OwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;
