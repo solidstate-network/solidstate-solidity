@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './OwnableStorage.sol';
+import {OwnableStorage} from './OwnableStorage.sol';
 
 abstract contract OwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;

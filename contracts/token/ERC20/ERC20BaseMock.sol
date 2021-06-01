@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20Base.sol';
+import {ERC20Base} from './ERC20Base.sol';
 
 contract ERC20BaseMock is ERC20Base {
   function transfer (address sender, address recipient, uint amount) external {

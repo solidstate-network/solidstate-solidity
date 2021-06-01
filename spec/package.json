@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Portable specifications for SolidState contracts",
@@ -18,9 +18,17 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
-  "dependencies": {
-    "@solidstate/library": "^0.0.11"
+  "main": "./dist/spec/index.js",
+  "types": "./dist/spec/index.d.ts",
+  "scripts": {
+    "tsc": "tsc --build tsconfig.json"
   },
+  "dependencies": {
+    "@solidstate/library": "^0.0.13"
+  },
+  "files": [
+    "dist/"
+  ],
   "publishConfig": {
     "access": "public"
   }

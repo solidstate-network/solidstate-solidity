@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './Factory.sol';
+import {Factory} from './Factory.sol';
 
 /**
  * @title Factory for contract self-replication

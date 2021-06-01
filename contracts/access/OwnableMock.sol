@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './Ownable.sol';
+import {Ownable, OwnableStorage} from './Ownable.sol';
 
 contract OwnableMock is Ownable {
   using OwnableStorage for OwnableStorage.Layout;

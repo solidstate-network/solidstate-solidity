@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './MinimalProxyFactory.sol';
+import {MinimalProxyFactory} from './MinimalProxyFactory.sol';
 
 contract MinimalProxyFactoryMock is MinimalProxyFactory {
   function deployMinimalProxy (address target) external returns (address minimalProxy) {

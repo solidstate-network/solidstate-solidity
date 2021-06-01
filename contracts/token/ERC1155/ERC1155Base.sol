@@ -4,11 +4,11 @@ pragma solidity ^0.8.0;
 
 // TODO: remove ERC165
 
-import './IERC1155.sol';
-import './IERC1155Receiver.sol';
-import './ERC1155BaseStorage.sol';
-import '../../introspection/ERC165.sol';
-import '../../utils/AddressUtils.sol';
+import {IERC1155} from './IERC1155.sol';
+import {IERC1155Receiver} from './IERC1155Receiver.sol';
+import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {AddressUtils} from '../../utils/AddressUtils.sol';
 
 /**
  * @title Base ERC1155 contract
@@ -133,7 +133,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint id,
     uint amount,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: mint to the zero address');
 
     _beforeTokenTransfer(msg.sender, address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
@@ -156,7 +156,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint id,
     uint amount,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     _doSafeTransferAcceptanceCheck(msg.sender, address(0), account, id, amount, data);
     _mint(account, id, amount, data);
   }
@@ -174,7 +174,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: mint to the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
@@ -202,7 +202,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) internal {
+  ) virtual internal {
     _doSafeBatchTransferAcceptanceCheck(msg.sender, address(0), account, ids, amounts, data);
     _mintBatch(account, ids, amounts, data);
   }
@@ -217,7 +217,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     address account,
     uint id,
     uint amount
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: burn from the zero address');
 
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
@@ -239,7 +239,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     address account,
     uint[] memory ids,
     uint[] memory amounts
-  ) internal {
+  ) virtual internal {
     require(account != address(0), 'ERC1155: burn from the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
@@ -280,9 +280,11 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    // TODO: error message
-    // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
-    balances[id][sender] -= amount;
+    uint256 senderBalance = balances[id][sender];
+    require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
+    unchecked {
+      balances[id][sender] = senderBalance - amount;
+    }
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -337,9 +339,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     for (uint i; i < ids.length; i++) {
       uint token = ids[i];
       uint amount = amounts[i];
-      // TODO: error message
-      // balances[id][sender] = balances[id][sender].sub(amount, 'ERC1155: insufficient balances for transfer');
-      balances[token][sender] -= amount;
+
+      uint256 senderBalance = balances[token][sender];
+      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
+      unchecked {
+        balances[token][sender] = senderBalance - amount;
+      }
       balances[token][recipient] += amount;
     }
 
@@ -399,9 +404,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
   ) private {
     if (to.isContract()) {
       try IERC1155Receiver(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
-        if (response != IERC1155Receiver(to).onERC1155Received.selector) {
-          revert('ERC1155: ERC1155Receiver rejected tokens');
-        }
+        require(
+          response == IERC1155Receiver.onERC1155Received.selector,
+          'ERC1155: ERC1155Receiver rejected tokens'
+        );
       } catch Error(string memory reason) {
         revert(reason);
       } catch {
@@ -429,9 +435,10 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
   ) private {
     if (to.isContract()) {
       try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, amounts, data) returns (bytes4 response) {
-        if (response != IERC1155Receiver(to).onERC1155BatchReceived.selector) {
-          revert('ERC1155: ERC1155Receiver rejected tokens');
-        }
+        require(
+          response == IERC1155Receiver.onERC1155BatchReceived.selector,
+          'ERC1155: ERC1155Receiver rejected tokens'
+        );
       } catch Error(string memory reason) {
         revert(reason);
       } catch {

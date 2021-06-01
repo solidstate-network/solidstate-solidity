@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './EnumerableSet.sol';
-import './Math.sol';
+import {EnumerableSet} from './EnumerableSet.sol';
+import {Math} from './Math.sol';
 
 library Array {
   /**

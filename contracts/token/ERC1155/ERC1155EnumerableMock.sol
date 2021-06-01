@@ -2,7 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC1155Enumerable.sol';
+import {ERC1155Enumerable} from './ERC1155Enumerable.sol';
+import {IERC1155} from './IERC1155.sol';
+import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
+import {IERC165} from '../../introspection/IERC165.sol';
+
 
 contract ERC1155EnumerableMock is ERC1155Enumerable {
   using ERC165Storage for ERC165Storage.Layout;

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './ERC20Base.sol';
-import './ERC20ImplicitApprovalStorage.sol';
+import {ERC20Base} from './ERC20Base.sol';
+import {ERC20ImplicitApprovalStorage} from './ERC20ImplicitApprovalStorage.sol';
 
 /**
  * @title ERC20 token with approval whitelist

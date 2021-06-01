@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import '../../utils/AddressUtils.sol';
-import './IDiamondCuttable.sol';
+import {AddressUtils} from '../../utils/AddressUtils.sol';
+import {IDiamondCuttable} from './IDiamondCuttable.sol';
 
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)

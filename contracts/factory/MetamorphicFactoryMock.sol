@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './MetamorphicFactory.sol';
+import {MetamorphicFactory} from './MetamorphicFactory.sol';
 
 contract MetamorphicFactoryMock is MetamorphicFactory {
   function deployMetamorphicContract (address target, bytes32 salt) external returns (address metamorphicContract) {

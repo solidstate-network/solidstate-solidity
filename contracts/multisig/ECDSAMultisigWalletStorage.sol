@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '../utils/EnumerableSet.sol';
+import {EnumerableSet} from '../utils/EnumerableSet.sol';
 
 library ECDSAMultisigWalletStorage {
   using EnumerableSet for EnumerableSet.AddressSet;

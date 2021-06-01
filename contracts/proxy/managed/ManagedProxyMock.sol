@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './ManagedProxy.sol';
+import {ManagedProxy} from './ManagedProxy.sol';
 
  contract ManagedProxyMock is ManagedProxy {
    address private _manager;
