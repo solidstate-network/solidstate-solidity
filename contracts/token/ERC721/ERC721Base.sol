@@ -4,13 +4,13 @@ pragma solidity ^0.8.0;
 
 // TODO: remove ERC165
 
-import '../../introspection/ERC165.sol';
-import '../../utils/AddressUtils.sol';
-import '../../utils/EnumerableMap.sol';
-import '../../utils/EnumerableSet.sol';
-import './IERC721.sol';
-import './IERC721Receiver.sol';
-import './ERC721BaseStorage.sol';
+import {ERC165} from '../../introspection/ERC165.sol';
+import {AddressUtils} from '../../utils/AddressUtils.sol';
+import {EnumerableMap} from '../../utils/EnumerableMap.sol';
+import {EnumerableSet} from '../../utils/EnumerableSet.sol';
+import {IERC721} from './IERC721.sol';
+import {IERC721Receiver} from './IERC721Receiver.sol';
+import {ERC721BaseStorage} from './ERC721BaseStorage.sol';
 
 abstract contract ERC721Base is IERC721, ERC165 {
   using AddressUtils for address;
