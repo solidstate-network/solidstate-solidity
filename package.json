@@ -4,7 +4,7 @@
   "author": "Nick Barry",
   "license": "MIT",
   "scripts": {
-    "lerna-publish": "build && lerna publish",
+    "lerna-publish": "yarn build && lerna publish",
     "build": "lerna run tsc"
   },
   "devDependencies": {
