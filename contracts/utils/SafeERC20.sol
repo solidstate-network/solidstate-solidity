@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import {IERC20} from '../IERC20.sol';
-import {AddressUtils} from '../../../utils/AddressUtils.sol';
+import {IERC20} from '../token/ERC20/IERC20.sol';
+import {AddressUtils} from './AddressUtils.sol';
 
 /**
  * @title Safe ERC20 interaction library
