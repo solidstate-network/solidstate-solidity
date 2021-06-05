@@ -1,8 +1,6 @@
-import { expect } from 'chai';
 import { describeBehaviorOfERC20 } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 import { ERC20Mock, ERC20Mock__factory } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
