@@ -8,7 +8,7 @@ import {ERC1271Stored} from './ERC1271Stored.sol';
 contract ERC1271StoredMock is ERC1271Stored {
   constructor (
     bytes32 hash,
-    bytes memory signature
+    bytes memory
   ) {
     ERC1271StoredStorage.layout().hashes[hash] = true;
   }

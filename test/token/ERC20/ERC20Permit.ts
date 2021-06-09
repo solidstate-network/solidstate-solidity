@@ -7,7 +7,6 @@ describe('ERC20Permit', function () {
   const name = 'ERC20Metadata.name';
   const symbol = 'ERC20Metadata.symbol';
   const decimals = 18;
-  const supply = ethers.utils.parseEther('1');
 
   let deployer: SignerWithAddress;
   let instance: ERC20PermitMock;
@@ -20,8 +19,7 @@ describe('ERC20Permit', function () {
     instance = await new ERC20PermitMock__factory(deployer).deploy(
       name,
       symbol,
-      decimals,
-      supply,
+      decimals
     );
   });
 
