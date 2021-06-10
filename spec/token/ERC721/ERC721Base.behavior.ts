@@ -13,7 +13,7 @@ interface ERC721BaseBehaviorArgs {
 }
 
 export function describeBehaviorOfERC721Base(
-  { deploy, supply, mint, burn }: ERC721BaseBehaviorArgs,
+  { deploy, mint, burn }: ERC721BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
