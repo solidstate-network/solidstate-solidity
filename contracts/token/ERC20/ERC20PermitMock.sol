@@ -10,8 +10,7 @@ contract ERC20PermitMock is ERC20Permit {
     constructor (
         string memory name,
         string memory symbol,
-        uint8 decimals,
-        uint supply
+        uint8 decimals
     ) {
         ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage.layout();
 

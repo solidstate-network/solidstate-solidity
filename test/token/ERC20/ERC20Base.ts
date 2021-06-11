@@ -120,6 +120,13 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWith('ERC20: burn from the zero address');
         });
+
+        it('burn amount exceeds balance', async () => {
+          await instance['mint(address,uint256)'](receiver.address, 100);
+          await expect(
+            instance['burn(address,uint256)'](receiver.address, 101),
+          ).to.be.revertedWith('ERC20: burn amount exceeds balance');
+        });
       });
     });
 

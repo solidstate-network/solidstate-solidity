@@ -14,8 +14,7 @@ describe('ERC1271Stored', function () {
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1271StoredMock__factory(deployer).deploy(
-      validParams[0],
-      validParams[1],
+      validParams[0]
     );
   });
 

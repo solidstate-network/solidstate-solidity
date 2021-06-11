@@ -77,7 +77,11 @@ abstract contract ERC20Base is IERC20 {
     _beforeTokenTransfer(account, address(0), amount);
 
     ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
-    l.balances[account] -= amount;
+    uint256 balance = l.balances[account];
+    require(balance >= amount, "ERC20: burn amount exceeds balance");
+    unchecked {
+      l.balances[account] = balance - amount;
+    }
     l.totalSupply -= amount;
 
     emit Transfer(account, address(0), amount);
