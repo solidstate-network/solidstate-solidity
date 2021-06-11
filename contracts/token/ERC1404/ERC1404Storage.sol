@@ -21,7 +21,11 @@ library ERC1404Storage {
     uint8[] memory restrictionCodes,
     string[] memory restrictionMessages
   ) internal {
-    require(restrictionCodes.length == restrictionMessages.length, 'TODO');
+    require(
+      restrictionCodes.length == restrictionMessages.length,
+      'ERC1404: restrictionCodes and restrictionMessages length mismatch'
+    );
+
     mapping (uint8 => string) storage restrictions = l.restrictions;
 
     for (uint i; i < restrictionCodes.length; i++) {
