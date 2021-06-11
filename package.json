@@ -4,18 +4,18 @@
   "author": "Nick Barry",
   "license": "MIT",
   "scripts": {
-    "publish": "build && lerna publish",
+    "lerna-publish": "yarn build && lerna publish",
     "build": "lerna run tsc"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@solidstate/spec": "link:spec",
-    "@typechain/ethers-v5": "^7.0.0",
-    "@typechain/hardhat": "^2.0.1",
+    "@typechain/ethers-v5": "^7.0.1",
+    "@typechain/hardhat": "^2.0.2",
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",
-    "@types/node": "^15.6.1",
+    "@types/node": "^15.12.2",
     "chai": "^4.3.4",
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.3.0",
@@ -24,10 +24,9 @@
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
     "lerna": "^4.0.0",
-    "prettier": "^2.3.0",
+    "prettier": "^2.3.1",
     "solidity-coverage": "^0.7.16",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.9.0",
     "typechain": "^5.0.0",
     "typescript": "^4.3.2"
   }
