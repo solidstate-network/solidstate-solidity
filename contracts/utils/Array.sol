@@ -44,21 +44,6 @@ library Array {
     return minValue;
   }
 
-  // TODO: move to EnumerableSet library
-  function slice (
-    EnumerableSet.AddressSet storage set,
-    uint offset,
-    uint count
-  ) internal view returns (address[] memory) {
-    address[] memory output = new address[](count);
-
-    for (uint i; i < count; i++) {
-      output[i] = EnumerableSet.at(set, offset + i);
-    }
-
-    return output;
-  }
-
   /**
    * @notice find index of first element of array that is greater than or equal to given query
    * @dev array must be sorted in ascending order and contain no duplicates
