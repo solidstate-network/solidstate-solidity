@@ -444,7 +444,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 },
               ),
             ).to.be.revertedWith(
-              'revert Mock on the method is not initialized',
+              'Mock on the method is not initialized',
             );
           });
 
