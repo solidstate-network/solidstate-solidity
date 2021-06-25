@@ -25,7 +25,7 @@ describe('ERC20Base', function () {
   });
 
   describeBehaviorOfERC20Base({
-    deploy: async () => instance as unknown as ERC20Base,
+    deploy: async () => instance as any,
     supply: ethers.constants.Zero,
     mint: (recipient, amount) =>
       instance['mint(address,uint256)'](recipient, amount),
