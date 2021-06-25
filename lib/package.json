@@ -24,7 +24,7 @@
     "tsc": "tsc --build tsconfig.json"
   },
   "dependencies": {
-    "eth-permit": "^0.1.9"
+    "eth-permit": "^0.1.10"
   },
   "files": [
     "dist/"

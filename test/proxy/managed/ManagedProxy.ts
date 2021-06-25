@@ -33,7 +33,7 @@ describe('ManagedProxy', function () {
   });
 
   describeBehaviorOfManagedProxy({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

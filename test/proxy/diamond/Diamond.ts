@@ -33,7 +33,7 @@ describe('Diamond', function () {
   });
 
   describeBehaviorOfDiamond({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     getOwner: async () => owner,
     getNomineeOwner: async () => getNomineeOwner,
     getNonOwner: async () => getNonOwner,

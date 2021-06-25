@@ -57,7 +57,7 @@ export function describeBehaviorOfERC20Permit(
 
     describe('#permit', function () {
       it('should increase allowance using permit', async () => {
-        const deadline = getCurrentTimestamp() + 100;
+        const deadline = getCurrentTimestamp() + 3600;
 
         const permit = await signERC2612Permit(
           user.provider,
@@ -113,7 +113,7 @@ export function describeBehaviorOfERC20Permit(
       });
 
       it('should revert if signature is invalid', async () => {
-        const deadline = getCurrentTimestamp() + 100;
+        const deadline = getCurrentTimestamp() + 3600;
 
         const permit = await signERC2612Permit(
           user.provider,

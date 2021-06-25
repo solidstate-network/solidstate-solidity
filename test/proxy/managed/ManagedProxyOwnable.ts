@@ -18,9 +18,9 @@ describe('ManagedProxyOwnable', function () {
       'function getImplementation () external view returns (address)',
     ]);
 
-    const implementationInstance = await new OwnableMock__factory(deployer).deploy(
-      deployer.address
-    );
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(deployer.address);
 
     await manager.mock['getImplementation()'].returns(
       implementationInstance.address,
@@ -35,7 +35,7 @@ describe('ManagedProxyOwnable', function () {
   });
 
   describeBehaviorOfManagedProxyOwnable({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

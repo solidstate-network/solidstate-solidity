@@ -19,12 +19,12 @@ describe('ERC20Permit', function () {
     instance = await new ERC20PermitMock__factory(deployer).deploy(
       name,
       symbol,
-      decimals
+      decimals,
     );
   });
 
   describeBehaviorOfERC20Permit({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     supply: ethers.constants.Zero,
     mint: (recipient, amount) =>
       instance['mint(address,uint256)'](recipient, amount),
