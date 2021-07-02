@@ -6,7 +6,7 @@ import {EnumerableSet} from '../../utils/EnumerableSet.sol';
 import {ERC1155Base} from './ERC1155Base.sol';
 import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 
-contract ERC1155Enumerable is ERC1155Base {
+abstract contract ERC1155Enumerable is ERC1155Base {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
