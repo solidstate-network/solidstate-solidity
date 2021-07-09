@@ -64,7 +64,7 @@ library ECDSAMultisigWalletStorage {
       l.signers.length() < 256,
       'ECDSAMultisigWallet: signer limit reached'
     );
-    l.signers.add(account);
+    require(l.signers.add(account), 'ECDSAMultisigWallet: failed to add signer');
   }
 
   function removeSigner (
@@ -75,6 +75,6 @@ library ECDSAMultisigWalletStorage {
       l.quorum <= l.signers.length() - 1,
       'ECDSAMultisigWallet: insufficient signers to meet quorum'
     );
-    l.signers.remove(account);
+    require(l.signers.remove(account), 'ECDSAMultisigWallet: failed to remove signer');
   }
 }
