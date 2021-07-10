@@ -77,6 +77,12 @@ Install dependencies via Yarn:
 yarn install
 ```
 
+Setup Husky to format code on commit:
+
+```bash
+yarn prepare
+```
+
 Link local packages and install remaining dependencies via Lerna:
 
 ```bash
