@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lerna-publish": "yarn build && lerna publish",
-    "build": "lerna run tsc"
+    "build": "hardhat compile && lerna run tsc"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
