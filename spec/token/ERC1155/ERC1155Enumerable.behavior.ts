@@ -38,6 +38,7 @@ export function describeBehaviorOfERC1155Enumerable(
         deploy,
         mint,
         burn,
+        tokenId,
       },
       skips,
     );
