@@ -130,7 +130,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "value",
+        "name": "amount",
         "type": "uint256"
       }
     ],
