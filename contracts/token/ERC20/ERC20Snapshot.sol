@@ -6,11 +6,20 @@ import {Array} from '../../utils/Array.sol';
 import {ERC20Base} from './ERC20Base.sol';
 import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 
+/**
+ * @title ERC20 base implementation with support for token balance and supply snapshots
+ */
 contract ERC20Snapshot is ERC20Base {
   using Array for uint[];
 
   event Snapshot (uint id);
 
+  /**
+   * @notice query the token balance of given account at given snapshot id
+   * @param account address to query
+   * @param snapshotId snapshot id to query
+   * @return token balance
+   */
   function balanceOfAt (
     address account,
     uint snapshotId
@@ -22,6 +31,11 @@ contract ERC20Snapshot is ERC20Base {
     return snapshotted ? value : balanceOf(account);
   }
 
+  /**
+   * @notice query the total minted token supply at given snapshot id
+   * @param snapshotId snapshot id to query
+   * @return token supply
+   */
   function totalSupplyAt (
     uint snapshotId
   ) public view returns (uint) {
