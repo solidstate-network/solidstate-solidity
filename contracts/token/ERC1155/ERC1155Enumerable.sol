@@ -7,18 +7,30 @@ import {ERC1155Base} from './ERC1155Base.sol';
 import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 import {IERC1155Enumerable} from './IERC1155Enumerable.sol';
 
+/**
+ * @title ERC1155 implementation including enumerable and aggregate functions
+ */
 abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
+  /**
+   * @inheritdoc IERC1155Enumerable
+   */
   function totalSupply (uint id) public override view returns (uint) {
     return ERC1155EnumerableStorage.layout().totalSupply[id];
   }
 
+  /**
+   * @inheritdoc IERC1155Enumerable
+   */
   function totalHolders (uint id) public override view returns (uint) {
     return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
   }
 
+  /**
+   * @inheritdoc IERC1155Enumerable
+   */
   function accountsByToken (uint id) public override view returns (address[] memory) {
     EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage.layout().accountsByToken[id];
 
@@ -31,6 +43,9 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
     return addresses;
   }
 
+  /**
+   * @inheritdoc IERC1155Enumerable
+   */
   function tokensByAccount (address account) public override view returns (uint[] memory) {
     EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage.layout().tokensByAccount[account];
 
@@ -43,6 +58,10 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
     return ids;
   }
 
+  /**
+   * @notice ERC1155 hook: update aggregate values
+   * @inheritdoc ERC1155Base
+   */
   function _beforeTokenTransfer (
     address operator,
     address from,
