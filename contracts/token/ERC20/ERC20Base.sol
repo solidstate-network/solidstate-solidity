@@ -74,6 +74,30 @@ abstract contract ERC20Base is IERC20 {
     return true;
   }
 
+  /**
+   * @notice enable spender to spend tokens on behalf of holder
+   * @param holder address on whose behalf tokens may be spent
+   * @param spender recipient of allowance
+   * @param amount quantity of tokens approved for spending
+   */
+  function _approve (
+    address holder,
+    address spender,
+    uint amount
+  ) virtual internal {
+    require(holder != address(0), 'ERC20: approve from the zero address');
+    require(spender != address(0), 'ERC20: approve to the zero address');
+
+    ERC20BaseStorage.layout().allowances[holder][spender] = amount;
+
+    emit Approval(holder, spender, amount);
+  }
+
+  /**
+   * @notice mint tokens for given account
+   * @param account recipient of minted tokens
+   * @param amount quantity of tokens minted
+   */
   function _mint (
     address account,
     uint amount
@@ -89,6 +113,11 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(address(0), account, amount);
   }
 
+  /**
+   * @notice burn tokens held by given account
+   * @param account holder of burned tokens
+   * @param amount quantity of tokens burned
+   */
   function _burn (
     address account,
     uint amount
@@ -108,6 +137,12 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(account, address(0), amount);
   }
 
+  /**
+   * @notice transfer tokens from holder to recipient
+   * @param holder owner of tokens to be transferred
+   * @param recipient beneficiary of transfer
+   * @param amount quantity of tokens transferred
+   */
   function _transfer (
     address holder,
     address recipient,
@@ -129,19 +164,12 @@ abstract contract ERC20Base is IERC20 {
     emit Transfer(holder, recipient, amount);
   }
 
-  function _approve (
-    address holder,
-    address spender,
-    uint amount
-  ) virtual internal {
-    require(holder != address(0), 'ERC20: approve from the zero address');
-    require(spender != address(0), 'ERC20: approve to the zero address');
-
-    ERC20BaseStorage.layout().allowances[holder][spender] = amount;
-
-    emit Approval(holder, spender, amount);
-  }
-
+  /**
+   * @notice ERC20 hook, called before all transfers including mint and burn
+   * @param from sender of tokens
+   * @param to receiver of tokens
+   * @param amount quantity of tokens transferred
+   */
   function _beforeTokenTransfer (
     address from,
     address to,
