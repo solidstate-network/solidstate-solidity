@@ -166,6 +166,7 @@ abstract contract ERC20Base is IERC20 {
 
   /**
    * @notice ERC20 hook, called before all transfers including mint and burn
+   * @dev function should be overridden and new implementation must call super
    * @param from sender of tokens
    * @param to receiver of tokens
    * @param amount quantity of tokens transferred
