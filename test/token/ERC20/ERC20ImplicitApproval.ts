@@ -8,17 +8,19 @@ import {
 } from '../../../typechain';
 
 describe('ERC20ImplicitApproval', function () {
-  let implicitlyApprovedSender: SignerWithAddress;
+  let holder: SignerWithAddress;
+  let implicitlyApprovedSpender: SignerWithAddress;
   let instance: ERC20ImplicitApprovalMock;
 
   before(async function () {
-    [implicitlyApprovedSender] = await ethers.getSigners();
+    // TODO: avoid need for gap in array by passing separate (non-implicitly-approved) spender to ERC20Base behavior tests
+    [holder, ,implicitlyApprovedSpender] = await ethers.getSigners();
   });
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC20ImplicitApprovalMock__factory(deployer).deploy([
-      implicitlyApprovedSender.address,
+      implicitlyApprovedSpender.address,
     ]);
   });
 
@@ -29,7 +31,8 @@ describe('ERC20ImplicitApproval', function () {
       instance['mint(address,uint256)'](recipient, amount),
     burn: (recipient, amount) =>
       instance['burn(address,uint256)'](recipient, amount),
-    getImplicitlyApprovedSpender: async () => implicitlyApprovedSender,
+    getHolder: async () => holder,
+    getImplicitlyApprovedSpender: async () => implicitlyApprovedSpender,
   });
 
   describe('__internal', function () {
@@ -43,7 +46,7 @@ describe('ERC20ImplicitApproval', function () {
 
         expect(
           await instance.callStatic['isImplicitlyApproved(address)'](
-            implicitlyApprovedSender.address,
+            implicitlyApprovedSpender.address,
           ),
         ).to.be.true;
       });
