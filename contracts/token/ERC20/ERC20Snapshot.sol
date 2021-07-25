@@ -116,11 +116,12 @@ contract ERC20Snapshot is ERC20Base {
    * @inheritdoc ERC20Base
    */
   function _beforeTokenTransfer (
+    address operator,
     address from,
     address to,
     uint amount
   ) virtual override internal {
-    super._beforeTokenTransfer(from, to, amount);
+    super._beforeTokenTransfer(operator, from, to, amount);
 
     if (from == address(0)) {
       _updateAccountSnapshot(to);

@@ -104,7 +104,7 @@ abstract contract ERC20Base is IERC20 {
   ) virtual internal {
     require(account != address(0), 'ERC20: mint to the zero address');
 
-    _beforeTokenTransfer(address(0), account, amount);
+    _beforeTokenTransfer(address(this), address(0), account, amount);
 
     ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     l.totalSupply += amount;
@@ -124,7 +124,7 @@ abstract contract ERC20Base is IERC20 {
   ) virtual internal {
     require(account != address(0), 'ERC20: burn from the zero address');
 
-    _beforeTokenTransfer(account, address(0), amount);
+    _beforeTokenTransfer(address(this), account, address(0), amount);
 
     ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     uint256 balance = l.balances[account];
@@ -151,7 +151,7 @@ abstract contract ERC20Base is IERC20 {
     require(holder != address(0), 'ERC20: transfer from the zero address');
     require(recipient != address(0), 'ERC20: transfer to the zero address');
 
-    _beforeTokenTransfer(holder, recipient, amount);
+    _beforeTokenTransfer(msg.sender, holder, recipient, amount);
 
     ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout();
     uint256 holderBalance = l.balances[holder];
@@ -167,11 +167,13 @@ abstract contract ERC20Base is IERC20 {
   /**
    * @notice ERC20 hook, called before all transfers including mint and burn
    * @dev function should be overridden and new implementation must call super
+   * @param operator executor of transfer
    * @param from sender of tokens
    * @param to receiver of tokens
    * @param amount quantity of tokens transferred
    */
   function _beforeTokenTransfer (
+    address operator,
     address from,
     address to,
     uint amount
