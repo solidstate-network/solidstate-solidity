@@ -112,7 +112,7 @@ abstract contract ERC1155Base is IERC1155 {
   ) virtual internal {
     require(account != address(0), 'ERC1155: mint to the zero address');
 
-    _beforeTokenTransfer(msg.sender, address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
+    _beforeTokenTransfer(address(this), address(0), account, _asSingletonArray(id), _asSingletonArray(amount), data);
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
     balances[account] += amount;
@@ -154,7 +154,7 @@ abstract contract ERC1155Base is IERC1155 {
     require(account != address(0), 'ERC1155: mint to the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
-    _beforeTokenTransfer(msg.sender, address(0), account, ids, amounts, data);
+    _beforeTokenTransfer(address(this), address(0), account, ids, amounts, data);
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
@@ -196,7 +196,7 @@ abstract contract ERC1155Base is IERC1155 {
   ) virtual internal {
     require(account != address(0), 'ERC1155: burn from the zero address');
 
-    _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
+    _beforeTokenTransfer(address(this), account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
     require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
@@ -219,7 +219,7 @@ abstract contract ERC1155Base is IERC1155 {
     require(account != address(0), 'ERC1155: burn from the zero address');
     require(ids.length == amounts.length, 'ERC1155: ids and amounts length mismatch');
 
-    _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
+    _beforeTokenTransfer(address(this), account, address(0), ids, amounts, '');
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
