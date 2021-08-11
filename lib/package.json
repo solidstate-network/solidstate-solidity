@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/library",
-  "version": "0.0.15",
+  "version": "0.0.18",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "SolidState utility library",
@@ -24,7 +24,7 @@
     "tsc": "tsc --build tsconfig.json"
   },
   "dependencies": {
-    "eth-permit": "^0.1.9"
+    "eth-permit": "^0.1.10"
   },
   "files": [
     "dist/"

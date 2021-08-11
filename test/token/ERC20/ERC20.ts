@@ -21,7 +21,7 @@ describe('ERC20', function () {
   });
 
   describeBehaviorOfERC20({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     mint: async (recipient, amount) =>
       instance['mint(address,uint256)'](recipient, amount),
     burn: async (recipient, amount) =>

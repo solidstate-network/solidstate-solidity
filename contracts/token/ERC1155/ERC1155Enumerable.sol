@@ -5,20 +5,21 @@ pragma solidity ^0.8.0;
 import {EnumerableSet} from '../../utils/EnumerableSet.sol';
 import {ERC1155Base} from './ERC1155Base.sol';
 import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
+import {IERC1155Enumerable} from './IERC1155Enumerable.sol';
 
-contract ERC1155Enumerable is ERC1155Base {
+abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
-  function totalSupply (uint id) public view returns (uint) {
+  function totalSupply (uint id) public override view returns (uint) {
     return ERC1155EnumerableStorage.layout().totalSupply[id];
   }
 
-  function totalHolders (uint id) public view returns (uint) {
+  function totalHolders (uint id) public override view returns (uint) {
     return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
   }
 
-  function accountsByToken (uint id) public view returns (address[] memory) {
+  function accountsByToken (uint id) public override view returns (address[] memory) {
     EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage.layout().accountsByToken[id];
 
     address[] memory addresses = new address[](accounts.length());
@@ -30,7 +31,7 @@ contract ERC1155Enumerable is ERC1155Base {
     return addresses;
   }
 
-  function tokensByAccount (address account) public view returns (uint[] memory) {
+  function tokensByAccount (address account) public override view returns (uint[] memory) {
     EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage.layout().tokensByAccount[account];
 
     uint[] memory ids = new uint[](tokens.length());

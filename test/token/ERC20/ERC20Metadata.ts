@@ -21,7 +21,7 @@ describe('ERC20Metadata', function () {
   });
 
   describeBehaviorOfERC20Metadata({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     name,
     symbol,
     decimals,

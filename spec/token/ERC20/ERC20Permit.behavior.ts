@@ -6,7 +6,6 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
-import { getCurrentTimestamp } from 'hardhat/internal/hardhat-network/provider/utils/getCurrentTimestamp';
 
 interface ERC20PermitArgs {
   deploy: () => Promise<ERC20Permit>;
@@ -57,7 +56,11 @@ export function describeBehaviorOfERC20Permit(
 
     describe('#permit', function () {
       it('should increase allowance using permit', async () => {
-        const deadline = getCurrentTimestamp() + 100;
+        let { timestamp } = await ethers.provider.getBlock('latest');
+
+        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
+
+        const deadline = timestamp + 3600;
 
         const permit = await signERC2612Permit(
           user.provider,
@@ -86,7 +89,11 @@ export function describeBehaviorOfERC20Permit(
       });
 
       it('should revert if deadline is passed', async () => {
-        const deadline = getCurrentTimestamp() - 10;
+        let { timestamp } = await ethers.provider.getBlock('latest');
+
+        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
+
+        const deadline = timestamp - 10;
 
         const permit = await signERC2612Permit(
           user.provider,
@@ -113,7 +120,11 @@ export function describeBehaviorOfERC20Permit(
       });
 
       it('should revert if signature is invalid', async () => {
-        const deadline = getCurrentTimestamp() + 100;
+        let { timestamp } = await ethers.provider.getBlock('latest');
+
+        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
+
+        const deadline = timestamp + 3600;
 
         const permit = await signERC2612Permit(
           user.provider,

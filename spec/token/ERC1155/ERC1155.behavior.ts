@@ -15,15 +15,16 @@ interface ERC1155BehaviorArgs {
     id: BigNumber,
     amount: BigNumber,
   ) => Promise<ContractTransaction>;
+  tokenId?: BigNumber;
 }
 
 export function describeBehaviorOfERC1155(
-  { deploy, mint, burn }: ERC1155BehaviorArgs,
+  { deploy, mint, burn, tokenId }: ERC1155BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::ERC1155', function () {
-    describeBehaviorOfERC1155Base({ deploy, mint, burn }, skips);
+    describeBehaviorOfERC1155Base({ deploy, mint, burn, tokenId }, skips);
   });
 }

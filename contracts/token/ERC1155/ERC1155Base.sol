@@ -2,19 +2,16 @@
 
 pragma solidity ^0.8.0;
 
-// TODO: remove ERC165
-
 import {IERC1155} from './IERC1155.sol';
 import {IERC1155Receiver} from './IERC1155Receiver.sol';
 import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
-import {ERC165} from '../../introspection/ERC165.sol';
 import {AddressUtils} from '../../utils/AddressUtils.sol';
 
 /**
  * @title Base ERC1155 contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract ERC1155Base is IERC1155, ERC165 {
+abstract contract ERC1155Base is IERC1155 {
   using AddressUtils for address;
 
   /**
@@ -47,9 +44,11 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     uint[] memory batchBalances = new uint[](accounts.length);
 
-    for (uint i; i < accounts.length; i++) {
-      require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
-      batchBalances[i] = balances[ids[i]][accounts[i]];
+    unchecked {
+      for (uint i; i < accounts.length; i++) {
+        require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
+        batchBalances[i] = balances[ids[i]][accounts[i]];
+      }
     }
 
     return batchBalances;
@@ -183,8 +182,7 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
     for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      balances[id][account] += amounts[i];
+      balances[ids[i]][account] += amounts[i];
     }
 
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
@@ -223,8 +221,11 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
-    balances[account] -= amount;
+
+    unchecked {
+      require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
+      balances[account] -= amount;
+    }
 
     emit TransferSingle(msg.sender, account, address(0), id, amount);
   }
@@ -247,10 +248,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
-      balances[id][account] -= amounts[i];
+    unchecked {
+      for (uint i; i < ids.length; i++) {
+        uint id = ids[i];
+        require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
+        balances[id][account] -= amounts[i];
+      }
     }
 
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);
@@ -280,11 +283,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    uint256 senderBalance = balances[id][sender];
-    require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
     unchecked {
+      uint256 senderBalance = balances[id][sender];
+      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       balances[id][sender] = senderBalance - amount;
     }
+
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -340,11 +344,12 @@ abstract contract ERC1155Base is IERC1155, ERC165 {
       uint token = ids[i];
       uint amount = amounts[i];
 
-      uint256 senderBalance = balances[token][sender];
-      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       unchecked {
+        uint256 senderBalance = balances[token][sender];
+        require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
         balances[token][sender] = senderBalance - amount;
       }
+
       balances[token][recipient] += amount;
     }
 

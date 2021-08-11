@@ -14,7 +14,7 @@ describe('ERC1155Enumerable', function () {
   });
 
   describeBehaviorOfERC1155Enumerable({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     mint: (recipient, tokenId, amount) =>
       instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>

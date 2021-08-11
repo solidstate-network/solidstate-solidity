@@ -46,7 +46,7 @@ describe('DiamondLoupe', function () {
   });
 
   describeBehaviorOfDiamondLoupe({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     facetCuts,
   });
 });

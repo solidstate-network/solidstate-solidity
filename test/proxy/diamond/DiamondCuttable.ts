@@ -21,7 +21,7 @@ describe('DiamondCuttable', function () {
   });
 
   describeBehaviorOfDiamondCuttable({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

@@ -20,10 +20,11 @@ interface ERC1155BaseBehaviorArgs {
     id: BigNumber,
     amount: BigNumber,
   ) => Promise<ContractTransaction>;
+  tokenId?: BigNumber;
 }
 
 export function describeBehaviorOfERC1155Base(
-  { deploy, mint, burn }: ERC1155BaseBehaviorArgs,
+  { deploy, mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -51,7 +52,7 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#balanceOf', function () {
       it('returns the balance of given token held by given address', async function () {
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         expect(
           await instance.callStatic['balanceOf(address,uint256)'](
             holder.address,
@@ -176,7 +177,7 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeTransferFrom', function () {
       it('sends amount from A to B', async function () {
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         await mint(spender.address, id, amount);
@@ -214,7 +215,7 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', function () {
         it('sender has insufficient balance', async function () {
-          const id = ethers.constants.Zero;
+          const id = tokenId ?? ethers.constants.Zero;
           const amount = ethers.constants.Two;
 
           await expect(
@@ -286,7 +287,7 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeBatchTransferFrom', function () {
       it('sends amount from A to B, batch version', async function () {
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         await mint(spender.address, id, amount);
@@ -324,7 +325,7 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', function () {
         it('sender has insufficient balance', async function () {
-          const id = ethers.constants.Zero;
+          const id = tokenId ?? ethers.constants.Zero;
           const amount = ethers.constants.Two;
 
           await expect(
