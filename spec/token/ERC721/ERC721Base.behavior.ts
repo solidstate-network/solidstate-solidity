@@ -85,17 +85,32 @@ export function describeBehaviorOfERC721Base(
         });
 
         it('owner is zero address');
-      })
+      });
     });
 
     describe('#getApproved', function () {
-      it('TODO: returns the approved spenders of given token');
-    });
+      it('returns approved spender of given token', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
 
-    describe('#isApprovedForAll', function () {
-      it(
-        'TODO: returns true if operator is approved for all tokens of given holder',
-      );
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(ethers.constants.AddressZero)
+
+        await instance.connect(holder).approve(instance.address, tokenId);
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(instance.address)
+
+        await instance.connect(holder).approve(ethers.constants.AddressZero, tokenId);
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(ethers.constants.AddressZero)
+      });
+
+      describe('reverts if', function () {
+        it('token does not exist', async function () {
+          await expect(
+            instance.callStatic.getApproved(ethers.constants.Two)
+          ).to.be.revertedWith(
+            'ERC721: approved query for nonexistent token'
+          );
+        });
+      });
     });
 
     describe('#isApprovedForAll', function () {
