@@ -155,5 +155,12 @@ abstract contract ERC721Base is IERC721 {
     return returnValue == ERC721_RECEIVED;
   }
 
+  /**
+   * @notice ERC721 hook, called before all transfers including mint and burn
+   * @dev function should be overridden and new implementation must call super
+   * @param from sender of token
+   * @param to receiver of token
+   * @param tokenId id of transferred token
+   */
   function _beforeTokenTransfer (address from, address to, uint tokenId) virtual internal {}
 }

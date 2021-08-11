@@ -7,17 +7,29 @@ import {ERC721MetadataStorage} from './ERC721MetadataStorage.sol';
 import {IERC721Metadata} from './IERC721Metadata.sol';
 import {UintUtils} from '../../utils/UintUtils.sol';
 
+/**
+ * @notice ERC721 metadata extensions
+ */
 abstract contract ERC721Metadata is IERC721Metadata, ERC721Base {
   using UintUtils for uint;
 
+  /**
+   * @notice inheritdoc IERC721Metadata
+   */
   function name () override public view returns (string memory) {
     return ERC721MetadataStorage.layout().name;
   }
 
+  /**
+   * @notice inheritdoc IERC721Metadata
+   */
   function symbol () override public view returns (string memory) {
     return ERC721MetadataStorage.layout().symbol;
   }
 
+  /**
+   * @notice inheritdoc IERC721Metadata
+   */
   function tokenURI (uint tokenId) override public view returns (string memory) {
     require(ERC721BaseStorage.exists(tokenId), 'ERC721Metadata: URI query for nonexistent token');
 
@@ -35,11 +47,14 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721Base {
     }
   }
 
+  /**
+   * @notice ERC721 hook: clear per-token URI data on burn
+   * @inheritdoc ERC721Base
+   */
   function _beforeTokenTransfer (address from, address to, uint tokenId) virtual override internal {
     super._beforeTokenTransfer(from, to, tokenId);
 
     if (to == address(0)) {
-      // TODO: clear metadata only if present
       delete ERC721MetadataStorage.layout().tokenURIs[tokenId];
     }
   }
