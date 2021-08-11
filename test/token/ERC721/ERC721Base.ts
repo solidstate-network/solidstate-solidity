@@ -177,7 +177,7 @@ describe('ERC721Base', function () {
         ).to.be.true;
       });
 
-      it('returns true if recipient returns TODO', async function () {
+      it('returns true if recipient returns IERC721Receiver interface ID', async function () {
         const receiverContract = await deployMockContract(sender, [
           'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
         ]);

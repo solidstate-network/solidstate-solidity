@@ -17,8 +17,6 @@ abstract contract ERC721Base is IERC721 {
   using EnumerableMap for EnumerableMap.UintToAddressMap;
   using EnumerableSet for EnumerableSet.UintSet;
 
-  bytes4 private constant ERC721_RECEIVED = 0x150b7a02;
-
   /**
    * @inheritdoc IERC721
    */
@@ -179,7 +177,7 @@ abstract contract ERC721Base is IERC721 {
     ), 'ERC721: transfer to non ERC721Receiver implementer');
 
     bytes4 returnValue = abi.decode(returnData, (bytes4));
-    return returnValue == ERC721_RECEIVED;
+    return returnValue == type(IERC721Receiver).interfaceId;
   }
 
   /**
