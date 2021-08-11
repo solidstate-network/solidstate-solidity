@@ -7,6 +7,7 @@ import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC721BehaviorArgs {
   deploy: () => Promise<ERC721>;
+  supply: BigNumber,
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
   name: string;
@@ -15,7 +16,7 @@ interface ERC721BehaviorArgs {
 }
 
 export function describeBehaviorOfERC721(
-  { deploy, mint, burn, name, symbol, tokenURI }: ERC721BehaviorArgs,
+  { deploy, supply, mint, burn, name, symbol, tokenURI }: ERC721BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,6 +25,7 @@ export function describeBehaviorOfERC721(
     describeBehaviorOfERC721Base(
       {
         deploy,
+        supply,
         mint,
         burn,
       },
