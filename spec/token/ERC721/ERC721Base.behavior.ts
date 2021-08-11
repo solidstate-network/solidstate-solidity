@@ -26,6 +26,7 @@ export function describeBehaviorOfERC721Base(
     let instance: ERC721Base;
 
     before(async function () {
+      // TODO: move to behavior args
       [holder, spender, receiver, sender] = await ethers.getSigners();
     });
 
@@ -90,5 +91,23 @@ export function describeBehaviorOfERC721Base(
     describe('#transferFrom', function () {
       it('TODO: transfers tokenId from a to b');
     });
+
+    describe('#safeTransferFrom', function () {
+      describe('(address,address,uint256)', function () {
+        it('todo');
+      });
+
+      describe('(address,address,uint256,bytes)', function () {
+        it('todo');
+      });
+    });
+
+    describe('#approve', function () {
+      it('todo')
+    })
+
+    describe('#setApprovalForAll', function () {
+      it('todo')
+    })
   });
 }

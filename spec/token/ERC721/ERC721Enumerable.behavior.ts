@@ -7,7 +7,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC721EnumerableBehaviorArgs {
   deploy: () => Promise<ERC721Enumerable>;
-  supply: BigNumber;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
 }
@@ -19,21 +18,21 @@ export function describeBehaviorOfERC721Enumerable(
   const describe = describeFilter(skips);
 
   describe('::ERC721Enumerable', function () {
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
-    let receiver: SignerWithAddress;
-    let sender: SignerWithAddress;
     let instance: ERC721Enumerable;
-
-    before(async function () {
-      [holder, spender, receiver, sender] = await ethers.getSigners();
-    });
 
     beforeEach(async function () {
       instance = await deploy();
     });
 
-    describe('#todo', function () {
+    describe('#totalSupply', function () {
+      it('todo');
+    });
+
+    describe('#tokenOfOwnerByIndex', function () {
+      it('todo');
+    });
+
+    describe('#tokenByIndex', function () {
       it('todo');
     });
   });

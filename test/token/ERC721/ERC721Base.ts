@@ -33,6 +33,10 @@ describe('ERC721Base', function () {
   });
 
   describe('__internal', function () {
+    describe('#_isApprovedOrOwner', function () {
+      it('todo');
+    });
+
     describe('#_mint', function () {
       it('increases balance of given account by given tokenId', async function () {
         let tokenId = ethers.constants.Two;
@@ -65,6 +69,16 @@ describe('ERC721Base', function () {
         });
 
         it('TODO: given token already exists');
+      });
+    });
+
+    describe('#_safeMint', function () {
+      describe('(address,uint256)', function () {
+        it('todo');
+      });
+
+      describe('(address,uint256,bytes)', function () {
+        it('todo');
       });
     });
 
@@ -126,6 +140,10 @@ describe('ERC721Base', function () {
       });
     });
 
+    describe('#_safeTransfer', function () {
+      it('todo');
+    });
+
     describe('#_approve', function () {
       it(
         'TODO: sets approval of spender with respect to holder for given tokenId',
@@ -155,6 +173,10 @@ describe('ERC721Base', function () {
         });
       });
     });
+
+    describe('#_checkOnERC721Received', function () {
+      it('todo');
+    })
 
     describe('#_beforeTokenTransfer', function () {
       it('todo');

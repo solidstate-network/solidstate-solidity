@@ -26,4 +26,6 @@ describe('ERC721Metadata', function () {
     symbol,
     tokenURI,
   });
+
+  // TODO: test that metadata is cleared on burn
 });
