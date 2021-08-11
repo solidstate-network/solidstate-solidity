@@ -42,4 +42,13 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
   ) external {
     _approve(to, tokenId);
   }
+
+  function checkOnERC721Received (
+    address from,
+    address to,
+    uint tokenId,
+    bytes memory data
+  ) external returns (bool) {
+    return _checkOnERC721Received(from, to, tokenId, data);
+  }
 }

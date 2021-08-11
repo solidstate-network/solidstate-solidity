@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
@@ -165,8 +166,68 @@ describe('ERC721Base', function () {
     });
 
     describe('#_checkOnERC721Received', function () {
-      it('todo');
-    })
+      it('returns true if recipient is not a contract', async function () {
+        expect(
+          await instance.callStatic.checkOnERC721Received(
+            ethers.constants.AddressZero,
+            receiver.address,
+            ethers.constants.Zero,
+            '0x'
+          )
+        ).to.be.true;
+      });
+
+      it('returns true if recipient returns TODO', async function () {
+        const receiverContract = await deployMockContract(sender, [
+          'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+        ]);
+
+        await receiverContract.mock.onERC721Received.returns('0x150b7a02');
+
+        expect(
+          await instance.callStatic.checkOnERC721Received(
+            ethers.constants.AddressZero,
+            receiverContract.address,
+            ethers.constants.Zero,
+            '0x'
+          )
+        ).to.be.true;
+      });
+
+      it('returns false if recipient does not return TODO', async function () {
+        const receiverContract = await deployMockContract(sender, [
+          'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+        ]);
+
+        await receiverContract.mock.onERC721Received.returns(ethers.utils.randomBytes(4));
+
+        expect(
+          await instance.callStatic.checkOnERC721Received(
+            ethers.constants.AddressZero,
+            receiverContract.address,
+            ethers.constants.Zero,
+            '0x'
+          )
+        ).to.be.false;
+      });
+
+      describe('reverts if', function () {
+        it('recipient is not ERC721Receiver implementer', async function () {
+          // TODO: test against contract other than self
+
+          await expect(
+            instance.callStatic.checkOnERC721Received(
+              ethers.constants.AddressZero,
+              instance.address,
+              ethers.constants.Zero,
+              '0x'
+            )
+          ).to.be.revertedWith(
+            'ERC721: transfer to non ERC721Receiver implementer'
+          );
+        });
+      });
+    });
 
     describe('#_beforeTokenTransfer', function () {
       it('todo');

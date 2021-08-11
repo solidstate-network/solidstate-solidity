@@ -165,7 +165,7 @@ abstract contract ERC721Base is IERC721 {
     emit Approval(ownerOf(tokenId), operator, tokenId);
   }
 
-  function _checkOnERC721Received (address from, address to, uint tokenId, bytes memory data) private returns (bool) {
+  function _checkOnERC721Received (address from, address to, uint tokenId, bytes memory data) internal returns (bool) {
     if (!to.isContract()) {
       return true;
     }
