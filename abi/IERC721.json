@@ -78,7 +78,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "to",
+        "name": "operator",
         "type": "address"
       },
       {
@@ -96,7 +96,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "owner",
+        "name": "account",
         "type": "address"
       }
     ],
@@ -134,7 +134,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "owner",
+        "name": "account",
         "type": "address"
       },
       {
@@ -147,7 +147,7 @@
     "outputs": [
       {
         "internalType": "bool",
-        "name": "",
+        "name": "status",
         "type": "bool"
       }
     ],
@@ -233,7 +233,7 @@
       },
       {
         "internalType": "bool",
-        "name": "_approved",
+        "name": "status",
         "type": "bool"
       }
     ],

@@ -19,51 +19,78 @@ abstract contract ERC721Base is IERC721 {
 
   bytes4 private constant ERC721_RECEIVED = 0x150b7a02;
 
-  function balanceOf (address owner) override public view returns (uint) {
-    require(owner != address(0), 'ERC721: balance query for the zero address');
-    return ERC721BaseStorage.layout().holderTokens[owner].length();
+  /**
+   * @inheritdoc IERC721
+   */
+  function balanceOf (address account) override public view returns (uint) {
+    require(account != address(0), 'ERC721: balance query for the zero address');
+    return ERC721BaseStorage.layout().holderTokens[account].length();
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function ownerOf (uint tokenId) override public view returns (address) {
     address owner = ERC721BaseStorage.layout().tokenOwners.get(tokenId);
     require(owner != address(0), 'ERC721: invalid owner');
     return owner;
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function getApproved (uint tokenId) override public view returns (address) {
     require(ERC721BaseStorage.exists(tokenId), 'ERC721: approved query for nonexistent token');
     return ERC721BaseStorage.layout().tokenApprovals[tokenId];
   }
 
-  function isApprovedForAll (address owner, address operator) override public view returns (bool) {
-    return ERC721BaseStorage.layout().operatorApprovals[owner][operator];
+  /**
+   * @inheritdoc IERC721
+   */
+  function isApprovedForAll (address account, address operator) override public view returns (bool) {
+    return ERC721BaseStorage.layout().operatorApprovals[account][operator];
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function transferFrom (address from, address to, uint tokenId) override public payable {
     // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _transfer(from, to, tokenId);
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function safeTransferFrom (address from, address to, uint tokenId) override public payable {
     // TODO: handle payment
     safeTransferFrom(from, to, tokenId, '');
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function safeTransferFrom (address from, address to, uint tokenId, bytes memory data) override public payable {
     // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _safeTransfer(from, to, tokenId, data);
   }
 
-  function approve (address to, uint tokenId) override public payable {
+  /**
+   * @inheritdoc IERC721
+   */
+  function approve (address operator, uint tokenId) override public payable {
     // TODO: handle payment
     address owner = ownerOf(tokenId);
-    require(to != owner, 'ERC721: approval to current owner');
+    require(operator != owner, 'ERC721: approval to current owner');
     require(msg.sender == owner || isApprovedForAll(owner, msg.sender), 'ERC721: approve caller is not owner nor approved for all');
-    _approve(to, tokenId);
+    _approve(operator, tokenId);
   }
 
+  /**
+   * @inheritdoc IERC721
+   */
   function setApprovalForAll (address operator, bool status) override public {
     require(operator != msg.sender, 'ERC721: approve to caller');
     ERC721BaseStorage.layout().operatorApprovals[msg.sender][operator] = status;
@@ -133,9 +160,9 @@ abstract contract ERC721Base is IERC721 {
     require(_checkOnERC721Received(from, to, tokenId, data), 'ERC721: transfer to non ERC721Receiver implementer');
   }
 
-  function _approve (address to, uint tokenId) internal {
-    ERC721BaseStorage.layout().tokenApprovals[tokenId] = to;
-    emit Approval(ownerOf(tokenId), to, tokenId);
+  function _approve (address operator, uint tokenId) internal {
+    ERC721BaseStorage.layout().tokenApprovals[tokenId] = operator;
+    emit Approval(ownerOf(tokenId), operator, tokenId);
   }
 
   function _checkOnERC721Received (address from, address to, uint tokenId, bytes memory data) private returns (bool) {
