@@ -1,6 +1,6 @@
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfERC721Base } from './ERC721Base.behavior';
-import { describeBehaviorOfERC721Extended } from './ERC721Extended.behavior';
+import { describeBehaviorOfERC721Enumerable } from './ERC721Enumerable.behavior';
 import { describeBehaviorOfERC721Metadata } from './ERC721Metadata.behavior';
 import { ERC721 } from '../../../typechain';
 import { BigNumber, ContractTransaction } from 'ethers';
@@ -30,7 +30,7 @@ export function describeBehaviorOfERC721(
       skips,
     );
 
-    describeBehaviorOfERC721Extended(
+    describeBehaviorOfERC721Enumerable(
       {
         deploy,
         mint,
