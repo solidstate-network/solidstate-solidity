@@ -38,7 +38,7 @@ export function describeBehaviorOfERC721Base(
       it('returns the token balance of given address', async function () {
         expect(
           await instance.callStatic['balanceOf(address)'](
-            ethers.constants.AddressZero,
+            holder.address,
           ),
         ).to.equal(ethers.constants.Zero);
 
@@ -56,20 +56,35 @@ export function describeBehaviorOfERC721Base(
           -ethers.constants.One,
         );
       });
+
+      describe('reverts if', function () {
+        it('queried address is the zero address', async function () {
+          await expect(
+            instance.callStatic.balanceOf(ethers.constants.AddressZero)
+          ).to.be.revertedWith('ERC721: balance query for the zero address')
+        })
+      })
     });
 
     describe('#ownerOf', function () {
       it('returns the owner of given token', async function () {
-        expect(
-          await instance.callStatic.ownerOf(ethers.constants.Two),
-        ).to.equal(ethers.constants.AddressZero);
-
-        await mint(holder.address, ethers.constants.Two);
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
 
         expect(
-          await instance.callStatic.ownerOf(ethers.constants.Two),
+          await instance.callStatic.ownerOf(tokenId),
         ).to.equal(holder.address);
       });
+
+      describe('reverts if', function () {
+        it('token does not exist', async function () {
+          await expect(
+            instance.callStatic.ownerOf(ethers.constants.Two),
+          ).to.be.revertedWith('EnumerableMap: nonexistent key');
+        });
+
+        it('owner is zero address');
+      })
     });
 
     describe('#getApproved', function () {
