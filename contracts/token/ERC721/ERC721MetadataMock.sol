@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC721 } from './ERC721.sol';
+import { ERC721Metadata } from './ERC721Metadata.sol';
 import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 
-contract ERC721Mock is ERC721 {
+contract ERC721MetadataMock is ERC721Metadata {
   constructor (
     string memory name,
     string memory symbol,
@@ -15,18 +15,5 @@ contract ERC721Mock is ERC721 {
     l.name = name;
     l.symbol = symbol;
     l.baseURI = baseURI;
-  }
-
-  function mint (
-    address account,
-    uint tokenId
-  ) external {
-    _mint(account, tokenId);
-  }
-
-  function burn (
-    uint tokenId
-  ) external {
-    _burn(tokenId);
   }
 }
