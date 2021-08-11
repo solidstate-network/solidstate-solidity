@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { describeFilter } from '@solidstate/library';
 import { ethers } from 'hardhat';
+import { deployMockContract } from 'ethereum-waffle';
 import { ERC721Base } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';
@@ -105,15 +106,131 @@ export function describeBehaviorOfERC721Base(
 
     describe('#transferFrom', function () {
       it('TODO: transfers tokenId from a to b');
+
+      it('does not revert if recipient is not ERC721Receiver implementer', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        // TODO: test against contract other than self
+
+        await expect(
+          instance.connect(holder).transferFrom(
+            holder.address,
+            instance.address,
+            tokenId
+          )
+        ).not.to.be.reverted;
+      });
+
+      it('does not revert if recipient is ERC721Receiver implementer but does not accept transfer', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        const receiverContract = await deployMockContract(sender, [
+          'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+        ]);
+
+        await receiverContract.mock.onERC721Received.returns(ethers.utils.randomBytes(4));
+
+        await expect(
+          instance.connect(holder).transferFrom(
+            holder.address,
+            receiverContract.address,
+            tokenId
+          )
+        ).not.to.be.reverted;
+      });
+
+      describe('reverts if', function () {
+        it('todo');
+      });
     });
 
     describe('#safeTransferFrom', function () {
       describe('(address,address,uint256)', function () {
         it('todo');
+
+        describe('reverts if', function () {
+          it('todo');
+
+          it('recipient is not ERC721Receiver implementer', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            // TODO: test against contract other than self
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                instance.address,
+                tokenId
+              )
+            ).to.be.revertedWith('ERC721: transfer to non ERC721Receiver implementer');
+          });
+
+          it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            const receiverContract = await deployMockContract(sender, [
+              'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+            ]);
+
+            await receiverContract.mock.onERC721Received.returns(ethers.utils.randomBytes(4));
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                receiverContract.address,
+                tokenId
+              )
+            ).to.be.revertedWith('ERC721: transfer to non ERC721Receiver implementer');
+          });
+        });
       });
 
       describe('(address,address,uint256,bytes)', function () {
         it('todo');
+
+        describe('reverts if', function () {
+          it('todo');
+
+          it('recipient is not ERC721Receiver implementer', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            // TODO: test against contract other than self
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                instance.address,
+                tokenId,
+                '0x'
+              )
+            ).to.be.revertedWith('ERC721: transfer to non ERC721Receiver implementer');
+          });
+
+          it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            const receiverContract = await deployMockContract(sender, [
+              'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+            ]);
+
+            await receiverContract.mock.onERC721Received.returns(ethers.utils.randomBytes(4));
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                receiverContract.address,
+                tokenId,
+                '0x'
+              )
+            ).to.be.revertedWith('ERC721: transfer to non ERC721Receiver implementer');
+          });
+        });
       });
     });
 
