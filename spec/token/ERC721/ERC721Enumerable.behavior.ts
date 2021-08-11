@@ -38,11 +38,54 @@ export function describeBehaviorOfERC721Enumerable(
     });
 
     describe('#tokenOfOwnerByIndex', function () {
-      it('todo');
+      it('returns token id held by given account at given index', async function () {
+        // TODO: query balance to determine starting index
+
+        await expect(
+          instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.Zero)
+        ).to.be.revertedWith('EnumerableSet: index out of bounds');
+
+        await expect(
+          instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.One)
+        ).to.be.revertedWith('EnumerableSet: index out of bounds');
+
+        await mint(instance.address, ethers.constants.One)
+        await mint(instance.address, ethers.constants.Two)
+
+        expect(
+          await instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.Zero)
+        ).to.equal(ethers.constants.One)
+
+        expect(
+          await instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.One)
+        ).to.equal(ethers.constants.Two)
+      });
     });
 
     describe('#tokenByIndex', function () {
-      it('todo');
+      it('returns token id held globally at given index', async function () {
+        const index = await instance.callStatic.totalSupply();
+
+        await expect(
+          instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero))
+        ).to.be.revertedWith('EnumerableMap: index out of bounds');
+
+        await expect(
+          instance.callStatic.tokenByIndex(index.add(ethers.constants.One))
+        ).to.be.revertedWith('EnumerableMap: index out of bounds');
+
+        // TODO: mint to different addresses
+        await mint(instance.address, ethers.constants.One)
+        await mint(instance.address, ethers.constants.Two)
+
+        expect(
+          await instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero))
+        ).to.equal(ethers.constants.One)
+
+        expect(
+          await instance.callStatic.tokenByIndex(index.add(ethers.constants.One))
+        ).to.equal(ethers.constants.Two)
+      });
     });
   });
 }
