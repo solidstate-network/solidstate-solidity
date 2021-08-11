@@ -19,12 +19,12 @@ library ERC721BaseStorage {
     mapping (address => mapping (address => bool)) operatorApprovals;
   }
 
-  function exists (uint tokenId) internal view returns (bool) {
-    return ERC721BaseStorage.layout().tokenOwners.contains(tokenId);
-  }
-
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;
     assembly { l.slot := slot }
+  }
+
+  function exists (uint tokenId) internal view returns (bool) {
+    return ERC721BaseStorage.layout().tokenOwners.contains(tokenId);
   }
 }
