@@ -3,8 +3,18 @@
 pragma solidity ^0.8.0;
 
 import { ERC721Base } from './ERC721Base.sol';
+import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
+import {IERC165, ERC165} from '../../introspection/ERC165.sol';
 
-contract ERC721BaseMock is ERC721Base {
+contract ERC721BaseMock is ERC721Base, ERC165 {
+  using ERC165Storage for ERC165Storage.Layout;
+
+  constructor () {
+    // TODO: implement failing tests before setting supported interfaces
+    // ERC165Storage.layout().setSupportedInterface(type(IERC165).interfaceId, true);
+    // ERC165Storage.layout().setSupportedInterface(type(IERC721).interfaceId, true);
+  }
+
   function transfer (
     address from,
     address to,
