@@ -236,6 +236,37 @@ export function describeBehaviorOfERC721Base(
 
     describe('#approve', function () {
       it('todo')
+
+      it('does not revert if sender is approved to spend all tokens held by owner', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).setApprovalForAll(receiver.address, true);
+
+        await expect(
+          instance.connect(receiver).approve(receiver.address, tokenId)
+        ).not.to.be.reverted;
+      })
+
+      describe('reverts if', function () {
+        it('spender is current owner of given token', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await expect(
+            instance.connect(holder).approve(holder.address, tokenId)
+          ).to.be.revertedWith('ERC721: approval to current owner')
+        })
+
+        it('send is not owner of given token', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await expect(
+            instance.connect(receiver).approve(receiver.address, tokenId)
+          ).to.be.revertedWith('ERC721: approve caller is not owner nor approved for all')
+        })
+      })
     })
 
     describe('#setApprovalForAll', function () {
