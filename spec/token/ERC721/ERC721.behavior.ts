@@ -7,9 +7,9 @@ import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC721BehaviorArgs {
   deploy: () => Promise<ERC721>;
-  supply: BigNumber,
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
+  supply: BigNumber,
   name: string;
   symbol: string;
   tokenURI: string;
@@ -35,6 +35,7 @@ export function describeBehaviorOfERC721(
     describeBehaviorOfERC721Enumerable(
       {
         deploy,
+        supply,
         mint,
         burn,
       },
