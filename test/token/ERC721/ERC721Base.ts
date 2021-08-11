@@ -29,7 +29,7 @@ describe('ERC721Base', function () {
     supply: ethers.constants.Zero,
     mint: (recipient, tokenId) =>
       instance['mint(address,uint256)'](recipient, tokenId),
-    burn: (tokenId) => instance['burn(address,uint256)'](tokenId),
+    burn: (tokenId) => instance['burn(uint256)'](tokenId),
   });
 
   describe('__internal', function () {
@@ -78,7 +78,7 @@ describe('ERC721Base', function () {
         await instance['mint(address,uint256)'](receiver.address, tokenId);
 
         await expect(
-          instance['burn(address,uint256)'](receiver.address, tokenId),
+          instance['burn(uint256)'](tokenId),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(receiver.address, ethers.constants.AddressZero, tokenId);
@@ -135,8 +135,7 @@ describe('ERC721Base', function () {
         let tokenId = ethers.constants.Two;
 
         await expect(
-          instance['approve(address,address,uint256)'](
-            holder.address,
+          instance['__approve(address,uint256)'](
             spender.address,
             tokenId,
           ),
@@ -148,8 +147,7 @@ describe('ERC721Base', function () {
       describe('reverts if', function () {
         it('spender is the zero address', async function () {
           await expect(
-            instance['approve(address,address,uint256)'](
-              holder.address,
+            instance['__approve(address,uint256)'](
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),

@@ -60,13 +60,13 @@ export function describeBehaviorOfERC721Base(
     describe('#ownerOf', function () {
       it('returns the owner of given token', async function () {
         expect(
-          await instance.callStatic['ownerOf(uint)'](ethers.constants.Two),
+          await instance.callStatic.ownerOf(ethers.constants.Two),
         ).to.equal(ethers.constants.AddressZero);
 
         await mint(holder.address, ethers.constants.Two);
 
         expect(
-          await instance.callStatic['ownerOf(uint)'](ethers.constants.Two),
+          await instance.callStatic.ownerOf(ethers.constants.Two),
         ).to.equal(holder.address);
       });
     });
