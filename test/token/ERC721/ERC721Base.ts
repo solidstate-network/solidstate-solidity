@@ -35,7 +35,45 @@ describe('ERC721Base', function () {
 
   describe('__internal', function () {
     describe('#_isApprovedOrOwner', function () {
-      it('todo');
+      it('returns true if given spender is approved for given token', async function () {
+        const tokenId = ethers.constants.Two;
+        await instance.mint(holder.address, tokenId);
+
+        await instance.connect(holder).approve(spender.address, tokenId);
+
+        expect(
+          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId)
+        ).to.be.true;
+      });
+
+      it('returns true if given spender is approved for all tokens held by owner', async function () {
+        const tokenId = ethers.constants.Two;
+        await instance.mint(holder.address, tokenId);
+
+        await instance.connect(holder).setApprovalForAll(spender.address, true);
+
+        expect(
+          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId)
+        ).to.be.true;
+      });
+
+      it('returns true if given spender is owner of given token', async function () {
+        const tokenId = ethers.constants.Two;
+        await instance.mint(holder.address, tokenId);
+
+        expect(
+          await instance.callStatic.isApprovedOrOwner(holder.address, tokenId)
+        ).to.be.true;
+      });
+
+      it('returns false if given spender is neither owner of given token nor approved to spend it', async function () {
+        const tokenId = ethers.constants.Two;
+        await instance.mint(holder.address, tokenId);
+
+        expect(
+          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId)
+        ).to.be.false;
+      });
     });
 
     describe('#_mint', function () {

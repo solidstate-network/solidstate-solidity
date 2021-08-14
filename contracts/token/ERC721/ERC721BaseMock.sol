@@ -15,6 +15,13 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
     // ERC165Storage.layout().setSupportedInterface(type(IERC721).interfaceId, true);
   }
 
+  function isApprovedOrOwner (
+    address spender,
+    uint tokenId
+  ) external view returns (bool) {
+    return _isApprovedOrOwner(spender, tokenId);
+  }
+
   function transfer (
     address from,
     address to,
