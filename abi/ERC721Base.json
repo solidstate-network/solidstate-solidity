@@ -11,7 +11,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "approved",
+        "name": "operator",
         "type": "address"
       },
       {

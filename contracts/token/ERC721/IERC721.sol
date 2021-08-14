@@ -17,7 +17,7 @@ interface IERC721 is IERC165 {
 
   event Approval (
     address indexed owner,
-    address indexed approved,
+    address indexed operator,
     uint256 indexed tokenId
   );
 
