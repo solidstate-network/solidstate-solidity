@@ -37,6 +37,21 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
     _mint(account, tokenId);
   }
 
+  function safeMint (
+    address account,
+    uint tokenId
+  ) external {
+    _safeMint(account, tokenId);
+  }
+
+  function safeMint (
+    address account,
+    uint tokenId,
+    bytes calldata data
+  ) external {
+    _safeMint(account, tokenId, data);
+  }
+
   function burn (
     uint tokenId
   ) external {
