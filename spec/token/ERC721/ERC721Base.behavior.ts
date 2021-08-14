@@ -114,9 +114,15 @@ export function describeBehaviorOfERC721Base(
     });
 
     describe('#isApprovedForAll', function () {
-      it(
-        'TODO: returns true if operator is approved for all tokens of given holder',
-      );
+      it('returns whether given operator is approved to spend all tokens of given holder', async function () {
+        expect(await instance.callStatic.isApprovedForAll(holder.address, spender.address)).to.be.false;
+
+        await instance.connect(holder).setApprovalForAll(spender.address, true);
+        expect(await instance.callStatic.isApprovedForAll(holder.address, spender.address)).to.be.true;
+
+        await instance.connect(holder).setApprovalForAll(spender.address, false);
+        expect(await instance.callStatic.isApprovedForAll(holder.address, spender.address)).to.be.false;
+      });
     });
 
     describe('#transferFrom', function () {
@@ -250,7 +256,34 @@ export function describeBehaviorOfERC721Base(
     });
 
     describe('#approve', function () {
-      it('todo')
+      it('grants approval to spend given token on behalf of holder', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).approve(spender.address, tokenId);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).not.to.be.reverted;
+
+        await instance.connect(holder).approve(ethers.constants.AddressZero, tokenId);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).to.be.reverted;
+      })
+
+      it('emits Approval event', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await expect(
+          instance
+            .connect(holder).approve(spender.address, tokenId),
+        )
+          .to.emit(instance, 'Approval')
+          .withArgs(holder.address, spender.address, tokenId);
+      });
 
       it('does not revert if sender is approved to spend all tokens held by owner', async function () {
         const tokenId = ethers.constants.Two;
@@ -273,7 +306,7 @@ export function describeBehaviorOfERC721Base(
           ).to.be.revertedWith('ERC721: approval to current owner')
         })
 
-        it('send is not owner of given token', async function () {
+        it('sender is not owner of given token', async function () {
           const tokenId = ethers.constants.Two;
           await mint(holder.address, tokenId);
 
@@ -285,7 +318,46 @@ export function describeBehaviorOfERC721Base(
     })
 
     describe('#setApprovalForAll', function () {
-      it('todo')
+      it('grants and revokes approval to spend tokens on behalf of holder', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).setApprovalForAll(spender.address, true);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).not.to.be.reverted;
+
+        await instance.connect(holder).setApprovalForAll(spender.address, false);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).to.be.reverted;
+      })
+
+      it('emits ApprovalForAll event', async function () {
+        await expect(
+          instance
+            .connect(holder).setApprovalForAll(spender.address, true),
+        )
+          .to.emit(instance, 'ApprovalForAll')
+          .withArgs(holder.address, spender.address, true);
+
+        await expect(
+          instance
+          .connect(holder).setApprovalForAll(spender.address, true),
+        )
+          .to.emit(instance, 'ApprovalForAll')
+          .withArgs(holder.address, spender.address, true);
+      });
+
+      describe('reverts if', function () {
+        it('given operator is sender', async function () {
+          await expect(
+            instance.connect(holder).setApprovalForAll(holder.address, true)
+          ).to.be.revertedWith('ERC721: approve to caller')
+        })
+      })
     })
   });
 }
