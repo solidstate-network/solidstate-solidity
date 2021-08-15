@@ -7,11 +7,21 @@ import {ERC721Enumerable} from './ERC721Enumerable.sol';
 import {ERC721Metadata} from './ERC721Metadata.sol';
 import {ERC165} from '../../introspection/ERC165.sol';
 
-
 /**
  * @notice SolidState ERC721 implementation, including recommended extensions
  */
 abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata, ERC165 {
+  /**
+   * @notice ERC721 hook: revert if value is included in external transfer function call
+   * @inheritdoc ERC721Base
+   */
+  function _handleTransferMessageValue (address, address, uint, uint value) virtual override internal {
+    require(value == 0, 'ERC721: payable transfer calls not supported');
+  }
+
+  /**
+   * @inheritdoc ERC721Base
+   */
   function _beforeTokenTransfer (
     address from,
     address to,

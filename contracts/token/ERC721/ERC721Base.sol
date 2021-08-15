@@ -53,8 +53,8 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function transferFrom (address from, address to, uint tokenId) override public payable {
-    // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
+    _handleTransferMessageValue(from, to, tokenId, msg.value);
     _transfer(from, to, tokenId);
   }
 
@@ -62,7 +62,6 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function safeTransferFrom (address from, address to, uint tokenId) override public payable {
-    // TODO: handle payment
     safeTransferFrom(from, to, tokenId, '');
   }
 
@@ -70,8 +69,8 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function safeTransferFrom (address from, address to, uint tokenId, bytes memory data) override public payable {
-    // TODO: handle payment
     require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
+    _handleTransferMessageValue(from, to, tokenId, msg.value);
     _safeTransfer(from, to, tokenId, data);
   }
 
@@ -179,6 +178,15 @@ abstract contract ERC721Base is IERC721 {
     bytes4 returnValue = abi.decode(returnData, (bytes4));
     return returnValue == type(IERC721Receiver).interfaceId;
   }
+
+  /**
+   * @notice ERC721 hook, called before externally called transfers for processing of included message value
+   * @param from sender of token
+   * @param to receiver of token
+   * @param tokenId id of transferred token
+   * @param value message value
+   */
+  function _handleTransferMessageValue (address from, address to, uint tokenId, uint value) virtual internal;
 
   /**
    * @notice ERC721 hook, called before all transfers including mint and burn

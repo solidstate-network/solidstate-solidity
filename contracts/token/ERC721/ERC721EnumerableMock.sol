@@ -19,4 +19,6 @@ contract ERC721EnumerableMock is ERC721Enumerable, ERC721Base, ERC165 {
   ) external {
     _burn(tokenId);
   }
+
+  function _handleTransferMessageValue (address, address, uint, uint) override internal {}
 }

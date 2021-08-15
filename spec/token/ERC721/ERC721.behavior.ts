@@ -1,8 +1,11 @@
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfERC721Base } from './ERC721Base.behavior';
 import { describeBehaviorOfERC721Enumerable } from './ERC721Enumerable.behavior';
 import { describeBehaviorOfERC721Metadata } from './ERC721Metadata.behavior';
 import { ERC721 } from '../../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC721BehaviorArgs {
@@ -22,6 +25,18 @@ export function describeBehaviorOfERC721(
   const describe = describeFilter(skips);
 
   describe('::ERC721', function () {
+    let holder: SignerWithAddress;
+
+    let instance: ERC721;
+
+    before(async function () {
+      [holder] = await ethers.getSigners();
+    })
+
+    beforeEach(async function () {
+      instance = await deploy();
+    });
+
     describeBehaviorOfERC721Base(
       {
         deploy,
@@ -51,5 +66,68 @@ export function describeBehaviorOfERC721(
       },
       skips,
     );
+
+    describe('#transferFrom', function () {
+      describe('reverts if', function () {
+        it('value is included in transaction', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await expect(
+            instance.connect(holder).transferFrom(
+              holder.address,
+              holder.address,
+              tokenId,
+              { value: ethers.constants.One }
+            )
+          ).to.be.revertedWith(
+            'ERC721: payable transfer calls not supported'
+          );
+        })
+      });
+    });
+
+    describe('#safeTransferFrom', function () {
+      describe('(address,address,uint256)', function () {
+        describe('reverts if', function () {
+          it('value is included in transaction', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                { value: ethers.constants.One }
+              )
+            ).to.be.revertedWith(
+              'ERC721: payable transfer calls not supported'
+            );
+          });
+        });
+      });
+
+      describe('(address,address,uint256,bytes)', function () {
+        describe('reverts if', function () {
+          it('value is included in transaction', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await expect(
+              instance.connect(holder)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                '0x',
+                { value: ethers.constants.One }
+              )
+            ).to.be.revertedWith(
+              'ERC721: payable transfer calls not supported'
+            );
+          });
+        });
+      });
+    });
   });
 }
