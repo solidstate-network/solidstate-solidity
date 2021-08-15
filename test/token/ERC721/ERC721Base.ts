@@ -363,6 +363,8 @@ describe('ERC721Base', function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(sender.address, tokenId);
 
+        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(sender.address)
+
         await instance.transfer(
           sender.address,
           receiver.address,

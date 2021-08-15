@@ -136,7 +136,59 @@ export function describeBehaviorOfERC721Base(
     });
 
     describe('#transferFrom', function () {
-      it('TODO: transfers tokenId from a to b');
+      it('transfers token on behalf of holder', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).approve(spender.address, tokenId);
+
+        await expect(() =>
+          instance
+            .connect(spender).transferFrom(
+              holder.address,
+              receiver.address,
+              tokenId,
+            ),
+        ).to.changeTokenBalances(
+          instance,
+          [holder, receiver],
+          [ethers.constants.NegativeOne, ethers.constants.One],
+        );
+      });
+
+      it('updates owner of token', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).approve(spender.address, tokenId);
+
+        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(holder.address)
+
+        await instance.connect(spender).transferFrom(
+          holder.address,
+          receiver.address,
+          tokenId
+        );
+
+        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(receiver.address)
+      });
+
+      it('emits Transfer event', async function () {
+        const tokenId = ethers.constants.Two;
+        await mint(holder.address, tokenId);
+
+        await instance.connect(holder).approve(spender.address, tokenId);
+
+        await expect(
+          instance.connect(spender).transferFrom(
+            holder.address,
+            receiver.address,
+            tokenId,
+          ),
+        )
+          .to.emit(instance, 'Transfer')
+          .withArgs(holder.address, receiver.address, tokenId);
+      });
 
       it('does not revert if recipient is not ERC721Receiver implementer', async function () {
         const tokenId = ethers.constants.Two;
@@ -173,16 +225,120 @@ export function describeBehaviorOfERC721Base(
       });
 
       describe('reverts if', function () {
-        it('todo');
+        it('caller is neither owner of token nor authorized to spend it', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await expect(
+            instance.connect(spender).transferFrom(
+              holder.address,
+              ethers.constants.AddressZero,
+              tokenId
+            ),
+          ).to.be.revertedWith('ERC721: transfer caller is not owner or approved');
+        });
+
+        it('receiver is the zero address', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          await expect(
+            instance.connect(spender).transferFrom(
+              holder.address,
+              ethers.constants.AddressZero,
+              tokenId
+            ),
+          ).to.be.revertedWith('ERC721: transfer to the zero address');
+        });
       });
     });
 
     describe('#safeTransferFrom', function () {
       describe('(address,address,uint256)', function () {
-        it('todo');
+        it('transfers token on behalf of holder', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          await expect(() =>
+            instance
+              .connect(spender)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                receiver.address,
+                tokenId,
+              ),
+          ).to.changeTokenBalances(
+            instance,
+            [holder, receiver],
+            [ethers.constants.NegativeOne, ethers.constants.One],
+          );
+        });
+
+        it('updates owner of token', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(holder.address)
+
+          await instance.connect(spender)['safeTransferFrom(address,address,uint256)'](
+            holder.address,
+            receiver.address,
+            tokenId
+          );
+
+          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(receiver.address)
+        });
+
+        it('emits Transfer event', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          await expect(
+            instance.connect(spender)['safeTransferFrom(address,address,uint256)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+            ),
+          )
+            .to.emit(instance, 'Transfer')
+            .withArgs(holder.address, receiver.address, tokenId);
+        });
 
         describe('reverts if', function () {
-          it('todo');
+          it('caller is neither owner of token nor authorized to spend it', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await expect(
+              instance.connect(spender)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                ethers.constants.AddressZero,
+                tokenId
+              ),
+            ).to.be.revertedWith('ERC721: transfer caller is not owner or approved');
+          });
+
+          it('receiver is the zero address', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await instance.connect(holder).approve(spender.address, tokenId);
+
+            await expect(
+              instance.connect(spender)['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                ethers.constants.AddressZero,
+                tokenId
+              ),
+            ).to.be.revertedWith('ERC721: transfer to the zero address');
+          });
 
           it('recipient is not ERC721Receiver implementer', async function () {
             const tokenId = ethers.constants.Two;
@@ -221,10 +377,93 @@ export function describeBehaviorOfERC721Base(
       });
 
       describe('(address,address,uint256,bytes)', function () {
-        it('todo');
+        it('transfers token on behalf of holder', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          await expect(() =>
+            instance
+              .connect(spender)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                receiver.address,
+                tokenId,
+                '0x'
+              ),
+          ).to.changeTokenBalances(
+            instance,
+            [holder, receiver],
+            [ethers.constants.NegativeOne, ethers.constants.One],
+          );
+        });
+
+        it('updates owner of token', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(holder.address)
+
+          await instance.connect(spender)['safeTransferFrom(address,address,uint256,bytes)'](
+            holder.address,
+            receiver.address,
+            tokenId,
+            '0x'
+          );
+
+          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(receiver.address)
+        });
+
+        it('emits Transfer event', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await instance.connect(holder).approve(spender.address, tokenId);
+
+          await expect(
+            instance.connect(spender)['safeTransferFrom(address,address,uint256,bytes)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+              '0x'
+            ),
+          )
+            .to.emit(instance, 'Transfer')
+            .withArgs(holder.address, receiver.address, tokenId);
+        });
 
         describe('reverts if', function () {
-          it('todo');
+          it('caller is neither owner of token nor authorized to spend it', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await expect(
+              instance.connect(spender)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                ethers.constants.AddressZero,
+                tokenId,
+                '0x'
+              ),
+            ).to.be.revertedWith('ERC721: transfer caller is not owner or approved');
+          });
+
+          it('receiver is the zero address', async function () {
+            const tokenId = ethers.constants.Two;
+            await mint(holder.address, tokenId);
+
+            await instance.connect(holder).approve(spender.address, tokenId);
+
+            await expect(
+              instance.connect(spender)['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                ethers.constants.AddressZero,
+                tokenId,
+                '0x'
+              ),
+            ).to.be.revertedWith('ERC721: transfer to the zero address');
+          });
 
           it('recipient is not ERC721Receiver implementer', async function () {
             const tokenId = ethers.constants.Two;
