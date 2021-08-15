@@ -380,9 +380,26 @@ describe('ERC721Base', function () {
     });
 
     describe('#_approve', function () {
-      it(
-        'TODO: sets approval of spender with respect to holder for given tokenId',
-      );
+      it('grants approval to spend given token on behalf of holder', async function () {
+        const tokenId = ethers.constants.Two;
+        await instance.mint(holder.address, tokenId);
+
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(ethers.constants.AddressZero);
+
+        await instance.__approve(spender.address, tokenId);
+
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(spender.address);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).not.to.be.reverted;
+
+        await instance.connect(holder).approve(ethers.constants.AddressZero, tokenId);
+
+        await expect(
+          instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
+        ).to.be.reverted;
+      })
 
       it('emits Approval event', async function () {
         const tokenId = ethers.constants.Two;

@@ -260,7 +260,11 @@ export function describeBehaviorOfERC721Base(
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
 
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(ethers.constants.AddressZero);
+
         await instance.connect(holder).approve(spender.address, tokenId);
+
+        expect(await instance.callStatic.getApproved(tokenId)).to.equal(spender.address);
 
         await expect(
           instance.connect(spender).callStatic.transferFrom(holder.address, spender.address, tokenId)
