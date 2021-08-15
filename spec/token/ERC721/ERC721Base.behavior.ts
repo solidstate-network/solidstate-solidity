@@ -1,7 +1,9 @@
 import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
 import { ethers } from 'hardhat';
+
+import { describeFilter } from '@solidstate/library';
 import { deployMockContract } from 'ethereum-waffle';
+import { describeBehaviorOfERC165 } from '../../introspection';
 import { ERC721Base } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber, ContractTransaction } from 'ethers';
@@ -34,6 +36,14 @@ export function describeBehaviorOfERC721Base(
     beforeEach(async function () {
       instance = await deploy();
     });
+
+    describeBehaviorOfERC165(
+      {
+        deploy,
+        interfaceIds: ['0x80ac58cd'],
+      },
+      skips,
+    );
 
     describe('#balanceOf', function () {
       it('returns the token balance of given address', async function () {
