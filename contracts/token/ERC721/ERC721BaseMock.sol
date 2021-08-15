@@ -30,6 +30,15 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
     _transfer(from, to, tokenId);
   }
 
+  function safeTransfer (
+    address from,
+    address to,
+    uint tokenId,
+    bytes calldata data
+  ) external {
+    _safeTransfer(from, to, tokenId, data);
+  }
+
   function mint (
     address account,
     uint tokenId
