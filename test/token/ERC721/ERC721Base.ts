@@ -74,6 +74,18 @@ describe('ERC721Base', function () {
           await instance.callStatic.isApprovedOrOwner(spender.address, tokenId)
         ).to.be.false;
       });
+
+      describe('reverts if', function () {
+        it('token does not exist', async function () {
+          const tokenId = ethers.constants.Two;
+
+          await expect(
+            instance.callStatic.isApprovedOrOwner(ethers.constants.AddressZero, tokenId)
+          ).to.be.revertedWith(
+            'ERC721: query for nonexistent token'
+          );
+        })
+      })
     });
 
     describe('#_mint', function () {
