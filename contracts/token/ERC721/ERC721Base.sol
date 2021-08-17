@@ -53,8 +53,8 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function transferFrom (address from, address to, uint tokenId) override public payable {
-    require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _handleTransferMessageValue(from, to, tokenId, msg.value);
+    require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _transfer(from, to, tokenId);
   }
 
@@ -69,8 +69,8 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function safeTransferFrom (address from, address to, uint tokenId, bytes memory data) override public payable {
-    require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _handleTransferMessageValue(from, to, tokenId, msg.value);
+    require(_isApprovedOrOwner(msg.sender, tokenId), 'ERC721: transfer caller is not owner or approved');
     _safeTransfer(from, to, tokenId, data);
   }
 
