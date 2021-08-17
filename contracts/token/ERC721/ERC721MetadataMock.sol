@@ -18,5 +18,7 @@ contract ERC721MetadataMock is ERC721Metadata, ERC165 {
     l.baseURI = baseURI;
   }
 
+  function _handleApproveMessageValue (address, uint, uint) override internal {}
+
   function _handleTransferMessageValue (address, address, uint, uint) override internal {}
 }

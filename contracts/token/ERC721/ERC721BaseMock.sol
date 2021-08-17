@@ -82,5 +82,7 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
     return _checkOnERC721Received(from, to, tokenId, data);
   }
 
+  function _handleApproveMessageValue (address, uint, uint) override internal {}
+
   function _handleTransferMessageValue (address, address, uint, uint) override internal {}
 }

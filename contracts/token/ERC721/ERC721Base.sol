@@ -78,7 +78,7 @@ abstract contract ERC721Base is IERC721 {
    * @inheritdoc IERC721
    */
   function approve (address operator, uint tokenId) override public payable {
-    // TODO: handle payment
+    _handleApproveMessageValue(operator, tokenId, msg.value);
     address owner = ownerOf(tokenId);
     require(operator != owner, 'ERC721: approval to current owner');
     require(msg.sender == owner || isApprovedForAll(owner, msg.sender), 'ERC721: approve caller is not owner nor approved for all');
@@ -178,6 +178,14 @@ abstract contract ERC721Base is IERC721 {
     bytes4 returnValue = abi.decode(returnData, (bytes4));
     return returnValue == type(IERC721Receiver).interfaceId;
   }
+
+  /**
+   * @notice ERC721 hook, called before externally called approvals for processing of included message value
+   * @param operator beneficiary of approval
+   * @param tokenId id of transferred token
+   * @param value message value
+   */
+  function _handleApproveMessageValue (address operator, uint tokenId, uint value) virtual internal;
 
   /**
    * @notice ERC721 hook, called before externally called transfers for processing of included message value

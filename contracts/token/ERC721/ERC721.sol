@@ -12,6 +12,14 @@ import {ERC165} from '../../introspection/ERC165.sol';
  */
 abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata, ERC165 {
   /**
+   * @notice ERC721 hook: revert if value is included in external approve function call
+   * @inheritdoc ERC721Base
+   */
+  function _handleApproveMessageValue (address, uint, uint value) virtual override internal {
+    require(value == 0, 'ERC721: payable approve calls not supported');
+  }
+
+  /**
    * @notice ERC721 hook: revert if value is included in external transfer function call
    * @inheritdoc ERC721Base
    */

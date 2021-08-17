@@ -129,5 +129,24 @@ export function describeBehaviorOfERC721(
         });
       });
     });
+
+    describe('#approve', function () {
+      describe('reverts if', function () {
+        it('value is included in transaction', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
+
+          await expect(
+            instance.connect(holder).approve(
+              ethers.constants.AddressZero,
+              tokenId,
+              { value: ethers.constants.One }
+            )
+          ).to.be.revertedWith(
+            'ERC721: payable approve calls not supported'
+          );
+        })
+      });
+    });
   });
 }
