@@ -9,7 +9,7 @@ import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 /**
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
-contract ERC20Snapshot is ERC20Base {
+abstract contract ERC20Snapshot is ERC20Base {
   using Array for uint[];
 
   event Snapshot (uint id);

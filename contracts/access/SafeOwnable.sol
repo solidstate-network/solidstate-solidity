@@ -6,7 +6,7 @@ import {Ownable, OwnableStorage} from './Ownable.sol';
 import {SafeOwnableInternal} from './SafeOwnableInternal.sol';
 import {SafeOwnableStorage} from './SafeOwnableStorage.sol';
 
-contract SafeOwnable is Ownable, SafeOwnableInternal {
+abstract contract SafeOwnable is Ownable, SafeOwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;
   using SafeOwnableStorage for SafeOwnableStorage.Layout;
 

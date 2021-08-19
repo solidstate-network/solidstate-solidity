@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { Diamond, Diamond__factory } from '../../../typechain';
+import { Diamond, DiamondMock__factory } from '../../../typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { describeBehaviorOfDiamond } from '@solidstate/spec';
@@ -19,7 +19,7 @@ describe('Diamond', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new Diamond__factory(deployer).deploy();
+    instance = await new DiamondMock__factory(deployer).deploy();
 
     const facets = await instance.callStatic['facets()']();
 

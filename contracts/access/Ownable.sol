@@ -6,7 +6,7 @@ import {IERC173} from './IERC173.sol';
 import {OwnableInternal} from './OwnableInternal.sol';
 import {OwnableStorage} from './OwnableStorage.sol';
 
-contract Ownable is IERC173, OwnableInternal {
+abstract contract Ownable is IERC173, OwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;
 
   function owner () virtual override public view returns (address) {
