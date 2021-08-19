@@ -28,9 +28,9 @@ describe('ERC20ImplicitApproval', function () {
     deploy: async () => instance as any,
     supply: ethers.constants.Zero,
     mint: (recipient, amount) =>
-      instance['mint(address,uint256)'](recipient, amount),
+      instance.__mint(recipient, amount),
     burn: (recipient, amount) =>
-      instance['burn(address,uint256)'](recipient, amount),
+      instance.__burn(recipient, amount),
     getHolder: async () => holder,
     getImplicitlyApprovedSpender: async () => implicitlyApprovedSpender,
   });
@@ -39,13 +39,13 @@ describe('ERC20ImplicitApproval', function () {
     describe('#_isImplicitlyApproved', function () {
       it('returns implicit approval status of address', async function () {
         expect(
-          await instance.callStatic['isImplicitlyApproved(address)'](
+          await instance.callStatic.__isImplicitlyApproved(
             ethers.constants.AddressZero,
           ),
         ).to.be.false;
 
         expect(
-          await instance.callStatic['isImplicitlyApproved(address)'](
+          await instance.callStatic.__isImplicitlyApproved(
             implicitlyApprovedSpender.address,
           ),
         ).to.be.true;

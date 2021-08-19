@@ -14,7 +14,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     ERC165Storage.layout().setSupportedInterface(type(IERC1155).interfaceId, true);
   }
 
-  function mint (
+  function __mint (
     address account,
     uint id,
     uint amount
@@ -22,7 +22,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _mint(account, id, amount, '');
   }
 
-  function safeMint (
+  function __safeMint (
     address account,
     uint id,
     uint amount
@@ -30,7 +30,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _safeMint(account, id, amount, '');
   }
 
-  function mintBatch (
+  function __mintBatch (
     address account,
     uint[] memory ids,
     uint[] memory amounts
@@ -38,7 +38,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _mintBatch(account, ids, amounts, '');
   }
 
-  function safeMintBatch (
+  function __safeMintBatch (
     address account,
     uint[] memory ids,
     uint[] memory amounts
@@ -46,7 +46,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _safeMintBatch(account, ids, amounts, '');
   }
 
-  function burn (
+  function __burn (
     address account,
     uint id,
     uint amount
@@ -54,7 +54,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _burn(account, id, amount);
   }
 
-  function burnBatch (
+  function __burnBatch (
     address account,
     uint[] memory ids,
     uint[] memory amounts
@@ -62,7 +62,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _burnBatch(account, ids, amounts);
   }
 
-  function transfer (
+  function __transfer (
     address operator,
     address sender,
     address recipient,
@@ -73,7 +73,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _transfer(operator, sender, recipient, id, amount, data);
   }
 
-  function safeTransfer (
+  function __safeTransfer (
     address operator,
     address sender,
     address recipient,
@@ -84,7 +84,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _safeTransfer(operator, sender, recipient, id, amount, data);
   }
 
-  function transferBatch (
+  function __transferBatch (
     address operator,
     address sender,
     address recipient,
@@ -95,7 +95,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
     _transferBatch(operator, sender, recipient, ids, amounts, data);
   }
 
-  function safeTransferBatch (
+  function __safeTransferBatch (
     address operator,
     address sender,
     address recipient,

@@ -5,19 +5,19 @@ pragma solidity ^0.8.0;
 import {ERC20Base} from './ERC20Base.sol';
 
 contract ERC20BaseMock is ERC20Base {
-  function transfer (address sender, address recipient, uint amount) external {
+  function __transfer (address sender, address recipient, uint amount) external {
     _transfer(sender, recipient, amount);
   }
 
-  function mint (address account, uint amount) external {
+  function __mint (address account, uint amount) external {
     _mint(account, amount);
   }
 
-  function burn (address account, uint amount) external {
+  function __burn (address account, uint amount) external {
     _burn(account, amount);
   }
 
-  function approve (address holder, address spender, uint amount) external {
+  function __approve (address holder, address spender, uint amount) external {
     _approve(holder, spender, amount);
   }
 }
