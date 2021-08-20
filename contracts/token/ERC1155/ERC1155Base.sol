@@ -15,10 +15,7 @@ abstract contract ERC1155Base is IERC1155 {
   using AddressUtils for address;
 
   /**
-   * @notice query the balance of given token held by given address
-   * @param account address to query
-   * @param id token to query
-   * @return token balance
+   * @inheritdoc IERC1155
    */
   function balanceOf (
     address account,
@@ -29,10 +26,7 @@ abstract contract ERC1155Base is IERC1155 {
   }
 
   /**
-   * @notice query the balances of given tokens held by given addresses
-   * @param accounts addresss to query
-   * @param ids tokens to query
-   * @return token balances
+   * @inheritdoc IERC1155
    */
   function balanceOfBatch (
     address[] memory accounts,
@@ -55,10 +49,7 @@ abstract contract ERC1155Base is IERC1155 {
   }
 
   /**
-   * @notice query approval status of given operator with respect to given address
-   * @param account address to query for approval granted
-   * @param operator address to query for approval received
-   * @return whether operator is approved to spend tokens held by account
+   * @inheritdoc IERC1155
    */
   function isApprovedForAll (
     address account,
@@ -68,9 +59,7 @@ abstract contract ERC1155Base is IERC1155 {
   }
 
   /**
-   * @notice grant approval to or revoke approval from given operator to spend held tokens
-   * @param operator address whose approval status to update
-   * @param status whether operator should be considered approved
+   * @inheritdoc IERC1155
    */
   function setApprovalForAll (
     address operator,
@@ -82,12 +71,7 @@ abstract contract ERC1155Base is IERC1155 {
   }
 
   /**
-   * @notice transfer tokens between given addresses, checking for ERC1155Receiver implementation if applicable
-   * @param from sender of tokens
-   * @param to receiver of tokens
-   * @param id token ID
-   * @param amount quantity of tokens to transfer
-   * @param data data payload
+   * @inheritdoc IERC1155
    */
   function safeTransferFrom (
     address from,
@@ -101,12 +85,7 @@ abstract contract ERC1155Base is IERC1155 {
   }
 
   /**
-   * @notice transfer batch of tokens between given addresses, checking for ERC1155Receiver implementation if applicable
-   * @param from sender of tokens
-   * @param to receiver of tokens
-   * @param ids list of token IDs
-   * @param amounts list of quantities of tokens to transfer
-   * @param data data payload
+   * @inheritdoc IERC1155
    */
   function safeBatchTransferFrom (
     address from,
@@ -121,7 +100,7 @@ abstract contract ERC1155Base is IERC1155 {
 
   /**
    * @notice mint given quantity of tokens for given address
-   * @dev ERC1155Receiver implemenation is not checked
+   * @dev ERC1155Receiver implementation is not checked
    * @param account beneficiary of minting
    * @param id token ID
    * @param amount quantity of tokens to mint
@@ -162,7 +141,7 @@ abstract contract ERC1155Base is IERC1155 {
 
   /**
    * @notice mint batch of tokens for given address
-   * @dev ERC1155Receiver implemenation is not checked
+   * @dev ERC1155Receiver implementation is not checked
    * @param account beneficiary of minting
    * @param ids list of token IDs
    * @param amounts list of quantities of tokens to mint
@@ -261,7 +240,7 @@ abstract contract ERC1155Base is IERC1155 {
 
   /**
    * @notice transfer tokens between given addresses
-   * @dev ERC1155Receiver implemenation is not checked
+   * @dev ERC1155Receiver implementation is not checked
    * @param operator executor of transfer
    * @param sender sender of tokens
    * @param recipient receiver of tokens
@@ -317,7 +296,7 @@ abstract contract ERC1155Base is IERC1155 {
 
   /**
    * @notice transfer batch of tokens between given addresses
-   * @dev ERC1155Receiver implemenation is not checked
+   * @dev ERC1155Receiver implementation is not checked
    * @param operator executor of transfer
    * @param sender sender of tokens
    * @param recipient receiver of tokens
@@ -454,7 +433,7 @@ abstract contract ERC1155Base is IERC1155 {
 
   /**
    * @notice ERC1155 hook, called before all transfers including mint and burn
-   * @dev function should be overridden and new implemenation must call super
+   * @dev function should be overridden and new implementation must call super
    * @dev called for both single and batch transfers
    * @param operator executor of transfer
    * @param from sender of tokens

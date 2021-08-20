@@ -19,14 +19,14 @@ contract ERC1404BaseMock is ERC1404Base {
     return 0;
   }
 
-  function mint (
+  function __mint (
     address account,
     uint amount
   ) external {
     _mint(account, amount);
   }
 
-  function burn (
+  function __burn (
     address account,
     uint amount
   ) external {

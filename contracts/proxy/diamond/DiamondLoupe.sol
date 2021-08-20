@@ -9,7 +9,7 @@ import {IDiamondLoupe} from './IDiamondLoupe.sol';
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-contract DiamondLoupe is IDiamondLoupe {
+abstract contract DiamondLoupe is IDiamondLoupe {
   /**
    * @inheritdoc IDiamondLoupe
    */

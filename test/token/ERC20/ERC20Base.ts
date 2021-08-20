@@ -28,9 +28,9 @@ describe('ERC20Base', function () {
     deploy: async () => instance as any,
     supply: ethers.constants.Zero,
     mint: (recipient, amount) =>
-      instance['mint(address,uint256)'](recipient, amount),
+      instance.__mint(recipient, amount),
     burn: (recipient, amount) =>
-      instance['burn(address,uint256)'](recipient, amount),
+      instance.__burn(recipient, amount),
   });
 
   describe('__internal', function () {
@@ -39,7 +39,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(() =>
-          instance['mint(address,uint256)'](receiver.address, amount),
+          instance.__mint(receiver.address, amount),
         ).to.changeTokenBalance(instance, receiver, amount);
       });
 
@@ -47,7 +47,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
 
         let initialSupply = await instance.callStatic['totalSupply()']();
-        await instance['mint(address,uint256)'](receiver.address, amount);
+        await instance.__mint(receiver.address, amount);
         let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(finalSupply.sub(initialSupply)).to.equal(amount);
@@ -57,7 +57,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance['mint(address,uint256)'](receiver.address, amount),
+          instance.__mint(receiver.address, amount),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.constants.AddressZero, receiver.address, amount);
@@ -66,7 +66,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance['mint(address,uint256)'](
+            instance.__mint(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
@@ -78,10 +78,10 @@ describe('ERC20Base', function () {
     describe('#_burn', function () {
       it('decreases balance of given account by given amount', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](receiver.address, amount);
+        await instance.__mint(receiver.address, amount);
 
         await expect(() =>
-          instance['burn(address,uint256)'](receiver.address, amount),
+          instance.__burn(receiver.address, amount),
         ).to.changeTokenBalance(
           instance,
           receiver,
@@ -91,10 +91,10 @@ describe('ERC20Base', function () {
 
       it('decreases total supply by given amount', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](receiver.address, amount);
+        await instance.__mint(receiver.address, amount);
 
         let initialSupply = await instance.callStatic['totalSupply()']();
-        await instance['burn(address,uint256)'](receiver.address, amount);
+        await instance.__burn(receiver.address, amount);
         let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(initialSupply.sub(finalSupply)).to.equal(amount);
@@ -102,10 +102,10 @@ describe('ERC20Base', function () {
 
       it('emits Transfer event', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](receiver.address, amount);
+        await instance.__mint(receiver.address, amount);
 
         await expect(
-          instance['burn(address,uint256)'](receiver.address, amount),
+          instance.__burn(receiver.address, amount),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(receiver.address, ethers.constants.AddressZero, amount);
@@ -114,7 +114,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance['burn(address,uint256)'](
+            instance.__burn(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
@@ -122,9 +122,9 @@ describe('ERC20Base', function () {
         });
 
         it('burn amount exceeds balance', async () => {
-          await instance['mint(address,uint256)'](receiver.address, 100);
+          await instance.__mint(receiver.address, 100);
           await expect(
-            instance['burn(address,uint256)'](receiver.address, 101),
+            instance.__burn(receiver.address, 101),
           ).to.be.revertedWith('ERC20: burn amount exceeds balance');
         });
       });
@@ -133,10 +133,10 @@ describe('ERC20Base', function () {
     describe('#_transfer', function () {
       it('decreases balance of sender and increases balance of recipient by given amount', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](sender.address, amount);
+        await instance.__mint(sender.address, amount);
 
         await expect(() =>
-          instance['transfer(address,address,uint256)'](
+          instance.__transfer(
             sender.address,
             receiver.address,
             amount,
@@ -150,10 +150,10 @@ describe('ERC20Base', function () {
 
       it('does not modify total supply', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](sender.address, amount);
+        await instance.__mint(sender.address, amount);
 
         let initialSupply = await instance.callStatic['totalSupply()']();
-        await instance['transfer(address,address,uint256)'](
+        await instance.__transfer(
           sender.address,
           receiver.address,
           amount,
@@ -165,10 +165,10 @@ describe('ERC20Base', function () {
 
       it('emits Transfer event', async function () {
         let amount = ethers.constants.Two;
-        await instance['mint(address,uint256)'](sender.address, amount);
+        await instance.__mint(sender.address, amount);
 
         await expect(
-          instance['transfer(address,address,uint256)'](
+          instance.__transfer(
             sender.address,
             receiver.address,
             amount,
@@ -181,7 +181,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('sender is the zero address', async function () {
           await expect(
-            instance['transfer(address,address,uint256)'](
+            instance.__transfer(
               ethers.constants.AddressZero,
               receiver.address,
               ethers.constants.Zero,
@@ -191,7 +191,7 @@ describe('ERC20Base', function () {
 
         it('receiver is the zero address', async function () {
           await expect(
-            instance['transfer(address,address,uint256)'](
+            instance.__transfer(
               sender.address,
               ethers.constants.AddressZero,
               ethers.constants.Zero,
@@ -207,7 +207,7 @@ describe('ERC20Base', function () {
 
         await instance
           .connect(holder)
-          ['approve(address,address,uint256)'](
+          .__approve(
             holder.address,
             spender.address,
             amount,
@@ -222,7 +222,7 @@ describe('ERC20Base', function () {
         // approvals are not cumulative
         await instance
           .connect(holder)
-          ['approve(address,address,uint256)'](
+          .__approve(
             holder.address,
             spender.address,
             amount,
@@ -239,7 +239,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance['approve(address,address,uint256)'](
+          instance.__approve(
             holder.address,
             spender.address,
             amount,
@@ -252,7 +252,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('holder is the zero address', async function () {
           await expect(
-            instance['approve(address,address,uint256)'](
+            instance.__approve(
               ethers.constants.AddressZero,
               spender.address,
               ethers.constants.Zero,
@@ -262,7 +262,7 @@ describe('ERC20Base', function () {
 
         it('spender is the zero address', async function () {
           await expect(
-            instance['approve(address,address,uint256)'](
+            instance.__approve(
               holder.address,
               ethers.constants.AddressZero,
               ethers.constants.Zero,

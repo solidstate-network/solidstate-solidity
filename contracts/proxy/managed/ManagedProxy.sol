@@ -9,7 +9,7 @@ import {Proxy} from '../Proxy.sol';
  * @dev implementation fetched using immutable function selector
  */
  abstract contract ManagedProxy is Proxy {
-   bytes4 internal immutable _managerSelector;
+   bytes4 internal immutable MANAGER_SELECTOR;
 
    /**
     * @param managerSelector function selector used to fetch implementation from manager
@@ -17,14 +17,14 @@ import {Proxy} from '../Proxy.sol';
    constructor (
      bytes4 managerSelector
    ) {
-     _managerSelector = managerSelector;
+     MANAGER_SELECTOR = managerSelector;
    }
 
    /**
     * @inheritdoc Proxy
     */
    function _getImplementation () override internal view returns (address) {
-     (bool success, bytes memory data) = _getManager().staticcall(abi.encodePacked(_managerSelector));
+     (bool success, bytes memory data) = _getManager().staticcall(abi.encodePacked(MANAGER_SELECTOR));
      require(success, 'ManagedProxy: failed to fetch implementation');
      return abi.decode(data, (address));
    }

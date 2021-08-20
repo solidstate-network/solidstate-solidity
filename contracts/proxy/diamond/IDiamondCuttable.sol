@@ -2,6 +2,10 @@
 
 pragma solidity ^0.8.0;
 
+/**
+ * @title Diamond proxy upgrade interface
+ * @dev see https://eips.ethereum.org/EIPS/eip-2535
+ */
 interface IDiamondCuttable {
   enum FacetCutAction { ADD, REPLACE, REMOVE }
 

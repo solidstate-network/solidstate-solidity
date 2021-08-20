@@ -12,8 +12,8 @@ import {MetamorphicFactoryStorage} from './MetamorphicFactoryStorage.sol';
 abstract contract MetamorphicFactory is Factory {
   using MetamorphicFactoryStorage for MetamorphicFactoryStorage.Layout;
 
-  bytes private constant _metamorphicInitCode = hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
-  bytes32 private constant _metamorphicInitCodeHash = keccak256(_metamorphicInitCode);
+  bytes private constant METAMORPHIC_INIT_CODE = hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
+  bytes32 private constant METAMORPHIC_INIT_CODE_HASH = keccak256(METAMORPHIC_INIT_CODE);
 
   /**
    * @notice get metamorphic prototype deployment location for copying
@@ -33,7 +33,7 @@ abstract contract MetamorphicFactory is Factory {
   function _deployMetamorphicContract (address target, bytes32 salt) internal returns (address metamorphicContract) {
     MetamorphicFactoryStorage.Layout storage l = MetamorphicFactoryStorage.layout();
     l.setMetamorphicImplementation(target);
-    metamorphicContract = _deploy(_metamorphicInitCode, salt);
+    metamorphicContract = _deploy(METAMORPHIC_INIT_CODE, salt);
     l.setMetamorphicImplementation(address(0));
   }
 
@@ -43,6 +43,6 @@ abstract contract MetamorphicFactory is Factory {
    * @return deployment address
    */
   function _calculateMetamorphicDeploymentAddress (bytes32 salt) internal view returns (address) {
-    return _calculateDeploymentAddress(_metamorphicInitCodeHash, salt);
+    return _calculateDeploymentAddress(METAMORPHIC_INIT_CODE_HASH, salt);
   }
 }

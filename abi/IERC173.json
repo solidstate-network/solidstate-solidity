@@ -35,7 +35,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "newOwner",
+        "name": "account",
         "type": "address"
       }
     ],

@@ -9,7 +9,7 @@ import {DiamondBaseStorage} from './DiamondBaseStorage.sol';
 /**
  * @title EIP-2535 "Diamond" proxy update contract
  */
-contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
+abstract contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
   /**

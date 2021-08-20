@@ -18,7 +18,7 @@ import {ManagedProxy} from './ManagedProxy.sol';
      return _manager;
    }
 
-   function getImplementation () external view returns (address) {
+   function __getImplementation () external view returns (address) {
      return _getImplementation();
    }
 

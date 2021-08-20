@@ -23,14 +23,14 @@ contract ERC20Mock is ERC20 {
     _mint(msg.sender, supply);
   }
 
-  function mint (
+  function __mint (
     address account,
     uint amount
   ) external {
     _mint(account, amount);
   }
 
-  function burn (
+  function __burn (
     address account,
     uint amount
   ) external {

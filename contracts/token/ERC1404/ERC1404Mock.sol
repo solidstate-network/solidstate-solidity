@@ -21,14 +21,14 @@ contract ERC1404Mock is ERC1404 {
     return 0;
   }
 
-  function mint (
+  function __mint (
     address account,
     uint amount
   ) external {
     _mint(account, amount);
   }
 
-  function burn (
+  function __burn (
     address account,
     uint amount
   ) external {

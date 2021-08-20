@@ -4,7 +4,17 @@ pragma solidity ^0.8.0;
 
 import {ERC20Base, ERC20BaseStorage} from './ERC20Base.sol';
 
+/**
+ * @title ERC20 safe approval extensions
+ * @dev mitigations for transaction-ordering vulnerability (see https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729)
+ */
 abstract contract ERC20Extended is ERC20Base {
+  /**
+   * @notice increase spend amount granted to spender
+   * @param spender address whose allowance to increase
+   * @param amount quantity by which to increase allowance
+   * @return success status (always true; otherwise function will revert)
+   */
   function increaseAllowance (address spender, uint amount) virtual public returns (bool) {
     unchecked {
       mapping (address => uint) storage allowances = ERC20BaseStorage.layout().allowances[msg.sender];
@@ -22,6 +32,12 @@ abstract contract ERC20Extended is ERC20Base {
     }
   }
 
+  /**
+   * @notice decrease spend amount granted to spender
+   * @param spender address whose allowance to decrease
+   * @param amount quantity by which to decrease allowance
+   * @return success status (always true; otherwise function will revert)
+   */
   function decreaseAllowance (address spender, uint amount) virtual public returns (bool) {
     unchecked {
       mapping (address => uint) storage allowances = ERC20BaseStorage.layout().allowances[msg.sender];

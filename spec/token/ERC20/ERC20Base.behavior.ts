@@ -99,6 +99,36 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
+    describe('#approve', function () {
+      it('enables given spender to spend tokens on behalf of sender', async function () {
+        let amount = ethers.constants.Two;
+        await instance
+          .connect(holder)
+          ['approve(address,uint256)'](spender.address, amount);
+
+        expect(
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
+        ).to.equal(amount);
+
+        // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
+      });
+
+      it('emits Approval event', async function () {
+        let amount = ethers.constants.Two;
+
+        await expect(
+          instance
+            .connect(holder)
+            ['approve(address,uint256)'](spender.address, amount),
+        )
+          .to.emit(instance, 'Approval')
+          .withArgs(holder.address, spender.address, amount);
+      });
+    });
+
     describe('#transfer', function () {
       it('transfers amount from a to b', async function () {
         const amount = ethers.constants.Two;
@@ -177,36 +207,6 @@ export function describeBehaviorOfERC20Base(
               ),
           ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
         });
-      });
-    });
-
-    describe('#approve', function () {
-      it('enables given spender to spend tokens on behalf of sender', async function () {
-        let amount = ethers.constants.Two;
-        await instance
-          .connect(holder)
-          ['approve(address,uint256)'](spender.address, amount);
-
-        expect(
-          await instance.callStatic['allowance(address,address)'](
-            holder.address,
-            spender.address,
-          ),
-        ).to.equal(amount);
-
-        // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
-      });
-
-      it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
-
-        await expect(
-          instance
-            .connect(holder)
-            ['approve(address,uint256)'](spender.address, amount),
-        )
-          .to.emit(instance, 'Approval')
-          .withArgs(holder.address, spender.address, amount);
       });
     });
   });

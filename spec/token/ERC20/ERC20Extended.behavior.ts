@@ -59,7 +59,7 @@ export function describeBehaviorOfERC20Extended(
             holder.address,
             spender.address,
           ),
-        ).to.equal(amount.mul(ethers.constants.Two));
+        ).to.equal(amount.add(amount));
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });

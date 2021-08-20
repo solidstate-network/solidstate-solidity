@@ -21,9 +21,9 @@ describe('ERC1404', function () {
   describeBehaviorOfERC1404({
     deploy: async () => instance as any,
     mint: (recipient, amount) =>
-      instance['mint(address,uint256)'](recipient, amount),
+      instance.__mint(recipient, amount),
     burn: (recipient, amount) =>
-      instance['burn(address,uint256)'](recipient, amount),
+      instance.__burn(recipient, amount),
     restrictions,
     name: '',
     symbol: '',

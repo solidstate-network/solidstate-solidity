@@ -3,14 +3,14 @@
 pragma solidity ^0.8.0;
 
 library ERC165Storage {
-  bytes32 internal constant STORAGE_SLOT = keccak256(
-    'solidstate.contracts.storage.ERC165'
-  );
-
   struct Layout {
     // TODO: use EnumerableSet to allow post-diamond-cut auditing
     mapping (bytes4 => bool) supportedInterfaces;
   }
+
+  bytes32 internal constant STORAGE_SLOT = keccak256(
+    'solidstate.contracts.storage.ERC165'
+  );
 
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;

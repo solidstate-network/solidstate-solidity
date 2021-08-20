@@ -12,7 +12,7 @@ import {DiamondLoupe, IDiamondLoupe} from './DiamondLoupe.sol';
 /**
  * @notice SolidState "Diamond" proxy reference implementation
  */
-contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC165 {
+abstract contract Diamond is DiamondBase, DiamondCuttable, DiamondLoupe, SafeOwnable, ERC165 {
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
   using ERC165Storage for ERC165Storage.Layout;
   using OwnableStorage for OwnableStorage.Layout;

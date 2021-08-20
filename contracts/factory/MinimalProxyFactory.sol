@@ -9,8 +9,8 @@ import {Factory} from './Factory.sol';
  * @dev derived from https://github.com/optionality/clone-factory (MIT license)
  */
 abstract contract MinimalProxyFactory is Factory {
-  bytes private constant _minimalProxyInitCodePrefix = hex'3d602d80600a3d3981f3_363d3d373d3d3d363d73';
-  bytes private constant _minimalProxyInitCodeSuffix = hex'5af43d82803e903d91602b57fd5bf3';
+  bytes private constant MINIMAL_PROXY_INIT_CODE_PREFIX = hex'3d602d80600a3d3981f3_363d3d373d3d3d363d73';
+  bytes private constant MINIMAL_PROXY_INIT_CODE_SUFFIX = hex'5af43d82803e903d91602b57fd5bf3';
 
   /**
    * @notice deploy an EIP1167 minimal proxy using "CREATE" opcode
@@ -48,6 +48,6 @@ abstract contract MinimalProxyFactory is Factory {
    * @return bytes memory initialization code
    */
   function _generateMinimalProxyInitCode (address target) internal pure returns (bytes memory) {
-    return abi.encodePacked(_minimalProxyInitCodePrefix, target, _minimalProxyInitCodeSuffix);
+    return abi.encodePacked(MINIMAL_PROXY_INIT_CODE_PREFIX, target, MINIMAL_PROXY_INIT_CODE_SUFFIX);
   }
 }
