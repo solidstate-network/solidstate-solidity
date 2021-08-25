@@ -17,6 +17,12 @@ describe('Multicall', function () {
   // TODO: move to behavior tests
 
   describe('#multicall', function () {
+    it('returns empty array if no call data is passed', async function () {
+      expect(
+        await instance.callStatic.multicall([])
+      ).to.deep.equal([])
+    })
+
     it('returns array of response data', async function () {
       const result = await instance.callStatic.multicall([
         (await instance.populateTransaction.callTest()).data as BytesLike,
