@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import {EnumerableSet} from '../../utils/EnumerableSet.sol';
 import {ERC1155Base} from './ERC1155Base.sol';
+import {ERC1155BaseInternal} from './ERC1155BaseInternal.sol';
 import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 import {IERC1155Enumerable} from './IERC1155Enumerable.sol';
 
@@ -60,7 +61,7 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
 
   /**
    * @notice ERC1155 hook: update aggregate values
-   * @inheritdoc ERC1155Base
+   * @inheritdoc ERC1155BaseInternal
    */
   function _beforeTokenTransfer (
     address operator,
