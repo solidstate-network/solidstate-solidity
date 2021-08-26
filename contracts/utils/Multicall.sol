@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.0;
 
+import {IMulticall} from './IMulticall.sol';
+
 /**
  * @title Utility contract for supporting processing of multiple function calls in a single transaction
  */
-abstract contract Multicall {
+abstract contract Multicall is IMulticall {
   /**
-   * @notice batch function calls to the contract and return the results of each
-   * @param data array of function call data payloads
-   * @return results array of function call results
+   * @inheritdoc IMulticall
    */
-  function multicall(bytes[] calldata data) external returns (bytes[] memory results) {
+  function multicall(bytes[] calldata data) override external returns (bytes[] memory results) {
     results = new bytes[](data.length);
 
     for (uint i; i < data.length; i++) {
