@@ -5,13 +5,14 @@ pragma solidity ^0.8.0;
 import {EnumerableSet} from '../../utils/EnumerableSet.sol';
 import {ERC1155Base} from './ERC1155Base.sol';
 import {ERC1155BaseInternal} from './ERC1155BaseInternal.sol';
-import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 import {IERC1155Enumerable} from './IERC1155Enumerable.sol';
+import {ERC1155EnumerableInternal} from './ERC1155EnumerableInternal.sol';
+import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 
 /**
  * @title ERC1155 implementation including enumerable and aggregate functions
  */
-abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
+abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base, ERC1155EnumerableInternal {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
@@ -61,7 +62,7 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
 
   /**
    * @notice ERC1155 hook: update aggregate values
-   * @inheritdoc ERC1155BaseInternal
+   * @inheritdoc ERC1155EnumerableInternal
    */
   function _beforeTokenTransfer (
     address operator,
@@ -70,36 +71,7 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) virtual override internal {
+  ) virtual override(ERC1155BaseInternal, ERC1155EnumerableInternal) internal {
     super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
-
-    if (from != to) {
-      ERC1155EnumerableStorage.Layout storage l = ERC1155EnumerableStorage.layout();
-      mapping (uint => EnumerableSet.AddressSet) storage tokenAccounts = l.accountsByToken;
-      EnumerableSet.UintSet storage fromTokens = l.tokensByAccount[from];
-      EnumerableSet.UintSet storage toTokens = l.tokensByAccount[to];
-
-      for (uint i; i < ids.length; i++) {
-        uint amount = amounts[i];
-
-        if (amount > 0) {
-          uint id = ids[i];
-
-          if (from == address(0)) {
-            l.totalSupply[id] += amount;
-          } else if (balanceOf(from, id) == amount) {
-            tokenAccounts[id].remove(from);
-            fromTokens.remove(id);
-          }
-
-          if (to == address(0)) {
-            l.totalSupply[id] -= amount;
-          } else if (balanceOf(to, id) == 0) {
-            tokenAccounts[id].add(to);
-            toTokens.add(id);
-          }
-        }
-      }
-    }
   }
 }
