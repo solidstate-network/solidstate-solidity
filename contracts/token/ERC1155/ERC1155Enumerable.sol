@@ -11,15 +11,15 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
   using EnumerableSet for EnumerableSet.AddressSet;
   using EnumerableSet for EnumerableSet.UintSet;
 
-  function totalSupply (uint id) public override view returns (uint) {
+  function totalSupply (uint id) virtual override public view returns (uint) {
     return ERC1155EnumerableStorage.layout().totalSupply[id];
   }
 
-  function totalHolders (uint id) public override view returns (uint) {
+  function totalHolders (uint id) virtual override public view returns (uint) {
     return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
   }
 
-  function accountsByToken (uint id) public override view returns (address[] memory) {
+  function accountsByToken (uint id) virtual override public view returns (address[] memory) {
     EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage.layout().accountsByToken[id];
 
     address[] memory addresses = new address[](accounts.length());
@@ -31,7 +31,7 @@ abstract contract ERC1155Enumerable is IERC1155Enumerable, ERC1155Base {
     return addresses;
   }
 
-  function tokensByAccount (address account) public override view returns (uint[] memory) {
+  function tokensByAccount (address account) virtual override public view returns (uint[] memory) {
     EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage.layout().tokensByAccount[account];
 
     uint[] memory ids = new uint[](tokens.length());
