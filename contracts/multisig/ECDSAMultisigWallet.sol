@@ -127,11 +127,11 @@ abstract contract ECDSAMultisigWallet {
       l.setInvalidNonce(signer, signature.nonce);
 
       require(
-        signerBitmap & (2 ** index) == 0,
+        signerBitmap & (1 << index) == 0,
         'ECDSAMultisigWallet: signer cannot sign more than once'
       );
 
-      signerBitmap += 2 ** index;
+      signerBitmap += 1 << index;
     }
   }
 }

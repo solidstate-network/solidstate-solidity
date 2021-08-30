@@ -20,7 +20,7 @@ abstract contract ERC1155Base is IERC1155 {
   function balanceOf (
     address account,
     uint id
-  ) override public view returns (uint) {
+  ) virtual override public view returns (uint) {
     require(account != address(0), 'ERC1155: balance query for the zero address');
     return ERC1155BaseStorage.layout().balances[id][account];
   }
@@ -31,16 +31,18 @@ abstract contract ERC1155Base is IERC1155 {
   function balanceOfBatch (
     address[] memory accounts,
     uint[] memory ids
-  ) override public view returns (uint[] memory) {
+  ) virtual override public view returns (uint[] memory) {
     require(accounts.length == ids.length, 'ERC1155: accounts and ids length mismatch');
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
     uint[] memory batchBalances = new uint[](accounts.length);
 
-    for (uint i; i < accounts.length; i++) {
-      require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
-      batchBalances[i] = balances[ids[i]][accounts[i]];
+    unchecked {
+      for (uint i; i < accounts.length; i++) {
+        require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
+        batchBalances[i] = balances[ids[i]][accounts[i]];
+      }
     }
 
     return batchBalances;
@@ -52,7 +54,7 @@ abstract contract ERC1155Base is IERC1155 {
   function isApprovedForAll (
     address account,
     address operator
-  ) override public view returns (bool) {
+  ) virtual override public view returns (bool) {
     return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
   }
 
@@ -62,7 +64,7 @@ abstract contract ERC1155Base is IERC1155 {
   function setApprovalForAll (
     address operator,
     bool status
-  ) override public {
+  ) virtual override public {
     require(msg.sender != operator, 'ERC1155: setting approval status for self');
     ERC1155BaseStorage.layout().operatorApprovals[msg.sender][operator] = status;
     emit ApprovalForAll(msg.sender, operator, status);
@@ -77,7 +79,7 @@ abstract contract ERC1155Base is IERC1155 {
     uint id,
     uint amount,
     bytes memory data
-  ) override public {
+  ) virtual override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
     _safeTransfer(msg.sender, from, to, id, amount, data);
   }
@@ -91,7 +93,7 @@ abstract contract ERC1155Base is IERC1155 {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) override public {
+  ) virtual override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
     _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
   }
@@ -159,8 +161,7 @@ abstract contract ERC1155Base is IERC1155 {
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
     for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      balances[id][account] += amounts[i];
+      balances[ids[i]][account] += amounts[i];
     }
 
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
@@ -199,8 +200,11 @@ abstract contract ERC1155Base is IERC1155 {
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
-    balances[account] -= amount;
+
+    unchecked {
+      require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
+      balances[account] -= amount;
+    }
 
     emit TransferSingle(msg.sender, account, address(0), id, amount);
   }
@@ -223,10 +227,12 @@ abstract contract ERC1155Base is IERC1155 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
-      balances[id][account] -= amounts[i];
+    unchecked {
+      for (uint i; i < ids.length; i++) {
+        uint id = ids[i];
+        require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
+        balances[id][account] -= amounts[i];
+      }
     }
 
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);
@@ -256,11 +262,12 @@ abstract contract ERC1155Base is IERC1155 {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    uint256 senderBalance = balances[id][sender];
-    require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
     unchecked {
+      uint256 senderBalance = balances[id][sender];
+      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       balances[id][sender] = senderBalance - amount;
     }
+
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -316,11 +323,12 @@ abstract contract ERC1155Base is IERC1155 {
       uint token = ids[i];
       uint amount = amounts[i];
 
-      uint256 senderBalance = balances[token][sender];
-      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       unchecked {
+        uint256 senderBalance = balances[token][sender];
+        require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
         balances[token][sender] = senderBalance - amount;
       }
+
       balances[token][recipient] += amount;
     }
 

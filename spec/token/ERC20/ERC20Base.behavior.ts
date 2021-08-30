@@ -159,25 +159,25 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transferFrom', function () {
-      it('transfers amount from spender on behalf of sender', async function () {
+      it('transfers amount on behalf of holder', async function () {
         const amount = ethers.constants.Two;
-        await mint(sender.address, amount);
+        await mint(holder.address, amount);
 
         await instance
-          .connect(sender)
+          .connect(holder)
           ['approve(address,uint256)'](spender.address, amount);
 
         await expect(() =>
           instance
             .connect(spender)
             ['transferFrom(address,address,uint256)'](
-              sender.address,
+              holder.address,
               receiver.address,
               amount,
             ),
         ).to.changeTokenBalances(
           instance,
-          [sender, receiver],
+          [holder, receiver],
           [-amount, amount],
         );
       });
