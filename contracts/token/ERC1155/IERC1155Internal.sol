@@ -5,8 +5,7 @@ pragma solidity ^0.8.0;
 import {IERC165} from '../../introspection/IERC165.sol';
 
 /**
- * @notice ERC1155 interface
- * @dev see https://github.com/ethereum/EIPs/issues/1155
+ * @notice Partial ERC1155 interface needed by internal functions
  */
 interface IERC1155Internal {
   event TransferSingle (
