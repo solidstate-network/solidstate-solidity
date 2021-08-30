@@ -77,8 +77,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
     for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      balances[id][account] += amounts[i];
+      balances[ids[i]][account] += amounts[i];
     }
 
     emit TransferBatch(msg.sender, address(0), account, ids, amounts);
@@ -117,8 +116,11 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
     _beforeTokenTransfer(msg.sender, account, address(0), _asSingletonArray(id), _asSingletonArray(amount), '');
 
     mapping (address => uint) storage balances = ERC1155BaseStorage.layout().balances[id];
-    require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
-    balances[account] -= amount;
+
+    unchecked {
+      require(balances[account] >= amount, 'ERC1155: burn amount exceeds balances');
+      balances[account] -= amount;
+    }
 
     emit TransferSingle(msg.sender, account, address(0), id, amount);
   }
@@ -141,10 +143,12 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    for (uint i; i < ids.length; i++) {
-      uint id = ids[i];
-      require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
-      balances[id][account] -= amounts[i];
+    unchecked {
+      for (uint i; i < ids.length; i++) {
+        uint id = ids[i];
+        require(balances[id][account] >= amounts[i], 'ERC1155: burn amount exceeds balance');
+        balances[id][account] -= amounts[i];
+      }
     }
 
     emit TransferBatch(msg.sender, account, address(0), ids, amounts);
@@ -174,11 +178,12 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
-    uint256 senderBalance = balances[id][sender];
-    require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
     unchecked {
+      uint256 senderBalance = balances[id][sender];
+      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       balances[id][sender] = senderBalance - amount;
     }
+
     balances[id][recipient] += amount;
 
     emit TransferSingle(operator, sender, recipient, id, amount);
@@ -234,11 +239,12 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
       uint token = ids[i];
       uint amount = amounts[i];
 
-      uint256 senderBalance = balances[token][sender];
-      require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
       unchecked {
+        uint256 senderBalance = balances[token][sender];
+        require(senderBalance >= amount, 'ERC1155: insufficient balances for transfer');
         balances[token][sender] = senderBalance - amount;
       }
+
       balances[token][recipient] += amount;
     }
 

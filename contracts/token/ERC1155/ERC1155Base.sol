@@ -18,7 +18,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
   function balanceOf (
     address account,
     uint id
-  ) override public view returns (uint) {
+  ) virtual override public view returns (uint) {
     require(account != address(0), 'ERC1155: balance query for the zero address');
     return ERC1155BaseStorage.layout().balances[id][account];
   }
@@ -29,16 +29,18 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
   function balanceOfBatch (
     address[] memory accounts,
     uint[] memory ids
-  ) override public view returns (uint[] memory) {
+  ) virtual override public view returns (uint[] memory) {
     require(accounts.length == ids.length, 'ERC1155: accounts and ids length mismatch');
 
     mapping (uint => mapping (address => uint)) storage balances = ERC1155BaseStorage.layout().balances;
 
     uint[] memory batchBalances = new uint[](accounts.length);
 
-    for (uint i; i < accounts.length; i++) {
-      require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
-      batchBalances[i] = balances[ids[i]][accounts[i]];
+    unchecked {
+      for (uint i; i < accounts.length; i++) {
+        require(accounts[i] != address(0), 'ERC1155: batch balance query for the zero address');
+        batchBalances[i] = balances[ids[i]][accounts[i]];
+      }
     }
 
     return batchBalances;
@@ -50,7 +52,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
   function isApprovedForAll (
     address account,
     address operator
-  ) override public view returns (bool) {
+  ) virtual override public view returns (bool) {
     return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
   }
 
@@ -60,7 +62,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
   function setApprovalForAll (
     address operator,
     bool status
-  ) override public {
+  ) virtual override public {
     require(msg.sender != operator, 'ERC1155: setting approval status for self');
     ERC1155BaseStorage.layout().operatorApprovals[msg.sender][operator] = status;
     emit ApprovalForAll(msg.sender, operator, status);
@@ -75,7 +77,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
     uint id,
     uint amount,
     bytes memory data
-  ) override public {
+  ) virtual override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
     _safeTransfer(msg.sender, from, to, id, amount, data);
   }
@@ -89,7 +91,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
     uint[] memory ids,
     uint[] memory amounts,
     bytes memory data
-  ) override public {
+  ) virtual override public {
     require(from == msg.sender || isApprovedForAll(from, msg.sender), 'ERC1155: caller is not owner nor approved');
     _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
   }
