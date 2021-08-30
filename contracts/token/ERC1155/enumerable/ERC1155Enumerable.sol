@@ -2,12 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import {EnumerableSet} from '../../utils/EnumerableSet.sol';
-import {ERC1155Base} from './ERC1155Base.sol';
-import {ERC1155BaseInternal} from './ERC1155BaseInternal.sol';
+import {EnumerableSet} from '../../../utils/EnumerableSet.sol';
+import {ERC1155Base, ERC1155BaseInternal} from '../base/ERC1155Base.sol';
 import {IERC1155Enumerable} from './IERC1155Enumerable.sol';
-import {ERC1155EnumerableInternal} from './ERC1155EnumerableInternal.sol';
-import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
+import {ERC1155EnumerableInternal, ERC1155EnumerableStorage} from './ERC1155EnumerableInternal.sol';
 
 /**
  * @title ERC1155 implementation including enumerable and aggregate functions

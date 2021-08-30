@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import {IERC1155Internal} from './IERC1155Internal.sol';
-import {IERC1155Receiver} from './IERC1155Receiver.sol';
+import {AddressUtils} from '../../../utils/AddressUtils.sol';
+import {IERC1155Internal} from '../IERC1155Internal.sol';
+import {IERC1155Receiver} from '../IERC1155Receiver.sol';
 import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
-import {AddressUtils} from '../../utils/AddressUtils.sol';
 
 /**
  * @title Base ERC1155 internal functions

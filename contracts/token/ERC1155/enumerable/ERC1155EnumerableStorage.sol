@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import {EnumerableSet} from '../../utils/EnumerableSet.sol';
+import {EnumerableSet} from '../../../utils/EnumerableSet.sol';
 
 library ERC1155EnumerableStorage {
   struct Layout {

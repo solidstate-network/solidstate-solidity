@@ -2,9 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import {EnumerableSet} from '../../utils/EnumerableSet.sol';
-import {ERC1155BaseInternal} from './ERC1155BaseInternal.sol';
-import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
+import {EnumerableSet} from '../../../utils/EnumerableSet.sol';
+import {ERC1155BaseInternal, ERC1155BaseStorage} from '../base/ERC1155BaseInternal.sol';
 import {ERC1155EnumerableStorage} from './ERC1155EnumerableStorage.sol';
 
 /**

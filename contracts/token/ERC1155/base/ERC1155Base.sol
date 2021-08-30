@@ -2,10 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {IERC1155} from './IERC1155.sol';
-import {IERC1155Receiver} from './IERC1155Receiver.sol';
-import {ERC1155BaseInternal} from './ERC1155BaseInternal.sol';
-import {ERC1155BaseStorage} from './ERC1155BaseStorage.sol';
+import {IERC1155} from '../IERC1155.sol';
+import {IERC1155Receiver} from '../IERC1155Receiver.sol';
+import {ERC1155BaseInternal, ERC1155BaseStorage} from './ERC1155BaseInternal.sol';
 
 /**
  * @title Base ERC1155 contract
