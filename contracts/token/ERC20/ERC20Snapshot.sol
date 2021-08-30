@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import {Array} from '../../utils/Array.sol';
 import {ERC20Base} from './ERC20Base.sol';
+import {ERC20BaseInternal} from './ERC20BaseInternal.sol';
 import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 
 /**
@@ -113,7 +114,7 @@ abstract contract ERC20Snapshot is ERC20Base {
 
   /**
    * @notice ERC20 hook: update snapshot data
-   * @inheritdoc ERC20Base
+   * @inheritdoc ERC20BaseInternal
    */
   function _beforeTokenTransfer (
     address from,

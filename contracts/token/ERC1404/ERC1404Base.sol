@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import {IERC1404} from './IERC1404.sol';
 import {ERC1404Storage} from './ERC1404Storage.sol';
 import {ERC20Base} from '../ERC20/ERC20Base.sol';
+import {ERC20BaseInternal} from '../ERC20/ERC20BaseInternal.sol';
 
 /**
  * @title Base ERC1404 implementation
@@ -33,7 +34,7 @@ abstract contract ERC1404Base is IERC1404, ERC20Base {
 
   /**
    * @notice ERC20 hook: detect and handle transfer restriction
-   * @inheritdoc ERC20Base
+   * @inheritdoc ERC20BaseInternal
    */
   function _beforeTokenTransfer (
     address from,
