@@ -9,9 +9,12 @@ import {IDiamondCuttable} from './IDiamondCuttable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy base contract
- * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
+ * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
 abstract contract DiamondBase is Proxy {
+  /**
+   * @inheritdoc Proxy
+   */
   function _getImplementation () override internal view returns (address) {
     // inline storage layout retrieval uses less gas
     DiamondBaseStorage.Layout storage l;

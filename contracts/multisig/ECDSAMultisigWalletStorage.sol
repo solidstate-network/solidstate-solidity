@@ -7,15 +7,15 @@ import {EnumerableSet} from '../utils/EnumerableSet.sol';
 library ECDSAMultisigWalletStorage {
   using EnumerableSet for EnumerableSet.AddressSet;
 
-  bytes32 internal constant STORAGE_SLOT = keccak256(
-    'solidstate.contracts.storage.ECDSAMultisigWallet'
-  );
-
   struct Layout {
     uint quorum;
     EnumerableSet.AddressSet signers;
     mapping (address => mapping (uint => bool)) nonces;
   }
+
+  bytes32 internal constant STORAGE_SLOT = keccak256(
+    'solidstate.contracts.storage.ECDSAMultisigWallet'
+  );
 
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;
@@ -64,7 +64,7 @@ library ECDSAMultisigWalletStorage {
       l.signers.length() < 256,
       'ECDSAMultisigWallet: signer limit reached'
     );
-    l.signers.add(account);
+    require(l.signers.add(account), 'ECDSAMultisigWallet: failed to add signer');
   }
 
   function removeSigner (
@@ -75,6 +75,6 @@ library ECDSAMultisigWalletStorage {
       l.quorum <= l.signers.length() - 1,
       'ECDSAMultisigWallet: insufficient signers to meet quorum'
     );
-    l.signers.remove(account);
+    require(l.signers.remove(account), 'ECDSAMultisigWallet: failed to remove signer');
   }
 }

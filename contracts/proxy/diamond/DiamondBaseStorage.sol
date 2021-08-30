@@ -12,15 +12,6 @@ library DiamondBaseStorage {
   using AddressUtils for address;
   using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
-  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
-
-  bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
-  bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
-
-  bytes32 internal constant STORAGE_SLOT = keccak256(
-    'solidstate.contracts.storage.DiamondBase'
-  );
-
   struct Layout {
     // function selector => (facet address, selector slot position)
     mapping (bytes4 => bytes32) facets;
@@ -31,6 +22,15 @@ library DiamondBaseStorage {
 
     address fallbackAddress;
   }
+
+  bytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));
+  bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
+
+  bytes32 internal constant STORAGE_SLOT = keccak256(
+    'solidstate.contracts.storage.DiamondBase'
+  );
+
+  event DiamondCut (IDiamondCuttable.FacetCut[] facetCuts, address target, bytes data);
 
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;

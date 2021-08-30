@@ -6,13 +6,22 @@ import {IERC173} from './IERC173.sol';
 import {OwnableInternal} from './OwnableInternal.sol';
 import {OwnableStorage} from './OwnableStorage.sol';
 
-contract Ownable is IERC173, OwnableInternal {
+/**
+ * @title Ownership access control based on ERC173
+ */
+abstract contract Ownable is IERC173, OwnableInternal {
   using OwnableStorage for OwnableStorage.Layout;
 
+  /**
+   * @inheritdoc IERC173
+   */
   function owner () virtual override public view returns (address) {
     return OwnableStorage.layout().owner;
   }
 
+  /**
+   * @inheritdoc IERC173
+   */
   function transferOwnership (
     address account
   ) virtual override public onlyOwner {

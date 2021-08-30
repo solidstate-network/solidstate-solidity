@@ -15,7 +15,7 @@ contract ERC1155EnumerableMock is ERC1155Enumerable, ERC165 {
     ERC165Storage.layout().setSupportedInterface(type(IERC1155).interfaceId, true);
   }
 
-  function mint (
+  function __mint (
     address account,
     uint id,
     uint amount
@@ -23,7 +23,7 @@ contract ERC1155EnumerableMock is ERC1155Enumerable, ERC165 {
     _mint(account, id, amount, '');
   }
 
-  function burn (
+  function __burn (
     address account,
     uint id,
     uint amount

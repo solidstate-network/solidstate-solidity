@@ -16,11 +16,11 @@ import {ManagedProxy, ManagedProxyOwnable} from './ManagedProxyOwnable.sol';
      setOwner(manager);
    }
 
-   function getImplementation () external view returns (address) {
+   function __getImplementation () external view returns (address) {
      return _getImplementation();
    }
 
-   function getManager () external view returns (address) {
+   function __getManager () external view returns (address) {
      return _getManager();
    }
 

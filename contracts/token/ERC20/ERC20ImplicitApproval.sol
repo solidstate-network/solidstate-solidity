@@ -11,6 +11,7 @@ import {ERC20ImplicitApprovalStorage} from './ERC20ImplicitApprovalStorage.sol';
 abstract contract ERC20ImplicitApproval is ERC20Base {
   /**
    * @inheritdoc ERC20Base
+   * @dev internally stored allowance is ignored for implicitly approved spenders
    */
   function allowance (
     address holder,
@@ -25,17 +26,18 @@ abstract contract ERC20ImplicitApproval is ERC20Base {
 
   /**
    * @inheritdoc ERC20Base
+   * @dev internally stored allowance is ignored for implicitly approved spenders
    */
   function transferFrom (
-    address sender,
+    address holder,
     address recipient,
     uint amount
   ) override public returns (bool) {
     if (_isImplicitlyApproved(msg.sender)) {
-      _transfer(sender, recipient, amount);
+      _transfer(holder, recipient, amount);
       return true;
     } else {
-      return super.transferFrom(sender, recipient, amount);
+      return super.transferFrom(holder, recipient, amount);
     }
   }
 

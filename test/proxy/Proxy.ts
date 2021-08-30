@@ -1,7 +1,7 @@
 import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
   Ownable,
-  Ownable__factory,
+  OwnableMock__factory,
   ProxyMock,
   ProxyMock__factory,
 } from '../../typechain';
@@ -15,7 +15,7 @@ describe('Proxy', function () {
 
   before(async function () {
     [deployer] = await ethers.getSigners();
-    implementation = await new Ownable__factory(deployer).deploy();
+    implementation = await new OwnableMock__factory(deployer).deploy(deployer.address);
   });
 
   beforeEach(async function () {

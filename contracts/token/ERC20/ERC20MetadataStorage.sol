@@ -3,15 +3,15 @@
 pragma solidity ^0.8.0;
 
 library ERC20MetadataStorage {
-  bytes32 internal constant STORAGE_SLOT = keccak256(
-    'solidstate.contracts.storage.ERC20Metadata'
-  );
-
   struct Layout {
     string name;
     string symbol;
     uint8 decimals;
   }
+
+  bytes32 internal constant STORAGE_SLOT = keccak256(
+    'solidstate.contracts.storage.ERC20Metadata'
+  );
 
   function layout () internal pure returns (Layout storage l) {
     bytes32 slot = STORAGE_SLOT;
