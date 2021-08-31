@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC20Base} from './ERC20Base.sol';
+import {ERC20Base} from '../base/ERC20Base.sol';
 import {ERC20ImplicitApprovalStorage} from './ERC20ImplicitApprovalStorage.sol';
 
 /**

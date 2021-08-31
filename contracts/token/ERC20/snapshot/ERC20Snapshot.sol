@@ -2,9 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import {Array} from '../../utils/Array.sol';
-import {ERC20Base} from './ERC20Base.sol';
-import {ERC20BaseInternal} from './ERC20BaseInternal.sol';
+import {Array} from '../../../utils/Array.sol';
+import {ERC20Base, ERC20BaseInternal} from '../base/ERC20Base.sol';
 import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 
 /**

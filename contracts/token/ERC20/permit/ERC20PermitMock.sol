@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "./ERC20Permit.sol";
+import {ERC20MetadataStorage} from '../metadata/ERC20MetadataStorage.sol';
+import {ERC20Permit} from './ERC20Permit.sol';
 
 contract ERC20PermitMock is ERC20Permit {
     using ERC20MetadataStorage for ERC20MetadataStorage.Layout;

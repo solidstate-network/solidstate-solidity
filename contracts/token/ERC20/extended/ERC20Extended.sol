@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC20Base, ERC20BaseStorage} from './ERC20Base.sol';
+import {ERC20Base, ERC20BaseStorage} from '../base/ERC20Base.sol';
 
 /**
  * @title ERC20 safe approval extensions
