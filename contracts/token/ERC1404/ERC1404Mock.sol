@@ -15,9 +15,9 @@ contract ERC1404Mock is ERC1404 {
     ERC1404Storage.layout().setRestrictions(errorCodes, errorMessages);
   }
 
-  function detectTransferRestriction (
+  function _detectTransferRestriction (
     address, address, uint
-  ) override public pure returns (uint8) {
+  ) override internal pure returns (uint8) {
     return 0;
   }
 

@@ -28,4 +28,14 @@ describe('ERC1404Base', function () {
     burn: (recipient: string, amount: BigNumber) =>
       instance.__burn(recipient, amount),
   });
+
+  describe('__internal', function () {
+    describe('#_detectTransferRestriction', function () {
+      it('todo')
+    });
+
+    describe('#_messageForTransferRestriction', function () {
+      it('todo');
+    });
+  });
 });
