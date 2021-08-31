@@ -15,6 +15,19 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
   using AddressUtils for address;
 
   /**
+   * @notice query the balance of given token held by given address
+   * @param account address to query
+   * @param id token to query
+   * @return token balance
+   */
+  function _balanceOf (
+    address account,
+    uint id
+  ) virtual internal view returns (uint) {
+    return ERC1155BaseStorage.layout().balances[id][account];
+  }
+
+  /**
    * @notice mint given quantity of tokens for given address
    * @dev ERC1155Receiver implementation is not checked
    * @param account beneficiary of minting

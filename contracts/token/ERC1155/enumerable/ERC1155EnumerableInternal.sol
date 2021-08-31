@@ -41,14 +41,14 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
 
           if (from == address(0)) {
             l.totalSupply[id] += amount;
-          } else if (ERC1155BaseStorage.layout().balances[id][from] == amount) {
+          } else if (_balanceOf(from, id) == amount) {
             tokenAccounts[id].remove(from);
             fromTokens.remove(id);
           }
 
           if (to == address(0)) {
             l.totalSupply[id] -= amount;
-          } else if (ERC1155BaseStorage.layout().balances[id][to] == 0) {
+          } else if (_balanceOf(to, id) == 0) {
             tokenAccounts[id].add(to);
             toTokens.add(id);
           }

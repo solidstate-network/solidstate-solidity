@@ -29,6 +29,10 @@ describe('ERC1155Base', function () {
   });
 
   describe('__internal', function () {
+    describe('#_balanceOf', function () {
+      it('todo');
+    });
+
     describe('#_mint', function () {
       it('increases balance of given token held by given account by given amount', async function () {
         let id = ethers.constants.Zero;

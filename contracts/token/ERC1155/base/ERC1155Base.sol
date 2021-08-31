@@ -19,7 +19,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
     uint id
   ) virtual override public view returns (uint) {
     require(account != address(0), 'ERC1155: balance query for the zero address');
-    return ERC1155BaseStorage.layout().balances[id][account];
+    return _balanceOf(account, id);
   }
 
   /**
