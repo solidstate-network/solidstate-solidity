@@ -14,7 +14,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
    * @inheritdoc IERC20
    */
   function totalSupply () override virtual public view returns (uint) {
-    return ERC20BaseStorage.layout().totalSupply;
+    return _totalSupply();
   }
 
   /**
@@ -23,7 +23,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
   function balanceOf (
     address account
   ) override virtual public view returns (uint) {
-    return ERC20BaseStorage.layout().balances[account];
+    return _balanceOf(account);
   }
 
   /**

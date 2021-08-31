@@ -12,18 +12,6 @@ import {ERC20SnapshotStorage} from './ERC20SnapshotStorage.sol';
 abstract contract ERC20SnapshotInternal is ERC20BaseInternal {
   event Snapshot (uint id);
 
-  // TODO: define _balanceOf and _totalSupply functions in ERC20BaseInternal
-
-  function _balanceOf (
-    address account
-  ) internal view returns (uint) {
-    return ERC20BaseStorage.layout().balances[account];
-  }
-
-  function _totalSupply () internal view returns (uint) {
-    return ERC20BaseStorage.layout().totalSupply;
-  }
-
   function _snapshot () virtual internal returns (uint) {
     ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
 

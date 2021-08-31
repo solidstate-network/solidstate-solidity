@@ -10,6 +10,25 @@ import {ERC20BaseStorage} from './ERC20BaseStorage.sol';
  */
 abstract contract ERC20BaseInternal is IERC20Internal {
   /**
+   * @notice query the total minted token supply
+   * @return token supply
+   */
+  function _totalSupply () virtual internal view returns (uint) {
+    return ERC20BaseStorage.layout().totalSupply;
+  }
+
+  /**
+   * @notice query the token balance of given account
+   * @param account address to query
+   * @return token balance
+   */
+  function _balanceOf (
+    address account
+  ) virtual internal view returns (uint) {
+    return ERC20BaseStorage.layout().balances[account];
+  }
+
+  /**
    * @notice enable spender to spend tokens on behalf of holder
    * @param holder address on whose behalf tokens may be spent
    * @param spender recipient of allowance
