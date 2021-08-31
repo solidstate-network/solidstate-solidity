@@ -7,7 +7,7 @@ import {IERC1404} from '../IERC1404.sol';
 import {ERC1404Storage} from './ERC1404Storage.sol';
 
 /**
- * @title Base ERC1404 implementation
+ * @title Base ERC1404 internal functions
  */
 abstract contract ERC1404BaseInternal is ERC20BaseInternal {
   using ERC1404Storage for ERC1404Storage.Layout;
