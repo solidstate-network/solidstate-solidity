@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import { IERC721 } from './IERC721.sol';
-import { ERC721 } from './ERC721.sol';
-import { IERC165 } from '../../introspection/IERC165.sol';
-import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
-import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
+import {IERC165} from '../../introspection/IERC165.sol';
+import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
+import {ERC721MetadataStorage} from './metadata/ERC721MetadataStorage.sol';
+import {ERC721} from './ERC721.sol';
+import {IERC721} from './IERC721.sol';
 
 contract ERC721Mock is ERC721 {
   using ERC165Storage for ERC165Storage.Layout;

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import {EnumerableMap} from '../../utils/EnumerableMap.sol';
-import {EnumerableSet} from '../../utils/EnumerableSet.sol';
+import {EnumerableMap} from '../../../utils/EnumerableMap.sol';
+import {EnumerableSet} from '../../../utils/EnumerableSet.sol';
 
 library ERC721BaseStorage {
   using EnumerableMap for EnumerableMap.UintToAddressMap;

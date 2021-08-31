@@ -3,8 +3,7 @@
 pragma solidity ^0.8.0;
 
 import {ERC721Base, IERC721} from './ERC721Base.sol';
-import {ERC165Storage} from '../../introspection/ERC165Storage.sol';
-import {IERC165, ERC165} from '../../introspection/ERC165.sol';
+import {IERC165, ERC165, ERC165Storage} from '../../../introspection/ERC165.sol';
 
 contract ERC721BaseMock is ERC721Base, ERC165 {
   using ERC165Storage for ERC165Storage.Layout;

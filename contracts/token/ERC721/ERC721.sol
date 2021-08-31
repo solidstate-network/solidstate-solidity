@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC721Base} from './ERC721Base.sol';
-import {ERC721Enumerable} from './ERC721Enumerable.sol';
-import {ERC721Metadata} from './ERC721Metadata.sol';
+import {ERC721Base} from './base/ERC721Base.sol';
+import {ERC721Enumerable} from './enumerable/ERC721Enumerable.sol';
+import {ERC721Metadata} from './metadata/ERC721Metadata.sol';
 import {ERC165} from '../../introspection/ERC165.sol';
 
 /**

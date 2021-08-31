@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC721Base, ERC721BaseStorage} from './ERC721Base.sol';
+import {UintUtils} from '../../../utils/UintUtils.sol';
+import {ERC721Base, ERC721BaseStorage} from '../base/ERC721Base.sol';
 import {ERC721MetadataStorage} from './ERC721MetadataStorage.sol';
 import {IERC721Metadata} from './IERC721Metadata.sol';
-import {UintUtils} from '../../utils/UintUtils.sol';
 
 /**
  * @notice ERC721 metadata extensions

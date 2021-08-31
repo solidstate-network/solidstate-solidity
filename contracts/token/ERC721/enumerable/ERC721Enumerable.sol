@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {EnumerableMap} from '../../utils/EnumerableMap.sol';
-import {EnumerableSet} from '../../utils/EnumerableSet.sol';
-import {ERC721BaseStorage} from './ERC721BaseStorage.sol';
+import {EnumerableMap} from '../../../utils/EnumerableMap.sol';
+import {EnumerableSet} from '../../../utils/EnumerableSet.sol';
+import {ERC721BaseStorage} from '../base/ERC721BaseStorage.sol';
 import {IERC721Enumerable} from './IERC721Enumerable.sol';
 
 abstract contract ERC721Enumerable is IERC721Enumerable {
