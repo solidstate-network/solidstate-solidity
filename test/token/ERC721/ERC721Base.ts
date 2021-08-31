@@ -34,6 +34,18 @@ describe('ERC721Base', function () {
   });
 
   describe('__internal', function () {
+    describe('#_ownerOf', function () {
+      it('todo');
+    });
+
+    describe('#_getApproved', function () {
+      it('todo');
+    });
+
+    describe('#_isApprovedForAll', function () {
+      it('todo');
+    });
+
     describe('#_isApprovedOrOwner', function () {
       it('returns true if given spender is approved for given token', async function () {
         const tokenId = ethers.constants.Two;
