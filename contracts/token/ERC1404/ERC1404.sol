@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC1404Base} from './ERC1404Base.sol';
 import {ERC20} from '../ERC20/ERC20.sol';
 import {ERC20BaseInternal} from '../ERC20/ERC20BaseInternal.sol';
+import {ERC1404Base} from './base/ERC1404Base.sol';
 
 /**
  * @title SolidState ERC1404 implementation, including recommended ERC20 extensions
