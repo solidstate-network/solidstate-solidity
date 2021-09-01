@@ -6,10 +6,9 @@ import {ERC721BaseInternal} from '../base/ERC721Base.sol';
 import {ERC721MetadataStorage} from './ERC721MetadataStorage.sol';
 
 /**
- * @notice ERC721 metadata extensions
+ * @notice ERC721Metadata internal functions
  */
 abstract contract ERC721MetadataInternal is ERC721BaseInternal {
-
   /**
    * @notice ERC721 hook: clear per-token URI data on burn
    * @inheritdoc ERC721BaseInternal
