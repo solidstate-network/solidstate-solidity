@@ -5,12 +5,13 @@ pragma solidity ^0.8.0;
 import {UintUtils} from '../../../utils/UintUtils.sol';
 import {ERC721Base, ERC721BaseInternal, ERC721BaseStorage} from '../base/ERC721Base.sol';
 import {ERC721MetadataStorage} from './ERC721MetadataStorage.sol';
+import {ERC721MetadataInternal} from './ERC721MetadataInternal.sol';
 import {IERC721Metadata} from './IERC721Metadata.sol';
 
 /**
  * @notice ERC721 metadata extensions
  */
-abstract contract ERC721Metadata is IERC721Metadata, ERC721Base {
+abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal, ERC721Base {
   using UintUtils for uint;
 
   /**
@@ -48,14 +49,13 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721Base {
   }
 
   /**
-   * @notice ERC721 hook: clear per-token URI data on burn
-   * @inheritdoc ERC721BaseInternal
+   * @inheritdoc ERC721MetadataInternal
    */
-  function _beforeTokenTransfer (address from, address to, uint tokenId) virtual override internal {
+  function _beforeTokenTransfer (
+    address from,
+    address to,
+    uint tokenId
+  ) virtual override(ERC721MetadataInternal, ERC721BaseInternal) internal {
     super._beforeTokenTransfer(from, to, tokenId);
-
-    if (to == address(0)) {
-      delete ERC721MetadataStorage.layout().tokenURIs[tokenId];
-    }
   }
 }
