@@ -5,20 +5,9 @@ pragma solidity ^0.8.0;
 import {OwnableStorage} from '../../access/OwnableStorage.sol';
 import {ECDSA} from '../../cryptography/ECDSA.sol';
 import {ERC1271Base} from '../base/ERC1271Base.sol';
+import {ERC1271OwnableInternal} from './ERC1271OwnableInternal.sol';
 
 /**
  * @title ERC1271 implementation which delegates signing authority to ERC173 contract owner
  */
-abstract contract ERC1271Ownable is ERC1271Base {
-  using ECDSA for bytes32;
-
-  /**
-   * @notice return whether given signature is signed by contract owner
-   */
-  function _isValidSignature (
-    bytes32 hash,
-    bytes memory signature
-  ) override internal view returns (bool) {
-    return hash.toEthSignedMessageHash().recover(signature) == OwnableStorage.layout().owner;
-  }
-}
+abstract contract ERC1271Ownable is ERC1271OwnableInternal, ERC1271Base {}
