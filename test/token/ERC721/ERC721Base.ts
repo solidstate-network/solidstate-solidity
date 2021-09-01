@@ -34,6 +34,10 @@ describe('ERC721Base', function () {
   });
 
   describe('__internal', function () {
+    describe('#_balanceOf', function () {
+      it('todo');
+    });
+
     describe('#_ownerOf', function () {
       it('todo');
     });

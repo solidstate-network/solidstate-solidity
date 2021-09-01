@@ -17,6 +17,11 @@ abstract contract ERC721BaseInternal is IERC721Internal {
   using EnumerableMap for EnumerableMap.UintToAddressMap;
   using EnumerableSet for EnumerableSet.UintSet;
 
+  function _balanceOf (address account) internal view returns (uint) {
+    require(account != address(0), 'ERC721: balance query for the zero address');
+    return ERC721BaseStorage.layout().holderTokens[account].length();
+  }
+
   function _ownerOf (uint tokenId) internal view returns (address) {
     address owner = ERC721BaseStorage.layout().tokenOwners.get(tokenId);
     require(owner != address(0), 'ERC721: invalid owner');

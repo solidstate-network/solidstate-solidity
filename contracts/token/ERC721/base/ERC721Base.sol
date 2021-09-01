@@ -22,8 +22,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
    * @inheritdoc IERC721
    */
   function balanceOf (address account) override public view returns (uint) {
-    require(account != address(0), 'ERC721: balance query for the zero address');
-    return ERC721BaseStorage.layout().holderTokens[account].length();
+    return _balanceOf(account);
   }
 
   /**
