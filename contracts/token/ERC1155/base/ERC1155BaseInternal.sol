@@ -24,6 +24,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
     address account,
     uint id
   ) virtual internal view returns (uint) {
+    require(account != address(0), 'ERC1155: balance query for the zero address');
     return ERC1155BaseStorage.layout().balances[id][account];
   }
 
