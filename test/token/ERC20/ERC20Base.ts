@@ -34,6 +34,14 @@ describe('ERC20Base', function () {
   });
 
   describe('__internal', function () {
+    describe('#_totalSupply', function () {
+      it('todo');
+    });
+
+    describe('#_balanceOf', function () {
+      it('todo');
+    });
+
     describe('#_mint', function () {
       it('increases balance of given account by given amount', async function () {
         let amount = ethers.constants.Two;

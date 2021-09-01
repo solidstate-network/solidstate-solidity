@@ -3,30 +3,13 @@
 pragma solidity ^0.8.0;
 
 import {IERC165} from '../../introspection/IERC165.sol';
+import {IERC721Internal} from './IERC721Internal.sol';
 
 /**
  * @notice ERC721 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
-interface IERC721 is IERC165 {
-  event Transfer (
-    address indexed from,
-    address indexed to,
-    uint256 indexed tokenId
-  );
-
-  event Approval (
-    address indexed owner,
-    address indexed operator,
-    uint256 indexed tokenId
-  );
-
-  event ApprovalForAll (
-    address indexed owner,
-    address indexed operator,
-    bool approved
-  );
-
+interface IERC721 is IERC721Internal, IERC165 {
   /**
    * @notice query the balance of given address
    * @return balance quantity of tokens held

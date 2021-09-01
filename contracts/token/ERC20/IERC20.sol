@@ -2,23 +2,13 @@
 
 pragma solidity ^0.8.0;
 
+import {IERC20Internal} from './IERC20Internal.sol';
+
 /**
  * @title ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/20
  */
-interface IERC20 {
-  event Transfer(
-    address indexed from,
-    address indexed to,
-    uint256 value
-  );
-
-  event Approval(
-    address indexed owner,
-    address indexed spender,
-    uint256 value
-  );
-
+interface IERC20 is IERC20Internal {
   /**
    * @notice query the total minted token supply
    * @return token supply

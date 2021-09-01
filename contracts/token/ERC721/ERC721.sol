@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC721Base} from './ERC721Base.sol';
-import {ERC721Enumerable} from './ERC721Enumerable.sol';
-import {ERC721Metadata} from './ERC721Metadata.sol';
+import {ERC721Base, ERC721BaseInternal} from './base/ERC721Base.sol';
+import {ERC721Enumerable} from './enumerable/ERC721Enumerable.sol';
+import {ERC721Metadata} from './metadata/ERC721Metadata.sol';
 import {ERC165} from '../../introspection/ERC165.sol';
 
 /**
@@ -13,7 +13,7 @@ import {ERC165} from '../../introspection/ERC165.sol';
 abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata, ERC165 {
   /**
    * @notice ERC721 hook: revert if value is included in external approve function call
-   * @inheritdoc ERC721Base
+   * @inheritdoc ERC721BaseInternal
    */
   function _handleApproveMessageValue (address, uint, uint value) virtual override internal {
     require(value == 0, 'ERC721: payable approve calls not supported');
@@ -21,20 +21,20 @@ abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata, ERC165
 
   /**
    * @notice ERC721 hook: revert if value is included in external transfer function call
-   * @inheritdoc ERC721Base
+   * @inheritdoc ERC721BaseInternal
    */
   function _handleTransferMessageValue (address, address, uint, uint value) virtual override internal {
     require(value == 0, 'ERC721: payable transfer calls not supported');
   }
 
   /**
-   * @inheritdoc ERC721Base
+   * @inheritdoc ERC721BaseInternal
    */
   function _beforeTokenTransfer (
     address from,
     address to,
     uint tokenId
   )
-    virtual override(ERC721Base, ERC721Metadata) internal
+    virtual override(ERC721BaseInternal, ERC721Metadata) internal
   {}
 }
