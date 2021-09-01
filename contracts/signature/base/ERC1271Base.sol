@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import {IERC1271} from './IERC1271.sol';
+import {IERC1271} from '../IERC1271.sol';
 
 /**
  * @title Base implementation of ERC1721
