@@ -26,10 +26,8 @@ describe('ERC20Permit', function () {
   describeBehaviorOfERC20Permit({
     deploy: async () => instance as any,
     supply: ethers.constants.Zero,
-    mint: (recipient, amount) =>
-      instance['mint(address,uint256)'](recipient, amount),
-    burn: (recipient, amount) =>
-      instance['burn(address,uint256)'](recipient, amount),
+    mint: (recipient, amount) => instance.__mint(recipient, amount),
+    burn: (recipient, amount) => instance.__burn(recipient, amount),
     name,
     symbol,
     decimals,

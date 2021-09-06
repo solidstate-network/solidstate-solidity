@@ -3,7 +3,7 @@ import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
   DiamondBaseMock,
   DiamondBaseMock__factory,
-  Ownable__factory,
+  OwnableMock__factory,
 } from '../../../typechain';
 
 describe('DiamondBase', function () {
@@ -11,7 +11,9 @@ describe('DiamondBase', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new Ownable__factory(deployer).deploy();
+    const facetInstance = await new OwnableMock__factory(deployer).deploy(
+      deployer.address,
+    );
 
     instance = await new DiamondBaseMock__factory(deployer).deploy([
       {

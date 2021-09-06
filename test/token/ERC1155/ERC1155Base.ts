@@ -23,29 +23,29 @@ describe('ERC1155Base', function () {
   describeBehaviorOfERC1155Base({
     deploy: async () => instance as any,
     mint: (recipient, tokenId, amount) =>
-      instance['mint(address,uint256,uint256)'](recipient, tokenId, amount),
+      instance.__mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>
-      instance['burn(address,uint256,uint256)'](recipient, tokenId, amount),
+      instance.__burn(recipient, tokenId, amount),
   });
 
   describe('__internal', function () {
+    describe('#_balanceOf', function () {
+      it('todo');
+    });
+
     describe('#_mint', function () {
       it('increases balance of given token held by given account by given amount', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -57,9 +57,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await expect(
-          instance['mint(address,uint256,uint256)'](holder.address, id, amount),
-        )
+        await expect(instance.__mint(holder.address, id, amount))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -73,7 +71,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mint(address,uint256,uint256)'](
+            instance.__mint(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -88,18 +86,14 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['safeMint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__safeMint(holder.address, id, amount);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -111,13 +105,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await expect(
-          instance['safeMint(address,uint256,uint256)'](
-            holder.address,
-            id,
-            amount,
-          ),
-        )
+        await expect(instance.__safeMint(holder.address, id, amount))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -131,7 +119,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['safeMint(address,uint256,uint256)'](
+            instance.__safeMint(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -141,7 +129,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['safeMint(address,uint256,uint256)'](
+            instance.__safeMint(
               invalidReceiver,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -158,18 +146,14 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -181,13 +165,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await expect(
-          instance['mintBatch(address,uint256[],uint256[])'](
-            holder.address,
-            [id],
-            [amount],
-          ),
-        )
+        await expect(instance.__mintBatch(holder.address, [id], [amount]))
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -201,21 +179,13 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[])'](
-              ethers.constants.AddressZero,
-              [],
-              [],
-            ),
+            instance.__mintBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWith('ERC1155: mint to the zero address');
         });
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance['mintBatch(address,uint256[],uint256[])'](
-              holder.address,
-              [ethers.constants.Zero],
-              [],
-            ),
+            instance.__mintBatch(holder.address, [ethers.constants.Zero], []),
           ).to.be.revertedWith('ERC1155: ids and amounts length mismatch');
         });
       });
@@ -226,18 +196,14 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['safeMintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__safeMintBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -249,13 +215,7 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await expect(
-          instance['safeMintBatch(address,uint256[],uint256[])'](
-            holder.address,
-            [id],
-            [amount],
-          ),
-        )
+        await expect(instance.__safeMintBatch(holder.address, [id], [amount]))
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -269,17 +229,13 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance['safeMintBatch(address,uint256[],uint256[])'](
-              ethers.constants.AddressZero,
-              [],
-              [],
-            ),
+            instance.__safeMintBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWith('ERC1155: mint to the zero address');
         });
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance['safeMintBatch(address,uint256[],uint256[])'](
+            instance.__safeMintBatch(
               holder.address,
               [ethers.constants.Zero],
               [],
@@ -289,11 +245,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance['safeMintBatch(address,uint256[],uint256[])'](
-              instance.address,
-              [],
-              [],
-            ),
+            instance.__safeMintBatch(instance.address, [], []),
           ).to.be.revertedWith(
             'ERC1155: transfer to non ERC1155Receiver implementer',
           );
@@ -306,24 +258,16 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['burn(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__burn(holder.address, id, amount);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -335,15 +279,9 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        await expect(
-          instance['burn(address,uint256,uint256)'](holder.address, id, amount),
-        )
+        await expect(instance.__burn(holder.address, id, amount))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -357,7 +295,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('burn is made from the zero address', async function () {
           await expect(
-            instance['burn(address,uint256,uint256)'](
+            instance.__burn(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
@@ -367,7 +305,7 @@ describe('ERC1155Base', function () {
 
         it('burn amount exceeds balance', async function () {
           await expect(
-            instance['burn(address,uint256,uint256)'](
+            instance.__burn(
               holder.address,
               ethers.constants.Zero,
               ethers.constants.One,
@@ -382,24 +320,16 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialBalance = await instance['balanceOf(address,uint256)'](
+        let initialBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
 
-        await instance['burnBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__burnBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance['balanceOf(address,uint256)'](
+        let finalBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
@@ -411,19 +341,9 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
-        await expect(
-          instance['burnBatch(address,uint256[],uint256[])'](
-            holder.address,
-            [id],
-            [amount],
-          ),
-        )
+        await expect(instance.__burnBatch(holder.address, [id], [amount]))
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -437,27 +357,19 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('burn is made from the zero address', async function () {
           await expect(
-            instance['burnBatch(address,uint256[],uint256[])'](
-              ethers.constants.AddressZero,
-              [],
-              [],
-            ),
+            instance.__burnBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWith('ERC1155: burn from the zero address');
         });
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance['burnBatch(address,uint256[],uint256[])'](
-              holder.address,
-              [ethers.constants.Zero],
-              [],
-            ),
+            instance.__burnBatch(holder.address, [ethers.constants.Zero], []),
           ).to.be.revertedWith('ERC1155: ids and amounts length mismatch');
         });
 
         it('burn amount exceeds balance', async function () {
           await expect(
-            instance['burnBatch(address,uint256[],uint256[])'](
+            instance.__burnBatch(
               holder.address,
               [ethers.constants.Zero],
               [ethers.constants.One],
@@ -472,23 +384,19 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance['balanceOf(address,uint256)'](
+        let initialSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let initialRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
 
-        await instance[
-          'transfer(address,address,address,uint256,uint256,bytes)'
-        ](
+        let initialRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
+
+        await instance.__transfer(
           instance.address,
           holder.address,
           recipient.address,
@@ -497,13 +405,15 @@ describe('ERC1155Base', function () {
           ethers.utils.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance['balanceOf(address,uint256)'](
+        let finalSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let finalRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
+
+        let finalRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
 
         expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
         expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
@@ -515,14 +425,10 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
         await expect(
-          instance['transfer(address,address,address,uint256,uint256,bytes)'](
+          instance.__transfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -544,7 +450,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
-            instance['transfer(address,address,address,uint256,uint256,bytes)'](
+            instance.__transfer(
               instance.address,
               holder.address,
               ethers.constants.AddressZero,
@@ -557,7 +463,7 @@ describe('ERC1155Base', function () {
 
         it('transfer amount exceeds balance', async function () {
           await expect(
-            instance['transfer(address,address,address,uint256,uint256,bytes)'](
+            instance.__transfer(
               instance.address,
               holder.address,
               recipient.address,
@@ -575,23 +481,19 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance['balanceOf(address,uint256)'](
+        let initialSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let initialRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
 
-        await instance[
-          'safeTransfer(address,address,address,uint256,uint256,bytes)'
-        ](
+        let initialRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
+
+        await instance.__safeTransfer(
           instance.address,
           holder.address,
           recipient.address,
@@ -600,13 +502,15 @@ describe('ERC1155Base', function () {
           ethers.utils.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance['balanceOf(address,uint256)'](
+        let finalSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let finalRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
+
+        let finalRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
 
         expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
         expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
@@ -618,16 +522,10 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
         await expect(
-          instance[
-            'safeTransfer(address,address,address,uint256,uint256,bytes)'
-          ](
+          instance.__safeTransfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -649,9 +547,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
-            instance[
-              'safeTransfer(address,address,address,uint256,uint256,bytes)'
-            ](
+            instance.__safeTransfer(
               instance.address,
               holder.address,
               ethers.constants.AddressZero,
@@ -664,9 +560,7 @@ describe('ERC1155Base', function () {
 
         it('transfer amount exceeds balance', async function () {
           await expect(
-            instance[
-              'safeTransfer(address,address,address,uint256,uint256,bytes)'
-            ](
+            instance.__safeTransfer(
               instance.address,
               holder.address,
               recipient.address,
@@ -679,9 +573,7 @@ describe('ERC1155Base', function () {
 
         it('transfer is made to invalid receiver', async function () {
           await expect(
-            instance[
-              'safeTransfer(address,address,address,uint256,uint256,bytes)'
-            ](
+            instance.__safeTransfer(
               instance.address,
               holder.address,
               invalidReceiver,
@@ -701,23 +593,19 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance['balanceOf(address,uint256)'](
+        let initialSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let initialRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
 
-        await instance[
-          'transferBatch(address,address,address,uint256[],uint256[],bytes)'
-        ](
+        let initialRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
+
+        await instance.__transferBatch(
           instance.address,
           holder.address,
           recipient.address,
@@ -726,13 +614,15 @@ describe('ERC1155Base', function () {
           ethers.utils.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance['balanceOf(address,uint256)'](
+        let finalSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let finalRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
+
+        let finalRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
 
         expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
         expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
@@ -744,16 +634,10 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
         await expect(
-          instance[
-            'transferBatch(address,address,address,uint256[],uint256[],bytes)'
-          ](
+          instance.__transferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -775,9 +659,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
-            instance[
-              'transferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__transferBatch(
               instance.address,
               holder.address,
               ethers.constants.AddressZero,
@@ -790,9 +672,7 @@ describe('ERC1155Base', function () {
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance[
-              'transferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__transferBatch(
               instance.address,
               holder.address,
               recipient.address,
@@ -805,9 +685,7 @@ describe('ERC1155Base', function () {
 
         it('transfer amount exceeds balance', async function () {
           await expect(
-            instance[
-              'transferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__transferBatch(
               instance.address,
               holder.address,
               recipient.address,
@@ -825,23 +703,19 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mint(address,uint256,uint256)'](
-          holder.address,
-          id,
-          amount,
-        );
+        await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance['balanceOf(address,uint256)'](
+        let initialSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let initialRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
 
-        await instance[
-          'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-        ](
+        let initialRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
+
+        await instance.__safeTransferBatch(
           instance.address,
           holder.address,
           recipient.address,
@@ -850,13 +724,15 @@ describe('ERC1155Base', function () {
           ethers.utils.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance['balanceOf(address,uint256)'](
+        let finalSenderBalance = await instance.callStatic.balanceOf(
           holder.address,
           id,
         );
-        let finalRecipientBalance = await instance[
-          'balanceOf(address,uint256)'
-        ](recipient.address, id);
+
+        let finalRecipientBalance = await instance.callStatic.balanceOf(
+          recipient.address,
+          id,
+        );
 
         expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
         expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
@@ -868,16 +744,10 @@ describe('ERC1155Base', function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
 
-        await instance['mintBatch(address,uint256[],uint256[])'](
-          holder.address,
-          [id],
-          [amount],
-        );
+        await instance.__mintBatch(holder.address, [id], [amount]);
 
         await expect(
-          instance[
-            'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-          ](
+          instance.__safeTransferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -899,9 +769,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
-            instance[
-              'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__safeTransferBatch(
               instance.address,
               holder.address,
               ethers.constants.AddressZero,
@@ -914,9 +782,7 @@ describe('ERC1155Base', function () {
 
         it('input array lengths do not match', async function () {
           await expect(
-            instance[
-              'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__safeTransferBatch(
               instance.address,
               holder.address,
               recipient.address,
@@ -929,9 +795,7 @@ describe('ERC1155Base', function () {
 
         it('transfer amount exceeds balance', async function () {
           await expect(
-            instance[
-              'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__safeTransferBatch(
               instance.address,
               holder.address,
               recipient.address,
@@ -944,9 +808,7 @@ describe('ERC1155Base', function () {
 
         it('transfer is made to invalid receiver', async function () {
           await expect(
-            instance[
-              'safeTransferBatch(address,address,address,uint256[],uint256[],bytes)'
-            ](
+            instance.__safeTransferBatch(
               instance.address,
               holder.address,
               invalidReceiver,

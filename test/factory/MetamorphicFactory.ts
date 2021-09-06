@@ -22,15 +22,14 @@ describe('MetamorphicFactory', function () {
         const target = instance.address;
         const salt = ethers.utils.randomBytes(32);
 
-        const address = await instance.callStatic[
-          'deployMetamorphicContract(address,bytes32)'
-        ](target, salt);
-        expect(address).to.be.properAddress;
-
-        await instance['deployMetamorphicContract(address,bytes32)'](
+        const address = await instance.callStatic.__deployMetamorphicContract(
           target,
           salt,
         );
+
+        expect(address).to.be.properAddress;
+
+        await instance.__deployMetamorphicContract(target, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(target),
@@ -42,16 +41,10 @@ describe('MetamorphicFactory', function () {
           const target = instance.address;
           const salt = ethers.utils.randomBytes(32);
 
-          await instance['deployMetamorphicContract(address,bytes32)'](
-            target,
-            salt,
-          );
+          await instance.__deployMetamorphicContract(target, salt);
 
           await expect(
-            instance['deployMetamorphicContract(address,bytes32)'](
-              target,
-              salt,
-            ),
+            instance.__deployMetamorphicContract(target, salt),
           ).to.be.revertedWith('Factory: failed deployment');
         });
       });
@@ -65,9 +58,9 @@ describe('MetamorphicFactory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic[
-            'calculateMetamorphicDeploymentAddress(bytes32)'
-          ](salt),
+          await instance.callStatic.__calculateMetamorphicDeploymentAddress(
+            salt,
+          ),
         ).to.equal(
           ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );

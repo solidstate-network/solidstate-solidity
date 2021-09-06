@@ -24,8 +24,18 @@ describe('ERC1404Base', function () {
     restrictions,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>
-      instance['mint(address,uint256)'](recipient, amount),
+      instance.__mint(recipient, amount),
     burn: (recipient: string, amount: BigNumber) =>
-      instance['burn(address,uint256)'](recipient, amount),
+      instance.__burn(recipient, amount),
+  });
+
+  describe('__internal', function () {
+    describe('#_detectTransferRestriction', function () {
+      it('todo');
+    });
+
+    describe('#_messageForTransferRestriction', function () {
+      it('todo');
+    });
   });
 });

@@ -2,7 +2,12 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC1155Base} from './ERC1155Base.sol';
-import {ERC165} from '../../introspection/ERC165.sol';
+import { ERC165 } from '../../introspection/ERC165.sol';
+import { ERC1155Base } from './base/ERC1155Base.sol';
 
-abstract contract ERC1155 is ERC1155Base, ERC165 {}
+/**
+ * @title SolidState ERC1155 implementation
+ */
+abstract contract ERC1155 is ERC1155Base, ERC165 {
+
+}
