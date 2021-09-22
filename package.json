@@ -5,7 +5,13 @@
   "license": "MIT",
   "scripts": {
     "lerna-publish": "yarn build && lerna publish",
-    "build": "hardhat compile && lerna run tsc"
+    "build": "hardhat compile && lerna run tsc",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts,sol,json,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -23,8 +29,11 @@
     "hardhat-abi-exporter": "^2.3.0",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
+    "husky": "^7.0.1",
     "lerna": "^4.0.0",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.14",
     "solidity-coverage": "^0.7.17",
     "ts-node": "^10.2.1",
     "typechain": "^5.1.2",

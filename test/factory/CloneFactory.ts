@@ -71,9 +71,7 @@ describe('CloneFactory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateCloneDeploymentAddress(
-            salt,
-          ),
+          await instance.callStatic.__calculateCloneDeploymentAddress(salt),
         ).to.equal(
           ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );

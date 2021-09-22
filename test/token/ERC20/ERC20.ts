@@ -22,10 +22,8 @@ describe('ERC20', function () {
 
   describeBehaviorOfERC20({
     deploy: async () => instance as any,
-    mint: async (recipient, amount) =>
-      instance.__mint(recipient, amount),
-    burn: async (recipient, amount) =>
-      instance.__burn(recipient, amount),
+    mint: async (recipient, amount) => instance.__mint(recipient, amount),
+    burn: async (recipient, amount) => instance.__burn(recipient, amount),
     name,
     symbol,
     decimals,

@@ -15,7 +15,9 @@ describe('Proxy', function () {
 
   before(async function () {
     [deployer] = await ethers.getSigners();
-    implementation = await new OwnableMock__factory(deployer).deploy(deployer.address);
+    implementation = await new OwnableMock__factory(deployer).deploy(
+      deployer.address,
+    );
   });
 
   beforeEach(async function () {

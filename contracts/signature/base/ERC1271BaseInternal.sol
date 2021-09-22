@@ -7,14 +7,15 @@ pragma solidity ^0.8.0;
  * @dev _isValidSignature function must be overridden with application-specific logic
  */
 abstract contract ERC1271BaseInternal {
-  /**
-   * @notice return whether given signature is valid
-   * @param hash hashed data
-   * @param signature signed hash
-   * @return whether given signature is valid
-   */
-  function _isValidSignature (
-    bytes32 hash,
-    bytes memory signature
-  ) virtual internal view returns (bool);
+    /**
+     * @notice return whether given signature is valid
+     * @param hash hashed data
+     * @param signature signed hash
+     * @return whether given signature is valid
+     */
+    function _isValidSignature(bytes32 hash, bytes memory signature)
+        internal
+        view
+        virtual
+        returns (bool);
 }

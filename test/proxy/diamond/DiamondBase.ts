@@ -11,7 +11,9 @@ describe('DiamondBase', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new OwnableMock__factory(deployer).deploy(deployer.address);
+    const facetInstance = await new OwnableMock__factory(deployer).deploy(
+      deployer.address,
+    );
 
     instance = await new DiamondBaseMock__factory(deployer).deploy([
       {

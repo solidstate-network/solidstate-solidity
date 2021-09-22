@@ -41,7 +41,9 @@ export function describeBehaviorOfERC721Metadata(
 
       it('returns concatenation of base URI and token URI if both are set');
 
-      it('returns concatenation of base URI and token ID if only base URI is set');
+      it(
+        'returns concatenation of base URI and token ID if only base URI is set',
+      );
     });
   });
 }

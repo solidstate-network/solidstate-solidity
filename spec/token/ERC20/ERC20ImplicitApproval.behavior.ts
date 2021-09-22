@@ -69,17 +69,21 @@ export function describeBehaviorOfERC20ImplicitApproval(
 
         await mint(holder.address, amount);
 
-        await instance.connect(holder).approve(
-          implicitlyApprovedSpender.address,
-          ethers.constants.AddressZero
-        );
+        await instance
+          .connect(holder)
+          .approve(
+            implicitlyApprovedSpender.address,
+            ethers.constants.AddressZero,
+          );
 
         await expect(
-          instance.connect(implicitlyApprovedSpender).transferFrom(
-            holder.address,
-            implicitlyApprovedSpender.address,
-            amount
-          )
+          instance
+            .connect(implicitlyApprovedSpender)
+            .transferFrom(
+              holder.address,
+              implicitlyApprovedSpender.address,
+              amount,
+            ),
         ).not.to.be.reverted;
       });
     });

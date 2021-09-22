@@ -19,7 +19,9 @@ describe('Factory', function () {
         it('deploys bytecode and returns deployment address', async function () {
           const initCode = instance.deployTransaction.data;
 
-          const address = await instance.callStatic['__deploy(bytes)'](initCode);
+          const address = await instance.callStatic['__deploy(bytes)'](
+            initCode,
+          );
           expect(address).to.be.properAddress;
 
           await instance['__deploy(bytes)'](initCode);
@@ -95,7 +97,10 @@ describe('Factory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateDeploymentAddress(initCodeHash, salt),
+          await instance.callStatic.__calculateDeploymentAddress(
+            initCodeHash,
+            salt,
+          ),
         ).to.equal(
           ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );

@@ -9,7 +9,7 @@ interface ERC721EnumerableBehaviorArgs {
   deploy: () => Promise<ERC721Enumerable>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber,
+  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC721Enumerable(
@@ -30,7 +30,9 @@ export function describeBehaviorOfERC721Enumerable(
         expect(await instance.totalSupply()).to.equal(supply);
 
         await mint(instance.address, ethers.constants.Two);
-        expect(await instance.totalSupply()).to.equal(supply.add(ethers.constants.One));
+        expect(await instance.totalSupply()).to.equal(
+          supply.add(ethers.constants.One),
+        );
 
         await burn(ethers.constants.Two);
         expect(await instance.totalSupply()).to.equal(supply);
@@ -42,23 +44,35 @@ export function describeBehaviorOfERC721Enumerable(
         // TODO: query balance to determine starting index
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.Zero)
+          instance.callStatic.tokenOfOwnerByIndex(
+            instance.address,
+            ethers.constants.Zero,
+          ),
         ).to.be.revertedWith('EnumerableSet: index out of bounds');
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.One)
+          instance.callStatic.tokenOfOwnerByIndex(
+            instance.address,
+            ethers.constants.One,
+          ),
         ).to.be.revertedWith('EnumerableSet: index out of bounds');
 
-        await mint(instance.address, ethers.constants.One)
-        await mint(instance.address, ethers.constants.Two)
+        await mint(instance.address, ethers.constants.One);
+        await mint(instance.address, ethers.constants.Two);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.Zero)
-        ).to.equal(ethers.constants.One)
+          await instance.callStatic.tokenOfOwnerByIndex(
+            instance.address,
+            ethers.constants.Zero,
+          ),
+        ).to.equal(ethers.constants.One);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(instance.address, ethers.constants.One)
-        ).to.equal(ethers.constants.Two)
+          await instance.callStatic.tokenOfOwnerByIndex(
+            instance.address,
+            ethers.constants.One,
+          ),
+        ).to.equal(ethers.constants.Two);
       });
     });
 
@@ -67,24 +81,28 @@ export function describeBehaviorOfERC721Enumerable(
         const index = await instance.callStatic.totalSupply();
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero))
+          instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero)),
         ).to.be.revertedWith('EnumerableMap: index out of bounds');
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(ethers.constants.One))
+          instance.callStatic.tokenByIndex(index.add(ethers.constants.One)),
         ).to.be.revertedWith('EnumerableMap: index out of bounds');
 
         // TODO: mint to different addresses
-        await mint(instance.address, ethers.constants.One)
-        await mint(instance.address, ethers.constants.Two)
+        await mint(instance.address, ethers.constants.One);
+        await mint(instance.address, ethers.constants.Two);
 
         expect(
-          await instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero))
-        ).to.equal(ethers.constants.One)
+          await instance.callStatic.tokenByIndex(
+            index.add(ethers.constants.Zero),
+          ),
+        ).to.equal(ethers.constants.One);
 
         expect(
-          await instance.callStatic.tokenByIndex(index.add(ethers.constants.One))
-        ).to.equal(ethers.constants.Two)
+          await instance.callStatic.tokenByIndex(
+            index.add(ethers.constants.One),
+          ),
+        ).to.equal(ethers.constants.Two);
       });
     });
   });

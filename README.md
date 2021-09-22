@@ -29,6 +29,7 @@ import '@solidstate/contracts/token/ERC20/ERC20Base.sol';
 contract CustomToken is ERC20Base {
   // custom code...
 }
+
 ```
 
 Rather than rewrite the `ERC20Base` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
@@ -75,6 +76,12 @@ Install dependencies via Yarn:
 
 ```bash
 yarn install
+```
+
+Setup Husky to format code on commit:
+
+```bash
+yarn prepare
 ```
 
 Link local packages and install remaining dependencies via Lerna:

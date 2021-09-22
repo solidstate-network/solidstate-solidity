@@ -27,10 +27,8 @@ describe('ERC20Base', function () {
   describeBehaviorOfERC20Base({
     deploy: async () => instance as any,
     supply: ethers.constants.Zero,
-    mint: (recipient, amount) =>
-      instance.__mint(recipient, amount),
-    burn: (recipient, amount) =>
-      instance.__burn(recipient, amount),
+    mint: (recipient, amount) => instance.__mint(recipient, amount),
+    burn: (recipient, amount) => instance.__burn(recipient, amount),
   });
 
   describe('__internal', function () {
@@ -64,9 +62,7 @@ describe('ERC20Base', function () {
       it('emits Transfer event', async function () {
         let amount = ethers.constants.Two;
 
-        await expect(
-          instance.__mint(receiver.address, amount),
-        )
+        await expect(instance.__mint(receiver.address, amount))
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.constants.AddressZero, receiver.address, amount);
       });
@@ -112,9 +108,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
         await instance.__mint(receiver.address, amount);
 
-        await expect(
-          instance.__burn(receiver.address, amount),
-        )
+        await expect(instance.__burn(receiver.address, amount))
           .to.emit(instance, 'Transfer')
           .withArgs(receiver.address, ethers.constants.AddressZero, amount);
       });
@@ -144,11 +138,7 @@ describe('ERC20Base', function () {
         await instance.__mint(sender.address, amount);
 
         await expect(() =>
-          instance.__transfer(
-            sender.address,
-            receiver.address,
-            amount,
-          ),
+          instance.__transfer(sender.address, receiver.address, amount),
         ).to.changeTokenBalances(
           instance,
           [sender, receiver],
@@ -161,11 +151,7 @@ describe('ERC20Base', function () {
         await instance.__mint(sender.address, amount);
 
         let initialSupply = await instance.callStatic['totalSupply()']();
-        await instance.__transfer(
-          sender.address,
-          receiver.address,
-          amount,
-        );
+        await instance.__transfer(sender.address, receiver.address, amount);
         let finalSupply = await instance.callStatic['totalSupply()']();
 
         expect(finalSupply).to.equal(initialSupply);
@@ -176,11 +162,7 @@ describe('ERC20Base', function () {
         await instance.__mint(sender.address, amount);
 
         await expect(
-          instance.__transfer(
-            sender.address,
-            receiver.address,
-            amount,
-          ),
+          instance.__transfer(sender.address, receiver.address, amount),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(sender.address, receiver.address, amount);
@@ -215,11 +197,7 @@ describe('ERC20Base', function () {
 
         await instance
           .connect(holder)
-          .__approve(
-            holder.address,
-            spender.address,
-            amount,
-          );
+          .__approve(holder.address, spender.address, amount);
         await expect(
           await instance.callStatic['allowance(address,address)'](
             holder.address,
@@ -230,11 +208,7 @@ describe('ERC20Base', function () {
         // approvals are not cumulative
         await instance
           .connect(holder)
-          .__approve(
-            holder.address,
-            spender.address,
-            amount,
-          );
+          .__approve(holder.address, spender.address, amount);
         await expect(
           await instance.callStatic['allowance(address,address)'](
             holder.address,
@@ -247,11 +221,7 @@ describe('ERC20Base', function () {
         let amount = ethers.constants.Two;
 
         await expect(
-          instance.__approve(
-            holder.address,
-            spender.address,
-            amount,
-          ),
+          instance.__approve(holder.address, spender.address, amount),
         )
           .to.emit(instance, 'Approval')
           .withArgs(holder.address, spender.address, amount);

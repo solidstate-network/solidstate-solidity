@@ -31,7 +31,7 @@ describe('ERC1404Base', function () {
 
   describe('__internal', function () {
     describe('#_detectTransferRestriction', function () {
-      it('todo')
+      it('todo');
     });
 
     describe('#_messageForTransferRestriction', function () {

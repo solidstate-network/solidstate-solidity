@@ -11,8 +11,12 @@ describe('ManagedProxy', function () {
   let instance: ManagedProxyMock;
 
   beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory('OwnableMock');
-    const implementationInstance = await implementationFactory.deploy(ethers.constants.AddressZero);
+    const implementationFactory = await ethers.getContractFactory(
+      'OwnableMock',
+    );
+    const implementationInstance = await implementationFactory.deploy(
+      ethers.constants.AddressZero,
+    );
     await implementationInstance.deployed();
 
     const manager = await deployMockContract((await ethers.getSigners())[0], [

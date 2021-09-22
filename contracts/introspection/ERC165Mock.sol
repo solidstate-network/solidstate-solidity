@@ -2,12 +2,15 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC165, ERC165Storage, IERC165} from './ERC165.sol';
+import { ERC165, ERC165Storage, IERC165 } from './ERC165.sol';
 
 contract ERC165Mock is ERC165 {
-  using ERC165Storage for ERC165Storage.Layout;
+    using ERC165Storage for ERC165Storage.Layout;
 
-  constructor () {
-    ERC165Storage.layout().setSupportedInterface(type(IERC165).interfaceId, true);
-  }
+    constructor() {
+        ERC165Storage.layout().setSupportedInterface(
+            type(IERC165).interfaceId,
+            true
+        );
+    }
 }

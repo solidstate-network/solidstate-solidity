@@ -12,7 +12,7 @@ interface ERC721BehaviorArgs {
   deploy: () => Promise<ERC721>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber,
+  supply: BigNumber;
   name: string;
   symbol: string;
   tokenURI: string;
@@ -31,7 +31,7 @@ export function describeBehaviorOfERC721(
 
     before(async function () {
       [holder] = await ethers.getSigners();
-    })
+    });
 
     beforeEach(async function () {
       instance = await deploy();
@@ -74,16 +74,13 @@ export function describeBehaviorOfERC721(
           await mint(holder.address, tokenId);
 
           await expect(
-            instance.connect(holder).transferFrom(
-              holder.address,
-              holder.address,
-              tokenId,
-              { value: ethers.constants.One }
-            )
-          ).to.be.revertedWith(
-            'ERC721: payable transfer calls not supported'
-          );
-        })
+            instance
+              .connect(holder)
+              .transferFrom(holder.address, holder.address, tokenId, {
+                value: ethers.constants.One,
+              }),
+          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
+        });
       });
     });
 
@@ -95,14 +92,16 @@ export function describeBehaviorOfERC721(
             await mint(holder.address, tokenId);
 
             await expect(
-              instance.connect(holder)['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                { value: ethers.constants.One }
-              )
+              instance
+                .connect(holder)
+                ['safeTransferFrom(address,address,uint256)'](
+                  holder.address,
+                  holder.address,
+                  tokenId,
+                  { value: ethers.constants.One },
+                ),
             ).to.be.revertedWith(
-              'ERC721: payable transfer calls not supported'
+              'ERC721: payable transfer calls not supported',
             );
           });
         });
@@ -115,15 +114,17 @@ export function describeBehaviorOfERC721(
             await mint(holder.address, tokenId);
 
             await expect(
-              instance.connect(holder)['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                '0x',
-                { value: ethers.constants.One }
-              )
+              instance
+                .connect(holder)
+                ['safeTransferFrom(address,address,uint256,bytes)'](
+                  holder.address,
+                  holder.address,
+                  tokenId,
+                  '0x',
+                  { value: ethers.constants.One },
+                ),
             ).to.be.revertedWith(
-              'ERC721: payable transfer calls not supported'
+              'ERC721: payable transfer calls not supported',
             );
           });
         });
@@ -137,15 +138,13 @@ export function describeBehaviorOfERC721(
           await mint(holder.address, tokenId);
 
           await expect(
-            instance.connect(holder).approve(
-              ethers.constants.AddressZero,
-              tokenId,
-              { value: ethers.constants.One }
-            )
-          ).to.be.revertedWith(
-            'ERC721: payable approve calls not supported'
-          );
-        })
+            instance
+              .connect(holder)
+              .approve(ethers.constants.AddressZero, tokenId, {
+                value: ethers.constants.One,
+              }),
+          ).to.be.revertedWith('ERC721: payable approve calls not supported');
+        });
       });
     });
   });

@@ -14,7 +14,7 @@ describe('ERC20ImplicitApproval', function () {
 
   before(async function () {
     // TODO: avoid need for gap in array by passing separate (non-implicitly-approved) spender to ERC20Base behavior tests
-    [holder, ,implicitlyApprovedSpender] = await ethers.getSigners();
+    [holder, , implicitlyApprovedSpender] = await ethers.getSigners();
   });
 
   beforeEach(async function () {
@@ -27,10 +27,8 @@ describe('ERC20ImplicitApproval', function () {
   describeBehaviorOfERC20ImplicitApproval({
     deploy: async () => instance as any,
     supply: ethers.constants.Zero,
-    mint: (recipient, amount) =>
-      instance.__mint(recipient, amount),
-    burn: (recipient, amount) =>
-      instance.__burn(recipient, amount),
+    mint: (recipient, amount) => instance.__mint(recipient, amount),
+    burn: (recipient, amount) => instance.__burn(recipient, amount),
     getHolder: async () => holder,
     getImplicitlyApprovedSpender: async () => implicitlyApprovedSpender,
   });
