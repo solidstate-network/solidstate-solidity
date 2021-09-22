@@ -1,11 +1,6 @@
 {
   "version": "0.0.23",
-  "packages": [
-    "abi",
-    "contracts",
-    "lib",
-    "spec"
-  ],
+  "packages": ["abi", "contracts", "lib", "spec"],
   "command": {
     "publish": {
       "forcePublish": "*"

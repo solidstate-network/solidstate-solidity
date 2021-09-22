@@ -443,9 +443,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                   value,
                 },
               ),
-            ).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
+            ).to.be.revertedWith('Mock on the method is not initialized');
           });
 
           it('quorum is not reached', async function () {
