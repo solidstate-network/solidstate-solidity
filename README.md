@@ -136,4 +136,6 @@ yarn run hardhat coverage
 
 ## Sponsor
 
+[<img src="./premia-logo.svg" alt="premia.finance" height="200">](https://premia.finance)
+
 [![frexa.io](./frexa-logo.png)](http://frexa.io)
