@@ -2,8 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-// TODO: remove ERC20BaseStorage import
-import { ERC20BaseInternal, ERC20BaseStorage } from '../base/ERC20Base.sol';
+import { ERC20BaseInternal } from '../base/ERC20Base.sol';
 import { ERC20SnapshotStorage } from './ERC20SnapshotStorage.sol';
 
 /**

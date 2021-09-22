@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 
 library ERC165Storage {
     struct Layout {
-        // TODO: use EnumerableSet to allow post-diamond-cut auditing
         mapping(bytes4 => bool) supportedInterfaces;
     }
 
