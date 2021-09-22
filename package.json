@@ -9,7 +9,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{js,ts,sol}": [
+    "*.{js,ts,sol,json,md}": [
       "prettier --write"
     ]
   },
