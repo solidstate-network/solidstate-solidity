@@ -134,8 +134,8 @@ Generate a code coverage report using `solidity-coverage`:
 yarn run hardhat coverage
 ```
 
-## Sponsor
+## Sponsors
 
-[<img src="./premia-logo.svg" alt="premia.finance" height="200">](https://premia.finance)
+[<img src="./premia-logo.svg" alt="premia.finance" width="200">](https://premia.finance)
 
-[![frexa.io](./frexa-logo.png)](http://frexa.io)
+[<img src="./frexa-logo.svg" alt="frexa.io" width="200">](https://frexa.io)
