@@ -73,7 +73,7 @@ library ECDSA {
     /**
      * @notice generate an "Ethereum Signed Message" in the format returned by the eth_sign JSON-RPC method
      * @param hash hashed data payload
-     * @return signed message
+     * @return signed message hash
      */
     function toEthSignedMessageHash(bytes32 hash)
         internal
