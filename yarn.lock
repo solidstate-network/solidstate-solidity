@@ -1571,11 +1571,12 @@
     antlr4ts "^0.5.0-alpha.4"
 
 "@solidstate/library@^0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@solidstate/library/-/library-0.0.23.tgz#c03a813a2ff39686322f8a0861859e19ce6a779e"
-  integrity sha512-Q/i3Xa8sfluLttvhO7B85U/J0THSYsLowjrCcvzqBagO74qMx7Y1RQVI9FqrKBc8VRR3o1JGY0dnfVlUzK2NAQ==
-  dependencies:
-    eth-permit "^0.1.10"
+  version "0.0.0"
+  uid ""
+
+"@solidstate/library@link:lib":
+  version "0.0.0"
+  uid ""
 
 "@solidstate/spec@link:spec":
   version "0.0.0"
