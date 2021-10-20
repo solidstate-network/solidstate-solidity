@@ -26,5 +26,7 @@ abstract contract ERC1155 is
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) internal virtual override(ERC1155BaseInternal, ERC1155Enumerable) {}
+    ) internal virtual override(ERC1155BaseInternal, ERC1155Enumerable) {
+        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
+    }
 }
