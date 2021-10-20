@@ -1,29 +1,22 @@
 [
   {
-    "inputs": [],
-    "name": "name",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
       {
+        "indexed": false,
         "internalType": "string",
-        "name": "",
+        "name": "value",
         "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "URI",
+    "type": "event"
   },
   {
     "inputs": [
@@ -33,7 +26,7 @@
         "type": "uint256"
       }
     ],
-    "name": "tokenURI",
+    "name": "uri",
     "outputs": [
       {
         "internalType": "string",

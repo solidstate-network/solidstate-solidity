@@ -3,6 +3,7 @@ import { describeBehaviorOfERC1155 } from '@solidstate/spec';
 import { ERC1155Mock, ERC1155Mock__factory } from '../../../typechain';
 
 describe('ERC1155', function () {
+  const tokenURI = 'ERC1155Metadata.tokenURI';
   let instance: ERC1155Mock;
 
   beforeEach(async function () {
@@ -16,5 +17,6 @@ describe('ERC1155', function () {
       instance.__mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>
       instance.__burn(recipient, tokenId, amount),
+    tokenURI,
   });
 });

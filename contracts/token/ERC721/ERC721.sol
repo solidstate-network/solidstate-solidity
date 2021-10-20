@@ -48,5 +48,7 @@ abstract contract ERC721 is
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721BaseInternal, ERC721Metadata) {}
+    ) internal virtual override(ERC721BaseInternal, ERC721Metadata) {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
 }
