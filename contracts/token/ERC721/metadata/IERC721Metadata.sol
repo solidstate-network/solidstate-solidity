@@ -2,12 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import { IERC721 } from '../IERC721.sol';
-
 /**
  * @title ERC721Metadata interface
  */
-interface IERC721Metadata is IERC721 {
+interface IERC721Metadata {
     /**
      * @notice get token name
      * @return token name

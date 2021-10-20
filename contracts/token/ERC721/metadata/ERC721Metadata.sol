@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
-import { ERC721Base, ERC721BaseInternal, ERC721BaseStorage } from '../base/ERC721Base.sol';
+import { ERC721BaseInternal, ERC721BaseStorage } from '../base/ERC721Base.sol';
 import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 import { ERC721MetadataInternal } from './ERC721MetadataInternal.sol';
 import { IERC721Metadata } from './IERC721Metadata.sol';
@@ -11,11 +11,7 @@ import { IERC721Metadata } from './IERC721Metadata.sol';
 /**
  * @notice ERC721 metadata extensions
  */
-abstract contract ERC721Metadata is
-    IERC721Metadata,
-    ERC721MetadataInternal,
-    ERC721Base
-{
+abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
     using UintUtils for uint256;
 
     /**
@@ -67,7 +63,7 @@ abstract contract ERC721Metadata is
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721MetadataInternal, ERC721BaseInternal) {
+    ) internal virtual override {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 }
