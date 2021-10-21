@@ -17,12 +17,11 @@ library UintUtils {
         }
 
         bytes memory buffer = new bytes(digits);
-        uint256 index = digits - 1;
-        temp = value;
 
-        while (temp != 0) {
-            buffer[index--] = bytes1(uint8(48 + (temp % 10)));
-            temp /= 10;
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
         }
 
         return string(buffer);
