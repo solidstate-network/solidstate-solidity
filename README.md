@@ -1,6 +1,6 @@
 # SolidState Solidity
 
-> Warning: this library is in a pre-release state; contracts are not sufficiently tested for production use, documentation may be missing or inaccurate, and the API may change at any time.
+> A version of this library has been audited by Hacken.  More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
 
 SolidState is an upgradeable-first Solidity smart contract development library.
 
