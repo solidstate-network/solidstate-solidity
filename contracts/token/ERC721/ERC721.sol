@@ -21,11 +21,12 @@ abstract contract ERC721 is
      * @inheritdoc ERC721BaseInternal
      */
     function _handleApproveMessageValue(
-        address,
-        uint256,
+        address operator,
+        uint256 tokenId,
         uint256 value
     ) internal virtual override {
         require(value == 0, 'ERC721: payable approve calls not supported');
+        super._handleApproveMessageValue(operator, tokenId, value);
     }
 
     /**
@@ -33,12 +34,13 @@ abstract contract ERC721 is
      * @inheritdoc ERC721BaseInternal
      */
     function _handleTransferMessageValue(
-        address,
-        address,
-        uint256,
+        address from,
+        address to,
+        uint256 tokenId,
         uint256 value
     ) internal virtual override {
         require(value == 0, 'ERC721: payable transfer calls not supported');
+        super._handleTransferMessageValue(from, to, tokenId, value);
     }
 
     /**

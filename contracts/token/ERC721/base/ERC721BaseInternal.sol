@@ -184,7 +184,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address operator,
         uint256 tokenId,
         uint256 value
-    ) internal virtual;
+    ) internal virtual {}
 
     /**
      * @notice ERC721 hook, called before externally called transfers for processing of included message value
@@ -198,7 +198,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId,
         uint256 value
-    ) internal virtual;
+    ) internal virtual {}
 
     /**
      * @notice ERC721 hook, called before all transfers including mint and burn
