@@ -51,7 +51,7 @@ library ERC721BaseStorage {
         view
         returns (uint256)
     {
-        (uint256 tokenId, ) = ERC721BaseStorage.layout().tokenOwners.at(index);
+        (uint256 tokenId, ) = l.tokenOwners.at(index);
         return tokenId;
     }
 }
