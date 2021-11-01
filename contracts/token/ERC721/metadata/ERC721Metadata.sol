@@ -12,6 +12,7 @@ import { IERC721Metadata } from './IERC721Metadata.sol';
  * @notice ERC721 metadata extensions
  */
 abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
+    using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using UintUtils for uint256;
 
     /**
@@ -39,7 +40,7 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
         returns (string memory)
     {
         require(
-            ERC721BaseStorage.exists(tokenId),
+            ERC721BaseStorage.layout().exists(tokenId),
             'ERC721Metadata: URI query for nonexistent token'
         );
 
