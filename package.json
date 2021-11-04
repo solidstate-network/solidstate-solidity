@@ -6,7 +6,8 @@
   "scripts": {
     "lerna-publish": "yarn build && lerna publish",
     "build": "hardhat compile && lerna run tsc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade"
   },
   "lint-staged": {
     "*.{js,ts,sol,json,md}": [
@@ -40,6 +41,7 @@
     "solidity-coverage": "^0.7.17",
     "ts-node": "^10.3.0",
     "typechain": "^5.2.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "yarn-up": "^1.4.1"
   }
 }
