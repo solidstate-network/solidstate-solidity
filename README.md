@@ -1,6 +1,6 @@
 # SolidState Solidity
 
-> A version of this library has been audited by Hacken.  More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
+> A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
 
 SolidState is an upgradeable-first Solidity smart contract development library.
 
@@ -94,6 +94,12 @@ Compile contracts via Hardhat:
 
 ```bash
 yarn run hardhat compile
+```
+
+Automatically upgrade dependencies with yarn-up:
+
+```bash
+yarn upgrade-dependencies
 ```
 
 ### Networks
