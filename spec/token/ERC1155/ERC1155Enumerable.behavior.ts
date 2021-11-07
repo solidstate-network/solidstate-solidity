@@ -17,10 +17,11 @@ interface ERC1155EnumerableBehaviorArgs {
     id: BigNumber,
     amount: BigNumber,
   ) => Promise<ContractTransaction>;
+  tokenId?: BigNumber;
 }
 
 export function describeBehaviorOfERC1155Enumerable(
-  { deploy, mint, burn }: ERC1155EnumerableBehaviorArgs,
+  { deploy, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -37,6 +38,7 @@ export function describeBehaviorOfERC1155Enumerable(
         deploy,
         mint,
         burn,
+        tokenId,
       },
       skips,
     );
@@ -44,7 +46,7 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalSupply', function () {
       it('returns supply of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
@@ -82,7 +84,7 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalHolders', function () {
       it('returns number of holders of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
@@ -120,7 +122,7 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#accountsByToken', function () {
       it('returns list of addresses holding given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         expect(
@@ -158,7 +160,7 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#tokensByAccount', function () {
       it('returns list of tokens held by given address', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = ethers.constants.Zero;
+        const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
 
         expect(

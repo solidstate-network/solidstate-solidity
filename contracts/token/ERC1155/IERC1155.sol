@@ -2,69 +2,83 @@
 
 pragma solidity ^0.8.0;
 
-import {IERC165} from '../../introspection/IERC165.sol';
+import { IERC1155Internal } from './IERC1155Internal.sol';
+import { IERC165 } from '../../introspection/IERC165.sol';
 
-interface IERC1155 is IERC165 {
-  event TransferSingle (
-    address indexed operator,
-    address indexed from,
-    address indexed to,
-    uint256 id,
-    uint256 value
-  );
+/**
+ * @notice ERC1155 interface
+ * @dev see https://github.com/ethereum/EIPs/issues/1155
+ */
+interface IERC1155 is IERC1155Internal, IERC165 {
+    /**
+     * @notice query the balance of given token held by given address
+     * @param account address to query
+     * @param id token to query
+     * @return token balance
+     */
+    function balanceOf(address account, uint256 id)
+        external
+        view
+        returns (uint256);
 
-  event TransferBatch (
-    address indexed operator,
-    address indexed from,
-    address indexed to,
-    uint256[] ids,
-    uint256[] values
-  );
+    /**
+     * @notice query the balances of given tokens held by given addresses
+     * @param accounts addresss to query
+     * @param ids tokens to query
+     * @return token balances
+     */
+    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids)
+        external
+        view
+        returns (uint256[] memory);
 
-  event ApprovalForAll (
-    address indexed account,
-    address indexed operator,
-    bool approved
-  );
+    /**
+     * @notice query approval status of given operator with respect to given address
+     * @param account address to query for approval granted
+     * @param operator address to query for approval received
+     * @return whether operator is approved to spend tokens held by account
+     */
+    function isApprovedForAll(address account, address operator)
+        external
+        view
+        returns (bool);
 
-  event URI (
-    string value,
-    uint256 indexed id
-  );
+    /**
+     * @notice grant approval to or revoke approval from given operator to spend held tokens
+     * @param operator address whose approval status to update
+     * @param status whether operator should be considered approved
+     */
+    function setApprovalForAll(address operator, bool status) external;
 
-  function balanceOf (
-    address account,
-    uint256 id
-  ) external view returns (uint256);
+    /**
+     * @notice transfer tokens between given addresses, checking for ERC1155Receiver implementation if applicable
+     * @param from sender of tokens
+     * @param to receiver of tokens
+     * @param id token ID
+     * @param amount quantity of tokens to transfer
+     * @param data data payload
+     */
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes calldata data
+    ) external;
 
-  function balanceOfBatch (
-    address[] calldata accounts,
-    uint256[] calldata ids
-  ) external view returns (uint256[] memory);
-
-  function setApprovalForAll (
-    address operator,
-    bool approved
-  ) external;
-
-  function isApprovedForAll (
-    address account,
-    address operator
-  ) external view returns (bool);
-
-  function safeTransferFrom (
-    address from,
-    address to,
-    uint256 id,
-    uint256 amount,
-    bytes calldata data
-  ) external;
-
-  function safeBatchTransferFrom (
-    address from,
-    address to,
-    uint256[] calldata ids,
-    uint256[] calldata amounts,
-    bytes calldata data
-  ) external;
+    /**
+     * @notice transfer batch of tokens between given addresses, checking for ERC1155Receiver implementation if applicable
+     * @param from sender of tokens
+     * @param to receiver of tokens
+     * @param ids list of token IDs
+     * @param amounts list of quantities of tokens to transfer
+     * @param data data payload
+     */
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] calldata ids,
+        uint256[] calldata amounts,
+        bytes calldata data
+    ) external;
 }

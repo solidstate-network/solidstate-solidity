@@ -2,21 +2,23 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 
 export interface SignDataArgs {
-  values: any[];
   types: string[];
+  values: any[];
   nonce: any;
   address: any;
 }
 
-export async function signData(
-  signer: SignerWithAddress,
-  { values, types, nonce, address }: SignDataArgs,
-) {
+export function hashData({ types, values, nonce, address }: SignDataArgs) {
   const hash = ethers.utils.solidityKeccak256(
     [...types, 'uint256', 'address'],
     [...values, nonce, address],
   );
 
-  const signature = await signer.signMessage(ethers.utils.arrayify(hash));
+  return ethers.utils.arrayify(hash);
+}
+
+export async function signData(signer: SignerWithAddress, data: SignDataArgs) {
+  const signature = await signer.signMessage(hashData(data));
+
   return ethers.utils.arrayify(signature);
 }

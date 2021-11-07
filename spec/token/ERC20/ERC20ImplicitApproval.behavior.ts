@@ -9,6 +9,7 @@ import { BigNumber, ContractTransaction } from 'ethers';
 interface ERC20ImplicitApprovalBehaviorArgs {
   deploy: () => Promise<ERC20ImplicitApproval>;
   supply: BigNumber;
+  getHolder: () => Promise<SignerWithAddress>;
   getImplicitlyApprovedSpender: () => Promise<SignerWithAddress>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
@@ -18,6 +19,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
   {
     deploy,
     supply,
+    getHolder,
     getImplicitlyApprovedSpender,
     burn,
     mint,
@@ -27,10 +29,12 @@ export function describeBehaviorOfERC20ImplicitApproval(
   const describe = describeFilter(skips);
 
   describe('::ERC20ImplicitApproval', function () {
+    let holder: SignerWithAddress;
     let implicitlyApprovedSpender: SignerWithAddress;
     let instance: ERC20ImplicitApproval;
 
     before(async function () {
+      holder = await getHolder();
       implicitlyApprovedSpender = await getImplicitlyApprovedSpender();
     });
 
@@ -60,7 +64,28 @@ export function describeBehaviorOfERC20ImplicitApproval(
     });
 
     describe('#transferFrom', function () {
-      it('todo');
+      it('does not require approval for implicitly approved sender', async function () {
+        const amount = ethers.constants.One;
+
+        await mint(holder.address, amount);
+
+        await instance
+          .connect(holder)
+          .approve(
+            implicitlyApprovedSpender.address,
+            ethers.constants.AddressZero,
+          );
+
+        await expect(
+          instance
+            .connect(implicitlyApprovedSpender)
+            .transferFrom(
+              holder.address,
+              implicitlyApprovedSpender.address,
+              amount,
+            ),
+        ).not.to.be.reverted;
+      });
     });
   });
 }

@@ -18,9 +18,9 @@ describe('ManagedProxyOwnable', function () {
       'function getImplementation () external view returns (address)',
     ]);
 
-    const implementationInstance = await new OwnableMock__factory(deployer).deploy(
-      deployer.address
-    );
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(deployer.address);
 
     await manager.mock['getImplementation()'].returns(
       implementationInstance.address,
@@ -35,7 +35,7 @@ describe('ManagedProxyOwnable', function () {
   });
 
   describeBehaviorOfManagedProxyOwnable({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
@@ -48,7 +48,7 @@ describe('ManagedProxyOwnable', function () {
         it('manager is non-contract address', async function () {
           await instance['setOwner(address)'](ethers.constants.AddressZero);
 
-          await expect(instance.callStatic['getImplementation()']()).to.be
+          await expect(instance.callStatic.__getImplementation()).to.be
             .reverted;
         });
 
@@ -56,7 +56,7 @@ describe('ManagedProxyOwnable', function () {
           await instance['setOwner(address)'](instance.address);
 
           await expect(
-            instance.callStatic['getImplementation()'](),
+            instance.callStatic.__getImplementation(),
           ).to.be.revertedWith('ManagedProxy: failed to fetch implementation');
         });
       });
@@ -64,7 +64,7 @@ describe('ManagedProxyOwnable', function () {
 
     describe('#_getManager', function () {
       it('returns address of ERC173 owner', async function () {
-        expect(await instance.callStatic['getManager()']()).to.equal(
+        expect(await instance.callStatic.__getManager()).to.equal(
           await instance.callStatic['getOwner()'](),
         );
       });

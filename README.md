@@ -1,6 +1,6 @@
 # SolidState Solidity
 
-> Warning: this library is in a pre-release state; contracts are not sufficiently tested for production use, documentation may be missing or inaccurate, and the API may change at any time.
+> A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
 
 SolidState is an upgradeable-first Solidity smart contract development library.
 
@@ -29,6 +29,7 @@ import '@solidstate/contracts/token/ERC20/ERC20Base.sol';
 contract CustomToken is ERC20Base {
   // custom code...
 }
+
 ```
 
 Rather than rewrite the `ERC20Base` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
@@ -77,6 +78,12 @@ Install dependencies via Yarn:
 yarn install
 ```
 
+Setup Husky to format code on commit:
+
+```bash
+yarn prepare
+```
+
 Link local packages and install remaining dependencies via Lerna:
 
 ```bash
@@ -87,6 +94,12 @@ Compile contracts via Hardhat:
 
 ```bash
 yarn run hardhat compile
+```
+
+Automatically upgrade dependencies with yarn-up:
+
+```bash
+yarn upgrade-dependencies
 ```
 
 ### Networks
@@ -127,6 +140,8 @@ Generate a code coverage report using `solidity-coverage`:
 yarn run hardhat coverage
 ```
 
-## Sponsor
+## Sponsors
 
-[![frexa.io](./frexa-logo.png)](http://frexa.io)
+[<img src="./premia-logo.svg" alt="premia.finance" width="200">](https://premia.finance)
+
+[<img src="./frexa-logo.svg" alt="frexa.io" width="200">](https://frexa.io)

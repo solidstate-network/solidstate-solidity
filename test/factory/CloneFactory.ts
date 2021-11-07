@@ -17,10 +17,10 @@ describe('CloneFactory', function () {
     describe('#_clone', function () {
       describe('()', function () {
         it('deploys clone and returns deployment address', async function () {
-          const address = await instance.callStatic['deployClone()']();
+          const address = await instance.callStatic['__deployClone()']();
           expect(address).to.be.properAddress;
 
-          await instance['deployClone()']();
+          await instance['__deployClone()']();
 
           expect(await ethers.provider.getCode(address)).to.equal(
             await ethers.provider.getCode(instance.address),
@@ -36,12 +36,12 @@ describe('CloneFactory', function () {
         it('deploys clone and returns deployment address', async function () {
           const salt = ethers.utils.randomBytes(32);
 
-          const address = await instance.callStatic['deployClone(bytes32)'](
+          const address = await instance.callStatic['__deployClone(bytes32)'](
             salt,
           );
           expect(address).to.be.properAddress;
 
-          await instance['deployClone(bytes32)'](salt);
+          await instance['__deployClone(bytes32)'](salt);
 
           expect(await ethers.provider.getCode(address)).to.equal(
             await ethers.provider.getCode(instance.address),
@@ -54,10 +54,10 @@ describe('CloneFactory', function () {
           it('salt has already been used', async function () {
             const salt = ethers.utils.randomBytes(32);
 
-            await instance['deployClone(bytes32)'](salt);
+            await instance['__deployClone(bytes32)'](salt);
 
             await expect(
-              instance['deployClone(bytes32)'](salt),
+              instance['__deployClone(bytes32)'](salt),
             ).to.be.revertedWith('Factory: failed deployment');
           });
         });
@@ -71,9 +71,7 @@ describe('CloneFactory', function () {
         const salt = ethers.utils.randomBytes(32);
 
         expect(
-          await instance.callStatic['calculateCloneDeploymentAddress(bytes32)'](
-            salt,
-          ),
+          await instance.callStatic.__calculateCloneDeploymentAddress(salt),
         ).to.equal(
           ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
         );

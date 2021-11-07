@@ -7,7 +7,6 @@ describe('ERC20Permit', function () {
   const name = 'ERC20Metadata.name';
   const symbol = 'ERC20Metadata.symbol';
   const decimals = 18;
-  const supply = ethers.utils.parseEther('1');
 
   let deployer: SignerWithAddress;
   let instance: ERC20PermitMock;
@@ -21,17 +20,14 @@ describe('ERC20Permit', function () {
       name,
       symbol,
       decimals,
-      supply,
     );
   });
 
   describeBehaviorOfERC20Permit({
-    deploy: async () => instance,
+    deploy: async () => instance as any,
     supply: ethers.constants.Zero,
-    mint: (recipient, amount) =>
-      instance['mint(address,uint256)'](recipient, amount),
-    burn: (recipient, amount) =>
-      instance['burn(address,uint256)'](recipient, amount),
+    mint: (recipient, amount) => instance.__mint(recipient, amount),
+    burn: (recipient, amount) => instance.__burn(recipient, amount),
     name,
     symbol,
     decimals,

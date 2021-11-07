@@ -99,6 +99,36 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
+    describe('#approve', function () {
+      it('enables given spender to spend tokens on behalf of sender', async function () {
+        let amount = ethers.constants.Two;
+        await instance
+          .connect(holder)
+          ['approve(address,uint256)'](spender.address, amount);
+
+        expect(
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
+        ).to.equal(amount);
+
+        // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
+      });
+
+      it('emits Approval event', async function () {
+        let amount = ethers.constants.Two;
+
+        await expect(
+          instance
+            .connect(holder)
+            ['approve(address,uint256)'](spender.address, amount),
+        )
+          .to.emit(instance, 'Approval')
+          .withArgs(holder.address, spender.address, amount);
+      });
+    });
+
     describe('#transfer', function () {
       it('transfers amount from a to b', async function () {
         const amount = ethers.constants.Two;
@@ -129,25 +159,25 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transferFrom', function () {
-      it('transfers amount from spender on behalf of sender', async function () {
+      it('transfers amount on behalf of holder', async function () {
         const amount = ethers.constants.Two;
-        await mint(sender.address, amount);
+        await mint(holder.address, amount);
 
         await instance
-          .connect(sender)
+          .connect(holder)
           ['approve(address,uint256)'](spender.address, amount);
 
         await expect(() =>
           instance
             .connect(spender)
             ['transferFrom(address,address,uint256)'](
-              sender.address,
+              holder.address,
               receiver.address,
               amount,
             ),
         ).to.changeTokenBalances(
           instance,
-          [sender, receiver],
+          [holder, receiver],
           [-amount, amount],
         );
       });
@@ -177,36 +207,6 @@ export function describeBehaviorOfERC20Base(
               ),
           ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
         });
-      });
-    });
-
-    describe('#approve', function () {
-      it('enables given spender to spend tokens on behalf of sender', async function () {
-        let amount = ethers.constants.Two;
-        await instance
-          .connect(holder)
-          ['approve(address,uint256)'](spender.address, amount);
-
-        expect(
-          await instance.callStatic['allowance(address,address)'](
-            holder.address,
-            spender.address,
-          ),
-        ).to.equal(amount);
-
-        // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
-      });
-
-      it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
-
-        await expect(
-          instance
-            .connect(holder)
-            ['approve(address,uint256)'](spender.address, amount),
-        )
-          .to.emit(instance, 'Approval')
-          .withArgs(holder.address, spender.address, amount);
       });
     });
   });
