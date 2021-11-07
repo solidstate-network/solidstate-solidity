@@ -425,7 +425,9 @@ export function describeBehaviorOfDiamondCuttable(
               ethers.constants.AddressZero,
               '0x',
             ),
-          ).to.be.revertedWith('Transaction reverted without a reason string');
+          ).to.be.revertedWith(
+            "Hardhat couldn't infer the reason. Please report this to help us improve Hardhat.",
+          );
         });
 
         it('passed selector array is empty', async function () {
