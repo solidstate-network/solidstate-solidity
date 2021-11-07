@@ -33,7 +33,7 @@ task(TASK_COMPILE, async function (args, hre, runSuper) {
 
 export default {
   solidity: {
-    version: '0.8.4',
+    version: '0.8.9',
     settings: {
       optimizer: {
         enabled: true,
@@ -69,5 +69,6 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
+    outDir: 'typechain',
   },
 };
