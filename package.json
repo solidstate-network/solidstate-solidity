@@ -7,6 +7,7 @@
     "lerna-publish": "yarn build && lerna publish",
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky install",
+    "prettier": "prettier --write --ignore-path .gitignore .",
     "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade"
   },
   "lint-staged": {
