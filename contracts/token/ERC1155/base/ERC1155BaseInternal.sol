@@ -79,6 +79,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256 amount,
         bytes memory data
     ) internal virtual {
+        _mint(account, id, amount, data);
+
         _doSafeTransferAcceptanceCheck(
             msg.sender,
             address(0),
@@ -87,7 +89,6 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             amount,
             data
         );
-        _mint(account, id, amount, data);
     }
 
     /**
@@ -142,6 +143,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
+        _mintBatch(account, ids, amounts, data);
+
         _doSafeBatchTransferAcceptanceCheck(
             msg.sender,
             address(0),
@@ -150,7 +153,6 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             amounts,
             data
         );
-        _mintBatch(account, ids, amounts, data);
     }
 
     /**
@@ -292,6 +294,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256 amount,
         bytes memory data
     ) internal virtual {
+        _transfer(operator, sender, recipient, id, amount, data);
+
         _doSafeTransferAcceptanceCheck(
             operator,
             sender,
@@ -300,7 +304,6 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             amount,
             data
         );
-        _transfer(operator, sender, recipient, id, amount, data);
     }
 
     /**
@@ -371,6 +374,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
+        _transferBatch(operator, sender, recipient, ids, amounts, data);
+
         _doSafeBatchTransferAcceptanceCheck(
             operator,
             sender,
@@ -379,7 +384,6 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             amounts,
             data
         );
-        _transferBatch(operator, sender, recipient, ids, amounts, data);
     }
 
     /**
