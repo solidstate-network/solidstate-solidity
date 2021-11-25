@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { MathMock, MathMock__factory } from '../../typechain';
 
-describe('MathMock', function () {
+describe('Math', function () {
   let instance: MathMock;
 
   before(async function () {
@@ -11,7 +11,7 @@ describe('MathMock', function () {
   });
 
   describe('__internal', function () {
-    describe('average', function () {
+    describe('#average', function () {
       it('returns the average of two positive numbers from 0 to maxUint256', async function () {
         expect(
           await instance.average(
@@ -29,7 +29,7 @@ describe('MathMock', function () {
       });
     });
 
-    describe('__internal sqrt', function () {
+    describe('#sqrt', function () {
       it('returns the sqrt of a positive integer from 0 to maxUint256', async function () {
         expect(await instance.sqrt(ethers.BigNumber.from('16'))).to.eq(
           ethers.BigNumber.from('4'),
