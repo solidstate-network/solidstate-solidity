@@ -26,6 +26,20 @@ describe('Math', function () {
             ethers.BigNumber.from('5'),
           ),
         ).to.equal(ethers.BigNumber.from('5'));
+
+        expect(
+          await instance.average(
+            ethers.BigNumber.from('0'),
+            ethers.BigNumber.from('0'),
+          ),
+        ).to.equal(ethers.BigNumber.from('0'));
+
+        expect(
+          await instance.average(
+            ethers.constants.MaxUint256,
+            ethers.constants.MaxUint256,
+          ),
+        ).to.equal(ethers.constants.MaxUint256);
       });
     });
 
@@ -40,6 +54,10 @@ describe('Math', function () {
             await instance.sqrt(ethers.BigNumber.from(i.toString())),
           ).to.eq(ethers.BigNumber.from('3'));
         }
+
+        expect(await instance.sqrt(ethers.BigNumber.from('0'))).to.eq(
+          ethers.BigNumber.from('0'),
+        );
       });
     });
   });
