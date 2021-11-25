@@ -1572,7 +1572,7 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
-"@solidstate/library@^0.0.27":
+"@solidstate/library@^0.0.28":
   version "0.0.0"
   uid ""
 
