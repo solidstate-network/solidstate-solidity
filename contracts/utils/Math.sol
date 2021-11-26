@@ -10,7 +10,7 @@ library Math {
      * @param b second number
      */
     function average(uint256 a, uint256 b) internal pure returns (uint256) {
-        return (a / 2) + (b / 2) + (((a % 2) + (b % 2)) / 2);
+        return (a >> 1) + (b >> 1) + (((a & 1) + (b & 1)) >> 1);
     }
 
     /**
@@ -20,11 +20,11 @@ library Math {
      * @return y square root
      */
     function sqrt(uint256 x) internal pure returns (uint256 y) {
-        uint256 z = (x + 1) / 2;
+        uint256 z = (x + 1) >> 1;
         y = x;
         while (z < y) {
             y = z;
-            z = (x / z + z) / 2;
+            z = (x / z + z) >> 1;
         }
     }
 }
