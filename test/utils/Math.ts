@@ -58,6 +58,14 @@ describe('Math', function () {
         expect(await instance.sqrt(ethers.BigNumber.from('0'))).to.eq(
           ethers.BigNumber.from('0'),
         );
+
+        expect(
+          await instance.sqrt(
+            ethers.constants.MaxUint256.sub(ethers.BigNumber.from('1')),
+          ),
+        ).to.eq(
+          ethers.BigNumber.from('340282366920938463463374607431768211455'),
+        );
       });
     });
   });
