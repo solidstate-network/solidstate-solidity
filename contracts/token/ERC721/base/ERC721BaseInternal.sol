@@ -13,6 +13,7 @@ import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
  * @notice Base ERC721 internal functions
  */
 abstract contract ERC721BaseInternal is IERC721Internal {
+    using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -32,11 +33,14 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     }
 
     function _getApproved(uint256 tokenId) internal view returns (address) {
+        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
+
         require(
-            ERC721BaseStorage.exists(tokenId),
+            l.exists(tokenId),
             'ERC721: approved query for nonexistent token'
         );
-        return ERC721BaseStorage.layout().tokenApprovals[tokenId];
+
+        return l.tokenApprovals[tokenId];
     }
 
     function _isApprovedForAll(address account, address operator)
@@ -53,10 +57,12 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         returns (bool)
     {
         require(
-            ERC721BaseStorage.exists(tokenId),
+            ERC721BaseStorage.layout().exists(tokenId),
             'ERC721: query for nonexistent token'
         );
+
         address owner = _ownerOf(tokenId);
+
         return (spender == owner ||
             _getApproved(tokenId) == spender ||
             _isApprovedForAll(owner, spender));
@@ -64,14 +70,13 @@ abstract contract ERC721BaseInternal is IERC721Internal {
 
     function _mint(address to, uint256 tokenId) internal {
         require(to != address(0), 'ERC721: mint to the zero address');
-        require(
-            !ERC721BaseStorage.exists(tokenId),
-            'ERC721: token already minted'
-        );
+
+        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
+
+        require(!l.exists(tokenId), 'ERC721: token already minted');
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
         l.holderTokens[to].add(tokenId);
         l.tokenOwners.set(tokenId, to);
 
@@ -184,7 +189,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address operator,
         uint256 tokenId,
         uint256 value
-    ) internal virtual;
+    ) internal virtual {}
 
     /**
      * @notice ERC721 hook, called before externally called transfers for processing of included message value
@@ -198,7 +203,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId,
         uint256 value
-    ) internal virtual;
+    ) internal virtual {}
 
     /**
      * @notice ERC721 hook, called before all transfers including mint and burn

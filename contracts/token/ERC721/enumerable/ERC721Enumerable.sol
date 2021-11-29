@@ -6,8 +6,12 @@ import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
 import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
 import { IERC721Enumerable } from './IERC721Enumerable.sol';
+import { ERC721EnumerableInternal } from './ERC721EnumerableInternal.sol';
 
-abstract contract ERC721Enumerable is IERC721Enumerable {
+abstract contract ERC721Enumerable is
+    IERC721Enumerable,
+    ERC721EnumerableInternal
+{
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -15,7 +19,7 @@ abstract contract ERC721Enumerable is IERC721Enumerable {
      * @inheritdoc IERC721Enumerable
      */
     function totalSupply() public view override returns (uint256) {
-        return ERC721BaseStorage.layout().tokenOwners.length();
+        return _totalSupply();
     }
 
     /**
@@ -27,7 +31,7 @@ abstract contract ERC721Enumerable is IERC721Enumerable {
         override
         returns (uint256)
     {
-        return ERC721BaseStorage.layout().holderTokens[owner].at(index);
+        return _tokenOfOwnerByIndex(owner, index);
     }
 
     /**
@@ -39,7 +43,6 @@ abstract contract ERC721Enumerable is IERC721Enumerable {
         override
         returns (uint256)
     {
-        (uint256 tokenId, ) = ERC721BaseStorage.layout().tokenOwners.at(index);
-        return tokenId;
+        return _tokenByIndex(index);
     }
 }
