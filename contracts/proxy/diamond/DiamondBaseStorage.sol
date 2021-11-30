@@ -81,14 +81,14 @@ library DiamondBaseStorage {
                         selectorSlot,
                         facetCut
                     );
+                } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
+                    l.replaceFacetSelectors(facetCut);
                 } else if (action == IDiamondCuttable.FacetCutAction.REMOVE) {
                     (selectorCount, selectorSlot) = l.removeFacetSelectors(
                         selectorCount,
                         selectorSlot,
                         facetCut
                     );
-                } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
-                    l.replaceFacetSelectors(facetCut);
                 }
             }
 
