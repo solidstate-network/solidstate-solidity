@@ -38,7 +38,7 @@ describe('UintUtils', function () {
           ).to.equal('0x00');
         });
 
-        it('Should return correct hexString represenation of a number', async () => {
+        it('returns correct hexadecimal string representation of a number', async () => {
           const inputValues = [
             '1000',
             '1',
