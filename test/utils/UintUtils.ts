@@ -73,7 +73,7 @@ describe('UintUtils', function () {
           ).to.be.revertedWith('Strings: hex length insufficient');
         });
 
-        it('Should return correct hexString representation for matching value and length pairs', async () => {
+        it('returns hexadecimal string representation for matching value and length pairs', async () => {
           const inputValues = [
             '1000',
             '1',
