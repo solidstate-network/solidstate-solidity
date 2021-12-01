@@ -28,5 +28,15 @@ describe('UintUtils', function () {
         ).to.equal(ethers.constants.MaxUint256.toString());
       });
     });
+
+    describe('#toHexString', function () {
+      describe('(uint256)', function () {
+        it('todo');
+      });
+
+      describe('(uint256,uint256)', function () {
+        it('todo');
+      });
+    });
   });
 });
