@@ -20,6 +20,6 @@ contract UintUtilsMock {
         pure
         returns (string memory)
     {
-        return UintUtils.toHexString(value, length);
+        return value.toHexString(length);
     }
 }
