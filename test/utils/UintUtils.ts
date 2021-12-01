@@ -31,7 +31,7 @@ describe('UintUtils', function () {
 
     describe('#toHexString', function () {
       describe('(uint256)', function () {
-        it('Should return 0 if input is 0', async () => {
+        it('returns 0 if input is 0', async () => {
           const zeroNumber = ethers.BigNumber.from('0');
           expect(
             await instance.callStatic['toHexString(uint256)'](zeroNumber),
