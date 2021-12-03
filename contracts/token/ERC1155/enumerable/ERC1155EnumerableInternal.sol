@@ -18,7 +18,7 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
      * @param id token id to query
      * @return token supply
      */
-    function _totalSupply(uint256 id) internal view returns (uint256) {
+    function _totalSupply(uint256 id) internal view virtual returns (uint256) {
         return ERC1155EnumerableStorage.layout().totalSupply[id];
     }
 
@@ -27,7 +27,7 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
      * @param id token id to query
      * @return quantity of holders
      */
-    function _totalHolders(uint256 id) internal view returns (uint256) {
+    function _totalHolders(uint256 id) internal view virtual returns (uint256) {
         return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
     }
 
@@ -39,6 +39,7 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
     function _accountsByToken(uint256 id)
         internal
         view
+        virtual
         returns (address[] memory)
     {
         EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
@@ -62,6 +63,7 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
     function _tokensByAccount(address account)
         internal
         view
+        virtual
         returns (uint256[] memory)
     {
         EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
