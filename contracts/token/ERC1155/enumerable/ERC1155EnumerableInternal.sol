@@ -13,6 +13,50 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.UintSet;
 
+    function _totalSupply(uint256 id) internal view returns (uint256) {
+        return ERC1155EnumerableStorage.layout().totalSupply[id];
+    }
+
+    function _totalHolders(uint256 id) internal view returns (uint256) {
+        return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
+    }
+
+    function _accountsByToken(uint256 id)
+        internal
+        view
+        returns (address[] memory)
+    {
+        EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
+            .layout()
+            .accountsByToken[id];
+
+        address[] memory addresses = new address[](accounts.length());
+
+        for (uint256 i; i < accounts.length(); i++) {
+            addresses[i] = accounts.at(i);
+        }
+
+        return addresses;
+    }
+
+    function _tokensByAccount(address account)
+        internal
+        view
+        returns (uint256[] memory)
+    {
+        EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
+            .layout()
+            .tokensByAccount[account];
+
+        uint256[] memory ids = new uint256[](tokens.length());
+
+        for (uint256 i; i < tokens.length(); i++) {
+            ids[i] = tokens.at(i);
+        }
+
+        return ids;
+    }
+
     /**
      * @notice ERC1155 hook: update aggregate values
      * @inheritdoc ERC1155BaseInternal
