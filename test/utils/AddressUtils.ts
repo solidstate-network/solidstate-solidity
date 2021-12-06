@@ -1,18 +1,21 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
+import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
-import { allowedNodeEnvironmentFlags } from 'process';
+
 import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;
+  let secondInstance: AddressUtilsMock;
   let deployer: SignerWithAddress;
   let Alice: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer, Alice] = await ethers.getSigners();
     instance = await new AddressUtilsMock__factory(deployer).deploy();
+    secondInstance = await new AddressUtilsMock__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -60,7 +63,7 @@ describe('AddressUtils', async () => {
     });
 
     describe('functionCallWithValue', () => {
-      it('fails if the balance is insufficient for the call', async () => {
+      it('fails when callee balance is insufficient for the call', async () => {
         const initContractBalance = await ethers.provider.getBalance(
           instance.address,
         );
@@ -83,7 +86,7 @@ describe('AddressUtils', async () => {
         ).to.be.revertedWith('AddressUtils: insufficient balance for call');
       });
 
-      it('fails if the target is not a contract', async () => {
+      it('fails when the target is not a contract', async () => {
         const initContractBalance = await ethers.provider.getBalance(
           instance.address,
         );
@@ -105,7 +108,34 @@ describe('AddressUtils', async () => {
         ).to.be.revertedWith('AddressUtils: function call to non-contract');
       });
 
-      it('executes the correct function and transfers the correct value', () => {});
+      it('fails when unsuccesful call is made, with matching error string', async () => {
+        const initContractBalance = await ethers.provider.getBalance(
+          instance.address,
+        );
+        await Alice.sendTransaction({
+          to: instance.address,
+          value: ethers.utils.parseEther('10.0'),
+        });
+        expect(await ethers.provider.getBalance(instance.address)).to.eq(
+          initContractBalance.add(ethers.utils.parseEther('10.0')),
+        );
+
+        const data = (await instance.populateTransaction.callTest())
+          .data as BytesLike;
+        await expect(
+          instance
+            .connect(Alice)
+            .functionCallWithValue(
+              secondInstance.address,
+              data,
+              ethers.utils.parseEther('5'),
+              'error',
+            ),
+        ).to.be.revertedWith('error');
+      });
+      it('executes the correct function and transfers the correct value', async () => {
+        //TODO
+      });
     });
   });
 });

@@ -17,7 +17,7 @@ contract AddressUtilsMock {
     }
 
     function sendValue(address payable account, uint256 amount) external {
-        account.sendValue(amoun);
+        account.sendValue(amount);
     }
 
     function functionCall(address target, bytes memory data)
@@ -46,7 +46,7 @@ contract AddressUtilsMock {
 
     receive() external payable {}
 
-    function returnThisAddress() external view returns (address) {
-        return address(this);
+    function callTest() external pure returns (uint256) {
+        return 1;
     }
 }
