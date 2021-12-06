@@ -63,78 +63,81 @@ describe('AddressUtils', async () => {
     });
 
     describe('functionCallWithValue', () => {
-      it('fails when callee balance is insufficient for the call', async () => {
-        const initContractBalance = await ethers.provider.getBalance(
-          instance.address,
-        );
-        await Alice.sendTransaction({
-          to: instance.address,
-          value: ethers.utils.parseEther('10.0'),
-        });
-
-        expect(await ethers.provider.getBalance(instance.address)).to.eq(
-          initContractBalance.add(ethers.utils.parseEther('10.0')),
-        );
-
-        await expect(
-          instance.functionCallWithValue(
-            await deployer.getAddress(),
-            '0x',
-            ethers.utils.parseEther('100'),
-            'error',
-          ),
-        ).to.be.revertedWith('AddressUtils: insufficient balance for call');
+      it('executes the correct function and transfers the correct value', async () => {
+        //TODO
       });
 
-      it('fails when the target is not a contract', async () => {
-        const initContractBalance = await ethers.provider.getBalance(
-          instance.address,
-        );
-        await Alice.sendTransaction({
-          to: instance.address,
-          value: ethers.utils.parseEther('10.0'),
+      describe('reverts', () => {
+        it('fails when callee balance is insufficient for the call', async () => {
+          const initContractBalance = await ethers.provider.getBalance(
+            instance.address,
+          );
+          await Alice.sendTransaction({
+            to: instance.address,
+            value: ethers.utils.parseEther('10.0'),
+          });
+
+          expect(await ethers.provider.getBalance(instance.address)).to.eq(
+            initContractBalance.add(ethers.utils.parseEther('10.0')),
+          );
+
+          await expect(
+            instance.functionCallWithValue(
+              await deployer.getAddress(),
+              '0x',
+              ethers.utils.parseEther('100'),
+              'error',
+            ),
+          ).to.be.revertedWith('AddressUtils: insufficient balance for call');
         });
-        expect(await ethers.provider.getBalance(instance.address)).to.eq(
-          initContractBalance.add(ethers.utils.parseEther('10.0')),
-        );
 
-        await expect(
-          instance.functionCallWithValue(
-            await deployer.getAddress(),
-            '0x',
-            ethers.utils.parseEther('5'),
-            'error',
-          ),
-        ).to.be.revertedWith('AddressUtils: function call to non-contract');
-      });
+        it('fails when the target is not a contract', async () => {
+          const initContractBalance = await ethers.provider.getBalance(
+            instance.address,
+          );
+          await Alice.sendTransaction({
+            to: instance.address,
+            value: ethers.utils.parseEther('10.0'),
+          });
+          expect(await ethers.provider.getBalance(instance.address)).to.eq(
+            initContractBalance.add(ethers.utils.parseEther('10.0')),
+          );
 
-      it('fails when unsuccesful call is made, with matching error string', async () => {
-        const initContractBalance = await ethers.provider.getBalance(
-          instance.address,
-        );
-        await Alice.sendTransaction({
-          to: instance.address,
-          value: ethers.utils.parseEther('10.0'),
-        });
-        expect(await ethers.provider.getBalance(instance.address)).to.eq(
-          initContractBalance.add(ethers.utils.parseEther('10.0')),
-        );
-
-        const data = (await instance.populateTransaction.callTest())
-          .data as BytesLike;
-        await expect(
-          instance
-            .connect(Alice)
-            .functionCallWithValue(
-              secondInstance.address,
-              data,
+          await expect(
+            instance.functionCallWithValue(
+              await deployer.getAddress(),
+              '0x',
               ethers.utils.parseEther('5'),
               'error',
             ),
-        ).to.be.revertedWith('error');
-      });
-      it('executes the correct function and transfers the correct value', async () => {
-        //TODO
+          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+        });
+
+        it('fails when unsuccesful call is made, with matching error string', async () => {
+          const initContractBalance = await ethers.provider.getBalance(
+            instance.address,
+          );
+          await Alice.sendTransaction({
+            to: instance.address,
+            value: ethers.utils.parseEther('10.0'),
+          });
+          expect(await ethers.provider.getBalance(instance.address)).to.eq(
+            initContractBalance.add(ethers.utils.parseEther('10.0')),
+          );
+
+          const data = (await instance.populateTransaction.callTest())
+            .data as BytesLike;
+          await expect(
+            instance
+              .connect(Alice)
+              .functionCallWithValue(
+                secondInstance.address,
+                data,
+                ethers.utils.parseEther('5'),
+                'error',
+              ),
+          ).to.be.revertedWith('error');
+        });
       });
     });
   });
