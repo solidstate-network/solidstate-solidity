@@ -158,111 +158,6 @@ export function describeBehaviorOfDiamondCuttable(
         });
       });
 
-      describe('using FacetCutAction REMOVE', function () {
-        it('removes facet', async function () {
-          const contract = new ethers.Contract(
-            instance.address,
-            abi,
-            ethers.provider,
-          );
-
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
-              '0x',
-            );
-
-          for (let fn of functions) {
-            // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
-          }
-
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [{ target: ethers.constants.AddressZero, action: 2, selectors }],
-              ethers.constants.AddressZero,
-              '0x',
-            );
-
-          for (let fn of functions) {
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'DiamondBase: no facet found for function signature',
-            );
-          }
-        });
-
-        describe('reverts if', function () {
-          it('target address is not zero address', async function () {
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: instance.address,
-                    action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
-                  },
-                ],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
-            ).to.be.revertedWith(
-              'DiamondBase: REMOVE target must be zero address',
-            );
-          });
-
-          it('selector has not been added', async function () {
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: ethers.constants.AddressZero,
-                    action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
-                  },
-                ],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
-            ).to.be.revertedWith('DiamondBase: selector not found');
-          });
-
-          it('selector is immutable', async function () {
-            const selector = ethers.utils.randomBytes(4);
-
-            await instance.connect(owner).diamondCut(
-              [
-                {
-                  target: instance.address,
-                  action: 0,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
-
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: ethers.constants.AddressZero,
-                    action: 2,
-                    selectors: [selector],
-                  },
-                ],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
-            ).to.be.revertedWith('DiamondBase: selector is immutable');
-          });
-        });
-      });
-
       describe('using FacetCutAction REPLACE', function () {
         it('replaces facet', async function () {
           const contract = new ethers.Contract(
@@ -399,6 +294,111 @@ export function describeBehaviorOfDiamondCuttable(
                 '0x',
               ),
             ).to.be.revertedWith('DiamondBase: REPLACE target is identical');
+          });
+        });
+      });
+
+      describe('using FacetCutAction REMOVE', function () {
+        it('removes facet', async function () {
+          const contract = new ethers.Contract(
+            instance.address,
+            abi,
+            ethers.provider,
+          );
+
+          await instance
+            .connect(owner)
+            .diamondCut(
+              [{ target: facet.address, action: 0, selectors }],
+              ethers.constants.AddressZero,
+              '0x',
+            );
+
+          for (let fn of functions) {
+            // call reverts, but with mock-specific message
+            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+              'Mock on the method is not initialized',
+            );
+          }
+
+          await instance
+            .connect(owner)
+            .diamondCut(
+              [{ target: ethers.constants.AddressZero, action: 2, selectors }],
+              ethers.constants.AddressZero,
+              '0x',
+            );
+
+          for (let fn of functions) {
+            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+              'DiamondBase: no facet found for function signature',
+            );
+          }
+        });
+
+        describe('reverts if', function () {
+          it('target address is not zero address', async function () {
+            await expect(
+              instance.connect(owner).diamondCut(
+                [
+                  {
+                    target: instance.address,
+                    action: 2,
+                    selectors: [ethers.utils.randomBytes(4)],
+                  },
+                ],
+                ethers.constants.AddressZero,
+                '0x',
+              ),
+            ).to.be.revertedWith(
+              'DiamondBase: REMOVE target must be zero address',
+            );
+          });
+
+          it('selector has not been added', async function () {
+            await expect(
+              instance.connect(owner).diamondCut(
+                [
+                  {
+                    target: ethers.constants.AddressZero,
+                    action: 2,
+                    selectors: [ethers.utils.randomBytes(4)],
+                  },
+                ],
+                ethers.constants.AddressZero,
+                '0x',
+              ),
+            ).to.be.revertedWith('DiamondBase: selector not found');
+          });
+
+          it('selector is immutable', async function () {
+            const selector = ethers.utils.randomBytes(4);
+
+            await instance.connect(owner).diamondCut(
+              [
+                {
+                  target: instance.address,
+                  action: 0,
+                  selectors: [selector],
+                },
+              ],
+              ethers.constants.AddressZero,
+              '0x',
+            );
+
+            await expect(
+              instance.connect(owner).diamondCut(
+                [
+                  {
+                    target: ethers.constants.AddressZero,
+                    action: 2,
+                    selectors: [selector],
+                  },
+                ],
+                ethers.constants.AddressZero,
+                '0x',
+              ),
+            ).to.be.revertedWith('DiamondBase: selector is immutable');
           });
         });
       });
