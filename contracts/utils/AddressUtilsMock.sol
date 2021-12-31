@@ -10,8 +10,6 @@ contract AddressUtilsMock {
 
     receive() external payable {}
 
-    fallback() external payable {}
-
     function toString(address account) external pure returns (string memory) {
         return account.toString();
     }

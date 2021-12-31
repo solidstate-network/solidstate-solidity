@@ -90,10 +90,10 @@ describe('AddressUtils', async () => {
         await deployer.sendTransaction({ to: instance.address, value });
 
         const mock = await deployMockContract(deployer, [
-          'function fn () external payable',
+          'function fn () external payable returns (bool)',
         ]);
 
-        await mock.mock.fn.returns();
+        await mock.mock.fn.returns(true);
 
         const target = mock.address;
         const mocked = await mock.populateTransaction.fn();
@@ -155,25 +155,13 @@ describe('AddressUtils', async () => {
           ).to.be.reverted;
         });
 
-        it('unsuccesful call is made, with matching error string', async () => {
+        it('target contract reverts, with target contract error message', async () => {
           const revertReason = 'REVERT_REASON';
 
-          const initContractBalance = await ethers.provider.getBalance(
-            instance.address,
-          );
-          await deployer.sendTransaction({
-            to: instance.address,
-            value: ethers.utils.parseEther('10.0'),
-          });
-          expect(await ethers.provider.getBalance(instance.address)).to.eq(
-            initContractBalance.add(ethers.utils.parseEther('10.0')),
-          );
-
           const mock = await deployMockContract(deployer, [
-            'function fn () external payable',
+            'function fn () external payable returns (bool)',
           ]);
 
-          // TODO: separate test for revert with no reason
           await mock.mock.fn.revertsWithReason(revertReason);
 
           const target = mock.address;
@@ -184,6 +172,21 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               .functionCallWithValue(target, data, ethers.constants.Zero, ''),
+          ).to.be.revertedWith(revertReason);
+        });
+
+        it('target contract reverts, with provided error message', async () => {
+          const revertReason = 'REVERT_REASON';
+
+          await expect(
+            instance
+              .connect(deployer)
+              .functionCallWithValue(
+                instance.address,
+                '0x01',
+                ethers.constants.Zero,
+                revertReason,
+              ),
           ).to.be.revertedWith(revertReason);
         });
       });
