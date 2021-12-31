@@ -131,6 +131,30 @@ describe('AddressUtils', async () => {
           ).to.be.revertedWith('AddressUtils: function call to non-contract');
         });
 
+        it('target function is not payable and value is included', async () => {
+          const value = ethers.constants.Two;
+
+          await deployer.sendTransaction({ to: instance.address, value });
+
+          const mock = await deployMockContract(deployer, [
+            'function fn () external view returns (bool)',
+          ]);
+
+          await mock.mock.fn.returns(true);
+
+          const target = mock.address;
+          const mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as BytesLike;
+
+          // TODO: this function should revert because it is explicitly nonpayable
+
+          await expect(
+            instance
+              .connect(deployer)
+              .functionCallWithValue(target, data, value, ''),
+          ).to.be.reverted;
+        });
+
         it('unsuccesful call is made, with matching error string', async () => {
           const revertReason = 'REVERT_REASON';
 
