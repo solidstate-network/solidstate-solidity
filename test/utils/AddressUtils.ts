@@ -39,22 +39,19 @@ describe('AddressUtils', async () => {
     });
 
     describe('sendValue', () => {
-      it('checks that the ETH balance of receiver has increased by the value sent', async () => {
-        const receiver = await deployer.getAddress();
-        const balanceBeforeSend = await deployer.getBalance();
+      it('transfers given value to target contract', async () => {
+        const value = ethers.constants.Two;
 
-        await deployer.sendTransaction({
-          to: instance.address,
-          value: ethers.utils.parseEther('5.0'),
-        });
-        await instance
-          .connect(deployer)
-          .sendValue(receiver, ethers.utils.parseEther('4.0'));
+        await deployer.sendTransaction({ to: instance.address, value });
 
-        const balanceAfterSend = await deployer.getBalance();
-        expect(balanceAfterSend).to.eq(
-          balanceBeforeSend.add(ethers.utils.parseEther('4.0')),
-        );
+        const targetContract = await new AddressUtilsMock__factory(
+          deployer,
+        ).deploy();
+        const target = targetContract.address;
+
+        await expect(() =>
+          instance.connect(deployer).sendValue(target, value),
+        ).to.changeEtherBalances([instance, targetContract], [-value, value]);
       });
     });
 
