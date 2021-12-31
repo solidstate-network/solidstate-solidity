@@ -59,17 +59,38 @@ describe('AddressUtils', async () => {
     });
 
     describe('functionCallWithValue', () => {
-      it('executes the correct function and transfers the correct value', async () => {
-        const initContractBalance = await ethers.provider.getBalance(
-          instance.address,
+      it('returns the bytes representation of the return value of the target function', async () => {
+        const mock = await deployMockContract(deployer, [
+          'function fn () external payable returns (bool)',
+        ]);
+
+        await mock.mock.fn.returns(true);
+
+        const target = mock.address;
+        const mocked = await mock.populateTransaction.fn();
+        const data = mocked.data as BytesLike;
+
+        expect(
+          await instance
+            .connect(deployer)
+            .callStatic.functionCallWithValue(
+              target,
+              data,
+              ethers.constants.Zero,
+              '',
+            ),
+        ).to.equal(
+          ethers.utils.hexZeroPad(
+            ethers.utils.hexlify(ethers.constants.One),
+            32,
+          ),
         );
-        await deployer.sendTransaction({
-          to: instance.address,
-          value: ethers.utils.parseEther('10.0'),
-        });
-        expect(await ethers.provider.getBalance(instance.address)).to.eq(
-          initContractBalance.add(ethers.utils.parseEther('10.0')),
-        );
+      });
+
+      it('transfers given value to target contract', async () => {
+        const value = ethers.constants.Two;
+
+        await deployer.sendTransaction({ to: instance.address, value });
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable',
@@ -81,38 +102,15 @@ describe('AddressUtils', async () => {
         const mocked = await mock.populateTransaction.fn();
         const data = mocked.data as BytesLike;
 
-        const preTxContractBalance = await ethers.provider.getBalance(target);
-
-        const returnValue = await instance
-          .connect(deployer)
-          .callStatic.functionCallWithValue(
-            target,
-            data,
-            ethers.utils.parseEther('5.0'),
-            'error',
-          );
-
-        const postTxContractBalance = await ethers.provider.getBalance(target);
-        expect(postTxContractBalance).to.eq(
-          preTxContractBalance.add(ethers.utils.parseEther('5.0')),
-        );
-        expect(returnValue).to.eq(BigNumber.from('1.0'));
+        await expect(() =>
+          instance
+            .connect(deployer)
+            .functionCallWithValue(target, data, value, ''),
+        ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
 
       describe('reverts if', () => {
         it('contract balance is insufficient for the call', async () => {
-          const initContractBalance = await ethers.provider.getBalance(
-            instance.address,
-          );
-          await deployer.sendTransaction({
-            to: instance.address,
-            value: ethers.utils.parseEther('10.0'),
-          });
-
-          expect(await ethers.provider.getBalance(instance.address)).to.eq(
-            initContractBalance.add(ethers.utils.parseEther('10.0')),
-          );
-
           await expect(
             instance
               .connect(deployer)
@@ -126,17 +124,6 @@ describe('AddressUtils', async () => {
         });
 
         it('target is not a contract', async () => {
-          const initContractBalance = await ethers.provider.getBalance(
-            instance.address,
-          );
-          await deployer.sendTransaction({
-            to: instance.address,
-            value: ethers.utils.parseEther('10.0'),
-          });
-          expect(await ethers.provider.getBalance(instance.address)).to.eq(
-            initContractBalance.add(ethers.utils.parseEther('10.0')),
-          );
-
           await expect(
             instance.functionCallWithValue(
               await deployer.getAddress(),
