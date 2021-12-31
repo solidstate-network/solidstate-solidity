@@ -46,6 +46,8 @@ contract AddressUtilsMock {
 
     receive() external payable {}
 
+    fallback() external payable {}
+
     function callTest() external pure returns (uint256) {
         return 1;
     }

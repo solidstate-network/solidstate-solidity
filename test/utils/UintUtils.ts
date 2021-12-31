@@ -91,8 +91,8 @@ describe('UintUtils', function () {
           }
         });
 
-        describe('reverts', () => {
-          it('fails if length input is 0 and value is nonzero', async () => {
+        describe('reverts if', () => {
+          it('length input is 0 and value is nonzero', async () => {
             await expect(
               instance.callStatic['toHexString(uint256,uint256)'](
                 ethers.BigNumber.from('100'),

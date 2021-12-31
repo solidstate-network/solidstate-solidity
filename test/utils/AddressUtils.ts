@@ -1,9 +1,7 @@
-import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { BytesLike } from 'ethers';
+import { BytesLike, BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-
 import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 
 describe('AddressUtils', async () => {
@@ -64,11 +62,43 @@ describe('AddressUtils', async () => {
 
     describe('functionCallWithValue', () => {
       it('executes the correct function and transfers the correct value', async () => {
-        //TODO
+        const initContractBalance = await ethers.provider.getBalance(
+          instance.address,
+        );
+        await Alice.sendTransaction({
+          to: instance.address,
+          value: ethers.utils.parseEther('10.0'),
+        });
+        expect(await ethers.provider.getBalance(instance.address)).to.eq(
+          initContractBalance.add(ethers.utils.parseEther('10.0')),
+        );
+        const data = (await instance.populateTransaction.callTest())
+          .data as BytesLike;
+
+        const preTxContractBalance = await ethers.provider.getBalance(
+          secondInstance.address,
+        );
+
+        const returnValue = await instance
+          .connect(Alice)
+          .callStatic.functionCallWithValue(
+            secondInstance.address,
+            data,
+            ethers.utils.parseEther('5.0'),
+            'error',
+          );
+
+        const postTxContractBalance = await ethers.provider.getBalance(
+          secondInstance.address,
+        );
+        expect(postTxContractBalance).to.eq(
+          preTxContractBalance.add(ethers.utils.parseEther('5.0')),
+        );
+        expect(returnValue).to.eq(BigNumber.from('1.0'));
       });
 
-      describe('reverts', () => {
-        it('fails when callee balance is insufficient for the call', async () => {
+      describe('reverts if', () => {
+        it('contract balance is insufficient for the call', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
@@ -82,16 +112,18 @@ describe('AddressUtils', async () => {
           );
 
           await expect(
-            instance.functionCallWithValue(
-              await deployer.getAddress(),
-              '0x',
-              ethers.utils.parseEther('100'),
-              'error',
-            ),
+            instance
+              .connect(Alice)
+              .functionCallWithValue(
+                instance.address,
+                '0x',
+                ethers.utils.parseEther('100'),
+                'error',
+              ),
           ).to.be.revertedWith('AddressUtils: insufficient balance for call');
         });
 
-        it('fails when the target is not a contract', async () => {
+        it('target is not a contract', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
@@ -113,7 +145,8 @@ describe('AddressUtils', async () => {
           ).to.be.revertedWith('AddressUtils: function call to non-contract');
         });
 
-        it('fails when unsuccesful call is made, with matching error string', async () => {
+        //TODO: Why does this fail? Testing is incomplete.
+        it('unsuccesful call is made, with matching error string', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
@@ -124,7 +157,6 @@ describe('AddressUtils', async () => {
           expect(await ethers.provider.getBalance(instance.address)).to.eq(
             initContractBalance.add(ethers.utils.parseEther('10.0')),
           );
-
           const data = (await instance.populateTransaction.callTest())
             .data as BytesLike;
           await expect(
@@ -133,7 +165,7 @@ describe('AddressUtils', async () => {
               .functionCallWithValue(
                 secondInstance.address,
                 data,
-                ethers.utils.parseEther('5'),
+                ethers.utils.parseEther('5.0'),
                 'error',
               ),
           ).to.be.revertedWith('error');
