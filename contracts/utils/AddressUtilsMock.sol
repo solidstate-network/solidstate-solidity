@@ -8,6 +8,8 @@ contract AddressUtilsMock {
     using AddressUtils for address;
     using AddressUtils for address payable;
 
+    receive() external payable {}
+
     function toString(address account) external pure returns (string memory) {
         return account.toString();
     }
@@ -27,7 +29,7 @@ contract AddressUtilsMock {
         return target.functionCall(data);
     }
 
-    function functionalCall(
+    function functionCall(
         address target,
         bytes memory data,
         string memory error
@@ -42,13 +44,5 @@ contract AddressUtilsMock {
         string memory error
     ) external returns (bytes memory) {
         return target.functionCallWithValue(data, value, error);
-    }
-
-    receive() external payable {}
-
-    fallback() external payable {}
-
-    function callTest() external pure returns (uint256) {
-        return 1;
     }
 }
