@@ -29,7 +29,7 @@ contract AddressUtilsMock {
         return target.functionCall(data);
     }
 
-    function functionalCall(
+    function functionCall(
         address target,
         bytes memory data,
         string memory error
