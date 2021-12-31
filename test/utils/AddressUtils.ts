@@ -1,18 +1,17 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
 import { BytesLike, BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;
-  let secondInstance: AddressUtilsMock;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
     instance = await new AddressUtilsMock__factory(deployer).deploy();
-    secondInstance = await new AddressUtilsMock__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -71,25 +70,29 @@ describe('AddressUtils', async () => {
         expect(await ethers.provider.getBalance(instance.address)).to.eq(
           initContractBalance.add(ethers.utils.parseEther('10.0')),
         );
-        const data = (await instance.populateTransaction.callTest())
-          .data as BytesLike;
 
-        const preTxContractBalance = await ethers.provider.getBalance(
-          secondInstance.address,
-        );
+        const mock = await deployMockContract(deployer, [
+          'function fn () external payable',
+        ]);
+
+        await mock.mock.fn.returns();
+
+        const target = mock.address;
+        const mocked = await mock.populateTransaction.fn();
+        const data = mocked.data as BytesLike;
+
+        const preTxContractBalance = await ethers.provider.getBalance(target);
 
         const returnValue = await instance
           .connect(deployer)
           .callStatic.functionCallWithValue(
-            secondInstance.address,
+            target,
             data,
             ethers.utils.parseEther('5.0'),
             'error',
           );
 
-        const postTxContractBalance = await ethers.provider.getBalance(
-          secondInstance.address,
-        );
+        const postTxContractBalance = await ethers.provider.getBalance(target);
         expect(postTxContractBalance).to.eq(
           preTxContractBalance.add(ethers.utils.parseEther('5.0')),
         );
@@ -144,8 +147,9 @@ describe('AddressUtils', async () => {
           ).to.be.revertedWith('AddressUtils: function call to non-contract');
         });
 
-        //TODO: Why does this fail? Testing is incomplete.
         it('unsuccesful call is made, with matching error string', async () => {
+          const revertReason = 'REVERT_REASON';
+
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
@@ -156,18 +160,28 @@ describe('AddressUtils', async () => {
           expect(await ethers.provider.getBalance(instance.address)).to.eq(
             initContractBalance.add(ethers.utils.parseEther('10.0')),
           );
-          const data = (await instance.populateTransaction.callTest())
-            .data as BytesLike;
+
+          const mock = await deployMockContract(deployer, [
+            'function fn () external payable',
+          ]);
+
+          // TODO: separate test for revert with no reason
+          await mock.mock.fn.revertsWithReason(revertReason);
+
+          const target = mock.address;
+          const mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as BytesLike;
+
           await expect(
             instance
               .connect(deployer)
               .functionCallWithValue(
-                secondInstance.address,
+                target,
                 data,
                 ethers.utils.parseEther('5.0'),
                 'error',
               ),
-          ).to.be.revertedWith('error');
+          ).to.be.revertedWith(revertReason);
         });
       });
     });
