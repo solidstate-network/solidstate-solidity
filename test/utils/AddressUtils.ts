@@ -8,10 +8,9 @@ describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;
   let secondInstance: AddressUtilsMock;
   let deployer: SignerWithAddress;
-  let Alice: SignerWithAddress;
 
   beforeEach(async () => {
-    [deployer, Alice] = await ethers.getSigners();
+    [deployer] = await ethers.getSigners();
     instance = await new AddressUtilsMock__factory(deployer).deploy();
     secondInstance = await new AddressUtilsMock__factory(deployer).deploy();
   });
@@ -45,12 +44,12 @@ describe('AddressUtils', async () => {
         const receiver = await deployer.getAddress();
         const balanceBeforeSend = await deployer.getBalance();
 
-        await Alice.sendTransaction({
+        await deployer.sendTransaction({
           to: instance.address,
           value: ethers.utils.parseEther('5.0'),
         });
         await instance
-          .connect(Alice)
+          .connect(deployer)
           .sendValue(receiver, ethers.utils.parseEther('4.0'));
 
         const balanceAfterSend = await deployer.getBalance();
@@ -65,7 +64,7 @@ describe('AddressUtils', async () => {
         const initContractBalance = await ethers.provider.getBalance(
           instance.address,
         );
-        await Alice.sendTransaction({
+        await deployer.sendTransaction({
           to: instance.address,
           value: ethers.utils.parseEther('10.0'),
         });
@@ -80,7 +79,7 @@ describe('AddressUtils', async () => {
         );
 
         const returnValue = await instance
-          .connect(Alice)
+          .connect(deployer)
           .callStatic.functionCallWithValue(
             secondInstance.address,
             data,
@@ -102,7 +101,7 @@ describe('AddressUtils', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
-          await Alice.sendTransaction({
+          await deployer.sendTransaction({
             to: instance.address,
             value: ethers.utils.parseEther('10.0'),
           });
@@ -113,7 +112,7 @@ describe('AddressUtils', async () => {
 
           await expect(
             instance
-              .connect(Alice)
+              .connect(deployer)
               .functionCallWithValue(
                 instance.address,
                 '0x',
@@ -127,7 +126,7 @@ describe('AddressUtils', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
-          await Alice.sendTransaction({
+          await deployer.sendTransaction({
             to: instance.address,
             value: ethers.utils.parseEther('10.0'),
           });
@@ -150,7 +149,7 @@ describe('AddressUtils', async () => {
           const initContractBalance = await ethers.provider.getBalance(
             instance.address,
           );
-          await Alice.sendTransaction({
+          await deployer.sendTransaction({
             to: instance.address,
             value: ethers.utils.parseEther('10.0'),
           });
@@ -161,7 +160,7 @@ describe('AddressUtils', async () => {
             .data as BytesLike;
           await expect(
             instance
-              .connect(Alice)
+              .connect(deployer)
               .functionCallWithValue(
                 secondInstance.address,
                 data,
