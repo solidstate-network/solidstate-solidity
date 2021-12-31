@@ -17,24 +17,21 @@ describe('AddressUtils', async () => {
   describe('__internal', () => {
     describe('toString', () => {
       it('returns a string from an address', async () => {
-        const deployerAddress = await deployer.getAddress();
-        const stringAddress = await instance['toString(address)'](
-          deployerAddress,
-        );
-
-        expect(ethers.utils.getAddress(stringAddress)).to.eq(deployerAddress);
+        expect(
+          ethers.utils.getAddress(
+            await instance['toString(address)'](deployer.address),
+          ),
+        ).to.eq(deployer.address);
       });
     });
 
     describe('isContract', () => {
       it('returns true when an address is a contract', async () => {
-        expect(await instance.isContract(instance.address)).to.eq(true);
+        expect(await instance.isContract(instance.address)).to.be.true;
       });
 
       it('returns false when an address is not a contract', async () => {
-        expect(await instance.isContract(await deployer.getAddress())).to.eq(
-          false,
-        );
+        expect(await instance.isContract(deployer.address)).to.be.false;
       });
     });
 
