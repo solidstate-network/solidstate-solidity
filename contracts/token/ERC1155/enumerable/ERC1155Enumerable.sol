@@ -28,7 +28,7 @@ abstract contract ERC1155Enumerable is
         override
         returns (uint256)
     {
-        return ERC1155EnumerableStorage.layout().totalSupply[id];
+        return _totalSupply(id);
     }
 
     /**
@@ -41,7 +41,7 @@ abstract contract ERC1155Enumerable is
         override
         returns (uint256)
     {
-        return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
+        return _totalHolders(id);
     }
 
     /**
@@ -54,17 +54,7 @@ abstract contract ERC1155Enumerable is
         override
         returns (address[] memory)
     {
-        EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
-            .layout()
-            .accountsByToken[id];
-
-        address[] memory addresses = new address[](accounts.length());
-
-        for (uint256 i; i < accounts.length(); i++) {
-            addresses[i] = accounts.at(i);
-        }
-
-        return addresses;
+        return _accountsByToken(id);
     }
 
     /**
@@ -77,17 +67,7 @@ abstract contract ERC1155Enumerable is
         override
         returns (uint256[] memory)
     {
-        EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
-            .layout()
-            .tokensByAccount[account];
-
-        uint256[] memory ids = new uint256[](tokens.length());
-
-        for (uint256 i; i < tokens.length(); i++) {
-            ids[i] = tokens.at(i);
-        }
-
-        return ids;
+        return _tokensByAccount(account);
     }
 
     /**

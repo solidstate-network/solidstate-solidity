@@ -14,6 +14,72 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
     using EnumerableSet for EnumerableSet.UintSet;
 
     /**
+     * @notice query total minted supply of given token
+     * @param id token id to query
+     * @return token supply
+     */
+    function _totalSupply(uint256 id) internal view virtual returns (uint256) {
+        return ERC1155EnumerableStorage.layout().totalSupply[id];
+    }
+
+    /**
+     * @notice query total number of holders for given token
+     * @param id token id to query
+     * @return quantity of holders
+     */
+    function _totalHolders(uint256 id) internal view virtual returns (uint256) {
+        return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
+    }
+
+    /**
+     * @notice query holders of given token
+     * @param id token id to query
+     * @return list of holder addresses
+     */
+    function _accountsByToken(uint256 id)
+        internal
+        view
+        virtual
+        returns (address[] memory)
+    {
+        EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
+            .layout()
+            .accountsByToken[id];
+
+        address[] memory addresses = new address[](accounts.length());
+
+        for (uint256 i; i < accounts.length(); i++) {
+            addresses[i] = accounts.at(i);
+        }
+
+        return addresses;
+    }
+
+    /**
+     * @notice query tokens held by given address
+     * @param account address to query
+     * @return list of token ids
+     */
+    function _tokensByAccount(address account)
+        internal
+        view
+        virtual
+        returns (uint256[] memory)
+    {
+        EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
+            .layout()
+            .tokensByAccount[account];
+
+        uint256[] memory ids = new uint256[](tokens.length());
+
+        for (uint256 i; i < tokens.length(); i++) {
+            ids[i] = tokens.at(i);
+        }
+
+        return ids;
+    }
+
+    /**
      * @notice ERC1155 hook: update aggregate values
      * @inheritdoc ERC1155BaseInternal
      */
