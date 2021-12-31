@@ -117,8 +117,8 @@ describe('AddressUtils', async () => {
               .functionCallWithValue(
                 instance.address,
                 '0x',
-                ethers.utils.parseEther('100'),
-                'error',
+                ethers.constants.One,
+                '',
               ),
           ).to.be.revertedWith('AddressUtils: insufficient balance for call');
         });
@@ -126,10 +126,10 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance.functionCallWithValue(
-              await deployer.getAddress(),
+              ethers.constants.AddressZero,
               '0x',
-              ethers.utils.parseEther('5'),
-              'error',
+              ethers.constants.Zero,
+              '',
             ),
           ).to.be.revertedWith('AddressUtils: function call to non-contract');
         });
@@ -162,12 +162,7 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              .functionCallWithValue(
-                target,
-                data,
-                ethers.utils.parseEther('5.0'),
-                'error',
-              ),
+              .functionCallWithValue(target, data, ethers.constants.Zero, ''),
           ).to.be.revertedWith(revertReason);
         });
       });
