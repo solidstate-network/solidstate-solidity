@@ -38,12 +38,10 @@ library UintUtils {
             return '0x00';
         }
 
-        uint256 temp = value;
         uint256 length = 0;
 
-        while (temp != 0) {
+        for (uint256 temp = value; temp != 0; temp >>= 8) {
             length++;
-            temp >>= 8;
         }
 
         return toHexString(value, length);
