@@ -40,9 +40,21 @@ contract AddressUtilsMock {
     function functionCallWithValue(
         address target,
         bytes memory data,
+        uint256 value
+    ) external returns (bytes memory) {
+        return target.functionCallWithValue(data, value);
+    }
+
+    function functionCallWithValue(
+        address target,
+        bytes memory data,
         uint256 value,
         string memory error
     ) external returns (bytes memory) {
         return target.functionCallWithValue(data, value, error);
+    }
+
+    function revertTest() external pure {
+        revert();
     }
 }

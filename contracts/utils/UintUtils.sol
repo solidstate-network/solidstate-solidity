@@ -63,7 +63,7 @@ library UintUtils {
             value >>= 4;
         }
 
-        require(value == 0, 'Strings: hex length insufficient');
+        require(value == 0, 'UintUtils: hex length insufficient');
 
         return string(buffer);
     }
