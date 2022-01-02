@@ -88,15 +88,40 @@ describe('AddressUtils', async () => {
       });
 
       describe('reverts if', () => {
-        it('low level call is unsuccessful', async () => {
-          const target = instance.address;
-          const data = (await instance.populateTransaction.revertTest())
-            .data as BytesLike;
+        it('target is not a contract', async () => {
+          await expect(
+            instance['functionCall(address,bytes)'](
+              ethers.constants.AddressZero,
+              '0x',
+            ),
+          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+        });
+
+        it('target contract reverts, with target contract error message', async () => {
+          const revertReason = 'REVERT_REASON';
+
+          const mock = await deployMockContract(deployer, [
+            'function fn () external payable returns (bool)',
+          ]);
+
+          await mock.mock.fn.revertsWithReason(revertReason);
+
+          const target = mock.address;
+          const mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as BytesLike;
 
           await expect(
             instance
               .connect(deployer)
-              .callStatic['functionCall(address,bytes)'](target, data),
+              ['functionCall(address,bytes)'](target, data),
+          ).to.be.revertedWith(revertReason);
+        });
+
+        it('target contract reverts, with default error message', async () => {
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionCall(address,bytes)'](instance.address, '0x01'),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
       });
@@ -131,8 +156,37 @@ describe('AddressUtils', async () => {
         );
       });
 
-      //Does this need to be here? It is a repetition of #functionCallWithValue test case
       describe('reverts if', () => {
+        it('target is not a contract', async () => {
+          await expect(
+            instance['functionCall(address,bytes,string)'](
+              ethers.constants.AddressZero,
+              '0x',
+              '',
+            ),
+          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+        });
+
+        it('target contract reverts, with target contract error message', async () => {
+          const revertReason = 'REVERT_REASON';
+
+          const mock = await deployMockContract(deployer, [
+            'function fn () external payable returns (bool)',
+          ]);
+
+          await mock.mock.fn.revertsWithReason(revertReason);
+
+          const target = mock.address;
+          const mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as BytesLike;
+
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionCall(address,bytes,string)'](target, data, ''),
+          ).to.be.revertedWith(revertReason);
+        });
+
         it('target contract reverts, with provided error message', async () => {
           const revertReason = 'REVERT_REASON';
 
@@ -204,38 +258,91 @@ describe('AddressUtils', async () => {
       });
 
       describe('reverts if', () => {
-        //Does this need to be here?
-        it('low level call is unsuccessful', async () => {
-          const target = instance.address;
-          const data = (await instance.populateTransaction.revertTest())
-            .data as BytesLike;
+        it('target is not a contract', async () => {
+          await expect(
+            instance['functionCallWithValue(address,bytes,uint256)'](
+              ethers.constants.AddressZero,
+              '0x',
+              ethers.constants.Zero,
+            ),
+          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+        });
 
+        it('contract balance is insufficient for the call', async () => {
           await expect(
             instance
               .connect(deployer)
-              .callStatic['functionCallWithValue(address,bytes,uint256)'](
-                target,
-                data,
-                ethers.constants.Zero,
+              ['functionCallWithValue(address,bytes,uint256)'](
+                instance.address,
+                '0x',
+                ethers.constants.One,
               ),
-          ).to.be.revertedWith('AddressUtils: failed low-level call');
+          ).to.be.revertedWith('AddressUtils: insufficient balance for call');
         });
 
         it('target function is not payable and value is included', async () => {
           const value = ethers.constants.Two;
 
           await deployer.sendTransaction({ to: instance.address, value });
-          const target = instance.address;
-          const data = (await instance.populateTransaction.revertTest())
-            .data as BytesLike;
+
+          const targetContract = await new AddressUtilsMock__factory(
+            deployer,
+          ).deploy();
+
+          const target = targetContract.address;
+
+          // the sendValue function is used as a transaction target because it is itself nonpayable
+
+          const { data } = (await targetContract.populateTransaction.sendValue(
+            ethers.constants.AddressZero,
+            ethers.constants.Zero,
+          )) as { data: BytesLike };
 
           await expect(
             instance
               .connect(deployer)
-              .callStatic['functionCallWithValue(address,bytes,uint256)'](
+              ['functionCallWithValue(address,bytes,uint256)'](
                 target,
                 data,
                 value,
+              ),
+          ).to.be.revertedWith(
+            'AddressUtils: failed low-level call with value',
+          );
+        });
+
+        it('target contract reverts, with target contract error message', async () => {
+          const revertReason = 'REVERT_REASON';
+
+          const mock = await deployMockContract(deployer, [
+            'function fn () external payable returns (bool)',
+          ]);
+
+          await mock.mock.fn.revertsWithReason(revertReason);
+
+          const target = mock.address;
+          const mocked = await mock.populateTransaction.fn();
+          const data = mocked.data as BytesLike;
+
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionCallWithValue(address,bytes,uint256)'](
+                target,
+                data,
+                ethers.constants.Zero,
+              ),
+          ).to.be.revertedWith(revertReason);
+        });
+
+        it('target contract reverts, with default error message', async () => {
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionCallWithValue(address,bytes,uint256)'](
+                instance.address,
+                '0x01',
+                ethers.constants.Zero,
               ),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
@@ -299,6 +406,17 @@ describe('AddressUtils', async () => {
       });
 
       describe('reverts if', () => {
+        it('target is not a contract', async () => {
+          await expect(
+            instance['functionCallWithValue(address,bytes,uint256,string)'](
+              ethers.constants.AddressZero,
+              '0x',
+              ethers.constants.Zero,
+              '',
+            ),
+          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+        });
+
         it('contract balance is insufficient for the call', async () => {
           await expect(
             instance
@@ -310,17 +428,6 @@ describe('AddressUtils', async () => {
                 '',
               ),
           ).to.be.revertedWith('AddressUtils: insufficient balance for call');
-        });
-
-        it('target is not a contract', async () => {
-          await expect(
-            instance['functionCallWithValue(address,bytes,uint256,string)'](
-              ethers.constants.AddressZero,
-              '0x',
-              ethers.constants.Zero,
-              '',
-            ),
-          ).to.be.revertedWith('AddressUtils: function call to non-contract');
         });
 
         it('target function is not payable and value is included', async () => {
