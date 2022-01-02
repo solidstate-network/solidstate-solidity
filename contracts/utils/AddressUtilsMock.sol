@@ -53,8 +53,4 @@ contract AddressUtilsMock {
     ) external returns (bytes memory) {
         return target.functionCallWithValue(data, value, error);
     }
-
-    function revertTest() external pure {
-        revert();
-    }
 }
