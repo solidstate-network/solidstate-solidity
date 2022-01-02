@@ -314,23 +314,22 @@ describe('AddressUtils', async () => {
 
         it('target function is not payable and value is included', async () => {
           const value = ethers.constants.Two;
+          const revertReason = 'REVERT_REASON';
 
           await deployer.sendTransaction({ to: instance.address, value });
 
-          const mock = await deployMockContract(deployer, [
-            'function fn () external view returns (bool)',
-          ]);
+          const targetContract = await new AddressUtilsMock__factory(
+            deployer,
+          ).deploy();
 
-          //await mock.mock.fn.returns(true);
+          const target = targetContract.address;
 
-          const target = mock.address;
-          const mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          // the sendValue function is used as a transaction target because it is itself nonpayable
 
-          // TODO: this function should revert because it is explicitly nonpayable
-          // Commenting out the mocked return will revert the function. Not sure if the reason for
-          // the revert is that the function is non-payable. Would this be better tested by some 'mockTest'
-          // function in the AddressUtilsMock.sol contract?
+          const { data } = (await targetContract.populateTransaction.sendValue(
+            ethers.constants.AddressZero,
+            ethers.constants.Zero,
+          )) as { data: BytesLike };
 
           await expect(
             instance
@@ -339,9 +338,9 @@ describe('AddressUtils', async () => {
                 target,
                 data,
                 value,
-                '',
+                revertReason,
               ),
-          ).to.be.reverted;
+          ).to.be.revertedWith(revertReason);
         });
 
         it('target contract reverts, with target contract error message', async () => {
