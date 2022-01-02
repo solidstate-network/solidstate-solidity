@@ -18,16 +18,18 @@ abstract contract Multicall is IMulticall {
     {
         results = new bytes[](data.length);
 
-        for (uint256 i; i < data.length; i++) {
-            (bool success, bytes memory returndata) = address(this)
-                .delegatecall(data[i]);
+        unchecked {
+            for (uint256 i; i < data.length; i++) {
+                (bool success, bytes memory returndata) = address(this)
+                    .delegatecall(data[i]);
 
-            if (success) {
-                results[i] = returndata;
-            } else {
-                assembly {
-                    returndatacopy(0, 0, returndatasize())
-                    revert(0, returndatasize())
+                if (success) {
+                    results[i] = returndata;
+                } else {
+                    assembly {
+                        returndatacopy(0, 0, returndatasize())
+                        revert(0, returndatasize())
+                    }
                 }
             }
         }
