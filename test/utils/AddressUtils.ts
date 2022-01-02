@@ -36,19 +36,30 @@ describe('AddressUtils', async () => {
     });
 
     describe('#sendValue', () => {
-      it('transfers given value to target contract', async () => {
+      it('transfers given value to given address', async () => {
         const value = ethers.constants.Two;
 
         await deployer.sendTransaction({ to: instance.address, value });
 
-        const targetContract = await new AddressUtilsMock__factory(
-          deployer,
-        ).deploy();
-        const target = targetContract.address;
+        const target = deployer;
 
         await expect(() =>
-          instance.connect(deployer).sendValue(target, value),
-        ).to.changeEtherBalances([instance, targetContract], [-value, value]);
+          instance.connect(deployer).sendValue(target.address, value),
+        ).to.changeEtherBalances([instance, target], [-value, value]);
+      });
+
+      describe('reverts if', () => {
+        it('target contrect rejects transfer', async () => {
+          const value = ethers.constants.Two;
+
+          await deployer.sendTransaction({ to: instance.address, value });
+
+          const mock = await deployMockContract(deployer, []);
+
+          await expect(
+            instance.connect(deployer).sendValue(mock.address, value),
+          ).to.be.revertedWith('AddressUtils: failed to send value');
+        });
       });
     });
 
