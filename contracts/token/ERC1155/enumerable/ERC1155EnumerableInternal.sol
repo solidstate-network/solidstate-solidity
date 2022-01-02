@@ -48,8 +48,10 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
 
         address[] memory addresses = new address[](accounts.length());
 
-        for (uint256 i; i < accounts.length(); i++) {
-            addresses[i] = accounts.at(i);
+        unchecked {
+            for (uint256 i; i < accounts.length(); i++) {
+                addresses[i] = accounts.at(i);
+            }
         }
 
         return addresses;
@@ -72,8 +74,10 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
 
         uint256[] memory ids = new uint256[](tokens.length());
 
-        for (uint256 i; i < tokens.length(); i++) {
-            ids[i] = tokens.at(i);
+        unchecked {
+            for (uint256 i; i < tokens.length(); i++) {
+                ids[i] = tokens.at(i);
+            }
         }
 
         return ids;
@@ -101,7 +105,7 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
             EnumerableSet.UintSet storage fromTokens = l.tokensByAccount[from];
             EnumerableSet.UintSet storage toTokens = l.tokensByAccount[to];
 
-            for (uint256 i; i < ids.length; i++) {
+            for (uint256 i; i < ids.length; ) {
                 uint256 amount = amounts[i];
 
                 if (amount > 0) {
@@ -120,6 +124,10 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
                         tokenAccounts[id].add(to);
                         toTokens.add(id);
                     }
+                }
+
+                unchecked {
+                    i++;
                 }
             }
         }

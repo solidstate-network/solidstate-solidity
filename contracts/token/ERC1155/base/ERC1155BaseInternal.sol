@@ -123,8 +123,11 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         mapping(uint256 => mapping(address => uint256))
             storage balances = ERC1155BaseStorage.layout().balances;
 
-        for (uint256 i; i < ids.length; i++) {
+        for (uint256 i; i < ids.length; ) {
             balances[ids[i]][account] += amounts[i];
+            unchecked {
+                i++;
+            }
         }
 
         emit TransferBatch(msg.sender, address(0), account, ids, amounts);
@@ -338,19 +341,24 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         mapping(uint256 => mapping(address => uint256))
             storage balances = ERC1155BaseStorage.layout().balances;
 
-        for (uint256 i; i < ids.length; i++) {
+        for (uint256 i; i < ids.length; ) {
             uint256 token = ids[i];
             uint256 amount = amounts[i];
 
             unchecked {
                 uint256 senderBalance = balances[token][sender];
+
                 require(
                     senderBalance >= amount,
                     'ERC1155: insufficient balances for transfer'
                 );
+
                 balances[token][sender] = senderBalance - amount;
+
+                i++;
             }
 
+            // balance increase cannot be unchecked because ERC1155Base neither tracks nor validates a totalSupply
             balances[token][recipient] += amount;
         }
 
