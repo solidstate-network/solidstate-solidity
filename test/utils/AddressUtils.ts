@@ -107,8 +107,9 @@ describe('AddressUtils', async () => {
           await mock.mock.fn.revertsWithReason(revertReason);
 
           const target = mock.address;
-          const mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
 
           await expect(
             instance
@@ -177,8 +178,9 @@ describe('AddressUtils', async () => {
           await mock.mock.fn.revertsWithReason(revertReason);
 
           const target = mock.address;
-          const mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
 
           await expect(
             instance
@@ -321,8 +323,9 @@ describe('AddressUtils', async () => {
           await mock.mock.fn.revertsWithReason(revertReason);
 
           const target = mock.address;
-          const mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
 
           await expect(
             instance
@@ -471,8 +474,9 @@ describe('AddressUtils', async () => {
           await mock.mock.fn.revertsWithReason(revertReason);
 
           const target = mock.address;
-          const mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
 
           await expect(
             instance
