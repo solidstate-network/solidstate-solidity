@@ -28,5 +28,81 @@ describe('UintUtils', function () {
         ).to.equal(ethers.constants.MaxUint256.toString());
       });
     });
+
+    describe('#toHexString', function () {
+      describe('(uint256)', function () {
+        it('returns 0 if input is 0', async () => {
+          expect(
+            await instance.callStatic['toHexString(uint256)'](
+              ethers.constants.Zero,
+            ),
+          ).to.equal('0x00');
+        });
+
+        it('returns correct hexadecimal string representation of a number', async () => {
+          const inputValues = [
+            '1000',
+            '1',
+            '12345',
+            '85746201361230',
+            '999983',
+          ];
+          const outputValues = [
+            '0x03e8',
+            '0x01',
+            '0x3039',
+            '0x4dfc57df7b4e',
+            '0x0f422f',
+          ];
+          for (let i = 0; i < inputValues.length; i++) {
+            expect(
+              await instance.callStatic['toHexString(uint256)'](
+                ethers.BigNumber.from(inputValues[i]),
+              ),
+            ).to.equal(outputValues[i]);
+          }
+        });
+      });
+
+      describe('(uint256,uint256)', function () {
+        it('returns hexadecimal string representation for matching value and length pairs', async () => {
+          const inputValues = [
+            '1000',
+            '1',
+            '12345',
+            '85746201361230',
+            '999983',
+          ];
+          const inputLengths = ['2', '1', '2', '6', '3'];
+          const outputValues = [
+            '0x03e8',
+            '0x01',
+            '0x3039',
+            '0x4dfc57df7b4e',
+            '0x0f422f',
+          ];
+
+          for (let i = 0; i < inputValues.length; i++) {
+            expect(
+              await instance.callStatic['toHexString(uint256,uint256)'](
+                ethers.BigNumber.from(inputValues[i]),
+                ethers.BigNumber.from(inputLengths[i]),
+              ),
+            ).to.equal(outputValues[i]);
+          }
+        });
+
+        describe('reverts if', () => {
+          it('length input is 0 and value is nonzero', async () => {
+            await expect(
+              instance.callStatic['toHexString(uint256,uint256)'](
+                ethers.BigNumber.from('100'),
+                ethers.constants.Zero,
+              ),
+            ).to.be.revertedWith('UintUtils: hex length insufficient');
+          });
+        });
+      });
+    });
   });
 });

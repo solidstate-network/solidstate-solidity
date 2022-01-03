@@ -104,8 +104,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
           await mock.mock.fn.returns(true);
 
           let target = mock.address;
-          let mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
           let value = ethers.constants.One;
           let signatures: Signature[] = [];
 
@@ -140,8 +141,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
           await mock.mock.fn.returns(true);
 
           let target = mock.address;
-          let mocked = await mock.populateTransaction.fn();
-          const data = mocked.data as BytesLike;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
           let value = ethers.constants.Zero;
           let signatures: Signature[] = [];
 
@@ -183,8 +185,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
             await mock.mock.fn.revertsWithReason(reason);
 
             let target = mock.address;
-            let mocked = await mock.populateTransaction.fn();
-            const data = mocked.data as BytesLike;
+            const { data } = (await mock.populateTransaction.fn()) as {
+              data: BytesLike;
+            };
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -414,8 +417,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
             ]);
 
             let target = mock.address;
-            let mocked = await mock.populateTransaction.fn();
-            const data = mocked.data as BytesLike;
+            const { data } = (await mock.populateTransaction.fn()) as {
+              data: BytesLike;
+            };
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 

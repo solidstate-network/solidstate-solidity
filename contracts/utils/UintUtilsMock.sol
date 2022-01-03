@@ -10,4 +10,16 @@ contract UintUtilsMock {
     function toString(uint256 number) external pure returns (string memory) {
         return number.toString();
     }
+
+    function toHexString(uint256 value) external pure returns (string memory) {
+        return value.toHexString();
+    }
+
+    function toHexString(uint256 value, uint256 length)
+        external
+        pure
+        returns (string memory)
+    {
+        return value.toHexString(length);
+    }
 }
