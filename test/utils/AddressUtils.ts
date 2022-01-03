@@ -49,7 +49,7 @@ describe('AddressUtils', async () => {
       });
 
       describe('reverts if', () => {
-        it('target contrect rejects transfer', async () => {
+        it('target contract rejects transfer', async () => {
           const value = ethers.constants.Two;
 
           await deployer.sendTransaction({ to: instance.address, value });
@@ -72,8 +72,9 @@ describe('AddressUtils', async () => {
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
 
         expect(
           await instance
@@ -138,8 +139,9 @@ describe('AddressUtils', async () => {
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
 
         expect(
           await instance
@@ -214,8 +216,9 @@ describe('AddressUtils', async () => {
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
 
         expect(
           await instance
@@ -361,8 +364,9 @@ describe('AddressUtils', async () => {
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
 
         expect(
           await instance
@@ -393,8 +397,9 @@ describe('AddressUtils', async () => {
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
 
         await expect(() =>
           instance
