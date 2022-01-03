@@ -1567,6 +1567,13 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
+"@solidstate/hardhat-4byte-uploader@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@solidstate/hardhat-4byte-uploader/-/hardhat-4byte-uploader-1.0.2.tgz#c265d64a82c2f67982851408d088dc2ec58d4cad"
+  integrity sha512-O1trdKctT7ru28LxpLc3RvQtAniBbE1zahi1+y8lc3N04QygOy4k3DneY/QC2NF69xkfnNzloau2m0SnR04zuw==
+  dependencies:
+    axios "^0.24.0"
+
 "@solidstate/library@^0.0.29":
   version "0.0.0"
   uid ""
@@ -2282,6 +2289,13 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -5297,7 +5311,7 @@ flow-stoplight@^1.0.0:
   resolved "https://registry.yarnpkg.com/flow-stoplight/-/flow-stoplight-1.0.0.tgz#4a292c5bcff8b39fa6cc0cb1a853d86f27eeff7b"
   integrity sha1-SiksW8/4s5+mzAyxqFPYbyfu/3s=
 
-follow-redirects@^1.12.1:
+follow-redirects@^1.12.1, follow-redirects@^1.14.4:
   version "1.14.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
   integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
