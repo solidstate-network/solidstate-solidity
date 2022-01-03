@@ -32,9 +32,10 @@ describe('UintUtils', function () {
     describe('#toHexString', function () {
       describe('(uint256)', function () {
         it('returns 0 if input is 0', async () => {
-          const zeroNumber = ethers.constants.Zero;
           expect(
-            await instance.callStatic['toHexString(uint256)'](zeroNumber),
+            await instance.callStatic['toHexString(uint256)'](
+              ethers.constants.Zero,
+            ),
           ).to.equal('0x00');
         });
 
@@ -98,7 +99,7 @@ describe('UintUtils', function () {
                 ethers.BigNumber.from('100'),
                 ethers.constants.Zero,
               ),
-            ).to.be.revertedWith('Strings: hex length insufficient');
+            ).to.be.revertedWith('UintUtils: hex length insufficient');
           });
         });
       });
