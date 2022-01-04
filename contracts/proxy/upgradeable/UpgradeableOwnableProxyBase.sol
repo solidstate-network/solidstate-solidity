@@ -11,6 +11,8 @@ abstract contract UpgradeableOwnableProxyBase is OwnableInternal, Proxy {
     using UpgradeableOwnableProxyStorage for UpgradeableOwnableProxyStorage.Layout;
     using OwnableStorage for OwnableStorage.Layout;
 
+    receive() external payable {}
+
     constructor(address implementation) {
         UpgradeableOwnableProxyStorage.layout().implementation = implementation;
     }
