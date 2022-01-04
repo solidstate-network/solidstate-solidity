@@ -2,27 +2,19 @@
 
 pragma solidity ^0.8.0;
 
+import { UpgradeableOwnableProxyBase } from './UpgradeableOwnableProxyBase.sol';
 import { Proxy } from '../Proxy.sol';
 import { OwnableInternal } from '../../access/OwnableInternal.sol';
 import { OwnableStorage } from '../../access/OwnableStorage.sol';
 import { UpgradeableOwnableProxyStorage } from './UpgradeableOwnableProxyStorage.sol';
 
-contract UpgradeableOwnableProxy is Proxy, OwnableInternal {
+contract UpgradeableOwnableProxy is UpgradeableOwnableProxyBase {
     using UpgradeableOwnableProxyStorage for UpgradeableOwnableProxyStorage.Layout;
     using OwnableStorage for OwnableStorage.Layout;
 
-    constructor(address implementation) {
-        OwnableStorage.layout().setOwner(msg.sender);
-        UpgradeableOwnableProxyStorage.layout().implementation = implementation;
-    }
-
-    receive() external payable {}
-
-    function _getImplementation() internal view override returns (address) {
-        return UpgradeableOwnableProxyStorage.layout().implementation;
-    }
-
-    function setImplementation(address implementation) external onlyOwner {
-        UpgradeableOwnableProxyStorage.layout().implementation = implementation;
+    constructor(address implementation)
+        UpgradeableOwnableProxyBase(implementation)
+    {
+        _setOwner(msg.sender);
     }
 }
