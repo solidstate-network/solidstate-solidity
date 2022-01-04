@@ -18,25 +18,10 @@ contract UpgradeableOwnableProxy is Proxy, OwnableInternal {
 
     receive() external payable {}
 
-    /**
-     * @inheritdoc Proxy
-     */
     function _getImplementation() internal view override returns (address) {
         return UpgradeableOwnableProxyStorage.layout().implementation;
     }
 
-    /**
-     * @notice get address of implementation contract
-     * @return implementation address
-     */
-    function getImplementation() external view returns (address) {
-        return _getImplementation();
-    }
-
-    /**
-     * @notice set address of implementation contract
-     * @param implementation address of the new implementation
-     */
     function setImplementation(address implementation) external onlyOwner {
         UpgradeableOwnableProxyStorage.layout().implementation = implementation;
     }
