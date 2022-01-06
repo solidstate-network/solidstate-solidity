@@ -108,33 +108,37 @@ abstract contract ECDSAMultisigWallet {
 
         uint256 signerBitmap;
 
-        for (uint256 i; i < signatures.length; i++) {
-            Signature memory signature = signatures[i];
+        unchecked {
+            for (uint256 i; i < signatures.length; i++) {
+                Signature memory signature = signatures[i];
 
-            address signer = keccak256(
-                abi.encodePacked(data, signature.nonce, address(this))
-            ).toEthSignedMessageHash().recover(signature.data);
+                address signer = keccak256(
+                    abi.encodePacked(data, signature.nonce, address(this))
+                ).toEthSignedMessageHash().recover(signature.data);
 
-            uint256 index = l.signers.indexOf(signer);
+                uint256 index = l.signers.indexOf(signer);
 
-            require(
-                index < 256,
-                'ECDSAMultisigWallet: recovered signer not authorized'
-            );
+                require(
+                    index < 256,
+                    'ECDSAMultisigWallet: recovered signer not authorized'
+                );
 
-            require(
-                !l.isInvalidNonce(signer, signature.nonce),
-                'ECDSAMultisigWallet: invalid nonce'
-            );
+                require(
+                    !l.isInvalidNonce(signer, signature.nonce),
+                    'ECDSAMultisigWallet: invalid nonce'
+                );
 
-            l.setInvalidNonce(signer, signature.nonce);
+                l.setInvalidNonce(signer, signature.nonce);
 
-            require(
-                signerBitmap & (1 << index) == 0,
-                'ECDSAMultisigWallet: signer cannot sign more than once'
-            );
+                uint256 shift = 1 << index;
 
-            signerBitmap += 1 << index;
+                require(
+                    signerBitmap & shift == 0,
+                    'ECDSAMultisigWallet: signer cannot sign more than once'
+                );
+
+                signerBitmap |= shift;
+            }
         }
     }
 }

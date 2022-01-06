@@ -13,9 +13,11 @@ library Array {
     function max(uint256[] storage array) internal view returns (uint256) {
         uint256 maxValue = 0;
 
-        for (uint256 i; i < array.length; i++) {
-            if (array[i] > maxValue) {
-                maxValue = array[i];
+        unchecked {
+            for (uint256 i; i < array.length; i++) {
+                if (array[i] > maxValue) {
+                    maxValue = array[i];
+                }
             }
         }
 
@@ -30,9 +32,11 @@ library Array {
     function min(uint256[] storage array) internal view returns (uint256) {
         uint256 minValue = type(uint256).max;
 
-        for (uint256 i; i < array.length; i++) {
-            if (array[i] < minValue) {
-                minValue = array[i];
+        unchecked {
+            for (uint256 i; i < array.length; i++) {
+                if (array[i] < minValue) {
+                    minValue = array[i];
+                }
             }
         }
 

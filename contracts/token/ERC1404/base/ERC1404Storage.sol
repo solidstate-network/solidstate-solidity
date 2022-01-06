@@ -29,8 +29,10 @@ library ERC1404Storage {
 
         mapping(uint8 => string) storage restrictions = l.restrictions;
 
-        for (uint256 i; i < restrictionCodes.length; i++) {
-            restrictions[restrictionCodes[i]] = restrictionMessages[i];
+        unchecked {
+            for (uint256 i; i < restrictionCodes.length; i++) {
+                restrictions[restrictionCodes[i]] = restrictionMessages[i];
+            }
         }
     }
 
