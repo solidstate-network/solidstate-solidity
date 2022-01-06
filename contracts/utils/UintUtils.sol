@@ -41,7 +41,9 @@ library UintUtils {
         uint256 length = 0;
 
         for (uint256 temp = value; temp != 0; temp >>= 8) {
-            length++;
+            unchecked {
+                length++;
+            }
         }
 
         return toHexString(value, length);
@@ -56,9 +58,11 @@ library UintUtils {
         buffer[0] = '0';
         buffer[1] = 'x';
 
-        for (uint256 i = 2 * length + 1; i > 1; --i) {
-            buffer[i] = HEX_SYMBOLS[value & 0xf];
-            value >>= 4;
+        unchecked {
+            for (uint256 i = 2 * length + 1; i > 1; --i) {
+                buffer[i] = HEX_SYMBOLS[value & 0xf];
+                value >>= 4;
+            }
         }
 
         require(value == 0, 'UintUtils: hex length insufficient');

@@ -8,8 +8,6 @@ contract AddressUtilsMock {
     using AddressUtils for address;
     using AddressUtils for address payable;
 
-    receive() external payable {}
-
     function toString(address account) external pure returns (string memory) {
         return account.toString();
     }

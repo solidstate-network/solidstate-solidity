@@ -3,6 +3,7 @@ import path from 'path';
 
 import { task } from 'hardhat/config';
 import '@nomiclabs/hardhat-waffle';
+import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
 import 'hardhat-gas-reporter';

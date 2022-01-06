@@ -39,7 +39,10 @@ describe('AddressUtils', async () => {
       it('transfers given value to given address', async () => {
         const value = ethers.constants.Two;
 
-        await deployer.sendTransaction({ to: instance.address, value });
+        await ethers.provider.send('hardhat_setBalance', [
+          instance.address,
+          ethers.utils.hexStripZeros(value.toHexString()),
+        ]);
 
         const target = deployer;
 
@@ -52,7 +55,10 @@ describe('AddressUtils', async () => {
         it('target contract rejects transfer', async () => {
           const value = ethers.constants.Two;
 
-          await deployer.sendTransaction({ to: instance.address, value });
+          await ethers.provider.send('hardhat_setBalance', [
+            instance.address,
+            ethers.utils.hexStripZeros(value.toHexString()),
+          ]);
 
           const mock = await deployMockContract(deployer, []);
 
@@ -123,7 +129,7 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes)'](instance.address, '0x01'),
+              ['functionCall(address,bytes)'](instance.address, '0x'),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
       });
@@ -199,7 +205,7 @@ describe('AddressUtils', async () => {
               .connect(deployer)
               ['functionCall(address,bytes,string)'](
                 instance.address,
-                '0x01',
+                '0x',
                 revertReason,
               ),
           ).to.be.revertedWith(revertReason);
@@ -239,7 +245,10 @@ describe('AddressUtils', async () => {
       it('transfers given value to target contract', async () => {
         const value = ethers.constants.Two;
 
-        await deployer.sendTransaction({ to: instance.address, value });
+        await ethers.provider.send('hardhat_setBalance', [
+          instance.address,
+          ethers.utils.hexStripZeros(value.toHexString()),
+        ]);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -288,7 +297,10 @@ describe('AddressUtils', async () => {
         it('target function is not payable and value is included', async () => {
           const value = ethers.constants.Two;
 
-          await deployer.sendTransaction({ to: instance.address, value });
+          await ethers.provider.send('hardhat_setBalance', [
+            instance.address,
+            ethers.utils.hexStripZeros(value.toHexString()),
+          ]);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
@@ -347,7 +359,7 @@ describe('AddressUtils', async () => {
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256)'](
                 instance.address,
-                '0x01',
+                '0x',
                 ethers.constants.Zero,
               ),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
@@ -388,7 +400,10 @@ describe('AddressUtils', async () => {
       it('transfers given value to target contract', async () => {
         const value = ethers.constants.Two;
 
-        await deployer.sendTransaction({ to: instance.address, value });
+        await ethers.provider.send('hardhat_setBalance', [
+          instance.address,
+          ethers.utils.hexStripZeros(value.toHexString()),
+        ]);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -442,7 +457,10 @@ describe('AddressUtils', async () => {
           const value = ethers.constants.Two;
           const revertReason = 'REVERT_REASON';
 
-          await deployer.sendTransaction({ to: instance.address, value });
+          await ethers.provider.send('hardhat_setBalance', [
+            instance.address,
+            ethers.utils.hexStripZeros(value.toHexString()),
+          ]);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
@@ -503,7 +521,7 @@ describe('AddressUtils', async () => {
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256,string)'](
                 instance.address,
-                '0x01',
+                '0x',
                 ethers.constants.Zero,
                 revertReason,
               ),
