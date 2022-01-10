@@ -6,30 +6,11 @@ import { Math } from './Math.sol';
 
 library ArrayUtils {
     /**
-     * @notice get maximum value in an array
-     * @param array array to search
-     * @return maximum value
-     */
-    function max(uint256[] storage array) internal view returns (uint256) {
-        uint256 maxValue = 0;
-
-        unchecked {
-            for (uint256 i; i < array.length; i++) {
-                if (array[i] > maxValue) {
-                    maxValue = array[i];
-                }
-            }
-        }
-
-        return maxValue;
-    }
-
-    /**
      * @notice get minimum value in an array
      * @param array array to search
      * @return minimum value
      */
-    function min(uint256[] storage array) internal view returns (uint256) {
+    function min(uint256[] memory array) internal view returns (uint256) {
         uint256 minValue = type(uint256).max;
 
         unchecked {
@@ -41,6 +22,25 @@ library ArrayUtils {
         }
 
         return minValue;
+    }
+
+    /**
+     * @notice get maximum value in an array
+     * @param array array to search
+     * @return maximum value
+     */
+    function max(uint256[] memory array) internal view returns (uint256) {
+        uint256 maxValue = 0;
+
+        unchecked {
+            for (uint256 i; i < array.length; i++) {
+                if (array[i] > maxValue) {
+                    maxValue = array[i];
+                }
+            }
+        }
+
+        return maxValue;
     }
 
     /**
