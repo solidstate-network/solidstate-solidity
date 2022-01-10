@@ -8,19 +8,19 @@ contract ArrayUtilsMock {
     using ArrayUtils for address[];
     using ArrayUtils for uint256[];
 
-    function min(address[] memory array) external view returns (address) {
+    function min(address[] memory array) external pure returns (address) {
         return array.min();
     }
 
-    function min(uint256[] memory array) external view returns (uint256) {
+    function min(uint256[] memory array) external pure returns (uint256) {
         return array.min();
     }
 
-    function max(address[] memory array) external view returns (address) {
+    function max(address[] memory array) external pure returns (address) {
         return array.max();
     }
 
-    function max(uint256[] memory array) external view returns (uint256) {
+    function max(uint256[] memory array) external pure returns (uint256) {
         return array.max();
     }
 }

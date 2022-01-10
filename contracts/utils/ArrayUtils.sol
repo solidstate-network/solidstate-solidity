@@ -8,7 +8,7 @@ library ArrayUtils {
      * @param array array to search
      * @return minimum value
      */
-    function min(address[] memory array) internal view returns (address) {
+    function min(address[] memory array) internal pure returns (address) {
         address minValue = address(type(uint160).max);
 
         unchecked {
@@ -27,7 +27,7 @@ library ArrayUtils {
      * @param array array to search
      * @return minimum value
      */
-    function min(uint256[] memory array) internal view returns (uint256) {
+    function min(uint256[] memory array) internal pure returns (uint256) {
         uint256 minValue = type(uint256).max;
 
         unchecked {
@@ -46,7 +46,7 @@ library ArrayUtils {
      * @param array array to search
      * @return maximum value
      */
-    function max(address[] memory array) internal view returns (address) {
+    function max(address[] memory array) internal pure returns (address) {
         address maxValue = address(0);
 
         unchecked {
@@ -65,7 +65,7 @@ library ArrayUtils {
      * @param array array to search
      * @return maximum value
      */
-    function max(uint256[] memory array) internal view returns (uint256) {
+    function max(uint256[] memory array) internal pure returns (uint256) {
         uint256 maxValue = 0;
 
         unchecked {
