@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import { Math } from './Math.sol';
-
 library ArrayUtils {
     /**
      * @notice get minimum value in given array
@@ -79,38 +77,5 @@ library ArrayUtils {
         }
 
         return maxValue;
-    }
-
-    /**
-     * @notice find index of first element of array that is greater than or equal to given query
-     * @dev array must be sorted in ascending order and contain no duplicates
-     * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
-     * @param array array to query
-     * @param query element to search for
-     * @return index of query or array length if query is not found or exceeded
-     */
-    function findUpperBound(uint256[] storage array, uint256 query)
-        internal
-        view
-        returns (uint256)
-    {
-        if (array.length == 0) {
-            return 0;
-        }
-
-        uint256 low = 0;
-        uint256 high = array.length;
-
-        while (low < high) {
-            uint256 mid = Math.average(low, high);
-
-            if (array[mid] > query) {
-                high = mid;
-            } else {
-                low = mid + 1;
-            }
-        }
-
-        return (low > 0 && array[low - 1] == query) ? low - 1 : low;
     }
 }

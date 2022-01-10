@@ -2,15 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-import { ArrayUtils } from '../../../utils/ArrayUtils.sol';
+import { Math } from '../../../utils/Math.sol';
 import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInternal.sol';
 
 /**
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
 abstract contract ERC20Snapshot is ERC20SnapshotInternal {
-    using ArrayUtils for uint256[];
-
     /**
      * @notice query the token balance of given account at given snapshot id
      * @param account address to query
@@ -54,12 +52,45 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
             'ERC20Snapshot: snapshot id does not exist'
         );
 
-        uint256 index = snapshots.ids.findUpperBound(snapshotId);
+        uint256 index = _findUpperBound(snapshots.ids, snapshotId);
 
         if (index == snapshots.ids.length) {
             return (false, 0);
         } else {
             return (true, snapshots.values[index]);
         }
+    }
+
+    /**
+     * @notice find index of first element of array that is greater than or equal to given query
+     * @dev array must be sorted in ascending order and contain no duplicates
+     * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
+     * @param array array to query
+     * @param query element to search for
+     * @return index of query or array length if query is not found or exceeded
+     */
+    function _findUpperBound(uint256[] storage array, uint256 query)
+        private
+        view
+        returns (uint256)
+    {
+        if (array.length == 0) {
+            return 0;
+        }
+
+        uint256 low = 0;
+        uint256 high = array.length;
+
+        while (low < high) {
+            uint256 mid = Math.average(low, high);
+
+            if (array[mid] > query) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return (low > 0 && array[low - 1] == query) ? low - 1 : low;
     }
 }
