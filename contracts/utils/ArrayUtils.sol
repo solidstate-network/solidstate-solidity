@@ -6,7 +6,26 @@ import { Math } from './Math.sol';
 
 library ArrayUtils {
     /**
-     * @notice get minimum value in an array
+     * @notice get minimum value in given array
+     * @param array array to search
+     * @return minimum value
+     */
+    function min(address[] memory array) internal view returns (address) {
+        address minValue = address(type(uint160).max);
+
+        unchecked {
+            for (uint256 i; i < array.length; i++) {
+                if (array[i] < minValue) {
+                    minValue = array[i];
+                }
+            }
+        }
+
+        return minValue;
+    }
+
+    /**
+     * @notice get minimum value in given array
      * @param array array to search
      * @return minimum value
      */
@@ -25,7 +44,26 @@ library ArrayUtils {
     }
 
     /**
-     * @notice get maximum value in an array
+     * @notice get maximum value in given array
+     * @param array array to search
+     * @return maximum value
+     */
+    function max(address[] memory array) internal view returns (address) {
+        address maxValue = address(0);
+
+        unchecked {
+            for (uint256 i; i < array.length; i++) {
+                if (array[i] > maxValue) {
+                    maxValue = array[i];
+                }
+            }
+        }
+
+        return maxValue;
+    }
+
+    /**
+     * @notice get maximum value in given array
      * @param array array to search
      * @return maximum value
      */
