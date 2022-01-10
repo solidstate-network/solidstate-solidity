@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.0;
 
-import { Array } from '../../../utils/Array.sol';
+import { ArrayUtils } from '../../../utils/ArrayUtils.sol';
 import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInternal.sol';
 
 /**
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
 abstract contract ERC20Snapshot is ERC20SnapshotInternal {
-    using Array for uint256[];
+    using ArrayUtils for uint256[];
 
     /**
      * @notice query the token balance of given account at given snapshot id

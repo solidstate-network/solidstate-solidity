@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import { Math } from './Math.sol';
 
-library Array {
+library ArrayUtils {
     /**
      * @notice get maximum value in an array
      * @param array array to search
