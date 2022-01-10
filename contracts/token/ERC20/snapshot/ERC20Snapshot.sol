@@ -74,23 +74,25 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
         view
         returns (uint256)
     {
-        if (array.length == 0) {
-            return 0;
-        }
-
-        uint256 low = 0;
-        uint256 high = array.length;
-
-        while (low < high) {
-            uint256 mid = Math.average(low, high);
-
-            if (array[mid] > query) {
-                high = mid;
-            } else {
-                low = mid + 1;
+        unchecked {
+            if (array.length == 0) {
+                return 0;
             }
-        }
 
-        return (low > 0 && array[low - 1] == query) ? low - 1 : low;
+            uint256 low = 0;
+            uint256 high = array.length;
+
+            while (low < high) {
+                uint256 mid = Math.average(low, high);
+
+                if (array[mid] > query) {
+                    high = mid;
+                } else {
+                    low = mid + 1;
+                }
+            }
+
+            return (low > 0 && array[low - 1] == query) ? low - 1 : low;
+        }
     }
 }
