@@ -10,6 +10,10 @@ const bnToAddress = (bn: BigNumber) => {
   );
 };
 
+const bnToBytes32 = (bn: BigNumber) => {
+  return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
+};
+
 describe('ArrayUtils', async () => {
   let instance: ArrayUtilsMock;
   let deployer: SignerWithAddress;
@@ -20,6 +24,24 @@ describe('ArrayUtils', async () => {
   });
 
   describe('__internal', () => {
+    describe('#min(bytes32[])', () => {
+      it('returns the minimum bytes32 value in given array', async () => {
+        expect(
+          await instance.callStatic['min(bytes32[])']([
+            bnToBytes32(ethers.constants.One),
+            bnToBytes32(ethers.constants.Zero),
+            bnToBytes32(ethers.constants.Two),
+          ]),
+        ).to.equal(bnToBytes32(ethers.constants.Zero));
+      });
+
+      it('returns the max bytes32 value if array is empty', async () => {
+        expect(await instance.callStatic['min(bytes32[])']([])).to.equal(
+          bnToBytes32(ethers.constants.MaxUint256),
+        );
+      });
+    });
+
     describe('#min(address[])', () => {
       it('returns the minimum address in given array', async () => {
         expect(
@@ -52,6 +74,24 @@ describe('ArrayUtils', async () => {
       it('returns the max uint256 if array is empty', async () => {
         expect(await instance.callStatic['min(uint256[])']([])).to.equal(
           ethers.constants.MaxUint256,
+        );
+      });
+    });
+
+    describe('#max(bytes32[])', () => {
+      it('returns the maximum bytes32 value in given array', async () => {
+        expect(
+          await instance.callStatic['max(bytes32[])']([
+            bnToBytes32(ethers.constants.One),
+            bnToBytes32(ethers.constants.Zero),
+            bnToBytes32(ethers.constants.Two),
+          ]),
+        ).to.equal(bnToBytes32(ethers.constants.Two));
+      });
+
+      it('returns empty bytes if array is empty', async () => {
+        expect(await instance.callStatic['max(bytes32[])']([])).to.equal(
+          ethers.constants.HashZero,
         );
       });
     });
