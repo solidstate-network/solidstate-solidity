@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-library UpgradeableOwnableProxyStorage {
-    bytes32 internal constant STORAGE_SLOT =
-        keccak256('solidstate.contracts.storage.UpgradeableOwnableProxy');
-
+library UpgradeableProxyStorage {
     struct Layout {
         address implementation;
     }
+
+    bytes32 internal constant STORAGE_SLOT =
+        keccak256('solidstate.contracts.storage.UpgradeableProxy');
 
     function layout() internal pure returns (Layout storage l) {
         bytes32 slot = STORAGE_SLOT;
