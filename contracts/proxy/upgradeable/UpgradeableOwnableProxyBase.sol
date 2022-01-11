@@ -14,11 +14,7 @@ abstract contract UpgradeableOwnableProxyBase is OwnableInternal, Proxy {
     receive() external payable {}
 
     constructor(address implementation) {
-        UpgradeableProxyStorage.layout().implementation = implementation;
-    }
-
-    function _setImplementation(address implementation) internal {
-        UpgradeableProxyStorage.layout().implementation = implementation;
+        UpgradeableProxyStorage.layout().setImplementation(implementation);
     }
 
     function _getImplementation() internal view override returns (address) {

@@ -20,8 +20,4 @@ contract UpgradeableOwnableProxyBaseMock is UpgradeableOwnableProxyBase {
     function setOwner(address owner) public onlyOwner {
         _setOwner(owner);
     }
-
-    function setImplementation(address implementation) public onlyOwner {
-        _setImplementation(implementation);
-    }
 }
