@@ -24,16 +24,6 @@ export default {
     },
   },
 
-  networks: {
-    generic: {
-      // set URL for external network
-      url: `${process.env.URL}`,
-      accounts: {
-        mnemonic: `${process.env.MNEMONIC}`,
-      },
-    },
-  },
-
   abiExporter: {
     runOnCompile: true,
     clear: true,

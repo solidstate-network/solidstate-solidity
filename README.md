@@ -102,16 +102,6 @@ Automatically upgrade dependencies with yarn-up:
 yarn upgrade-dependencies
 ```
 
-### Networks
-
-By default, Hardhat uses the Hardhat Network in-process.
-
-To use an external network via URL, set the `URL` environment variable and append commands with `--network generic`:
-
-```bash
-URL="[NODE_URL]" yarn run hardhat test --network generic
-```
-
 ### Publication
 
 Publish packages via Lerna:
