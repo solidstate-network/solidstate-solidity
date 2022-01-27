@@ -102,14 +102,6 @@ Automatically upgrade dependencies with yarn-up:
 yarn upgrade-dependencies
 ```
 
-### Publication
-
-Publish packages via Lerna:
-
-```bash
-yarn lerna-publish
-```
-
 ### Testing
 
 Test contracts with Hardhat and generate gas report using `hardhat-gas-reporter`:
@@ -122,6 +114,14 @@ Generate a code coverage report using `solidity-coverage`:
 
 ```bash
 yarn run hardhat coverage
+```
+
+### Publication
+
+Publish packages via Lerna:
+
+```bash
+yarn lerna-publish
 ```
 
 ## Sponsors
