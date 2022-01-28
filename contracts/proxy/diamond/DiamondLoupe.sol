@@ -13,12 +13,7 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     /**
      * @inheritdoc IDiamondLoupe
      */
-    function facets()
-        external
-        view
-        override
-        returns (Facet[] memory diamondFacets)
-    {
+    function facets() external view returns (Facet[] memory diamondFacets) {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
         diamondFacets = new Facet[](l.selectorCount);
@@ -96,7 +91,6 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     function facetFunctionSelectors(address facet)
         external
         view
-        override
         returns (bytes4[] memory selectors)
     {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
@@ -142,7 +136,6 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     function facetAddresses()
         external
         view
-        override
         returns (address[] memory addresses)
     {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
@@ -198,7 +191,6 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     function facetAddress(bytes4 selector)
         external
         view
-        override
         returns (address facet)
     {
         facet = address(bytes20(DiamondBaseStorage.layout().facets[selector]));

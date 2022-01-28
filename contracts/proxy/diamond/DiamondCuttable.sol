@@ -22,7 +22,7 @@ abstract contract DiamondCuttable is IDiamondCuttable, OwnableInternal {
         FacetCut[] calldata facetCuts,
         address target,
         bytes calldata data
-    ) external override onlyOwner {
+    ) external onlyOwner {
         DiamondBaseStorage.layout().diamondCut(facetCuts, target, data);
     }
 }
