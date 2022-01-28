@@ -18,7 +18,6 @@ abstract contract ERC1271Base is IERC1271, ERC1271BaseInternal {
     function isValidSignature(bytes32 hash, bytes memory signature)
         external
         view
-        override
         returns (bytes4 magicValue)
     {
         if (_isValidSignature(hash, signature)) {
