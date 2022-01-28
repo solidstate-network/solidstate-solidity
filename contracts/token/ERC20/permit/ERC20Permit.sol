@@ -27,7 +27,7 @@ abstract contract ERC20Permit is IERC2612, ERC20Base, ERC20Metadata {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public virtual override {
+    ) public virtual {
         require(block.timestamp <= deadline, 'ERC20Permit: expired deadline');
 
         // Assembly for more efficiently computing:
@@ -97,7 +97,7 @@ abstract contract ERC20Permit is IERC2612, ERC20Base, ERC20Metadata {
     /**
      * @dev inhertidoc IERC2612
      */
-    function nonces(address owner) public view override returns (uint256) {
+    function nonces(address owner) public view returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
     }
 

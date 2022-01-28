@@ -12,21 +12,21 @@ abstract contract ERC20Metadata is IERC20Metadata {
     /**
      * @inheritdoc IERC20Metadata
      */
-    function name() public view virtual override returns (string memory) {
+    function name() public view virtual returns (string memory) {
         return ERC20MetadataStorage.layout().name;
     }
 
     /**
      * @inheritdoc IERC20Metadata
      */
-    function symbol() public view virtual override returns (string memory) {
+    function symbol() public view virtual returns (string memory) {
         return ERC20MetadataStorage.layout().symbol;
     }
 
     /**
      * @inheritdoc IERC20Metadata
      */
-    function decimals() public view virtual override returns (uint8) {
+    function decimals() public view virtual returns (uint8) {
         return ERC20MetadataStorage.layout().decimals;
     }
 }
