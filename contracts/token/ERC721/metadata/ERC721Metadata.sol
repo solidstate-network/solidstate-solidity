@@ -18,14 +18,14 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
     /**
      * @notice inheritdoc IERC721Metadata
      */
-    function name() public view virtual override returns (string memory) {
+    function name() public view virtual returns (string memory) {
         return ERC721MetadataStorage.layout().name;
     }
 
     /**
      * @notice inheritdoc IERC721Metadata
      */
-    function symbol() public view virtual override returns (string memory) {
+    function symbol() public view virtual returns (string memory) {
         return ERC721MetadataStorage.layout().symbol;
     }
 
@@ -36,7 +36,6 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
         public
         view
         virtual
-        override
         returns (string memory)
     {
         require(

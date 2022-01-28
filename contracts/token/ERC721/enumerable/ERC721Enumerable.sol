@@ -18,7 +18,7 @@ abstract contract ERC721Enumerable is
     /**
      * @inheritdoc IERC721Enumerable
      */
-    function totalSupply() public view override returns (uint256) {
+    function totalSupply() public view returns (uint256) {
         return _totalSupply();
     }
 
@@ -28,7 +28,6 @@ abstract contract ERC721Enumerable is
     function tokenOfOwnerByIndex(address owner, uint256 index)
         public
         view
-        override
         returns (uint256)
     {
         return _tokenOfOwnerByIndex(owner, index);
@@ -37,12 +36,7 @@ abstract contract ERC721Enumerable is
     /**
      * @inheritdoc IERC721Enumerable
      */
-    function tokenByIndex(uint256 index)
-        public
-        view
-        override
-        returns (uint256)
-    {
+    function tokenByIndex(uint256 index) public view returns (uint256) {
         return _tokenByIndex(index);
     }
 }
