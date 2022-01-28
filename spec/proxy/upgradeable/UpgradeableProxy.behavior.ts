@@ -1,24 +1,24 @@
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfProxy } from '../Proxy.behavior';
-import { ManagedProxy } from '../../../typechain';
+import { UpgradeableProxy } from '../../../typechain';
 
-interface ManagedProxyBehaviorArgs {
-  deploy: () => Promise<ManagedProxy>;
+interface UpgradeableProxyBehaviorArgs {
+  deploy: () => Promise<UpgradeableProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
-export function describeBehaviorOfManagedProxy(
+export function describeBehaviorOfUpgradeableProxy(
   {
     deploy,
     implementationFunction,
     implementationFunctionArgs,
-  }: ManagedProxyBehaviorArgs,
+  }: UpgradeableProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ManagedProxy', function () {
+  describe('::UpgradeableProxy', function () {
     describeBehaviorOfProxy(
       {
         deploy,

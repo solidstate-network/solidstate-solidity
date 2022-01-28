@@ -1,5 +1,5 @@
-import { describeBehaviorOfManagedProxy } from './ManagedProxy.behavior';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfManagedProxy } from './ManagedProxy.behavior';
 import { ManagedProxyOwnable } from '../../../typechain';
 
 interface ManagedProxyOwnableBehaviorArgs {
