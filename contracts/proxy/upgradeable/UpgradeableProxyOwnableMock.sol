@@ -10,4 +10,9 @@ contract UpgradeableProxyOwnableMock is UpgradeableProxyOwnable {
         _setImplementation(implementation);
         OwnableStorage.layout().owner = owner;
     }
+
+    /**
+     * @dev suppress compiler warning
+     */
+    receive() external payable {}
 }

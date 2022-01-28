@@ -16,4 +16,9 @@ contract UpgradeableProxyMock is UpgradeableProxy {
     function __setImplementation(address implementation) external {
         _setImplementation(implementation);
     }
+
+    /**
+     * @dev suppress compiler warning
+     */
+    receive() external payable {}
 }
