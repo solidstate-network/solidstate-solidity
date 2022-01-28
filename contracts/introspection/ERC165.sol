@@ -14,12 +14,7 @@ abstract contract ERC165 is IERC165 {
     /**
      * @inheritdoc IERC165
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override
-        returns (bool)
-    {
+    function supportsInterface(bytes4 interfaceId) public view returns (bool) {
         return ERC165Storage.layout().isSupportedInterface(interfaceId);
     }
 }
