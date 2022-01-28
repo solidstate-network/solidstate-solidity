@@ -1,1 +1,2 @@
-export * from './UpgradeableOwnableProxy.behavior';
+export * from './UpgradeableProxy.behavior';
+export * from './UpgradeableProxyOwnable.behavior';

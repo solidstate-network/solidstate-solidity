@@ -1,24 +1,24 @@
-import { UpgradeableOwnableProxy } from '../../../typechain';
-import { describeBehaviorOfProxy } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfProxy } from '../Proxy.behavior';
+import { UpgradeableProxy } from '../../../typechain';
 
-interface UpgradeableOwnableProxyArgs {
-  deploy: () => Promise<UpgradeableOwnableProxy>;
+interface UpgradeableProxyBehaviorArgs {
+  deploy: () => Promise<UpgradeableProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
-export function describeBehaviorOfUpgradeableOwnableProxy(
+export function describeBehaviorOfUpgradeableProxy(
   {
     deploy,
     implementationFunction,
     implementationFunctionArgs,
-  }: UpgradeableOwnableProxyArgs,
+  }: UpgradeableProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::UpgradeableOwnableProxy', () => {
+  describe('::UpgradeableProxy', function () {
     describeBehaviorOfProxy(
       {
         deploy,
