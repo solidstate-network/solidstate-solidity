@@ -84,49 +84,43 @@ export function describeBehaviorOfERC721(
       });
     });
 
-    describe('#safeTransferFrom', function () {
-      describe('(address,address,uint256)', function () {
-        describe('reverts if', function () {
-          it('value is included in transaction', async function () {
-            const tokenId = ethers.constants.Two;
-            await mint(holder.address, tokenId);
+    describe('#safeTransferFrom(address,address,uint256)', function () {
+      describe('reverts if', function () {
+        it('value is included in transaction', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
 
-            await expect(
-              instance
-                .connect(holder)
-                ['safeTransferFrom(address,address,uint256)'](
-                  holder.address,
-                  holder.address,
-                  tokenId,
-                  { value: ethers.constants.One },
-                ),
-            ).to.be.revertedWith(
-              'ERC721: payable transfer calls not supported',
-            );
-          });
+          await expect(
+            instance
+              .connect(holder)
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                { value: ethers.constants.One },
+              ),
+          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
         });
       });
+    });
 
-      describe('(address,address,uint256,bytes)', function () {
-        describe('reverts if', function () {
-          it('value is included in transaction', async function () {
-            const tokenId = ethers.constants.Two;
-            await mint(holder.address, tokenId);
+    describe('#safeTransferFrom(address,address,uint256,bytes)', function () {
+      describe('reverts if', function () {
+        it('value is included in transaction', async function () {
+          const tokenId = ethers.constants.Two;
+          await mint(holder.address, tokenId);
 
-            await expect(
-              instance
-                .connect(holder)
-                ['safeTransferFrom(address,address,uint256,bytes)'](
-                  holder.address,
-                  holder.address,
-                  tokenId,
-                  '0x',
-                  { value: ethers.constants.One },
-                ),
-            ).to.be.revertedWith(
-              'ERC721: payable transfer calls not supported',
-            );
-          });
+          await expect(
+            instance
+              .connect(holder)
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                '0x',
+                { value: ethers.constants.One },
+              ),
+          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
         });
       });
     });
