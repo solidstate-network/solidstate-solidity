@@ -13,7 +13,6 @@ abstract contract Multicall is IMulticall {
      */
     function multicall(bytes[] calldata data)
         external
-        override
         returns (bytes[] memory results)
     {
         results = new bytes[](data.length);

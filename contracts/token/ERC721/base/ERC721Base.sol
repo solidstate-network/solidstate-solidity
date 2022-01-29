@@ -21,26 +21,21 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function balanceOf(address account) public view override returns (uint256) {
+    function balanceOf(address account) public view returns (uint256) {
         return _balanceOf(account);
     }
 
     /**
      * @inheritdoc IERC721
      */
-    function ownerOf(uint256 tokenId) public view override returns (address) {
+    function ownerOf(uint256 tokenId) public view returns (address) {
         return _ownerOf(tokenId);
     }
 
     /**
      * @inheritdoc IERC721
      */
-    function getApproved(uint256 tokenId)
-        public
-        view
-        override
-        returns (address)
-    {
+    function getApproved(uint256 tokenId) public view returns (address) {
         return _getApproved(tokenId);
     }
 
@@ -50,7 +45,6 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
     function isApprovedForAll(address account, address operator)
         public
         view
-        override
         returns (bool)
     {
         return _isApprovedForAll(account, operator);
@@ -63,7 +57,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
         address from,
         address to,
         uint256 tokenId
-    ) public payable override {
+    ) public payable {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         require(
             _isApprovedOrOwner(msg.sender, tokenId),
@@ -79,7 +73,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
         address from,
         address to,
         uint256 tokenId
-    ) public payable override {
+    ) public payable {
         safeTransferFrom(from, to, tokenId, '');
     }
 
@@ -91,7 +85,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) public payable override {
+    ) public payable {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         require(
             _isApprovedOrOwner(msg.sender, tokenId),
@@ -103,11 +97,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function approve(address operator, uint256 tokenId)
-        public
-        payable
-        override
-    {
+    function approve(address operator, uint256 tokenId) public payable {
         _handleApproveMessageValue(operator, tokenId, msg.value);
         address owner = ownerOf(tokenId);
         require(operator != owner, 'ERC721: approval to current owner');
@@ -121,7 +111,7 @@ abstract contract ERC721Base is IERC721, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function setApprovalForAll(address operator, bool status) public override {
+    function setApprovalForAll(address operator, bool status) public {
         require(operator != msg.sender, 'ERC721: approve to caller');
         ERC721BaseStorage.layout().operatorApprovals[msg.sender][
             operator

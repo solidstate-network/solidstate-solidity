@@ -18,7 +18,6 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
         public
         view
         virtual
-        override
         returns (uint256)
     {
         return _balanceOf(account, id);
@@ -31,7 +30,6 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
         public
         view
         virtual
-        override
         returns (uint256[] memory)
     {
         require(
@@ -64,7 +62,6 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
         public
         view
         virtual
-        override
         returns (bool)
     {
         return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
@@ -73,11 +70,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
     /**
      * @inheritdoc IERC1155
      */
-    function setApprovalForAll(address operator, bool status)
-        public
-        virtual
-        override
-    {
+    function setApprovalForAll(address operator, bool status) public virtual {
         require(
             msg.sender != operator,
             'ERC1155: setting approval status for self'
@@ -97,7 +90,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) public virtual override {
+    ) public virtual {
         require(
             from == msg.sender || isApprovedForAll(from, msg.sender),
             'ERC1155: caller is not owner nor approved'
@@ -114,7 +107,7 @@ abstract contract ERC1155Base is IERC1155, ERC1155BaseInternal {
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) public virtual override {
+    ) public virtual {
         require(
             from == msg.sender || isApprovedForAll(from, msg.sender),
             'ERC1155: caller is not owner nor approved'

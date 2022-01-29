@@ -15,19 +15,14 @@ abstract contract Ownable is IERC173, OwnableInternal {
     /**
      * @inheritdoc IERC173
      */
-    function owner() public view virtual override returns (address) {
+    function owner() public view virtual returns (address) {
         return OwnableStorage.layout().owner;
     }
 
     /**
      * @inheritdoc IERC173
      */
-    function transferOwnership(address account)
-        public
-        virtual
-        override
-        onlyOwner
-    {
+    function transferOwnership(address account) public virtual onlyOwner {
         OwnableStorage.layout().setOwner(account);
         emit OwnershipTransferred(msg.sender, account);
     }
