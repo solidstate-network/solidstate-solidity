@@ -277,7 +277,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('(address,address,uint256)', function () {
+    describe('#safeTransferFrom(address,address,uint256)', function () {
       it('transfers token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
@@ -422,7 +422,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('(address,address,uint256,bytes)', function () {
+    describe('#safeTransferFrom(address,address,uint256,bytes)', function () {
       it('transfers token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
