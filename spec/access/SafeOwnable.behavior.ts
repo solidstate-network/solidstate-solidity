@@ -55,7 +55,7 @@ export function describeBehaviorOfSafeOwnable(
       });
     });
 
-    describe('#transferOwnership', function () {
+    describe('#transferOwnership(address)', function () {
       it('does not set new owner', async function () {
         await instance
           .connect(owner)
@@ -74,7 +74,7 @@ export function describeBehaviorOfSafeOwnable(
       });
     });
 
-    describe('#acceptOwnership', function () {
+    describe('#acceptOwnership()', function () {
       it('sets new owner', async function () {
         await instance
           .connect(owner)
