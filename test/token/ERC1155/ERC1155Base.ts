@@ -29,11 +29,11 @@ describe('ERC1155Base', function () {
   });
 
   describe('__internal', function () {
-    describe('#_balanceOf', function () {
+    describe('#_balanceOf(address,uint256)', function () {
       it('todo');
     });
 
-    describe('#_mint', function () {
+    describe('#_mint(address,uint256,uint256,bytes)', function () {
       it('increases balance of given token held by given account by given amount', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -81,7 +81,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeMint', function () {
+    describe('#_safeMint(address,uint256,uint256,bytes)', function () {
       it('increases balance of given token held by given account by given amount', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -141,7 +141,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_mintBatch', function () {
+    describe('#_mintBatch(address,uint256[],uint256[],bytes)', function () {
       it('increases balances of given tokens held by given account by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -191,7 +191,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeMintBatch', function () {
+    describe('#_safeMintBatch(address,uint256[],uint256[],bytes)', function () {
       it('increases balances of given tokens held by given account by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -253,7 +253,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_burn', function () {
+    describe('#_burn(address,uint256,uint256)', function () {
       it('decreases balance of given token held by given account by given amount', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -315,7 +315,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_burnBatch', function () {
+    describe('#_burnBatch(address,uint256[],uint256[])', function () {
       it('decreases balances of given tokens held by given account by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -379,7 +379,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_transfer', function () {
+    describe('#_transfer(address,address,address,uint256,uint256,bytes)', function () {
       it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -476,7 +476,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeTransfer', function () {
+    describe('#_safeTransfer(address,address,address,uint256,uint256,bytes)', function () {
       it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -588,7 +588,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_transferBatch', function () {
+    describe('#_transferBatch(address,address,address,uint256[],uint256[],bytes)', function () {
       it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -698,7 +698,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeTransferBatch', function () {
+    describe('#_safeTransferBatch(address,address,address,uint256[],uint256[],bytes)', function () {
       it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
         let id = ethers.constants.Zero;
         let amount = ethers.constants.Two;
@@ -823,7 +823,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer', function () {
+    describe('#_beforeTokenTransfer(address,address,address,uint256[],uint256[],bytes)', function () {
       it('todo');
     });
   });
