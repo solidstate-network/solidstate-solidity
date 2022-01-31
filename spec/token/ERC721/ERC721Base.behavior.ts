@@ -45,7 +45,7 @@ export function describeBehaviorOfERC721Base(
       skips,
     );
 
-    describe('#balanceOf', function () {
+    describe('#balanceOf(address)', function () {
       it('returns the token balance of given address', async function () {
         expect(
           await instance.callStatic['balanceOf(address)'](holder.address),
@@ -75,7 +75,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#ownerOf', function () {
+    describe('#ownerOf(uint256)', function () {
       it('returns the owner of given token', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
@@ -96,7 +96,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#getApproved', function () {
+    describe('#getApproved(uint256)', function () {
       it('returns approved spender of given token', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
@@ -127,7 +127,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#isApprovedForAll', function () {
+    describe('#isApprovedForAll(address,address)', function () {
       it('returns whether given operator is approved to spend all tokens of given holder', async function () {
         expect(
           await instance.callStatic.isApprovedForAll(
@@ -156,7 +156,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#transferFrom', function () {
+    describe('#transferFrom(address,address,uint256)', function () {
       it('transfers token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
@@ -574,7 +574,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#approve', function () {
+    describe('#approve(address,uint256)', function () {
       it('grants approval to spend given token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);
@@ -651,7 +651,7 @@ export function describeBehaviorOfERC721Base(
       });
     });
 
-    describe('#setApprovalForAll', function () {
+    describe('#setApprovalForAll(address,bool)', function () {
       it('grants and revokes approval to spend tokens on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await mint(holder.address, tokenId);

@@ -67,7 +67,7 @@ export function describeBehaviorOfERC721(
       skips,
     );
 
-    describe('#transferFrom', function () {
+    describe('#transferFrom(address,address,uint256)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
           const tokenId = ethers.constants.Two;
@@ -125,7 +125,7 @@ export function describeBehaviorOfERC721(
       });
     });
 
-    describe('#approve', function () {
+    describe('#approve(address,uint256)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
           const tokenId = ethers.constants.Two;

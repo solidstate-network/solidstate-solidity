@@ -22,19 +22,19 @@ export function describeBehaviorOfERC721Metadata(
       instance = await deploy();
     });
 
-    describe('#name', function () {
+    describe('#name()', function () {
       it('returns token name', async function () {
         expect(await instance.callStatic['name()']()).to.equal(name);
       });
     });
 
-    describe('#symbol', function () {
+    describe('#symbol()', function () {
       it('returns token symbol', async function () {
         expect(await instance.callStatic['symbol()']()).to.equal(symbol);
       });
     });
 
-    describe('#tokenURI', function () {
+    describe('#tokenURI(uint256)', function () {
       it('returns empty string if neither base URI nor token URI is set');
 
       it('returns stored token URI if base URI is not set');
