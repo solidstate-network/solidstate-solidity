@@ -33,23 +33,23 @@ describe('ERC721Base', function () {
   });
 
   describe('__internal', function () {
-    describe('#_balanceOf', function () {
+    describe('#_balanceOf(address)', function () {
       it('todo');
     });
 
-    describe('#_ownerOf', function () {
+    describe('#_ownerOf(uint256)', function () {
       it('todo');
     });
 
-    describe('#_getApproved', function () {
+    describe('#_getApproved(uint256)', function () {
       it('todo');
     });
 
-    describe('#_isApprovedForAll', function () {
+    describe('#_isApprovedForAll(address,address)', function () {
       it('todo');
     });
 
-    describe('#_isApprovedOrOwner', function () {
+    describe('#_isApprovedOrOwner(address,uint256)', function () {
       it('returns true if given spender is approved for given token', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(holder.address, tokenId);
@@ -104,7 +104,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_mint', function () {
+    describe('#_mint(address,uint256)', function () {
       it('creates token with given id for given account', async function () {
         const tokenId = ethers.constants.Two;
         await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
@@ -363,7 +363,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_burn', function () {
+    describe('#_burn(uint256)', function () {
       it('destroys given token', async function () {
         const tokenId = ethers.constants.Two;
 
@@ -396,7 +396,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_transfer', function () {
+    describe('#_transfer(address,address,uint256)', function () {
       it('decreases balance of sender and increases balance of recipient by one', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(sender.address, tokenId);
@@ -463,7 +463,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_safeTransfer', function () {
+    describe('#_safeTransfer(address,address,uint256,bytes)', function () {
       it('decreases balance of sender and increases balance of recipient by one', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(sender.address, tokenId);
@@ -588,7 +588,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_approve', function () {
+    describe('#_approve(address,uint256)', function () {
       it('grants approval to spend given token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(holder.address, tokenId);
@@ -632,7 +632,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_checkOnERC721Received', function () {
+    describe('#_checkOnERC721Received(address,address,uint256,bytes)', function () {
       it('returns true if recipient is not a contract', async function () {
         expect(
           await instance.callStatic.checkOnERC721Received(
@@ -698,7 +698,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer', function () {
+    describe('#_beforeTokenTransfer(address,address,uint256)', function () {
       it('todo');
     });
   });
