@@ -38,7 +38,7 @@ export function describeBehaviorOfSafeOwnable(
         getOwner,
         getNonOwner,
       },
-      ['#transferOwnership', ...(skips ?? [])],
+      ['#transferOwnership(address)', ...(skips ?? [])],
     );
 
     describe('#nomineeOwner', function () {
