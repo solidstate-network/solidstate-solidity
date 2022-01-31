@@ -32,15 +32,15 @@ describe('ERC20Base', function () {
   });
 
   describe('__internal', function () {
-    describe('#_totalSupply', function () {
+    describe('#_totalSupply()', function () {
       it('todo');
     });
 
-    describe('#_balanceOf', function () {
+    describe('#_balanceOf(address)', function () {
       it('todo');
     });
 
-    describe('#_mint', function () {
+    describe('#_mint(address,uint256)', function () {
       it('increases balance of given account by given amount', async function () {
         let amount = ethers.constants.Two;
 
@@ -79,7 +79,7 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_burn', function () {
+    describe('#_burn(address,uint256)', function () {
       it('decreases balance of given account by given amount', async function () {
         let amount = ethers.constants.Two;
         await instance.__mint(receiver.address, amount);
@@ -132,7 +132,7 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_transfer', function () {
+    describe('#_transfer(address,address,uint256)', function () {
       it('decreases balance of sender and increases balance of recipient by given amount', async function () {
         let amount = ethers.constants.Two;
         await instance.__mint(sender.address, amount);
@@ -191,7 +191,7 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_approve', function () {
+    describe('#_approve(address,address,uint256)', function () {
       it('sets approval of spender with respect to holder to given amount', async function () {
         let amount = ethers.constants.Two;
 
@@ -250,7 +250,7 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer', function () {
+    describe('#_beforeTokenTransfer(address,address,uint256)', function () {
       it('todo');
     });
   });

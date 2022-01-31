@@ -29,7 +29,7 @@ describe('ERC1271Ownable', function () {
   });
 
   describe('__internal', function () {
-    describe('#_isValidSignature', function () {
+    describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns true for signature created by owner', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await owner.signMessage(ethers.utils.arrayify(hash));

@@ -34,7 +34,7 @@ describe('ERC20ImplicitApproval', function () {
   });
 
   describe('__internal', function () {
-    describe('#_isImplicitlyApproved', function () {
+    describe('#_isImplicitlyApproved(address)', function () {
       it('returns implicit approval status of address', async function () {
         expect(
           await instance.callStatic.__isImplicitlyApproved(
