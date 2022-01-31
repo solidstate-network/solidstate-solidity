@@ -79,7 +79,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
       verificationAddress = await getVerificationAddress();
     });
 
-    describe('receive', function () {
+    describe('receive()', function () {
       it('accepts ether transfer', async function () {
         let [signer] = signers;
         let value = ethers.constants.One;
@@ -90,7 +90,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
       });
     });
 
-    describe('#verifyAndExecute', function () {
+    describe('#verifyAndExecute((address,bytes,uint256,bool),(bytes,uin256))', function () {
       describe('with "call" opcode', function () {
         let delegate = false;
 
