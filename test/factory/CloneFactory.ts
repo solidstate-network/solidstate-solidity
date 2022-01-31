@@ -14,7 +14,7 @@ describe('CloneFactory', function () {
   describeBehaviorOfCloneFactory({ deploy: () => instance });
 
   describe('__internal', function () {
-    describe('#_clone()', function () {
+    describe('#_deployClone()', function () {
       it('deploys clone and returns deployment address', async function () {
         const address = await instance.callStatic['__deployClone()']();
         expect(address).to.be.properAddress;
@@ -31,7 +31,7 @@ describe('CloneFactory', function () {
       });
     });
 
-    describe('#_clone(bytes32)', function () {
+    describe('#_deployClone(bytes32)', function () {
       it('deploys clone and returns deployment address', async function () {
         const salt = ethers.utils.randomBytes(32);
 
@@ -62,7 +62,7 @@ describe('CloneFactory', function () {
       });
     });
 
-    describe('#_calculateCloneDeploymentAddress', function () {
+    describe('#_calculateCloneDeploymentAddress(bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode = '0x58333b90818180333cf3';
         const initCodeHash = ethers.utils.keccak256(initCode);

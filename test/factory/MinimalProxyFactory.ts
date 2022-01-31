@@ -81,7 +81,7 @@ describe('MinimalProxyFactory', function () {
       });
     });
 
-    describe('#_calculateMinimalProxyDeploymentAddress', function () {
+    describe('#_calculateMinimalProxyDeploymentAddress(address,bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const target = instance.address;
         const initCode =
@@ -98,7 +98,7 @@ describe('MinimalProxyFactory', function () {
       });
     });
 
-    describe('#_generateMinimalProxyInitCode', function () {
+    describe('#_generateMinimalProxyInitCode(address)', function () {
       it('returns packed encoding of initialization code prefix, target address, and initialization code suffix', async function () {
         const target = instance.address;
         const initCode =

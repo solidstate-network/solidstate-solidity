@@ -86,7 +86,7 @@ describe('Factory', function () {
       });
     });
 
-    describe('#_calculateDeploymentAddress', function () {
+    describe('#_calculateDeploymentAddress(bytes32,bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode = instance.deployTransaction.data;
         const initCodeHash = ethers.utils.keccak256(initCode);
