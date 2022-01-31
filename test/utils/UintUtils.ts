@@ -11,7 +11,7 @@ describe('UintUtils', function () {
   });
 
   describe('__internal', function () {
-    describe('#toString', function () {
+    describe('#toString(uint256)', function () {
       it('returns base-10 string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
