@@ -50,7 +50,7 @@ export function describeBehaviorOfERC1155Base(
       skips,
     );
 
-    describe('#balanceOf', function () {
+    describe('#balanceOf(address,uint256)', function () {
       it('returns the balance of given token held by given address', async function () {
         const id = tokenId ?? ethers.constants.Zero;
         expect(
@@ -92,7 +92,7 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#balanceOfBatch', function () {
+    describe('#balanceOfBatch(address[],uint256[])', function () {
       it('returns the balances of given tokens held by given addresses', async function () {
         expect(
           await instance.callStatic['balanceOfBatch(address[],uint256[])'](
@@ -126,7 +126,7 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#isApprovedForAll', function () {
+    describe('#isApprovedForAll(address,address)', function () {
       it('returns whether given operator is approved to spend tokens of given account', async function () {
         expect(
           await instance.callStatic['isApprovedForAll(address,address)'](
@@ -148,7 +148,7 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#setApprovalForAll', function () {
+    describe('#setApprovalForAll(address,bool)', function () {
       it('approves given operator to spend tokens on behalf of sender', async function () {
         await instance
           .connect(holder)
@@ -175,7 +175,7 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeTransferFrom', function () {
+    describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', function () {
       it('sends amount from A to B', async function () {
         const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;
@@ -285,7 +285,7 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeBatchTransferFrom', function () {
+    describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', function () {
       it('sends amount from A to B, batch version', async function () {
         const id = tokenId ?? ethers.constants.Zero;
         const amount = ethers.constants.Two;

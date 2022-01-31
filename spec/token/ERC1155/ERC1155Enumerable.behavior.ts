@@ -43,7 +43,7 @@ export function describeBehaviorOfERC1155Enumerable(
       skips,
     );
 
-    describe('#totalSupply', function () {
+    describe('#totalSupply(uint256)', function () {
       it('returns supply of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? ethers.constants.Zero;
@@ -81,7 +81,7 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#totalHolders', function () {
+    describe('#totalHolders(uint256)', function () {
       it('returns number of holders of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? ethers.constants.Zero;
@@ -119,7 +119,7 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#accountsByToken', function () {
+    describe('#accountsByToken(uint256)', function () {
       it('returns list of addresses holding given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? ethers.constants.Zero;
@@ -157,7 +157,7 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#tokensByAccount', function () {
+    describe('#tokensByAccount(address)', function () {
       it('returns list of tokens held by given address', async function () {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? ethers.constants.Zero;
