@@ -34,7 +34,7 @@ export function describeBehaviorOfERC20Base(
       instance = await deploy();
     });
 
-    describe('#totalSupply', function () {
+    describe('#totalSupply()', function () {
       it('returns the total supply of tokens', async function () {
         expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
 
@@ -52,7 +52,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#balanceOf', function () {
+    describe('#balanceOf(address)', function () {
       it('returns the token balance of given address', async function () {
         expect(
           await instance.callStatic['balanceOf(address)'](
@@ -76,7 +76,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#allowance', function () {
+    describe('#allowance(address,address)', function () {
       it('returns the allowance given holder has granted to given spender', async function () {
         expect(
           await instance.callStatic['allowance(address,address)'](
@@ -99,7 +99,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#approve', function () {
+    describe('#approve(address,uint256)', function () {
       it('enables given spender to spend tokens on behalf of sender', async function () {
         let amount = ethers.constants.Two;
         await instance
@@ -129,7 +129,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#transfer', function () {
+    describe('#transfer(address,uint256)', function () {
       it('transfers amount from a to b', async function () {
         const amount = ethers.constants.Two;
         await mint(spender.address, amount);
@@ -158,7 +158,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#transferFrom', function () {
+    describe('#transferFrom(address,address,uint256)', function () {
       it('transfers amount on behalf of holder', async function () {
         const amount = ethers.constants.Two;
         await mint(holder.address, amount);
