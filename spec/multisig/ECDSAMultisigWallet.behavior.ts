@@ -90,7 +90,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
       });
     });
 
-    describe('#verifyAndExecute((address,bytes,uint256,bool),(bytes,uin256))', function () {
+    describe('#verifyAndExecute((address,bytes,uint256,bool),(bytes,uint256))', function () {
       describe('with "call" opcode', function () {
         let delegate = false;
 

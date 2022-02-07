@@ -41,7 +41,7 @@ export function describeBehaviorOfSafeOwnable(
       ['#transferOwnership(address)', ...(skips ?? [])],
     );
 
-    describe('#nomineeOwner', function () {
+    describe('#nomineeOwner()', function () {
       it('returns address of nominee owner', async function () {
         expect(await instance.callStatic['nomineeOwner()']()).to.equal(
           ethers.constants.AddressZero,

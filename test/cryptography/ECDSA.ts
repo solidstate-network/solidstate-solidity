@@ -42,7 +42,7 @@ describe('ECDSA', function () {
       it('todo');
     });
 
-    describe('#toEthSignedMessageHash', function () {
+    describe('#toEthSignedMessageHash(bytes32)', function () {
       it('returns hash of signed message prefix and message', async function () {
         const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('test'));
 
