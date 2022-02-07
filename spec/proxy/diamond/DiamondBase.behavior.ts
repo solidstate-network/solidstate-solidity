@@ -22,7 +22,7 @@ export function describeBehaviorOfDiamondBase(
       instance = await deploy();
     });
 
-    describe('fallback', function () {
+    describe('fallback()', function () {
       it('forwards data with matching selector call to facet', async function () {
         expect((instance as any)[facetFunction]).to.be.undefined;
 

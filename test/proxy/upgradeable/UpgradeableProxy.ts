@@ -32,14 +32,14 @@ describe('UpgradeableProxy', function () {
   });
 
   describe('__internal', function () {
-    describe('#_getImplementation', function () {
+    describe('#_getImplementation()', function () {
       it('returns implementation address', async function () {
         expect(await instance.callStatic.__getImplementation()).to.be
           .properAddress;
       });
     });
 
-    describe('#_setImplementation', function () {
+    describe('#_setImplementation(address)', function () {
       it('updates implementation address', async function () {
         const address = instance.address;
 

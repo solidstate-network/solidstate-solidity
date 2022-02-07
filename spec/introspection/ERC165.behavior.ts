@@ -20,7 +20,7 @@ export function describeBehaviorOfERC165(
       instance = await deploy();
     });
 
-    describe('#supportsInterface', function () {
+    describe('#supportsInterface(bytes4)', function () {
       it('returns true for ERC165 interface', async function () {
         expect(
           await instance.callStatic['supportsInterface(bytes4)']('0x01ffc9a7'),

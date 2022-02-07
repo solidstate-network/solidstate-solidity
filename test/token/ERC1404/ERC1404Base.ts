@@ -30,11 +30,11 @@ describe('ERC1404Base', function () {
   });
 
   describe('__internal', function () {
-    describe('#_detectTransferRestriction', function () {
+    describe('#_detectTransferRestriction(address,address,uint256)', function () {
       it('todo');
     });
 
-    describe('#_messageForTransferRestriction', function () {
+    describe('#_messageForTransferRestriction(uint8)', function () {
       it('todo');
     });
   });

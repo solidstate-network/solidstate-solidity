@@ -24,7 +24,7 @@ describe('ERC1271Stored', function () {
   });
 
   describe('__internal', function () {
-    describe('#_isValidSignature', function () {
+    describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns true if signature is stored', async function () {
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
@@ -44,7 +44,7 @@ describe('ERC1271Stored', function () {
       });
     });
 
-    describe('#_setValidSignature', function () {
+    describe('#_setValidSignature(bytes32,bool)', function () {
       it('sets signature validity', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = ethers.utils.randomBytes(0);

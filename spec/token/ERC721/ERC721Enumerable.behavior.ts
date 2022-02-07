@@ -25,7 +25,7 @@ export function describeBehaviorOfERC721Enumerable(
       instance = await deploy();
     });
 
-    describe('#totalSupply', function () {
+    describe('#totalSupply()', function () {
       it('returns total token supply', async function () {
         expect(await instance.totalSupply()).to.equal(supply);
 
@@ -39,7 +39,7 @@ export function describeBehaviorOfERC721Enumerable(
       });
     });
 
-    describe('#tokenOfOwnerByIndex', function () {
+    describe('#tokenOfOwnerByIndex(address,uint256)', function () {
       it('returns token id held by given account at given index', async function () {
         // TODO: query balance to determine starting index
 
@@ -76,7 +76,7 @@ export function describeBehaviorOfERC721Enumerable(
       });
     });
 
-    describe('#tokenByIndex', function () {
+    describe('#tokenByIndex(uint256)', function () {
       it('returns token id held globally at given index', async function () {
         const index = await instance.callStatic.totalSupply();
 

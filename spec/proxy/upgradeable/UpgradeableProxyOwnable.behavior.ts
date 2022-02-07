@@ -46,7 +46,7 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
       [],
     );
 
-    describe('#setImplementation', () => {
+    describe('#setImplementation(address)', () => {
       it('updates implementation address', async () => {
         const implementationFunction = 'fn';
         const abi = [

@@ -17,7 +17,7 @@ describe('MetamorphicFactory', function () {
   describeBehaviorOfMetamorphicFactory({ deploy: async () => instance as any });
 
   describe('__internal', function () {
-    describe('#_deployMetamorphicContract', function () {
+    describe('#_deployMetamorphicContract(address,bytes32)', function () {
       it('deploys metamorphic contract and returns deployment address', async function () {
         const target = instance.address;
         const salt = ethers.utils.randomBytes(32);
@@ -50,7 +50,7 @@ describe('MetamorphicFactory', function () {
       });
     });
 
-    describe('#_calculateMetamorphicDeploymentAddress', function () {
+    describe('#_calculateMetamorphicDeploymentAddress(bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode =
           '0x5860208158601c335a639c2236038752fa158151803b80938091923cf3';

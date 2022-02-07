@@ -62,7 +62,7 @@ export function describeBehaviorOfDiamondCuttable(
       skips,
     );
 
-    describe('#diamondCut', function () {
+    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
       it('emits DiamondCut event', async function () {
         const facets: any = [
           {

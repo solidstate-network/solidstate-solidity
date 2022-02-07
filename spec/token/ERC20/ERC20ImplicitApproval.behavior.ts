@@ -52,7 +52,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
       skips,
     );
 
-    describe('#allowance', function () {
+    describe('#allowance(address,address)', function () {
       it('returns maximum uint256 for implicitly approved spender', async function () {
         expect(
           await instance.callStatic['allowance(address,address)'](
@@ -63,7 +63,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
       });
     });
 
-    describe('#transferFrom', function () {
+    describe('#transferFrom(address,address,uint256)', function () {
       it('does not require approval for implicitly approved sender', async function () {
         const amount = ethers.constants.One;
 

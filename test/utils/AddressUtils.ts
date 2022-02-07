@@ -15,7 +15,7 @@ describe('AddressUtils', async () => {
   });
 
   describe('__internal', () => {
-    describe('#toString', () => {
+    describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(
           ethers.utils.getAddress(
@@ -25,7 +25,7 @@ describe('AddressUtils', async () => {
       });
     });
 
-    describe('#isContract', () => {
+    describe('#isContract(address)', () => {
       it('returns true when an address is a contract', async () => {
         expect(await instance.isContract(instance.address)).to.be.true;
       });
@@ -35,7 +35,7 @@ describe('AddressUtils', async () => {
       });
     });
 
-    describe('#sendValue', () => {
+    describe('#sendValue(address,uint256)', () => {
       it('transfers given value to given address', async () => {
         const value = ethers.constants.Two;
 

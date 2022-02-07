@@ -34,7 +34,7 @@ export function describeBehaviorOfDiamondLoupe(
       skips,
     );
 
-    describe('#facets', function () {
+    describe('#facets()', function () {
       it('returns facet cuts', async function () {
         expect(await instance.callStatic['facets()']()).to.have.deep.members(
           facetCuts.map((fc) => [fc.target, fc.selectors]),
@@ -42,7 +42,7 @@ export function describeBehaviorOfDiamondLoupe(
       });
     });
 
-    describe('#facetAddresses', function () {
+    describe('#facetAddresses()', function () {
       it('returns facets', async function () {
         expect(await instance.callStatic['facetAddresses()']()).to.have.members(
           facetCuts.map((fc) => fc.target),
@@ -50,7 +50,7 @@ export function describeBehaviorOfDiamondLoupe(
       });
     });
 
-    describe('#facetFunctionSelectors', function () {
+    describe('#facetFunctionSelectors(address)', function () {
       it('returns selectors for given facet', async function () {
         for (let facet of facetCuts) {
           expect(
@@ -70,7 +70,7 @@ export function describeBehaviorOfDiamondLoupe(
       });
     });
 
-    describe('#facetAddress', function () {
+    describe('#facetAddress(bytes4)', function () {
       it('returns facet for given selector', async function () {
         for (let facet of facetCuts) {
           for (let selector of facet.selectors) {

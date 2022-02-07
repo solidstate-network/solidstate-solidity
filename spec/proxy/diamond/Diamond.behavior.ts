@@ -81,7 +81,7 @@ export function describeBehaviorOfDiamond(
       skips,
     );
 
-    describe('receive', function () {
+    describe('receive()', function () {
       it('accepts ether transfer', async function () {
         let [signer] = await ethers.getSigners();
         let value = ethers.constants.One;
@@ -92,7 +92,7 @@ export function describeBehaviorOfDiamond(
       });
     });
 
-    describe('#getFallbackAddress', function () {
+    describe('#getFallbackAddress()', function () {
       it('returns the fallback address', async function () {
         expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
           fallbackAddress,
@@ -100,7 +100,7 @@ export function describeBehaviorOfDiamond(
       });
     });
 
-    describe('#setFallbackAddress', function () {
+    describe('#setFallbackAddress(address)', function () {
       it('updates the fallback address', async function () {
         const fallback = await deployMockContract(owner, []);
 
@@ -132,7 +132,7 @@ export function describeBehaviorOfDiamond(
       });
     });
 
-    describe('#diamondCut', function () {
+    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
       const selectors: string[] = [];
       const abi: string[] = [];
       let facet: MockContract;

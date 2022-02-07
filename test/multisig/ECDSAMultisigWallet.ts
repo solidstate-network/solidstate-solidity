@@ -33,7 +33,7 @@ describe('ECDSAMultisigWallet', function () {
   });
 
   describe('__internal', function () {
-    describe('#_verifySignatures', function () {
+    describe('#_verifySignatures(bytes,(bytes,uint256)[])', function () {
       it('todo');
     });
   });
