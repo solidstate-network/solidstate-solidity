@@ -12,7 +12,7 @@ describe('ECDSA', function () {
   });
 
   describe('__internal', function () {
-    describe('#recover(bytes32, bytes)', () => {
+    describe('#recover(bytes32,bytes)', () => {
       it('returns message signer', async function () {
         const [signer] = await ethers.getSigners();
 
