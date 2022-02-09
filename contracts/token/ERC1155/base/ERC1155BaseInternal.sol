@@ -58,10 +58,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             data
         );
 
-        mapping(address => uint256) storage balances = ERC1155BaseStorage
-            .layout()
-            .balances[id];
-        balances[account] += amount;
+        ERC1155BaseStorage.layout().balances[id][account] += amount;
 
         emit TransferSingle(msg.sender, address(0), account, id, amount);
     }
