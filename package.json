@@ -10,11 +10,6 @@
     "prettier": "prettier --write --ignore-path .gitignore .",
     "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade"
   },
-  "lint-staged": {
-    "*.{js,ts,sol,json,md}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
