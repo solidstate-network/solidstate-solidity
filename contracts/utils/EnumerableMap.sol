@@ -194,7 +194,6 @@ library EnumerableMap {
 
         if (keyIndex != 0) {
             unchecked {
-                // don't need to check underflow because valueIndex must > 0.
                 uint256 index = keyIndex - 1;
                 MapEntry storage last = map._entries[map._entries.length - 1];
 

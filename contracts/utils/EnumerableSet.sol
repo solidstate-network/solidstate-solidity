@@ -197,7 +197,6 @@ library EnumerableSet {
 
         if (valueIndex != 0) {
             unchecked {
-                // don't need to check underflow because valueIndex must > 0.
                 uint256 index = valueIndex - 1;
 
                 bytes32 last = set._values[set._values.length - 1];
