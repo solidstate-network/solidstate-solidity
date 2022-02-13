@@ -196,13 +196,16 @@ library EnumerableSet {
         uint256 valueIndex = set._indexes[value];
 
         if (valueIndex != 0) {
-            uint256 index = valueIndex - 1;
+            uint256 index;
+            unchecked {
+                index = valueIndex - 1;
+            }
             bytes32 last = set._values[set._values.length - 1];
 
             // move last value to now-vacant index
 
             set._values[index] = last;
-            set._indexes[last] = index + 1;
+            set._indexes[last] = valueIndex;
 
             // clear last index
 

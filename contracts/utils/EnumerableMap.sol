@@ -189,13 +189,16 @@ library EnumerableMap {
         uint256 keyIndex = map._indexes[key];
 
         if (keyIndex != 0) {
-            uint256 index = keyIndex - 1;
+            uint256 index;
+            unchecked {
+                index = keyIndex - 1;
+            }
             MapEntry storage last = map._entries[map._entries.length - 1];
 
             // move last entry to now-vacant index
 
             map._entries[index] = last;
-            map._indexes[last._key] = index + 1;
+            map._indexes[last._key] = keyIndex;
 
             // clear last index
 
