@@ -194,13 +194,11 @@ library EnumerableMap {
 
         if (keyIndex != 0) {
             unchecked {
-                uint256 index = keyIndex - 1;
                 MapEntry storage last = map._entries[map._entries.length - 1];
 
                 // move last entry to now-vacant index
-
-                map._entries[index] = last;
-                map._indexes[last._key] = index + 1;
+                map._entries[keyIndex - 1] = last;
+                map._indexes[last._key] = keyIndex;
             }
 
             // clear last index
