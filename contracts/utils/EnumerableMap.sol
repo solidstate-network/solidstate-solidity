@@ -165,7 +165,9 @@ library EnumerableMap {
     function _get(Map storage map, bytes32 key) private view returns (bytes32) {
         uint256 keyIndex = map._indexes[key];
         require(keyIndex != 0, 'EnumerableMap: nonexistent key');
-        return map._entries[keyIndex - 1]._value;
+        unchecked {
+            return map._entries[keyIndex - 1]._value;
+        }
     }
 
     function _set(
@@ -180,7 +182,9 @@ library EnumerableMap {
             map._indexes[key] = map._entries.length;
             return true;
         } else {
-            map._entries[keyIndex - 1]._value = value;
+            unchecked {
+                map._entries[keyIndex - 1]._value = value;
+            }
             return false;
         }
     }
