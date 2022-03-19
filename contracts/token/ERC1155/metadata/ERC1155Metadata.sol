@@ -8,7 +8,7 @@ import { ERC1155MetadataInternal } from './ERC1155MetadataInternal.sol';
 import { ERC1155MetadataStorage } from './ERC1155MetadataStorage.sol';
 
 /**
- * @notice ERC1155 metadata extensions
+ * @title ERC1155 metadata extensions
  */
 abstract contract ERC1155Metadata is IERC1155Metadata, ERC1155MetadataInternal {
     using UintUtils for uint256;

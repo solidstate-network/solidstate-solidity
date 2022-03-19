@@ -10,7 +10,7 @@ import { DiamondCuttable, IDiamondCuttable } from './DiamondCuttable.sol';
 import { DiamondLoupe, IDiamondLoupe } from './DiamondLoupe.sol';
 
 /**
- * @notice SolidState "Diamond" proxy reference implementation
+ * @title SolidState "Diamond" proxy reference implementation
  */
 abstract contract Diamond is
     DiamondBase,

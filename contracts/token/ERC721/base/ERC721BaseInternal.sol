@@ -10,7 +10,7 @@ import { IERC721Receiver } from '../IERC721Receiver.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 
 /**
- * @notice Base ERC721 internal functions
+ * @title Base ERC721 internal functions
  */
 abstract contract ERC721BaseInternal is IERC721Internal {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;

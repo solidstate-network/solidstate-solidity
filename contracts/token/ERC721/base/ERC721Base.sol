@@ -11,7 +11,7 @@ import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 import { ERC721BaseInternal } from './ERC721BaseInternal.sol';
 
 /**
- * @notice Base ERC721 implementation, excluding optional extensions
+ * @title Base ERC721 implementation, excluding optional extensions
  */
 abstract contract ERC721Base is IERC721, ERC721BaseInternal {
     using AddressUtils for address;

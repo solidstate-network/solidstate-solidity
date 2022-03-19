@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 /**
- * @notice Partial ERC721 interface needed by internal functions
+ * @title Partial ERC721 interface needed by internal functions
  */
 interface IERC721Internal {
     event Transfer(

@@ -6,7 +6,7 @@ import { ERC721BaseInternal } from '../base/ERC721Base.sol';
 import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 
 /**
- * @notice ERC721Metadata internal functions
+ * @title ERC721Metadata internal functions
  */
 abstract contract ERC721MetadataInternal is ERC721BaseInternal {
     /**

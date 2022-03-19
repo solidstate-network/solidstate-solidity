@@ -6,7 +6,7 @@ import { IERC1155MetadataInternal } from './IERC1155MetadataInternal.sol';
 import { ERC1155MetadataStorage } from './ERC1155MetadataStorage.sol';
 
 /**
- * @notice ERC1155Metadata internal functions
+ * @title ERC1155Metadata internal functions
  */
 abstract contract ERC1155MetadataInternal is IERC1155MetadataInternal {
     /**
