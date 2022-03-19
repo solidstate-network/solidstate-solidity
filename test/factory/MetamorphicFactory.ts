@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,
 } from '../../typechain';
+import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 describe('MetamorphicFactory', function () {
   let instance: MetamorphicFactoryMock;

@@ -1,11 +1,11 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC1271OwnableMock,
   ERC1271OwnableMock__factory,
 } from '../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 describe('ERC1271Ownable', function () {
   let owner: SignerWithAddress;

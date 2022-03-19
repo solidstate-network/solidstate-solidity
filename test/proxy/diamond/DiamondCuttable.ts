@@ -1,10 +1,10 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfDiamondCuttable } from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   DiamondCuttableMock,
   DiamondCuttableMock__factory,
 } from '../../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfDiamondCuttable } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('DiamondCuttable', function () {
   let owner: SignerWithAddress;

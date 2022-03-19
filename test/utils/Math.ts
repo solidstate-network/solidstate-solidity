@@ -1,6 +1,6 @@
+import { MathMock, MathMock__factory } from '../../typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { MathMock, MathMock__factory } from '../../typechain';
 
 describe('Math', function () {
   let instance: MathMock;

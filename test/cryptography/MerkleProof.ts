@@ -1,8 +1,8 @@
+import { MerkleProofMock, MerkleProofMock__factory } from '../../typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
-import { MerkleProofMock, MerkleProofMock__factory } from '../../typechain';
 
 describe('MerkleProof', function () {
   let instance: MerkleProofMock;

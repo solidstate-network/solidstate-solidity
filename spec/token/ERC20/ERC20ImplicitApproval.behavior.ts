@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
-import { ethers } from 'hardhat';
 import { ERC20ImplicitApproval } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC20ImplicitApprovalBehaviorArgs {
   deploy: () => Promise<ERC20ImplicitApproval>;

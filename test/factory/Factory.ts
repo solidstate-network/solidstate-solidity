@@ -1,7 +1,7 @@
+import { FactoryMock, FactoryMock__factory } from '../../typechain';
+import { describeBehaviorOfFactory } from '@solidstate/spec';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfFactory } from '@solidstate/spec';
-import { FactoryMock, FactoryMock__factory } from '../../typechain';
 
 describe('Factory', function () {
   let instance: FactoryMock;

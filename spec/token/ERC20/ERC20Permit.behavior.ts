@@ -1,11 +1,11 @@
-import { expect } from 'chai';
-import { describeFilter, signERC2612Permit } from '@solidstate/library';
-import { ethers } from 'hardhat';
 import { ERC20Permit } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter, signERC2612Permit } from '@solidstate/library';
+import { expect } from 'chai';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC20PermitArgs {
   deploy: () => Promise<ERC20Permit>;

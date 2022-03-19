@@ -1,8 +1,8 @@
-import { describeFilter } from '@solidstate/library';
 import { ERC1155 } from '../../../typechain';
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { describeBehaviorOfERC1155Enumerable } from './ERC1155Enumerable.behavior';
 import { describeBehaviorOfERC1155Metadata } from './ERC1155Metadata.behavior';
+import { describeFilter } from '@solidstate/library';
 import { BigNumber, ContractTransaction } from 'ethers';
 
 interface ERC1155BehaviorArgs {

@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { deployMockContract } from 'ethereum-waffle';
-import { describeFilter } from '@solidstate/library';
+import { UpgradeableProxyOwnable } from '../../../typechain';
 import { describeBehaviorOfUpgradeableProxy } from './UpgradeableProxy.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { UpgradeableProxyOwnable } from '../../../typechain';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
 
 interface UpgradeableProxyOwnableArgs {
   deploy: () => Promise<UpgradeableProxyOwnable>;

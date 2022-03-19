@@ -1,9 +1,9 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfERC721Enumerable } from '@solidstate/spec';
 import {
   ERC721EnumerableMock,
   ERC721EnumerableMock__factory,
 } from '../../../typechain';
+import { describeBehaviorOfERC721Enumerable } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('ERC721Enumerable', function () {
   let instance: ERC721EnumerableMock;

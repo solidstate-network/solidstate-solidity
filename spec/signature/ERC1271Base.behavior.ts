@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
 import { ERC1271Base } from '../../typechain';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 
 interface ERC1271BaseBehaviorArgs {
   deploy: () => Promise<ERC1271Base>;
