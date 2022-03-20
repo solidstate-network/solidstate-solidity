@@ -155,20 +155,26 @@ interface IERC4626 is IERC20 {
     /**
      * @notice execute a withdrawal of assets on behalf of given address
      * @param assetAmount quantity of assets to withdraw
+     * @param receiver recipient of assets resulting from withdrawal
      * @param owner holder of shares to be redeemed
      * @return shareAmount quantity of shares to redeem
      */
-    function withdraw(uint256 assetAmount, address owner)
-        external
-        returns (uint256 shareAmount);
+    function withdraw(
+        uint256 assetAmount,
+        address receiver,
+        address owner
+    ) external returns (uint256 shareAmount);
 
     /**
      * @notice execute a redemption of shares on behalf of given address
      * @param shareAmount quantity of shares to redeem
+     * @param receiver recipient of assets resulting from withdrawal
      * @param owner holder of shares to be redeemed
      * @return assetAmount quantity of assets to withdraw
      */
-    function redeem(uint256 shareAmount, address owner)
-        external
-        returns (uint256 assetAmount);
+    function redeem(
+        uint256 shareAmount,
+        address receiver,
+        address owner
+    ) external returns (uint256 assetAmount);
 }
