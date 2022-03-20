@@ -42,6 +42,7 @@ interface IERC4626 is IERC20 {
      */
     function convertToShares(uint256 assetAmount)
         external
+        view
         returns (uint256 shareAmount);
 
     /**
@@ -51,6 +52,7 @@ interface IERC4626 is IERC20 {
      */
     function convertToAssets(uint256 shareAmount)
         external
+        view
         returns (uint256 assetAmount);
 
     /**
