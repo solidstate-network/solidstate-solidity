@@ -2,15 +2,15 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC20Base, ERC20BaseInternal } from '../../ERC20/base/ERC20Base.sol';
+import { ERC20BaseInternal } from '../../ERC20/base/ERC20BaseInternal.sol';
 import { IERC1404 } from '../IERC1404.sol';
-import { ERC1404Storage } from './ERC1404Storage.sol';
+import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
 
 /**
  * @title Base ERC1404 internal functions
  */
 abstract contract ERC1404BaseInternal is ERC20BaseInternal {
-    using ERC1404Storage for ERC1404Storage.Layout;
+    using ERC1404BaseStorage for ERC1404BaseStorage.Layout;
 
     function _detectTransferRestriction(
         address from,
@@ -24,7 +24,8 @@ abstract contract ERC1404BaseInternal is ERC20BaseInternal {
         virtual
         returns (string memory)
     {
-        return ERC1404Storage.layout().getRestrictionMessage(restrictionCode);
+        return
+            ERC1404BaseStorage.layout().getRestrictionMessage(restrictionCode);
     }
 
     /**
