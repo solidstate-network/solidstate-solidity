@@ -35,7 +35,7 @@ export function describeBehaviorOfERC20Extended(
 
     describeBehaviorOfERC20Base({ deploy, supply, burn, mint }, skips);
 
-    describe('#increaseAllowance', function () {
+    describe('#increaseAllowance(address,uint256)', function () {
       it('increases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
 
@@ -97,7 +97,7 @@ export function describeBehaviorOfERC20Extended(
       });
     });
 
-    describe('#decreaseAllowance', function () {
+    describe('#decreaseAllowance(address,uint256)', function () {
       it('decreases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
         await instance

@@ -21,26 +21,14 @@ abstract contract ERC1155Enumerable is
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function totalSupply(uint256 id)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function totalSupply(uint256 id) public view virtual returns (uint256) {
         return _totalSupply(id);
     }
 
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function totalHolders(uint256 id)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function totalHolders(uint256 id) public view virtual returns (uint256) {
         return _totalHolders(id);
     }
 
@@ -51,7 +39,6 @@ abstract contract ERC1155Enumerable is
         public
         view
         virtual
-        override
         returns (address[] memory)
     {
         return _accountsByToken(id);
@@ -64,7 +51,6 @@ abstract contract ERC1155Enumerable is
         public
         view
         virtual
-        override
         returns (uint256[] memory)
     {
         return _tokensByAccount(account);

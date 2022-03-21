@@ -102,14 +102,18 @@ Automatically upgrade dependencies with yarn-up:
 yarn upgrade-dependencies
 ```
 
-### Networks
+### Testing
 
-By default, Hardhat uses the Hardhat Network in-process.
-
-To use an external network via URL, set the `URL` environment variable and append commands with `--network generic`:
+Test contracts with Hardhat and generate gas report using `hardhat-gas-reporter`:
 
 ```bash
-URL="[NODE_URL]" yarn run hardhat test --network generic
+yarn run hardhat test
+```
+
+Generate a code coverage report using `solidity-coverage`:
+
+```bash
+yarn run hardhat coverage
 ```
 
 ### Publication
@@ -118,26 +122,6 @@ Publish packages via Lerna:
 
 ```bash
 yarn lerna-publish
-```
-
-### Testing
-
-Test contracts via Hardhat:
-
-```bash
-yarn run hardhat test
-```
-
-Activate gas usage reporting by setting the `REPORT_GAS` environment variable to `"true"`:
-
-```bash
-REPORT_GAS=true yarn run hardhat test
-```
-
-Generate a code coverage report using `solidity-coverage`:
-
-```bash
-yarn run hardhat coverage
 ```
 
 ## Sponsors

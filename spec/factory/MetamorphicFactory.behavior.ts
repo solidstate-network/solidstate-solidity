@@ -23,7 +23,7 @@ export function describeBehaviorOfMetamorphicFactory(
 
     describeBehaviorOfFactory({}, skips);
 
-    describe('#getMetamorphicImplementation', function () {
+    describe('#getMetamorphicImplementation()', function () {
       // behavior changes during internal call but cannot be tested independently
       it('returns zero address', async function () {
         expect(

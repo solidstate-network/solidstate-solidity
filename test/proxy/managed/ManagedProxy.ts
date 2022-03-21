@@ -43,7 +43,7 @@ describe('ManagedProxy', function () {
   });
 
   describe('__internal', function () {
-    describe('#_getImplementation', function () {
+    describe('#_getImplementation()', function () {
       it('returns implementation address', async function () {
         expect(await instance.callStatic.__getImplementation()).to.be
           .properAddress;

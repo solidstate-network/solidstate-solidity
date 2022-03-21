@@ -41,7 +41,7 @@ describe('ManagedProxyOwnable', function () {
   });
 
   describe('__internal', function () {
-    describe('#_getImplementation', function () {
+    describe('#_getImplementation()', function () {
       it('returns implementation address');
 
       describe('reverts if', function () {
@@ -62,7 +62,7 @@ describe('ManagedProxyOwnable', function () {
       });
     });
 
-    describe('#_getManager', function () {
+    describe('#_getManager()', function () {
       it('returns address of ERC173 owner', async function () {
         expect(await instance.callStatic.__getManager()).to.equal(
           await instance.callStatic['getOwner()'](),

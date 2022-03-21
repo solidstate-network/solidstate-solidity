@@ -38,7 +38,7 @@ export function describeBehaviorOfERC1404Base(
 
     // TODO: transfers blocked if restriction exists
 
-    describe('#detectTransferRestriction', function () {
+    describe('#detectTransferRestriction(address,address,uint256)', function () {
       it('returns zero if no restriction exists', async function () {
         expect(
           await instance.callStatic.detectTransferRestriction(
@@ -50,7 +50,7 @@ export function describeBehaviorOfERC1404Base(
       });
     });
 
-    describe('#messageForTransferRestriction', function () {
+    describe('#messageForTransferRestriction(uint8)', function () {
       it('returns empty string for unknown restriction code', async function () {
         expect(
           await instance.callStatic.messageForTransferRestriction(255),

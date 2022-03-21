@@ -21,7 +21,7 @@ export function describeBehaviorOfERC1271Base(
       instance = await deploy();
     });
 
-    describe('#isValidSignature', function () {
+    describe('#isValidSignature(bytes32,bytes)', function () {
       it('returns 0x1626ba7e for valid signature', async function () {
         expect(
           await instance.callStatic['isValidSignature(bytes32,bytes)'](

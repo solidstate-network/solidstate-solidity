@@ -13,7 +13,7 @@ describe('Multicall', function () {
 
   // TODO: move to behavior tests
 
-  describe('#multicall', function () {
+  describe('#multicall(bytes[])', function () {
     it('returns empty array if no call data is passed', async function () {
       expect(await instance.callStatic.multicall([])).to.deep.equal([]);
     });

@@ -11,7 +11,7 @@ describe('Math', function () {
   });
 
   describe('__internal', function () {
-    describe('#average', function () {
+    describe('#average(uint256,uint256)', function () {
       it('returns the average of two positive numbers from 0 to maxUint256', async function () {
         expect(
           await instance.average(
@@ -43,7 +43,7 @@ describe('Math', function () {
       });
     });
 
-    describe('#sqrt', function () {
+    describe('#sqrt(uint256)', function () {
       it('returns the sqrt of a positive integer from 0 to maxUint256', async function () {
         expect(await instance.sqrt(ethers.BigNumber.from('16'))).to.eq(
           ethers.BigNumber.from('4'),

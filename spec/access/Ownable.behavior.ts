@@ -27,13 +27,13 @@ export function describeBehaviorOfOwnable(
       nonOwner = await getNonOwner();
     });
 
-    describe('#owner', function () {
+    describe('#owner()', function () {
       it('returns address of owner', async function () {
         expect(await instance.callStatic['owner()']()).to.equal(owner.address);
       });
     });
 
-    describe('#transferOwnership', function () {
+    describe('#transferOwnership(address)', function () {
       it('sets new owner', async function () {
         await instance
           .connect(owner)

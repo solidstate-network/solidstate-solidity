@@ -20,7 +20,7 @@ export function describeBehaviorOfERC1155Metadata(
       instance = await deploy();
     });
 
-    describe('#uri', function () {
+    describe('#uri(uint256)', function () {
       it('returns empty string if neither base URI nor token URI is set');
 
       it('returns stored token URI if base URI is not set');

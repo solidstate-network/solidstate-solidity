@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import { IERC165 } from '../../introspection/IERC165.sol';
 
 /**
- * @notice Partial ERC1155 interface needed by internal functions
+ * @title Partial ERC1155 interface needed by internal functions
  */
 interface IERC1155Internal {
     event TransferSingle(

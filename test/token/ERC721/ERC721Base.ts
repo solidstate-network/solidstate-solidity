@@ -33,23 +33,23 @@ describe('ERC721Base', function () {
   });
 
   describe('__internal', function () {
-    describe('#_balanceOf', function () {
+    describe('#_balanceOf(address)', function () {
       it('todo');
     });
 
-    describe('#_ownerOf', function () {
+    describe('#_ownerOf(uint256)', function () {
       it('todo');
     });
 
-    describe('#_getApproved', function () {
+    describe('#_getApproved(uint256)', function () {
       it('todo');
     });
 
-    describe('#_isApprovedForAll', function () {
+    describe('#_isApprovedForAll(address,address)', function () {
       it('todo');
     });
 
-    describe('#_isApprovedOrOwner', function () {
+    describe('#_isApprovedOrOwner(address,uint256)', function () {
       it('returns true if given spender is approved for given token', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(holder.address, tokenId);
@@ -104,7 +104,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_mint', function () {
+    describe('#_mint(address,uint256)', function () {
       it('creates token with given id for given account', async function () {
         const tokenId = ethers.constants.Two;
         await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
@@ -149,151 +149,206 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_safeMint', function () {
-      describe('(address,uint256)', function () {
-        it('creates token with given id for given account', async function () {
-          const tokenId = ethers.constants.Two;
-          await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+    describe('#_safeMint(address,uint256)', function () {
+      it('creates token with given id for given account', async function () {
+        const tokenId = ethers.constants.Two;
+        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
 
-          await instance['safeMint(address,uint256)'](holder.address, tokenId);
-          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
-            holder.address,
+        await instance['safeMint(address,uint256)'](holder.address, tokenId);
+        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+          holder.address,
+        );
+      });
+
+      it('increases balance of given account by one', async function () {
+        const tokenId = ethers.constants.Two;
+
+        await expect(() =>
+          instance['safeMint(address,uint256)'](receiver.address, tokenId),
+        ).to.changeTokenBalance(instance, receiver, ethers.constants.One);
+      });
+
+      it('emits Transfer event', async function () {
+        const tokenId = ethers.constants.Two;
+
+        await expect(
+          instance['safeMint(address,uint256)'](receiver.address, tokenId),
+        )
+          .to.emit(instance, 'Transfer')
+          .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+      });
+
+      it('does not revert if given account is ERC721Receiver implementer', async function () {
+        const receiverContract = await deployMockContract(sender, [
+          'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+        ]);
+
+        await receiverContract.mock.onERC721Received.returns('0x150b7a02');
+
+        await expect(
+          instance['safeMint(address,uint256)'](
+            receiverContract.address,
+            ethers.constants.Two,
+          ),
+        ).not.to.be.reverted;
+      });
+
+      describe('reverts if', function () {
+        it('given account is zero address', async function () {
+          await expect(
+            instance['safeMint(address,uint256)'](
+              ethers.constants.AddressZero,
+              ethers.constants.Zero,
+            ),
+          ).to.be.revertedWith('ERC721: mint to the zero address');
+        });
+
+        it('given token already exists', async function () {
+          const tokenId = ethers.constants.Two;
+          await instance.mint(instance.address, tokenId);
+
+          await expect(
+            instance['safeMint(address,uint256)'](instance.address, tokenId),
+          ).to.be.revertedWith('ERC721: token already minted');
+        });
+
+        it('recipient is not ERC721Receiver implementer', async function () {
+          // TODO: test against contract other than self
+
+          await expect(
+            instance['safeMint(address,uint256)'](
+              instance.address,
+              ethers.constants.Two,
+            ),
+          ).to.be.revertedWith(
+            'ERC721: transfer to non ERC721Receiver implementer',
           );
         });
 
-        it('increases balance of given account by one', async function () {
-          const tokenId = ethers.constants.Two;
-
-          await expect(() =>
-            instance['safeMint(address,uint256)'](receiver.address, tokenId),
-          ).to.changeTokenBalance(instance, receiver, ethers.constants.One);
-        });
-
-        it('emits Transfer event', async function () {
-          const tokenId = ethers.constants.Two;
-
-          await expect(
-            instance['safeMint(address,uint256)'](receiver.address, tokenId),
-          )
-            .to.emit(instance, 'Transfer')
-            .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
-        });
-
-        it('does not revert if given account is ERC721Receiver implementer', async function () {
+        it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
           const receiverContract = await deployMockContract(sender, [
             'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
           ]);
 
-          await receiverContract.mock.onERC721Received.returns('0x150b7a02');
+          await receiverContract.mock.onERC721Received.returns(
+            ethers.utils.randomBytes(4),
+          );
 
           await expect(
             instance['safeMint(address,uint256)'](
               receiverContract.address,
               ethers.constants.Two,
             ),
-          ).not.to.be.reverted;
-        });
-
-        describe('reverts if', function () {
-          it('given account is zero address', async function () {
-            await expect(
-              instance['safeMint(address,uint256)'](
-                ethers.constants.AddressZero,
-                ethers.constants.Zero,
-              ),
-            ).to.be.revertedWith('ERC721: mint to the zero address');
-          });
-
-          it('given token already exists', async function () {
-            const tokenId = ethers.constants.Two;
-            await instance.mint(instance.address, tokenId);
-
-            await expect(
-              instance['safeMint(address,uint256)'](instance.address, tokenId),
-            ).to.be.revertedWith('ERC721: token already minted');
-          });
-
-          it('recipient is not ERC721Receiver implementer', async function () {
-            // TODO: test against contract other than self
-
-            await expect(
-              instance['safeMint(address,uint256)'](
-                instance.address,
-                ethers.constants.Two,
-              ),
-            ).to.be.revertedWith(
-              'ERC721: transfer to non ERC721Receiver implementer',
-            );
-          });
-
-          it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
-            const receiverContract = await deployMockContract(sender, [
-              'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
-            ]);
-
-            await receiverContract.mock.onERC721Received.returns(
-              ethers.utils.randomBytes(4),
-            );
-
-            await expect(
-              instance['safeMint(address,uint256)'](
-                receiverContract.address,
-                ethers.constants.Two,
-              ),
-            ).to.be.revertedWith(
-              'ERC721: transfer to non ERC721Receiver implementer',
-            );
-          });
+          ).to.be.revertedWith(
+            'ERC721: transfer to non ERC721Receiver implementer',
+          );
         });
       });
+    });
 
-      describe('(address,uint256,bytes)', function () {
-        it('creates token with given id for given account', async function () {
-          const tokenId = ethers.constants.Two;
-          await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+    describe('#_safeMint(address,uint256,bytes)', function () {
+      it('creates token with given id for given account', async function () {
+        const tokenId = ethers.constants.Two;
+        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
 
-          await instance['safeMint(address,uint256,bytes)'](
-            holder.address,
+        await instance['safeMint(address,uint256,bytes)'](
+          holder.address,
+          tokenId,
+          '0x',
+        );
+        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+          holder.address,
+        );
+      });
+
+      it('increases balance of given account by one', async function () {
+        const tokenId = ethers.constants.Two;
+
+        await expect(() =>
+          instance['safeMint(address,uint256,bytes)'](
+            receiver.address,
             tokenId,
             '0x',
-          );
-          expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
-            holder.address,
-          );
-        });
+          ),
+        ).to.changeTokenBalance(instance, receiver, ethers.constants.One);
+      });
 
-        it('increases balance of given account by one', async function () {
-          const tokenId = ethers.constants.Two;
+      it('emits Transfer event', async function () {
+        const tokenId = ethers.constants.Two;
 
-          await expect(() =>
+        await expect(
+          instance['safeMint(address,uint256,bytes)'](
+            receiver.address,
+            tokenId,
+            '0x',
+          ),
+        )
+          .to.emit(instance, 'Transfer')
+          .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+      });
+
+      it('does not revert if given account is ERC721Receiver implementer', async function () {
+        const receiverContract = await deployMockContract(sender, [
+          'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
+        ]);
+
+        await receiverContract.mock.onERC721Received.returns('0x150b7a02');
+
+        await expect(
+          instance['safeMint(address,uint256,bytes)'](
+            receiverContract.address,
+            ethers.constants.Two,
+            '0x',
+          ),
+        ).not.to.be.reverted;
+      });
+
+      describe('reverts if', function () {
+        it('given account is zero address', async function () {
+          await expect(
             instance['safeMint(address,uint256,bytes)'](
-              receiver.address,
-              tokenId,
+              ethers.constants.AddressZero,
+              ethers.constants.Zero,
               '0x',
             ),
-          ).to.changeTokenBalance(instance, receiver, ethers.constants.One);
+          ).to.be.revertedWith('ERC721: mint to the zero address');
         });
 
-        it('emits Transfer event', async function () {
+        it('given token already exists', async function () {
           const tokenId = ethers.constants.Two;
+          await instance.mint(instance.address, tokenId);
 
           await expect(
             instance['safeMint(address,uint256,bytes)'](
-              receiver.address,
+              instance.address,
               tokenId,
               '0x',
             ),
-          )
-            .to.emit(instance, 'Transfer')
-            .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+          ).to.be.revertedWith('ERC721: token already minted');
         });
 
-        it('does not revert if given account is ERC721Receiver implementer', async function () {
+        it('recipient is not ERC721Receiver implementer', async function () {
+          // TODO: test against contract other than self
+
+          await expect(
+            instance['safeMint(address,uint256,bytes)'](
+              instance.address,
+              ethers.constants.Two,
+              '0x',
+            ),
+          ).to.be.revertedWith(
+            'ERC721: transfer to non ERC721Receiver implementer',
+          );
+        });
+
+        it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
           const receiverContract = await deployMockContract(sender, [
             'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
           ]);
 
-          await receiverContract.mock.onERC721Received.returns('0x150b7a02');
+          await receiverContract.mock.onERC721Received.returns(
+            ethers.utils.randomBytes(4),
+          );
 
           await expect(
             instance['safeMint(address,uint256,bytes)'](
@@ -301,71 +356,14 @@ describe('ERC721Base', function () {
               ethers.constants.Two,
               '0x',
             ),
-          ).not.to.be.reverted;
-        });
-
-        describe('reverts if', function () {
-          it('given account is zero address', async function () {
-            await expect(
-              instance['safeMint(address,uint256,bytes)'](
-                ethers.constants.AddressZero,
-                ethers.constants.Zero,
-                '0x',
-              ),
-            ).to.be.revertedWith('ERC721: mint to the zero address');
-          });
-
-          it('given token already exists', async function () {
-            const tokenId = ethers.constants.Two;
-            await instance.mint(instance.address, tokenId);
-
-            await expect(
-              instance['safeMint(address,uint256,bytes)'](
-                instance.address,
-                tokenId,
-                '0x',
-              ),
-            ).to.be.revertedWith('ERC721: token already minted');
-          });
-
-          it('recipient is not ERC721Receiver implementer', async function () {
-            // TODO: test against contract other than self
-
-            await expect(
-              instance['safeMint(address,uint256,bytes)'](
-                instance.address,
-                ethers.constants.Two,
-                '0x',
-              ),
-            ).to.be.revertedWith(
-              'ERC721: transfer to non ERC721Receiver implementer',
-            );
-          });
-
-          it('recipient is ERC721Receiver implementer but does not accept transfer', async function () {
-            const receiverContract = await deployMockContract(sender, [
-              'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
-            ]);
-
-            await receiverContract.mock.onERC721Received.returns(
-              ethers.utils.randomBytes(4),
-            );
-
-            await expect(
-              instance['safeMint(address,uint256,bytes)'](
-                receiverContract.address,
-                ethers.constants.Two,
-                '0x',
-              ),
-            ).to.be.revertedWith(
-              'ERC721: transfer to non ERC721Receiver implementer',
-            );
-          });
+          ).to.be.revertedWith(
+            'ERC721: transfer to non ERC721Receiver implementer',
+          );
         });
       });
     });
 
-    describe('#_burn', function () {
+    describe('#_burn(uint256)', function () {
       it('destroys given token', async function () {
         const tokenId = ethers.constants.Two;
 
@@ -398,7 +396,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_transfer', function () {
+    describe('#_transfer(address,address,uint256)', function () {
       it('decreases balance of sender and increases balance of recipient by one', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(sender.address, tokenId);
@@ -465,7 +463,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_safeTransfer', function () {
+    describe('#_safeTransfer(address,address,uint256,bytes)', function () {
       it('decreases balance of sender and increases balance of recipient by one', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(sender.address, tokenId);
@@ -590,7 +588,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_approve', function () {
+    describe('#_approve(address,uint256)', function () {
       it('grants approval to spend given token on behalf of holder', async function () {
         const tokenId = ethers.constants.Two;
         await instance.mint(holder.address, tokenId);
@@ -634,7 +632,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_checkOnERC721Received', function () {
+    describe('#_checkOnERC721Received(address,address,uint256,bytes)', function () {
       it('returns true if recipient is not a contract', async function () {
         expect(
           await instance.callStatic.checkOnERC721Received(
@@ -700,7 +698,7 @@ describe('ERC721Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer', function () {
+    describe('#_beforeTokenTransfer(address,address,uint256)', function () {
       it('todo');
     });
   });

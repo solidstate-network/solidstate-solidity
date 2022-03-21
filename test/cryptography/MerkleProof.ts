@@ -13,7 +13,7 @@ describe('MerkleProof', function () {
   });
 
   describe('__internal', function () {
-    describe('#verify', function () {
+    describe('#verify(bytes32[],bytes32,bytes32)', function () {
       it('returns true if proof is valid', async function () {
         const leaves = ['1', '2', '3'];
         const tree = new MerkleTree(leaves, keccak256, {

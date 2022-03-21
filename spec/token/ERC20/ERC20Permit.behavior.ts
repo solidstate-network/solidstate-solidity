@@ -54,7 +54,7 @@ export function describeBehaviorOfERC20Permit(
       skips,
     );
 
-    describe('#permit', function () {
+    describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
         let { timestamp } = await ethers.provider.getBlock('latest');
 

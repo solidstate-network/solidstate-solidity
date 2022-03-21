@@ -13,20 +13,14 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
     /**
      * @inheritdoc IERC20
      */
-    function totalSupply() public view virtual override returns (uint256) {
+    function totalSupply() public view virtual returns (uint256) {
         return _totalSupply();
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function balanceOf(address account)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function balanceOf(address account) public view virtual returns (uint256) {
         return _balanceOf(account);
     }
 
@@ -37,7 +31,6 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         public
         view
         virtual
-        override
         returns (uint256)
     {
         return ERC20BaseStorage.layout().allowances[holder][spender];
@@ -49,7 +42,6 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
     function approve(address spender, uint256 amount)
         public
         virtual
-        override
         returns (bool)
     {
         _approve(msg.sender, spender, amount);
@@ -62,7 +54,6 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
     function transfer(address recipient, uint256 amount)
         public
         virtual
-        override
         returns (bool)
     {
         _transfer(msg.sender, recipient, amount);
@@ -76,7 +67,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         address holder,
         address recipient,
         uint256 amount
-    ) public virtual override returns (bool) {
+    ) public virtual returns (bool) {
         uint256 currentAllowance = ERC20BaseStorage.layout().allowances[holder][
             msg.sender
         ];

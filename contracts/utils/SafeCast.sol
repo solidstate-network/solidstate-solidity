@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 /**
- * @notice Helper library for safe casting of uint and int values
+ * @title Helper library for safe casting of uint and int values
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library SafeCast {
