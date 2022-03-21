@@ -25,6 +25,7 @@
     "ethereum-waffle": "^3.4.0",
     "hardhat": "^2.8.3",
     "hardhat-abi-exporter": "^2.8.0",
+    "hardhat-contract-sizer": "^2.5.0",
     "hardhat-gas-reporter": "^1.0.7",
     "hardhat-spdx-license-identifier": "^2.0.3",
     "husky": "^7.0.4",
