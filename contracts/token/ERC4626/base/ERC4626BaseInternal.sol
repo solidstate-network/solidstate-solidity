@@ -129,15 +129,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
     {
         shareAmount = _previewDeposit(assetAmount);
 
-        IERC20(_asset()).safeTransferFrom(
-            msg.sender,
-            address(this),
-            assetAmount
-        );
-
-        _mint(receiver, shareAmount);
-
-        emit Deposit(msg.sender, receiver, assetAmount, shareAmount);
+        _deposit(msg.sender, receiver, assetAmount, shareAmount);
     }
 
     function _mint(uint256 shareAmount, address receiver)
@@ -147,15 +139,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
     {
         assetAmount = _previewMint(shareAmount);
 
-        IERC20(_asset()).safeTransferFrom(
-            msg.sender,
-            address(this),
-            assetAmount
-        );
-
-        _mint(receiver, shareAmount);
-
-        emit Deposit(msg.sender, receiver, assetAmount, shareAmount);
+        _deposit(msg.sender, receiver, assetAmount, shareAmount);
     }
 
     function _withdraw(
@@ -165,24 +149,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
     ) internal virtual returns (uint256 shareAmount) {
         shareAmount = _previewWithdraw(assetAmount);
 
-        if (msg.sender != owner) {
-            uint256 allowance = _allowance(owner, msg.sender);
-
-            require(
-                allowance >= shareAmount,
-                'ERC4626: share amount exceeds allowance'
-            );
-
-            unchecked {
-                _approve(owner, msg.sender, allowance - shareAmount);
-            }
-        }
-
-        _burn(owner, shareAmount);
-
-        IERC20(_asset()).safeTransfer(receiver, assetAmount);
-
-        emit Withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
+        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
     }
 
     function _redeem(
@@ -190,6 +157,31 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address receiver,
         address owner
     ) internal virtual returns (uint256 assetAmount) {
+        assetAmount = _previewRedeem(shareAmount);
+
+        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
+    }
+
+    function _deposit(
+        address caller,
+        address receiver,
+        uint256 assetAmount,
+        uint256 shareAmount
+    ) private {
+        IERC20(_asset()).safeTransferFrom(caller, address(this), assetAmount);
+
+        _mint(receiver, shareAmount);
+
+        emit Deposit(msg.sender, receiver, assetAmount, shareAmount);
+    }
+
+    function _withdraw(
+        address caller,
+        address receiver,
+        address owner,
+        uint256 assetAmount,
+        uint256 shareAmount
+    ) private {
         if (msg.sender != owner) {
             uint256 allowance = _allowance(owner, msg.sender);
 
@@ -203,12 +195,10 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             }
         }
 
-        assetAmount = _previewRedeem(shareAmount);
-
         _burn(owner, shareAmount);
 
         IERC20(_asset()).safeTransfer(receiver, assetAmount);
 
-        emit Withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
+        emit Withdraw(caller, receiver, owner, assetAmount, shareAmount);
     }
 }
