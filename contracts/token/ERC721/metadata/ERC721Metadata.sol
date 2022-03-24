@@ -9,7 +9,7 @@ import { ERC721MetadataInternal } from './ERC721MetadataInternal.sol';
 import { IERC721Metadata } from './IERC721Metadata.sol';
 
 /**
- * @notice ERC721 metadata extensions
+ * @title ERC721 metadata extensions
  */
 abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;

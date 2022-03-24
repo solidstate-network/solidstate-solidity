@@ -6,7 +6,7 @@ import { IERC165 } from '../../introspection/IERC165.sol';
 import { IERC721Internal } from './IERC721Internal.sol';
 
 /**
- * @notice ERC721 interface
+ * @title ERC721 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
 interface IERC721 is IERC721Internal, IERC165 {

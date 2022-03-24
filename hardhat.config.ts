@@ -3,6 +3,7 @@ import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import fs from 'fs';
 import 'hardhat-abi-exporter';
+import 'hardhat-contract-sizer';
 import 'hardhat-gas-reporter';
 import 'hardhat-spdx-license-identifier';
 import { task } from 'hardhat/config';

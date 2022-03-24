@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 /**
- * @notice ERC2612 interface
+ * @title ERC2612 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2612.
  */
 interface IERC2612 {

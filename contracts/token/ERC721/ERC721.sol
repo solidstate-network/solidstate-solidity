@@ -8,7 +8,7 @@ import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
 import { ERC165 } from '../../introspection/ERC165.sol';
 
 /**
- * @notice SolidState ERC721 implementation, including recommended extensions
+ * @title SolidState ERC721 implementation, including recommended extensions
  */
 abstract contract ERC721 is
     ERC721Base,

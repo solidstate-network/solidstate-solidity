@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 /**
- * @notice ERC1155 metadata extensions
+ * @title ERC1155 metadata extensions
  */
 library ERC1155MetadataStorage {
     bytes32 internal constant STORAGE_SLOT =
