@@ -220,7 +220,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         _afterDeposit(receiver, assetAmount, shareAmount);
 
-        emit Deposit(msg.sender, receiver, assetAmount, shareAmount);
+        emit Deposit(caller, receiver, assetAmount, shareAmount);
     }
 
     function _withdraw(
@@ -230,8 +230,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         uint256 assetAmount,
         uint256 shareAmount
     ) private {
-        if (msg.sender != owner) {
-            uint256 allowance = _allowance(owner, msg.sender);
+        if (caller != owner) {
+            uint256 allowance = _allowance(owner, caller);
 
             require(
                 allowance >= shareAmount,
@@ -239,7 +239,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             );
 
             unchecked {
-                _approve(owner, msg.sender, allowance - shareAmount);
+                _approve(owner, caller, allowance - shareAmount);
             }
         }
 
