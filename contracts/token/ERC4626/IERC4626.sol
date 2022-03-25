@@ -64,7 +64,7 @@ interface IERC4626 is IERC4626Internal, IERC20 {
 
     /**
      * @notice calculate the maximum quantity of base assets which may be withdrawn by given holder
-     * @param owner holder of shares resulting from deposit
+     * @param owner holder of shares to be redeemed
      * @return maxAssets maximum asset mint amount
      */
     function maxWithdraw(address owner)

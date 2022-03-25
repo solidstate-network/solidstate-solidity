@@ -182,6 +182,32 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
     }
 
+    /**
+     * @notice ERC4626 hook, called deposit and mint actions
+     * @dev function should be overridden and new implementation must call super
+     * @param receiver recipient of shares resulting from deposit
+     * @param assetAmount quantity of assets being deposited
+     * @param shareAmount quantity of shares being minted
+     */
+    function _afterDeposit(
+        address receiver,
+        uint256 assetAmount,
+        uint256 shareAmount
+    ) internal virtual {}
+
+    /**
+     * @notice ERC4626 hook, called before withdraw and redeem actions
+     * @dev function should be overridden and new implementation must call super
+     * @param owner holder of shares to be redeemed
+     * @param assetAmount quantity of assets being withdrawn
+     * @param shareAmount quantity of shares being redeemed
+     */
+    function _beforeWithdraw(
+        address owner,
+        uint256 assetAmount,
+        uint256 shareAmount
+    ) internal virtual {}
+
     function _deposit(
         address caller,
         address receiver,
@@ -191,6 +217,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         IERC20(_asset()).safeTransferFrom(caller, address(this), assetAmount);
 
         _mint(receiver, shareAmount);
+
+        _afterDeposit(receiver, assetAmount, shareAmount);
 
         emit Deposit(msg.sender, receiver, assetAmount, shareAmount);
     }
@@ -214,6 +242,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
                 _approve(owner, msg.sender, allowance - shareAmount);
             }
         }
+
+        _beforeWithdraw(owner, assetAmount, shareAmount);
 
         _burn(owner, shareAmount);
 
