@@ -1,9 +1,9 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
-import { ethers } from 'hardhat';
 import { ERC721Enumerable } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC721EnumerableBehaviorArgs {
   deploy: () => Promise<ERC721Enumerable>;

@@ -1,10 +1,10 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
   DiamondBaseMock,
   DiamondBaseMock__factory,
   OwnableMock__factory,
 } from '../../../typechain';
+import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('DiamondBase', function () {
   let instance: DiamondBaseMock;

@@ -16,6 +16,7 @@
     "@solidstate/hardhat-4byte-uploader": "^1.0.2",
     "@solidstate/library": "link:lib",
     "@solidstate/spec": "link:spec",
+    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@typechain/ethers-v5": "^10.0.0",
     "@typechain/hardhat": "^6.0.0",
     "@types/chai": "^4.3.0",

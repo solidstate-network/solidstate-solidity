@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
-import { describeFilter } from '@solidstate/library';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ERC20Extended } from '../../../typechain';
-import { ethers } from 'hardhat';
+import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC20ExtendedBehaviorArgs {
   deploy: () => Promise<ERC20Extended>;

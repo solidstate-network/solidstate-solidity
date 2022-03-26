@@ -1,9 +1,9 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { ERC1155Enumerable } from '../../../typechain';
+import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
 interface ERC1155EnumerableBehaviorArgs {
   deploy: () => Promise<ERC1155Enumerable>;

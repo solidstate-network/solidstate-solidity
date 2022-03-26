@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { BytesLike } from 'ethers';
 import { MulticallMock, MulticallMock__factory } from '../../typechain';
+import { expect } from 'chai';
+import { BytesLike } from 'ethers';
+import { ethers } from 'hardhat';
 
 describe('Multicall', function () {
   let instance: MulticallMock;

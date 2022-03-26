@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
 import { Proxy } from '../../typechain';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface ProxyBehaviorArgs {

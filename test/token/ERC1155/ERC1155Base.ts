@@ -1,8 +1,8 @@
+import { ERC1155BaseMock, ERC1155BaseMock__factory } from '../../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC1155BaseMock, ERC1155BaseMock__factory } from '../../../typechain';
 
 describe('ERC1155Base', function () {
   let holder: SignerWithAddress;

@@ -1,10 +1,9 @@
-import { expect } from 'chai';
-import { ethers } from 'ethers';
-
+import { SafeOwnable } from '../../typechain';
 import { describeBehaviorOfOwnable } from './Ownable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { SafeOwnable } from '../../typechain';
+import { expect } from 'chai';
+import { ethers } from 'ethers';
 
 interface SafeOwnableBehaviorArgs {
   deploy: () => Promise<SafeOwnable>;
