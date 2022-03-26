@@ -94,7 +94,7 @@ describe('ERC4626Base', () => {
 
     describe('#_maxDeposit(address)', () => {
       it('returns the maximum deposit as uint256.max', async () => {
-        expect(await instance.maxDeposit(deployer.address)).to.eq(
+        expect(await instance.callStatic.maxDeposit(deployer.address)).to.eq(
           ethers.constants.MaxUint256.sub(ethers.constants.One),
         );
       });
@@ -102,7 +102,7 @@ describe('ERC4626Base', () => {
 
     describe('#_maxMint(address)', () => {
       it('returns the maximum mint as uint256.max', async () => {
-        expect(await instance.maxMint(deployer.address)).to.eq(
+        expect(await instance.callStatic.maxMint(deployer.address)).to.eq(
           ethers.constants.MaxUint256.sub(ethers.constants.One),
         );
       });
@@ -110,9 +110,9 @@ describe('ERC4626Base', () => {
 
     describe('#_maxWithdraw(address)', () => {
       it('returns the maximum withdraw as balance of caller converted to assets', async () => {
-        await instance.connect(deployer).__mint(BigNumber.from('10'));
+        await instance.__mint(deployer.address, BigNumber.from('10'));
 
-        expect(await instance.maxWithdraw(deployer.address)).to.eq(
+        expect(await instance.callStatic.maxWithdraw(deployer.address)).to.eq(
           await instance.callStatic.convertToAssets(BigNumber.from('10')),
         );
       });
@@ -120,9 +120,9 @@ describe('ERC4626Base', () => {
 
     describe('#_maxRedeem(address)', () => {
       it('returns the maximum redeem as balance of caller', async () => {
-        await instance.connect(deployer).__mint(BigNumber.from('10'));
+        await instance.__mint(deployer.address, BigNumber.from('10'));
 
-        expect(await instance.maxRedeem(deployer.address)).to.eq(
+        expect(await instance.callStatic.maxRedeem(deployer.address)).to.eq(
           BigNumber.from('10'),
         );
       });
