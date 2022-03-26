@@ -1,7 +1,7 @@
+import { ECDSAMock, ECDSAMock__factory } from '../../typechain';
+import { hashData, signData } from '@solidstate/library';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { hashData, signData } from '@solidstate/library';
-import { ECDSAMock, ECDSAMock__factory } from '../../typechain';
 
 describe('ECDSA', function () {
   let instance: ECDSAMock;

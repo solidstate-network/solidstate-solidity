@@ -1,10 +1,10 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ECDSAMultisigWalletMock,
   ECDSAMultisigWalletMock__factory,
 } from '../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('ECDSAMultisigWallet', function () {
   const quorum = ethers.constants.One;

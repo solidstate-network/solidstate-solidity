@@ -1,13 +1,13 @@
+import { Diamond } from '../../../typechain';
+import { describeBehaviorOfSafeOwnable } from '../../access';
+import { describeBehaviorOfERC165 } from '../../introspection';
+import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
+import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
-import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
-import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
-import { describeBehaviorOfERC165 } from '../../introspection';
-import { describeBehaviorOfSafeOwnable } from '../../access';
-import { Diamond } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 interface DiamondBehaviorArgs {
   deploy: () => Promise<Diamond>;

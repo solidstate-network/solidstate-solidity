@@ -1,11 +1,11 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   UpgradeableProxyMock,
   UpgradeableProxyMock__factory,
 } from '../../../typechain';
+import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
+import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
 
 describe('UpgradeableProxy', function () {
   let instance: UpgradeableProxyMock;

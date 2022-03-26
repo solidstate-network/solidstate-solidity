@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
 import {
   ReentrancyGuardMock,
   ReentrancyGuardMock__factory,
 } from '../../typechain';
+import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 describe('ReentrancyGuard', function () {
   let instance: ReentrancyGuardMock;

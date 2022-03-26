@@ -1,8 +1,8 @@
+import { ERC1271Ownable } from '../../typechain';
 import { describeBehaviorOfERC1271Base } from './ERC1271Base.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ethers } from 'hardhat';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC1271Ownable } from '../../typechain';
 
 interface ERC1271OwnableBehaviorArgs {
   deploy: () => Promise<ERC1271Ownable>;

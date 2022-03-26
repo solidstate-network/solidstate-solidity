@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,
 } from '../../typechain';
+import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 describe('MinimalProxyFactory', function () {
   let instance: MinimalProxyFactoryMock;

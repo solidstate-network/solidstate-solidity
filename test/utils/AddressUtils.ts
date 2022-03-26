@@ -1,9 +1,9 @@
+import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BytesLike, BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;

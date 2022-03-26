@@ -1,9 +1,9 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfERC20Extended } from '@solidstate/spec';
 import {
   ERC20ExtendedMock,
   ERC20ExtendedMock__factory,
 } from '../../../typechain';
+import { describeBehaviorOfERC20Extended } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('ERC20Extended', function () {
   let instance: ERC20ExtendedMock;

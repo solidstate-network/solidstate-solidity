@@ -1,7 +1,7 @@
+import { ERC1271StoredMock, ERC1271StoredMock__factory } from '../../typechain';
+import { describeBehaviorOfERC1271Stored } from '@solidstate/spec';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1271Stored } from '@solidstate/spec';
-import { ERC1271StoredMock, ERC1271StoredMock__factory } from '../../typechain';
 
 const validParams: [Uint8Array, Uint8Array] = [
   ethers.utils.randomBytes(32),

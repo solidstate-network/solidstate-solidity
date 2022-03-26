@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfFactory } from './Factory.behavior';
 import { MetamorphicFactory } from '../../typechain';
+import { describeBehaviorOfFactory } from './Factory.behavior';
+import { describeFilter } from '@solidstate/library';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface MetaphoricFactoryBehaviorArgs {

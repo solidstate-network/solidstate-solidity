@@ -1,10 +1,10 @@
-import { ethers } from 'hardhat';
-import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec';
 import {
   DiamondLoupeMock,
   DiamondLoupeMock__factory,
 } from '../../../typechain';
+import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec';
+import { deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
 
 describe('DiamondLoupe', function () {
   let facet;

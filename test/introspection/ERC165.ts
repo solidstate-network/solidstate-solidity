@@ -1,6 +1,6 @@
-import { ethers } from 'hardhat';
-import { describeBehaviorOfERC165 } from '@solidstate/spec';
 import { ERC165Mock, ERC165Mock__factory } from '../../typechain';
+import { describeBehaviorOfERC165 } from '@solidstate/spec';
+import { ethers } from 'hardhat';
 
 describe('ERC165', function () {
   let instance: ERC165Mock;

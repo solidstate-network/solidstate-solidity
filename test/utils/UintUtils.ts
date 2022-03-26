@@ -1,6 +1,6 @@
+import { UintUtilsMock, UintUtilsMock__factory } from '../../typechain';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { UintUtilsMock, UintUtilsMock__factory } from '../../typechain';
 
 describe('UintUtils', function () {
   let instance: UintUtilsMock;

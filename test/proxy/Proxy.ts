@@ -1,4 +1,3 @@
-import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
   Ownable,
   OwnableMock__factory,
@@ -6,6 +5,7 @@ import {
   ProxyMock__factory,
 } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfProxy } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
 describe('Proxy', function () {
