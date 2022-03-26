@@ -1,19 +1,19 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import {
-  describeBehaviorOfCloneFactory,
-  describeBehaviorOfERC20Base,
-} from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   ERC20Mock,
   ERC20Mock__factory,
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
 } from '../../../typechain';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import {
+  describeBehaviorOfCloneFactory,
+  describeBehaviorOfERC20Base,
+} from '@solidstate/spec';
+import { expect } from 'chai';
 import { BigNumber } from 'ethers';
+import { ethers } from 'hardhat';
 
-describe.only('ERC4626Base', () => {
+describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
   let instance: ERC4626BaseMock;
@@ -38,46 +38,48 @@ describe.only('ERC4626Base', () => {
 
   describe('__internal', () => {
     describe('#_totalAssets()', () => {
-      it('returns the totalAsset value', async () => {
-        expect(await instance.totalAssets()).to.be.eq(ethers.constants.Two);
+      it('returns the total asset value denominated in the base asset', async () => {
+        expect(await instance.callStatic.totalAssets()).to.be.eq(
+          ethers.constants.Two,
+        );
       });
     });
 
     describe('#_asset()', () => {
-      it('returns the address of the underlying asset', async () => {
-        expect(await instance.asset()).to.eq(assetInstance.address);
+      it('returns the address of the base asset', async () => {
+        expect(await instance.callStatic.asset()).to.eq(assetInstance.address);
       });
     });
 
     describe('#_convertToShares(uint256)', () => {
-      it('returns shareAmount input if totalSupply is zero', async () => {
-        expect(await instance.convertToShares(ethers.constants.Two)).to.eq(
-          ethers.constants.Two,
-        );
+      it('returns input amount if share supply is zero', async () => {
+        expect(
+          await instance.callStatic.convertToShares(ethers.constants.Two),
+        ).to.eq(ethers.constants.Two);
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
         await instance.connect(deployer).__mint(BigNumber.from('10'));
 
-        expect(await instance.convertToShares(ethers.constants.One)).to.eq(
-          BigNumber.from('5'),
-        );
+        expect(
+          await instance.callStatic.convertToShares(ethers.constants.One),
+        ).to.eq(BigNumber.from('5'));
       });
     });
 
     describe('#_convertToAssets(uint256)', () => {
-      it('returns shareAmount inpput if totalSupply is 0', async () => {
-        expect(await instance.convertToAssets(ethers.constants.Two)).to.eq(
-          ethers.constants.Two,
-        );
+      it('returns input amount if share supply is zero', async () => {
+        expect(
+          await instance.callStatic.convertToAssets(ethers.constants.Two),
+        ).to.eq(ethers.constants.Two);
       });
 
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
         await instance.connect(deployer).__mint(BigNumber.from('5'));
 
-        expect(await instance.convertToAssets(BigNumber.from('10'))).to.eq(
-          BigNumber.from('4'),
-        );
+        expect(
+          await instance.callStatic.convertToAssets(BigNumber.from('10')),
+        ).to.eq(BigNumber.from('4'));
       });
     });
 
@@ -102,12 +104,12 @@ describe.only('ERC4626Base', () => {
         await instance.connect(deployer).__mint(BigNumber.from('10'));
 
         expect(await instance.maxWithdraw(deployer.address)).to.eq(
-          await instance.convertToAssets(BigNumber.from('10')),
+          await instance.callStatic.convertToAssets(BigNumber.from('10')),
         );
       });
     });
 
-    describe('#_maxRedeem', () => {
+    describe('#_maxRedeem(address)', () => {
       it('returns the maximum redeem as balance of caller', async () => {
         await instance.connect(deployer).__mint(BigNumber.from('10'));
 
@@ -119,94 +121,128 @@ describe.only('ERC4626Base', () => {
 
     describe('#_previewDeposit(uint256)', () => {
       it('returns the deposit input amount converted to shares', async () => {
-        expect(await instance.previewDeposit(ethers.constants.One)).to.eq(
-          await instance.convertToShares(ethers.constants.One),
+        expect(
+          await instance.callStatic.previewDeposit(ethers.constants.One),
+        ).to.eq(
+          await instance.callStatic.convertToShares(ethers.constants.One),
         );
       });
     });
 
     describe('_previewMint(uint256)', () => {
       it('returns the mint input amount converted to assets', async () => {
-        expect(await instance.previewMint(ethers.constants.One)).to.eq(
-          await instance.convertToAssets(ethers.constants.One),
+        expect(
+          await instance.callStatic.previewMint(ethers.constants.One),
+        ).to.eq(
+          await instance.callStatic.convertToAssets(ethers.constants.One),
         );
       });
     });
 
     describe('_previewWithdraw(uint256)', () => {
       it('returns the withdraw input amount coverted to shares', async () => {
-        expect(await instance.previewWithdraw(ethers.constants.One)).to.eq(
-          await instance.convertToShares(ethers.constants.One),
+        expect(
+          await instance.callStatic.previewWithdraw(ethers.constants.One),
+        ).to.eq(
+          await instance.callStatic.convertToShares(ethers.constants.One),
         );
       });
     });
 
     describe('_previewRedeem(uint256)', () => {
       it('returns the redeem input amount converted to assets', async () => {
-        expect(await instance.previewMint(ethers.constants.One)).to.eq(
-          await instance.convertToAssets(ethers.constants.One),
+        expect(
+          await instance.callStatic.previewMint(ethers.constants.One),
+        ).to.eq(
+          await instance.callStatic.convertToAssets(ethers.constants.One),
         );
       });
     });
 
-    describe.only('#_deposit(uint256,address)', () => {
-      // it('mints the correct amount of shares for asset input to receiver input address', async () => {
-      // const depositAmount = BigNumber.from('10');
+    describe('#_deposit(uint256,address)', () => {
+      it('transfers assets from caller', async () => {
+        const assetAmount = BigNumber.from('10');
 
-      // await instance.connect(deployer).__mint(depositAmount);
-      // await assetInstance.__mint(depositor.address, depositAmount);
-      // await assetInstance.connect(depositor).approve(instance.address, depositAmount);
-
-      // const returnedShares = await instance.previewDeposit(depositAmount);
-
-      // expect(await instance.connect(depositor).deposit(depositAmount, depositor.address))
-      // .to.changeTokenBalance(instance, depositor, returnedShares)
-      // .to.changeTokenBalances(assetInstance, [depositor, instance], [depositAmount.mul(BigNumber.from('-1')), depositAmount]);
-      // });
-
-      it('emits a deposit event', async () => {
-        const depositAmount = BigNumber.from('10');
-
-        await instance.connect(deployer).__mint(depositAmount);
-        await assetInstance.__mint(depositor.address, depositAmount);
+        await instance.connect(deployer).__mint(assetAmount);
+        await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, depositAmount);
+          .approve(instance.address, assetAmount);
 
-        const returnedShares = await instance.previewDeposit(depositAmount);
+        expect(() =>
+          instance.connect(depositor).deposit(assetAmount, depositor.address),
+        ).to.changeTokenBalances(
+          assetInstance,
+          [depositor, instance],
+          [assetAmount.mul(ethers.constants.NegativeOne), assetAmount],
+        );
+      });
+
+      it('mints shares for receiver', async () => {
+        const assetAmount = BigNumber.from('10');
+
+        await instance.connect(deployer).__mint(assetAmount);
+        await assetInstance.__mint(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        const shareAmount = await instance.callStatic.previewDeposit(
+          assetAmount,
+        );
+
+        expect(() =>
+          instance.connect(depositor).deposit(assetAmount, depositor.address),
+        ).to.changeTokenBalance(instance, depositor, shareAmount);
+      });
+
+      it('emits Deposit event', async () => {
+        const assetAmount = BigNumber.from('10');
+
+        await instance.connect(deployer).__mint(assetAmount);
+        await assetInstance.__mint(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        const shareAmount = await instance.callStatic.previewDeposit(
+          assetAmount,
+        );
 
         expect(
           await instance
             .connect(depositor)
-            .deposit(depositAmount, depositor.address),
+            .deposit(assetAmount, depositor.address),
         )
           .to.emit(instance, 'Deposit')
           .withArgs(
             depositor.address,
             depositor.address,
-            depositAmount,
-            returnedShares,
+            assetAmount,
+            shareAmount,
           );
       });
 
       it('calls the _afterDeposit hook', async () => {
-        const depositAmount = BigNumber.from('10');
+        const assetAmount = BigNumber.from('10');
 
-        await instance.connect(deployer).__mint(depositAmount);
-        await assetInstance.__mint(depositor.address, depositAmount);
+        await instance.connect(deployer).__mint(assetAmount);
+        await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, depositAmount);
+          .approve(instance.address, assetAmount);
 
-        const returnedShares = await instance.previewDeposit(depositAmount);
+        const shareAmount = await instance.callStatic.previewDeposit(
+          assetAmount,
+        );
 
         expect(
           await instance
             .connect(depositor)
-            .deposit(depositAmount, depositor.address),
+            .deposit(assetAmount, depositor.address),
         )
           .to.emit(instance, 'AfterDepositCheck')
-          .withArgs(depositor.address, depositAmount, returnedShares);
+          .withArgs(depositor.address, assetAmount, shareAmount);
       });
 
       describe('reverts if', () => {
