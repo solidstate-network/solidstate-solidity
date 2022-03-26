@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC4626Base } from './ERC4626Base.sol';
-import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
+import { ERC4626 } from './ERC4626.sol';
+import { ERC4626BaseStorage } from './base/ERC4626BaseStorage.sol';
 
-contract ERC4626BaseMock is ERC4626Base {
+contract ERC4626Mock is ERC4626 {
     using ERC4626BaseStorage for ERC4626BaseStorage.Layout;
 
     event AfterDepositCheck(
