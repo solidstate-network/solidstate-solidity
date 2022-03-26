@@ -7,7 +7,7 @@ import {
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   describeBehaviorOfCloneFactory,
-  describeBehaviorOfERC20Base,
+  describeBehaviorOfERC4626Base,
 } from '@solidstate/spec';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
@@ -36,6 +36,15 @@ describe('ERC4626Base', () => {
     );
   });
 
+  describeBehaviorOfERC4626Base({
+    deploy: async () => instance as any,
+    supply: ethers.constants.Zero,
+    mint: (recipient: string, amount: BigNumber) =>
+      instance.__mint(recipient, amount),
+    burn: (recipient: string, amount: BigNumber) =>
+      instance.__burn(recipient, amount),
+  });
+
   describe('__internal', () => {
     describe('#_totalAssets()', () => {
       it('returns the total asset value denominated in the base asset', async () => {
@@ -59,7 +68,7 @@ describe('ERC4626Base', () => {
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await instance.connect(deployer).__mint(BigNumber.from('10'));
+        await instance.__mint(deployer.address, BigNumber.from('10'));
 
         expect(
           await instance.callStatic.convertToShares(ethers.constants.One),
@@ -75,7 +84,7 @@ describe('ERC4626Base', () => {
       });
 
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
-        await instance.connect(deployer).__mint(BigNumber.from('5'));
+        await instance.__mint(deployer.address, BigNumber.from('5'));
 
         expect(
           await instance.callStatic.convertToAssets(BigNumber.from('10')),
@@ -163,7 +172,7 @@ describe('ERC4626Base', () => {
       it('transfers assets from caller', async () => {
         const assetAmount = BigNumber.from('10');
 
-        await instance.connect(deployer).__mint(assetAmount);
+        await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
@@ -181,7 +190,7 @@ describe('ERC4626Base', () => {
       it('mints shares for receiver', async () => {
         const assetAmount = BigNumber.from('10');
 
-        await instance.connect(deployer).__mint(assetAmount);
+        await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
@@ -199,7 +208,7 @@ describe('ERC4626Base', () => {
       it('emits Deposit event', async () => {
         const assetAmount = BigNumber.from('10');
 
-        await instance.connect(deployer).__mint(assetAmount);
+        await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
@@ -226,7 +235,7 @@ describe('ERC4626Base', () => {
       it('calls the _afterDeposit hook', async () => {
         const assetAmount = BigNumber.from('10');
 
-        await instance.connect(deployer).__mint(assetAmount);
+        await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)

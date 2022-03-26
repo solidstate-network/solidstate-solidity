@@ -72,7 +72,27 @@ contract ERC4626BaseMock is ERC4626Base {
         _beforeWithdraw(owner, assetAmount, shareAmount);
     }
 
-    function __mint(uint256 amount) external {
-        _mint(msg.sender, amount);
+    function __transfer(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external {
+        _transfer(sender, recipient, amount);
+    }
+
+    function __mint(address account, uint256 amount) external {
+        _mint(account, amount);
+    }
+
+    function __burn(address account, uint256 amount) external {
+        _burn(account, amount);
+    }
+
+    function __approve(
+        address holder,
+        address spender,
+        uint256 amount
+    ) external {
+        _approve(holder, spender, amount);
     }
 }
