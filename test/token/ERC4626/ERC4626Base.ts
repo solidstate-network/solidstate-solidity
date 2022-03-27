@@ -38,6 +38,8 @@ describe('ERC4626Base', () => {
 
   describeBehaviorOfERC4626Base({
     deploy: async () => instance as any,
+    getAsset: async () => assetInstance,
+    totalAssets: ethers.constants.Two,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>
       instance.__mint(recipient, amount),
@@ -46,52 +48,6 @@ describe('ERC4626Base', () => {
   });
 
   describe('__internal', () => {
-    describe('#_totalAssets()', () => {
-      it('returns the total asset value denominated in the base asset', async () => {
-        expect(await instance.callStatic.totalAssets()).to.be.eq(
-          ethers.constants.Two,
-        );
-      });
-    });
-
-    describe('#_asset()', () => {
-      it('returns the address of the base asset', async () => {
-        expect(await instance.callStatic.asset()).to.eq(assetInstance.address);
-      });
-    });
-
-    describe('#_convertToShares(uint256)', () => {
-      it('returns input amount if share supply is zero', async () => {
-        expect(
-          await instance.callStatic.convertToShares(ethers.constants.Two),
-        ).to.eq(ethers.constants.Two);
-      });
-
-      it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await instance.__mint(deployer.address, BigNumber.from('10'));
-
-        expect(
-          await instance.callStatic.convertToShares(ethers.constants.One),
-        ).to.eq(BigNumber.from('5'));
-      });
-    });
-
-    describe('#_convertToAssets(uint256)', () => {
-      it('returns input amount if share supply is zero', async () => {
-        expect(
-          await instance.callStatic.convertToAssets(ethers.constants.Two),
-        ).to.eq(ethers.constants.Two);
-      });
-
-      it('returns the correct amount of assets if totalSupply is non-zero', async () => {
-        await instance.__mint(deployer.address, BigNumber.from('5'));
-
-        expect(
-          await instance.callStatic.convertToAssets(BigNumber.from('10')),
-        ).to.eq(BigNumber.from('4'));
-      });
-    });
-
     describe('#_maxDeposit(address)', () => {
       it('returns the maximum deposit as uint256.max', async () => {
         expect(await instance.callStatic.maxDeposit(deployer.address)).to.eq(
