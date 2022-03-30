@@ -24,13 +24,13 @@ export function describeBehaviorOfERC20Permit(
   const describe = describeFilter(skips);
 
   describe('::ERC20Permit', function () {
-    let user: SignerWithAddress;
+    let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let thirdParty: SignerWithAddress;
     let instance: ERC20Permit;
 
     beforeEach(async function () {
-      [user, spender, thirdParty] = await ethers.getSigners();
+      [holder, spender, thirdParty] = await ethers.getSigners();
       instance = await deploy();
     });
 
@@ -56,98 +56,139 @@ export function describeBehaviorOfERC20Permit(
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
-        let { timestamp } = await ethers.provider.getBlock('latest');
+        const { timestamp } = await ethers.provider.getBlock('latest');
 
-        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
-
-        const deadline = timestamp + 3600;
+        const amount = ethers.constants.Two;
+        const deadline = timestamp + 1;
 
         const permit = await signERC2612Permit(
-          user.provider,
+          ethers.provider,
           instance.address,
-          user.address,
+          holder.address,
           spender.address,
-          '500',
+          amount.toString(),
           deadline,
         );
 
         await instance
           .connect(thirdParty)
           .permit(
-            user.address,
+            holder.address,
             spender.address,
-            '500',
+            amount,
             deadline,
             permit.v,
             permit.r,
             permit.s,
           );
 
-        expect(await instance.allowance(user.address, spender.address)).to.eq(
-          500,
+        expect(await instance.allowance(holder.address, spender.address)).to.eq(
+          amount,
         );
       });
 
-      it('should revert if deadline is passed', async () => {
-        let { timestamp } = await ethers.provider.getBlock('latest');
+      describe('reverts if', () => {
+        it('deadline has passed', async () => {
+          const { timestamp } = await ethers.provider.getBlock('latest');
 
-        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
+          const amount = ethers.constants.Two;
+          const deadline = timestamp;
 
-        const deadline = timestamp - 10;
+          const permit = await signERC2612Permit(
+            ethers.provider,
+            instance.address,
+            holder.address,
+            spender.address,
+            amount.toString(),
+            deadline,
+          );
 
-        const permit = await signERC2612Permit(
-          user.provider,
-          instance.address,
-          user.address,
-          spender.address,
-          '500',
-          deadline,
-        );
+          await expect(
+            instance
+              .connect(thirdParty)
+              .permit(
+                holder.address,
+                spender.address,
+                amount,
+                deadline,
+                permit.v,
+                permit.r,
+                permit.s,
+              ),
+          ).to.be.revertedWith('ERC20Permit: expired deadline');
+        });
 
-        await expect(
-          instance
+        it('signature is invalid', async () => {
+          const { timestamp } = await ethers.provider.getBlock('latest');
+
+          const amount = ethers.constants.Two;
+          const deadline = timestamp + 1;
+
+          const permit = await signERC2612Permit(
+            ethers.provider,
+            instance.address,
+            holder.address,
+            spender.address,
+            amount.toString(),
+            deadline,
+          );
+
+          await expect(
+            instance
+              .connect(thirdParty)
+              .permit(
+                holder.address,
+                spender.address,
+                amount,
+                deadline,
+                permit.v,
+                '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+                permit.s,
+              ),
+          ).to.be.revertedWith('ECDSA: invalid signature');
+        });
+
+        it('signature has already been used', async () => {
+          const { timestamp } = await ethers.provider.getBlock('latest');
+
+          const amount = ethers.constants.Two;
+          const deadline = timestamp + 2;
+
+          const permit = await signERC2612Permit(
+            ethers.provider,
+            instance.address,
+            holder.address,
+            spender.address,
+            amount.toString(),
+            deadline,
+          );
+
+          await instance
             .connect(thirdParty)
             .permit(
-              user.address,
+              holder.address,
               spender.address,
-              '500',
+              amount,
               deadline,
               permit.v,
               permit.r,
               permit.s,
-            ),
-        ).to.be.revertedWith('ERC20Permit: expired deadline');
-      });
+            );
 
-      it('should revert if signature is invalid', async () => {
-        let { timestamp } = await ethers.provider.getBlock('latest');
-
-        await ethers.provider.send('evm_setNextBlockTimestamp', [++timestamp]);
-
-        const deadline = timestamp + 3600;
-
-        const permit = await signERC2612Permit(
-          user.provider,
-          instance.address,
-          user.address,
-          spender.address,
-          '500',
-          deadline,
-        );
-
-        await expect(
-          instance
-            .connect(thirdParty)
-            .permit(
-              user.address,
-              spender.address,
-              '500',
-              deadline,
-              permit.v,
-              '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-              permit.s,
-            ),
-        ).to.be.revertedWith('ECDSA: invalid signature');
+          await expect(
+            instance
+              .connect(thirdParty)
+              .permit(
+                holder.address,
+                spender.address,
+                amount,
+                deadline,
+                permit.v,
+                permit.r,
+                permit.s,
+              ),
+          ).to.be.revertedWith('ERC20Permit: invalid signature');
+        });
       });
     });
   });
