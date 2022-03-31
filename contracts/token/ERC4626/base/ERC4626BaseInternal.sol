@@ -158,7 +158,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address owner
     ) internal virtual returns (uint256 shareAmount) {
         require(
-            assetAmount <= _maxWithdraw(receiver),
+            assetAmount <= _maxWithdraw(owner),
             'ERC4626: maximum amount exceeded'
         );
 
@@ -173,7 +173,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address owner
     ) internal virtual returns (uint256 assetAmount) {
         require(
-            shareAmount <= _maxRedeem(receiver),
+            shareAmount <= _maxRedeem(owner),
             'ERC4626: maximum amount exceeded'
         );
 
