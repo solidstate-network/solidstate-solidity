@@ -15,10 +15,10 @@ describe('ERC4626', function () {
     const [deployer] = await ethers.getSigners();
 
     assetInstance = await new ERC20Mock__factory(deployer).deploy(
-      'asset',
-      'AST',
-      18,
-      ethers.utils.parseEther('100'),
+      '',
+      '',
+      0,
+      ethers.constants.Zero,
     );
 
     instance = await new ERC4626Mock__factory(deployer).deploy(

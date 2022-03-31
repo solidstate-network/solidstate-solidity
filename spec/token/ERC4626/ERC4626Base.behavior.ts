@@ -136,48 +136,48 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#previewDeposit(uint256)', () => {
       it('returns the deposit input amount converted to shares', async () => {
-        const amount = ethers.utils.parseUnits('1', 18);
+        const assetAmount = ethers.utils.parseUnits('1', 18);
 
         // TODO: check rounding direction
 
-        expect(await instance.callStatic.previewDeposit(amount)).to.eq(
-          await instance.callStatic.convertToShares(amount),
+        expect(await instance.callStatic.previewDeposit(assetAmount)).to.eq(
+          await instance.callStatic.convertToShares(assetAmount),
         );
       });
     });
 
     describe('#previewMint(uint256)', () => {
       it('returns the mint input amount converted to assets', async () => {
-        const amount = ethers.utils.parseUnits('1', 18);
+        const shareAmount = ethers.utils.parseUnits('1', 18);
 
         // TODO: check rounding direction
 
-        expect(await instance.callStatic.previewMint(amount)).to.eq(
-          await instance.callStatic.convertToAssets(amount),
+        expect(await instance.callStatic.previewMint(shareAmount)).to.eq(
+          await instance.callStatic.convertToAssets(shareAmount),
         );
       });
     });
 
     describe('#previewWithdraw(uint256)', () => {
       it('returns the withdraw input amount coverted to shares', async () => {
-        const amount = ethers.utils.parseUnits('1', 18);
+        const assetAmount = ethers.utils.parseUnits('1', 18);
 
         // TODO: check rounding direction
 
-        expect(await instance.callStatic.previewWithdraw(amount)).to.eq(
-          await instance.callStatic.convertToShares(amount),
+        expect(await instance.callStatic.previewWithdraw(assetAmount)).to.eq(
+          await instance.callStatic.convertToShares(assetAmount),
         );
       });
     });
 
     describe('#previewRedeem(uint256)', () => {
       it('returns the redeem input amount converted to assets', async () => {
-        const amount = ethers.utils.parseUnits('1', 18);
+        const shareAmount = ethers.utils.parseUnits('1', 18);
 
         // TODO: check rounding direction
 
-        expect(await instance.callStatic.previewRedeem(amount)).to.eq(
-          await instance.callStatic.convertToAssets(amount),
+        expect(await instance.callStatic.previewRedeem(shareAmount)).to.eq(
+          await instance.callStatic.convertToAssets(shareAmount),
         );
       });
     });

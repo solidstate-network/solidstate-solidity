@@ -25,10 +25,10 @@ describe('ERC4626Base', () => {
 
   beforeEach(async () => {
     assetInstance = await new ERC20Mock__factory(deployer).deploy(
-      'asset',
-      'AST',
-      18,
-      ethers.utils.parseEther('100'),
+      '',
+      '',
+      0,
+      ethers.constants.Zero,
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
