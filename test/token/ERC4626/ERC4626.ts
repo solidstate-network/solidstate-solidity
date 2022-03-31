@@ -29,7 +29,6 @@ describe('ERC4626', function () {
   describeBehaviorOfERC4626({
     deploy: async () => instance as any,
     getAsset: async () => assetInstance,
-    totalAssets: ethers.constants.Two,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     name: '',

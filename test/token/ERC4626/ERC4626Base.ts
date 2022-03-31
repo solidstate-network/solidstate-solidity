@@ -39,7 +39,6 @@ describe('ERC4626Base', () => {
   describeBehaviorOfERC4626Base({
     deploy: async () => instance as any,
     getAsset: async () => assetInstance,
-    totalAssets: ethers.constants.Two,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>
       instance.__mint(recipient, amount),

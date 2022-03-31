@@ -9,21 +9,13 @@ import { ethers } from 'hardhat';
 interface ERC4626BaseBehaviorArgs {
   deploy: () => Promise<ERC4626Base>;
   getAsset: () => Promise<IERC20>;
-  totalAssets: BigNumber;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   supply: BigNumber;
 }
 
 export function describeBehaviorOfERC4626Base(
-  {
-    deploy,
-    getAsset,
-    totalAssets,
-    mint,
-    burn,
-    supply,
-  }: ERC4626BaseBehaviorArgs,
+  { deploy, getAsset, mint, burn, supply }: ERC4626BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -55,12 +47,6 @@ export function describeBehaviorOfERC4626Base(
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {
         expect(await instance.callStatic.asset()).to.eq(assetInstance.address);
-      });
-    });
-
-    describe('#totalAssets()', () => {
-      it('returns the total asset value denominated in the base asset', async () => {
-        expect(await instance.callStatic.totalAssets()).to.be.eq(totalAssets);
       });
     });
 

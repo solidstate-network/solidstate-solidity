@@ -7,7 +7,6 @@ import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 interface ERC4626BehaviorArgs {
   deploy: () => Promise<ERC4626>;
   getAsset: () => Promise<IERC20>;
-  totalAssets: BigNumber;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   name: string;
@@ -20,7 +19,6 @@ export function describeBehaviorOfERC4626(
   {
     deploy,
     getAsset,
-    totalAssets,
     mint,
     burn,
     name,
@@ -50,7 +48,6 @@ export function describeBehaviorOfERC4626(
       {
         deploy,
         getAsset,
-        totalAssets,
         mint,
         burn,
         supply,
