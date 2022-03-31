@@ -9,17 +9,30 @@ import { IERC4626Internal } from '../IERC4626Internal.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
- * @title Base ERC4626 internal functions_
+ * @title Base ERC4626 internal functions
  */
 abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
     using SafeERC20 for IERC20;
 
+    /**
+     * @notice get the address of the base token used for vault accountin purposes
+     * @return base token address
+     */
     function _asset() internal view virtual returns (address) {
         return ERC4626BaseStorage.layout().asset;
     }
 
+    /**
+     * @notice get the total quantity of the base asset currently managed by the vault
+     * @return total managed asset amount
+     */
     function _totalAssets() internal view virtual returns (uint256);
 
+    /**
+     * @notice calculate the quantity of shares received in exchange for a given quantity of assets, not accounting for slippage
+     * @param assetAmount quantity of assets to convert
+     * @return shareAmount quantity of shares calculated
+     */
     function _convertToShares(uint256 assetAmount)
         internal
         view
@@ -32,6 +45,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             : (assetAmount * supply) / _totalAssets();
     }
 
+    /**
+     * @notice calculate the quantity of assets received in exchange for a given quantity of shares, not accounting for slippage
+     * @param shareAmount quantity of shares to convert
+     * @return assetAmount quantity of assets calculated
+     */
     function _convertToAssets(uint256 shareAmount)
         internal
         view
@@ -44,6 +62,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             : (shareAmount * _totalAssets()) / supply;
     }
 
+    /**
+     * @notice calculate the maximum quantity of base assets which may be deposited on behalf of given receiver
+     * @dev unused address param represents recipient of shares resulting from deposit
+     * @return maxAssets maximum asset deposit amount
+     */
     function _maxDeposit(address)
         internal
         view
@@ -53,6 +76,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         maxAssets = type(uint256).max;
     }
 
+    /**
+     * @notice calculate the maximum quantity of shares which may be minted on behalf of given receiver
+     * @dev unused address param represents recipient of shares resulting from deposit
+     * @return maxShares maximum share mint amount
+     */
     function _maxMint(address)
         internal
         view
@@ -62,6 +90,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         maxShares = type(uint256).max;
     }
 
+    /**
+     * @notice calculate the maximum quantity of base assets which may be withdrawn by given holder
+     * @param owner holder of shares to be redeemed
+     * @return maxAssets maximum asset mint amount
+     */
     function _maxWithdraw(address owner)
         internal
         view
@@ -71,6 +104,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         maxAssets = _convertToAssets(_balanceOf(owner));
     }
 
+    /**
+     * @notice calculate the maximum quantity of shares which may be redeemed by given holder
+     * @param owner holder of shares to be redeemed
+     * @return maxShares maximum share redeem amount
+     */
     function _maxRedeem(address owner)
         internal
         view
@@ -80,6 +118,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         maxShares = _balanceOf(owner);
     }
 
+    /**
+     * @notice simulate a deposit of given quantity of assets
+     * @param assetAmount quantity of assets to deposit
+     * @return shareAmount quantity of shares to mint
+     */
     function _previewDeposit(uint256 assetAmount)
         internal
         view
@@ -89,6 +132,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         shareAmount = _convertToShares(assetAmount);
     }
 
+    /**
+     * @notice simulate a minting of given quantity of shares
+     * @param shareAmount quantity of shares to mint
+     * @return assetAmount quantity of assets to deposit
+     */
     function _previewMint(uint256 shareAmount)
         internal
         view
@@ -101,6 +149,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             : (shareAmount * _totalAssets()) / supply;
     }
 
+    /**
+     * @notice simulate a withdrawal of given quantity of assets
+     * @param assetAmount quantity of assets to withdraw
+     * @return shareAmount quantity of shares to redeem
+     */
     function _previewWithdraw(uint256 assetAmount)
         internal
         view
@@ -113,6 +166,11 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             : (assetAmount * supply) / _totalAssets();
     }
 
+    /**
+     * @notice simulate a redemption of given quantity of shares
+     * @param shareAmount quantity of shares to redeem
+     * @return assetAmount quantity of assets to withdraw
+     */
     function _previewRedeem(uint256 shareAmount)
         internal
         view
@@ -122,6 +180,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         assetAmount = _convertToAssets(shareAmount);
     }
 
+    /**
+     * @notice execute a deposit of assets on behalf of given address
+     * @param assetAmount quantity of assets to deposit
+     * @param receiver recipient of shares resulting from deposit
+     * @return shareAmount quantity of shares to mint
+     */
     function _deposit(uint256 assetAmount, address receiver)
         internal
         virtual
@@ -137,6 +201,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         _deposit(msg.sender, receiver, assetAmount, shareAmount);
     }
 
+    /**
+     * @notice execute a minting of shares on behalf of given address
+     * @param shareAmount quantity of shares to mint
+     * @param receiver recipient of shares resulting from deposit
+     * @return assetAmount quantity of assets to deposit
+     */
     function _mint(uint256 shareAmount, address receiver)
         internal
         virtual
@@ -152,6 +222,13 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         _deposit(msg.sender, receiver, assetAmount, shareAmount);
     }
 
+    /**
+     * @notice execute a withdrawal of assets on behalf of given address
+     * @param assetAmount quantity of assets to withdraw
+     * @param receiver recipient of assets resulting from withdrawal
+     * @param owner holder of shares to be redeemed
+     * @return shareAmount quantity of shares to redeem
+     */
     function _withdraw(
         uint256 assetAmount,
         address receiver,
@@ -167,6 +244,13 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
     }
 
+    /**
+     * @notice execute a redemption of shares on behalf of given address
+     * @param shareAmount quantity of shares to redeem
+     * @param receiver recipient of assets resulting from withdrawal
+     * @param owner holder of shares to be redeemed
+     * @return assetAmount quantity of assets to withdraw
+     */
     function _redeem(
         uint256 shareAmount,
         address receiver,
@@ -208,6 +292,13 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         uint256 shareAmount
     ) internal virtual {}
 
+    /**
+     * @notice exchange assets for shares on behalf of given address
+     * @param caller supplier of assets to be deposited
+     * @param receiver recipient of shares resulting from deposit
+     * @param assetAmount quantity of assets to deposit
+     * @param shareAmount quantity of shares to mint
+     */
     function _deposit(
         address caller,
         address receiver,
@@ -223,6 +314,14 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         emit Deposit(caller, receiver, assetAmount, shareAmount);
     }
 
+    /**
+     * @notice exchange shares for assets on behalf of given address
+     * @param caller transaction operator for purposes of allowance verification
+     * @param receiver recipient of assets resulting from withdrawal
+     * @param owner holder of shares to be redeemed
+     * @param assetAmount quantity of assets to withdraw
+     * @param shareAmount quantity of shares to redeem
+     */
     function _withdraw(
         address caller,
         address receiver,
