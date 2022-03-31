@@ -1,5 +1,6 @@
 import { IERC20, ERC4626Base } from '../../../typechain';
 import { describeBehaviorOfERC20Base } from '../ERC20';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
@@ -28,8 +29,13 @@ export function describeBehaviorOfERC4626Base(
   const describe = describeFilter(skips);
 
   describe('::ERC4626Base', function () {
+    let depositor: SignerWithAddress;
     let assetInstance: IERC20;
     let instance: ERC4626Base;
+
+    before(async () => {
+      [depositor] = await ethers.getSigners();
+    });
 
     beforeEach(async function () {
       assetInstance = await getAsset();
@@ -91,19 +97,41 @@ export function describeBehaviorOfERC4626Base(
     });
 
     describe('#maxDeposit(address)', () => {
-      it('todo');
+      it('returns maximum uint256', async () => {
+        expect(await instance.callStatic.maxDeposit(depositor.address)).to.eq(
+          ethers.constants.MaxUint256.sub(ethers.constants.One),
+        );
+      });
     });
 
     describe('#maxMint(address)', () => {
-      it('todo');
+      it('returns maximum uint256', async () => {
+        expect(await instance.callStatic.maxMint(depositor.address)).to.eq(
+          ethers.constants.MaxUint256.sub(ethers.constants.One),
+        );
+      });
     });
 
     describe('#maxWithdraw(address)', () => {
-      it('todo');
+      it('returns asset value of share balance of given account', async () => {
+        await mint(depositor.address, ethers.constants.Two);
+        const balance = await instance.callStatic.balanceOf(depositor.address);
+
+        expect(await instance.callStatic.maxWithdraw(depositor.address)).to.eq(
+          await instance.callStatic.convertToAssets(balance),
+        );
+      });
     });
 
     describe('#maxRedeem(address)', () => {
-      it('todo');
+      it('returns share balance of given account', async () => {
+        await mint(depositor.address, ethers.constants.Two);
+        const balance = await instance.callStatic.balanceOf(depositor.address);
+
+        expect(await instance.callStatic.maxRedeem(depositor.address)).to.eq(
+          balance,
+        );
+      });
     });
 
     describe('#previewDeposit(uint256)', () => {
