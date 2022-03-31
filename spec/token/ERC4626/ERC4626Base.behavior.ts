@@ -58,11 +58,18 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await mint(instance.address, BigNumber.from('10'));
+        await mint(instance.address, BigNumber.from('5'));
 
-        expect(
-          await instance.callStatic.convertToShares(ethers.constants.One),
-        ).to.eq(BigNumber.from('5'));
+        const supply = await instance.callStatic.totalSupply();
+        const assets = await instance.callStatic.totalAssets();
+
+        const assetAmount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.convertToShares(assetAmount)).to.eq(
+          assetAmount.mul(supply).div(assets),
+        );
       });
     });
 
@@ -76,16 +83,23 @@ export function describeBehaviorOfERC4626Base(
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
         await mint(instance.address, BigNumber.from('5'));
 
-        expect(
-          await instance.callStatic.convertToAssets(BigNumber.from('10')),
-        ).to.eq(BigNumber.from('4'));
+        const supply = await instance.callStatic.totalSupply();
+        const assets = await instance.callStatic.totalAssets();
+
+        const shareAmount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.convertToAssets(shareAmount)).to.eq(
+          shareAmount.mul(assets).div(supply),
+        );
       });
     });
 
     describe('#maxDeposit(address)', () => {
       it('returns maximum uint256', async () => {
         expect(await instance.callStatic.maxDeposit(depositor.address)).to.eq(
-          ethers.constants.MaxUint256.sub(ethers.constants.One),
+          ethers.constants.MaxUint256,
         );
       });
     });
@@ -93,7 +107,7 @@ export function describeBehaviorOfERC4626Base(
     describe('#maxMint(address)', () => {
       it('returns maximum uint256', async () => {
         expect(await instance.callStatic.maxMint(depositor.address)).to.eq(
-          ethers.constants.MaxUint256.sub(ethers.constants.One),
+          ethers.constants.MaxUint256,
         );
       });
     });

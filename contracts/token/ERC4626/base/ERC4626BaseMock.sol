@@ -26,16 +26,8 @@ contract ERC4626BaseMock is ERC4626Base {
         ERC4626Layout.asset = asset;
     }
 
-    function _totalAssets() internal pure override returns (uint256) {
-        return 2;
-    }
-
-    function _maxDeposit(address) internal pure override returns (uint256) {
-        return type(uint256).max - 1;
-    }
-
-    function _maxMint(address) internal pure override returns (uint256) {
-        return type(uint256).max - 1;
+    function _totalAssets() internal view override returns (uint256) {
+        return _totalSupply();
     }
 
     function _afterDeposit(
