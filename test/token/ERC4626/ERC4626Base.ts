@@ -48,46 +48,6 @@ describe('ERC4626Base', () => {
   });
 
   describe('__internal', () => {
-    describe('#_previewDeposit(uint256)', () => {
-      it('returns the deposit input amount converted to shares', async () => {
-        expect(
-          await instance.callStatic.previewDeposit(ethers.constants.One),
-        ).to.eq(
-          await instance.callStatic.convertToShares(ethers.constants.One),
-        );
-      });
-    });
-
-    describe('_previewMint(uint256)', () => {
-      it('returns the mint input amount converted to assets', async () => {
-        expect(
-          await instance.callStatic.previewMint(ethers.constants.One),
-        ).to.eq(
-          await instance.callStatic.convertToAssets(ethers.constants.One),
-        );
-      });
-    });
-
-    describe('_previewWithdraw(uint256)', () => {
-      it('returns the withdraw input amount coverted to shares', async () => {
-        expect(
-          await instance.callStatic.previewWithdraw(ethers.constants.One),
-        ).to.eq(
-          await instance.callStatic.convertToShares(ethers.constants.One),
-        );
-      });
-    });
-
-    describe('_previewRedeem(uint256)', () => {
-      it('returns the redeem input amount converted to assets', async () => {
-        expect(
-          await instance.callStatic.previewMint(ethers.constants.One),
-        ).to.eq(
-          await instance.callStatic.convertToAssets(ethers.constants.One),
-        );
-      });
-    });
-
     describe('#_deposit(uint256,address)', () => {
       it('transfers assets from caller', async () => {
         const assetAmount = BigNumber.from('10');

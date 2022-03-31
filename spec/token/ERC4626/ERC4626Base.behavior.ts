@@ -135,19 +135,51 @@ export function describeBehaviorOfERC4626Base(
     });
 
     describe('#previewDeposit(uint256)', () => {
-      it('todo');
+      it('returns the deposit input amount converted to shares', async () => {
+        const amount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.previewDeposit(amount)).to.eq(
+          await instance.callStatic.convertToShares(amount),
+        );
+      });
     });
 
     describe('#previewMint(uint256)', () => {
-      it('todo');
+      it('returns the mint input amount converted to assets', async () => {
+        const amount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.previewMint(amount)).to.eq(
+          await instance.callStatic.convertToAssets(amount),
+        );
+      });
     });
 
     describe('#previewWithdraw(uint256)', () => {
-      it('todo');
+      it('returns the withdraw input amount coverted to shares', async () => {
+        const amount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.previewWithdraw(amount)).to.eq(
+          await instance.callStatic.convertToShares(amount),
+        );
+      });
     });
 
     describe('#previewRedeem(uint256)', () => {
-      it('todo');
+      it('returns the redeem input amount converted to assets', async () => {
+        const amount = ethers.utils.parseUnits('1', 18);
+
+        // TODO: check rounding direction
+
+        expect(await instance.callStatic.previewRedeem(amount)).to.eq(
+          await instance.callStatic.convertToAssets(amount),
+        );
+      });
     });
 
     describe('#deposit(uint256,address)', () => {
