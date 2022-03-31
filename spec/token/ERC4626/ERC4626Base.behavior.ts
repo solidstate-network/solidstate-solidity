@@ -253,7 +253,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       describe('reverts if', () => {
-        it.skip('assetAmount input is too large', async () => {
+        it.skip('deposit amount is too large', async () => {
           await expect(
             instance.deposit(ethers.constants.MaxUint256, depositor.address),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
@@ -321,7 +321,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       describe('reverts if', () => {
-        it.skip('assetAmount input is too large', async () => {
+        it.skip('mint amount is too large', async () => {
           await expect(
             instance.mint(ethers.constants.MaxUint256, depositor.address),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
@@ -415,14 +415,36 @@ export function describeBehaviorOfERC4626Base(
       });
 
       describe('reverts if', () => {
-        it.skip('assetAmount input is too large', async () => {
+        it('withdraw amount is too large', async () => {
+          const assetAmount = ethers.constants.Two;
+          const shareAmount = await instance.callStatic.convertToShares(
+            assetAmount,
+          );
+
+          await mint(depositor.address, shareAmount);
+
           await expect(
             instance.withdraw(
-              ethers.constants.MaxUint256,
+              assetAmount.add(ethers.constants.One),
               recipient.address,
               depositor.address,
             ),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+
+        it('share amount exceeds allowance', async () => {
+          const assetAmount = ethers.constants.Two;
+          const shareAmount = await instance.callStatic.convertToShares(
+            assetAmount,
+          );
+
+          await mint(depositor.address, shareAmount);
+
+          await expect(
+            instance
+              .connect(caller)
+              .withdraw(assetAmount, recipient.address, depositor.address),
+          ).to.be.revertedWith('ERC4626: share amount exceeds allowance');
         });
       });
     });
@@ -514,14 +536,30 @@ export function describeBehaviorOfERC4626Base(
       });
 
       describe('reverts if', () => {
-        it.skip('assetAmount input is too large', async () => {
+        it('redeem amount is too large', async () => {
+          const shareAmount = ethers.constants.Two;
+
+          await mint(depositor.address, shareAmount);
+
           await expect(
             instance.redeem(
-              ethers.constants.MaxUint256,
+              shareAmount.add(ethers.constants.One),
               recipient.address,
               depositor.address,
             ),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+
+        it('share amount exceeds allowance', async () => {
+          const shareAmount = ethers.constants.Two;
+
+          await mint(depositor.address, shareAmount);
+
+          await expect(
+            instance
+              .connect(caller)
+              .redeem(shareAmount, recipient.address, depositor.address),
+          ).to.be.revertedWith('ERC4626: share amount exceeds allowance');
         });
       });
     });
