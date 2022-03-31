@@ -5,6 +5,7 @@ import {
   ERC4626Mock__factory,
 } from '../../../typechain';
 import { describeBehaviorOfERC4626 } from '@solidstate/spec';
+import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('ERC4626', function () {
@@ -31,6 +32,8 @@ describe('ERC4626', function () {
     getAsset: async () => assetInstance,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
+    mintAsset: (recipient: string, amount: BigNumber) =>
+      assetInstance.__mint(recipient, amount),
     name: '',
     symbol: '',
     decimals: 0,

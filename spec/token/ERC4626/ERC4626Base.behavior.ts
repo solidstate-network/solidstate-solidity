@@ -11,22 +11,27 @@ interface ERC4626BaseBehaviorArgs {
   getAsset: () => Promise<IERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  mintAsset: (
+    address: string,
+    amount: BigNumber,
+  ) => Promise<ContractTransaction>;
   supply: BigNumber;
 }
 
 export function describeBehaviorOfERC4626Base(
-  { deploy, getAsset, mint, burn, supply }: ERC4626BaseBehaviorArgs,
+  { deploy, getAsset, mint, burn, mintAsset, supply }: ERC4626BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::ERC4626Base', function () {
+    let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
     let assetInstance: IERC20;
     let instance: ERC4626Base;
 
     before(async () => {
-      [depositor] = await ethers.getSigners();
+      [caller, depositor] = await ethers.getSigners();
     });
 
     beforeEach(async function () {
@@ -183,7 +188,76 @@ export function describeBehaviorOfERC4626Base(
     });
 
     describe('#deposit(uint256,address)', () => {
-      it('todo');
+      it('transfers assets from caller', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        expect(() =>
+          instance.connect(depositor).deposit(assetAmount, depositor.address),
+        ).to.changeTokenBalances(
+          assetInstance,
+          [depositor, instance],
+          [assetAmount.mul(ethers.constants.NegativeOne), assetAmount],
+        );
+      });
+
+      it('mints shares for receiver', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        const shareAmount = await instance.callStatic.previewDeposit(
+          assetAmount,
+        );
+
+        expect(() =>
+          instance.connect(depositor).deposit(assetAmount, depositor.address),
+        ).to.changeTokenBalance(instance, depositor, shareAmount);
+      });
+
+      it('emits Deposit event', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        const shareAmount = await instance.callStatic.previewDeposit(
+          assetAmount,
+        );
+
+        expect(
+          await instance
+            .connect(depositor)
+            .deposit(assetAmount, depositor.address),
+        )
+          .to.emit(instance, 'Deposit')
+          .withArgs(
+            depositor.address,
+            depositor.address,
+            assetAmount,
+            shareAmount,
+          );
+      });
+
+      describe('reverts if', () => {
+        it.skip('assetAmount input is too large', async () => {
+          await expect(
+            instance.deposit(ethers.constants.MaxUint256, caller.address),
+          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+      });
     });
 
     describe('#mint(uint256,address)', () => {

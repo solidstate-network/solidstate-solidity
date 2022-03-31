@@ -44,73 +44,12 @@ describe('ERC4626Base', () => {
       instance.__mint(recipient, amount),
     burn: (recipient: string, amount: BigNumber) =>
       instance.__burn(recipient, amount),
+    mintAsset: (recipient: string, amount: BigNumber) =>
+      assetInstance.__mint(recipient, amount),
   });
 
   describe('__internal', () => {
     describe('#_deposit(uint256,address)', () => {
-      it('transfers assets from caller', async () => {
-        const assetAmount = BigNumber.from('10');
-
-        await instance.__mint(deployer.address, assetAmount);
-        await assetInstance.__mint(depositor.address, assetAmount);
-        await assetInstance
-          .connect(depositor)
-          .approve(instance.address, assetAmount);
-
-        expect(() =>
-          instance.connect(depositor).deposit(assetAmount, depositor.address),
-        ).to.changeTokenBalances(
-          assetInstance,
-          [depositor, instance],
-          [assetAmount.mul(ethers.constants.NegativeOne), assetAmount],
-        );
-      });
-
-      it('mints shares for receiver', async () => {
-        const assetAmount = BigNumber.from('10');
-
-        await instance.__mint(deployer.address, assetAmount);
-        await assetInstance.__mint(depositor.address, assetAmount);
-        await assetInstance
-          .connect(depositor)
-          .approve(instance.address, assetAmount);
-
-        const shareAmount = await instance.callStatic.previewDeposit(
-          assetAmount,
-        );
-
-        expect(() =>
-          instance.connect(depositor).deposit(assetAmount, depositor.address),
-        ).to.changeTokenBalance(instance, depositor, shareAmount);
-      });
-
-      it('emits Deposit event', async () => {
-        const assetAmount = BigNumber.from('10');
-
-        await instance.__mint(deployer.address, assetAmount);
-        await assetInstance.__mint(depositor.address, assetAmount);
-        await assetInstance
-          .connect(depositor)
-          .approve(instance.address, assetAmount);
-
-        const shareAmount = await instance.callStatic.previewDeposit(
-          assetAmount,
-        );
-
-        expect(
-          await instance
-            .connect(depositor)
-            .deposit(assetAmount, depositor.address),
-        )
-          .to.emit(instance, 'Deposit')
-          .withArgs(
-            depositor.address,
-            depositor.address,
-            assetAmount,
-            shareAmount,
-          );
-      });
-
       it('calls the _afterDeposit hook', async () => {
         const assetAmount = BigNumber.from('10');
 
@@ -131,14 +70,6 @@ describe('ERC4626Base', () => {
         )
           .to.emit(instance, 'AfterDepositCheck')
           .withArgs(depositor.address, assetAmount, shareAmount);
-      });
-
-      describe('reverts if', () => {
-        it.skip('assetAmount input is too large', async () => {
-          await expect(
-            instance.deposit(ethers.constants.MaxUint256, deployer.address),
-          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
-        });
       });
     });
   });
