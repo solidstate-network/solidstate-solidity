@@ -261,7 +261,71 @@ export function describeBehaviorOfERC4626Base(
     });
 
     describe('#mint(uint256,address)', () => {
-      it('todo');
+      it('transfers assets from caller', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewMint(shareAmount);
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        expect(() =>
+          instance.connect(depositor).mint(shareAmount, depositor.address),
+        ).to.changeTokenBalances(
+          assetInstance,
+          [depositor, instance],
+          [assetAmount.mul(ethers.constants.NegativeOne), assetAmount],
+        );
+      });
+
+      it('mints shares for receiver', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewMint(shareAmount);
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        expect(() =>
+          instance.connect(depositor).mint(shareAmount, depositor.address),
+        ).to.changeTokenBalance(instance, depositor, shareAmount);
+      });
+
+      it('emits Deposit event', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewMint(shareAmount);
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+
+        expect(
+          await instance
+            .connect(depositor)
+            .mint(shareAmount, depositor.address),
+        )
+          .to.emit(instance, 'Deposit')
+          .withArgs(
+            depositor.address,
+            depositor.address,
+            assetAmount,
+            shareAmount,
+          );
+      });
+
+      describe('reverts if', () => {
+        it.skip('assetAmount input is too large', async () => {
+          await expect(
+            instance.mint(ethers.constants.MaxUint256, caller.address),
+          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+      });
     });
 
     describe('#withdraw(uint256,address,address)', () => {
