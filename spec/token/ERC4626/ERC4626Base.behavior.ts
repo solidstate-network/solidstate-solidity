@@ -27,11 +27,12 @@ export function describeBehaviorOfERC4626Base(
   describe('::ERC4626Base', function () {
     let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
+    let recipient: SignerWithAddress;
     let assetInstance: IERC20;
     let instance: ERC4626Base;
 
     before(async () => {
-      [caller, depositor] = await ethers.getSigners();
+      [caller, depositor, recipient] = await ethers.getSigners();
     });
 
     beforeEach(async function () {
@@ -197,7 +198,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        expect(() =>
+        await expect(() =>
           instance.connect(depositor).deposit(assetAmount, depositor.address),
         ).to.changeTokenBalances(
           assetInstance,
@@ -219,7 +220,7 @@ export function describeBehaviorOfERC4626Base(
           assetAmount,
         );
 
-        expect(() =>
+        await expect(() =>
           instance.connect(depositor).deposit(assetAmount, depositor.address),
         ).to.changeTokenBalance(instance, depositor, shareAmount);
       });
@@ -254,7 +255,7 @@ export function describeBehaviorOfERC4626Base(
       describe('reverts if', () => {
         it.skip('assetAmount input is too large', async () => {
           await expect(
-            instance.deposit(ethers.constants.MaxUint256, caller.address),
+            instance.deposit(ethers.constants.MaxUint256, depositor.address),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
         });
       });
@@ -271,7 +272,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        expect(() =>
+        await expect(() =>
           instance.connect(depositor).mint(shareAmount, depositor.address),
         ).to.changeTokenBalances(
           assetInstance,
@@ -290,7 +291,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        expect(() =>
+        await expect(() =>
           instance.connect(depositor).mint(shareAmount, depositor.address),
         ).to.changeTokenBalance(instance, depositor, shareAmount);
       });
@@ -322,18 +323,207 @@ export function describeBehaviorOfERC4626Base(
       describe('reverts if', () => {
         it.skip('assetAmount input is too large', async () => {
           await expect(
-            instance.mint(ethers.constants.MaxUint256, caller.address),
+            instance.mint(ethers.constants.MaxUint256, depositor.address),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
         });
       });
     });
 
     describe('#withdraw(uint256,address,address)', () => {
-      it('todo');
+      it('transfers assets to receiver', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+
+        await expect(() =>
+          instance
+            .connect(depositor)
+            .withdraw(assetAmount, recipient.address, depositor.address),
+        ).to.changeTokenBalances(
+          assetInstance,
+          [recipient, instance],
+          [assetAmount, assetAmount.mul(ethers.constants.NegativeOne)],
+        );
+      });
+
+      it('burns shares held by depositor', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+
+        const shareAmount = await instance.callStatic.previewWithdraw(
+          assetAmount,
+        );
+
+        await expect(() =>
+          instance
+            .connect(depositor)
+            .withdraw(assetAmount, recipient.address, depositor.address),
+        ).to.changeTokenBalance(
+          instance,
+          depositor,
+          shareAmount.mul(ethers.constants.NegativeOne),
+        );
+      });
+
+      it('emits Withdraw event', async () => {
+        const assetAmount = ethers.constants.Two;
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+        await instance
+          .connect(depositor)
+          .approve(caller.address, ethers.constants.MaxUint256);
+
+        const shareAmount = await instance.callStatic.previewWithdraw(
+          assetAmount,
+        );
+
+        expect(
+          await instance
+            .connect(caller)
+            .withdraw(assetAmount, recipient.address, depositor.address),
+        )
+          .to.emit(instance, 'Withdraw')
+          .withArgs(
+            caller.address,
+            recipient.address,
+            depositor.address,
+            assetAmount,
+            shareAmount,
+          );
+      });
+
+      describe('reverts if', () => {
+        it.skip('assetAmount input is too large', async () => {
+          await expect(
+            instance.withdraw(
+              ethers.constants.MaxUint256,
+              recipient.address,
+              depositor.address,
+            ),
+          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+      });
     });
 
     describe('#redeem(uint256,address,address)', () => {
-      it('todo');
+      it('transfers assets to receiver', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewRedeem(
+          shareAmount,
+        );
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+
+        await expect(() =>
+          instance
+            .connect(depositor)
+            .redeem(shareAmount, recipient.address, depositor.address),
+        ).to.changeTokenBalances(
+          assetInstance,
+          [recipient, instance],
+          [assetAmount, assetAmount.mul(ethers.constants.NegativeOne)],
+        );
+      });
+
+      it('burns shares held by depositor', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewRedeem(
+          shareAmount,
+        );
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+
+        await expect(() =>
+          instance
+            .connect(depositor)
+            .redeem(shareAmount, recipient.address, depositor.address),
+        ).to.changeTokenBalance(
+          instance,
+          depositor,
+          shareAmount.mul(ethers.constants.NegativeOne),
+        );
+      });
+
+      it('emits Withdraw event', async () => {
+        const shareAmount = ethers.constants.Two;
+        const assetAmount = await instance.callStatic.previewRedeem(
+          shareAmount,
+        );
+
+        await mint(caller.address, assetAmount);
+        await mintAsset(depositor.address, assetAmount);
+        await assetInstance
+          .connect(depositor)
+          .approve(instance.address, assetAmount);
+        await instance
+          .connect(depositor)
+          .deposit(assetAmount, depositor.address);
+        await instance
+          .connect(depositor)
+          .approve(caller.address, ethers.constants.MaxUint256);
+
+        expect(
+          await instance
+            .connect(caller)
+            .redeem(shareAmount, recipient.address, depositor.address),
+        )
+          .to.emit(instance, 'Withdraw')
+          .withArgs(
+            caller.address,
+            recipient.address,
+            depositor.address,
+            assetAmount,
+            shareAmount,
+          );
+      });
+
+      describe('reverts if', () => {
+        it.skip('assetAmount input is too large', async () => {
+          await expect(
+            instance.redeem(
+              ethers.constants.MaxUint256,
+              recipient.address,
+              depositor.address,
+            ),
+          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+        });
+      });
     });
   });
 }
