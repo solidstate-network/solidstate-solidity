@@ -445,9 +445,11 @@ export function describeBehaviorOfERC4626Base(
 
           await mint(depositor.address, shareAmount);
 
+          const max = await instance.callStatic.maxWithdraw(depositor.address);
+
           await expect(
             instance.withdraw(
-              assetAmount.add(ethers.constants.One),
+              max.add(ethers.constants.One),
               recipient.address,
               depositor.address,
             ),
@@ -563,9 +565,11 @@ export function describeBehaviorOfERC4626Base(
 
           await mint(depositor.address, shareAmount);
 
+          const max = await instance.callStatic.maxRedeem(depositor.address);
+
           await expect(
             instance.redeem(
-              shareAmount.add(ethers.constants.One),
+              max.add(ethers.constants.One),
               recipient.address,
               depositor.address,
             ),
