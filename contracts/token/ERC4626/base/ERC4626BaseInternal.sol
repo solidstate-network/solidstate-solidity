@@ -40,9 +40,17 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         returns (uint256 shareAmount)
     {
         uint256 supply = _totalSupply();
-        shareAmount = supply == 0
-            ? assetAmount
-            : (assetAmount * supply) / _totalAssets();
+
+        if (supply == 0) {
+            shareAmount = assetAmount;
+        } else {
+            uint256 totalAssets = _totalAssets();
+            if (totalAssets == 0) {
+                shareAmount = assetAmount;
+            } else {
+                shareAmount = (assetAmount * supply) / totalAssets;
+            }
+        }
     }
 
     /**
@@ -57,9 +65,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         returns (uint256 assetAmount)
     {
         uint256 supply = _totalSupply();
-        assetAmount = supply == 0
-            ? shareAmount
-            : (shareAmount * _totalAssets()) / supply;
+
+        if (supply == 0) {
+            assetAmount = shareAmount;
+        } else {
+            assetAmount = (shareAmount * _totalAssets()) / supply;
+        }
     }
 
     /**
@@ -144,9 +155,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         returns (uint256 assetAmount)
     {
         uint256 supply = _totalSupply();
-        assetAmount = supply == 0
-            ? shareAmount
-            : (shareAmount * _totalAssets()) / supply;
+
+        if (supply == 0) {
+            assetAmount = shareAmount;
+        } else {
+            assetAmount = (shareAmount * _totalAssets() + supply - 1) / supply;
+        }
     }
 
     /**
@@ -161,9 +175,20 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         returns (uint256 shareAmount)
     {
         uint256 supply = _totalSupply();
-        shareAmount = supply == 0
-            ? assetAmount
-            : (assetAmount * supply) / _totalAssets();
+
+        if (supply == 0) {
+            shareAmount = assetAmount;
+        } else {
+            uint256 totalAssets = _totalAssets();
+
+            if (totalAssets == 0) {
+                shareAmount = assetAmount;
+            } else {
+                shareAmount =
+                    (assetAmount * supply + totalAssets - 1) /
+                    totalAssets;
+            }
+        }
     }
 
     /**

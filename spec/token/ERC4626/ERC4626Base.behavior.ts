@@ -64,14 +64,14 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await mint(instance.address, BigNumber.from('5'));
+        await mint(instance.address, BigNumber.from('10'));
 
         const supply = await instance.callStatic.totalSupply();
         const assets = await instance.callStatic.totalAssets();
 
-        const assetAmount = ethers.utils.parseUnits('1', 18);
+        const assetAmount = BigNumber.from('3');
 
-        // TODO: check rounding direction
+        // result is rounded down
 
         expect(await instance.callStatic.convertToShares(assetAmount)).to.eq(
           assetAmount.mul(supply).div(assets),
@@ -87,14 +87,14 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
-        await mint(instance.address, BigNumber.from('5'));
+        await mint(instance.address, BigNumber.from('10'));
 
         const supply = await instance.callStatic.totalSupply();
         const assets = await instance.callStatic.totalAssets();
 
-        const shareAmount = ethers.utils.parseUnits('1', 18);
+        const shareAmount = BigNumber.from('3');
 
-        // TODO: check rounding direction
+        // result is rounded down
 
         expect(await instance.callStatic.convertToAssets(shareAmount)).to.eq(
           shareAmount.mul(assets).div(supply),
@@ -144,7 +144,7 @@ export function describeBehaviorOfERC4626Base(
       it('returns the deposit input amount converted to shares', async () => {
         const assetAmount = ethers.utils.parseUnits('1', 18);
 
-        // TODO: check rounding direction
+        // result is rounded down
 
         expect(await instance.callStatic.previewDeposit(assetAmount)).to.eq(
           await instance.callStatic.convertToShares(assetAmount),
@@ -153,25 +153,47 @@ export function describeBehaviorOfERC4626Base(
     });
 
     describe('#previewMint(uint256)', () => {
-      it('returns the mint input amount converted to assets', async () => {
-        const shareAmount = ethers.utils.parseUnits('1', 18);
+      it('todo: supply is 0');
 
-        // TODO: check rounding direction
+      it('returns the mint input amount converted to assets', async () => {
+        await mint(instance.address, BigNumber.from('10'));
+
+        const supply = await instance.callStatic.totalSupply();
+        const assets = await instance.callStatic.totalAssets();
+
+        const shareAmount = BigNumber.from('3');
+
+        const err = shareAmount.mul(assets).mod(supply).isZero()
+          ? ethers.constants.Zero
+          : ethers.constants.One;
+
+        // result is rounded up
 
         expect(await instance.callStatic.previewMint(shareAmount)).to.eq(
-          await instance.callStatic.convertToAssets(shareAmount),
+          (await instance.callStatic.convertToAssets(shareAmount)).add(err),
         );
       });
     });
 
     describe('#previewWithdraw(uint256)', () => {
-      it('returns the withdraw input amount coverted to shares', async () => {
-        const assetAmount = ethers.utils.parseUnits('1', 18);
+      it('todo: supply is 0');
 
-        // TODO: check rounding direction
+      it('returns the withdraw input amount coverted to shares', async () => {
+        await mint(instance.address, BigNumber.from('10'));
+
+        const supply = await instance.callStatic.totalSupply();
+        const assets = await instance.callStatic.totalAssets();
+
+        const assetAmount = BigNumber.from('3');
+
+        const err = assetAmount.mul(supply).mod(assets).isZero()
+          ? ethers.constants.Zero
+          : ethers.constants.One;
+
+        // result is rounded up
 
         expect(await instance.callStatic.previewWithdraw(assetAmount)).to.eq(
-          await instance.callStatic.convertToShares(assetAmount),
+          (await instance.callStatic.convertToShares(assetAmount)).add(err),
         );
       });
     });
@@ -180,7 +202,7 @@ export function describeBehaviorOfERC4626Base(
       it('returns the redeem input amount converted to assets', async () => {
         const shareAmount = ethers.utils.parseUnits('1', 18);
 
-        // TODO: check rounding direction
+        // result is rounded down
 
         expect(await instance.callStatic.previewRedeem(shareAmount)).to.eq(
           await instance.callStatic.convertToAssets(shareAmount),
