@@ -32,6 +32,21 @@ abstract contract ERC20BaseInternal is IERC20Internal {
     }
 
     /**
+     * @notice query the allowance granted from given holder to given spender
+     * @param holder approver of allowance
+     * @param spender recipient of allowance
+     * @return token allowance
+     */
+    function _allowance(address holder, address spender)
+        internal
+        view
+        virtual
+        returns (uint256)
+    {
+        return ERC20BaseStorage.layout().allowances[holder][spender];
+    }
+
+    /**
      * @notice enable spender to spend tokens on behalf of holder
      * @param holder address on whose behalf tokens may be spent
      * @param spender recipient of allowance

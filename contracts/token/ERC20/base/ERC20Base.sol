@@ -33,7 +33,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         virtual
         returns (uint256)
     {
-        return ERC20BaseStorage.layout().allowances[holder][spender];
+        return _allowance(holder, spender);
     }
 
     /**
@@ -68,17 +68,19 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         address recipient,
         uint256 amount
     ) public virtual returns (bool) {
-        uint256 currentAllowance = ERC20BaseStorage.layout().allowances[holder][
-            msg.sender
-        ];
+        uint256 currentAllowance = _allowance(holder, msg.sender);
+
         require(
             currentAllowance >= amount,
             'ERC20: transfer amount exceeds allowance'
         );
+
         unchecked {
             _approve(holder, msg.sender, currentAllowance - amount);
         }
+
         _transfer(holder, recipient, amount);
+
         return true;
     }
 }
