@@ -24,7 +24,7 @@ Where possible, automated tests are designed to be imported by repositories whic
 For example, consider a custom `ERC20Base` implementation:
 
 ```solidity
-import '@solidstate/contracts/token/ERC20/ERC20Base.sol';
+import '@solidstate/contracts/token/ERC20/base/ERC20Base.sol';
 
 contract CustomToken is ERC20Base {
   // custom code...
