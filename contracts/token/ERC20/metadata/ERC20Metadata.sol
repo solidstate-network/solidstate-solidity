@@ -2,31 +2,31 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC20MetadataStorage } from './ERC20MetadataStorage.sol';
 import { IERC20Metadata } from './IERC20Metadata.sol';
+import { ERC20MetadataInternal } from './ERC20MetadataInternal.sol';
 
 /**
  * @title ERC20 metadata extensions
  */
-abstract contract ERC20Metadata is IERC20Metadata {
+abstract contract ERC20Metadata is IERC20Metadata, ERC20MetadataInternal {
     /**
      * @inheritdoc IERC20Metadata
      */
-    function name() public view virtual returns (string memory) {
-        return ERC20MetadataStorage.layout().name;
+    function name() external view returns (string memory) {
+        return _name();
     }
 
     /**
      * @inheritdoc IERC20Metadata
      */
-    function symbol() public view virtual returns (string memory) {
-        return ERC20MetadataStorage.layout().symbol;
+    function symbol() external view returns (string memory) {
+        return _symbol();
     }
 
     /**
      * @inheritdoc IERC20Metadata
      */
-    function decimals() public view virtual returns (uint8) {
-        return ERC20MetadataStorage.layout().decimals;
+    function decimals() external view returns (uint8) {
+        return _decimals();
     }
 }

@@ -6,7 +6,7 @@ import { IERC20Internal } from '../IERC20Internal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
- * @title Base ERC20 implementation, excluding optional extensions
+ * @title Base ERC20 internal functions, excluding optional extensions
  */
 abstract contract ERC20BaseInternal is IERC20Internal {
     /**
