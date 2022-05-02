@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/library",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "SolidState utility library",
