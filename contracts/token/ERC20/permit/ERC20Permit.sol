@@ -114,7 +114,7 @@ abstract contract ERC20Permit is IERC2612, ERC20Base, ERC20Metadata {
                 keccak256(
                     'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
                 ),
-                keccak256(bytes(name())), // ERC-20 Name
+                keccak256(bytes(_name())), // ERC-20 Name
                 keccak256(bytes('1')), // Version
                 chainId,
                 address(this)
