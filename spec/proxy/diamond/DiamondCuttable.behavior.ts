@@ -113,9 +113,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
+            await expect(contract.callStatic[fn]()).to.be.reverted;
           }
         });
 
@@ -176,9 +174,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
+            await expect(contract.callStatic[fn]()).to.be.reverted;
           }
 
           const facetReplacement = await deployMockContract(owner, abi);
@@ -197,9 +193,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
+            await expect(contract.callStatic[fn]()).to.be.reverted;
           }
         });
 
@@ -316,9 +310,7 @@ export function describeBehaviorOfDiamondCuttable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'Mock on the method is not initialized',
-            );
+            await expect(contract.callStatic[fn]()).to.be.reverted;
           }
 
           await instance
