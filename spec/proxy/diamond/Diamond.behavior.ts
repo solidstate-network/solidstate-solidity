@@ -118,7 +118,7 @@ export function describeBehaviorOfDiamond(
             to: instance.address,
             data: ethers.utils.randomBytes(4),
           }),
-        ).to.be.revertedWith('Mock on the method is not initialized');
+        ).to.be.reverted;
       });
 
       describe('reverts if', function () {
@@ -168,9 +168,8 @@ export function describeBehaviorOfDiamond(
           expectedSelectors.push(selector);
 
           // call reverts, but with mock-specific message
-          await expect(
-            owner.call({ to: instance.address, data: selector }),
-          ).to.be.revertedWith('Mock on the method is not initialized');
+          await expect(owner.call({ to: instance.address, data: selector })).to
+            .be.reverted;
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members([
             ...facetCuts.map((fc) => [fc.target, fc.selectors]),
@@ -223,9 +222,8 @@ export function describeBehaviorOfDiamond(
             );
 
             // call reverts, but with mock-specific message
-            await expect(
-              owner.call({ to: instance.address, data: last }),
-            ).to.be.revertedWith('Mock on the method is not initialized');
+            await expect(owner.call({ to: instance.address, data: last })).to.be
+              .reverted;
           }
 
           await expect(
@@ -287,9 +285,8 @@ export function describeBehaviorOfDiamond(
             );
 
             // call reverts, but with mock-specific message
-            await expect(
-              owner.call({ to: instance.address, data: last }),
-            ).to.be.revertedWith('Mock on the method is not initialized');
+            await expect(owner.call({ to: instance.address, data: last })).to.be
+              .reverted;
           }
 
           await expect(
@@ -351,9 +348,8 @@ export function describeBehaviorOfDiamond(
             );
 
             // call reverts, but with mock-specific message
-            await expect(
-              owner.call({ to: instance.address, data: last }),
-            ).to.be.revertedWith('Mock on the method is not initialized');
+            await expect(owner.call({ to: instance.address, data: last })).to.be
+              .reverted;
           }
 
           await expect(

@@ -475,7 +475,7 @@ export function describeBehaviorOfDiamondCuttable(
         it('initialization function reverts', async function () {
           await expect(
             instance.connect(owner).diamondCut([], facet.address, '0x01'),
-          ).to.be.revertedWith('Mock on the method is not initialized');
+          ).to.be.reverted;
         });
       });
     });

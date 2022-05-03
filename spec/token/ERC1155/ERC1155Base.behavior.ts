@@ -259,7 +259,7 @@ export function describeBehaviorOfERC1155Base(
                 ethers.constants.Zero,
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('Mock on the method is not initialized');
+          ).to.be.reverted;
         });
 
         it('receiver rejects transfer', async function () {
@@ -375,7 +375,7 @@ export function describeBehaviorOfERC1155Base(
                 [],
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('Mock on the method is not initialized');
+          ).to.be.reverted;
         });
 
         it('receiver rejects transfer', async function () {

@@ -57,16 +57,14 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
 
         const contract = new ethers.Contract(instance.address, abi, owner);
 
-        await expect(
-          contract.callStatic[implementationFunction](),
-        ).not.to.be.revertedWith('Mock on the method is not initialized');
+        await expect(contract.callStatic[implementationFunction]()).not.to.be
+          .reverted;
 
         await instance.connect(owner).setImplementation(implementation.address);
 
         // call reverts, but with mock-specific message
-        await expect(
-          contract.callStatic[implementationFunction](),
-        ).to.be.revertedWith('Mock on the method is not initialized');
+        await expect(contract.callStatic[implementationFunction]()).to.be
+          .reverted;
       });
 
       describe('reverts if', () => {
