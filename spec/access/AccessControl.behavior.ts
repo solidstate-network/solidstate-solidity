@@ -1,4 +1,5 @@
 import { AccessControl } from '../../typechain';
+import { describeBehaviorOfERC165 } from '../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { expect } from 'chai';

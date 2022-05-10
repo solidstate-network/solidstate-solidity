@@ -1,9 +1,9 @@
-import { describeBehaviorOfAccessControl } from '../../spec/access/AccessControl.behavior';
 import { AccessControlMock, AccessControlMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfAccessControl } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
-describe.only('AccessControl', function () {
+describe('AccessControl', function () {
   let admin: SignerWithAddress;
   let authorized: SignerWithAddress;
   let other: SignerWithAddress;
