@@ -6,7 +6,6 @@ import './AccessControl.sol';
 
 contract AccessControlMock is AccessControl {
     constructor() {
-        _initRole();
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
