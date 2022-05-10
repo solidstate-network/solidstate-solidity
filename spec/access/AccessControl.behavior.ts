@@ -74,12 +74,6 @@ export function describeBehaviorOfAccessControl(
           ),
         ).to.equal(DEFAULT_ADMIN_ROLE);
       });
-      // it("a role's admin role can be changed", async function () {
-      //   await instance.connect(admin).setRoleAdmin(`${ROLE}`, OTHER_ROLE);
-      //   expect(
-      //     await instance.callStatic['getRoleAdmin(bytes32)'](ROLE),
-      //   ).to.equal(OTHER_ROLE);
-      // });
     });
     describe('#grantRole(bytes32, address)', function () {
       it('accounts can be granted a role multiple times', async function () {
@@ -153,6 +147,26 @@ export function describeBehaviorOfAccessControl(
           .renounceRole(`${ROLE}`, authorized.address);
         const receipt = await trx.wait();
         expectEvent.notEmitted(receipt, 'RoleRevoked');
+      });
+    });
+    describe('reverts if', function () {
+      it('non-admin cannot grant role to other accounts', async function () {
+        await instance.connect(admin).grantRole(`${ROLE}`, authorized.address);
+        await expect(
+          instance.connect(authorized).grantRole(`${ROLE}`, authorized.address),
+        ).to.be.revertedWith(
+          `AccessControl: account ${authorized.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+        );
+      });
+      it('non-admin cannot revoke role', async function () {
+        await instance.connect(admin).grantRole(`${ROLE}`, authorized.address);
+        await expect(
+          instance
+            .connect(authorized)
+            .revokeRole(`${ROLE}`, authorized.address),
+        ).to.be.revertedWith(
+          `AccessControl: account ${authorized.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+        );
       });
     });
   });
