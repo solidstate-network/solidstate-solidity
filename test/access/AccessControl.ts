@@ -1,19 +1,33 @@
-import { AccessControlMock, OwnableMock__factory } from '../../typechain';
+import { describeBehaviorOfAccessControl } from '../../spec/access/AccessControl.behavior';
+import { AccessControlMock, AccessControlMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
-const DEFAULT_ADMIN_ROLE =
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = web3.utils.soliditySha3('ROLE');
-const OTHER_ROLE = web3.utils.soliditySha3('OTHER_ROLE');
-
-describe('AccessControl', function () {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+describe.only('AccessControl', function () {
+  let admin: SignerWithAddress;
+  let authorized: SignerWithAddress;
+  let other: SignerWithAddress;
+  let otherAdmin: SignerWithAddress;
+  let otherAuthorized: SignerWithAddress;
   let instance: AccessControlMock;
 
-  before(async function () {});
+  before(async function () {
+    [admin, authorized, other, otherAdmin, otherAuthorized] =
+      await ethers.getSigners();
+  });
 
-  beforeEach(async function () {});
+  beforeEach(async function () {
+    instance = await new AccessControlMock__factory(admin).deploy(
+      admin.address,
+    );
+  });
+
+  describeBehaviorOfAccessControl({
+    deploy: async () => instance as any,
+    getAdmin: async () => admin,
+    getAuthorized: async () => authorized,
+    getOther: async () => other,
+    getOtherAdmin: async () => otherAdmin,
+    getOtherAuthorized: async () => otherAuthorized,
+  });
 });

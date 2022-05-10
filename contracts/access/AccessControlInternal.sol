@@ -12,6 +12,24 @@ abstract contract AccessControlInternal {
 
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
+    event RoleAdminChanged(
+        bytes32 indexed role,
+        bytes32 indexed previousAdminRole,
+        bytes32 indexed newAdminRole
+    );
+
+    event RoleGranted(
+        bytes32 indexed role,
+        address indexed account,
+        address indexed sender
+    );
+
+    event RoleRevoked(
+        bytes32 indexed role,
+        address indexed account,
+        address indexed sender
+    );
+
     /**
      * @dev Modifier that checks that an account has a specific role. Reverts
      * with a standardized message including the required role.
@@ -29,19 +47,23 @@ abstract contract AccessControlInternal {
     /**
      * @dev Returns `true` if `account` has been granted `role`.
      */
-    function _hasRole(bytes32 role, address account) internal returns (bool) {
+    function _hasRole(bytes32 role, address account)
+        internal
+        view
+        returns (bool)
+    {
         return AccessControlStorage.layout().roles[role].members[account];
     }
 
     /**
-     * @dev Revert with a standard message if `_msgSender()` is missing `role`.
+     * @dev Revert with a standard message if `msg.sender` is missing `role`.
      * Overriding this function changes the behavior of the {onlyRole} modifier.
      *
      * Format of the revert message is described in {_checkRole}.
      *
      */
     function _checkRole(bytes32 role) internal view virtual {
-        _checkRole(role, _msgSender());
+        _checkRole(role, msg.sender);
     }
 
     /**
@@ -52,7 +74,7 @@ abstract contract AccessControlInternal {
      *  /^AccessControl: account (0x[0-9a-f]{40}) is missing role (0x[0-9a-f]{64})$/
      */
     function _checkRole(bytes32 role, address account) internal view virtual {
-        if (!AccessControlStorage.layout()._hasRole(role, account)) {
+        if (!_hasRole(role, account)) {
             revert(
                 string(
                     abi.encodePacked(
@@ -72,7 +94,7 @@ abstract contract AccessControlInternal {
      *
      * To change a role's admin, use {_setRoleAdmin}.
      */
-    function _getRoleAdmin(bytes32 role) internal returns (bytes32) {
+    function _getRoleAdmin(bytes32 role) internal view returns (bytes32) {
         return AccessControlStorage.layout().roles[role].adminRole;
     }
 
@@ -95,7 +117,7 @@ abstract contract AccessControlInternal {
     function _grantRole(bytes32 role, address account) internal virtual {
         if (!_hasRole(role, account)) {
             AccessControlStorage.layout().roles[role].members[account] = true;
-            emit RoleGranted(role, account, _msgSender());
+            emit RoleGranted(role, account, msg.sender);
         }
     }
 
@@ -107,7 +129,7 @@ abstract contract AccessControlInternal {
     function _revokeRole(bytes32 role, address account) internal virtual {
         if (_hasRole(role, account)) {
             AccessControlStorage.layout().roles[role].members[account] = false;
-            emit RoleRevoked(role, account, _msgSender());
+            emit RoleRevoked(role, account, msg.sender);
         }
     }
 }

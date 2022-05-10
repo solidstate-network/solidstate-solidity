@@ -67,7 +67,6 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
         public
         view
         virtual
-        override
         returns (bool)
     {
         return _hasRole(role, account);
@@ -76,13 +75,7 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
     /**
      * @dev See {AccessControlInternal-_getRoleAdmin}.
      */
-    function getRoleAdmin(bytes32 role)
-        public
-        view
-        virtual
-        override
-        returns (bytes32)
-    {
+    function getRoleAdmin(bytes32 role) public view virtual returns (bytes32) {
         return _getRoleAdmin(role);
     }
 
@@ -99,7 +92,6 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
     function grantRole(bytes32 role, address account)
         public
         virtual
-        override
         onlyRole(getRoleAdmin(role))
     {
         _grantRole(role, account);
@@ -117,7 +109,6 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
     function revokeRole(bytes32 role, address account)
         public
         virtual
-        override
         onlyRole(getRoleAdmin(role))
     {
         _revokeRole(role, account);
@@ -137,11 +128,7 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
      *
      * - the caller must be `account`.
      */
-    function renounceRole(bytes32 role, address account)
-        public
-        virtual
-        override
-    {
+    function renounceRole(bytes32 role, address account) public virtual {
         require(
             account == _msgSender(),
             'AccessControl: can only renounce roles for self'
