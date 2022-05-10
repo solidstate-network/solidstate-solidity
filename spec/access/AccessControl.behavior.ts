@@ -121,5 +121,39 @@ export function describeBehaviorOfAccessControl(
         ).to.equal(false);
       });
     });
+    describe('#renounceRole(bytes32, address)', function () {
+      beforeEach(async function () {
+        this.receipt = await instance
+          .connect(admin)
+          .grantRole(`${ROLE}`, authorized.address);
+      });
+      it('bearer can renounce role', async function () {
+        await expect(
+          instance
+            .connect(authorized)
+            .renounceRole(`${ROLE}`, authorized.address),
+        )
+          .to.emit(instance, 'RoleRevoked')
+          .withArgs(`${ROLE}`, authorized.address, authorized.address);
+
+        expect(
+          await instance.callStatic['hasRole(bytes32,address)'](
+            `${ROLE}`,
+            authorized.address,
+          ),
+        ).to.equal(false);
+      });
+      it('a role can be renounced multiple times', async function () {
+        await instance
+          .connect(authorized)
+          .renounceRole(`${ROLE}`, authorized.address);
+
+        const trx = await instance
+          .connect(authorized)
+          .renounceRole(`${ROLE}`, authorized.address);
+        const receipt = await trx.wait();
+        expectEvent.notEmitted(receipt, 'RoleRevoked');
+      });
+    });
   });
 }
