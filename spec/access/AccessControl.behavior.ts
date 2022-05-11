@@ -1,17 +1,12 @@
 import { AccessControl } from '../../typechain';
-import { describeBehaviorOfERC165 } from '../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import * as web3 from 'web3-utils';
-
-const { expectEvent } = require('@openzeppelin/test-helpers');
 
 const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = web3.soliditySha3('ROLE');
-const OTHER_ROLE = web3.soliditySha3('OTHER_ROLE');
+const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
 
 interface AccessControlBehaviorArgs {
   deploy: () => Promise<AccessControl>;
@@ -97,7 +92,7 @@ export function describeBehaviorOfAccessControl(
           .connect(admin)
           .grantRole(`${ROLE}`, authorized.address);
         const receipt = await trx.wait();
-        expectEvent.notEmitted(receipt, 'RoleGranted');
+        expect(receipt.events?.length).to.equal(0);
       });
     });
     describe('#revokeRole(bytes32, address)', function () {
@@ -147,7 +142,7 @@ export function describeBehaviorOfAccessControl(
           .connect(authorized)
           .renounceRole(`${ROLE}`, authorized.address);
         const receipt = await trx.wait();
-        expectEvent.notEmitted(receipt, 'RoleRevoked');
+        expect(receipt.events?.length).to.equal(0);
       });
     });
     describe('reverts if', function () {

@@ -18,7 +18,6 @@ abstract contract ERC165 is IERC165 {
         public
         view
         virtual
-        override
         returns (bool)
     {
         return ERC165Storage.layout().isSupportedInterface(interfaceId);

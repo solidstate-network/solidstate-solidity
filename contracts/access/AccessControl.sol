@@ -3,8 +3,8 @@
 
 pragma solidity ^0.8.0;
 
-import './AccessControlInternal.sol';
-import '../introspection/ERC165.sol';
+import { IAccessControl } from './IAccessControl.sol';
+import { AccessControlInternal } from './AccessControlInternal.sol';
 
 /**
  * @dev Contract module that allows children to implement role-based access
@@ -44,22 +44,7 @@ import '../introspection/ERC165.sol';
  * grant and revoke this role. Extra precautions should be taken to secure
  * accounts that have been granted it.
  */
-abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override
-        returns (bool)
-    {
-        return
-            interfaceId == type(IAccessControl).interfaceId ||
-            super.supportsInterface(interfaceId);
-    }
-
+abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @dev See {AccessControlInternal-_hasRole}.
      */
@@ -130,7 +115,7 @@ abstract contract AccessControl is Context, AccessControlInternal, ERC165 {
      */
     function renounceRole(bytes32 role, address account) public virtual {
         require(
-            account == _msgSender(),
+            account == msg.sender,
             'AccessControl: can only renounce roles for self'
         );
 

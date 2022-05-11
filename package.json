@@ -4,7 +4,6 @@
   "author": "Nick Barry",
   "license": "MIT",
   "scripts": {
-    "coverage": "env COVERAGE=true hardhat coverage",
     "lerna-publish": "yarn build && lerna publish",
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky install",
@@ -15,7 +14,6 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@openzeppelin/test-helpers": "^0.5.15",
     "@solidstate/hardhat-4byte-uploader": "^1.0.2",
     "@solidstate/library": "link:lib",
     "@solidstate/spec": "link:spec",
@@ -44,7 +42,6 @@
     "ts-node": "^10.7.0",
     "typechain": "^8.0.0",
     "typescript": "^4.6.4",
-    "web3-utils": "^1.7.3",
     "yarn-up": "^1.4.1"
   }
 }

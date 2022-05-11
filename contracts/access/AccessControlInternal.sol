@@ -3,32 +3,17 @@
 pragma solidity ^0.8.0;
 
 import { AccessControlStorage } from './AccessControlStorage.sol';
-import './IAccessControl.sol';
+import { IAccessControlInternal } from './IAccessControlInternal.sol';
 import '../utils/Context.sol';
-import '../utils/Strings.sol';
+import { UintUtils } from '../utils/UintUtils.sol';
+import { AddressUtils } from '../utils/AddressUtils.sol';
 
-abstract contract AccessControlInternal {
+abstract contract AccessControlInternal is IAccessControlInternal {
     using AccessControlStorage for AccessControlStorage.Layout;
+    using AddressUtils for address;
+    using UintUtils for uint256;
 
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
-
-    event RoleAdminChanged(
-        bytes32 indexed role,
-        bytes32 indexed previousAdminRole,
-        bytes32 indexed newAdminRole
-    );
-
-    event RoleGranted(
-        bytes32 indexed role,
-        address indexed account,
-        address indexed sender
-    );
-
-    event RoleRevoked(
-        bytes32 indexed role,
-        address indexed account,
-        address indexed sender
-    );
 
     /**
      * @dev Modifier that checks that an account has a specific role. Reverts
@@ -79,9 +64,9 @@ abstract contract AccessControlInternal {
                 string(
                     abi.encodePacked(
                         'AccessControl: account ',
-                        Strings.toHexString(uint160(account), 20),
+                        account.toString(),
                         ' is missing role ',
-                        Strings.toHexString(uint256(role), 32)
+                        uint256(role).toHexString(32)
                     )
                 )
             );
