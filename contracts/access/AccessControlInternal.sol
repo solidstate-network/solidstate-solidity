@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 
 import { AccessControlStorage } from './AccessControlStorage.sol';
 import { IAccessControlInternal } from './IAccessControlInternal.sol';
-import '../utils/Context.sol';
 import { UintUtils } from '../utils/UintUtils.sol';
 import { AddressUtils } from '../utils/AddressUtils.sol';
 
