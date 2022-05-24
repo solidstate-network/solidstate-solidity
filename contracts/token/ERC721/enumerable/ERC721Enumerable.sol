@@ -18,6 +18,13 @@ abstract contract ERC721Enumerable is
     /**
      * @inheritdoc IERC721Enumerable
      */
+    function ownerOf(uint256 tokenId) public view returns (address) {
+        return _ownerOf(tokenId);
+    }
+
+    /**
+     * @inheritdoc IERC721Enumerable
+     */
     function totalSupply() public view returns (uint256) {
         return _totalSupply();
     }
