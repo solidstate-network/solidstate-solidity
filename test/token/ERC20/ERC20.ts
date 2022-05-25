@@ -1,5 +1,5 @@
-import { ERC20Mock, ERC20Mock__factory } from '../../../typechain';
 import { describeBehaviorOfERC20 } from '@solidstate/spec';
+import { ERC20Mock, ERC20Mock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';

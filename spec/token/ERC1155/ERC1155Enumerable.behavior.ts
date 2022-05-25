@@ -1,6 +1,6 @@
-import { ERC1155Enumerable } from '../../../typechain';
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { describeFilter } from '@solidstate/library';
+import { ERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

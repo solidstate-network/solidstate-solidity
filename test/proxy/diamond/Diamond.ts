@@ -1,6 +1,6 @@
-import { Diamond, DiamondMock__factory } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfDiamond } from '@solidstate/spec';
+import { Diamond, DiamondMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

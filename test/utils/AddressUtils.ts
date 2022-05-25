@@ -1,5 +1,8 @@
-import { AddressUtilsMock, AddressUtilsMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import {
+  AddressUtilsMock,
+  AddressUtilsMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BytesLike, BigNumber } from 'ethers';

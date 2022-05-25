@@ -1,7 +1,7 @@
-import { DiamondCuttable } from '../../../typechain';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { DiamondCuttable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';

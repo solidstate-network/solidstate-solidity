@@ -1,5 +1,8 @@
-import { ERC1271StoredMock, ERC1271StoredMock__factory } from '../../typechain';
 import { describeBehaviorOfERC1271Stored } from '@solidstate/spec';
+import {
+  ERC1271StoredMock,
+  ERC1271StoredMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
