@@ -10,7 +10,7 @@ import { ERC1155Metadata } from './metadata/ERC1155Metadata.sol';
 /**
  * @title SolidState ERC1155 implementation
  */
-abstract contract ERC1155 is
+abstract contract SolidStateERC1155 is
     ERC1155Base,
     ERC1155Enumerable,
     ERC1155Metadata,

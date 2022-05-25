@@ -1,6 +1,6 @@
 import {
-  ERC20Mock,
-  ERC20Mock__factory,
+  SolidStateERC20Mock,
+  SolidStateERC20Mock__factory,
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
 } from '../../../typechain';
@@ -17,14 +17,14 @@ describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
   let instance: ERC4626BaseMock;
-  let assetInstance: ERC20Mock;
+  let assetInstance: SolidStateERC20Mock;
 
   before(async () => {
     [deployer, depositor] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    assetInstance = await new ERC20Mock__factory(deployer).deploy(
+    assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
       '',
       '',
       0,

@@ -1,15 +1,18 @@
-import { Diamond, DiamondMock__factory } from '../../../typechain';
+import {
+  SolidStateDiamond,
+  SolidStateDiamondMock__factory,
+} from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfDiamond } from '@solidstate/spec';
+import { describeBehaviorOfSolidStateDiamond } from '@solidstate/spec';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('Diamond', function () {
+describe('SolidStateDiamond', function () {
   let owner: SignerWithAddress;
   let getNomineeOwner: SignerWithAddress;
   let getNonOwner: SignerWithAddress;
 
-  let instance: Diamond;
+  let instance: SolidStateDiamond;
 
   let facetCuts: any[] = [];
 
@@ -19,7 +22,7 @@ describe('Diamond', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new DiamondMock__factory(deployer).deploy();
+    instance = await new SolidStateDiamondMock__factory(deployer).deploy();
 
     const facets = await instance.callStatic['facets()']();
 
@@ -32,7 +35,7 @@ describe('Diamond', function () {
     };
   });
 
-  describeBehaviorOfDiamond({
+  describeBehaviorOfSolidStateDiamond({
     deploy: async () => instance as any,
     getOwner: async () => owner,
     getNomineeOwner: async () => getNomineeOwner,

@@ -1,24 +1,27 @@
-import { ERC721Mock, ERC721Mock__factory } from '../../../typechain';
-import { describeBehaviorOfERC721 } from '@solidstate/spec';
+import {
+  SolidStateERC721Mock,
+  SolidStateERC721Mock__factory,
+} from '../../../typechain';
+import { describeBehaviorOfSolidStateERC721 } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
 const name = 'ERC721Metadata.name';
 const symbol = 'ERC721Metadata.symbol';
 const tokenURI = 'ERC721Metadata.tokenURI';
 
-describe('ERC721', function () {
-  let instance: ERC721Mock;
+describe('SolidStateERC721', function () {
+  let instance: SolidStateERC721Mock;
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC721Mock__factory(deployer).deploy(
+    instance = await new SolidStateERC721Mock__factory(deployer).deploy(
       name,
       symbol,
       tokenURI,
     );
   });
 
-  describeBehaviorOfERC721({
+  describeBehaviorOfSolidStateERC721({
     deploy: async () => instance,
     supply: ethers.constants.Zero,
     mint: async (recipient, tokenId) =>

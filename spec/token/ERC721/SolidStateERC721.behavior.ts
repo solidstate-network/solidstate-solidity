@@ -1,4 +1,4 @@
-import { ERC721 } from '../../../typechain';
+import { SolidStateERC721 } from '../../../typechain';
 import { describeBehaviorOfERC721Base } from './ERC721Base.behavior';
 import { describeBehaviorOfERC721Enumerable } from './ERC721Enumerable.behavior';
 import { describeBehaviorOfERC721Metadata } from './ERC721Metadata.behavior';
@@ -8,8 +8,8 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC721BehaviorArgs {
-  deploy: () => Promise<ERC721>;
+interface SolidStateERC721BehaviorArgs {
+  deploy: () => Promise<SolidStateERC721>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
   supply: BigNumber;
@@ -18,16 +18,24 @@ interface ERC721BehaviorArgs {
   tokenURI: string;
 }
 
-export function describeBehaviorOfERC721(
-  { deploy, supply, mint, burn, name, symbol, tokenURI }: ERC721BehaviorArgs,
+export function describeBehaviorOfSolidStateERC721(
+  {
+    deploy,
+    supply,
+    mint,
+    burn,
+    name,
+    symbol,
+    tokenURI,
+  }: SolidStateERC721BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC721', function () {
+  describe('::SolidStateERC721', function () {
     let holder: SignerWithAddress;
 
-    let instance: ERC721;
+    let instance: SolidStateERC721;
 
     before(async function () {
       [holder] = await ethers.getSigners();

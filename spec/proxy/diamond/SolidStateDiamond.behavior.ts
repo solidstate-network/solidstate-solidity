@@ -1,4 +1,4 @@
-import { Diamond } from '../../../typechain';
+import { SolidStateDiamond } from '../../../typechain';
 import { describeBehaviorOfSafeOwnable } from '../../access';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
@@ -9,8 +9,8 @@ import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-interface DiamondBehaviorArgs {
-  deploy: () => Promise<Diamond>;
+interface SolidStateDiamondBehaviorArgs {
+  deploy: () => Promise<SolidStateDiamond>;
   getOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
@@ -18,7 +18,7 @@ interface DiamondBehaviorArgs {
   fallbackAddress: string;
 }
 
-export function describeBehaviorOfDiamond(
+export function describeBehaviorOfSolidStateDiamond(
   {
     deploy,
     getOwner,
@@ -26,16 +26,16 @@ export function describeBehaviorOfDiamond(
     getNonOwner,
     facetCuts,
     fallbackAddress,
-  }: DiamondBehaviorArgs,
+  }: SolidStateDiamondBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Diamond', function () {
+  describe('::SolidStateDiamond', function () {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    let instance: Diamond;
+    let instance: SolidStateDiamond;
 
     before(async function () {
       owner = await getOwner();

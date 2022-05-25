@@ -1,42 +1,37 @@
-import { IERC20, ERC4626 } from '../../../typechain';
-import { describeBehaviorOfERC20 } from '../ERC20';
-import { describeBehaviorOfERC4626Base } from './ERC4626Base.behavior';
+import { SolidStateERC1404 } from '../../../typechain';
+import { describeBehaviorOfSolidStateERC20 } from '../ERC20';
+import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface ERC4626BehaviorArgs {
-  deploy: () => Promise<ERC4626>;
-  getAsset: () => Promise<IERC20>;
+interface SolidStateERC1404BehaviorArgs {
+  deploy: () => Promise<SolidStateERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  mintAsset: (
-    address: string,
-    amount: BigNumber,
-  ) => Promise<ContractTransaction>;
+  restrictions: any;
   name: string;
   symbol: string;
   decimals: BigNumberish;
   supply: BigNumber;
 }
 
-export function describeBehaviorOfERC4626(
+export function describeBehaviorOfSolidStateERC1404(
   {
     deploy,
-    getAsset,
     mint,
     burn,
-    mintAsset,
+    restrictions,
     name,
     symbol,
     decimals,
     supply,
-  }: ERC4626BehaviorArgs,
+  }: SolidStateERC1404BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC4626', function () {
-    describeBehaviorOfERC20(
+  describe('::SolidStateERC1404', function () {
+    describeBehaviorOfSolidStateERC20(
       {
         deploy,
         mint,
@@ -49,13 +44,12 @@ export function describeBehaviorOfERC4626(
       skips,
     );
 
-    describeBehaviorOfERC4626Base(
+    describeBehaviorOfERC1404Base(
       {
         deploy,
-        getAsset,
+        restrictions,
         mint,
         burn,
-        mintAsset,
         supply,
       },
       ['::ERC20Base', ...(skips ?? [])],

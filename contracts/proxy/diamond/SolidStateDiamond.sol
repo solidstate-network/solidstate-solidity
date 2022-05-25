@@ -12,7 +12,7 @@ import { DiamondLoupe, IDiamondLoupe } from './DiamondLoupe.sol';
 /**
  * @title SolidState "Diamond" proxy reference implementation
  */
-abstract contract Diamond is
+abstract contract SolidStateDiamond is
     DiamondBase,
     DiamondCuttable,
     DiamondLoupe,
@@ -59,8 +59,8 @@ abstract contract Diamond is
 
         // register Diamond
 
-        selectors[10] = Diamond.getFallbackAddress.selector;
-        selectors[11] = Diamond.setFallbackAddress.selector;
+        selectors[10] = SolidStateDiamond.getFallbackAddress.selector;
+        selectors[11] = SolidStateDiamond.setFallbackAddress.selector;
 
         // diamond cut
 

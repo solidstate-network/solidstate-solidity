@@ -10,7 +10,7 @@ import { ERC165 } from '../../introspection/ERC165.sol';
 /**
  * @title SolidState ERC721 implementation, including recommended extensions
  */
-abstract contract ERC721 is
+abstract contract SolidStateERC721 is
     ERC721Base,
     ERC721Enumerable,
     ERC721Metadata,

@@ -9,6 +9,6 @@ import { ERC20Metadata } from './metadata/ERC20Metadata.sol';
 /**
  * @title SolidState ERC20 implementation, including recommended extensions
  */
-abstract contract ERC20 is ERC20Base, ERC20Extended, ERC20Metadata {
+abstract contract SolidStateERC20 is ERC20Base, ERC20Extended, ERC20Metadata {
 
 }

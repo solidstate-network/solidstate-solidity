@@ -1,5 +1,8 @@
-import { ERC1404Mock, ERC1404Mock__factory } from '../../../typechain';
-import { describeBehaviorOfERC1404 } from '@solidstate/spec';
+import {
+  SolidStateERC1404Mock,
+  SolidStateERC1404Mock__factory,
+} from '../../../typechain';
+import { describeBehaviorOfSolidStateERC1404 } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
 let restrictions = [
@@ -7,18 +10,18 @@ let restrictions = [
   { code: ethers.BigNumber.from(3), message: 'three' },
 ];
 
-describe('ERC1404', function () {
-  let instance: ERC1404Mock;
+describe('SolidStateERC1404', function () {
+  let instance: SolidStateERC1404Mock;
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1404Mock__factory(deployer).deploy(
+    instance = await new SolidStateERC1404Mock__factory(deployer).deploy(
       restrictions.map((r) => r.code),
       restrictions.map((r) => r.message),
     );
   });
 
-  describeBehaviorOfERC1404({
+  describeBehaviorOfSolidStateERC1404({
     deploy: async () => instance as any,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

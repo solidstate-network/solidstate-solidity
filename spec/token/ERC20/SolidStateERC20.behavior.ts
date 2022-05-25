@@ -1,12 +1,12 @@
-import { ERC20 } from '../../../typechain';
+import { SolidStateERC20 } from '../../../typechain';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { describeBehaviorOfERC20Extended } from './ERC20Extended.behavior';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
 import { describeFilter } from '@solidstate/library';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface ERC20BehaviorArgs {
-  deploy: () => Promise<ERC20>;
+interface SolidStateERC20BehaviorArgs {
+  deploy: () => Promise<SolidStateERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   name: string;
@@ -15,13 +15,21 @@ interface ERC20BehaviorArgs {
   supply: BigNumber;
 }
 
-export function describeBehaviorOfERC20(
-  { deploy, mint, burn, name, symbol, decimals, supply }: ERC20BehaviorArgs,
+export function describeBehaviorOfSolidStateERC20(
+  {
+    deploy,
+    mint,
+    burn,
+    name,
+    symbol,
+    decimals,
+    supply,
+  }: SolidStateERC20BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20', function () {
+  describe('::SolidStateERC20', function () {
     describeBehaviorOfERC20Base(
       {
         deploy,

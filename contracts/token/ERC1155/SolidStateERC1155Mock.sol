@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC1155 } from './ERC1155.sol';
+import { SolidStateERC1155 } from './SolidStateERC1155.sol';
 import { IERC1155 } from './IERC1155.sol';
 import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
 import { IERC165 } from '../../introspection/IERC165.sol';
 
-contract ERC1155Mock is ERC1155 {
+contract SolidStateERC1155Mock is SolidStateERC1155 {
     using ERC165Storage for ERC165Storage.Layout;
 
     constructor() {
