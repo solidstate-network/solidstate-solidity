@@ -1,5 +1,5 @@
-import { ERC721Mock, ERC721Mock__factory } from '../../../typechain';
 import { describeBehaviorOfERC721 } from '@solidstate/spec';
+import { ERC721Mock, ERC721Mock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 const name = 'ERC721Metadata.name';

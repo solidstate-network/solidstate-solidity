@@ -1,9 +1,9 @@
-import { ERC721 } from '../../../typechain';
 import { describeBehaviorOfERC721Base } from './ERC721Base.behavior';
 import { describeBehaviorOfERC721Enumerable } from './ERC721Enumerable.behavior';
 import { describeBehaviorOfERC721Metadata } from './ERC721Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { ERC721 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

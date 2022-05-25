@@ -1,10 +1,10 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import {
   ERC721Base,
   ERC721BaseMock,
   ERC721BaseMock__factory,
-} from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfERC721Base } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';

@@ -1,10 +1,10 @@
-import { Diamond } from '../../../typechain';
 import { describeBehaviorOfSafeOwnable } from '../../access';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
 import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { Diamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';

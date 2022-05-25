@@ -1,6 +1,6 @@
-import { DiamondLoupe } from '../../../typechain';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { describeFilter } from '@solidstate/library';
+import { DiamondLoupe } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
