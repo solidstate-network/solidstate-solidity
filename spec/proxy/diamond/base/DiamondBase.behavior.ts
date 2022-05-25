@@ -1,4 +1,4 @@
-import { DiamondBase } from '../../../typechain';
+import { DiamondBase } from '../../../../typechain';
 import { describeFilter } from '@solidstate/library';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

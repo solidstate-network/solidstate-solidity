@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
+import { DiamondBaseStorage } from './base/DiamondBaseStorage.sol';
 import { IDiamondLoupe } from './IDiamondLoupe.sol';
 
 /**

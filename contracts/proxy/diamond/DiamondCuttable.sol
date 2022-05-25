@@ -3,8 +3,8 @@
 pragma solidity ^0.8.0;
 
 import { OwnableInternal } from '../../access/OwnableInternal.sol';
+import { DiamondBaseStorage } from './base/DiamondBaseStorage.sol';
 import { IDiamondCuttable } from './IDiamondCuttable.sol';
-import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract

@@ -2,7 +2,7 @@ import {
   DiamondBaseMock,
   DiamondBaseMock__factory,
   OwnableMock__factory,
-} from '../../../typechain';
+} from '../../../../typechain';
 import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import { ethers } from 'hardhat';
 
