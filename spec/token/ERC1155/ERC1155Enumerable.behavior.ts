@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -7,6 +7,12 @@ import { ethers } from 'hardhat';
 
 interface ERC1155EnumerableBehaviorArgs {
   deploy: () => Promise<ERC1155Enumerable>;
+  transfer: (
+    from: SignerWithAddress,
+    to: SignerWithAddress,
+    id: BigNumber,
+    amount: BigNumber,
+  ) => Promise<ContractTransaction>;
   mint: (
     address: string,
     id: BigNumber,
@@ -21,7 +27,7 @@ interface ERC1155EnumerableBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1155Enumerable(
-  { deploy, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
+  { deploy, transfer, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -32,16 +38,6 @@ export function describeBehaviorOfERC1155Enumerable(
     beforeEach(async function () {
       instance = await deploy();
     });
-
-    describeBehaviorOfERC1155Base(
-      {
-        deploy,
-        mint,
-        burn,
-        tokenId,
-      },
-      skips,
-    );
 
     describe('#totalSupply(uint256)', function () {
       it('returns supply of given token', async function () {
@@ -59,15 +55,7 @@ export function describeBehaviorOfERC1155Enumerable(
           amount,
         );
 
-        await instance
-          .connect(holder0)
-          ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
-            holder0.address,
-            holder1.address,
-            id,
-            amount,
-            ethers.utils.randomBytes(0),
-          );
+        await transfer(holder0, holder1, id, amount);
 
         expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
           amount,
@@ -97,15 +85,7 @@ export function describeBehaviorOfERC1155Enumerable(
           1,
         );
 
-        await instance
-          .connect(holder0)
-          ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
-            holder0.address,
-            holder1.address,
-            id,
-            amount,
-            ethers.utils.randomBytes(0),
-          );
+        await transfer(holder0, holder1, id, amount);
 
         expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
           1,
@@ -135,15 +115,7 @@ export function describeBehaviorOfERC1155Enumerable(
           await instance.callStatic['accountsByToken(uint256)'](id),
         ).to.eql([holder0.address]);
 
-        await instance
-          .connect(holder0)
-          ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
-            holder0.address,
-            holder1.address,
-            id,
-            amount,
-            ethers.utils.randomBytes(0),
-          );
+        await transfer(holder0, holder1, id, amount);
 
         expect(
           await instance.callStatic['accountsByToken(uint256)'](id),
@@ -187,15 +159,7 @@ export function describeBehaviorOfERC1155Enumerable(
           ),
         ).to.eql([]);
 
-        await instance
-          .connect(holder0)
-          ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
-            holder0.address,
-            holder1.address,
-            id,
-            amount,
-            ethers.utils.randomBytes(0),
-          );
+        await transfer(holder0, holder1, id, amount);
 
         expect(
           await instance.callStatic['tokensByAccount(address)'](
