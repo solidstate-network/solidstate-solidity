@@ -8,6 +8,7 @@ interface ERC1404BehaviorArgs {
   deploy: () => Promise<ERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
   restrictions: any;
   name: string;
   symbol: string;
@@ -20,6 +21,7 @@ export function describeBehaviorOfERC1404(
     deploy,
     mint,
     burn,
+    allowance,
     restrictions,
     name,
     symbol,
@@ -36,6 +38,7 @@ export function describeBehaviorOfERC1404(
         deploy,
         mint,
         burn,
+        allowance,
         name,
         symbol,
         decimals,

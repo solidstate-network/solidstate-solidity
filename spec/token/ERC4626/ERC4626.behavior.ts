@@ -9,6 +9,7 @@ interface ERC4626BehaviorArgs {
   getAsset: () => Promise<IERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
   mintAsset: (
     address: string,
     amount: BigNumber,
@@ -25,6 +26,7 @@ export function describeBehaviorOfERC4626(
     getAsset,
     mint,
     burn,
+    allowance,
     mintAsset,
     name,
     symbol,
@@ -41,6 +43,7 @@ export function describeBehaviorOfERC4626(
         deploy,
         mint,
         burn,
+        allowance,
         name,
         symbol,
         decimals,

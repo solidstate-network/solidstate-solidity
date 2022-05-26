@@ -32,6 +32,8 @@ describe('ERC4626', function () {
     getAsset: async () => assetInstance,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
+    allowance: (holder, spender) =>
+      instance.callStatic.allowance(holder, spender),
     mintAsset: (recipient: string, amount: BigNumber) =>
       assetInstance.__mint(recipient, amount),
     name: '',

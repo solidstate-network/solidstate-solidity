@@ -9,6 +9,7 @@ interface ERC20BehaviorArgs {
   deploy: () => Promise<ERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
   name: string;
   symbol: string;
   decimals: BigNumberish;
@@ -16,7 +17,16 @@ interface ERC20BehaviorArgs {
 }
 
 export function describeBehaviorOfERC20(
-  { deploy, mint, burn, name, symbol, decimals, supply }: ERC20BehaviorArgs,
+  {
+    deploy,
+    mint,
+    burn,
+    name,
+    allowance,
+    symbol,
+    decimals,
+    supply,
+  }: ERC20BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -37,9 +47,10 @@ export function describeBehaviorOfERC20(
         deploy,
         mint,
         burn,
+        allowance,
         supply,
       },
-      ['::ERC20Base', ...(skips ?? [])],
+      skips,
     );
 
     describeBehaviorOfERC20Metadata(

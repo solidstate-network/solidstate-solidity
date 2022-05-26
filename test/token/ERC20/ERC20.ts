@@ -24,6 +24,8 @@ describe('ERC20', function () {
     deploy: async () => instance as any,
     mint: async (recipient, amount) => instance.__mint(recipient, amount),
     burn: async (recipient, amount) => instance.__burn(recipient, amount),
+    allowance: (holder, spender) =>
+      instance.callStatic.allowance(holder, spender),
     name,
     symbol,
     decimals,
