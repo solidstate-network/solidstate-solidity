@@ -3,13 +3,14 @@
 pragma solidity ^0.8.0;
 
 import { IERC20 } from '../IERC20.sol';
+import { IERC20Base } from './IERC20Base.sol';
 import { ERC20BaseInternal } from './ERC20BaseInternal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
  * @title Base ERC20 implementation, excluding optional extensions
  */
-abstract contract ERC20Base is IERC20, ERC20BaseInternal {
+abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
     /**
      * @inheritdoc IERC20
      */

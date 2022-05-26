@@ -2,15 +2,17 @@
 
 pragma solidity ^0.8.0;
 
+import { ERC165 } from '../../introspection/ERC165.sol';
 import { ERC721Base, ERC721BaseInternal } from './base/ERC721Base.sol';
 import { ERC721Enumerable } from './enumerable/ERC721Enumerable.sol';
 import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
-import { ERC165 } from '../../introspection/ERC165.sol';
+import { ISolidStateERC721 } from './ISolidStateERC721.sol';
 
 /**
  * @title SolidState ERC721 implementation, including recommended extensions
  */
 abstract contract SolidStateERC721 is
+    ISolidStateERC721,
     ERC721Base,
     ERC721Enumerable,
     ERC721Metadata,
