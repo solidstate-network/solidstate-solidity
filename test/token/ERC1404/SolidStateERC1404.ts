@@ -1,8 +1,8 @@
+import { describeBehaviorOfSolidStateERC1404 } from '@solidstate/spec';
 import {
   SolidStateERC1404Mock,
   SolidStateERC1404Mock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfSolidStateERC1404 } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 let restrictions = [
@@ -25,6 +25,8 @@ describe('SolidStateERC1404', function () {
     deploy: async () => instance as any,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
+    allowance: (holder, spender) =>
+      instance.callStatic.allowance(holder, spender),
     restrictions,
     name: '',
     symbol: '',

@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC20Base, ERC20BaseStorage } from '../base/ERC20Base.sol';
+import { ERC20BaseInternal, ERC20BaseStorage } from '../base/ERC20Base.sol';
 
 /**
  * @title ERC20 safe approval extensions
  * @dev mitigations for transaction-ordering vulnerability (see https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729)
  */
-abstract contract ERC20Extended is ERC20Base {
+abstract contract ERC20Extended is ERC20BaseInternal {
     /**
      * @notice increase spend amount granted to spender
      * @param spender address whose allowance to increase

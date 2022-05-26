@@ -1,8 +1,8 @@
+import { describeBehaviorOfSolidStateERC721 } from '@solidstate/spec';
 import {
   SolidStateERC721Mock,
   SolidStateERC721Mock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfSolidStateERC721 } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 const name = 'ERC721Metadata.name';

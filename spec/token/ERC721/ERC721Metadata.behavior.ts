@@ -1,5 +1,5 @@
-import { ERC721Metadata } from '../../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { ERC721Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 interface ERC721MetadataBehaviorArgs {

@@ -2,9 +2,10 @@
 
 pragma solidity ^0.8.0;
 
+import { ERC20Base } from '../base/ERC20Base.sol';
 import { ERC20Extended } from './ERC20Extended.sol';
 
-contract ERC20ExtendedMock is ERC20Extended {
+contract ERC20ExtendedMock is ERC20Base, ERC20Extended {
     function __mint(address account, uint256 amount) external {
         _mint(account, amount);
     }

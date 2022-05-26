@@ -1,7 +1,7 @@
-import { IERC20, SolidStateERC4626 } from '../../../typechain';
 import { describeBehaviorOfSolidStateERC20 } from '../ERC20';
 import { describeBehaviorOfERC4626Base } from './ERC4626Base.behavior';
 import { describeFilter } from '@solidstate/library';
+import { IERC20, SolidStateERC4626 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface SolidStateERC4626BehaviorArgs {
@@ -9,6 +9,7 @@ interface SolidStateERC4626BehaviorArgs {
   getAsset: () => Promise<IERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
   mintAsset: (
     address: string,
     amount: BigNumber,
@@ -25,6 +26,7 @@ export function describeBehaviorOfSolidStateERC4626(
     getAsset,
     mint,
     burn,
+    allowance,
     mintAsset,
     name,
     symbol,
@@ -41,6 +43,7 @@ export function describeBehaviorOfSolidStateERC4626(
         deploy,
         mint,
         burn,
+        allowance,
         name,
         symbol,
         decimals,

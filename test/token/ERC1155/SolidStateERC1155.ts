@@ -1,8 +1,8 @@
+import { describeBehaviorOfSolidStateERC1155 } from '@solidstate/spec';
 import {
   SolidStateERC1155Mock,
   SolidStateERC1155Mock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfSolidStateERC1155 } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 const tokenURI = 'ERC1155Metadata.tokenURI';

@@ -1,4 +1,7 @@
-import { UintUtilsMock, UintUtilsMock__factory } from '../../typechain';
+import {
+  UintUtilsMock,
+  UintUtilsMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

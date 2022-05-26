@@ -1,8 +1,8 @@
+import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec';
 import {
   DiamondLoupeMock,
   DiamondLoupeMock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
