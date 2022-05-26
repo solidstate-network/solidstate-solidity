@@ -1,12 +1,19 @@
 import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
 import { describeBehaviorOfERC1155Enumerable } from './ERC1155Enumerable.behavior';
 import { describeBehaviorOfERC1155Metadata } from './ERC1155Metadata.behavior';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { SolidStateERC1155 } from '@solidstate/typechain-types';
 import { BigNumber, ContractTransaction } from 'ethers';
 
 interface SolidStateERC1155BehaviorArgs {
   deploy: () => Promise<SolidStateERC1155>;
+  transfer: (
+    from: SignerWithAddress,
+    to: SignerWithAddress,
+    id: BigNumber,
+    amount: BigNumber,
+  ) => Promise<ContractTransaction>;
   mint: (
     address: string,
     id: BigNumber,
@@ -22,7 +29,14 @@ interface SolidStateERC1155BehaviorArgs {
 }
 
 export function describeBehaviorOfSolidStateERC1155(
-  { deploy, mint, burn, tokenId, tokenURI }: SolidStateERC1155BehaviorArgs,
+  {
+    deploy,
+    transfer,
+    mint,
+    burn,
+    tokenId,
+    tokenURI,
+  }: SolidStateERC1155BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -32,6 +46,7 @@ export function describeBehaviorOfSolidStateERC1155(
 
     describeBehaviorOfERC1155Enumerable({
       deploy,
+      transfer,
       mint,
       burn,
     });
