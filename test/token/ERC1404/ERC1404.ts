@@ -1,5 +1,5 @@
-import { ERC1404Mock, ERC1404Mock__factory } from '../../../typechain';
 import { describeBehaviorOfERC1404 } from '@solidstate/spec';
+import { ERC1404Mock, ERC1404Mock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 let restrictions = [

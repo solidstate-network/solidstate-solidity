@@ -1,10 +1,10 @@
+import { describeBehaviorOfERC4626 } from '@solidstate/spec';
 import {
   ERC20Mock,
   ERC20Mock__factory,
   ERC4626Mock,
   ERC4626Mock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfERC4626 } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 

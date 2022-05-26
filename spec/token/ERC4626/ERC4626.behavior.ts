@@ -1,7 +1,7 @@
-import { IERC20, ERC4626 } from '../../../typechain';
 import { describeBehaviorOfERC20 } from '../ERC20';
 import { describeBehaviorOfERC4626Base } from './ERC4626Base.behavior';
 import { describeFilter } from '@solidstate/library';
+import { IERC20, ERC4626 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface ERC4626BehaviorArgs {

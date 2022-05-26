@@ -39,6 +39,5 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
-    outDir: 'typechain',
   },
 };

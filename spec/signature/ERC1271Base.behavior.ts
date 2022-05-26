@@ -1,5 +1,5 @@
-import { ERC1271Base } from '../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { ERC1271Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 interface ERC1271BaseBehaviorArgs {

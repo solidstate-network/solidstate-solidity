@@ -1,6 +1,6 @@
-import { ECDSAMultisigWallet } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signData } from '@solidstate/library';
+import { ECDSAMultisigWallet } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';

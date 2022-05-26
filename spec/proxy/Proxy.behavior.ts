@@ -1,5 +1,5 @@
-import { Proxy } from '../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { Proxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

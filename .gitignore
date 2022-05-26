@@ -7,7 +7,7 @@ yarn.lock
 yarn-error.log
 lerna-debug.log
 
-typechain/
+typechain-types/
 dist/
 
 artifacts/

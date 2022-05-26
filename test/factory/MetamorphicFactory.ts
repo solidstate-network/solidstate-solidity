@@ -1,8 +1,8 @@
+import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,
-} from '../../typechain';
-import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

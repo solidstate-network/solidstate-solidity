@@ -1,5 +1,5 @@
-import { ERC20Metadata } from '../../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { ERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumberish } from 'ethers';
 

@@ -1,6 +1,6 @@
-import { OwnableMock, OwnableMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
+import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('Ownable', function () {

@@ -1,5 +1,5 @@
-import { ERC165 } from '../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { ERC165 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 interface ERC165BehaviorArgs {

@@ -8,7 +8,7 @@
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky install",
     "prettier": "prettier --write --ignore-path .gitignore .",
-    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade"
+    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types' && yarn upgrade"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
@@ -16,6 +16,7 @@
     "@solidstate/hardhat-4byte-uploader": "^1.0.2",
     "@solidstate/library": "link:lib",
     "@solidstate/spec": "link:spec",
+    "@solidstate/typechain-types": "link:typechain-types",
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@typechain/ethers-v5": "^10.0.0",
     "@typechain/hardhat": "^6.0.0",

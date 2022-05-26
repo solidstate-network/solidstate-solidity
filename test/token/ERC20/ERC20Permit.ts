@@ -1,6 +1,9 @@
-import { ERC20PermitMock, ERC20PermitMock__factory } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Permit } from '@solidstate/spec';
+import {
+  ERC20PermitMock,
+  ERC20PermitMock__factory,
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC20Permit', function () {
