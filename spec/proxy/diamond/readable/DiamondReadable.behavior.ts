@@ -18,11 +18,8 @@ export function describeBehaviorOfDiamondReadable(
   describe('::DiamondReadable', function () {
     let instance: DiamondReadable;
 
-    before(async function () {
-      expect(facetCuts).to.have.lengthOf.at.least(1);
-    });
-
     beforeEach(async function () {
+      expect(facetCuts).to.have.lengthOf.at.least(1);
       instance = await deploy();
     });
 
