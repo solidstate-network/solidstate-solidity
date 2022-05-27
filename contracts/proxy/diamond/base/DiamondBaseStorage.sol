@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
-import { IDiamondCuttable } from '../IDiamondCuttable.sol';
+import { IDiamondWritable } from '../writable/IDiamondWritable.sol';
 
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
@@ -30,7 +30,7 @@ library DiamondBaseStorage {
         keccak256('solidstate.contracts.storage.DiamondBase');
 
     event DiamondCut(
-        IDiamondCuttable.FacetCut[] facetCuts,
+        IDiamondWritable.FacetCut[] facetCuts,
         address target,
         bytes data
     );
@@ -51,7 +51,7 @@ library DiamondBaseStorage {
      */
     function diamondCut(
         Layout storage l,
-        IDiamondCuttable.FacetCut[] memory facetCuts,
+        IDiamondWritable.FacetCut[] memory facetCuts,
         address target,
         bytes memory data
     ) internal {
@@ -67,23 +67,23 @@ library DiamondBaseStorage {
             }
 
             for (uint256 i; i < facetCuts.length; i++) {
-                IDiamondCuttable.FacetCut memory facetCut = facetCuts[i];
-                IDiamondCuttable.FacetCutAction action = facetCut.action;
+                IDiamondWritable.FacetCut memory facetCut = facetCuts[i];
+                IDiamondWritable.FacetCutAction action = facetCut.action;
 
                 require(
                     facetCut.selectors.length > 0,
                     'DiamondBase: no selectors specified'
                 );
 
-                if (action == IDiamondCuttable.FacetCutAction.ADD) {
+                if (action == IDiamondWritable.FacetCutAction.ADD) {
                     (selectorCount, selectorSlot) = l.addFacetSelectors(
                         selectorCount,
                         selectorSlot,
                         facetCut
                     );
-                } else if (action == IDiamondCuttable.FacetCutAction.REPLACE) {
+                } else if (action == IDiamondWritable.FacetCutAction.REPLACE) {
                     l.replaceFacetSelectors(facetCut);
-                } else if (action == IDiamondCuttable.FacetCutAction.REMOVE) {
+                } else if (action == IDiamondWritable.FacetCutAction.REMOVE) {
                     (selectorCount, selectorSlot) = l.removeFacetSelectors(
                         selectorCount,
                         selectorSlot,
@@ -110,7 +110,7 @@ library DiamondBaseStorage {
         Layout storage l,
         uint256 selectorCount,
         bytes32 selectorSlot,
-        IDiamondCuttable.FacetCut memory facetCut
+        IDiamondWritable.FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
             require(
@@ -157,7 +157,7 @@ library DiamondBaseStorage {
         Layout storage l,
         uint256 selectorCount,
         bytes32 selectorSlot,
-        IDiamondCuttable.FacetCut memory facetCut
+        IDiamondWritable.FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
             require(
@@ -251,7 +251,7 @@ library DiamondBaseStorage {
 
     function replaceFacetSelectors(
         Layout storage l,
-        IDiamondCuttable.FacetCut memory facetCut
+        IDiamondWritable.FacetCut memory facetCut
     ) internal {
         unchecked {
             require(

@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-import { OwnableStorage } from '../../access/OwnableStorage.sol';
-import { ERC165, IERC165 } from '../../introspection/ERC165.sol';
-import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
-import { DiamondBase } from './base/DiamondBase.sol';
-import { DiamondCuttable, IDiamondCuttable } from './DiamondCuttable.sol';
+import { OwnableStorage } from '../../../access/OwnableStorage.sol';
+import { ERC165, IERC165 } from '../../../introspection/ERC165.sol';
+import { ERC165Storage } from '../../../introspection/ERC165Storage.sol';
+import { DiamondBase } from '../base/DiamondBase.sol';
+import { DiamondWritable, IDiamondWritable } from './DiamondWritable.sol';
 
-contract DiamondCuttableMock is DiamondBase, DiamondCuttable, ERC165 {
+contract DiamondWritableMock is DiamondBase, DiamondWritable, ERC165 {
     using OwnableStorage for OwnableStorage.Layout;
     using ERC165Storage for ERC165Storage.Layout;
 
@@ -19,7 +19,7 @@ contract DiamondCuttableMock is DiamondBase, DiamondCuttable, ERC165 {
             true
         );
         ERC165Storage.layout().setSupportedInterface(
-            type(IDiamondCuttable).interfaceId,
+            type(IDiamondWritable).interfaceId,
             true
         );
     }

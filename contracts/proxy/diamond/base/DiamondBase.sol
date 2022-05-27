@@ -3,8 +3,6 @@
 pragma solidity ^0.8.0;
 
 import { Proxy } from '../../Proxy.sol';
-import { IDiamondLoupe } from '../IDiamondLoupe.sol';
-import { IDiamondCuttable } from '../IDiamondCuttable.sol';
 import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
 
 /**

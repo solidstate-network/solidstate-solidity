@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
  * @title Diamond proxy introspection interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IDiamondLoupe {
+interface IDiamondReadable {
     struct Facet {
         address target;
         bytes4[] selectors;

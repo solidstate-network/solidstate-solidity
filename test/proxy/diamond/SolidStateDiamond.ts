@@ -35,12 +35,17 @@ describe('SolidStateDiamond', function () {
     };
   });
 
-  describeBehaviorOfSolidStateDiamond({
-    deploy: async () => instance as any,
-    getOwner: async () => owner,
-    getNomineeOwner: async () => getNomineeOwner,
-    getNonOwner: async () => getNonOwner,
-    facetCuts,
-    fallbackAddress: ethers.constants.AddressZero,
-  });
+  describeBehaviorOfSolidStateDiamond(
+    {
+      deploy: async () => instance as any,
+      getOwner: async () => owner,
+      getNomineeOwner: async () => getNomineeOwner,
+      getNonOwner: async () => getNonOwner,
+      facetFunction: '',
+      facetFunctionArgs: [],
+      facetCuts,
+      fallbackAddress: ethers.constants.AddressZero,
+    },
+    ['fallback()'],
+  );
 });

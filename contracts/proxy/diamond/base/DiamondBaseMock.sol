@@ -2,12 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-import { DiamondBase, DiamondBaseStorage, IDiamondCuttable } from './DiamondBase.sol';
+import { IDiamondWritable } from '../writable/IDiamondWritable.sol';
+import { DiamondBase, DiamondBaseStorage } from './DiamondBase.sol';
 
 contract DiamondBaseMock is DiamondBase {
     using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
-    constructor(IDiamondCuttable.FacetCut[] memory cuts) {
+    constructor(IDiamondWritable.FacetCut[] memory cuts) {
         DiamondBaseStorage.layout().diamondCut(cuts, address(0), '');
     }
 }

@@ -1,24 +1,24 @@
-import { describeBehaviorOfERC165 } from '../../introspection';
+import { describeBehaviorOfERC165 } from '../../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { DiamondCuttable } from '@solidstate/typechain-types';
+import { DiamondWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-interface DiamondCuttableBehaviorArgs {
-  deploy: () => Promise<DiamondCuttable>;
+interface DiamondWritableBehaviorArgs {
+  deploy: () => Promise<DiamondWritable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
-export function describeBehaviorOfDiamondCuttable(
-  { deploy, getOwner, getNonOwner }: DiamondCuttableBehaviorArgs,
+export function describeBehaviorOfDiamondWritable(
+  { deploy, getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondCuttable', function () {
+  describe('::DiamondWritable', function () {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
@@ -27,7 +27,7 @@ export function describeBehaviorOfDiamondCuttable(
     let abi: any;
     let facet: any;
 
-    let instance: DiamondCuttable;
+    let instance: DiamondWritable;
 
     before(async function () {
       owner = await getOwner();

@@ -2,23 +2,23 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC165, IERC165 } from '../../introspection/ERC165.sol';
-import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
-import { DiamondBase, DiamondBaseStorage, IDiamondCuttable } from './base/DiamondBase.sol';
-import { DiamondLoupe, IDiamondLoupe } from './DiamondLoupe.sol';
+import { ERC165, IERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
+import { DiamondBase, DiamondBaseStorage } from '../base/DiamondBase.sol';
+import { IDiamondWritable } from '../writable/IDiamondWritable.sol';
+import { DiamondReadable, IDiamondReadable } from './DiamondReadable.sol';
 
-contract DiamondLoupeMock is DiamondBase, DiamondLoupe, ERC165 {
+contract DiamondReadableMock is DiamondBase, DiamondReadable, ERC165 {
     using DiamondBaseStorage for DiamondBaseStorage.Layout;
     using ERC165Storage for ERC165Storage.Layout;
 
-    constructor(IDiamondCuttable.FacetCut[] memory cuts) {
+    constructor(IDiamondWritable.FacetCut[] memory cuts) {
         DiamondBaseStorage.layout().diamondCut(cuts, address(0), '');
         ERC165Storage.layout().setSupportedInterface(
             type(IERC165).interfaceId,
             true
         );
         ERC165Storage.layout().setSupportedInterface(
-            type(IDiamondLoupe).interfaceId,
+            type(IDiamondReadable).interfaceId,
             true
         );
     }

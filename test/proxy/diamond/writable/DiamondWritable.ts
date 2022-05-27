@@ -1,15 +1,15 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfDiamondCuttable } from '@solidstate/spec';
+import { describeBehaviorOfDiamondWritable } from '@solidstate/spec';
 import {
-  DiamondCuttableMock,
-  DiamondCuttableMock__factory,
+  DiamondWritableMock,
+  DiamondWritableMock__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondCuttable', function () {
+describe('DiamondWritable', function () {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: DiamondCuttableMock;
+  let instance: DiamondWritableMock;
 
   before(async function () {
     [owner, nonOwner] = await ethers.getSigners();
@@ -17,10 +17,10 @@ describe('DiamondCuttable', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new DiamondCuttableMock__factory(deployer).deploy();
+    instance = await new DiamondWritableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfDiamondCuttable({
+  describeBehaviorOfDiamondWritable({
     deploy: async () => instance as any,
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,

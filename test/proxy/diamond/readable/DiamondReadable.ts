@@ -1,16 +1,16 @@
-import { describeBehaviorOfDiamondLoupe } from '@solidstate/spec';
+import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
-  DiamondLoupeMock,
-  DiamondLoupeMock__factory,
+  DiamondReadableMock,
+  DiamondReadableMock__factory,
 } from '@solidstate/typechain-types';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-describe('DiamondLoupe', function () {
+describe('DiamondReadable', function () {
   let facet;
   const facetCuts: any[] = [];
 
-  let instance: DiamondLoupeMock;
+  let instance: DiamondReadableMock;
 
   before(async function () {
     const functions = [];
@@ -42,10 +42,12 @@ describe('DiamondLoupe', function () {
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new DiamondLoupeMock__factory(deployer).deploy(facetCuts);
+    instance = await new DiamondReadableMock__factory(deployer).deploy(
+      facetCuts,
+    );
   });
 
-  describeBehaviorOfDiamondLoupe({
+  describeBehaviorOfDiamondReadable({
     deploy: async () => instance as any,
     facetCuts,
   });

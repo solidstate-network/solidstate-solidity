@@ -1,7 +1,8 @@
 import { describeBehaviorOfSafeOwnable } from '../../access';
 import { describeBehaviorOfERC165 } from '../../introspection';
-import { describeBehaviorOfDiamondCuttable } from './DiamondCuttable.behavior';
-import { describeBehaviorOfDiamondLoupe } from './DiamondLoupe.behavior';
+import { describeBehaviorOfDiamondBase } from './base/DiamondBase.behavior';
+import { describeBehaviorOfDiamondReadable } from './readable/DiamondReadable.behavior';
+import { describeBehaviorOfDiamondWritable } from './writable/DiamondWritable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { SolidStateDiamond } from '@solidstate/typechain-types';
@@ -14,6 +15,8 @@ interface SolidStateDiamondBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
+  facetFunction: string;
+  facetFunctionArgs: string[];
   facetCuts: any[];
   fallbackAddress: string;
 }
@@ -24,6 +27,8 @@ export function describeBehaviorOfSolidStateDiamond(
     getOwner,
     getNomineeOwner,
     getNonOwner,
+    facetFunction,
+    facetFunctionArgs,
     facetCuts,
     fallbackAddress,
   }: SolidStateDiamondBehaviorArgs,
@@ -46,19 +51,28 @@ export function describeBehaviorOfSolidStateDiamond(
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondCuttable(
+    describeBehaviorOfDiamondBase(
       {
         deploy,
-        getOwner,
-        getNonOwner,
+        facetFunction,
+        facetFunctionArgs,
       },
       skips,
     );
 
-    describeBehaviorOfDiamondLoupe(
+    describeBehaviorOfDiamondReadable(
       {
         deploy,
         facetCuts,
+      },
+      skips,
+    );
+
+    describeBehaviorOfDiamondWritable(
+      {
+        deploy,
+        getOwner,
+        getNonOwner,
       },
       skips,
     );

@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.0;
 
-import { DiamondBaseStorage } from './base/DiamondBaseStorage.sol';
-import { IDiamondLoupe } from './IDiamondLoupe.sol';
+import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { IDiamondReadable } from './IDiamondReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract DiamondLoupe is IDiamondLoupe {
+abstract contract DiamondReadable is IDiamondReadable {
     /**
-     * @inheritdoc IDiamondLoupe
+     * @inheritdoc IDiamondReadable
      */
     function facets() external view returns (Facet[] memory diamondFacets) {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
@@ -86,7 +86,7 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     }
 
     /**
-     * @inheritdoc IDiamondLoupe
+     * @inheritdoc IDiamondReadable
      */
     function facetFunctionSelectors(address facet)
         external
@@ -131,7 +131,7 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     }
 
     /**
-     * @inheritdoc IDiamondLoupe
+     * @inheritdoc IDiamondReadable
      */
     function facetAddresses()
         external
@@ -186,7 +186,7 @@ abstract contract DiamondLoupe is IDiamondLoupe {
     }
 
     /**
-     * @inheritdoc IDiamondLoupe
+     * @inheritdoc IDiamondReadable
      */
     function facetAddress(bytes4 selector)
         external

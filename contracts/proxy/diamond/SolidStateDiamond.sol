@@ -6,16 +6,16 @@ import { SafeOwnable, OwnableStorage, Ownable } from '../../access/SafeOwnable.s
 import { IERC173 } from '../../access/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
-import { DiamondCuttable, IDiamondCuttable } from './DiamondCuttable.sol';
-import { DiamondLoupe, IDiamondLoupe } from './DiamondLoupe.sol';
+import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
+import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
 
 /**
  * @title SolidState "Diamond" proxy reference implementation
  */
 abstract contract SolidStateDiamond is
     DiamondBase,
-    DiamondCuttable,
-    DiamondLoupe,
+    DiamondReadable,
+    DiamondWritable,
     SafeOwnable,
     ERC165
 {
@@ -27,20 +27,20 @@ abstract contract SolidStateDiamond is
         ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
         bytes4[] memory selectors = new bytes4[](12);
 
-        // register DiamondCuttable
+        // register DiamondWritable
 
-        selectors[0] = IDiamondCuttable.diamondCut.selector;
+        selectors[0] = IDiamondWritable.diamondCut.selector;
 
-        erc165.setSupportedInterface(type(IDiamondCuttable).interfaceId, true);
+        erc165.setSupportedInterface(type(IDiamondWritable).interfaceId, true);
 
-        // register DiamondLoupe
+        // register DiamondReadable
 
-        selectors[1] = IDiamondLoupe.facets.selector;
-        selectors[2] = IDiamondLoupe.facetFunctionSelectors.selector;
-        selectors[3] = IDiamondLoupe.facetAddresses.selector;
-        selectors[4] = IDiamondLoupe.facetAddress.selector;
+        selectors[1] = IDiamondReadable.facets.selector;
+        selectors[2] = IDiamondReadable.facetFunctionSelectors.selector;
+        selectors[3] = IDiamondReadable.facetAddresses.selector;
+        selectors[4] = IDiamondReadable.facetAddress.selector;
 
-        erc165.setSupportedInterface(type(IDiamondLoupe).interfaceId, true);
+        erc165.setSupportedInterface(type(IDiamondReadable).interfaceId, true);
 
         // register ERC165
 
@@ -68,7 +68,7 @@ abstract contract SolidStateDiamond is
 
         facetCuts[0] = FacetCut({
             target: address(this),
-            action: IDiamondCuttable.FacetCutAction.ADD,
+            action: IDiamondWritable.FacetCutAction.ADD,
             selectors: selectors
         });
 

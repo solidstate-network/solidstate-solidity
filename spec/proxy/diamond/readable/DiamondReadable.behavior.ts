@@ -1,22 +1,22 @@
-import { describeBehaviorOfERC165 } from '../../introspection';
+import { describeBehaviorOfERC165 } from '../../../introspection';
 import { describeFilter } from '@solidstate/library';
-import { DiamondLoupe } from '@solidstate/typechain-types';
+import { DiamondReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface DiamondLoupeBehaviorArgs {
-  deploy: () => Promise<DiamondLoupe>;
+interface DiamondReadableBehaviorArgs {
+  deploy: () => Promise<DiamondReadable>;
   facetCuts: any[];
 }
 
-export function describeBehaviorOfDiamondLoupe(
-  { deploy, facetCuts }: DiamondLoupeBehaviorArgs,
+export function describeBehaviorOfDiamondReadable(
+  { deploy, facetCuts }: DiamondReadableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondLoupe', function () {
-    let instance: DiamondLoupe;
+  describe('::DiamondReadable', function () {
+    let instance: DiamondReadable;
 
     before(async function () {
       expect(facetCuts).to.have.lengthOf.at.least(1);

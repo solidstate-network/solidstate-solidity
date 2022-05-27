@@ -10,7 +10,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondCuttable.FacetCutAction",
+            "internalType": "enum IDiamondWritable.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -21,7 +21,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IDiamondCuttable.FacetCut[]",
+        "internalType": "struct IDiamondWritable.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -51,7 +51,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondCuttable.FacetCutAction",
+            "internalType": "enum IDiamondWritable.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -61,7 +61,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IDiamondCuttable.FacetCut[]",
+        "internalType": "struct IDiamondWritable.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
