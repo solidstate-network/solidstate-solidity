@@ -2,16 +2,13 @@
 
 pragma solidity ^0.8.0;
 
+import { IERC173Internal } from './IERC173Internal.sol';
+
 /**
  * @title Contract ownership standard interface
  * @dev see https://eips.ethereum.org/EIPS/eip-173
  */
-interface IERC173 {
-    event OwnershipTransferred(
-        address indexed previousOwner,
-        address indexed newOwner
-    );
-
+interface IERC173 is IERC173Internal {
     /**
      * @notice get the ERC173 contract owner
      * @return conract owner

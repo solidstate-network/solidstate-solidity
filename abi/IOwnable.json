@@ -19,18 +19,27 @@
     "type": "event"
   },
   {
-    "stateMutability": "payable",
-    "type": "fallback"
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "implementation",
+        "name": "account",
         "type": "address"
       }
     ],
-    "name": "setImplementation",
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
