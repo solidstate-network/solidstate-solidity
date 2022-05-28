@@ -9,11 +9,13 @@ import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
 import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
 import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
+import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
 
 /**
  * @title SolidState "Diamond" proxy reference implementation
  */
 abstract contract SolidStateDiamond is
+    ISolidStateDiamond,
     DiamondBase,
     DiamondReadable,
     DiamondWritable,
