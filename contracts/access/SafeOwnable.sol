@@ -3,40 +3,33 @@
 pragma solidity ^0.8.0;
 
 import { Ownable, OwnableStorage } from './Ownable.sol';
+import { ISafeOwnable } from './ISafeOwnable.sol';
+import { OwnableInternal } from './OwnableInternal.sol';
 import { SafeOwnableInternal } from './SafeOwnableInternal.sol';
-import { SafeOwnableStorage } from './SafeOwnableStorage.sol';
 
 /**
  * @title Ownership access control based on ERC173 with ownership transfer safety check
  */
-abstract contract SafeOwnable is Ownable, SafeOwnableInternal {
-    using OwnableStorage for OwnableStorage.Layout;
-    using SafeOwnableStorage for SafeOwnableStorage.Layout;
-
-    function nomineeOwner() public view virtual returns (address) {
-        return SafeOwnableStorage.layout().nomineeOwner;
-    }
-
+abstract contract SafeOwnable is ISafeOwnable, Ownable, SafeOwnableInternal {
     /**
-     * @inheritdoc Ownable
-     * @dev ownership transfer must be accepted by beneficiary before transfer is complete
+     * @inheritdoc ISafeOwnable
      */
-    function transferOwnership(address account)
-        public
-        virtual
-        override
-        onlyOwner
-    {
-        SafeOwnableStorage.layout().setNomineeOwner(account);
+    function nomineeOwner() public view virtual returns (address) {
+        return _nomineeOwner();
     }
 
     /**
-     * @notice accept transfer of contract ownership
+     * @inheritdoc ISafeOwnable
      */
     function acceptOwnership() public virtual onlyNomineeOwner {
-        OwnableStorage.Layout storage l = OwnableStorage.layout();
-        emit OwnershipTransferred(l.owner, msg.sender);
-        l.setOwner(msg.sender);
-        SafeOwnableStorage.layout().setNomineeOwner(address(0));
+        _acceptOwnership();
+    }
+
+    function _transferOwnership(address account)
+        internal
+        virtual
+        override(OwnableInternal, SafeOwnableInternal)
+    {
+        super._transferOwnership(account);
     }
 }

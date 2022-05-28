@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import { SafeOwnable, OwnableStorage, Ownable } from '../../access/SafeOwnable.sol';
+import { IOwnable, Ownable, OwnableInternal, OwnableStorage } from '../../access/Ownable.sol';
+import { ISafeOwnable, SafeOwnable } from '../../access/SafeOwnable.sol';
 import { IERC173 } from '../../access/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
@@ -52,7 +53,7 @@ abstract contract SolidStateDiamond is
 
         selectors[6] = Ownable.owner.selector;
         selectors[7] = SafeOwnable.nomineeOwner.selector;
-        selectors[8] = SafeOwnable.transferOwnership.selector;
+        selectors[8] = Ownable.transferOwnership.selector;
         selectors[9] = SafeOwnable.acceptOwnership.selector;
 
         erc165.setSupportedInterface(type(IERC173).interfaceId, true);
@@ -95,5 +96,13 @@ abstract contract SolidStateDiamond is
      */
     function setFallbackAddress(address fallbackAddress) external onlyOwner {
         DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
+    }
+
+    function _transferOwnership(address account)
+        internal
+        virtual
+        override(OwnableInternal, SafeOwnable)
+    {
+        super._transferOwnership(account);
     }
 }
