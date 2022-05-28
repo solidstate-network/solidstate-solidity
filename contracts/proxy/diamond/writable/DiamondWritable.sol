@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { OwnableInternal } from '../../../access/OwnableInternal.sol';
+import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondWritable } from './IDiamondWritable.sol';
 

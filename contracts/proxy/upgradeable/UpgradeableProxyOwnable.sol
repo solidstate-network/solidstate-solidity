@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import { UpgradeableProxy } from './UpgradeableProxy.sol';
-import { OwnableInternal } from '../../access/OwnableInternal.sol';
+import { OwnableInternal } from '../../access/ownable/OwnableInternal.sol';
 
 /**
  * @title Proxy with upgradeable implementation controlled by ERC171 owner

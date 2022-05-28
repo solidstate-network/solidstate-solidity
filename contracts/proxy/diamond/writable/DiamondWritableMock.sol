@@ -2,9 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import { OwnableStorage } from '../../../access/OwnableStorage.sol';
-import { ERC165, IERC165 } from '../../../introspection/ERC165.sol';
-import { ERC165Storage } from '../../../introspection/ERC165Storage.sol';
+import { OwnableStorage } from '../../../access/ownable/OwnableStorage.sol';
+import { ERC165, IERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondWritable, IDiamondWritable } from './DiamondWritable.sol';
 

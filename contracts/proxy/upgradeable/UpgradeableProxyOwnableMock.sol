@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { OwnableStorage } from '../../access/OwnableStorage.sol';
+import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { UpgradeableProxyOwnable } from './UpgradeableProxyOwnable.sol';
 
 contract UpgradeableProxyOwnableMock is UpgradeableProxyOwnable {
