@@ -12,4 +12,16 @@ interface ISolidStateDiamond is
     IDiamondWritable,
     ISafeOwnable,
     IERC165
-{}
+{
+    /**
+     * @notice get the address of the fallback contract
+     * @return fallback address
+     */
+    function getFallbackAddress() external view returns (address);
+
+    /**
+     * @notice set the address of the fallback contract
+     * @param fallbackAddress fallback address
+     */
+    function setFallbackAddress(address fallbackAddress) external;
+}

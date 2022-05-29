@@ -185,6 +185,19 @@
   },
   {
     "inputs": [],
+    "name": "getFallbackAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "nomineeOwner",
     "outputs": [
       {
@@ -207,6 +220,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fallbackAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setFallbackAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

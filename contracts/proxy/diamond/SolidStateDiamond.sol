@@ -85,16 +85,14 @@ abstract contract SolidStateDiamond is
     receive() external payable {}
 
     /**
-     * @notice get the address of the fallback contract
-     * @return fallback address
+     * @inheritdoc ISolidStateDiamond
      */
     function getFallbackAddress() external view returns (address) {
         return DiamondBaseStorage.layout().fallbackAddress;
     }
 
     /**
-     * @notice set the address of the fallback contract
-     * @param fallbackAddress fallback address
+     * @inheritdoc ISolidStateDiamond
      */
     function setFallbackAddress(address fallbackAddress) external onlyOwner {
         DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
