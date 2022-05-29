@@ -21,7 +21,7 @@ describe('DiamondWritable', function () {
   });
 
   describeBehaviorOfDiamondWritable({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

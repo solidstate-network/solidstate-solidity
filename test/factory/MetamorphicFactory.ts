@@ -14,7 +14,7 @@ describe('MetamorphicFactory', function () {
     instance = await new MetamorphicFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMetamorphicFactory({ deploy: async () => instance as any });
+  describeBehaviorOfMetamorphicFactory({ deploy: async () => instance });
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract(address,bytes32)', function () {

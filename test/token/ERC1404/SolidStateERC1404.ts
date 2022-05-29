@@ -22,7 +22,7 @@ describe('SolidStateERC1404', function () {
   });
 
   describeBehaviorOfSolidStateERC1404({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>

@@ -48,7 +48,7 @@ describe('DiamondReadable', function () {
   });
 
   describeBehaviorOfDiamondReadable({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     facetCuts,
   });
 });

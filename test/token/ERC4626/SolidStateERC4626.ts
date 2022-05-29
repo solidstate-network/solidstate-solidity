@@ -28,7 +28,7 @@ describe('SolidStateERC4626', function () {
   });
 
   describeBehaviorOfSolidStateERC4626({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getAsset: async () => assetInstance,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

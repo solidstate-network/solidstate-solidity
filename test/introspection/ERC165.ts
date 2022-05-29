@@ -11,7 +11,7 @@ describe('ERC165', function () {
   });
 
   describeBehaviorOfERC165({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     interfaceIds: [],
   });
 });

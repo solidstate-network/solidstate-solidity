@@ -16,7 +16,7 @@ describe('SolidStateERC1155', function () {
   });
 
   describeBehaviorOfSolidStateERC1155({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)

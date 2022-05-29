@@ -24,7 +24,7 @@ describe('ERC1155Base', function () {
   });
 
   describeBehaviorOfERC1155Base({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>

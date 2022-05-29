@@ -37,7 +37,7 @@ describe('SolidStateDiamond', function () {
 
   describeBehaviorOfSolidStateDiamond(
     {
-      deploy: async () => instance as any,
+      deploy: async () => instance,
       getOwner: async () => owner,
       getNomineeOwner: async () => getNomineeOwner,
       getNonOwner: async () => getNonOwner,

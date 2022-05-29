@@ -14,7 +14,7 @@ describe('ERC1155Enumerable', function () {
   });
 
   describeBehaviorOfERC1155Enumerable({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)
