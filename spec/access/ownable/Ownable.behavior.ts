@@ -1,11 +1,11 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { Ownable } from '@solidstate/typechain-types';
+import { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface OwnableBehaviorArgs {
-  deploy: () => Promise<Ownable>;
+  deploy: () => Promise<IOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
@@ -17,7 +17,7 @@ export function describeBehaviorOfOwnable(
   const describe = describeFilter(skips);
 
   describe('::Ownable', function () {
-    let instance: Ownable;
+    let instance: IOwnable;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 

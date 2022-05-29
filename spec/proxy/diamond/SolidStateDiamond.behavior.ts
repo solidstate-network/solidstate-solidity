@@ -5,13 +5,13 @@ import { describeBehaviorOfDiamondReadable } from './readable/DiamondReadable.be
 import { describeBehaviorOfDiamondWritable } from './writable/DiamondWritable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { SolidStateDiamond } from '@solidstate/typechain-types';
+import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface SolidStateDiamondBehaviorArgs {
-  deploy: () => Promise<SolidStateDiamond>;
+  deploy: () => Promise<ISolidStateDiamond>;
   getOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
@@ -40,7 +40,7 @@ export function describeBehaviorOfSolidStateDiamond(
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    let instance: SolidStateDiamond;
+    let instance: ISolidStateDiamond;
 
     before(async function () {
       owner = await getOwner();

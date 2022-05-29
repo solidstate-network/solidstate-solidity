@@ -1,11 +1,11 @@
 import { describeBehaviorOfSolidStateERC20 } from '../ERC20';
 import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
-import { SolidStateERC1404 } from '@solidstate/typechain-types';
+import { ISolidStateERC1404 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface SolidStateERC1404BehaviorArgs {
-  deploy: () => Promise<SolidStateERC1404>;
+  deploy: () => Promise<ISolidStateERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   allowance: (holder: string, spender: string) => Promise<BigNumber>;

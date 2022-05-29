@@ -1,10 +1,10 @@
 import { describeFilter } from '@solidstate/library';
-import { DiamondBase } from '@solidstate/typechain-types';
+import { IDiamondBase } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface DiamondBaseBehaviorArgs {
-  deploy: () => Promise<DiamondBase>;
+  deploy: () => Promise<IDiamondBase>;
   facetFunction: string;
   facetFunctionArgs: string[];
 }
@@ -16,7 +16,7 @@ export function describeBehaviorOfDiamondBase(
   const describe = describeFilter(skips);
 
   describe('::DiamondBase', function () {
-    let instance: DiamondBase;
+    let instance: IDiamondBase;
 
     beforeEach(async function () {
       instance = await deploy();

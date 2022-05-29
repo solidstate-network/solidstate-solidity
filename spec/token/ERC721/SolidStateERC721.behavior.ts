@@ -62,7 +62,7 @@ export function describeBehaviorOfSolidStateERC721(
         mint,
         burn,
       },
-      ['::ERC721Base', ...(skips ?? [])],
+      skips,
     );
 
     describeBehaviorOfERC721Metadata(

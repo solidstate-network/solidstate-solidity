@@ -1,13 +1,13 @@
 import { describeBehaviorOfERC20Base } from '../ERC20';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IERC20, ERC4626Base } from '@solidstate/typechain-types';
+import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface ERC4626BaseBehaviorArgs {
-  deploy: () => Promise<ERC4626Base>;
+  deploy: () => Promise<IERC4626Base>;
   getAsset: () => Promise<IERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
@@ -29,7 +29,7 @@ export function describeBehaviorOfERC4626Base(
     let depositor: SignerWithAddress;
     let recipient: SignerWithAddress;
     let assetInstance: IERC20;
-    let instance: ERC4626Base;
+    let instance: IERC4626Base;
 
     before(async () => {
       [caller, depositor, recipient] = await ethers.getSigners();

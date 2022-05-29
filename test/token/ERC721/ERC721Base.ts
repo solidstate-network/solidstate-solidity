@@ -26,7 +26,7 @@ describe('ERC721Base', function () {
   });
 
   describeBehaviorOfERC721Base({
-    deploy: async () => instance as unknown as ERC721Base,
+    deploy: async () => instance as any,
     supply: ethers.constants.Zero,
     mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
     burn: (tokenId) => instance.burn(tokenId),

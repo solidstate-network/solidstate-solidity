@@ -1,13 +1,13 @@
 import { describeBehaviorOfUpgradeableProxy } from './UpgradeableProxy.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { UpgradeableProxyOwnable } from '@solidstate/typechain-types';
+import { IUpgradeableProxyOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface UpgradeableProxyOwnableArgs {
-  deploy: () => Promise<UpgradeableProxyOwnable>;
+  deploy: () => Promise<IUpgradeableProxyOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
   implementationFunction: string;
@@ -27,7 +27,7 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
   const describe = describeFilter(skips);
 
   describe('::UpgradeableProxyOwnable', () => {
-    let instance: UpgradeableProxyOwnable;
+    let instance: IUpgradeableProxyOwnable;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 

@@ -1,9 +1,9 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC1271Base } from '@solidstate/typechain-types';
+import { IERC1271Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 interface ERC1271BaseBehaviorArgs {
-  deploy: () => Promise<ERC1271Base>;
+  deploy: () => Promise<IERC1271Base>;
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
   getInvalidParams: () => Promise<[Uint8Array, Uint8Array]>;
 }
@@ -15,7 +15,7 @@ export function describeBehaviorOfERC1271Base(
   const describe = describeFilter(skips);
 
   describe('::ERC1271Base', function () {
-    let instance: ERC1271Base;
+    let instance: IERC1271Base;
 
     beforeEach(async function () {
       instance = await deploy();

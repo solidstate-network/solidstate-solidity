@@ -1,12 +1,12 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { ERC20Extended } from '@solidstate/typechain-types';
+import { IERC20Extended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface ERC20ExtendedBehaviorArgs {
-  deploy: () => Promise<ERC20Extended>;
+  deploy: () => Promise<IERC20Extended>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
@@ -23,7 +23,7 @@ export function describeBehaviorOfERC20Extended(
     let deployer: SignerWithAddress;
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
-    let instance: ERC20Extended;
+    let instance: IERC20Extended;
 
     before(async function () {
       [deployer, holder, spender] = await ethers.getSigners();

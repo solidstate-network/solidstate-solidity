@@ -1,10 +1,10 @@
 import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ERC1271Stored } from '@solidstate/typechain-types';
+import { IERC1271Stored } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 interface ERC1271OwnableBehaviorArgs {
-  deploy: () => Promise<ERC1271Stored>;
+  deploy: () => Promise<IERC1271Stored>;
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
 }
 

@@ -1,11 +1,11 @@
 import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { ERC1271Ownable } from '@solidstate/typechain-types';
+import { IERC1271Ownable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 interface ERC1271OwnableBehaviorArgs {
-  deploy: () => Promise<ERC1271Ownable>;
+  deploy: () => Promise<IERC1271Ownable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }

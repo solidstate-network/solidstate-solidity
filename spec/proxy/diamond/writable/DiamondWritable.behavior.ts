@@ -1,13 +1,13 @@
 import { describeBehaviorOfERC165 } from '../../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { DiamondWritable } from '@solidstate/typechain-types';
+import { IDiamondWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface DiamondWritableBehaviorArgs {
-  deploy: () => Promise<DiamondWritable>;
+  deploy: () => Promise<IDiamondWritable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
@@ -27,7 +27,7 @@ export function describeBehaviorOfDiamondWritable(
     let abi: any;
     let facet: any;
 
-    let instance: DiamondWritable;
+    let instance: IDiamondWritable;
 
     before(async function () {
       owner = await getOwner();

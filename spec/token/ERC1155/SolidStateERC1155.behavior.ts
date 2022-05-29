@@ -3,11 +3,11 @@ import { describeBehaviorOfERC1155Enumerable } from './ERC1155Enumerable.behavio
 import { describeBehaviorOfERC1155Metadata } from './ERC1155Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { SolidStateERC1155 } from '@solidstate/typechain-types';
+import { ISolidStateERC1155 } from '@solidstate/typechain-types';
 import { BigNumber, ContractTransaction } from 'ethers';
 
 interface SolidStateERC1155BehaviorArgs {
-  deploy: () => Promise<SolidStateERC1155>;
+  deploy: () => Promise<ISolidStateERC1155>;
   transfer: (
     from: SignerWithAddress,
     to: SignerWithAddress,

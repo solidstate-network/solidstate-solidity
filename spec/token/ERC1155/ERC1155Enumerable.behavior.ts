@@ -1,12 +1,12 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { ERC1155Enumerable } from '@solidstate/typechain-types';
+import { IERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface ERC1155EnumerableBehaviorArgs {
-  deploy: () => Promise<ERC1155Enumerable>;
+  deploy: () => Promise<IERC1155Enumerable>;
   transfer: (
     from: SignerWithAddress,
     to: SignerWithAddress,
@@ -33,7 +33,7 @@ export function describeBehaviorOfERC1155Enumerable(
   const describe = describeFilter(skips);
 
   describe('::ERC1155Enumerable', function () {
-    let instance: ERC1155Enumerable;
+    let instance: IERC1155Enumerable;
 
     beforeEach(async function () {
       instance = await deploy();
