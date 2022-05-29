@@ -3,25 +3,22 @@
 pragma solidity ^0.8.0;
 
 import { IERC1271 } from '../IERC1271.sol';
+import { IERC1271Base } from './IERC1271Base.sol';
 import { ERC1271BaseInternal } from './ERC1271BaseInternal.sol';
 
 /**
  * @title Base implementation of ERC1721
  * @dev _isValidSignature function must be overridden with application-specific logic
  */
-abstract contract ERC1271Base is IERC1271, ERC1271BaseInternal {
-    bytes4 internal constant MAGIC_VALUE = IERC1271.isValidSignature.selector;
-
+abstract contract ERC1271Base is IERC1271Base, ERC1271BaseInternal {
     /**
      * @inheritdoc IERC1271
      */
     function isValidSignature(bytes32 hash, bytes memory signature)
         external
         view
-        returns (bytes4 magicValue)
+        returns (bytes4)
     {
-        if (_isValidSignature(hash, signature)) {
-            magicValue = MAGIC_VALUE;
-        }
+        return _isValidSignature(hash, signature);
     }
 }

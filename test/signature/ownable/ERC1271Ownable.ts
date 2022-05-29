@@ -30,7 +30,7 @@ describe('ERC1271Ownable', function () {
 
   describe('__internal', function () {
     describe('#_isValidSignature(bytes32,bytes)', function () {
-      it('returns true for signature created by owner', async function () {
+      it('returns magic value for signature created by owner', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await owner.signMessage(ethers.utils.arrayify(hash));
 
@@ -39,10 +39,10 @@ describe('ERC1271Ownable', function () {
             hash,
             signature,
           ),
-        ).to.be.true;
+        ).to.equal('0x1626ba7e');
       });
 
-      it('returns false for signature created by non-owner', async function () {
+      it('returns null bytes for signature created by non-owner', async function () {
         let hash = ethers.utils.randomBytes(32);
         let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
 
@@ -51,7 +51,7 @@ describe('ERC1271Ownable', function () {
             hash,
             signature,
           ),
-        ).to.be.false;
+        ).to.equal('0x00000000');
       });
     });
   });

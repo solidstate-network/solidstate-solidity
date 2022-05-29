@@ -13,7 +13,7 @@ contract ERC1271OwnableMock is ERC1271Ownable {
     function __isValidSignature(bytes32 hash, bytes memory signature)
         external
         view
-        returns (bool)
+        returns (bytes4)
     {
         return _isValidSignature(hash, signature);
     }
