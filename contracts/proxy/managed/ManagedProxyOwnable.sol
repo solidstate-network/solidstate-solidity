@@ -3,12 +3,13 @@
 pragma solidity ^0.8.0;
 
 import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
+import { IManagedProxyOwnable } from './IManagedProxyOwnable.sol';
 import { ManagedProxy } from './ManagedProxy.sol';
 
 /**
  * @title Proxy with implementation controlled by ERC171 owner
  */
-abstract contract ManagedProxyOwnable is ManagedProxy {
+abstract contract ManagedProxyOwnable is IManagedProxyOwnable, ManagedProxy {
     /**
      * @inheritdoc ManagedProxy
      */

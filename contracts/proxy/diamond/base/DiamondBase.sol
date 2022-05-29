@@ -3,13 +3,14 @@
 pragma solidity ^0.8.0;
 
 import { Proxy } from '../../Proxy.sol';
+import { IDiamondBase } from './IDiamondBase.sol';
 import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy base contract
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-abstract contract DiamondBase is Proxy {
+abstract contract DiamondBase is IDiamondBase, Proxy {
     /**
      * @inheritdoc Proxy
      */
