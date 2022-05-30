@@ -1,13 +1,14 @@
-import { ERC1404 } from '../../../typechain';
 import { describeBehaviorOfERC20 } from '../ERC20';
 import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
+import { ERC1404 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 interface ERC1404BehaviorArgs {
   deploy: () => Promise<ERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
   restrictions: any;
   name: string;
   symbol: string;
@@ -20,6 +21,7 @@ export function describeBehaviorOfERC1404(
     deploy,
     mint,
     burn,
+    allowance,
     restrictions,
     name,
     symbol,
@@ -36,6 +38,7 @@ export function describeBehaviorOfERC1404(
         deploy,
         mint,
         burn,
+        allowance,
         name,
         symbol,
         decimals,

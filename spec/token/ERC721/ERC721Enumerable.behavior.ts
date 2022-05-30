@@ -1,6 +1,6 @@
-import { ERC721Enumerable } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { ERC721Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

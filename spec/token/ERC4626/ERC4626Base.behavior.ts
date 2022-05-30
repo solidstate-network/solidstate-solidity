@@ -1,7 +1,7 @@
-import { IERC20, ERC4626Base } from '../../../typechain';
 import { describeBehaviorOfERC20Base } from '../ERC20';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { IERC20, ERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

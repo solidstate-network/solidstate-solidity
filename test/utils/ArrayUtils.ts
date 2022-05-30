@@ -1,5 +1,8 @@
-import { ArrayUtilsMock, ArrayUtilsMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import {
+  ArrayUtilsMock,
+  ArrayUtilsMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';

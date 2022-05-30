@@ -1,9 +1,9 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC20ImplicitApproval } from '@solidstate/spec';
 import {
   ERC20ImplicitApprovalMock,
   ERC20ImplicitApprovalMock__factory,
-} from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfERC20ImplicitApproval } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
