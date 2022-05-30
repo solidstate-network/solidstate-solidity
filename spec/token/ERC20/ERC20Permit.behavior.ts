@@ -1,8 +1,8 @@
-import { ERC20Permit } from '../../../typechain';
 import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
 import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
+import { ERC20Permit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

@@ -1,14 +1,14 @@
-import {
-  ERC20Mock,
-  ERC20Mock__factory,
-  ERC4626BaseMock,
-  ERC4626BaseMock__factory,
-} from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   describeBehaviorOfCloneFactory,
   describeBehaviorOfERC4626Base,
 } from '@solidstate/spec';
+import {
+  ERC20Mock,
+  ERC20Mock__factory,
+  ERC4626BaseMock,
+  ERC4626BaseMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';

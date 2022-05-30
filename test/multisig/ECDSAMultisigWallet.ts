@@ -1,9 +1,9 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
 import {
   ECDSAMultisigWalletMock,
   ECDSAMultisigWalletMock__factory,
-} from '../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ECDSAMultisigWallet', function () {

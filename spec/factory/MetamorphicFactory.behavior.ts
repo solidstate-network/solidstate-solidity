@@ -1,6 +1,6 @@
-import { MetamorphicFactory } from '../../typechain';
 import { describeBehaviorOfFactory } from './Factory.behavior';
 import { describeFilter } from '@solidstate/library';
+import { MetamorphicFactory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

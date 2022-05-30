@@ -1,6 +1,6 @@
-import { UpgradeableProxy } from '../../../typechain';
 import { describeBehaviorOfProxy } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
+import { UpgradeableProxy } from '@solidstate/typechain-types';
 
 interface UpgradeableProxyBehaviorArgs {
   deploy: () => Promise<UpgradeableProxy>;

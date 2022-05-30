@@ -1,6 +1,6 @@
-import { ERC1404Base } from '../../../typechain';
 import { describeBehaviorOfERC20Base } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
+import { ERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

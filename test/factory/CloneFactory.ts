@@ -1,5 +1,8 @@
-import { CloneFactoryMock, CloneFactoryMock__factory } from '../../typechain';
 import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
+import {
+  CloneFactoryMock,
+  CloneFactoryMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
