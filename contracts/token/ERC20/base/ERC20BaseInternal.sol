@@ -51,18 +51,21 @@ abstract contract ERC20BaseInternal is IERC20Internal {
      * @param holder address on whose behalf tokens may be spent
      * @param spender recipient of allowance
      * @param amount quantity of tokens approved for spending
+     * @return success status (always true; otherwise function should revert)
      */
     function _approve(
         address holder,
         address spender,
         uint256 amount
-    ) internal virtual {
+    ) internal virtual returns (bool) {
         require(holder != address(0), 'ERC20: approve from the zero address');
         require(spender != address(0), 'ERC20: approve to the zero address');
 
         ERC20BaseStorage.layout().allowances[holder][spender] = amount;
 
         emit Approval(holder, spender, amount);
+
+        return true;
     }
 
     /**
@@ -108,12 +111,13 @@ abstract contract ERC20BaseInternal is IERC20Internal {
      * @param holder owner of tokens to be transferred
      * @param recipient beneficiary of transfer
      * @param amount quantity of tokens transferred
+     * @return success status (always true; otherwise function should revert)
      */
     function _transfer(
         address holder,
         address recipient,
         uint256 amount
-    ) internal virtual {
+    ) internal virtual returns (bool) {
         require(holder != address(0), 'ERC20: transfer from the zero address');
         require(recipient != address(0), 'ERC20: transfer to the zero address');
 
@@ -131,6 +135,36 @@ abstract contract ERC20BaseInternal is IERC20Internal {
         l.balances[recipient] += amount;
 
         emit Transfer(holder, recipient, amount);
+
+        return true;
+    }
+
+    /**
+     * @notice transfer tokens to given recipient on behalf of given holder
+     * @param holder holder of tokens prior to transfer
+     * @param recipient beneficiary of token transfer
+     * @param amount quantity of tokens to transfer
+     * @return success status (always true; otherwise function should revert)
+     */
+    function _transferFrom(
+        address holder,
+        address recipient,
+        uint256 amount
+    ) internal virtual returns (bool) {
+        uint256 currentAllowance = _allowance(holder, msg.sender);
+
+        require(
+            currentAllowance >= amount,
+            'ERC20: transfer amount exceeds allowance'
+        );
+
+        unchecked {
+            _approve(holder, msg.sender, currentAllowance - amount);
+        }
+
+        _transfer(holder, recipient, amount);
+
+        return true;
     }
 
     /**
