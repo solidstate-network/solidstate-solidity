@@ -29,17 +29,23 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
+     * @notice query if account's has role
+     * @param role role to query
+     * @param account account to query
      * @dev Returns `true` if `account` has been granted `role`.
      */
     function _hasRole(bytes32 role, address account)
         internal
         view
+        virtual
         returns (bool)
     {
         return AccessControlStorage.layout().roles[role].members[account];
     }
 
     /**
+     * @notice query role by msg.sender
+     * @param role role to query
      * @dev Revert with a standard message if `msg.sender` is missing `role`.
      * Overriding this function changes the behavior of the {onlyRole} modifier.
      *
@@ -51,6 +57,9 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
+     * @notice query role by account
+     * @param role role to query
+     * @param account account to query
      * @dev Revert with a standard message if `account` is missing `role`.
      *
      * The format of the revert reason is given by the following regular expression:
@@ -73,16 +82,26 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
+     * @notice query admin role
+     * @param role role to query
      * @dev Returns the admin role that controls `role`. See {grantRole} and
      * {revokeRole}.
      *
      * To change a role's admin, use {_setRoleAdmin}.
      */
-    function _getRoleAdmin(bytes32 role) internal view returns (bytes32) {
+    function _getRoleAdmin(bytes32 role)
+        internal
+        view
+        virtual
+        returns (bytes32)
+    {
         return AccessControlStorage.layout().roles[role].adminRole;
     }
 
     /**
+     * @notice set role as admin role
+     * @param role role to set
+     * @param adminRole admin role to set
      * @dev Sets `adminRole` as ``role``'s admin role.
      *
      * Emits a {RoleAdminChanged} event.
@@ -94,7 +113,17 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
+     * @notice grant role to account
+     * @param role role to grant
+     * @param account account to grant the role
      * @dev Grants `role` to `account`.
+     *
+     *  * If `account` had not been already granted `role`, emits a {RoleGranted}
+     * event.
+     *
+     * Requirements:
+     *
+     * - the caller must have ``role``'s admin role.
      *
      * Internal function without access restriction.
      */
@@ -106,7 +135,16 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
+     * @notice revoke role from account
+     * @param role role to revoke
+     * @param account account to revoke the role
      * @dev Revokes `role` from `account`.
+     *
+     * If `account` had been granted `role`, emits a {RoleRevoked} event.
+     *
+     * Requirements:
+     *
+     * - the caller must have ``role``'s admin role.
      *
      * Internal function without access restriction.
      */

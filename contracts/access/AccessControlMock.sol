@@ -14,5 +14,9 @@ contract AccessControlMock is AccessControl {
         _setRoleAdmin(roleId, adminRoleId);
     }
 
+    function checkRole(bytes32 role) public view onlyRole(role) returns (bool) {
+        return _hasRole(role, msg.sender);
+    }
+
     function senderProtected(bytes32 roleId) public onlyRole(roleId) {}
 }

@@ -1,7 +1,10 @@
 import { AccessControlMock, AccessControlMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfAccessControl } from '@solidstate/spec';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
+
+const OTHER_ROLE = ethers.utils.solidityKeccak256(['string'], ['OTHER_ROLE']);
 
 describe('AccessControl', function () {
   let admin: SignerWithAddress;
@@ -29,5 +32,25 @@ describe('AccessControl', function () {
     getOther: async () => other,
     getOtherAdmin: async () => otherAdmin,
     getOtherAuthorized: async () => otherAuthorized,
+  });
+
+  describe.only('#checkRole(bytes32)', function () {
+    beforeEach(async function () {
+      this.receipt = await instance
+        .connect(admin)
+        .grantRole(`${OTHER_ROLE}`, authorized.address);
+    });
+    it('should able to call checkRole', async function () {
+      expect(await instance.connect(authorized).checkRole(OTHER_ROLE)).to.equal(
+        true,
+      );
+    });
+    it('revert when no access', async function () {
+      await expect(
+        instance.connect(other).checkRole(OTHER_ROLE),
+      ).to.revertedWith(
+        `AccessControl: account ${other.address.toLowerCase()} is missing role ${OTHER_ROLE}`,
+      );
+    });
   });
 });

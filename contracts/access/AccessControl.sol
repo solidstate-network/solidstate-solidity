@@ -46,7 +46,25 @@ import { AccessControlInternal } from './AccessControlInternal.sol';
  */
 abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
-     * @dev See {AccessControlInternal-_hasRole}.
+     * @dev Grants `role` to `account`.
+     *
+     * If `account` had not been already granted `role`, emits a {RoleGranted}
+     * event.
+     *
+     * Requirements:
+     *
+     * - the caller must have ``role``'s admin role.
+     */
+    function grantRole(bytes32 role, address account)
+        external
+        virtual
+        onlyRole(_getRoleAdmin(role))
+    {
+        _grantRole(role, account);
+    }
+
+    /**
+     * @inheritdoc IAccessControl
      */
     function hasRole(bytes32 role, address account)
         public
@@ -58,28 +76,10 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     }
 
     /**
-     * @dev See {AccessControlInternal-_getRoleAdmin}.
+     * @inheritdoc IAccessControl
      */
     function getRoleAdmin(bytes32 role) public view virtual returns (bytes32) {
         return _getRoleAdmin(role);
-    }
-
-    /**
-     * @dev Grants `role` to `account`.
-     *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
-     */
-    function grantRole(bytes32 role, address account)
-        public
-        virtual
-        onlyRole(getRoleAdmin(role))
-    {
-        _grantRole(role, account);
     }
 
     /**

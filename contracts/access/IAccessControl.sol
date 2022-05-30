@@ -6,49 +6,37 @@ pragma solidity ^0.8.0;
 import { IAccessControlInternal } from './IAccessControlInternal.sol';
 
 /**
+ * @title AccessControl interface
  * @dev External interface of AccessControl declared to support ERC165 detection.
  */
 interface IAccessControl is IAccessControlInternal {
-    /**
-     * @dev Returns `true` if `account` has been granted `role`.
+    /*
+     * @inheritdoc IAccessControlInternal _hasRole
      */
     function hasRole(bytes32 role, address account)
         external
         view
         returns (bool);
 
-    /**
-     * @dev Returns the admin role that controls `role`. See {grantRole} and
-     * {revokeRole}.
-     *
-     * To change a role's admin, use {AccessControl-_setRoleAdmin}.
+    /*
+     * @inheritdoc IAccessControlInternal _getRoleAdmin
      */
     function getRoleAdmin(bytes32 role) external view returns (bytes32);
 
-    /**
-     * @dev Grants `role` to `account`.
-     *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
+    /*
+     * @inheritdoc IAccessControlInternal _setRoleAdmin
      */
     function grantRole(bytes32 role, address account) external;
 
-    /**
-     * @dev Revokes `role` from `account`.
-     *
-     * If `account` had been granted `role`, emits a {RoleRevoked} event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
+    /*
+     * @inheritdoc IAccessControlInternal _revokeRole
      */
     function revokeRole(bytes32 role, address account) external;
 
     /**
+     * @notice remove role from account
+     * @param role role to remove
+     * @param account account to remove role from
      * @dev Revokes `role` from the calling account.
      *
      * Roles are often managed via {grantRole} and {revokeRole}: this function's

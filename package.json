@@ -8,8 +8,7 @@
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky install",
     "prettier": "prettier --write --ignore-path .gitignore .",
-    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade",
-    "test": "yarn run hardhat test"
+    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec' && yarn upgrade"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
