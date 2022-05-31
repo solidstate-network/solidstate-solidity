@@ -1,10 +1,13 @@
-import { describeBehaviorOfFactory } from './Factory.behavior';
+import {
+  describeBehaviorOfFactory,
+  FactoryBehaviorArgs,
+} from './Factory.behavior';
 import { describeFilter } from '@solidstate/library';
 import { MetamorphicFactory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface MetaphoricFactoryBehaviorArgs {}
+export interface MetaphoricFactoryBehaviorArgs extends FactoryBehaviorArgs {}
 
 export function describeBehaviorOfMetamorphicFactory(
   deploy: () => Promise<MetamorphicFactory>,

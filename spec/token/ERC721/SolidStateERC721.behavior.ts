@@ -1,6 +1,15 @@
-import { describeBehaviorOfERC721Base } from './ERC721Base.behavior';
-import { describeBehaviorOfERC721Enumerable } from './ERC721Enumerable.behavior';
-import { describeBehaviorOfERC721Metadata } from './ERC721Metadata.behavior';
+import {
+  describeBehaviorOfERC721Base,
+  ERC721BaseBehaviorArgs,
+} from './ERC721Base.behavior';
+import {
+  describeBehaviorOfERC721Enumerable,
+  ERC721EnumerableBehaviorArgs,
+} from './ERC721Enumerable.behavior';
+import {
+  describeBehaviorOfERC721Metadata,
+  ERC721MetadataBehaviorArgs,
+} from './ERC721Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { SolidStateERC721 } from '@solidstate/typechain-types';
@@ -8,14 +17,10 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface SolidStateERC721BehaviorArgs {
-  mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
-  burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber;
-  name: string;
-  symbol: string;
-  tokenURI: string;
-}
+export interface SolidStateERC721BehaviorArgs
+  extends ERC721BaseBehaviorArgs,
+    ERC721EnumerableBehaviorArgs,
+    ERC721MetadataBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateERC721(
   deploy: () => Promise<SolidStateERC721>,

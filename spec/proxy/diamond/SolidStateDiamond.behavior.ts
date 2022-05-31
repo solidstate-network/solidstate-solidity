@@ -1,8 +1,23 @@
-import { describeBehaviorOfSafeOwnable } from '../../access';
-import { describeBehaviorOfERC165 } from '../../introspection';
-import { describeBehaviorOfDiamondBase } from './base/DiamondBase.behavior';
-import { describeBehaviorOfDiamondReadable } from './readable/DiamondReadable.behavior';
-import { describeBehaviorOfDiamondWritable } from './writable/DiamondWritable.behavior';
+import {
+  describeBehaviorOfSafeOwnable,
+  SafeOwnableBehaviorArgs,
+} from '../../access';
+import {
+  describeBehaviorOfERC165,
+  ERC165BehaviorArgs,
+} from '../../introspection';
+import {
+  describeBehaviorOfDiamondBase,
+  DiamondBaseBehaviorArgs,
+} from './base/DiamondBase.behavior';
+import {
+  describeBehaviorOfDiamondReadable,
+  DiamondReadableBehaviorArgs,
+} from './readable/DiamondReadable.behavior';
+import {
+  describeBehaviorOfDiamondWritable,
+  DiamondWritableBehaviorArgs,
+} from './writable/DiamondWritable.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
@@ -10,13 +25,11 @@ import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-export interface SolidStateDiamondBehaviorArgs {
-  getOwner: () => Promise<SignerWithAddress>;
-  getNomineeOwner: () => Promise<SignerWithAddress>;
-  getNonOwner: () => Promise<SignerWithAddress>;
-  facetFunction: string;
-  facetFunctionArgs: string[];
-  facetCuts: any[];
+export interface SolidStateDiamondBehaviorArgs
+  extends DiamondBaseBehaviorArgs,
+    DiamondReadableBehaviorArgs,
+    DiamondWritableBehaviorArgs,
+    SafeOwnableBehaviorArgs {
   fallbackAddress: string;
 }
 
@@ -76,8 +89,9 @@ export function describeBehaviorOfSolidStateDiamond(
       skips,
     );
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
-      deploy,
+      deploy as any,
       {
         interfaceIds: ['0x7f5828d0'],
       },

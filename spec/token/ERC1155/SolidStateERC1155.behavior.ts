@@ -1,31 +1,24 @@
-import { describeBehaviorOfERC1155Base } from './ERC1155Base.behavior';
-import { describeBehaviorOfERC1155Enumerable } from './ERC1155Enumerable.behavior';
-import { describeBehaviorOfERC1155Metadata } from './ERC1155Metadata.behavior';
+import {
+  describeBehaviorOfERC1155Base,
+  ERC1155BaseBehaviorArgs,
+} from './ERC1155Base.behavior';
+import {
+  describeBehaviorOfERC1155Enumerable,
+  ERC1155EnumerableBehaviorArgs,
+} from './ERC1155Enumerable.behavior';
+import {
+  describeBehaviorOfERC1155Metadata,
+  ERC1155MetadataBehaviorArgs,
+} from './ERC1155Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1155 } from '@solidstate/typechain-types';
 import { BigNumber, ContractTransaction } from 'ethers';
 
-export interface SolidStateERC1155BehaviorArgs {
-  transfer: (
-    from: SignerWithAddress,
-    to: SignerWithAddress,
-    id: BigNumber,
-    amount: BigNumber,
-  ) => Promise<ContractTransaction>;
-  mint: (
-    address: string,
-    id: BigNumber,
-    amount: BigNumber,
-  ) => Promise<ContractTransaction>;
-  burn: (
-    address: string,
-    id: BigNumber,
-    amount: BigNumber,
-  ) => Promise<ContractTransaction>;
-  tokenId?: BigNumber;
-  tokenURI: string;
-}
+export interface SolidStateERC1155BehaviorArgs
+  extends ERC1155BaseBehaviorArgs,
+    ERC1155EnumerableBehaviorArgs,
+    ERC1155MetadataBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateERC1155(
   deploy: () => Promise<ISolidStateERC1155>,

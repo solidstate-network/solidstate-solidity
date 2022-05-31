@@ -1,5 +1,11 @@
-import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
-import { describeBehaviorOfERC20Metadata } from './ERC20Metadata.behavior';
+import {
+  describeBehaviorOfERC20Base,
+  ERC20BaseBehaviorArgs,
+} from './ERC20Base.behavior';
+import {
+  describeBehaviorOfERC20Metadata,
+  ERC20MetadataBehaviorArgs,
+} from './ERC20Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { ERC20Permit } from '@solidstate/typechain-types';
@@ -7,14 +13,9 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitArgs {
-  supply: BigNumber;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  name: string;
-  symbol: string;
-  decimals: BigNumberish;
-}
+interface ERC20PermitArgs
+  extends ERC20BaseBehaviorArgs,
+    ERC20MetadataBehaviorArgs {}
 
 export function describeBehaviorOfERC20Permit(
   deploy: () => Promise<ERC20Permit>,

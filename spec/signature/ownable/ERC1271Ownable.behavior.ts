@@ -25,6 +25,7 @@ export function describeBehaviorOfERC1271Ownable(
       nonOwner = await getNonOwner();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
       deploy,
       {

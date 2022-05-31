@@ -1,8 +1,11 @@
-import { describeBehaviorOfFactory } from './Factory.behavior';
+import {
+  describeBehaviorOfFactory,
+  FactoryBehaviorArgs,
+} from './Factory.behavior';
 import { describeFilter } from '@solidstate/library';
 import { BaseContract } from 'ethers';
 
-export interface CloneFactoryBehaviorArgs {}
+export interface CloneFactoryBehaviorArgs extends FactoryBehaviorArgs {}
 
 export function describeBehaviorOfCloneFactory(
   deploy: () => Promise<BaseContract>,

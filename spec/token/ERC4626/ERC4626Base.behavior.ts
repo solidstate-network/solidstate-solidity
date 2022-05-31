@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC20Base } from '../ERC20';
+import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
@@ -6,15 +6,12 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface ERC4626BaseBehaviorArgs {
+export interface ERC4626BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
   getAsset: () => Promise<IERC20>;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   mintAsset: (
     address: string,
     amount: BigNumber,
   ) => Promise<ContractTransaction>;
-  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC4626Base(

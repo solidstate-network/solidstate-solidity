@@ -1,15 +1,12 @@
-import { describeBehaviorOfERC20Base } from '../ERC20';
+import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
 import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface ERC1404BaseBehaviorArgs {
+export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
   restrictions: any;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC1404Base(

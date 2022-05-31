@@ -41,6 +41,7 @@ export function describeBehaviorOfERC1155Base(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
       deploy,
       {

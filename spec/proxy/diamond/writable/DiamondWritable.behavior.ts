@@ -54,6 +54,7 @@ export function describeBehaviorOfDiamondWritable(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
       deploy as any,
       {
