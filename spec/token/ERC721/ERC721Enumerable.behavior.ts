@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC721EnumerableBehaviorArgs {
+export interface ERC721EnumerableBehaviorArgs {
   deploy: () => Promise<ERC721Enumerable>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;

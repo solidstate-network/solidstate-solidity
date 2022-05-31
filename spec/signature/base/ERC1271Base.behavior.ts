@@ -2,7 +2,7 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1271Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC1271BaseBehaviorArgs {
+export interface ERC1271BaseBehaviorArgs {
   deploy: () => Promise<IERC1271Base>;
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
   getInvalidParams: () => Promise<[Uint8Array, Uint8Array]>;

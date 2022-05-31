@@ -5,7 +5,7 @@ import { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 
-interface SafeOwnableBehaviorArgs {
+export interface SafeOwnableBehaviorArgs {
   deploy: () => Promise<ISafeOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;

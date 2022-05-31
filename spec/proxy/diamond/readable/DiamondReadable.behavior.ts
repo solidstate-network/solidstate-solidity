@@ -4,7 +4,7 @@ import { IDiamondReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface DiamondReadableBehaviorArgs {
+export interface DiamondReadableBehaviorArgs {
   deploy: () => Promise<IDiamondReadable>;
   facetCuts: any[];
 }

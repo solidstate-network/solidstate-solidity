@@ -5,7 +5,7 @@ import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC20 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface SolidStateERC20BehaviorArgs {
+export interface SolidStateERC20BehaviorArgs {
   deploy: () => Promise<ISolidStateERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;

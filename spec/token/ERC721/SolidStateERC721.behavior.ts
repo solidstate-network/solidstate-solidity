@@ -8,7 +8,7 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface SolidStateERC721BehaviorArgs {
+export interface SolidStateERC721BehaviorArgs {
   deploy: () => Promise<SolidStateERC721>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;

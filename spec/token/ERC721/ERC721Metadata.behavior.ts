@@ -2,7 +2,7 @@ import { describeFilter } from '@solidstate/library';
 import { IERC721Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC721MetadataBehaviorArgs {
+export interface ERC721MetadataBehaviorArgs {
   deploy: () => Promise<IERC721Metadata>;
   name: string;
   symbol: string;

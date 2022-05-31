@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC1404BaseBehaviorArgs {
+export interface ERC1404BaseBehaviorArgs {
   deploy: () => Promise<IERC1404Base>;
   restrictions: any;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;

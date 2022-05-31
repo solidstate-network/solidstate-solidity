@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-interface DiamondWritableBehaviorArgs {
+export interface DiamondWritableBehaviorArgs {
   deploy: () => Promise<IDiamondWritable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;

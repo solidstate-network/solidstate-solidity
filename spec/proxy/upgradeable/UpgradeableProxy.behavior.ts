@@ -2,7 +2,7 @@ import { describeBehaviorOfProxy } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
 import { IUpgradeableProxy } from '@solidstate/typechain-types';
 
-interface UpgradeableProxyBehaviorArgs {
+export interface UpgradeableProxyBehaviorArgs {
   deploy: () => Promise<IUpgradeableProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];

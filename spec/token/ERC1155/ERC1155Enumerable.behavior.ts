@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC1155EnumerableBehaviorArgs {
+export interface ERC1155EnumerableBehaviorArgs {
   deploy: () => Promise<IERC1155Enumerable>;
   transfer: (
     from: SignerWithAddress,

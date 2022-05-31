@@ -7,7 +7,7 @@ import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC1155BaseBehaviorArgs {
+export interface ERC1155BaseBehaviorArgs {
   deploy: () => Promise<IERC1155Base>;
   mint: (
     address: string,

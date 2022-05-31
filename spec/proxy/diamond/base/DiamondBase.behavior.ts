@@ -3,7 +3,7 @@ import { IDiamondBase } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface DiamondBaseBehaviorArgs {
+export interface DiamondBaseBehaviorArgs {
   deploy: () => Promise<IDiamondBase>;
   facetFunction: string;
   facetFunctionArgs: string[];

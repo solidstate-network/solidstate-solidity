@@ -7,7 +7,7 @@ import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC721BaseBehaviorArgs {
+export interface ERC721BaseBehaviorArgs {
   deploy: () => Promise<ERC721Base>;
   supply: BigNumber;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;

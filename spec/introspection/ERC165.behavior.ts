@@ -2,7 +2,7 @@ import { describeFilter } from '@solidstate/library';
 import { IERC165 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC165BehaviorArgs {
+export interface ERC165BehaviorArgs {
   deploy: () => Promise<IERC165>;
   interfaceIds: string[];
 }

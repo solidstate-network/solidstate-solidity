@@ -4,7 +4,7 @@ import { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface OwnableBehaviorArgs {
+export interface OwnableBehaviorArgs {
   deploy: () => Promise<IOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;

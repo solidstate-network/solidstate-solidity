@@ -4,7 +4,7 @@ import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1404 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface SolidStateERC1404BehaviorArgs {
+export interface SolidStateERC1404BehaviorArgs {
   deploy: () => Promise<ISolidStateERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;

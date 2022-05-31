@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20ImplicitApprovalBehaviorArgs {
+export interface ERC20ImplicitApprovalBehaviorArgs {
   deploy: () => Promise<ERC20ImplicitApproval>;
   supply: BigNumber;
   getHolder: () => Promise<SignerWithAddress>;

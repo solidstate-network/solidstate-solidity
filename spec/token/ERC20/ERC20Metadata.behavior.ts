@@ -3,7 +3,7 @@ import { IERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumberish } from 'ethers';
 
-interface ERC20MetadataBehaviorArgs {
+export interface ERC20MetadataBehaviorArgs {
   deploy: () => Promise<IERC20Metadata>;
   name: string;
   symbol: string;

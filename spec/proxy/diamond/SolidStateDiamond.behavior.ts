@@ -10,7 +10,7 @@ import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-interface SolidStateDiamondBehaviorArgs {
+export interface SolidStateDiamondBehaviorArgs {
   deploy: () => Promise<ISolidStateDiamond>;
   getOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;

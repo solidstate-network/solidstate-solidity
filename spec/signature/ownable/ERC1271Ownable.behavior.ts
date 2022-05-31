@@ -4,7 +4,7 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1271Ownable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-interface ERC1271OwnableBehaviorArgs {
+export interface ERC1271OwnableBehaviorArgs {
   deploy: () => Promise<IERC1271Ownable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;

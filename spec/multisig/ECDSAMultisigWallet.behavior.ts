@@ -39,7 +39,7 @@ const signAuthorization = async function (
   });
 };
 
-interface ECDSAMultisigWalletBehaviorArgs {
+export interface ECDSAMultisigWalletBehaviorArgs {
   deploy: () => Promise<IECDSAMultisigWallet>;
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;

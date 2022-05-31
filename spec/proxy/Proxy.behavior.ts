@@ -3,7 +3,7 @@ import { IProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface ProxyBehaviorArgs {
+export interface ProxyBehaviorArgs {
   deploy: () => Promise<IProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];

@@ -4,7 +4,7 @@ import { MetamorphicFactory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface MetaphoricFactoryBehaviorArgs {
+export interface MetaphoricFactoryBehaviorArgs {
   deploy: () => Promise<MetamorphicFactory>;
 }
 

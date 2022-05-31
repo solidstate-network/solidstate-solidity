@@ -6,7 +6,7 @@ import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1155 } from '@solidstate/typechain-types';
 import { BigNumber, ContractTransaction } from 'ethers';
 
-interface SolidStateERC1155BehaviorArgs {
+export interface SolidStateERC1155BehaviorArgs {
   deploy: () => Promise<ISolidStateERC1155>;
   transfer: (
     from: SignerWithAddress,
