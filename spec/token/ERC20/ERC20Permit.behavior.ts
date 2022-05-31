@@ -8,7 +8,6 @@ import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface ERC20PermitArgs {
-  deploy: () => Promise<ERC20Permit>;
   supply: BigNumber;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
@@ -18,7 +17,8 @@ interface ERC20PermitArgs {
 }
 
 export function describeBehaviorOfERC20Permit(
-  { deploy, supply, burn, mint, name, symbol, decimals }: ERC20PermitArgs,
+  deploy: () => Promise<ERC20Permit>,
+  { supply, burn, mint, name, symbol, decimals }: ERC20PermitArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -35,8 +35,8 @@ export function describeBehaviorOfERC20Permit(
     });
 
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         supply,
@@ -45,8 +45,8 @@ export function describeBehaviorOfERC20Permit(
     );
 
     describeBehaviorOfERC20Metadata(
+      deploy,
       {
-        deploy,
         name,
         symbol,
         decimals,

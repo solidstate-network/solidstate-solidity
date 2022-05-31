@@ -23,8 +23,7 @@ describe('ERC1155Base', function () {
     invalidReceiver = instance.address;
   });
 
-  describeBehaviorOfERC1155Base({
-    deploy: async () => instance,
+  describeBehaviorOfERC1155Base(async () => instance, {
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>

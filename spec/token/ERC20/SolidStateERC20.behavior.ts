@@ -6,7 +6,6 @@ import { ISolidStateERC20 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 export interface SolidStateERC20BehaviorArgs {
-  deploy: () => Promise<ISolidStateERC20>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
@@ -17,8 +16,8 @@ export interface SolidStateERC20BehaviorArgs {
 }
 
 export function describeBehaviorOfSolidStateERC20(
+  deploy: () => Promise<ISolidStateERC20>,
   {
-    deploy,
     mint,
     burn,
     name,
@@ -33,8 +32,8 @@ export function describeBehaviorOfSolidStateERC20(
 
   describe('::SolidStateERC20', function () {
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         supply,
@@ -43,8 +42,8 @@ export function describeBehaviorOfSolidStateERC20(
     );
 
     describeBehaviorOfERC20Extended(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         allowance,
@@ -54,8 +53,8 @@ export function describeBehaviorOfSolidStateERC20(
     );
 
     describeBehaviorOfERC20Metadata(
+      deploy,
       {
-        deploy,
         name,
         symbol,
         decimals,

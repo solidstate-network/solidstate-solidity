@@ -25,8 +25,7 @@ describe('UpgradeableProxy', function () {
     );
   });
 
-  describeBehaviorOfUpgradeableProxy({
-    deploy: async () => instance,
+  describeBehaviorOfUpgradeableProxy(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

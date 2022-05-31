@@ -8,14 +8,14 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC721BaseBehaviorArgs {
-  deploy: () => Promise<ERC721Base>;
   supply: BigNumber;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC721Base(
-  { deploy, mint, burn }: ERC721BaseBehaviorArgs,
+  deploy: () => Promise<ERC721Base>,
+  { mint, burn }: ERC721BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -37,8 +37,8 @@ export function describeBehaviorOfERC721Base(
     });
 
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0x80ac58cd'],
       },
       skips,

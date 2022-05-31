@@ -4,13 +4,13 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondBaseBehaviorArgs {
-  deploy: () => Promise<IDiamondBase>;
   facetFunction: string;
   facetFunctionArgs: string[];
 }
 
 export function describeBehaviorOfDiamondBase(
-  { deploy, facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
+  deploy: () => Promise<IDiamondBase>,
+  { facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

@@ -5,12 +5,12 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondReadableBehaviorArgs {
-  deploy: () => Promise<IDiamondReadable>;
   facetCuts: any[];
 }
 
 export function describeBehaviorOfDiamondReadable(
-  { deploy, facetCuts }: DiamondReadableBehaviorArgs,
+  deploy: () => Promise<IDiamondReadable>,
+  { facetCuts }: DiamondReadableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,8 +24,8 @@ export function describeBehaviorOfDiamondReadable(
     });
 
     describeBehaviorOfERC165(
+      deploy as any,
       {
-        deploy: deploy as any,
         interfaceIds: ['0x48e2b093'],
       },
       skips,

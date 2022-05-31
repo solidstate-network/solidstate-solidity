@@ -6,7 +6,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155EnumerableBehaviorArgs {
-  deploy: () => Promise<IERC1155Enumerable>;
   transfer: (
     from: SignerWithAddress,
     to: SignerWithAddress,
@@ -27,7 +26,8 @@ export interface ERC1155EnumerableBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1155Enumerable(
-  { deploy, transfer, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
+  deploy: () => Promise<IERC1155Enumerable>,
+  { transfer, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

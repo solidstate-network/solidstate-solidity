@@ -13,8 +13,7 @@ describe('ERC1155Enumerable', function () {
     instance = await new ERC1155EnumerableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC1155Enumerable({
-    deploy: async () => instance,
+  describeBehaviorOfERC1155Enumerable(async () => instance, {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)

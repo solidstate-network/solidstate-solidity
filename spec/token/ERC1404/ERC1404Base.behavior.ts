@@ -6,7 +6,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1404BaseBehaviorArgs {
-  deploy: () => Promise<IERC1404Base>;
   restrictions: any;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
@@ -14,7 +13,8 @@ export interface ERC1404BaseBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1404Base(
-  { deploy, restrictions, mint, burn, supply }: ERC1404BaseBehaviorArgs,
+  deploy: () => Promise<IERC1404Base>,
+  { restrictions, mint, burn, supply }: ERC1404BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -27,8 +27,8 @@ export function describeBehaviorOfERC1404Base(
     });
 
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         supply,
         mint,
         burn,

@@ -22,8 +22,7 @@ describe('ERC1271Ownable', function () {
     );
   });
 
-  describeBehaviorOfERC1271Ownable({
-    deploy: async () => instance as any,
+  describeBehaviorOfERC1271Ownable(async () => instance as any, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

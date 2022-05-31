@@ -4,14 +4,14 @@ import { expect } from 'chai';
 import { BigNumberish } from 'ethers';
 
 export interface ERC20MetadataBehaviorArgs {
-  deploy: () => Promise<IERC20Metadata>;
   name: string;
   symbol: string;
   decimals: BigNumberish;
 }
 
 export function describeBehaviorOfERC20Metadata(
-  { deploy, name, symbol, decimals }: ERC20MetadataBehaviorArgs,
+  deploy: () => Promise<IERC20Metadata>,
+  { name, symbol, decimals }: ERC20MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

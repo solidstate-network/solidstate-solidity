@@ -6,14 +6,14 @@ import { expect } from 'chai';
 import { ethers } from 'ethers';
 
 export interface SafeOwnableBehaviorArgs {
-  deploy: () => Promise<ISafeOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfSafeOwnable(
-  { deploy, getOwner, getNomineeOwner, getNonOwner }: SafeOwnableBehaviorArgs,
+  deploy: () => Promise<ISafeOwnable>,
+  { getOwner, getNomineeOwner, getNonOwner }: SafeOwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -32,8 +32,8 @@ export function describeBehaviorOfSafeOwnable(
     });
 
     describeBehaviorOfOwnable(
+      deploy,
       {
-        deploy,
         getOwner,
         getNonOwner,
       },

@@ -7,13 +7,13 @@ import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface DiamondWritableBehaviorArgs {
-  deploy: () => Promise<IDiamondWritable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfDiamondWritable(
-  { deploy, getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
+  deploy: () => Promise<IDiamondWritable>,
+  { getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -55,8 +55,8 @@ export function describeBehaviorOfDiamondWritable(
     });
 
     describeBehaviorOfERC165(
+      deploy as any,
       {
-        deploy: deploy as any,
         interfaceIds: ['0x1f931c1c'],
       },
       skips,

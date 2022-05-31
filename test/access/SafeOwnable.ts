@@ -20,8 +20,7 @@ describe('SafeOwnable', function () {
     instance = await new SafeOwnableMock__factory(owner).deploy(owner.address);
   });
 
-  describeBehaviorOfSafeOwnable({
-    deploy: async () => instance,
+  describeBehaviorOfSafeOwnable(async () => instance, {
     getOwner: async () => owner,
     getNomineeOwner: async () => nomineeOwner,
     getNonOwner: async () => nonOwner,

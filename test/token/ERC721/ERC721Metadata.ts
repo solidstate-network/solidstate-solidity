@@ -20,8 +20,7 @@ describe('ERC721Metadata', function () {
     );
   });
 
-  describeBehaviorOfERC721Metadata({
-    deploy: async () => instance,
+  describeBehaviorOfERC721Metadata(async () => instance, {
     name,
     symbol,
     tokenURI,

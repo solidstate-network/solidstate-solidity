@@ -4,17 +4,13 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface ProxyBehaviorArgs {
-  deploy: () => Promise<IProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfProxy(
-  {
-    deploy,
-    implementationFunction,
-    implementationFunctionArgs,
-  }: ProxyBehaviorArgs,
+  deploy: () => Promise<IProxy>,
+  { implementationFunction, implementationFunctionArgs }: ProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

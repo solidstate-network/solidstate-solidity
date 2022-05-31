@@ -5,13 +5,13 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface OwnableBehaviorArgs {
-  deploy: () => Promise<IOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfOwnable(
-  { deploy, getOwner, getNonOwner }: OwnableBehaviorArgs,
+  deploy: () => Promise<IOwnable>,
+  { getOwner, getNonOwner }: OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

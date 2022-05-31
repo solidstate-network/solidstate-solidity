@@ -11,7 +11,6 @@ import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface SolidStateDiamondBehaviorArgs {
-  deploy: () => Promise<ISolidStateDiamond>;
   getOwner: () => Promise<SignerWithAddress>;
   getNomineeOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
@@ -22,8 +21,8 @@ export interface SolidStateDiamondBehaviorArgs {
 }
 
 export function describeBehaviorOfSolidStateDiamond(
+  deploy: () => Promise<ISolidStateDiamond>,
   {
-    deploy,
     getOwner,
     getNomineeOwner,
     getNonOwner,
@@ -52,8 +51,8 @@ export function describeBehaviorOfSolidStateDiamond(
     });
 
     describeBehaviorOfDiamondBase(
+      deploy,
       {
-        deploy,
         facetFunction,
         facetFunctionArgs,
       },
@@ -61,16 +60,16 @@ export function describeBehaviorOfSolidStateDiamond(
     );
 
     describeBehaviorOfDiamondReadable(
+      deploy,
       {
-        deploy,
         facetCuts,
       },
       skips,
     );
 
     describeBehaviorOfDiamondWritable(
+      deploy,
       {
-        deploy,
         getOwner,
         getNonOwner,
       },
@@ -78,16 +77,16 @@ export function describeBehaviorOfSolidStateDiamond(
     );
 
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0x7f5828d0'],
       },
       skips,
     );
 
     describeBehaviorOfSafeOwnable(
+      deploy,
       {
-        deploy,
         getOwner,
         getNomineeOwner,
         getNonOwner,

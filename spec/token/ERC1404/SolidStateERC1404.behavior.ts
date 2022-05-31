@@ -5,7 +5,6 @@ import { ISolidStateERC1404 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 export interface SolidStateERC1404BehaviorArgs {
-  deploy: () => Promise<ISolidStateERC1404>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
@@ -17,8 +16,8 @@ export interface SolidStateERC1404BehaviorArgs {
 }
 
 export function describeBehaviorOfSolidStateERC1404(
+  deploy: () => Promise<ISolidStateERC1404>,
   {
-    deploy,
     mint,
     burn,
     allowance,
@@ -34,8 +33,8 @@ export function describeBehaviorOfSolidStateERC1404(
 
   describe('::SolidStateERC1404', function () {
     describeBehaviorOfSolidStateERC20(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         allowance,
@@ -48,8 +47,8 @@ export function describeBehaviorOfSolidStateERC1404(
     );
 
     describeBehaviorOfERC1404Base(
+      deploy,
       {
-        deploy,
         restrictions,
         mint,
         burn,

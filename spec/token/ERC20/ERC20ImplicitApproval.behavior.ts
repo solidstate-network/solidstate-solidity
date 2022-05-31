@@ -7,7 +7,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ImplicitApprovalBehaviorArgs {
-  deploy: () => Promise<ERC20ImplicitApproval>;
   supply: BigNumber;
   getHolder: () => Promise<SignerWithAddress>;
   getImplicitlyApprovedSpender: () => Promise<SignerWithAddress>;
@@ -16,8 +15,8 @@ export interface ERC20ImplicitApprovalBehaviorArgs {
 }
 
 export function describeBehaviorOfERC20ImplicitApproval(
+  deploy: () => Promise<ERC20ImplicitApproval>,
   {
-    deploy,
     supply,
     getHolder,
     getImplicitlyApprovedSpender,
@@ -43,8 +42,8 @@ export function describeBehaviorOfERC20ImplicitApproval(
     });
 
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         supply,

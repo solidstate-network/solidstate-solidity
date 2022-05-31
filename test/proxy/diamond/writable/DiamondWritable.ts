@@ -20,8 +20,7 @@ describe('DiamondWritable', function () {
     instance = await new DiamondWritableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfDiamondWritable({
-    deploy: async () => instance,
+  describeBehaviorOfDiamondWritable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

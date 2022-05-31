@@ -24,8 +24,7 @@ describe('ERC20Base', function () {
     instance = await new ERC20BaseMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC20Base({
-    deploy: async () => instance,
+  describeBehaviorOfERC20Base(async () => instance, {
     supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

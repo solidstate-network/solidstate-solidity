@@ -40,7 +40,6 @@ const signAuthorization = async function (
 };
 
 export interface ECDSAMultisigWalletBehaviorArgs {
-  deploy: () => Promise<IECDSAMultisigWallet>;
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;
   quorum: BigNumber;
@@ -48,8 +47,8 @@ export interface ECDSAMultisigWalletBehaviorArgs {
 }
 
 export function describeBehaviorOfECDSAMultisigWallet(
+  deploy: () => Promise<IECDSAMultisigWallet>,
   {
-    deploy,
     getSigners,
     getNonSigner,
     quorum,

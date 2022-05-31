@@ -9,7 +9,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface SolidStateERC721BehaviorArgs {
-  deploy: () => Promise<SolidStateERC721>;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
   supply: BigNumber;
@@ -19,15 +18,8 @@ export interface SolidStateERC721BehaviorArgs {
 }
 
 export function describeBehaviorOfSolidStateERC721(
-  {
-    deploy,
-    supply,
-    mint,
-    burn,
-    name,
-    symbol,
-    tokenURI,
-  }: SolidStateERC721BehaviorArgs,
+  deploy: () => Promise<SolidStateERC721>,
+  { supply, mint, burn, name, symbol, tokenURI }: SolidStateERC721BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -46,8 +38,8 @@ export function describeBehaviorOfSolidStateERC721(
     });
 
     describeBehaviorOfERC721Base(
+      deploy,
       {
-        deploy,
         supply,
         mint,
         burn,
@@ -56,8 +48,8 @@ export function describeBehaviorOfSolidStateERC721(
     );
 
     describeBehaviorOfERC721Enumerable(
+      deploy,
       {
-        deploy,
         supply,
         mint,
         burn,
@@ -66,8 +58,8 @@ export function describeBehaviorOfSolidStateERC721(
     );
 
     describeBehaviorOfERC721Metadata(
+      deploy,
       {
-        deploy,
         name,
         symbol,
         tokenURI,

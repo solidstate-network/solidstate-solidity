@@ -3,14 +3,13 @@ import { describeFilter } from '@solidstate/library';
 import { IUpgradeableProxy } from '@solidstate/typechain-types';
 
 export interface UpgradeableProxyBehaviorArgs {
-  deploy: () => Promise<IUpgradeableProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfUpgradeableProxy(
+  deploy: () => Promise<IUpgradeableProxy>,
   {
-    deploy,
     implementationFunction,
     implementationFunctionArgs,
   }: UpgradeableProxyBehaviorArgs,
@@ -20,8 +19,8 @@ export function describeBehaviorOfUpgradeableProxy(
 
   describe('::UpgradeableProxy', function () {
     describeBehaviorOfProxy(
+      deploy,
       {
-        deploy,
         implementationFunction,
         implementationFunctionArgs,
       },

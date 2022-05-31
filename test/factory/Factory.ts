@@ -11,7 +11,7 @@ describe('Factory', function () {
     instance = await new FactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfFactory({ deploy: async () => instance });
+  describeBehaviorOfFactory(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_deploy(bytes)', function () {

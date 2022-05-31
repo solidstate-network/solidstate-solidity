@@ -3,14 +3,14 @@ import { IERC721Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface ERC721MetadataBehaviorArgs {
-  deploy: () => Promise<IERC721Metadata>;
   name: string;
   symbol: string;
   tokenURI: string;
 }
 
 export function describeBehaviorOfERC721Metadata(
-  { deploy, name, symbol, tokenURI }: ERC721MetadataBehaviorArgs,
+  deploy: () => Promise<IERC721Metadata>,
+  { name, symbol, tokenURI }: ERC721MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

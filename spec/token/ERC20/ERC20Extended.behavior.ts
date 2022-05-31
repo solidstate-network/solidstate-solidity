@@ -6,7 +6,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ExtendedBehaviorArgs {
-  deploy: () => Promise<IERC20Extended>;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
@@ -14,7 +13,8 @@ export interface ERC20ExtendedBehaviorArgs {
 }
 
 export function describeBehaviorOfERC20Extended(
-  { deploy, mint, burn, allowance, supply }: ERC20ExtendedBehaviorArgs,
+  deploy: () => Promise<IERC20Extended>,
+  { mint, burn, allowance, supply }: ERC20ExtendedBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

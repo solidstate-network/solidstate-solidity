@@ -4,12 +4,11 @@ import { MetamorphicFactory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface MetaphoricFactoryBehaviorArgs {
-  deploy: () => Promise<MetamorphicFactory>;
-}
+export interface MetaphoricFactoryBehaviorArgs {}
 
 export function describeBehaviorOfMetamorphicFactory(
-  { deploy }: MetaphoricFactoryBehaviorArgs,
+  deploy: () => Promise<MetamorphicFactory>,
+  {}: MetaphoricFactoryBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -21,7 +20,7 @@ export function describeBehaviorOfMetamorphicFactory(
       instance = await deploy();
     });
 
-    describeBehaviorOfFactory({}, skips);
+    describeBehaviorOfFactory(deploy, {}, skips);
 
     describe('#getMetamorphicImplementation()', function () {
       // behavior changes during internal call but cannot be tested independently

@@ -16,8 +16,7 @@ describe('ERC1155Metadata', function () {
     );
   });
 
-  describeBehaviorOfERC1155Metadata({
-    deploy: async () => instance,
+  describeBehaviorOfERC1155Metadata(async () => instance, {
     tokenURI,
   });
 });

@@ -8,7 +8,6 @@ import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155BaseBehaviorArgs {
-  deploy: () => Promise<IERC1155Base>;
   mint: (
     address: string,
     id: BigNumber,
@@ -23,7 +22,8 @@ export interface ERC1155BaseBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1155Base(
-  { deploy, mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
+  deploy: () => Promise<IERC1155Base>,
+  { mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -42,8 +42,8 @@ export function describeBehaviorOfERC1155Base(
     });
 
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0xd9b67a26'],
       },
       skips,

@@ -7,7 +7,6 @@ import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface UpgradeableProxyOwnableArgs {
-  deploy: () => Promise<IUpgradeableProxyOwnable>;
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
   implementationFunction: string;
@@ -15,8 +14,8 @@ interface UpgradeableProxyOwnableArgs {
 }
 
 export function describeBehaviorOfUpgradeableProxyOwnable(
+  deploy: () => Promise<IUpgradeableProxyOwnable>,
   {
-    deploy,
     getOwner,
     getNonOwner,
     implementationFunction,
@@ -38,8 +37,8 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
     });
 
     describeBehaviorOfUpgradeableProxy(
+      deploy,
       {
-        deploy,
         implementationFunction,
         implementationFunctionArgs,
       },

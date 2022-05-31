@@ -3,14 +3,13 @@ import { describeFilter } from '@solidstate/library';
 import { IManagedProxy } from '@solidstate/typechain-types';
 
 export interface ManagedProxyBehaviorArgs {
-  deploy: () => Promise<IManagedProxy>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfManagedProxy(
+  deploy: () => Promise<IManagedProxy>,
   {
-    deploy,
     implementationFunction,
     implementationFunctionArgs,
   }: ManagedProxyBehaviorArgs,
@@ -20,8 +19,8 @@ export function describeBehaviorOfManagedProxy(
 
   describe('::ManagedProxy', function () {
     describeBehaviorOfProxy(
+      deploy,
       {
-        deploy,
         implementationFunction,
         implementationFunctionArgs,
       },
