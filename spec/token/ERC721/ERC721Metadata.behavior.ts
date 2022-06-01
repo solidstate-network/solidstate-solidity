@@ -1,9 +1,9 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC721Metadata } from '@solidstate/typechain-types';
+import { IERC721Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 interface ERC721MetadataBehaviorArgs {
-  deploy: () => Promise<ERC721Metadata>;
+  deploy: () => Promise<IERC721Metadata>;
   name: string;
   symbol: string;
   tokenURI: string;
@@ -16,7 +16,7 @@ export function describeBehaviorOfERC721Metadata(
   const describe = describeFilter(skips);
 
   describe('::ERC721Metadata', function () {
-    let instance: ERC721Metadata;
+    let instance: IERC721Metadata;
 
     beforeEach(async function () {
       instance = await deploy();

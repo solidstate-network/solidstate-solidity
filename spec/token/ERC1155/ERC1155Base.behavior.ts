@@ -1,14 +1,14 @@
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { ERC1155Base } from '@solidstate/typechain-types';
+import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface ERC1155BaseBehaviorArgs {
-  deploy: () => Promise<ERC1155Base>;
+  deploy: () => Promise<IERC1155Base>;
   mint: (
     address: string,
     id: BigNumber,
@@ -31,7 +31,7 @@ export function describeBehaviorOfERC1155Base(
   describe('::ERC1155Base', function () {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
-    let instance: ERC1155Base;
+    let instance: IERC1155Base;
 
     before(async function () {
       [holder, spender] = await ethers.getSigners();

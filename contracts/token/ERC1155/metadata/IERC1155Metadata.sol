@@ -2,10 +2,12 @@
 
 pragma solidity ^0.8.0;
 
+import { IERC1155MetadataInternal } from './IERC1155MetadataInternal.sol';
+
 /**
  * @title ERC1155Metadata interface
  */
-interface IERC1155Metadata {
+interface IERC1155Metadata is IERC1155MetadataInternal {
     /**
      * @notice get generated URI for given token
      * @return token URI

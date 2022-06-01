@@ -14,7 +14,7 @@ describe('ERC20Extended', function () {
   });
 
   describeBehaviorOfERC20Extended({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

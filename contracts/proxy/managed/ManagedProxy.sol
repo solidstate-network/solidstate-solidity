@@ -3,12 +3,13 @@
 pragma solidity ^0.8.0;
 
 import { Proxy } from '../Proxy.sol';
+import { IManagedProxy } from './IManagedProxy.sol';
 
 /**
  * @title Proxy with externally controlled implementation
  * @dev implementation fetched using immutable function selector
  */
-abstract contract ManagedProxy is Proxy {
+abstract contract ManagedProxy is IManagedProxy, Proxy {
     bytes4 internal immutable MANAGER_SELECTOR;
 
     /**

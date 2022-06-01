@@ -17,7 +17,7 @@ describe('Ownable', function () {
   });
 
   describeBehaviorOfOwnable({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import { ECDSAMultisigWallet, ECDSAMultisigWalletStorage } from './ECDSAMultisigWallet.sol';
+import { ECDSAMultisigWallet } from './ECDSAMultisigWallet.sol';
+import { ECDSAMultisigWalletStorage } from './ECDSAMultisigWalletStorage.sol';
 
 contract ECDSAMultisigWalletMock is ECDSAMultisigWallet {
     using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;

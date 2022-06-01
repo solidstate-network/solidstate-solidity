@@ -25,7 +25,7 @@ describe('ECDSAMultisigWallet', function () {
   });
 
   describeBehaviorOfECDSAMultisigWallet({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getSigners: async () => signers,
     getNonSigner: async () => nonSigner,
     quorum,

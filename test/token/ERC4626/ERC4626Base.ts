@@ -4,8 +4,8 @@ import {
   describeBehaviorOfERC4626Base,
 } from '@solidstate/spec';
 import {
-  ERC20Mock,
-  ERC20Mock__factory,
+  SolidStateERC20Mock,
+  SolidStateERC20Mock__factory,
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
 } from '@solidstate/typechain-types';
@@ -17,14 +17,14 @@ describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
   let instance: ERC4626BaseMock;
-  let assetInstance: ERC20Mock;
+  let assetInstance: SolidStateERC20Mock;
 
   before(async () => {
     [deployer, depositor] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    assetInstance = await new ERC20Mock__factory(deployer).deploy(
+    assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
       '',
       '',
       0,
@@ -37,7 +37,7 @@ describe('ERC4626Base', () => {
   });
 
   describeBehaviorOfERC4626Base({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getAsset: async () => assetInstance,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>

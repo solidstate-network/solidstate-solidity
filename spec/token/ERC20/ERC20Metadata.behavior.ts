@@ -1,10 +1,10 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC20Metadata } from '@solidstate/typechain-types';
+import { IERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumberish } from 'ethers';
 
 interface ERC20MetadataBehaviorArgs {
-  deploy: () => Promise<ERC20Metadata>;
+  deploy: () => Promise<IERC20Metadata>;
   name: string;
   symbol: string;
   decimals: BigNumberish;
@@ -17,7 +17,7 @@ export function describeBehaviorOfERC20Metadata(
   const describe = describeFilter(skips);
 
   describe('::ERC20Metadata', function () {
-    let instance: ERC20Metadata;
+    let instance: IERC20Metadata;
 
     beforeEach(async function () {
       instance = await deploy();

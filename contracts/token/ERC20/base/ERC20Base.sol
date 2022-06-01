@@ -3,13 +3,14 @@
 pragma solidity ^0.8.0;
 
 import { IERC20 } from '../IERC20.sol';
+import { IERC20Base } from './IERC20Base.sol';
 import { ERC20BaseInternal } from './ERC20BaseInternal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
  * @title Base ERC20 implementation, excluding optional extensions
  */
-abstract contract ERC20Base is IERC20, ERC20BaseInternal {
+abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
     /**
      * @inheritdoc IERC20
      */
@@ -44,8 +45,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         virtual
         returns (bool)
     {
-        _approve(msg.sender, spender, amount);
-        return true;
+        return _approve(msg.sender, spender, amount);
     }
 
     /**
@@ -56,8 +56,7 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         virtual
         returns (bool)
     {
-        _transfer(msg.sender, recipient, amount);
-        return true;
+        return _transfer(msg.sender, recipient, amount);
     }
 
     /**
@@ -68,19 +67,6 @@ abstract contract ERC20Base is IERC20, ERC20BaseInternal {
         address recipient,
         uint256 amount
     ) public virtual returns (bool) {
-        uint256 currentAllowance = _allowance(holder, msg.sender);
-
-        require(
-            currentAllowance >= amount,
-            'ERC20: transfer amount exceeds allowance'
-        );
-
-        unchecked {
-            _approve(holder, msg.sender, currentAllowance - amount);
-        }
-
-        _transfer(holder, recipient, amount);
-
-        return true;
+        return _transferFrom(holder, recipient, amount);
     }
 }

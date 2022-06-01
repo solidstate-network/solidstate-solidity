@@ -21,7 +21,7 @@ describe('SafeOwnable', function () {
   });
 
   describeBehaviorOfSafeOwnable({
-    deploy: async () => instance as any,
+    deploy: async () => instance,
     getOwner: async () => owner,
     getNomineeOwner: async () => nomineeOwner,
     getNonOwner: async () => nonOwner,

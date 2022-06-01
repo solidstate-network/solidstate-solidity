@@ -24,7 +24,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct ECDSAMultisigWallet.Parameters",
+        "internalType": "struct IECDSAMultisigWalletInternal.Parameters",
         "name": "parameters",
         "type": "tuple"
       },
@@ -41,7 +41,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct ECDSAMultisigWallet.Signature[]",
+        "internalType": "struct IECDSAMultisigWalletInternal.Signature[]",
         "name": "signatures",
         "type": "tuple[]"
       }

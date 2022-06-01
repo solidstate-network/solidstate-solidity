@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import { ERC20ImplicitApproval, ERC20ImplicitApprovalStorage } from './ERC20ImplicitApproval.sol';
+import { ERC20ImplicitApproval } from './ERC20ImplicitApproval.sol';
+import { ERC20ImplicitApprovalStorage } from './ERC20ImplicitApprovalStorage.sol';
 
 contract ERC20ImplicitApprovalMock is ERC20ImplicitApproval {
     constructor(address[] memory approvedAccounts) {

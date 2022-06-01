@@ -7,13 +7,14 @@ import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
 import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
 import { IERC721 } from '../IERC721.sol';
 import { IERC721Receiver } from '../IERC721Receiver.sol';
+import { IERC721Base } from './IERC721Base.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 import { ERC721BaseInternal } from './ERC721BaseInternal.sol';
 
 /**
  * @title Base ERC721 implementation, excluding optional extensions
  */
-abstract contract ERC721Base is IERC721, ERC721BaseInternal {
+abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
