@@ -23,8 +23,7 @@ describe('SolidStateERC20', function () {
     );
   });
 
-  describeBehaviorOfSolidStateERC20({
-    deploy: async () => instance,
+  describeBehaviorOfSolidStateERC20(async () => instance, {
     mint: async (recipient, amount) => instance.__mint(recipient, amount),
     burn: async (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>

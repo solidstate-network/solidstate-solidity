@@ -1,4 +1,7 @@
-import { describeBehaviorOfERC20Base } from './ERC20Base.behavior';
+import {
+  describeBehaviorOfERC20Base,
+  ERC20BaseBehaviorArgs,
+} from './ERC20Base.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC20ImplicitApproval } from '@solidstate/typechain-types';
@@ -6,18 +9,15 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20ImplicitApprovalBehaviorArgs {
-  deploy: () => Promise<ERC20ImplicitApproval>;
-  supply: BigNumber;
+export interface ERC20ImplicitApprovalBehaviorArgs
+  extends ERC20BaseBehaviorArgs {
   getHolder: () => Promise<SignerWithAddress>;
   getImplicitlyApprovedSpender: () => Promise<SignerWithAddress>;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20ImplicitApproval(
+  deploy: () => Promise<ERC20ImplicitApproval>,
   {
-    deploy,
     supply,
     getHolder,
     getImplicitlyApprovedSpender,
@@ -43,8 +43,8 @@ export function describeBehaviorOfERC20ImplicitApproval(
     });
 
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         supply,

@@ -4,14 +4,14 @@ import { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface OwnableBehaviorArgs {
-  deploy: () => Promise<IOwnable>;
+export interface OwnableBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfOwnable(
-  { deploy, getOwner, getNonOwner }: OwnableBehaviorArgs,
+  deploy: () => Promise<IOwnable>,
+  { getOwner, getNonOwner }: OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

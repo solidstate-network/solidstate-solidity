@@ -15,8 +15,7 @@ describe('SolidStateERC1155', function () {
     instance = await new SolidStateERC1155Mock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfSolidStateERC1155({
-    deploy: async () => instance,
+  describeBehaviorOfSolidStateERC1155(async () => instance, {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)

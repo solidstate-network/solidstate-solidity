@@ -1,28 +1,22 @@
-import { describeBehaviorOfSolidStateERC20 } from '../ERC20';
-import { describeBehaviorOfERC4626Base } from './ERC4626Base.behavior';
+import {
+  describeBehaviorOfSolidStateERC20,
+  SolidStateERC20BehaviorArgs,
+} from '../ERC20';
+import {
+  describeBehaviorOfERC4626Base,
+  ERC4626BaseBehaviorArgs,
+} from './ERC4626Base.behavior';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, ISolidStateERC4626 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface SolidStateERC4626BehaviorArgs {
-  deploy: () => Promise<ISolidStateERC4626>;
-  getAsset: () => Promise<IERC20>;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  allowance: (holder: string, spender: string) => Promise<BigNumber>;
-  mintAsset: (
-    address: string,
-    amount: BigNumber,
-  ) => Promise<ContractTransaction>;
-  name: string;
-  symbol: string;
-  decimals: BigNumberish;
-  supply: BigNumber;
-}
+export interface SolidStateERC4626BehaviorArgs
+  extends SolidStateERC20BehaviorArgs,
+    ERC4626BaseBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateERC4626(
+  deploy: () => Promise<ISolidStateERC4626>,
   {
-    deploy,
     getAsset,
     mint,
     burn,
@@ -39,8 +33,8 @@ export function describeBehaviorOfSolidStateERC4626(
 
   describe('::SolidStateERC4626', function () {
     describeBehaviorOfSolidStateERC20(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         allowance,
@@ -53,8 +47,8 @@ export function describeBehaviorOfSolidStateERC4626(
     );
 
     describeBehaviorOfERC4626Base(
+      deploy,
       {
-        deploy,
         getAsset,
         mint,
         burn,

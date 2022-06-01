@@ -1,10 +1,20 @@
-import { describeBehaviorOfFactory } from './Factory.behavior';
+import {
+  describeBehaviorOfFactory,
+  FactoryBehaviorArgs,
+} from './Factory.behavior';
 import { describeFilter } from '@solidstate/library';
+import { BaseContract } from 'ethers';
 
-export function describeBehaviorOfCloneFactory({}, skips?: string[]) {
+export interface CloneFactoryBehaviorArgs extends FactoryBehaviorArgs {}
+
+export function describeBehaviorOfCloneFactory(
+  deploy: () => Promise<BaseContract>,
+  {}: CloneFactoryBehaviorArgs,
+  skips?: string[],
+) {
   const describe = describeFilter(skips);
 
   describe('::CloneFactory', function () {
-    describeBehaviorOfFactory({}, skips);
+    describeBehaviorOfFactory(deploy, {}, skips);
   });
 }

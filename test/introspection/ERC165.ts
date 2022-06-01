@@ -10,8 +10,7 @@ describe('ERC165', function () {
     instance = await new ERC165Mock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC165({
-    deploy: async () => instance,
+  describeBehaviorOfERC165(async () => instance, {
     interfaceIds: [],
   });
 });

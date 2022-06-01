@@ -2,13 +2,13 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1155Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC1155MetadataBehaviorArgs {
-  deploy: () => Promise<IERC1155Metadata>;
+export interface ERC1155MetadataBehaviorArgs {
   tokenURI: string;
 }
 
 export function describeBehaviorOfERC1155Metadata(
-  { deploy, tokenURI }: ERC1155MetadataBehaviorArgs,
+  deploy: () => Promise<IERC1155Metadata>,
+  { tokenURI }: ERC1155MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

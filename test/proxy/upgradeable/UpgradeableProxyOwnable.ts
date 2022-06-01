@@ -33,8 +33,7 @@ describe('UpgradeableProxyOwnable', function () {
     );
   });
 
-  describeBehaviorOfUpgradeableProxyOwnable({
-    deploy: async () => instance,
+  describeBehaviorOfUpgradeableProxyOwnable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
     implementationFunction: 'owner()',

@@ -4,13 +4,13 @@ import { IDiamondReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface DiamondReadableBehaviorArgs {
-  deploy: () => Promise<IDiamondReadable>;
+export interface DiamondReadableBehaviorArgs {
   facetCuts: any[];
 }
 
 export function describeBehaviorOfDiamondReadable(
-  { deploy, facetCuts }: DiamondReadableBehaviorArgs,
+  deploy: () => Promise<IDiamondReadable>,
+  { facetCuts }: DiamondReadableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -23,9 +23,10 @@ export function describeBehaviorOfDiamondReadable(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
+      deploy as any,
       {
-        deploy: deploy as any,
         interfaceIds: ['0x48e2b093'],
       },
       skips,

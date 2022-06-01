@@ -24,8 +24,7 @@ describe('ERC20ImplicitApproval', function () {
     ]);
   });
 
-  describeBehaviorOfERC20ImplicitApproval({
-    deploy: async () => instance,
+  describeBehaviorOfERC20ImplicitApproval(async () => instance, {
     supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

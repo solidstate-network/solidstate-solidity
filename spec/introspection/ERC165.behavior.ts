@@ -2,13 +2,13 @@ import { describeFilter } from '@solidstate/library';
 import { IERC165 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC165BehaviorArgs {
-  deploy: () => Promise<IERC165>;
+export interface ERC165BehaviorArgs {
   interfaceIds: string[];
 }
 
 export function describeBehaviorOfERC165(
-  { deploy, interfaceIds }: ERC165BehaviorArgs,
+  deploy: () => Promise<IERC165>,
+  { interfaceIds }: ERC165BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

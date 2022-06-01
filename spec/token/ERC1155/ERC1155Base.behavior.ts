@@ -7,8 +7,7 @@ import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC1155BaseBehaviorArgs {
-  deploy: () => Promise<IERC1155Base>;
+export interface ERC1155BaseBehaviorArgs {
   mint: (
     address: string,
     id: BigNumber,
@@ -23,7 +22,8 @@ interface ERC1155BaseBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1155Base(
-  { deploy, mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
+  deploy: () => Promise<IERC1155Base>,
+  { mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -41,9 +41,10 @@ export function describeBehaviorOfERC1155Base(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0xd9b67a26'],
       },
       skips,

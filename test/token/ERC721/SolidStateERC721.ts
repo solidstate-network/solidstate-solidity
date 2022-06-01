@@ -21,8 +21,7 @@ describe('SolidStateERC721', function () {
     );
   });
 
-  describeBehaviorOfSolidStateERC721({
-    deploy: async () => instance,
+  describeBehaviorOfSolidStateERC721(async () => instance, {
     supply: ethers.constants.Zero,
     mint: async (recipient, tokenId) =>
       instance['mint(address,uint256)'](recipient, tokenId),

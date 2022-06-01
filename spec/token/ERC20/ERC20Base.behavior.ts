@@ -5,15 +5,15 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20BaseBehaviorArgs {
-  deploy: () => Promise<IERC20Base>;
+export interface ERC20BaseBehaviorArgs {
   supply: BigNumber;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(
-  { deploy, supply, mint, burn }: ERC20BaseBehaviorArgs,
+  deploy: () => Promise<IERC20Base>,
+  { supply, mint, burn }: ERC20BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

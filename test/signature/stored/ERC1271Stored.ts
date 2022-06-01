@@ -21,8 +21,7 @@ describe('ERC1271Stored', function () {
     );
   });
 
-  describeBehaviorOfERC1271Stored({
-    deploy: async () => instance as any,
+  describeBehaviorOfERC1271Stored(async () => instance as any, {
     getValidParams: async () => validParams,
   });
 

@@ -6,14 +6,14 @@ import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-interface DiamondWritableBehaviorArgs {
-  deploy: () => Promise<IDiamondWritable>;
+export interface DiamondWritableBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfDiamondWritable(
-  { deploy, getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
+  deploy: () => Promise<IDiamondWritable>,
+  { getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -54,9 +54,10 @@ export function describeBehaviorOfDiamondWritable(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
+      deploy as any,
       {
-        deploy: deploy as any,
         interfaceIds: ['0x1f931c1c'],
       },
       skips,

@@ -3,21 +3,22 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1271Stored } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-interface ERC1271OwnableBehaviorArgs {
-  deploy: () => Promise<IERC1271Stored>;
+export interface ERC1271StoredBehaviorArgs {
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
 }
 
 export function describeBehaviorOfERC1271Stored(
-  { deploy, getValidParams }: ERC1271OwnableBehaviorArgs,
+  deploy: () => Promise<IERC1271Stored>,
+  { getValidParams }: ERC1271StoredBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::ERC1271Stored', function () {
+    // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
+      deploy,
       {
-        deploy,
         getValidParams,
         getInvalidParams: async () => [
           ethers.utils.randomBytes(32),

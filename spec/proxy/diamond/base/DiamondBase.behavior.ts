@@ -3,14 +3,14 @@ import { IDiamondBase } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface DiamondBaseBehaviorArgs {
-  deploy: () => Promise<IDiamondBase>;
+export interface DiamondBaseBehaviorArgs {
   facetFunction: string;
   facetFunctionArgs: string[];
 }
 
 export function describeBehaviorOfDiamondBase(
-  { deploy, facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
+  deploy: () => Promise<IDiamondBase>,
+  { facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

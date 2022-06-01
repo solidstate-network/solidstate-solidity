@@ -4,14 +4,14 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1271Ownable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-interface ERC1271OwnableBehaviorArgs {
-  deploy: () => Promise<IERC1271Ownable>;
+export interface ERC1271OwnableBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfERC1271Ownable(
-  { deploy, getOwner, getNonOwner }: ERC1271OwnableBehaviorArgs,
+  deploy: () => Promise<IERC1271Ownable>,
+  { getOwner, getNonOwner }: ERC1271OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -25,9 +25,10 @@ export function describeBehaviorOfERC1271Ownable(
       nonOwner = await getNonOwner();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
+      deploy,
       {
-        deploy,
         getValidParams: async function () {
           let hash = ethers.utils.randomBytes(32);
           let signature = await owner.signMessage(ethers.utils.arrayify(hash));

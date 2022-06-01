@@ -22,8 +22,7 @@ describe('ERC1404Base', function () {
     );
   });
 
-  describeBehaviorOfERC1404Base({
-    deploy: async () => instance,
+  describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>

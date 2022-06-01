@@ -1,24 +1,22 @@
-import { describeBehaviorOfSolidStateERC20 } from '../ERC20';
-import { describeBehaviorOfERC1404Base } from './ERC1404Base.behavior';
+import {
+  describeBehaviorOfSolidStateERC20,
+  SolidStateERC20BehaviorArgs,
+} from '../ERC20';
+import {
+  describeBehaviorOfERC1404Base,
+  ERC1404BaseBehaviorArgs,
+} from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1404 } from '@solidstate/typechain-types';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
-interface SolidStateERC1404BehaviorArgs {
-  deploy: () => Promise<ISolidStateERC1404>;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  allowance: (holder: string, spender: string) => Promise<BigNumber>;
-  restrictions: any;
-  name: string;
-  symbol: string;
-  decimals: BigNumberish;
-  supply: BigNumber;
-}
+export interface SolidStateERC1404BehaviorArgs
+  extends SolidStateERC20BehaviorArgs,
+    ERC1404BaseBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateERC1404(
+  deploy: () => Promise<ISolidStateERC1404>,
   {
-    deploy,
     mint,
     burn,
     allowance,
@@ -34,8 +32,8 @@ export function describeBehaviorOfSolidStateERC1404(
 
   describe('::SolidStateERC1404', function () {
     describeBehaviorOfSolidStateERC20(
+      deploy,
       {
-        deploy,
         mint,
         burn,
         allowance,
@@ -48,8 +46,8 @@ export function describeBehaviorOfSolidStateERC1404(
     );
 
     describeBehaviorOfERC1404Base(
+      deploy,
       {
-        deploy,
         restrictions,
         mint,
         burn,

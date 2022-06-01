@@ -25,8 +25,7 @@ describe('ERC721Base', function () {
     instance = await new ERC721BaseMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC721Base({
-    deploy: async () => instance,
+  describeBehaviorOfERC721Base(async () => instance, {
     supply: ethers.constants.Zero,
     mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
     burn: (tokenId) => instance.burn(tokenId),

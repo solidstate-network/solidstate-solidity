@@ -2,14 +2,14 @@ import { describeFilter } from '@solidstate/library';
 import { IERC1271Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface ERC1271BaseBehaviorArgs {
-  deploy: () => Promise<IERC1271Base>;
+export interface ERC1271BaseBehaviorArgs {
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
   getInvalidParams: () => Promise<[Uint8Array, Uint8Array]>;
 }
 
 export function describeBehaviorOfERC1271Base(
-  { deploy, getValidParams, getInvalidParams }: ERC1271BaseBehaviorArgs,
+  deploy: () => Promise<IERC1271Base>,
+  { getValidParams, getInvalidParams }: ERC1271BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
