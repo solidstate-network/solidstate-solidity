@@ -1,13 +1,12 @@
-import { Pausable } from '../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { Pausable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-interface PausableBehaviorArgs {
-  deploy: () => Promise<Pausable>;
-}
+export interface PausableBehaviorArgs {}
 
 export function describeBehaviorOfPausable(
-  { deploy }: PausableBehaviorArgs,
+  deploy: () => Promise<Pausable>,
+  args: PausableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

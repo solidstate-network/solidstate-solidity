@@ -1,6 +1,9 @@
-import { PausableMock, PausableMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfPausable } from '@solidstate/spec';
+import {
+  PausableMock,
+  PausableMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -16,9 +19,7 @@ describe('Pausable', function () {
     instance = await new PausableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfPausable({
-    deploy: async () => instance as any,
-  });
+  describeBehaviorOfPausable(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_pause()', function () {
