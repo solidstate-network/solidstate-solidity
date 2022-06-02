@@ -1,26 +1,22 @@
-import { Proxy } from '../../typechain';
 import { describeFilter } from '@solidstate/library';
+import { IProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface ProxyBehaviorArgs {
-  deploy: () => Promise<Proxy>;
+export interface ProxyBehaviorArgs {
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
 
 export function describeBehaviorOfProxy(
-  {
-    deploy,
-    implementationFunction,
-    implementationFunctionArgs,
-  }: ProxyBehaviorArgs,
+  deploy: () => Promise<IProxy>,
+  { implementationFunction, implementationFunctionArgs }: ProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::Proxy', function () {
-    let instance: Proxy;
+    let instance: IProxy;
 
     beforeEach(async function () {
       const [deployer] = await ethers.getSigners();

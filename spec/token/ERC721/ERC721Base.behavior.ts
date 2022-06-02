@@ -1,21 +1,21 @@
-import { ERC721Base } from '../../../typechain';
 import { describeBehaviorOfERC165 } from '../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { ERC721Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC721BaseBehaviorArgs {
-  deploy: () => Promise<ERC721Base>;
+export interface ERC721BaseBehaviorArgs {
   supply: BigNumber;
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC721Base(
-  { deploy, mint, burn }: ERC721BaseBehaviorArgs,
+  deploy: () => Promise<ERC721Base>,
+  { mint, burn }: ERC721BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -36,9 +36,10 @@ export function describeBehaviorOfERC721Base(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0x80ac58cd'],
       },
       skips,

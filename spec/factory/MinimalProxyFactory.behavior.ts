@@ -1,10 +1,20 @@
-import { describeBehaviorOfFactory } from './Factory.behavior';
+import {
+  describeBehaviorOfFactory,
+  FactoryBehaviorArgs,
+} from './Factory.behavior';
 import { describeFilter } from '@solidstate/library';
+import { BaseContract } from 'ethers';
 
-export function describeBehaviorOfMinimalProxyFactory({}, skips?: string[]) {
+export interface MinimalProxyFactoryBehaviorArgs extends FactoryBehaviorArgs {}
+
+export function describeBehaviorOfMinimalProxyFactory(
+  deploy: () => Promise<BaseContract>,
+  {}: MinimalProxyFactoryBehaviorArgs,
+  skips?: string[],
+) {
   const describe = describeFilter(skips);
 
   describe('::MinimalProxyFactory', function () {
-    describeBehaviorOfFactory({}, skips);
+    describeBehaviorOfFactory(deploy, {}, skips);
   });
 }

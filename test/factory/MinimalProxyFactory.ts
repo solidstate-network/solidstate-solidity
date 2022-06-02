@@ -1,8 +1,8 @@
+import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,
-} from '../../typechain';
-import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -14,7 +14,7 @@ describe('MinimalProxyFactory', function () {
     instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMinimalProxyFactory({ deploy: async () => instance });
+  describeBehaviorOfMinimalProxyFactory(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_deployMinimalProxy(address)', function () {

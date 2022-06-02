@@ -1,10 +1,10 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC20Base } from '@solidstate/spec';
 import {
   ERC20Base,
   ERC20BaseMock,
   ERC20BaseMock__factory,
-} from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfERC20Base } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -24,8 +24,7 @@ describe('ERC20Base', function () {
     instance = await new ERC20BaseMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC20Base({
-    deploy: async () => instance as any,
+  describeBehaviorOfERC20Base(async () => instance, {
     supply: ethers.constants.Zero,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),

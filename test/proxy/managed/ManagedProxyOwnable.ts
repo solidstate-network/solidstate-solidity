@@ -1,9 +1,9 @@
+import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
 import {
   ManagedProxyOwnableMock,
   ManagedProxyOwnableMock__factory,
   OwnableMock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
@@ -34,8 +34,7 @@ describe('ManagedProxyOwnable', function () {
     );
   });
 
-  describeBehaviorOfManagedProxyOwnable({
-    deploy: async () => instance as any,
+  describeBehaviorOfManagedProxyOwnable(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

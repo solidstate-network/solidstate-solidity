@@ -1,8 +1,8 @@
+import { describeBehaviorOfERC721Enumerable } from '@solidstate/spec';
 import {
   ERC721EnumerableMock,
   ERC721EnumerableMock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfERC721Enumerable } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC721Enumerable', function () {
@@ -13,8 +13,7 @@ describe('ERC721Enumerable', function () {
     instance = await new ERC721EnumerableMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC721Enumerable({
-    deploy: async () => instance,
+  describeBehaviorOfERC721Enumerable(async () => instance, {
     mint: (recipient, tokenId) =>
       instance['mint(address,uint256)'](recipient, tokenId),
     burn: (tokenId) => instance['burn(uint256)'](tokenId),

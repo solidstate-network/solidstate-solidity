@@ -1,8 +1,8 @@
+import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
 import {
   MetamorphicFactoryMock,
   MetamorphicFactoryMock__factory,
-} from '../../typechain';
-import { describeBehaviorOfMetamorphicFactory } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -14,7 +14,7 @@ describe('MetamorphicFactory', function () {
     instance = await new MetamorphicFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMetamorphicFactory({ deploy: async () => instance as any });
+  describeBehaviorOfMetamorphicFactory(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_deployMetamorphicContract(address,bytes32)', function () {

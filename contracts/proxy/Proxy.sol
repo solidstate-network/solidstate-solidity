@@ -3,11 +3,12 @@
 pragma solidity ^0.8.0;
 
 import { AddressUtils } from '../utils/AddressUtils.sol';
+import { IProxy } from './IProxy.sol';
 
 /**
  * @title Base proxy contract
  */
-abstract contract Proxy {
+abstract contract Proxy is IProxy {
     using AddressUtils for address;
 
     /**

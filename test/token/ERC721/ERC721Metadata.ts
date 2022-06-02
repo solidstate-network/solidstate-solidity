@@ -1,8 +1,8 @@
+import { describeBehaviorOfERC721Metadata } from '@solidstate/spec';
 import {
   ERC721MetadataMock,
   ERC721MetadataMock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfERC721Metadata } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC721Metadata', function () {
@@ -20,8 +20,7 @@ describe('ERC721Metadata', function () {
     );
   });
 
-  describeBehaviorOfERC721Metadata({
-    deploy: async () => instance,
+  describeBehaviorOfERC721Metadata(async () => instance, {
     name,
     symbol,
     tokenURI,

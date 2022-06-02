@@ -1,8 +1,8 @@
+import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   UpgradeableProxyMock,
   UpgradeableProxyMock__factory,
-} from '../../../typechain';
-import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
@@ -25,8 +25,7 @@ describe('UpgradeableProxy', function () {
     );
   });
 
-  describeBehaviorOfUpgradeableProxy({
-    deploy: async () => instance as any,
+  describeBehaviorOfUpgradeableProxy(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

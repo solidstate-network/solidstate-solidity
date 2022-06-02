@@ -1,5 +1,8 @@
-import { CloneFactoryMock, CloneFactoryMock__factory } from '../../typechain';
 import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
+import {
+  CloneFactoryMock,
+  CloneFactoryMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -11,7 +14,7 @@ describe('CloneFactory', function () {
     instance = await new CloneFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfCloneFactory({ deploy: () => instance });
+  describeBehaviorOfCloneFactory(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_deployClone()', function () {

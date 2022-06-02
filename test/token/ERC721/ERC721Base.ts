@@ -1,10 +1,10 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import {
   ERC721Base,
   ERC721BaseMock,
   ERC721BaseMock__factory,
-} from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeBehaviorOfERC721Base } from '@solidstate/spec';
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
@@ -25,8 +25,7 @@ describe('ERC721Base', function () {
     instance = await new ERC721BaseMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfERC721Base({
-    deploy: async () => instance as unknown as ERC721Base,
+  describeBehaviorOfERC721Base(async () => instance, {
     supply: ethers.constants.Zero,
     mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
     burn: (tokenId) => instance.burn(tokenId),

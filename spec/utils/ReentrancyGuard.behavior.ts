@@ -1,10 +1,9 @@
 import { BaseContract } from 'ethers';
 
-interface ReentrancyGuardBehaviorArgs {
-  deploy: () => Promise<BaseContract>;
-}
+export interface ReentrancyGuardBehaviorArgs {}
 
 export function describeBehaviorOfReentrancyGuard(
-  { deploy }: ReentrancyGuardBehaviorArgs,
+  deploy: () => Promise<BaseContract>,
+  {}: ReentrancyGuardBehaviorArgs,
   skips?: string[],
 ) {}

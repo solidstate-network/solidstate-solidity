@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { OwnableStorage } from '../../access/OwnableStorage.sol';
+import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { ECDSA } from '../../cryptography/ECDSA.sol';
 import { ERC1271BaseInternal } from '../base/ERC1271BaseInternal.sol';
 
@@ -20,10 +20,12 @@ abstract contract ERC1271OwnableInternal is ERC1271BaseInternal {
         internal
         view
         override
-        returns (bool)
+        returns (bytes4 magicValue)
     {
         return
             hash.toEthSignedMessageHash().recover(signature) ==
-            OwnableStorage.layout().owner;
+                OwnableStorage.layout().owner
+                ? MAGIC_VALUE
+                : bytes4(0);
     }
 }

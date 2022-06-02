@@ -1,6 +1,6 @@
-import { ECDSAMultisigWallet } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signData } from '@solidstate/library';
+import { IECDSAMultisigWallet } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';
@@ -39,8 +39,7 @@ const signAuthorization = async function (
   });
 };
 
-interface ECDSAMultisigWalletBehaviorArgs {
-  deploy: () => Promise<ECDSAMultisigWallet>;
+export interface ECDSAMultisigWalletBehaviorArgs {
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;
   quorum: BigNumber;
@@ -48,8 +47,8 @@ interface ECDSAMultisigWalletBehaviorArgs {
 }
 
 export function describeBehaviorOfECDSAMultisigWallet(
+  deploy: () => Promise<IECDSAMultisigWallet>,
   {
-    deploy,
     getSigners,
     getNonSigner,
     quorum,
@@ -60,7 +59,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
   const describe = describeFilter(skips);
 
   describe('::ECDSAMultisigWallet', function () {
-    let instance: ECDSAMultisigWallet;
+    let instance: IECDSAMultisigWallet;
     let signers: SignerWithAddress[];
     let nonSigner: SignerWithAddress;
 

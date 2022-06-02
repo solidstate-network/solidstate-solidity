@@ -1,34 +1,31 @@
-import { ERC1404Base } from '../../../typechain';
-import { describeBehaviorOfERC20Base } from '../ERC20';
+import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
+import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC1404BaseBehaviorArgs {
-  deploy: () => Promise<ERC1404Base>;
+export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
   restrictions: any;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber;
 }
 
 export function describeBehaviorOfERC1404Base(
-  { deploy, restrictions, mint, burn, supply }: ERC1404BaseBehaviorArgs,
+  deploy: () => Promise<IERC1404Base>,
+  { restrictions, mint, burn, supply }: ERC1404BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::ERC1404Base', function () {
-    let instance: ERC1404Base;
+    let instance: IERC1404Base;
 
     beforeEach(async function () {
       instance = await deploy();
     });
 
     describeBehaviorOfERC20Base(
+      deploy,
       {
-        deploy,
         supply,
         mint,
         burn,

@@ -1,5 +1,5 @@
-import { ECDSAMock, ECDSAMock__factory } from '../../typechain';
 import { hashData, signData } from '@solidstate/library';
+import { ECDSAMock, ECDSAMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
