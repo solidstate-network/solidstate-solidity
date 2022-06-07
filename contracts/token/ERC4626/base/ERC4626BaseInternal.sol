@@ -223,7 +223,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         shareAmount = _previewDeposit(assetAmount);
 
-        _deposit(msg.sender, receiver, assetAmount, shareAmount);
+        _deposit(msg.sender, receiver, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -244,7 +244,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         assetAmount = _previewMint(shareAmount);
 
-        _deposit(msg.sender, receiver, assetAmount, shareAmount);
+        _deposit(msg.sender, receiver, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -266,7 +266,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         shareAmount = _previewWithdraw(assetAmount);
 
-        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
+        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -288,7 +288,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         assetAmount = _previewRedeem(shareAmount);
 
-        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount);
+        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -323,16 +323,32 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param receiver recipient of shares resulting from deposit
      * @param assetAmount quantity of assets to deposit
      * @param shareAmount quantity of shares to mint
+     * @param assetAmountCredit quantity of assets to deduct from deposit amount
+     * @param shareAmountDebt quantity of shares to deduct from mint amount
      */
     function _deposit(
         address caller,
         address receiver,
         uint256 assetAmount,
-        uint256 shareAmount
+        uint256 shareAmount,
+        uint256 assetAmountCredit,
+        uint256 shareAmountDebt
     ) internal virtual {
-        IERC20(_asset()).safeTransferFrom(caller, address(this), assetAmount);
+        uint256 assetAmountNet = assetAmount - assetAmountCredit;
 
-        _mint(receiver, shareAmount);
+        if (assetAmountNet > 0) {
+            IERC20(_asset()).safeTransferFrom(
+                caller,
+                address(this),
+                assetAmount
+            );
+        }
+
+        uint256 shareAmountNet = shareAmount - shareAmountDebt;
+
+        if (shareAmountNet > 0) {
+            _mint(receiver, shareAmount);
+        }
 
         _afterDeposit(receiver, assetAmount, shareAmount);
 
@@ -346,13 +362,17 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param owner holder of shares to be redeemed
      * @param assetAmount quantity of assets to withdraw
      * @param shareAmount quantity of shares to redeem
+     * @param assetAmountDebt quantity of assets to deduct from withdrawal amount
+     * @param shareAmountCredit quantity of shares to deduct from burn amount
      */
     function _withdraw(
         address caller,
         address receiver,
         address owner,
         uint256 assetAmount,
-        uint256 shareAmount
+        uint256 shareAmount,
+        uint256 assetAmountDebt,
+        uint256 shareAmountCredit
     ) internal virtual {
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
@@ -369,9 +389,17 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         _beforeWithdraw(owner, assetAmount, shareAmount);
 
-        _burn(owner, shareAmount);
+        uint256 shareAmountNet = shareAmount - shareAmountCredit;
 
-        IERC20(_asset()).safeTransfer(receiver, assetAmount);
+        if (shareAmountNet > 0) {
+            _burn(owner, shareAmount);
+        }
+
+        uint256 assetAmountNet = assetAmount - assetAmountDebt;
+
+        if (assetAmountNet > 0) {
+            IERC20(_asset()).safeTransfer(receiver, assetAmount);
+        }
 
         emit Withdraw(caller, receiver, owner, assetAmount, shareAmount);
     }
