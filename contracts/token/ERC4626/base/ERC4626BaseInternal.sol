@@ -329,7 +329,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address receiver,
         uint256 assetAmount,
         uint256 shareAmount
-    ) private {
+    ) internal virtual {
         IERC20(_asset()).safeTransferFrom(caller, address(this), assetAmount);
 
         _mint(receiver, shareAmount);
@@ -353,7 +353,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address owner,
         uint256 assetAmount,
         uint256 shareAmount
-    ) private {
+    ) internal virtual {
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
 
