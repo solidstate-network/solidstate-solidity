@@ -340,14 +340,14 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             IERC20(_asset()).safeTransferFrom(
                 caller,
                 address(this),
-                assetAmount
+                assetAmountNet
             );
         }
 
         uint256 shareAmountNet = shareAmount - shareAmountOffset;
 
         if (shareAmountNet > 0) {
-            _mint(receiver, shareAmount);
+            _mint(receiver, shareAmountNet);
         }
 
         _afterDeposit(receiver, assetAmount, shareAmount);
@@ -392,13 +392,13 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         uint256 shareAmountNet = shareAmount - shareAmountOffset;
 
         if (shareAmountNet > 0) {
-            _burn(owner, shareAmount);
+            _burn(owner, shareAmountNet);
         }
 
         uint256 assetAmountNet = assetAmount - assetAmountOffset;
 
         if (assetAmountNet > 0) {
-            IERC20(_asset()).safeTransfer(receiver, assetAmount);
+            IERC20(_asset()).safeTransfer(receiver, assetAmountNet);
         }
 
         emit Withdraw(caller, receiver, owner, assetAmount, shareAmount);
