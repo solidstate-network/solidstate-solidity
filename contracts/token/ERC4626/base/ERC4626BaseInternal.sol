@@ -323,18 +323,18 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param receiver recipient of shares resulting from deposit
      * @param assetAmount quantity of assets to deposit
      * @param shareAmount quantity of shares to mint
-     * @param assetAmountCredit quantity of assets to deduct from deposit amount
-     * @param shareAmountDebt quantity of shares to deduct from mint amount
+     * @param assetAmountOffset quantity of assets to deduct from deposit amount
+     * @param shareAmountOffset quantity of shares to deduct from mint amount
      */
     function _deposit(
         address caller,
         address receiver,
         uint256 assetAmount,
         uint256 shareAmount,
-        uint256 assetAmountCredit,
-        uint256 shareAmountDebt
+        uint256 assetAmountOffset,
+        uint256 shareAmountOffset
     ) internal virtual {
-        uint256 assetAmountNet = assetAmount - assetAmountCredit;
+        uint256 assetAmountNet = assetAmount - assetAmountOffset;
 
         if (assetAmountNet > 0) {
             IERC20(_asset()).safeTransferFrom(
@@ -344,7 +344,7 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
             );
         }
 
-        uint256 shareAmountNet = shareAmount - shareAmountDebt;
+        uint256 shareAmountNet = shareAmount - shareAmountOffset;
 
         if (shareAmountNet > 0) {
             _mint(receiver, shareAmount);
@@ -362,8 +362,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param owner holder of shares to be redeemed
      * @param assetAmount quantity of assets to withdraw
      * @param shareAmount quantity of shares to redeem
-     * @param assetAmountDebt quantity of assets to deduct from withdrawal amount
-     * @param shareAmountCredit quantity of shares to deduct from burn amount
+     * @param assetAmountOffset quantity of assets to deduct from withdrawal amount
+     * @param shareAmountOffset quantity of shares to deduct from burn amount
      */
     function _withdraw(
         address caller,
@@ -371,8 +371,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address owner,
         uint256 assetAmount,
         uint256 shareAmount,
-        uint256 assetAmountDebt,
-        uint256 shareAmountCredit
+        uint256 assetAmountOffset,
+        uint256 shareAmountOffset
     ) internal virtual {
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
@@ -389,13 +389,13 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
 
         _beforeWithdraw(owner, assetAmount, shareAmount);
 
-        uint256 shareAmountNet = shareAmount - shareAmountCredit;
+        uint256 shareAmountNet = shareAmount - shareAmountOffset;
 
         if (shareAmountNet > 0) {
             _burn(owner, shareAmount);
         }
 
-        uint256 assetAmountNet = assetAmount - assetAmountDebt;
+        uint256 assetAmountNet = assetAmount - assetAmountOffset;
 
         if (assetAmountNet > 0) {
             IERC20(_asset()).safeTransfer(receiver, assetAmount);
