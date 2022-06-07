@@ -4,7 +4,7 @@
   "author": "Nick Barry",
   "license": "MIT",
   "scripts": {
-    "lerna-publish": "yarn build && lerna publish",
+    "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky install",
     "prettier": "prettier --write --ignore-path .gitignore .",
