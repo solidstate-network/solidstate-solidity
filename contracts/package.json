@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/contracts",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Solidity library for flexible smart contract development",
