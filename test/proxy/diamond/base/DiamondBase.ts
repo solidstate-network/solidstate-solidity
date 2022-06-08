@@ -25,7 +25,7 @@ describe('DiamondBase', function () {
   });
 
   describeBehaviorOfDiamondBase(async () => instance, {
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
+    implementationFunction: 'owner()',
+    implementationFunctionArgs: [],
   });
 });

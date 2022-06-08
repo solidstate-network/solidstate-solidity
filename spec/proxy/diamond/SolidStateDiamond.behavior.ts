@@ -39,8 +39,8 @@ export function describeBehaviorOfSolidStateDiamond(
     getOwner,
     getNomineeOwner,
     getNonOwner,
-    facetFunction,
-    facetFunctionArgs,
+    implementationFunction,
+    implementationFunctionArgs,
     facetCuts,
     fallbackAddress,
   }: SolidStateDiamondBehaviorArgs,
@@ -66,8 +66,8 @@ export function describeBehaviorOfSolidStateDiamond(
     describeBehaviorOfDiamondBase(
       deploy,
       {
-        facetFunction,
-        facetFunctionArgs,
+        implementationFunction,
+        implementationFunctionArgs,
       },
       skips,
     );

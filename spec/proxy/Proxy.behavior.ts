@@ -23,7 +23,7 @@ export function describeBehaviorOfProxy(
       instance = await deploy();
     });
 
-    describe('fallback', function () {
+    describe('fallback()', function () {
       it('forwards data to implementation', async function () {
         const contract = new ethers.Contract(
           instance.address,
