@@ -25,12 +25,10 @@ export function describeBehaviorOfProxy(
 
     describe('fallback', function () {
       it('forwards data to implementation', async function () {
-        expect((instance as any)[implementationFunction]).to.be.undefined;
-
-        let contract = new ethers.Contract(
+        const contract = new ethers.Contract(
           instance.address,
           [`function ${implementationFunction}`],
-          (await ethers.getSigners())[0],
+          ethers.provider,
         );
 
         await expect(
