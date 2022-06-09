@@ -3,12 +3,13 @@
 pragma solidity ^0.8.0;
 
 import { Proxy } from '../Proxy.sol';
+import { IUpgradeableProxy } from './IUpgradeableProxy.sol';
 import { UpgradeableProxyStorage } from './UpgradeableProxyStorage.sol';
 
 /**
  * @title Proxy with upgradeable implementation
  */
-abstract contract UpgradeableProxy is Proxy {
+abstract contract UpgradeableProxy is IUpgradeableProxy, Proxy {
     using UpgradeableProxyStorage for UpgradeableProxyStorage.Layout;
 
     /**

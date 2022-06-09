@@ -26,8 +26,7 @@ describe('Proxy', function () {
     );
   });
 
-  describeBehaviorOfProxy({
-    deploy: async () => instance as any,
+  describeBehaviorOfProxy(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

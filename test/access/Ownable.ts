@@ -16,8 +16,7 @@ describe('Ownable', function () {
     instance = await new OwnableMock__factory(owner).deploy(owner.address);
   });
 
-  describeBehaviorOfOwnable({
-    deploy: async () => instance as any,
+  describeBehaviorOfOwnable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

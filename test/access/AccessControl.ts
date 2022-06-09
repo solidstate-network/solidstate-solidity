@@ -1,6 +1,9 @@
-import { AccessControlMock, AccessControlMock__factory } from '../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfAccessControl } from '@solidstate/spec';
+import {
+  AccessControlMock,
+  AccessControlMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -34,7 +37,7 @@ describe('AccessControl', function () {
     getOtherAuthorized: async () => otherAuthorized,
   });
 
-  describe.only('#checkRole(bytes32)', function () {
+  describe('#checkRole(bytes32)', function () {
     beforeEach(async function () {
       this.receipt = await instance
         .connect(admin)

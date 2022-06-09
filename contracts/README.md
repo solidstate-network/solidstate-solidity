@@ -14,9 +14,9 @@ yarn add --dev @solidstate/contracts
 
 ## Layout
 
-SolidState maintains "recommended" implementations of various EIP standards, which are suitable for most users. Internally, these implementations may be composed of several modules, which themselves may be composed of several visibility layers. Layers are subject to a consistent naming convention so that their purposes may be easily identified.
+SolidState maintains "recommended" implementations of various EIP standards, which are suitable for most users. Internally, these implementations may be composed of several modules, which themselves may be composed of several "visibility layers". Visibility layers are subject to a consistent naming convention so that their purposes may be easily identified.
 
-For example, the `ERC20` contract contains `ERC20Base`, `ERC20Extended` and `ERC20Metadata` modules. The `ERC20Base` module is composed of the external functions specified by the `IERC20` interface, `ERC20BaseInternal`, and `ERC20BaseStorage`.
+For example, the `SolidStateERC20` contract contains `ERC20Base`, `ERC20Extended` and `ERC20Metadata` modules. The `ERC20Base` module is composed of the external functions specified by the `IERC20` interface, `ERC20BaseInternal`, and `ERC20BaseStorage`.
 
 An overview of the uses of each visibility layer is as follows:
 

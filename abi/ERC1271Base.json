@@ -16,7 +16,7 @@
     "outputs": [
       {
         "internalType": "bytes4",
-        "name": "magicValue",
+        "name": "",
         "type": "bytes4"
       }
     ],

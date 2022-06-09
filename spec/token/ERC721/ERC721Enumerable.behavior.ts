@@ -5,15 +5,15 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC721EnumerableBehaviorArgs {
-  deploy: () => Promise<ERC721Enumerable>;
+export interface ERC721EnumerableBehaviorArgs {
   mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
   burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
   supply: BigNumber;
 }
 
 export function describeBehaviorOfERC721Enumerable(
-  { deploy, mint, burn, supply }: ERC721EnumerableBehaviorArgs,
+  deploy: () => Promise<ERC721Enumerable>,
+  { mint, burn, supply }: ERC721EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);

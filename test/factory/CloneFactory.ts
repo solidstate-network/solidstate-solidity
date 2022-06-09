@@ -14,7 +14,7 @@ describe('CloneFactory', function () {
     instance = await new CloneFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfCloneFactory({ deploy: () => instance });
+  describeBehaviorOfCloneFactory(async () => instance, {});
 
   describe('__internal', function () {
     describe('#_deployClone()', function () {
