@@ -10,4 +10,12 @@ contract OwnableMock is Ownable {
     constructor(address owner) {
         OwnableStorage.layout().setOwner(owner);
     }
+
+    function setOwner(address owner) external {
+        OwnableStorage.layout().setOwner(owner);
+    }
+
+    function __transitiveOwner() external view returns (address) {
+        return _transitiveOwner();
+    }
 }
