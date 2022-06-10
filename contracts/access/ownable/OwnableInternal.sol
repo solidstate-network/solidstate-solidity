@@ -12,10 +12,7 @@ abstract contract OwnableInternal is IOwnableInternal {
     using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
-        require(
-            msg.sender == OwnableStorage.layout().owner,
-            'Ownable: sender must be owner'
-        );
+        require(msg.sender == _owner(), 'Ownable: sender must be owner');
         _;
     }
 
