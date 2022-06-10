@@ -35,7 +35,7 @@ abstract contract OwnableInternal is IOwnableInternal {
             try IERC173(owner).owner() returns (address transitiveOwner) {
                 owner = transitiveOwner;
             } catch {
-                // do nothing
+                return owner;
             }
         }
 
