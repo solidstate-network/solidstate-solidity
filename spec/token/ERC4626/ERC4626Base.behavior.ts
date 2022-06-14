@@ -1,4 +1,9 @@
-import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
+import {
+  describeBehaviorOfERC20Base,
+  describeBehaviorOfERC20Metadata,
+  ERC20BaseBehaviorArgs,
+  ERC20MetadataBehaviorArgs,
+} from '../ERC20';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
@@ -6,7 +11,9 @@ import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface ERC4626BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
+export interface ERC4626BaseBehaviorArgs
+  extends ERC20BaseBehaviorArgs,
+    ERC20MetadataBehaviorArgs {
   getAsset: () => Promise<IERC20>;
   mintAsset: (
     address: string,
@@ -16,7 +23,16 @@ export interface ERC4626BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
 
 export function describeBehaviorOfERC4626Base(
   deploy: () => Promise<IERC4626Base>,
-  { getAsset, mint, burn, mintAsset, supply }: ERC4626BaseBehaviorArgs,
+  {
+    getAsset,
+    mint,
+    burn,
+    mintAsset,
+    name,
+    symbol,
+    decimals,
+    supply,
+  }: ERC4626BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -43,6 +59,16 @@ export function describeBehaviorOfERC4626Base(
         supply,
         mint,
         burn,
+      },
+      skips,
+    );
+
+    describeBehaviorOfERC20Metadata(
+      deploy,
+      {
+        name,
+        symbol,
+        decimals,
       },
       skips,
     );

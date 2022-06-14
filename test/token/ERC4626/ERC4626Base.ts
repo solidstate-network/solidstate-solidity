@@ -1,8 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import {
-  describeBehaviorOfCloneFactory,
-  describeBehaviorOfERC4626Base,
-} from '@solidstate/spec';
+import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
   SolidStateERC20Mock,
   SolidStateERC20Mock__factory,
@@ -32,19 +29,25 @@ describe('ERC4626Base', () => {
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
+      '',
+      '',
+      0,
       assetInstance.address,
     );
   });
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
-    supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>
       instance.__mint(recipient, amount),
     burn: (recipient: string, amount: BigNumber) =>
       instance.__burn(recipient, amount),
     mintAsset: (recipient: string, amount: BigNumber) =>
       assetInstance.__mint(recipient, amount),
+    name: '',
+    symbol: '',
+    decimals: 0,
+    supply: ethers.constants.Zero,
   });
 
   describe('__internal', () => {

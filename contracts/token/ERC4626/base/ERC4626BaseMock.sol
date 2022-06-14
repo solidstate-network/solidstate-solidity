@@ -4,8 +4,10 @@ pragma solidity ^0.8.0;
 
 import { ERC4626Base } from './ERC4626Base.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
+import { ERC20MetadataStorage } from '../../ERC20/metadata/ERC20MetadataStorage.sol';
 
 contract ERC4626BaseMock is ERC4626Base {
+    using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
     using ERC4626BaseStorage for ERC4626BaseStorage.Layout;
 
     event AfterDepositCheck(
@@ -19,11 +21,27 @@ contract ERC4626BaseMock is ERC4626Base {
         uint256 shareAmount
     );
 
-    constructor(address asset) {
-        ERC4626BaseStorage.Layout storage ERC4626Layout = ERC4626BaseStorage
-            .layout();
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint8 decimals,
+        address asset
+    ) {
+        {
+            ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage
+                .layout();
 
-        ERC4626Layout.asset = asset;
+            l.setName(name);
+            l.setSymbol(symbol);
+            l.setDecimals(decimals);
+        }
+
+        {
+            ERC4626BaseStorage.Layout storage ERC4626Layout = ERC4626BaseStorage
+                .layout();
+
+            ERC4626Layout.asset = asset;
+        }
     }
 
     function _totalAssets() internal view override returns (uint256) {

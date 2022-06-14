@@ -2,14 +2,15 @@
 
 pragma solidity ^0.8.0;
 
-import { IERC20 } from '../ERC20/IERC20.sol';
+import { IERC20Base } from '../ERC20/base/IERC20Base.sol';
+import { IERC20Metadata } from '../ERC20/metadata/IERC20Metadata.sol';
 import { IERC4626Internal } from './IERC4626Internal.sol';
 
 /**
  * @title ERC4626 interface
  * @dev see https://github.com/ethereum/EIPs/issues/4626
  */
-interface IERC4626 is IERC4626Internal, IERC20 {
+interface IERC4626 is IERC4626Internal, IERC20Base, IERC20Metadata {
     /**
      * @notice get the address of the base token used for vault accountin purposes
      * @return base token address
