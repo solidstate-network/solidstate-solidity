@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { SolidStateERC20 } from '../ERC20/SolidStateERC20.sol';
 import { ERC4626Base } from './base/ERC4626Base.sol';

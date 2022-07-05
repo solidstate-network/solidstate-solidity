@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { IERC165, ERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
 import { ERC1155Base } from '../base/ERC1155Base.sol';

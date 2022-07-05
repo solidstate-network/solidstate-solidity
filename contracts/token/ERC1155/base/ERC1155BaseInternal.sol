@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { IERC1155Internal } from '../IERC1155Internal.sol';

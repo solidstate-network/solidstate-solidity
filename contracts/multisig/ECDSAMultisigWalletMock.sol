@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { ECDSAMultisigWallet } from './ECDSAMultisigWallet.sol';
 import { ECDSAMultisigWalletStorage } from './ECDSAMultisigWalletStorage.sol';
