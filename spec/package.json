@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Portable specifications for SolidState contracts",
@@ -25,7 +25,7 @@
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
   "dependencies": {
-    "@solidstate/library": "^0.0.35"
+    "@solidstate/library": "^0.0.36"
   },
   "files": [
     "dist/"
