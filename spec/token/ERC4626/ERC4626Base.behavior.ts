@@ -218,7 +218,9 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmount);
 
         await expect(() =>
-          instance.connect(depositor).deposit(assetAmount, depositor.address),
+          instance
+            .connect(depositor)
+            ['deposit(uint256,address)'](assetAmount, depositor.address),
         ).to.changeTokenBalances(
           assetInstance,
           [depositor, instance],
@@ -240,7 +242,9 @@ export function describeBehaviorOfERC4626Base(
         );
 
         await expect(() =>
-          instance.connect(depositor).deposit(assetAmount, depositor.address),
+          instance
+            .connect(depositor)
+            ['deposit(uint256,address)'](assetAmount, depositor.address),
         ).to.changeTokenBalance(instance, depositor, shareAmount);
       });
 
@@ -260,7 +264,7 @@ export function describeBehaviorOfERC4626Base(
         expect(
           await instance
             .connect(depositor)
-            .deposit(assetAmount, depositor.address),
+            ['deposit(uint256,address)'](assetAmount, depositor.address),
         )
           .to.emit(instance, 'Deposit')
           .withArgs(
@@ -274,7 +278,10 @@ export function describeBehaviorOfERC4626Base(
       describe('reverts if', () => {
         it.skip('deposit amount is too large', async () => {
           await expect(
-            instance.deposit(ethers.constants.MaxUint256, depositor.address),
+            instance['deposit(uint256,address)'](
+              ethers.constants.MaxUint256,
+              depositor.address,
+            ),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
         });
       });
@@ -355,7 +362,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
         const assetAmountOut = await instance.callStatic.convertToAssets(
           await instance.callStatic.balanceOf(depositor.address),
@@ -385,7 +392,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
         const assetAmountOut = await instance.callStatic.convertToAssets(
           await instance.callStatic.balanceOf(depositor.address),
@@ -415,7 +422,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
         await instance
           .connect(depositor)
           .approve(caller.address, ethers.constants.MaxUint256);
@@ -472,7 +479,7 @@ export function describeBehaviorOfERC4626Base(
             .approve(instance.address, assetAmountIn);
           await instance
             .connect(depositor)
-            .deposit(assetAmountIn, depositor.address);
+            ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
           const assetAmountOut = await instance.callStatic.convertToAssets(
             await instance.callStatic.balanceOf(depositor.address),
@@ -497,7 +504,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
         const shareAmount = await instance.callStatic.balanceOf(
           depositor.address,
@@ -510,7 +517,11 @@ export function describeBehaviorOfERC4626Base(
         await expect(() =>
           instance
             .connect(depositor)
-            .redeem(shareAmount, recipient.address, depositor.address),
+            ['redeem(uint256,address,address)'](
+              shareAmount,
+              recipient.address,
+              depositor.address,
+            ),
         ).to.changeTokenBalances(
           assetInstance,
           [recipient, instance],
@@ -527,7 +538,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
         const shareAmount = await instance.callStatic.balanceOf(
           depositor.address,
@@ -536,7 +547,11 @@ export function describeBehaviorOfERC4626Base(
         await expect(() =>
           instance
             .connect(depositor)
-            .redeem(shareAmount, recipient.address, depositor.address),
+            ['redeem(uint256,address,address)'](
+              shareAmount,
+              recipient.address,
+              depositor.address,
+            ),
         ).to.changeTokenBalance(
           instance,
           depositor,
@@ -553,7 +568,7 @@ export function describeBehaviorOfERC4626Base(
           .approve(instance.address, assetAmountIn);
         await instance
           .connect(depositor)
-          .deposit(assetAmountIn, depositor.address);
+          ['deposit(uint256,address)'](assetAmountIn, depositor.address);
         await instance
           .connect(depositor)
           .approve(caller.address, ethers.constants.MaxUint256);
@@ -569,7 +584,11 @@ export function describeBehaviorOfERC4626Base(
         expect(
           await instance
             .connect(caller)
-            .redeem(shareAmount, recipient.address, depositor.address),
+            ['redeem(uint256,address,address)'](
+              shareAmount,
+              recipient.address,
+              depositor.address,
+            ),
         )
           .to.emit(instance, 'Withdraw')
           .withArgs(
@@ -590,7 +609,7 @@ export function describeBehaviorOfERC4626Base(
           const max = await instance.callStatic.maxRedeem(depositor.address);
 
           await expect(
-            instance.redeem(
+            instance['redeem(uint256,address,address)'](
               max.add(ethers.constants.One),
               recipient.address,
               depositor.address,
@@ -606,7 +625,11 @@ export function describeBehaviorOfERC4626Base(
           await expect(
             instance
               .connect(caller)
-              .redeem(shareAmount, recipient.address, depositor.address),
+              ['redeem(uint256,address,address)'](
+                shareAmount,
+                recipient.address,
+                depositor.address,
+              ),
           ).to.be.revertedWith('ERC4626: share amount exceeds allowance');
         });
       });
