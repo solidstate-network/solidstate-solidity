@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.8;
 
-import { OwnableInternal, OwnableStorage } from '../../access/ownable/OwnableInternal.sol';
+import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { ManagedProxy, ManagedProxyOwnable } from './ManagedProxyOwnable.sol';
 
-contract ManagedProxyOwnableMock is ManagedProxyOwnable, OwnableInternal {
+contract ManagedProxyOwnableMock is ManagedProxyOwnable {
     using OwnableStorage for OwnableStorage.Layout;
 
     constructor(address manager, bytes4 managerSelector)
