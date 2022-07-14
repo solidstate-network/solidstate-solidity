@@ -2,29 +2,20 @@
 
 pragma solidity ^0.8.8;
 
+import { ERC20Base } from '../base/ERC20Base.sol';
 import { ERC20MetadataStorage } from '../metadata/ERC20MetadataStorage.sol';
 import { ERC20Permit } from './ERC20Permit.sol';
 
-contract ERC20PermitMock is ERC20Permit {
-    using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
-
-    constructor(
-        string memory name,
-        string memory symbol,
-        uint8 decimals
-    ) {
-        ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage.layout();
-
-        l.setName(name);
-        l.setSymbol(symbol);
-        l.setDecimals(decimals);
+contract ERC20PermitMock is ERC20Permit, ERC20Base {
+    constructor(string memory name) {
+        ERC20MetadataStorage.layout().name = name;
     }
 
-    function __mint(address account, uint256 amount) external {
-        _mint(account, amount);
-    }
-
-    function __burn(address account, uint256 amount) external {
-        _burn(account, amount);
+    /**
+     * @dev this function does not exist on the interface, but the eth-permit
+     *  package calls it directly via function selector
+     */
+    function name() external view returns (string memory) {
+        return _name();
     }
 }

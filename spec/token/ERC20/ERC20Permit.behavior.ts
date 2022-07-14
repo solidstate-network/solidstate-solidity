@@ -1,11 +1,3 @@
-import {
-  describeBehaviorOfERC20Base,
-  ERC20BaseBehaviorArgs,
-} from './ERC20Base.behavior';
-import {
-  describeBehaviorOfERC20Metadata,
-  ERC20MetadataBehaviorArgs,
-} from './ERC20Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { ERC20Permit } from '@solidstate/typechain-types';
@@ -13,13 +5,13 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitArgs
-  extends ERC20BaseBehaviorArgs,
-    ERC20MetadataBehaviorArgs {}
+interface ERC20PermitArgs {
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
+}
 
 export function describeBehaviorOfERC20Permit(
   deploy: () => Promise<ERC20Permit>,
-  { supply, burn, mint, name, symbol, decimals }: ERC20PermitArgs,
+  args: ERC20PermitArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -34,26 +26,6 @@ export function describeBehaviorOfERC20Permit(
       [holder, spender, thirdParty] = await ethers.getSigners();
       instance = await deploy();
     });
-
-    describeBehaviorOfERC20Base(
-      deploy,
-      {
-        mint,
-        burn,
-        supply,
-      },
-      skips,
-    );
-
-    describeBehaviorOfERC20Metadata(
-      deploy,
-      {
-        name,
-        symbol,
-        decimals,
-      },
-      skips,
-    );
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
@@ -83,7 +55,7 @@ export function describeBehaviorOfERC20Permit(
             permit.s,
           );
 
-        expect(await instance.allowance(holder.address, spender.address)).to.eq(
+        expect(await args.allowance(holder.address, spender.address)).to.eq(
           amount,
         );
       });
