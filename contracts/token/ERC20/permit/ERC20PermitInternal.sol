@@ -44,8 +44,10 @@ abstract contract ERC20PermitInternal is
         //   )
         // );
 
+        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
+
         bytes32 hashStruct;
-        uint256 nonce = ERC20PermitStorage.layout().nonces[owner];
+        uint256 nonce = l.nonces[owner];
 
         assembly {
             // Load free memory pointer
@@ -65,15 +67,11 @@ abstract contract ERC20PermitInternal is
             hashStruct := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            _chainId()
-        ];
+        bytes32 domainSeparator = l.domainSeparators[_chainId()];
 
         if (domainSeparator == 0x00) {
             domainSeparator = _calculateDomainSeparator();
-            ERC20PermitStorage.layout().domainSeparators[
-                _chainId()
-            ] = domainSeparator;
+            l.domainSeparators[_chainId()] = domainSeparator;
         }
 
         // Assembly for more efficient computing:
@@ -101,7 +99,7 @@ abstract contract ERC20PermitInternal is
 
         require(signer == owner, 'ERC20Permit: invalid signature');
 
-        ERC20PermitStorage.layout().nonces[owner]++;
+        l.nonces[owner]++;
         _approve(owner, spender, amount);
     }
 
