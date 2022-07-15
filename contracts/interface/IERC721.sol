@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC165 } from '../../introspection/IERC165.sol';
+import { IERC165 } from './IERC165.sol';
 import { IERC721Internal } from './IERC721Internal.sol';
 
 /**
