@@ -27,6 +27,14 @@ export function describeBehaviorOfERC20Permit(
       instance = await deploy();
     });
 
+    describe('#DOMAIN_SEPARATOR', () => {
+      it('todo');
+    });
+
+    describe('#nonces', () => {
+      it('todo');
+    });
+
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
         const { timestamp } = await ethers.provider.getBlock('latest');
