@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC173 } from '../../interface/IERC173.sol';
+import { IERC173 } from '../../interfaces/IERC173.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { IOwnableInternal } from './IOwnableInternal.sol';
 import { OwnableStorage } from './OwnableStorage.sol';

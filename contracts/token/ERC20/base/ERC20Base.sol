@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC20 } from '../../../interface/IERC20.sol';
+import { IERC20 } from '../../../interfaces/IERC20.sol';
 import { IERC20Base } from './IERC20Base.sol';
 import { ERC20BaseInternal } from './ERC20BaseInternal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.8;
 
 import { ISafeOwnable } from '../../access/ownable/ISafeOwnable.sol';
-import { IERC165 } from '../../interface/IERC165.sol';
+import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IDiamondBase } from './base/IDiamondBase.sol';
 import { IDiamondReadable } from './readable/IDiamondReadable.sol';
 import { IDiamondWritable } from './writable/IDiamondWritable.sol';

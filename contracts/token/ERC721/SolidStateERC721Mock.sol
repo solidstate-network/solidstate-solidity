@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC165 } from '../../interface/IERC165.sol';
-import { IERC721 } from '../../interface/IERC721.sol';
+import { IERC165 } from '../../interfaces/IERC165.sol';
+import { IERC721 } from '../../interfaces/IERC721.sol';
 import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
 import { ERC721MetadataStorage } from './metadata/ERC721MetadataStorage.sol';
 import { SolidStateERC721 } from './SolidStateERC721.sol';

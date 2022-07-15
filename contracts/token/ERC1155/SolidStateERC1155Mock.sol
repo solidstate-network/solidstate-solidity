@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC165 } from '../../interface/IERC165.sol';
-import { IERC1155 } from '../../interface/IERC1155.sol';
+import { IERC165 } from '../../interfaces/IERC165.sol';
+import { IERC1155 } from '../../interfaces/IERC1155.sol';
 import { ERC165Storage } from '../../introspection/ERC165Storage.sol';
 import { SolidStateERC1155 } from './SolidStateERC1155.sol';
 

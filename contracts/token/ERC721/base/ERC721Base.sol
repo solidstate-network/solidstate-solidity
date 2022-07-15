@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC721 } from '../../../interface/IERC721.sol';
-import { IERC721Receiver } from '../../../interface/IERC721Receiver.sol';
+import { IERC721 } from '../../../interfaces/IERC721.sol';
+import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
 import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
