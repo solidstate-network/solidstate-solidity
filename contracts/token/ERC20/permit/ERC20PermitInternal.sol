@@ -35,14 +35,16 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * TODO
+     * @notice get the current ERC2612 nonce for the given address
+     * @return current nonce
      */
     function _nonces(address owner) internal view returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
     }
 
     /**
-     * TODO
+     * @notice calculate unique EIP-712 domain separator
+     * @return domainSeparator domain separator
      */
     function _calculateDomainSeparator()
         internal
@@ -74,7 +76,14 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * TODO
+     * @notice approve spender to transfer tokens held by owner via signature
+     * @dev this function may be vulnerable to approval replay attacks
+     * @param owner holder of tokens and signer of permit
+     * @param spender beneficiary of approval
+     * @param amount quantity of tokens to approve
+     * @param v secp256k1 'v' value
+     * @param r secp256k1 'r' value
+     * @param s secp256k1 's' value
      * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
      * EIP712 Domain Separator is automatically recalculated.
      */

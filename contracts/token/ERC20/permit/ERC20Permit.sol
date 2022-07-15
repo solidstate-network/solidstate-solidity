@@ -25,7 +25,7 @@ abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     }
 
     /**
-     * @dev inhertidoc IERC2612
+     * @inheritdoc IERC2612
      */
     function nonces(address owner) public view returns (uint256) {
         return _nonces(owner);
@@ -33,8 +33,6 @@ abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
 
     /**
      * @inheritdoc IERC2612
-     * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
-     * EIP712 Domain Separator is automatically recalculated.
      */
     function permit(
         address owner,
