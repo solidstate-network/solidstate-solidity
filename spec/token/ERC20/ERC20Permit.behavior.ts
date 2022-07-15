@@ -5,13 +5,13 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitArgs {
+interface ERC20PermitBehaviorArgs {
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
 }
 
 export function describeBehaviorOfERC20Permit(
   deploy: () => Promise<ERC20Permit>,
-  args: ERC20PermitArgs,
+  args: ERC20PermitBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
