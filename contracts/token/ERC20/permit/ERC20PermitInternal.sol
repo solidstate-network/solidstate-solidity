@@ -18,6 +18,45 @@ abstract contract ERC20PermitInternal is
 
     /**
      * TODO
+     */
+    function _nonces(address owner) internal view returns (uint256) {
+        return ERC20PermitStorage.layout().nonces[owner];
+    }
+
+    /**
+     * TODO
+     */
+    function _calculateDomainSeparator()
+        internal
+        view
+        returns (bytes32 domainSeparator)
+    {
+        // no need for assembly, running very rarely
+        domainSeparator = keccak256(
+            abi.encode(
+                keccak256(
+                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
+                ),
+                keccak256(bytes(_name())), // ERC-20 Name
+                keccak256(bytes('1')), // Version
+                _chainId(),
+                address(this)
+            )
+        );
+    }
+
+    /**
+     * @notice get the current chain ID
+     * @return chainId chain ID
+     */
+    function _chainId() private view returns (uint256 chainId) {
+        assembly {
+            chainId := chainid()
+        }
+    }
+
+    /**
+     * TODO
      * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
      * EIP712 Domain Separator is automatically recalculated.
      */
@@ -101,44 +140,5 @@ abstract contract ERC20PermitInternal is
 
         l.nonces[owner]++;
         _approve(owner, spender, amount);
-    }
-
-    /**
-     * TODO
-     */
-    function _nonces(address owner) internal view returns (uint256) {
-        return ERC20PermitStorage.layout().nonces[owner];
-    }
-
-    /**
-     * TODO
-     */
-    function _calculateDomainSeparator()
-        internal
-        view
-        returns (bytes32 domainSeparator)
-    {
-        // no need for assembly, running very rarely
-        domainSeparator = keccak256(
-            abi.encode(
-                keccak256(
-                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
-                ),
-                keccak256(bytes(_name())), // ERC-20 Name
-                keccak256(bytes('1')), // Version
-                _chainId(),
-                address(this)
-            )
-        );
-    }
-
-    /**
-     * @notice get the current chain ID
-     * @return chainId chain ID
-     */
-    function _chainId() private view returns (uint256 chainId) {
-        assembly {
-            chainId := chainid()
-        }
     }
 }
