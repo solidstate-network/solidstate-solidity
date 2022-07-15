@@ -65,11 +65,20 @@ abstract contract ERC20PermitInternal is
             hashStruct := keccak256(pointer, 192)
         }
 
-        bytes32 eip712DomainHash = _domainSeparator();
+        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
+            _chainId()
+        ];
+
+        if (domainSeparator == 0x00) {
+            domainSeparator = _calculateDomainSeparator();
+            ERC20PermitStorage.layout().domainSeparators[
+                _chainId()
+            ] = domainSeparator;
+        }
 
         // Assembly for more efficient computing:
         // bytes32 hash = keccak256(
-        //   abi.encodePacked(uint16(0x1901), eip712DomainHash, hashStruct)
+        //   abi.encodePacked(uint16(0x1901), domainSeparator, hashStruct)
         // );
 
         bytes32 hash;
@@ -82,7 +91,7 @@ abstract contract ERC20PermitInternal is
                 pointer,
                 0x1901000000000000000000000000000000000000000000000000000000000000
             ) // EIP191 header
-            mstore(add(pointer, 2), eip712DomainHash) // EIP712 domain hash
+            mstore(add(pointer, 2), domainSeparator) // EIP712 domain hash
             mstore(add(pointer, 34), hashStruct) // Hash of struct
 
             hash := keccak256(pointer, 66)
@@ -104,38 +113,25 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * @notice update chain ID if changed and return domain separator
-     * @return domain separator
+     * TODO
      */
-    function _domainSeparator() private returns (bytes32) {
-        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            _chainId()
-        ];
-
-        if (domainSeparator != 0x00) {
-            return domainSeparator;
-        }
-
-        uint256 chainId = _chainId();
-
+    function _calculateDomainSeparator()
+        internal
+        view
+        returns (bytes32 domainSeparator)
+    {
         // no need for assembly, running very rarely
-        bytes32 newDomainSeparator = keccak256(
+        domainSeparator = keccak256(
             abi.encode(
                 keccak256(
                     'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
                 ),
                 keccak256(bytes(_name())), // ERC-20 Name
                 keccak256(bytes('1')), // Version
-                chainId,
+                _chainId(),
                 address(this)
             )
         );
-
-        ERC20PermitStorage.layout().domainSeparators[
-            chainId
-        ] = newDomainSeparator;
-
-        return newDomainSeparator;
     }
 
     /**
