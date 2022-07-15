@@ -14,6 +14,17 @@ import { IERC20Permit } from './IERC20Permit.sol';
  */
 abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     /**
+     * @inheritdoc IERC2612
+     */
+    function DOMAIN_SEPARATOR()
+        external
+        view
+        returns (bytes32 domainSeparator)
+    {
+        return _DOMAIN_SEPARATOR();
+    }
+
+    /**
      * @dev inhertidoc IERC2612
      */
     function nonces(address owner) public view returns (uint256) {

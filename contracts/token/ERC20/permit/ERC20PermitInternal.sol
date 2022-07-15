@@ -17,6 +17,24 @@ abstract contract ERC20PermitInternal is
     using ECDSA for bytes32;
 
     /**
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator domain separator
+     */
+    function _DOMAIN_SEPARATOR()
+        internal
+        view
+        returns (bytes32 domainSeparator)
+    {
+        domainSeparator = ERC20PermitStorage.layout().domainSeparators[
+            _chainId()
+        ];
+
+        if (domainSeparator == 0x00) {
+            domainSeparator = _calculateDomainSeparator();
+        }
+    }
+
+    /**
      * TODO
      */
     function _nonces(address owner) internal view returns (uint256) {

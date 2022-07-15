@@ -8,6 +8,12 @@ pragma solidity ^0.8.8;
  */
 interface IERC2612 {
     /**
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator domain separator
+     */
+    function DOMAIN_SEPARATOR() external view returns (bytes32 domainSeparator);
+
+    /**
      * @notice get the current ERC2612 nonce for the given address
      * @return current nonce
      */
