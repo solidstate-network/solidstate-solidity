@@ -104,10 +104,18 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * @notice update domain separator for new chain ID
-     * @return new domain separator
+     * @notice update chain ID if changed and return domain separator
+     * @return domain separator
      */
-    function _updateDomainSeparator() private returns (bytes32) {
+    function _domainSeparator() private returns (bytes32) {
+        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
+            _chainId()
+        ];
+
+        if (domainSeparator != 0x00) {
+            return domainSeparator;
+        }
+
         uint256 chainId = _chainId();
 
         // no need for assembly, running very rarely
@@ -128,22 +136,6 @@ abstract contract ERC20PermitInternal is
         ] = newDomainSeparator;
 
         return newDomainSeparator;
-    }
-
-    /**
-     * @notice update chain ID if changed and return domain separator
-     * @return domain separator
-     */
-    function _domainSeparator() private returns (bytes32) {
-        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            _chainId()
-        ];
-
-        if (domainSeparator != 0x00) {
-            return domainSeparator;
-        }
-
-        return _updateDomainSeparator();
     }
 
     /**
