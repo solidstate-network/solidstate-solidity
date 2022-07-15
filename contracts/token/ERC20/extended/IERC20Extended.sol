@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC20Internal } from '../IERC20Internal.sol';
+import { IERC20ExtendedInternal } from './IERC20ExtendedInternal.sol';
 
 /**
  * @title ERC20 extended interface
  */
-interface IERC20Extended is IERC20Internal {
+interface IERC20Extended is IERC20ExtendedInternal {
     /**
      * @notice increase spend amount granted to spender
      * @param spender address whose allowance to increase

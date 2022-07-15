@@ -7,6 +7,6 @@ import { IERC2612 } from './IERC2612.sol';
 
 // TODO: note that IERC20Metadata is needed for eth-permit library
 
-interface IERC20Permit is IERC2612, IERC20Metadata {
+interface IERC20Permit is IERC2612 {
 
 }

@@ -12,12 +12,7 @@ import { IERC20Permit } from './IERC20Permit.sol';
  * @title ERC20 extension with support for ERC2612 permits
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
-abstract contract ERC20Permit is
-    IERC20Permit,
-    ERC20PermitInternal,
-    ERC20Metadata,
-    ERC20Base
-{
+abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     /**
      * @inheritdoc IERC2612
      * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
