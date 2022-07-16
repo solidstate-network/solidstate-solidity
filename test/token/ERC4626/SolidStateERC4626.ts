@@ -8,6 +8,10 @@ import {
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
+const name = 'ERC20Metadata.name';
+const symbol = 'ERC20Metadata.symbol';
+const decimals = 18;
+
 describe('SolidStateERC4626', function () {
   let assetInstance: SolidStateERC20Mock;
   let instance: SolidStateERC4626Mock;
@@ -16,9 +20,9 @@ describe('SolidStateERC4626', function () {
     const [deployer] = await ethers.getSigners();
 
     assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      '',
-      '',
-      0,
+      name,
+      symbol,
+      decimals,
       ethers.constants.Zero,
     );
 
@@ -35,9 +39,9 @@ describe('SolidStateERC4626', function () {
       instance.callStatic.allowance(holder, spender),
     mintAsset: (recipient: string, amount: BigNumber) =>
       assetInstance.__mint(recipient, amount),
-    name: '',
-    symbol: '',
-    decimals: 0,
+    name,
+    symbol,
+    decimals,
     supply: ethers.constants.Zero,
   });
 });

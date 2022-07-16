@@ -13,6 +13,10 @@ import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
+const name = 'ERC20Metadata.name';
+const symbol = 'ERC20Metadata.symbol';
+const decimals = 18;
+
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
@@ -25,9 +29,9 @@ describe('ERC4626Base', () => {
 
   beforeEach(async () => {
     assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      '',
-      '',
-      0,
+      name,
+      symbol,
+      decimals,
       ethers.constants.Zero,
     );
 
@@ -45,6 +49,9 @@ describe('ERC4626Base', () => {
       instance.__burn(recipient, amount),
     mintAsset: (recipient: string, amount: BigNumber) =>
       assetInstance.__mint(recipient, amount),
+    name,
+    symbol,
+    decimals,
   });
 
   describe('__internal', () => {

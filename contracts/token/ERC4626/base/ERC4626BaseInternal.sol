@@ -5,13 +5,18 @@ pragma solidity ^0.8.8;
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { IERC20 } from '../../ERC20/IERC20.sol';
 import { ERC20BaseInternal } from '../../ERC20/base/ERC20BaseInternal.sol';
+import { ERC20MetadataInternal } from '../../ERC20/metadata/ERC20MetadataInternal.sol';
 import { IERC4626Internal } from '../IERC4626Internal.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base ERC4626 internal functions
  */
-abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
+abstract contract ERC4626BaseInternal is
+    IERC4626Internal,
+    ERC20BaseInternal,
+    ERC20MetadataInternal
+{
     using SafeERC20 for IERC20;
 
     /**
