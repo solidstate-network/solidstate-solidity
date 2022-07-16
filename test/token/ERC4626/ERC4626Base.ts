@@ -29,14 +29,17 @@ describe('ERC4626Base', () => {
 
   beforeEach(async () => {
     assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      name,
-      symbol,
-      decimals,
+      '',
+      '',
+      0,
       ethers.constants.Zero,
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
       assetInstance.address,
+      name,
+      symbol,
+      decimals,
     );
   });
 

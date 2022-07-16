@@ -28,6 +28,9 @@ describe('SolidStateERC4626', function () {
 
     instance = await new SolidStateERC4626Mock__factory(deployer).deploy(
       assetInstance.address,
+      name,
+      symbol,
+      decimals,
     );
   });
 

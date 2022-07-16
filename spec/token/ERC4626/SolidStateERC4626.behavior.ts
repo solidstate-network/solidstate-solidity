@@ -25,6 +25,7 @@ export function describeBehaviorOfSolidStateERC4626(
 
     describeBehaviorOfERC4626Base(deploy, args, [
       '::ERC20Base',
+      '::ERC20Metadata',
       ...(skips ?? []),
     ]);
   });
