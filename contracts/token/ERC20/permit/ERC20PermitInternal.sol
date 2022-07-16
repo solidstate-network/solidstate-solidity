@@ -17,7 +17,73 @@ abstract contract ERC20PermitInternal is
     using ECDSA for bytes32;
 
     /**
-     * TODO
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator domain separator
+     */
+    function _DOMAIN_SEPARATOR()
+        internal
+        view
+        returns (bytes32 domainSeparator)
+    {
+        domainSeparator = ERC20PermitStorage.layout().domainSeparators[
+            _chainId()
+        ];
+
+        if (domainSeparator == 0x00) {
+            domainSeparator = _calculateDomainSeparator();
+        }
+    }
+
+    /**
+     * @notice get the current ERC2612 nonce for the given address
+     * @return current nonce
+     */
+    function _nonces(address owner) internal view returns (uint256) {
+        return ERC20PermitStorage.layout().nonces[owner];
+    }
+
+    /**
+     * @notice calculate unique EIP-712 domain separator
+     * @return domainSeparator domain separator
+     */
+    function _calculateDomainSeparator()
+        internal
+        view
+        returns (bytes32 domainSeparator)
+    {
+        // no need for assembly, running very rarely
+        domainSeparator = keccak256(
+            abi.encode(
+                keccak256(
+                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
+                ),
+                keccak256(bytes(_name())), // ERC-20 Name
+                keccak256(bytes('1')), // Version
+                _chainId(),
+                address(this)
+            )
+        );
+    }
+
+    /**
+     * @notice get the current chain ID
+     * @return chainId chain ID
+     */
+    function _chainId() private view returns (uint256 chainId) {
+        assembly {
+            chainId := chainid()
+        }
+    }
+
+    /**
+     * @notice approve spender to transfer tokens held by owner via signature
+     * @dev this function may be vulnerable to approval replay attacks
+     * @param owner holder of tokens and signer of permit
+     * @param spender beneficiary of approval
+     * @param amount quantity of tokens to approve
+     * @param v secp256k1 'v' value
+     * @param r secp256k1 'r' value
+     * @param s secp256k1 's' value
      * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
      * EIP712 Domain Separator is automatically recalculated.
      */
@@ -44,8 +110,10 @@ abstract contract ERC20PermitInternal is
         //   )
         // );
 
+        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
+
         bytes32 hashStruct;
-        uint256 nonce = ERC20PermitStorage.layout().nonces[owner];
+        uint256 nonce = l.nonces[owner];
 
         assembly {
             // Load free memory pointer
@@ -65,11 +133,16 @@ abstract contract ERC20PermitInternal is
             hashStruct := keccak256(pointer, 192)
         }
 
-        bytes32 eip712DomainHash = _domainSeparator();
+        bytes32 domainSeparator = l.domainSeparators[_chainId()];
+
+        if (domainSeparator == 0x00) {
+            domainSeparator = _calculateDomainSeparator();
+            l.domainSeparators[_chainId()] = domainSeparator;
+        }
 
         // Assembly for more efficient computing:
         // bytes32 hash = keccak256(
-        //   abi.encodePacked(uint16(0x1901), eip712DomainHash, hashStruct)
+        //   abi.encodePacked(uint16(0x1901), domainSeparator, hashStruct)
         // );
 
         bytes32 hash;
@@ -82,7 +155,7 @@ abstract contract ERC20PermitInternal is
                 pointer,
                 0x1901000000000000000000000000000000000000000000000000000000000000
             ) // EIP191 header
-            mstore(add(pointer, 2), eip712DomainHash) // EIP712 domain hash
+            mstore(add(pointer, 2), domainSeparator) // EIP712 domain hash
             mstore(add(pointer, 34), hashStruct) // Hash of struct
 
             hash := keccak256(pointer, 66)
@@ -92,67 +165,7 @@ abstract contract ERC20PermitInternal is
 
         require(signer == owner, 'ERC20Permit: invalid signature');
 
-        ERC20PermitStorage.layout().nonces[owner]++;
+        l.nonces[owner]++;
         _approve(owner, spender, amount);
-    }
-
-    /**
-     * TODO
-     */
-    function _nonces(address owner) internal view returns (uint256) {
-        return ERC20PermitStorage.layout().nonces[owner];
-    }
-
-    /**
-     * @notice update domain separator for new chain ID
-     * @return new domain separator
-     */
-    function _updateDomainSeparator() private returns (bytes32) {
-        uint256 chainId = _chainId();
-
-        // no need for assembly, running very rarely
-        bytes32 newDomainSeparator = keccak256(
-            abi.encode(
-                keccak256(
-                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
-                ),
-                keccak256(bytes(_name())), // ERC-20 Name
-                keccak256(bytes('1')), // Version
-                chainId,
-                address(this)
-            )
-        );
-
-        ERC20PermitStorage.layout().domainSeparators[
-            chainId
-        ] = newDomainSeparator;
-
-        return newDomainSeparator;
-    }
-
-    /**
-     * @notice update chain ID if changed and return domain separator
-     * @return domain separator
-     */
-    function _domainSeparator() private returns (bytes32) {
-        bytes32 domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            _chainId()
-        ];
-
-        if (domainSeparator != 0x00) {
-            return domainSeparator;
-        }
-
-        return _updateDomainSeparator();
-    }
-
-    /**
-     * @notice get the current chain ID
-     * @return chainId chain ID
-     */
-    function _chainId() private view returns (uint256 chainId) {
-        assembly {
-            chainId := chainid()
-        }
     }
 }

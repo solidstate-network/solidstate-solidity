@@ -8,6 +8,18 @@ pragma solidity ^0.8.8;
  */
 interface IERC2612 {
     /**
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator domain separator
+     */
+    function DOMAIN_SEPARATOR() external view returns (bytes32 domainSeparator);
+
+    /**
+     * @notice get the current ERC2612 nonce for the given address
+     * @return current nonce
+     */
+    function nonces(address owner) external view returns (uint256);
+
+    /**
      * @notice approve spender to transfer tokens held by owner via signature
      * @dev this function may be vulnerable to approval replay attacks
      * @param owner holder of tokens and signer of permit
@@ -26,10 +38,4 @@ interface IERC2612 {
         bytes32 r,
         bytes32 s
     ) external;
-
-    /**
-     * @notice get the current ERC2612 nonce for the given address
-     * @return current nonce
-     */
-    function nonces(address owner) external view returns (uint256);
 }
