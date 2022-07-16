@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitBehaviorArgs {
+export interface ERC20PermitBehaviorArgs {
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
 }
 
