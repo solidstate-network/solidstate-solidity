@@ -5,6 +5,7 @@ import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { ERC20BaseInternal } from '../base/ERC20BaseInternal.sol';
 import { ERC20MetadataInternal } from '../metadata/ERC20MetadataInternal.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
+import { IERC20PermitInternal } from './IERC20PermitInternal.sol';
 
 /**
  * @title ERC20 extension with support for ERC2612 permits
@@ -12,7 +13,8 @@ import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
  */
 abstract contract ERC20PermitInternal is
     ERC20BaseInternal,
-    ERC20MetadataInternal
+    ERC20MetadataInternal,
+    IERC20PermitInternal
 {
     using ECDSA for bytes32;
 

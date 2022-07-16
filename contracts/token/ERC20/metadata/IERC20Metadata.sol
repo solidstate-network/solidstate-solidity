@@ -2,10 +2,12 @@
 
 pragma solidity ^0.8.8;
 
+import { IERC20MetadataInternal } from './IERC20MetadataInternal.sol';
+
 /**
  * @title ERC20 metadata interface
  */
-interface IERC20Metadata {
+interface IERC20Metadata is IERC20MetadataInternal {
     /**
      * @notice return token name
      * @return token name

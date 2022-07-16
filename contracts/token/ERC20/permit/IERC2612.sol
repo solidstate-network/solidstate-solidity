@@ -2,11 +2,13 @@
 
 pragma solidity ^0.8.8;
 
+import { IERC2612Internal } from './IERC2612Internal.sol';
+
 /**
  * @title ERC2612 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2612.
  */
-interface IERC2612 {
+interface IERC2612 is IERC2612Internal {
     /**
      * @notice return the EIP-712 domain separator unique to contract and chain
      * @return domainSeparator domain separator
