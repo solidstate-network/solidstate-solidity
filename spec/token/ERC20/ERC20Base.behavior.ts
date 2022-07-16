@@ -100,6 +100,16 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#approve(address,uint256)', function () {
+      it('returns true', async () => {
+        const amount = ethers.constants.Two;
+
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['approve(address,uint256)'](spender.address, amount),
+        ).to.be.true;
+      });
+
       it('enables given spender to spend tokens on behalf of sender', async function () {
         let amount = ethers.constants.Two;
         await instance
@@ -130,17 +140,28 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transfer(address,uint256)', function () {
-      it('transfers amount from a to b', async function () {
+      it('returns true', async () => {
         const amount = ethers.constants.Two;
-        await mint(spender.address, amount);
+        await mint(holder.address, amount);
+
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['transfer(address,uint256)'](receiver.address, amount),
+        ).to.be.true;
+      });
+
+      it('transfers amount from holder to receiver', async function () {
+        const amount = ethers.constants.Two;
+        await mint(holder.address, amount);
 
         await expect(() =>
           instance
-            .connect(spender)
-            ['transfer(address,uint256)'](holder.address, amount),
+            .connect(holder)
+            ['transfer(address,uint256)'](receiver.address, amount),
         ).to.changeTokenBalances(
           instance,
-          [spender, holder],
+          [holder, receiver],
           [-amount, amount],
         );
       });
@@ -159,6 +180,25 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transferFrom(address,address,uint256)', function () {
+      it('returns true', async () => {
+        const amount = ethers.constants.Two;
+        await mint(holder.address, amount);
+
+        await instance
+          .connect(holder)
+          ['approve(address,uint256)'](spender.address, amount);
+
+        expect(
+          await instance
+            .connect(spender)
+            .callStatic['transferFrom(address,address,uint256)'](
+              holder.address,
+              receiver.address,
+              amount,
+            ),
+        ).to.be.true;
+      });
+
       it('transfers amount on behalf of holder', async function () {
         const amount = ethers.constants.Two;
         await mint(holder.address, amount);
