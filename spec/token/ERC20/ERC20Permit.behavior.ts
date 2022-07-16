@@ -27,11 +27,11 @@ export function describeBehaviorOfERC20Permit(
       instance = await deploy();
     });
 
-    describe('#DOMAIN_SEPARATOR', () => {
+    describe('#DOMAIN_SEPARATOR()', () => {
       it('todo');
     });
 
-    describe('#nonces', () => {
+    describe('#nonces(address)', () => {
       it('todo');
     });
 
