@@ -6,12 +6,17 @@ import { IERC20 } from '../../../interfaces/IERC20.sol';
 import { IERC4626Internal } from '../../../interfaces/IERC4626Internal.sol';
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { ERC20BaseInternal } from '../../ERC20/base/ERC20BaseInternal.sol';
+import { ERC20MetadataInternal } from '../../ERC20/metadata/ERC20MetadataInternal.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base ERC4626 internal functions
  */
-abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
+abstract contract ERC4626BaseInternal is
+    IERC4626Internal,
+    ERC20BaseInternal,
+    ERC20MetadataInternal
+{
     using SafeERC20 for IERC20;
 
     /**

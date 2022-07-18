@@ -5,13 +5,13 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitArgs {
+export interface ERC20PermitBehaviorArgs {
   allowance: (holder: string, spender: string) => Promise<BigNumber>;
 }
 
 export function describeBehaviorOfERC20Permit(
   deploy: () => Promise<ERC20Permit>,
-  args: ERC20PermitArgs,
+  args: ERC20PermitBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -25,6 +25,14 @@ export function describeBehaviorOfERC20Permit(
     beforeEach(async function () {
       [holder, spender, thirdParty] = await ethers.getSigners();
       instance = await deploy();
+    });
+
+    describe('#DOMAIN_SEPARATOR()', () => {
+      it('todo');
+    });
+
+    describe('#nonces(address)', () => {
+      it('todo');
     });
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {

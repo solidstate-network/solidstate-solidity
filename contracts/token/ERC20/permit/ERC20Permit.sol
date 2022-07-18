@@ -15,8 +15,24 @@ import { IERC20Permit } from './IERC20Permit.sol';
 abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     /**
      * @inheritdoc IERC2612
-     * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
-     * EIP712 Domain Separator is automatically recalculated.
+     */
+    function DOMAIN_SEPARATOR()
+        external
+        view
+        returns (bytes32 domainSeparator)
+    {
+        return _DOMAIN_SEPARATOR();
+    }
+
+    /**
+     * @inheritdoc IERC2612
+     */
+    function nonces(address owner) public view returns (uint256) {
+        return _nonces(owner);
+    }
+
+    /**
+     * @inheritdoc IERC2612
      */
     function permit(
         address owner,
@@ -28,12 +44,5 @@ abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
         bytes32 s
     ) public virtual {
         _permit(owner, spender, amount, deadline, v, r, s);
-    }
-
-    /**
-     * @dev inhertidoc IERC2612
-     */
-    function nonces(address owner) public view returns (uint256) {
-        return _nonces(owner);
     }
 }
