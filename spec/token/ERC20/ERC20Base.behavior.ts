@@ -141,13 +141,13 @@ export function describeBehaviorOfERC20Base(
 
     describe('#transfer(address,uint256)', function () {
       it('returns true', async () => {
-        const amount = ethers.constants.Two;
-        await mint(holder.address, amount);
-
         expect(
           await instance
             .connect(holder)
-            .callStatic['transfer(address,uint256)'](receiver.address, amount),
+            .callStatic['transfer(address,uint256)'](
+              receiver.address,
+              ethers.constants.Zero,
+            ),
         ).to.be.true;
       });
 
@@ -181,20 +181,13 @@ export function describeBehaviorOfERC20Base(
 
     describe('#transferFrom(address,address,uint256)', function () {
       it('returns true', async () => {
-        const amount = ethers.constants.Two;
-        await mint(holder.address, amount);
-
-        await instance
-          .connect(holder)
-          ['approve(address,uint256)'](spender.address, amount);
-
         expect(
           await instance
             .connect(spender)
             .callStatic['transferFrom(address,address,uint256)'](
               holder.address,
               receiver.address,
-              amount,
+              ethers.constants.Zero,
             ),
         ).to.be.true;
       });
