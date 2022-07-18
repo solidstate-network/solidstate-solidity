@@ -2,11 +2,11 @@ import {
   describeBehaviorOfUpgradeableProxy,
   UpgradeableProxyBehaviorArgs,
 } from './UpgradeableProxy.behavior';
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IUpgradeableProxyOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface UpgradeableProxyOwnableArgs extends UpgradeableProxyBehaviorArgs {

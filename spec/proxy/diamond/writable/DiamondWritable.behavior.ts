@@ -1,9 +1,9 @@
 import { describeBehaviorOfERC165 } from '../../../introspection';
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IDiamondWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface DiamondWritableBehaviorArgs {

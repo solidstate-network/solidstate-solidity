@@ -1,9 +1,9 @@
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
   DiamondReadableMock,
   DiamondReadableMock__factory,
 } from '@solidstate/typechain-types';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 describe('DiamondReadable', function () {
