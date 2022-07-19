@@ -179,7 +179,7 @@ export function describeBehaviorOfERC4626Base(
     describe('#previewWithdraw(uint256)', () => {
       it('todo: supply is 0');
 
-      it('returns the withdraw input amount coverted to shares', async () => {
+      it('returns the withdraw input amount converted to shares', async () => {
         await args.mint(instance.address, BigNumber.from('10'));
 
         const supply = await instance.callStatic.totalSupply();
