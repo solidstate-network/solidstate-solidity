@@ -282,8 +282,8 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .callStatic.previewDeposit(assetAmount);
 
-        expect(
-          await instance
+        await expect(
+          instance
             .connect(depositor)
             ['deposit(uint256,address)'](assetAmount, depositor.address),
         )
@@ -372,10 +372,8 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        expect(
-          await instance
-            .connect(depositor)
-            .mint(shareAmount, depositor.address),
+        await expect(
+          instance.connect(depositor).mint(shareAmount, depositor.address),
         )
           .to.emit(instance, 'Deposit')
           .withArgs(
@@ -485,8 +483,8 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .callStatic.previewWithdraw(assetAmountOut);
 
-        expect(
-          await instance
+        await expect(
+          instance
             .connect(caller)
             .withdraw(assetAmountOut, recipient.address, depositor.address),
         )
@@ -647,8 +645,8 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .callStatic.previewRedeem(shareAmount);
 
-        expect(
-          await instance
+        await expect(
+          instance
             .connect(caller)
             ['redeem(uint256,address,address)'](
               shareAmount,
