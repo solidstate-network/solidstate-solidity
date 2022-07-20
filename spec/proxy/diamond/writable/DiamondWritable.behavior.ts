@@ -426,7 +426,7 @@ export function describeBehaviorOfDiamondWritable(
               ethers.constants.AddressZero,
               '0x',
             ),
-          ).to.be.revertedWith("Hardhat couldn't infer the reason.");
+          ).to.be.revertedWithoutReason();
         });
 
         it('passed selector array is empty', async function () {

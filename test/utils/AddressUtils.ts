@@ -365,7 +365,9 @@ describe('AddressUtils', async () => {
                 '0x',
                 ethers.constants.Zero,
               ),
-          ).to.be.revertedWith('AddressUtils: failed low-level call');
+          ).to.be.revertedWith(
+            'AddressUtils: failed low-level call with value',
+          );
         });
       });
     });
