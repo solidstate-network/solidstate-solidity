@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.8;
 
+import { EnumerableMap } from '../../../data/EnumerableMap.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
-import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
 import { IERC721Internal } from '../IERC721Internal.sol';
 import { IERC721Receiver } from '../IERC721Receiver.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';

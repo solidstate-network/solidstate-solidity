@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { EnumerableMap } from '../../../data/EnumerableMap.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 
 library ERC721BaseStorage {
     using EnumerableSet for EnumerableSet.UintSet;
