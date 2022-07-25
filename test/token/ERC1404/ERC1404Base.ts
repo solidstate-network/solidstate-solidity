@@ -1,7 +1,10 @@
-import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
-import { ERC1404BaseMock, ERC1404BaseMock__factory } from '../../../typechain';
+import {
+  ERC1404BaseMock,
+  ERC1404BaseMock__factory,
+} from '@solidstate/typechain-types';
 import { BigNumber } from 'ethers';
+import { ethers } from 'hardhat';
 
 let restrictions = [
   { code: ethers.BigNumber.from(1), message: 'one' },
@@ -19,8 +22,7 @@ describe('ERC1404Base', function () {
     );
   });
 
-  describeBehaviorOfERC1404Base({
-    deploy: async () => instance as any,
+  describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
     supply: ethers.constants.Zero,
     mint: (recipient: string, amount: BigNumber) =>

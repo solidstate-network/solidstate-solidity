@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { IERC1155Internal } from '../IERC1155Internal.sol';
@@ -184,7 +184,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         unchecked {
             require(
                 balances[account] >= amount,
-                'ERC1155: burn amount exceeds balances'
+                'ERC1155: burn amount exceeds balance'
             );
             balances[account] -= amount;
         }

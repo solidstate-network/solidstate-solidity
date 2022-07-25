@@ -1,8 +1,11 @@
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
+import {
+  ERC1155BaseMock,
+  ERC1155BaseMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { ERC1155BaseMock, ERC1155BaseMock__factory } from '../../../typechain';
 
 describe('ERC1155Base', function () {
   let holder: SignerWithAddress;
@@ -20,8 +23,7 @@ describe('ERC1155Base', function () {
     invalidReceiver = instance.address;
   });
 
-  describeBehaviorOfERC1155Base({
-    deploy: async () => instance as any,
+  describeBehaviorOfERC1155Base(async () => instance, {
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),
     burn: (recipient, tokenId, amount) =>

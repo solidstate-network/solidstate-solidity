@@ -1,18 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-
-import { task } from 'hardhat/config';
 import '@nomiclabs/hardhat-waffle';
 import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
+import fs from 'fs';
 import 'hardhat-abi-exporter';
+import 'hardhat-contract-sizer';
 import 'hardhat-gas-reporter';
 import 'hardhat-spdx-license-identifier';
+import { task } from 'hardhat/config';
+import path from 'path';
 import 'solidity-coverage';
 
 export default {
   solidity: {
-    version: '0.8.10',
+    version: '0.8.15',
     settings: {
       optimizer: {
         enabled: true,
@@ -39,6 +39,5 @@ export default {
 
   typechain: {
     alwaysGenerateOverloads: true,
-    outDir: 'typechain',
   },
 };

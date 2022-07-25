@@ -1,13 +1,14 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { deployMockContract } from 'ethereum-waffle';
 import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
 import {
   ManagedProxyMock,
   ManagedProxyMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain-types';
+import { expect } from 'chai';
+import { MockContract, deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
 
 describe('ManagedProxy', function () {
+  let manager: MockContract;
   let instance: ManagedProxyMock;
 
   beforeEach(async function () {
@@ -19,7 +20,7 @@ describe('ManagedProxy', function () {
     );
     await implementationInstance.deployed();
 
-    const manager = await deployMockContract((await ethers.getSigners())[0], [
+    manager = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
     ]);
 
@@ -36,8 +37,7 @@ describe('ManagedProxy', function () {
     );
   });
 
-  describeBehaviorOfManagedProxy({
-    deploy: async () => instance as any,
+  describeBehaviorOfManagedProxy(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
@@ -58,7 +58,7 @@ describe('ManagedProxy', function () {
         });
 
         it('manager fails to return implementation', async function () {
-          await instance.setManager(instance.address);
+          await manager.mock['getImplementation()'].revertsWithReason('ERROR');
 
           await expect(
             instance.callStatic.__getImplementation(),

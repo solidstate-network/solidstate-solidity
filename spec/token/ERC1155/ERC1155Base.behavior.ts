@@ -1,15 +1,13 @@
+import { describeBehaviorOfERC165 } from '../../introspection';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
+import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
+import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-import { describeFilter } from '@solidstate/library';
-import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfERC165 } from '../../introspection';
-import { ERC1155Base } from '../../../typechain';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { BigNumber, ContractTransaction } from 'ethers';
-
-interface ERC1155BaseBehaviorArgs {
-  deploy: () => Promise<ERC1155Base>;
+export interface ERC1155BaseBehaviorArgs {
   mint: (
     address: string,
     id: BigNumber,
@@ -24,7 +22,8 @@ interface ERC1155BaseBehaviorArgs {
 }
 
 export function describeBehaviorOfERC1155Base(
-  { deploy, mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
+  deploy: () => Promise<IERC1155Base>,
+  { mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -32,7 +31,7 @@ export function describeBehaviorOfERC1155Base(
   describe('::ERC1155Base', function () {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
-    let instance: ERC1155Base;
+    let instance: IERC1155Base;
 
     before(async function () {
       [holder, spender] = await ethers.getSigners();
@@ -42,9 +41,10 @@ export function describeBehaviorOfERC1155Base(
       instance = await deploy();
     });
 
+    // TODO: nonstandard usage
     describeBehaviorOfERC165(
+      deploy,
       {
-        deploy,
         interfaceIds: ['0xd9b67a26'],
       },
       skips,

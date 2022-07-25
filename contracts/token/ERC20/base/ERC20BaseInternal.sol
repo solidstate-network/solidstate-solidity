@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { IERC20Internal } from '../IERC20Internal.sol';
+import { IERC20BaseInternal } from './IERC20BaseInternal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
- * @title Base ERC20 implementation, excluding optional extensions
+ * @title Base ERC20 internal functions, excluding optional extensions
  */
-abstract contract ERC20BaseInternal is IERC20Internal {
+abstract contract ERC20BaseInternal is IERC20BaseInternal {
     /**
      * @notice query the total minted token supply
      * @return token supply
@@ -32,22 +32,40 @@ abstract contract ERC20BaseInternal is IERC20Internal {
     }
 
     /**
+     * @notice query the allowance granted from given holder to given spender
+     * @param holder approver of allowance
+     * @param spender recipient of allowance
+     * @return token allowance
+     */
+    function _allowance(address holder, address spender)
+        internal
+        view
+        virtual
+        returns (uint256)
+    {
+        return ERC20BaseStorage.layout().allowances[holder][spender];
+    }
+
+    /**
      * @notice enable spender to spend tokens on behalf of holder
      * @param holder address on whose behalf tokens may be spent
      * @param spender recipient of allowance
      * @param amount quantity of tokens approved for spending
+     * @return success status (always true; otherwise function should revert)
      */
     function _approve(
         address holder,
         address spender,
         uint256 amount
-    ) internal virtual {
+    ) internal virtual returns (bool) {
         require(holder != address(0), 'ERC20: approve from the zero address');
         require(spender != address(0), 'ERC20: approve to the zero address');
 
         ERC20BaseStorage.layout().allowances[holder][spender] = amount;
 
         emit Approval(holder, spender, amount);
+
+        return true;
     }
 
     /**
@@ -93,12 +111,13 @@ abstract contract ERC20BaseInternal is IERC20Internal {
      * @param holder owner of tokens to be transferred
      * @param recipient beneficiary of transfer
      * @param amount quantity of tokens transferred
+     * @return success status (always true; otherwise function should revert)
      */
     function _transfer(
         address holder,
         address recipient,
         uint256 amount
-    ) internal virtual {
+    ) internal virtual returns (bool) {
         require(holder != address(0), 'ERC20: transfer from the zero address');
         require(recipient != address(0), 'ERC20: transfer to the zero address');
 
@@ -116,6 +135,36 @@ abstract contract ERC20BaseInternal is IERC20Internal {
         l.balances[recipient] += amount;
 
         emit Transfer(holder, recipient, amount);
+
+        return true;
+    }
+
+    /**
+     * @notice transfer tokens to given recipient on behalf of given holder
+     * @param holder holder of tokens prior to transfer
+     * @param recipient beneficiary of token transfer
+     * @param amount quantity of tokens to transfer
+     * @return success status (always true; otherwise function should revert)
+     */
+    function _transferFrom(
+        address holder,
+        address recipient,
+        uint256 amount
+    ) internal virtual returns (bool) {
+        uint256 currentAllowance = _allowance(holder, msg.sender);
+
+        require(
+            currentAllowance >= amount,
+            'ERC20: transfer amount exceeds allowance'
+        );
+
+        unchecked {
+            _approve(holder, msg.sender, currentAllowance - amount);
+        }
+
+        _transfer(holder, recipient, amount);
+
+        return true;
     }
 
     /**

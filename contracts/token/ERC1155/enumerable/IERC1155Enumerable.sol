@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
+
+import { IERC1155Internal } from '../IERC1155Internal.sol';
 
 /**
  * @title ERC1155 enumerable and aggregate function interface
  */
-interface IERC1155Enumerable {
+interface IERC1155Enumerable is IERC1155Internal {
     /**
      * @notice query total minted supply of given token
      * @param id token id to query

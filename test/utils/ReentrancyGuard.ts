@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
 import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
 import {
   ReentrancyGuardMock,
   ReentrancyGuardMock__factory,
-} from '../../typechain';
+} from '@solidstate/typechain-types';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
 describe('ReentrancyGuard', function () {
   let instance: ReentrancyGuardMock;
@@ -14,9 +14,7 @@ describe('ReentrancyGuard', function () {
     instance = await new ReentrancyGuardMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfReentrancyGuard({
-    deploy: async () => instance,
-  });
+  describeBehaviorOfReentrancyGuard(async () => instance, {});
 
   describe('__internal', function () {
     describe('nonReentrant modifier', function () {

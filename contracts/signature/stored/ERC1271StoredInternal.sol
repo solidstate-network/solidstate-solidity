@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { ERC1271BaseInternal } from '../base/ERC1271BaseInternal.sol';
 import { ERC1271StoredStorage } from './ERC1271StoredStorage.sol';
@@ -14,9 +14,12 @@ abstract contract ERC1271StoredInternal is ERC1271BaseInternal {
         view
         virtual
         override
-        returns (bool)
+        returns (bytes4 magicValue)
     {
-        return ERC1271StoredStorage.layout().hashes[hash];
+        return
+            ERC1271StoredStorage.layout().hashes[hash]
+                ? MAGIC_VALUE
+                : bytes4(0);
     }
 
     function _setValidSignature(bytes32 hash, bool status) internal {

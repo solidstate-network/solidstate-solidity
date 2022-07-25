@@ -1,16 +1,12 @@
+import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfProxy } from '../Proxy.behavior';
-import { ManagedProxy } from '../../../typechain';
+import { IManagedProxy } from '@solidstate/typechain-types';
 
-interface ManagedProxyBehaviorArgs {
-  deploy: () => Promise<ManagedProxy>;
-  implementationFunction: string;
-  implementationFunctionArgs: any[];
-}
+export interface ManagedProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfManagedProxy(
+  deploy: () => Promise<IManagedProxy>,
   {
-    deploy,
     implementationFunction,
     implementationFunctionArgs,
   }: ManagedProxyBehaviorArgs,
@@ -20,8 +16,8 @@ export function describeBehaviorOfManagedProxy(
 
   describe('::ManagedProxy', function () {
     describeBehaviorOfProxy(
+      deploy,
       {
-        deploy,
         implementationFunction,
         implementationFunctionArgs,
       },

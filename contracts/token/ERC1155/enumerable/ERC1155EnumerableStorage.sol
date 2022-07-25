@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 
 library ERC1155EnumerableStorage {
     struct Layout {

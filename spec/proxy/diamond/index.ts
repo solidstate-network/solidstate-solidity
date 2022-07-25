@@ -1,4 +1,5 @@
-export * from './Diamond.behavior';
-export * from './DiamondBase.behavior';
-export * from './DiamondCuttable.behavior';
-export * from './DiamondLoupe.behavior';
+export * from './base';
+export * from './readable';
+export * from './writable';
+
+export * from './SolidStateDiamond.behavior';

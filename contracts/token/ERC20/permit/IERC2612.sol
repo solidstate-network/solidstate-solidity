@@ -1,12 +1,26 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
+
+import { IERC2612Internal } from './IERC2612Internal.sol';
 
 /**
  * @title ERC2612 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2612.
  */
-interface IERC2612 {
+interface IERC2612 is IERC2612Internal {
+    /**
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator domain separator
+     */
+    function DOMAIN_SEPARATOR() external view returns (bytes32 domainSeparator);
+
+    /**
+     * @notice get the current ERC2612 nonce for the given address
+     * @return current nonce
+     */
+    function nonces(address owner) external view returns (uint256);
+
     /**
      * @notice approve spender to transfer tokens held by owner via signature
      * @dev this function may be vulnerable to approval replay attacks
@@ -26,10 +40,4 @@ interface IERC2612 {
         bytes32 r,
         bytes32 s
     ) external;
-
-    /**
-     * @notice get the current ERC2612 nonce for the given address
-     * @return current nonce
-     */
-    function nonces(address owner) external view returns (uint256);
 }

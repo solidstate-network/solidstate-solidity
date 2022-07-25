@@ -1,8 +1,11 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import {
+  ArrayUtilsMock,
+  ArrayUtilsMock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-import { ArrayUtilsMock, ArrayUtilsMock__factory } from '../../typechain';
 
 const bnToAddress = (bn: BigNumber) => {
   return ethers.utils.getAddress(

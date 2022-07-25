@@ -1,19 +1,19 @@
-import { expect } from 'chai';
-import { describeFilter } from '@solidstate/library';
-import { ethers } from 'hardhat';
-import { ERC20Base } from '../../../typechain';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
+import { IERC20Base } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { BigNumber, ContractTransaction } from 'ethers';
+import { ethers } from 'hardhat';
 
-interface ERC20BaseBehaviorArgs {
-  deploy: () => Promise<ERC20Base>;
+export interface ERC20BaseBehaviorArgs {
   supply: BigNumber;
   mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
   burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(
-  { deploy, supply, mint, burn }: ERC20BaseBehaviorArgs,
+  deploy: () => Promise<IERC20Base>,
+  { supply, mint, burn }: ERC20BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,7 +24,7 @@ export function describeBehaviorOfERC20Base(
     let spender: SignerWithAddress;
     let receiver: SignerWithAddress;
     let sender: SignerWithAddress;
-    let instance: ERC20Base;
+    let instance: IERC20Base;
 
     before(async function () {
       [holder, spender, receiver, sender] = await ethers.getSigners();
@@ -100,6 +100,16 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#approve(address,uint256)', function () {
+      it('returns true', async () => {
+        const amount = ethers.constants.Two;
+
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['approve(address,uint256)'](spender.address, amount),
+        ).to.be.true;
+      });
+
       it('enables given spender to spend tokens on behalf of sender', async function () {
         let amount = ethers.constants.Two;
         await instance
@@ -130,17 +140,28 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transfer(address,uint256)', function () {
-      it('transfers amount from a to b', async function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['transfer(address,uint256)'](
+              receiver.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
+      it('transfers amount from holder to receiver', async function () {
         const amount = ethers.constants.Two;
-        await mint(spender.address, amount);
+        await mint(holder.address, amount);
 
         await expect(() =>
           instance
-            .connect(spender)
-            ['transfer(address,uint256)'](holder.address, amount),
+            .connect(holder)
+            ['transfer(address,uint256)'](receiver.address, amount),
         ).to.changeTokenBalances(
           instance,
-          [spender, holder],
+          [holder, receiver],
           [-amount, amount],
         );
       });
@@ -159,6 +180,18 @@ export function describeBehaviorOfERC20Base(
     });
 
     describe('#transferFrom(address,address,uint256)', function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(spender)
+            .callStatic['transferFrom(address,address,uint256)'](
+              holder.address,
+              receiver.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
       it('transfers amount on behalf of holder', async function () {
         const amount = ethers.constants.Two;
         await mint(holder.address, amount);

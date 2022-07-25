@@ -1,9 +1,9 @@
-import { ethers } from 'hardhat';
 import { describeBehaviorOfERC1155Metadata } from '@solidstate/spec';
 import {
   ERC1155MetadataMock,
   ERC1155MetadataMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain-types';
+import { ethers } from 'hardhat';
 
 describe('ERC1155Metadata', function () {
   const tokenURI = 'ERC1155Metadata.tokenURI';
@@ -16,8 +16,7 @@ describe('ERC1155Metadata', function () {
     );
   });
 
-  describeBehaviorOfERC1155Metadata({
-    deploy: async () => instance,
+  describeBehaviorOfERC1155Metadata(async () => instance, {
     tokenURI,
   });
 });

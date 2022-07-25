@@ -1,7 +1,5 @@
 # SolidState Solidity
 
-> A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
-
 SolidState is an upgradeable-first Solidity smart contract development library.
 
 It consists of the following packages:
@@ -12,6 +10,8 @@ It consists of the following packages:
 | `@solidstate/contracts` | core contracts                                                                        | [📖](./contracts/README.md) |
 | `@solidstate/library`   | functions for interacting with and validating contracts                               | [📖](./lib/README.md)       |
 | `@solidstate/spec`      | portable tests which may be run against third-party implementations of core contracts | [📖](./spec/README.md)      |
+
+> **Note**: A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
 
 ### Contracts
 
@@ -24,7 +24,7 @@ Where possible, automated tests are designed to be imported by repositories whic
 For example, consider a custom `ERC20Base` implementation:
 
 ```solidity
-import '@solidstate/contracts/token/ERC20/ERC20Base.sol';
+import '@solidstate/contracts/token/ERC20/base/ERC20Base.sol';
 
 contract CustomToken is ERC20Base {
   // custom code...

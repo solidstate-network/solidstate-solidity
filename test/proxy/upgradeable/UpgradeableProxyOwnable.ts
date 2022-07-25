@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { deployMockContract } from 'ethereum-waffle';
-import { describeBehaviorOfUpgradeableProxyOwnable } from '@solidstate/spec';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfUpgradeableProxyOwnable } from '@solidstate/spec';
 import {
   UpgradeableProxyOwnableMock,
   UpgradeableProxyOwnableMock__factory,
-} from '../../../typechain';
+} from '@solidstate/typechain-types';
+import { expect } from 'chai';
+import { deployMockContract } from 'ethereum-waffle';
+import { ethers } from 'hardhat';
 
 describe('UpgradeableProxyOwnable', function () {
   let owner: SignerWithAddress;
@@ -33,8 +33,7 @@ describe('UpgradeableProxyOwnable', function () {
     );
   });
 
-  describeBehaviorOfUpgradeableProxyOwnable({
-    deploy: async () => instance as any,
+  describeBehaviorOfUpgradeableProxyOwnable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
     implementationFunction: 'owner()',

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { ERC20Metadata, ERC20MetadataStorage } from './ERC20Metadata.sol';
+import { ERC20Metadata } from './ERC20Metadata.sol';
+import { ERC20MetadataStorage } from './ERC20MetadataStorage.sol';
 
 contract ERC20MetadataMock is ERC20Metadata {
     using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
