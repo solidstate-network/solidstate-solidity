@@ -184,7 +184,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         unchecked {
             require(
                 balances[account] >= amount,
-                'ERC1155: burn amount exceeds balances'
+                'ERC1155: burn amount exceeds balance'
             );
             balances[account] -= amount;
         }
