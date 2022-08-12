@@ -311,4 +311,17 @@ library DiamondBaseStorage {
             }
         }
     }
+
+    function initialize(
+        address[] calldata _addresses,
+        bytes[] calldata _calldata
+    ) internal {
+        require(
+            _addresses.length == _calldata.length,
+            'DiamondBase: addresses and calldata length do not match'
+        );
+        for (uint256 i; i < _addresses.length; i++) {
+            initialize(_addresses[i], _calldata[i]);
+        }
+    }
 }
