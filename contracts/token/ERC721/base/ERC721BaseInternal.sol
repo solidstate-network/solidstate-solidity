@@ -18,7 +18,12 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    function _balanceOf(address account) internal view returns (uint256) {
+    function _balanceOf(address account)
+        internal
+        view
+        virtual
+        returns (uint256)
+    {
         require(
             account != address(0),
             'ERC721: balance query for the zero address'
@@ -26,13 +31,18 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         return ERC721BaseStorage.layout().holderTokens[account].length();
     }
 
-    function _ownerOf(uint256 tokenId) internal view returns (address) {
+    function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
         address owner = ERC721BaseStorage.layout().tokenOwners.get(tokenId);
         require(owner != address(0), 'ERC721: invalid owner');
         return owner;
     }
 
-    function _getApproved(uint256 tokenId) internal view returns (address) {
+    function _getApproved(uint256 tokenId)
+        internal
+        view
+        virtual
+        returns (address)
+    {
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
 
         require(
@@ -46,6 +56,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     function _isApprovedForAll(address account, address operator)
         internal
         view
+        virtual
         returns (bool)
     {
         return ERC721BaseStorage.layout().operatorApprovals[account][operator];
@@ -54,6 +65,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     function _isApprovedOrOwner(address spender, uint256 tokenId)
         internal
         view
+        virtual
         returns (bool)
     {
         require(
@@ -68,7 +80,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
             _isApprovedForAll(owner, spender));
     }
 
-    function _mint(address to, uint256 tokenId) internal {
+    function _mint(address to, uint256 tokenId) internal virtual {
         require(to != address(0), 'ERC721: mint to the zero address');
 
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
@@ -83,7 +95,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         emit Transfer(address(0), to, tokenId);
     }
 
-    function _safeMint(address to, uint256 tokenId) internal {
+    function _safeMint(address to, uint256 tokenId) internal virtual {
         _safeMint(to, tokenId, '');
     }
 
@@ -91,7 +103,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) internal {
+    ) internal virtual {
         _mint(to, tokenId);
         require(
             _checkOnERC721Received(address(0), to, tokenId, data),
@@ -99,7 +111,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         );
     }
 
-    function _burn(uint256 tokenId) internal {
+    function _burn(uint256 tokenId) internal virtual {
         address owner = _ownerOf(tokenId);
 
         _beforeTokenTransfer(owner, address(0), tokenId);
@@ -117,7 +129,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address from,
         address to,
         uint256 tokenId
-    ) internal {
+    ) internal virtual {
         require(
             _ownerOf(tokenId) == from,
             'ERC721: transfer of token that is not own'
@@ -141,7 +153,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) internal {
+    ) internal virtual {
         _transfer(from, to, tokenId);
         require(
             _checkOnERC721Received(from, to, tokenId, data),
@@ -149,7 +161,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         );
     }
 
-    function _approve(address operator, uint256 tokenId) internal {
+    function _approve(address operator, uint256 tokenId) internal virtual {
         ERC721BaseStorage.layout().tokenApprovals[tokenId] = operator;
         emit Approval(_ownerOf(tokenId), operator, tokenId);
     }
@@ -159,7 +171,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) internal returns (bool) {
+    ) internal virtual returns (bool) {
         if (!to.isContract()) {
             return true;
         }
