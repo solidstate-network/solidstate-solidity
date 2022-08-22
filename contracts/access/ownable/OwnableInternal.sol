@@ -12,13 +12,13 @@ abstract contract OwnableInternal is IOwnableInternal {
     using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
-        require(msg.sender == _owner(), 'Ownable: sender must be owner');
+        require(_msgSender() == _owner(), 'Ownable: sender must be owner');
         _;
     }
 
     modifier onlyTransitiveOwner() {
         require(
-            msg.sender == _transitiveOwner(),
+            _msgSender() == _transitiveOwner(),
             'Ownable: sender must be transitive owner'
         );
         _;
@@ -44,6 +44,26 @@ abstract contract OwnableInternal is IOwnableInternal {
 
     function _transferOwnership(address account) internal virtual {
         OwnableStorage.layout().setOwner(account);
-        emit OwnershipTransferred(msg.sender, account);
+        emit OwnershipTransferred(_msgSender(), account);
+    }
+
+    /*
+     * @notice Overrides the msgSender to enable delegation message signing.
+     * @returns address - The account whose authority is being acted on.
+     */
+    function _msgSender() internal view virtual returns (address sender) {
+        if (msg.sender == address(this)) {
+            bytes memory array = msg.data;
+            uint256 index = msg.data.length;
+            assembly {
+                sender := and(
+                    mload(add(array, index)),
+                    0xffffffffffffffffffffffffffffffffffffffff
+                )
+            }
+        } else {
+            sender = msg.sender;
+        }
+        return sender;
     }
 }

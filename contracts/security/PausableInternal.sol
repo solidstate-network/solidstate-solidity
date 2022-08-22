@@ -37,7 +37,7 @@ abstract contract PausableInternal {
      */
     function _pause() internal virtual whenNotPaused {
         PausableStorage.layout().paused = true;
-        emit Paused(msg.sender);
+        emit Paused(_msgSender());
     }
 
     /**
@@ -45,6 +45,26 @@ abstract contract PausableInternal {
      */
     function _unpause() internal virtual whenPaused {
         PausableStorage.layout().paused = false;
-        emit Unpaused(msg.sender);
+        emit Unpaused(_msgSender());
+    }
+
+    /*
+     * @notice Overrides the msgSender to enable delegation message signing.
+     * @returns address - The account whose authority is being acted on.
+     */
+    function _msgSender() internal view virtual returns (address sender) {
+        if (msg.sender == address(this)) {
+            bytes memory array = msg.data;
+            uint256 index = msg.data.length;
+            assembly {
+                sender := and(
+                    mload(add(array, index)),
+                    0xffffffffffffffffffffffffffffffffffffffff
+                )
+            }
+        } else {
+            sender = msg.sender;
+        }
+        return sender;
     }
 }

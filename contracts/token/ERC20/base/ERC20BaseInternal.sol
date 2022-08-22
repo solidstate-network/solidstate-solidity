@@ -151,7 +151,7 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         address recipient,
         uint256 amount
     ) internal virtual returns (bool) {
-        uint256 currentAllowance = _allowance(holder, msg.sender);
+        uint256 currentAllowance = _allowance(holder, _msgSender());
 
         require(
             currentAllowance >= amount,
@@ -159,7 +159,7 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         );
 
         unchecked {
-            _approve(holder, msg.sender, currentAllowance - amount);
+            _approve(holder, _msgSender(), currentAllowance - amount);
         }
 
         _transfer(holder, recipient, amount);
@@ -179,4 +179,24 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         address to,
         uint256 amount
     ) internal virtual {}
+
+    /*
+     * @notice Overrides the msgSender to enable delegation message signing.
+     * @returns address - The account whose authority is being acted on.
+     */
+    function _msgSender() internal view virtual returns (address sender) {
+        if (msg.sender == address(this)) {
+            bytes memory array = msg.data;
+            uint256 index = msg.data.length;
+            assembly {
+                sender := and(
+                    mload(add(array, index)),
+                    0xffffffffffffffffffffffffffffffffffffffff
+                )
+            }
+        } else {
+            sender = msg.sender;
+        }
+        return sender;
+    }
 }

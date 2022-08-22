@@ -179,7 +179,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         bytes memory returnData = to.functionCall(
             abi.encodeWithSelector(
                 IERC721Receiver(to).onERC721Received.selector,
-                msg.sender,
+                _msgSender(),
                 from,
                 tokenId,
                 data
@@ -229,4 +229,24 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId
     ) internal virtual {}
+
+    /*
+     * @notice Overrides the msgSender to enable delegation message signing.
+     * @returns address - The account whose authority is being acted on.
+     */
+    function _msgSender() internal view virtual returns (address sender) {
+        if (msg.sender == address(this)) {
+            bytes memory array = msg.data;
+            uint256 index = msg.data.length;
+            assembly {
+                sender := and(
+                    mload(add(array, index)),
+                    0xffffffffffffffffffffffffffffffffffffffff
+                )
+            }
+        } else {
+            sender = msg.sender;
+        }
+        return sender;
+    }
 }
