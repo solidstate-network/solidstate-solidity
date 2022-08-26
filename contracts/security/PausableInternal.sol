@@ -3,11 +3,12 @@
 pragma solidity ^0.8.8;
 
 import { PausableStorage } from './PausableStorage.sol';
+import { MsgSenderTrick } from '../utils/MsgSenderTrick.sol';
 
 /**
  * @title Internal functions for Pausable security control module.
  */
-abstract contract PausableInternal {
+abstract contract PausableInternal is MsgSenderTrick {
     using PausableStorage for PausableStorage.Layout;
 
     event Paused(address account);
@@ -46,25 +47,5 @@ abstract contract PausableInternal {
     function _unpause() internal virtual whenPaused {
         PausableStorage.layout().paused = false;
         emit Unpaused(_msgSender());
-    }
-
-    /*
-     * @notice Overrides the msgSender to enable delegation message signing.
-     * @returns address - The account whose authority is being acted on.
-     */
-    function _msgSender() internal view virtual returns (address sender) {
-        if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-            assembly {
-                sender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
-        } else {
-            sender = msg.sender;
-        }
-        return sender;
     }
 }

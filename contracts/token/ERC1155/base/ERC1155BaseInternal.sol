@@ -6,12 +6,13 @@ import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { IERC1155Internal } from '../IERC1155Internal.sol';
 import { IERC1155Receiver } from '../IERC1155Receiver.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
+import { MsgSenderTrick } from '../../../utils/MsgSenderTrick.sol';
 
 /**
  * @title Base ERC1155 internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract ERC1155BaseInternal is IERC1155Internal {
+abstract contract ERC1155BaseInternal is IERC1155Internal, MsgSenderTrick {
     using AddressUtils for address;
 
     /**
@@ -511,24 +512,4 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {}
-
-    /*
-     * @notice Overrides the msgSender to enable delegation message signing.
-     * @returns address - The account whose authority is being acted on.
-     */
-    function _msgSender() internal view virtual returns (address sender) {
-        if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-            assembly {
-                sender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
-        } else {
-            sender = msg.sender;
-        }
-        return sender;
-    }
 }

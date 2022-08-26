@@ -6,8 +6,9 @@ import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { IERC173 } from '../IERC173.sol';
 import { IOwnableInternal } from './IOwnableInternal.sol';
 import { OwnableStorage } from './OwnableStorage.sol';
+import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
 
-abstract contract OwnableInternal is IOwnableInternal {
+abstract contract OwnableInternal is IOwnableInternal, MsgSenderTrick {
     using AddressUtils for address;
     using OwnableStorage for OwnableStorage.Layout;
 
@@ -45,25 +46,5 @@ abstract contract OwnableInternal is IOwnableInternal {
     function _transferOwnership(address account) internal virtual {
         OwnableStorage.layout().setOwner(account);
         emit OwnershipTransferred(_msgSender(), account);
-    }
-
-    /*
-     * @notice Overrides the msgSender to enable delegation message signing.
-     * @returns address - The account whose authority is being acted on.
-     */
-    function _msgSender() internal view virtual returns (address sender) {
-        if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-            assembly {
-                sender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
-        } else {
-            sender = msg.sender;
-        }
-        return sender;
     }
 }

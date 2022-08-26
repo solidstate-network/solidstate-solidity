@@ -4,11 +4,12 @@ pragma solidity ^0.8.8;
 
 import { IERC20BaseInternal } from './IERC20BaseInternal.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
+import { MsgSenderTrick } from '../../../utils/MsgSenderTrick.sol';
 
 /**
  * @title Base ERC20 internal functions, excluding optional extensions
  */
-abstract contract ERC20BaseInternal is IERC20BaseInternal {
+abstract contract ERC20BaseInternal is IERC20BaseInternal, MsgSenderTrick {
     /**
      * @notice query the total minted token supply
      * @return token supply
@@ -179,24 +180,4 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         address to,
         uint256 amount
     ) internal virtual {}
-
-    /*
-     * @notice Overrides the msgSender to enable delegation message signing.
-     * @returns address - The account whose authority is being acted on.
-     */
-    function _msgSender() internal view virtual returns (address sender) {
-        if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-            assembly {
-                sender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
-        } else {
-            sender = msg.sender;
-        }
-        return sender;
-    }
 }

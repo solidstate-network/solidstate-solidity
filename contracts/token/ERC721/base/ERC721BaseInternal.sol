@@ -8,11 +8,12 @@ import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
 import { IERC721Internal } from '../IERC721Internal.sol';
 import { IERC721Receiver } from '../IERC721Receiver.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
+import { MsgSenderTrick } from '../../../utils/MsgSenderTrick.sol';
 
 /**
  * @title Base ERC721 internal functions
  */
-abstract contract ERC721BaseInternal is IERC721Internal {
+abstract contract ERC721BaseInternal is IERC721Internal, MsgSenderTrick {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
@@ -229,24 +230,4 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId
     ) internal virtual {}
-
-    /*
-     * @notice Overrides the msgSender to enable delegation message signing.
-     * @returns address - The account whose authority is being acted on.
-     */
-    function _msgSender() internal view virtual returns (address sender) {
-        if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-            assembly {
-                sender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
-        } else {
-            sender = msg.sender;
-        }
-        return sender;
-    }
 }
