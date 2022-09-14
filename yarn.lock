@@ -1943,7 +1943,7 @@
   dependencies:
     axios "^0.24.0"
 
-"@solidstate/library@^0.0.37":
+"@solidstate/library@^0.0.40":
   version "0.0.0"
   uid ""
 
