@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC1155Internal } from '../IERC1155Internal.sol';
+import { IERC1155Internal } from '../../../interfaces/IERC1155Internal.sol';
 
 /**
  * @title ERC1155 enumerable and aggregate function interface
