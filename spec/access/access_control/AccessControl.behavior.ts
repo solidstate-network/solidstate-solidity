@@ -32,24 +32,31 @@ export function describeBehaviorOfAccessControl(
     });
 
     describe('#hasRole(bytes32, address)', function () {
-      it('deployer has default admin role', async function () {
+      it('returns whether given account has given role', async function () {
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
             DEFAULT_ADMIN_ROLE,
             admin.address,
           ),
         ).to.equal(true);
+
+        expect(
+          await instance.callStatic['hasRole(bytes32,address)'](
+            DEFAULT_ADMIN_ROLE,
+            ethers.constants.AddressZero,
+          ),
+        ).to.equal(false);
       });
     });
 
     describe('#getRoleAdmin(bytes32)', function () {
-      it("other roles's admin is the default admin role", async function () {
+      it('returns default admin role', async function () {
         expect(
-          await instance.callStatic['getRoleAdmin(bytes32)'](`${ROLE}`),
+          await instance.callStatic['getRoleAdmin(bytes32)'](ROLE),
         ).to.equal(DEFAULT_ADMIN_ROLE);
       });
 
-      it("default admin role's admin is itself", async function () {
+      it('returns default admin role as admin of itself', async function () {
         expect(
           await instance.callStatic['getRoleAdmin(bytes32)'](
             DEFAULT_ADMIN_ROLE,
@@ -58,37 +65,34 @@ export function describeBehaviorOfAccessControl(
       });
     });
 
-    describe('#grantRole(bytes32, address)', function () {
-      it('accounts can be granted a role multiple times', async function () {
-        await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
+    describe('#grantRole(bytes32,address)', function () {
+      it('adds role to account', async function () {
+        await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
+
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
-            `${ROLE}`,
+            ROLE,
             nonAdmin.address,
           ),
         ).to.equal(true);
       });
 
-      it('emits RoleGranted event', async function () {
-        await expect(
-          instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address),
-        ).to.emit(instance, 'RoleGranted');
-      });
+      it('emits RoleGranted event if account does not already have role', async function () {
+        await expect(instance.connect(admin).grantRole(ROLE, nonAdmin.address))
+          .to.emit(instance, 'RoleGranted')
+          .withArgs(ROLE, nonAdmin.address, admin.address);
 
-      it('accounts can be granted a role multiple times', async function () {
-        await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
-        const trx = await instance
-          .connect(admin)
-          .grantRole(`${ROLE}`, nonAdmin.address);
-        const receipt = await trx.wait();
-        expect(receipt.events?.length).to.equal(0);
+        await expect(
+          instance.connect(admin).grantRole(ROLE, nonAdmin.address),
+        ).not.to.emit(instance, 'RoleGranted');
       });
 
       describe('reverts if', function () {
-        it('non-admin cannot grant role to other accounts', async function () {
-          await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
+        it('sender is not admin', async function () {
+          await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
+
           await expect(
-            instance.connect(nonAdmin).grantRole(`${ROLE}`, nonAdmin.address),
+            instance.connect(nonAdmin).grantRole(ROLE, nonAdmin.address),
           ).to.be.revertedWith(
             `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
           );
@@ -96,69 +100,70 @@ export function describeBehaviorOfAccessControl(
       });
     });
 
-    describe('#revokeRole(bytes32, address)', function () {
-      beforeEach(async function () {
-        this.receipt = await instance
-          .connect(admin)
-          .grantRole(`${ROLE}`, nonAdmin.address);
-      });
+    describe('#revokeRole(bytes32,address)', function () {
+      it('removes role from account', async function () {
+        await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-      it('admin can revoke role', async function () {
-        await instance.connect(admin).revokeRole(`${ROLE}`, nonAdmin.address);
+        await instance.connect(admin).revokeRole(ROLE, nonAdmin.address);
+
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
-            `${ROLE}`,
+            ROLE,
             nonAdmin.address,
           ),
         ).to.equal(false);
       });
 
+      it('emits RoleRevoked event if given account has given role', async function () {
+        await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
+
+        await expect(instance.connect(admin).revokeRole(ROLE, nonAdmin.address))
+          .to.emit(instance, 'RoleRevoked')
+          .withArgs(ROLE, nonAdmin.address, admin.address);
+
+        await expect(
+          instance.connect(admin).revokeRole(ROLE, nonAdmin.address),
+        ).not.to.emit(instance, 'RoleRevoked');
+      });
+
       describe('reverts if', function () {
-        it('non-admin cannot revoke role', async function () {
-          await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
+        it('sender is not admin', async function () {
+          await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
+
           await expect(
-            instance.connect(nonAdmin).revokeRole(`${ROLE}`, nonAdmin.address),
+            instance.connect(nonAdmin).revokeRole(ROLE, nonAdmin.address),
           ).to.be.revertedWith(
             `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
           );
         });
       });
+    });
 
-      describe('#renounceRole(bytes32, address)', function () {
-        beforeEach(async function () {
-          this.receipt = await instance
-            .connect(admin)
-            .grantRole(`${ROLE}`, nonAdmin.address);
-        });
+    describe('#renounceRole(bytes32,address)', function () {
+      it('removes role from sender', async function () {
+        await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        it('bearer can renounce role', async function () {
-          await expect(
-            instance
-              .connect(nonAdmin)
-              .renounceRole(`${ROLE}`, nonAdmin.address),
-          )
-            .to.emit(instance, 'RoleRevoked')
-            .withArgs(`${ROLE}`, nonAdmin.address, nonAdmin.address);
-
+        await instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
           expect(
             await instance.callStatic['hasRole(bytes32,address)'](
-              `${ROLE}`,
+              ROLE,
               nonAdmin.address,
             ),
           ).to.equal(false);
-        });
+      });
 
-        it('a role can be renounced multiple times', async function () {
-          await instance
-            .connect(nonAdmin)
-            .renounceRole(`${ROLE}`, nonAdmin.address);
+      it('emits RoleRevoked event if sender has given role', async function () {
+        await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-          const trx = await instance
-            .connect(nonAdmin)
-            .renounceRole(`${ROLE}`, nonAdmin.address);
-          const receipt = await trx.wait();
-          expect(receipt.events?.length).to.equal(0);
-        });
+        await expect(
+          instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
+        )
+          .to.emit(instance, 'RoleRevoked')
+          .withArgs(ROLE, nonAdmin.address, nonAdmin.address);
+
+        await expect(
+          instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
+        ).not.to.emit(instance, 'RoleRevoked');
       });
     });
   });
