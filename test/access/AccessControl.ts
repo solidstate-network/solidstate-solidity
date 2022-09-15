@@ -11,15 +11,11 @@ const OTHER_ROLE = ethers.utils.solidityKeccak256(['string'], ['OTHER_ROLE']);
 
 describe('AccessControl', function () {
   let admin: SignerWithAddress;
-  let authorized: SignerWithAddress;
-  let other: SignerWithAddress;
-  let otherAdmin: SignerWithAddress;
-  let otherAuthorized: SignerWithAddress;
+  let nonAdmin: SignerWithAddress;
   let instance: AccessControlMock;
 
   before(async function () {
-    [admin, authorized, other, otherAdmin, otherAuthorized] =
-      await ethers.getSigners();
+    [admin, nonAdmin] = await ethers.getSigners();
   });
 
   beforeEach(async function () {
@@ -31,31 +27,28 @@ describe('AccessControl', function () {
   describeBehaviorOfAccessControl({
     deploy: async () => instance as any,
     getAdmin: async () => admin,
-    getAuthorized: async () => authorized,
-    getOther: async () => other,
-    getOtherAdmin: async () => otherAdmin,
-    getOtherAuthorized: async () => otherAuthorized,
+    getNonAdmin: async () => nonAdmin,
   });
 
   describe('#checkRole(bytes32)', function () {
-    beforeEach(async function () {
-      this.receipt = await instance
-        .connect(admin)
-        .grantRole(`${OTHER_ROLE}`, authorized.address);
-    });
-
     it('should able to call checkRole', async function () {
-      expect(await instance.connect(authorized).checkRole(OTHER_ROLE)).to.equal(
+      await instance
+        .connect(admin)
+        .grantRole(`${OTHER_ROLE}`, nonAdmin.address);
+
+      expect(await instance.connect(nonAdmin).checkRole(OTHER_ROLE)).to.equal(
         true,
       );
     });
 
-    it('revert when no access', async function () {
-      await expect(
-        instance.connect(other).checkRole(OTHER_ROLE),
-      ).to.revertedWith(
-        `AccessControl: account ${other.address.toLowerCase()} is missing role ${OTHER_ROLE}`,
-      );
+    describe('reverts if', function () {
+      it('sender does not have role', async function () {
+        await expect(
+          instance.connect(nonAdmin).checkRole(OTHER_ROLE),
+        ).to.revertedWith(
+          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${OTHER_ROLE}`,
+        );
+      });
     });
   });
 });

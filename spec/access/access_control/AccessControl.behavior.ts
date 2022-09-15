@@ -11,21 +11,11 @@ const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
 interface AccessControlBehaviorArgs {
   deploy: () => Promise<AccessControl>;
   getAdmin: () => Promise<SignerWithAddress>;
-  getAuthorized: () => Promise<SignerWithAddress>;
-  getOther: () => Promise<SignerWithAddress>;
-  getOtherAdmin(): Promise<SignerWithAddress>;
-  getOtherAuthorized(): Promise<SignerWithAddress>;
+  getNonAdmin: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfAccessControl(
-  {
-    deploy,
-    getAdmin,
-    getAuthorized,
-    getOther,
-    getOtherAdmin,
-    getOtherAuthorized,
-  }: AccessControlBehaviorArgs,
+  { deploy, getAdmin, getNonAdmin }: AccessControlBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -33,18 +23,12 @@ export function describeBehaviorOfAccessControl(
   describe('::AccessControl', function () {
     let instance: AccessControl;
     let admin: SignerWithAddress;
-    let authorized: SignerWithAddress;
-    let other: SignerWithAddress;
-    let otherAdmin: SignerWithAddress;
-    let otherAuthorized: SignerWithAddress;
+    let nonAdmin: SignerWithAddress;
 
     beforeEach(async function () {
       instance = await deploy();
       admin = await getAdmin();
-      authorized = await getAuthorized();
-      other = await getOther();
-      otherAdmin = await getOtherAdmin();
-      otherAuthorized = await getOtherAuthorized();
+      nonAdmin = await getNonAdmin();
     });
 
     describe('#hasRole(bytes32, address)', function () {
@@ -76,41 +60,37 @@ export function describeBehaviorOfAccessControl(
 
     describe('#grantRole(bytes32, address)', function () {
       it('accounts can be granted a role multiple times', async function () {
-        await instance.connect(admin).grantRole(`${ROLE}`, authorized.address);
+        await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
             `${ROLE}`,
-            authorized.address,
+            nonAdmin.address,
           ),
         ).to.equal(true);
       });
 
       it('emits RoleGranted event', async function () {
         await expect(
-          instance.connect(admin).grantRole(`${ROLE}`, authorized.address),
+          instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address),
         ).to.emit(instance, 'RoleGranted');
       });
 
       it('accounts can be granted a role multiple times', async function () {
-        await instance.connect(admin).grantRole(`${ROLE}`, authorized.address);
+        await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
         const trx = await instance
           .connect(admin)
-          .grantRole(`${ROLE}`, authorized.address);
+          .grantRole(`${ROLE}`, nonAdmin.address);
         const receipt = await trx.wait();
         expect(receipt.events?.length).to.equal(0);
       });
 
       describe('reverts if', function () {
         it('non-admin cannot grant role to other accounts', async function () {
-          await instance
-            .connect(admin)
-            .grantRole(`${ROLE}`, authorized.address);
+          await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
           await expect(
-            instance
-              .connect(authorized)
-              .grantRole(`${ROLE}`, authorized.address),
+            instance.connect(nonAdmin).grantRole(`${ROLE}`, nonAdmin.address),
           ).to.be.revertedWith(
-            `AccessControl: account ${authorized.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
           );
         });
       });
@@ -120,30 +100,26 @@ export function describeBehaviorOfAccessControl(
       beforeEach(async function () {
         this.receipt = await instance
           .connect(admin)
-          .grantRole(`${ROLE}`, authorized.address);
+          .grantRole(`${ROLE}`, nonAdmin.address);
       });
 
       it('admin can revoke role', async function () {
-        await instance.connect(admin).revokeRole(`${ROLE}`, authorized.address);
+        await instance.connect(admin).revokeRole(`${ROLE}`, nonAdmin.address);
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
             `${ROLE}`,
-            authorized.address,
+            nonAdmin.address,
           ),
         ).to.equal(false);
       });
 
       describe('reverts if', function () {
         it('non-admin cannot revoke role', async function () {
-          await instance
-            .connect(admin)
-            .grantRole(`${ROLE}`, authorized.address);
+          await instance.connect(admin).grantRole(`${ROLE}`, nonAdmin.address);
           await expect(
-            instance
-              .connect(authorized)
-              .revokeRole(`${ROLE}`, authorized.address),
+            instance.connect(nonAdmin).revokeRole(`${ROLE}`, nonAdmin.address),
           ).to.be.revertedWith(
-            `AccessControl: account ${authorized.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
           );
         });
       });
@@ -152,34 +128,34 @@ export function describeBehaviorOfAccessControl(
         beforeEach(async function () {
           this.receipt = await instance
             .connect(admin)
-            .grantRole(`${ROLE}`, authorized.address);
+            .grantRole(`${ROLE}`, nonAdmin.address);
         });
 
         it('bearer can renounce role', async function () {
           await expect(
             instance
-              .connect(authorized)
-              .renounceRole(`${ROLE}`, authorized.address),
+              .connect(nonAdmin)
+              .renounceRole(`${ROLE}`, nonAdmin.address),
           )
             .to.emit(instance, 'RoleRevoked')
-            .withArgs(`${ROLE}`, authorized.address, authorized.address);
+            .withArgs(`${ROLE}`, nonAdmin.address, nonAdmin.address);
 
           expect(
             await instance.callStatic['hasRole(bytes32,address)'](
               `${ROLE}`,
-              authorized.address,
+              nonAdmin.address,
             ),
           ).to.equal(false);
         });
 
         it('a role can be renounced multiple times', async function () {
           await instance
-            .connect(authorized)
-            .renounceRole(`${ROLE}`, authorized.address);
+            .connect(nonAdmin)
+            .renounceRole(`${ROLE}`, nonAdmin.address);
 
           const trx = await instance
-            .connect(authorized)
-            .renounceRole(`${ROLE}`, authorized.address);
+            .connect(nonAdmin)
+            .renounceRole(`${ROLE}`, nonAdmin.address);
           const receipt = await trx.wait();
           expect(receipt.events?.length).to.equal(0);
         });
