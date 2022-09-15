@@ -2,9 +2,11 @@
 
 pragma solidity ^0.8.0;
 
+import { EnumerableSet } from '../../utils/EnumerableSet.sol';
+
 library AccessControlStorage {
     struct RoleData {
-        mapping(address => bool) members;
+        EnumerableSet.AddressSet members;
         bytes32 adminRole;
     }
 

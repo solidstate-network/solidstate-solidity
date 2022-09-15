@@ -3,6 +3,7 @@
 pragma solidity ^0.8.0;
 
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { EnumerableSet } from '../../utils/EnumerableSet.sol';
 import { UintUtils } from '../../utils/UintUtils.sol';
 import { IAccessControlInternal } from './IAccessControlInternal.sol';
 import { AccessControlStorage } from './AccessControlStorage.sol';
@@ -12,8 +13,8 @@ import { AccessControlStorage } from './AccessControlStorage.sol';
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 abstract contract AccessControlInternal is IAccessControlInternal {
-    using AccessControlStorage for AccessControlStorage.Layout;
     using AddressUtils for address;
+    using EnumerableSet for EnumerableSet.AddressSet;
     using UintUtils for uint256;
 
     modifier onlyRole(bytes32 role) {
@@ -33,7 +34,8 @@ abstract contract AccessControlInternal is IAccessControlInternal {
         virtual
         returns (bool)
     {
-        return AccessControlStorage.layout().roles[role].members[account];
+        return
+            AccessControlStorage.layout().roles[role].members.contains(account);
     }
 
     /**
@@ -95,8 +97,7 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @param account recipient of role assignment
      */
     function _grantRole(bytes32 role, address account) internal virtual {
-        if (!_hasRole(role, account)) {
-            AccessControlStorage.layout().roles[role].members[account] = true;
+        if (AccessControlStorage.layout().roles[role].members.add(account)) {
             emit RoleGranted(role, account, msg.sender);
         }
     }
@@ -107,8 +108,7 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @parm account
      */
     function _revokeRole(bytes32 role, address account) internal virtual {
-        if (_hasRole(role, account)) {
-            AccessControlStorage.layout().roles[role].members[account] = false;
+        if (AccessControlStorage.layout().roles[role].members.remove(account)) {
             emit RoleRevoked(role, account, msg.sender);
         }
     }
