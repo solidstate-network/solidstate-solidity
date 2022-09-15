@@ -1,2 +1,2 @@
 export * from './ownable';
-export * from './accessControl';
+export * from './access_control';
