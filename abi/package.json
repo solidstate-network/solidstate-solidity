@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/abi",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "ABIs for SolidState contracts",
