@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import { AccessControlStorage } from './AccessControlStorage.sol';
-import { IAccessControlInternal } from './IAccessControlInternal.sol';
-import { UintUtils } from '../../utils/UintUtils.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { UintUtils } from '../../utils/UintUtils.sol';
+import { IAccessControlInternal } from './IAccessControlInternal.sol';
+import { AccessControlStorage } from './AccessControlStorage.sol';
 
 abstract contract AccessControlInternal is IAccessControlInternal {
     using AccessControlStorage for AccessControlStorage.Layout;
