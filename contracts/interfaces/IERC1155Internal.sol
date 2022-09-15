@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
-
-import { IERC165 } from '../../introspection/IERC165.sol';
+pragma solidity ^0.8.8;
 
 /**
  * @title Partial ERC1155 interface needed by internal functions

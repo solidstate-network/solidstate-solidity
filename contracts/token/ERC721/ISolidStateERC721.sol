@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { IERC721Base } from './base/IERC721Base.sol';
 import { IERC721Enumerable } from './enumerable/IERC721Enumerable.sol';

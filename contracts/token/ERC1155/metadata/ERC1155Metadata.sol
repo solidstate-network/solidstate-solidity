@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { IERC1155Metadata } from './IERC1155Metadata.sol';

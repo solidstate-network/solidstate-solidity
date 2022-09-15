@@ -141,7 +141,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
         // call reverts, but with mock-specific message
         await expect(
-          owner.call({
+          owner.sendTransaction({
             to: instance.address,
             data: ethers.utils.randomBytes(4),
           }),
@@ -196,7 +196,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
           // call reverts, but with mock-specific message
           await expect(
-            owner.call({ to: instance.address, data: selector }),
+            owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members([
@@ -251,12 +251,12 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({ to: instance.address, data: last }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
+            owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWith(
             'DiamondBase: no facet found for function signature',
           );
@@ -315,12 +315,12 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({ to: instance.address, data: last }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
+            owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWith(
             'DiamondBase: no facet found for function signature',
           );
@@ -379,12 +379,12 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({ to: instance.address, data: last }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
+            owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWith(
             'DiamondBase: no facet found for function signature',
           );

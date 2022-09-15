@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { ERC165, IERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from '../base/DiamondBase.sol';

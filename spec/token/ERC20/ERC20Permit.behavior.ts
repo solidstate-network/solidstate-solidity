@@ -1,11 +1,3 @@
-import {
-  describeBehaviorOfERC20Base,
-  ERC20BaseBehaviorArgs,
-} from './ERC20Base.behavior';
-import {
-  describeBehaviorOfERC20Metadata,
-  ERC20MetadataBehaviorArgs,
-} from './ERC20Metadata.behavior';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { ERC20Permit } from '@solidstate/typechain-types';
@@ -13,13 +5,13 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
-interface ERC20PermitArgs
-  extends ERC20BaseBehaviorArgs,
-    ERC20MetadataBehaviorArgs {}
+export interface ERC20PermitBehaviorArgs {
+  allowance: (holder: string, spender: string) => Promise<BigNumber>;
+}
 
 export function describeBehaviorOfERC20Permit(
   deploy: () => Promise<ERC20Permit>,
-  { supply, burn, mint, name, symbol, decimals }: ERC20PermitArgs,
+  args: ERC20PermitBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -35,32 +27,20 @@ export function describeBehaviorOfERC20Permit(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(
-      deploy,
-      {
-        mint,
-        burn,
-        supply,
-      },
-      skips,
-    );
+    describe('#DOMAIN_SEPARATOR()', () => {
+      it('todo');
+    });
 
-    describeBehaviorOfERC20Metadata(
-      deploy,
-      {
-        name,
-        symbol,
-        decimals,
-      },
-      skips,
-    );
+    describe('#nonces(address)', () => {
+      it('todo');
+    });
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
         const { timestamp } = await ethers.provider.getBlock('latest');
 
         const amount = ethers.constants.Two;
-        const deadline = timestamp + 1;
+        const deadline = timestamp + 100;
 
         const permit = await signERC2612Permit(
           ethers.provider,
@@ -70,6 +50,8 @@ export function describeBehaviorOfERC20Permit(
           amount.toString(),
           deadline,
         );
+
+        await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
 
         await instance
           .connect(thirdParty)
@@ -83,7 +65,7 @@ export function describeBehaviorOfERC20Permit(
             permit.s,
           );
 
-        expect(await instance.allowance(holder.address, spender.address)).to.eq(
+        expect(await args.allowance(holder.address, spender.address)).to.eq(
           amount,
         );
       });
@@ -93,7 +75,7 @@ export function describeBehaviorOfERC20Permit(
           const { timestamp } = await ethers.provider.getBlock('latest');
 
           const amount = ethers.constants.Two;
-          const deadline = timestamp;
+          const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(
             ethers.provider,
@@ -103,6 +85,10 @@ export function describeBehaviorOfERC20Permit(
             amount.toString(),
             deadline,
           );
+
+          await ethers.provider.send('evm_setNextBlockTimestamp', [
+            deadline + 1,
+          ]);
 
           await expect(
             instance
@@ -123,7 +109,7 @@ export function describeBehaviorOfERC20Permit(
           const { timestamp } = await ethers.provider.getBlock('latest');
 
           const amount = ethers.constants.Two;
-          const deadline = timestamp + 1;
+          const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(
             ethers.provider,
@@ -133,6 +119,8 @@ export function describeBehaviorOfERC20Permit(
             amount.toString(),
             deadline,
           );
+
+          await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
 
           await expect(
             instance
@@ -153,7 +141,7 @@ export function describeBehaviorOfERC20Permit(
           const { timestamp } = await ethers.provider.getBlock('latest');
 
           const amount = ethers.constants.Two;
-          const deadline = timestamp + 2;
+          const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(
             ethers.provider,
@@ -163,6 +151,10 @@ export function describeBehaviorOfERC20Permit(
             amount.toString(),
             deadline,
           );
+
+          await ethers.provider.send('evm_setNextBlockTimestamp', [
+            deadline - 1,
+          ]);
 
           await instance
             .connect(thirdParty)
@@ -175,6 +167,8 @@ export function describeBehaviorOfERC20Permit(
               permit.r,
               permit.s,
             );
+
+          await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
 
           await expect(
             instance

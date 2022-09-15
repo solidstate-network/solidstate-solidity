@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { IERC1271 } from '../IERC1271.sol';
+import { IERC1271 } from '../../interfaces/IERC1271.sol';
 
 /**
  * @title ERC1271Base internal functions

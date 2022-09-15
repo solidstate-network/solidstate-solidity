@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { Math } from '../../../utils/Math.sol';
 import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInternal.sol';

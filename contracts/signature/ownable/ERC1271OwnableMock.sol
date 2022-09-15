@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { ERC1271Ownable } from './ERC1271Ownable.sol';

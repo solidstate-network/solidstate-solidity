@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { IERC4626 } from '../IERC4626.sol';
+import { IERC4626 } from '../../../interfaces/IERC4626.sol';
 
 /**
  * @title ERC4626 base interface

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { IERC1404 } from '../IERC1404.sol';
+import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 
 /**
  * @title ERC1404 base interface

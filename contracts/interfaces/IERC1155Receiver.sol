@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
-import { IERC165 } from '../../introspection/IERC165.sol';
+import { IERC165 } from './IERC165.sol';
 
 /**
  * @title ERC1155 transfer receiver interface

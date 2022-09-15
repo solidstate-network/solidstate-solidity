@@ -19,14 +19,11 @@ export function describeBehaviorOfProxy(
     let instance: IProxy;
 
     beforeEach(async function () {
-      const [deployer] = await ethers.getSigners();
       instance = await deploy();
     });
 
     describe('fallback', function () {
-      it('forwards data to implementation', async function () {
-        expect((instance as any)[implementationFunction]).to.be.undefined;
-
+      it('forwards data to implementation', async () => {
         let contract = new ethers.Contract(
           instance.address,
           [`function ${implementationFunction}`],

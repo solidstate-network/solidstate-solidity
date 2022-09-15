@@ -8,8 +8,6 @@ import { ethers } from 'hardhat';
 
 describe('ERC20Permit', function () {
   const name = 'ERC20Metadata.name';
-  const symbol = 'ERC20Metadata.symbol';
-  const decimals = 18;
 
   let deployer: SignerWithAddress;
   let instance: ERC20PermitMock;
@@ -19,19 +17,11 @@ describe('ERC20Permit', function () {
   });
 
   beforeEach(async function () {
-    instance = await new ERC20PermitMock__factory(deployer).deploy(
-      name,
-      symbol,
-      decimals,
-    );
+    instance = await new ERC20PermitMock__factory(deployer).deploy(name);
   });
 
   describeBehaviorOfERC20Permit(async () => instance, {
-    supply: ethers.constants.Zero,
-    mint: (recipient, amount) => instance.__mint(recipient, amount),
-    burn: (recipient, amount) => instance.__burn(recipient, amount),
-    name,
-    symbol,
-    decimals,
+    allowance: (holder, spender) =>
+      instance.callStatic.allowance(holder, spender),
   });
 });
