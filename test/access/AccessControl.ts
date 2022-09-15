@@ -43,11 +43,13 @@ describe('AccessControl', function () {
         .connect(admin)
         .grantRole(`${OTHER_ROLE}`, authorized.address);
     });
+
     it('should able to call checkRole', async function () {
       expect(await instance.connect(authorized).checkRole(OTHER_ROLE)).to.equal(
         true,
       );
     });
+
     it('revert when no access', async function () {
       await expect(
         instance.connect(other).checkRole(OTHER_ROLE),
