@@ -16,8 +16,6 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     using AddressUtils for address;
     using UintUtils for uint256;
 
-    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
-
     modifier onlyRole(bytes32 role) {
         _checkRole(role);
         _;

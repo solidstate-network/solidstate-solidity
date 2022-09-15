@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.0;
 
-import './AccessControl.sol';
+import { AccessControl } from './AccessControl.sol';
+import { AccessControlStorage } from './AccessControlStorage.sol';
 
 contract AccessControlMock is AccessControl {
     constructor(address admin) {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, admin);
     }
 
     function setRoleAdmin(bytes32 roleId, bytes32 adminRoleId) public {

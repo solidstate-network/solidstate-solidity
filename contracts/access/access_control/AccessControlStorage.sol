@@ -12,6 +12,8 @@ library AccessControlStorage {
         mapping(bytes32 => RoleData) roles;
     }
 
+    bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
+
     bytes32 internal constant STORAGE_SLOT =
         keccak256('solidstate.contracts.storage.AccessControl');
 
