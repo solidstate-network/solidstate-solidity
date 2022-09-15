@@ -10,8 +10,8 @@ contract AccessControlMock is AccessControl {
         _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, admin);
     }
 
-    function setRoleAdmin(bytes32 roleId, bytes32 adminRoleId) public {
-        _setRoleAdmin(roleId, adminRoleId);
+    function setRoleAdmin(bytes32 role, bytes32 adminRole) public {
+        _setRoleAdmin(role, adminRole);
     }
 
     function checkRole(bytes32 role) public view {

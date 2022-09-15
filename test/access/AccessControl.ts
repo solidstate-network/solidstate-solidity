@@ -7,6 +7,8 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const DEFAULT_ADMIN_ROLE =
+  '0x0000000000000000000000000000000000000000000000000000000000000000';
 const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
 
 describe('AccessControl', function () {
@@ -73,6 +75,37 @@ describe('AccessControl', function () {
           `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
         );
       });
+    });
+  });
+
+  describe('#_setRoleAdmin(bytes32,bytes32)', function () {
+    it('updates role admin', async function () {
+      const newAdminRole = ethers.utils.solidityKeccak256(
+        ['string'],
+        ['NEW_ADMIN_ROLE'],
+      );
+
+      await instance.setRoleAdmin(ROLE, newAdminRole);
+
+      expect(await instance.callStatic.getRoleAdmin(ROLE)).to.equal(
+        newAdminRole,
+      );
+    });
+
+    it('emits RoleAdminChanged event if new role admin is different from old role admin', async function () {
+      const newAdminRole = ethers.utils.solidityKeccak256(
+        ['string'],
+        ['NEW_ADMIN_ROLE'],
+      );
+
+      await expect(instance.setRoleAdmin(ROLE, newAdminRole))
+        .to.emit(instance, 'RoleAdminChanged')
+        .withArgs(ROLE, DEFAULT_ADMIN_ROLE, newAdminRole);
+
+      await expect(instance.setRoleAdmin(ROLE, newAdminRole)).not.to.emit(
+        instance,
+        'RoleAdminChanged',
+      );
     });
   });
 });

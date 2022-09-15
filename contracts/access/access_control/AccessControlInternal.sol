@@ -87,8 +87,11 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      */
     function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal virtual {
         bytes32 previousAdminRole = _getRoleAdmin(role);
-        AccessControlStorage.layout().roles[role].adminRole = adminRole;
-        emit RoleAdminChanged(role, previousAdminRole, adminRole);
+
+        if (adminRole != previousAdminRole) {
+            AccessControlStorage.layout().roles[role].adminRole = adminRole;
+            emit RoleAdminChanged(role, previousAdminRole, adminRole);
+        }
     }
 
     /*
