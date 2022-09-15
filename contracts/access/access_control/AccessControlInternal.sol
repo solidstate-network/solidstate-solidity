@@ -7,6 +7,10 @@ import { UintUtils } from '../../utils/UintUtils.sol';
 import { IAccessControlInternal } from './IAccessControlInternal.sol';
 import { AccessControlStorage } from './AccessControlStorage.sol';
 
+/**
+ * @title Role-based access control system
+ * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
+ */
 abstract contract AccessControlInternal is IAccessControlInternal {
     using AccessControlStorage for AccessControlStorage.Layout;
     using AddressUtils for address;
@@ -14,25 +18,16 @@ abstract contract AccessControlInternal is IAccessControlInternal {
 
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
-    /**
-     * @notice Modifier that checks that an account has a specific role. Reverts
-     * with a standardized message including the required role.
-     *
-     * The format of the revert reason is given by the following regular expression:
-     *
-     *  /^AccessControl: account (0x[0-9a-f]{40}) is missing role (0x[0-9a-f]{64})$/
-     *
-     */
     modifier onlyRole(bytes32 role) {
         _checkRole(role);
         _;
     }
 
-    /**
-     * @notice query if account's has role
+    /*
+     * @notice query whether role is assigned to account
      * @param role role to query
      * @param account account to query
-     * @dev Returns `true` if `account` has been granted `role`.
+     * @return whether role is assigned to account
      */
     function _hasRole(bytes32 role, address account)
         internal
@@ -44,27 +39,17 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     }
 
     /**
-     * @notice query role by msg.sender
+     * @notice revert if sender does not have given role
      * @param role role to query
-     * @dev Revert with a standard message if `msg.sender` is missing `role`.
-     * Overriding this function changes the behavior of the {onlyRole} modifier.
-     *
-     * Format of the revert message is described in {_checkRole}.
-     *
      */
     function _checkRole(bytes32 role) internal view virtual {
         _checkRole(role, msg.sender);
     }
 
     /**
-     * @notice query role by account
+     * @notice revert if given account does not have given role
      * @param role role to query
-     * @param account account to query
-     * @dev Revert with a standard message if `account` is missing `role`.
-     *
-     * The format of the revert reason is given by the following regular expression:
-     *
-     *  /^AccessControl: account (0x[0-9a-f]{40}) is missing role (0x[0-9a-f]{64})$/
+     * @param account to query
      */
     function _checkRole(bytes32 role, address account) internal view virtual {
         if (!_hasRole(role, account)) {

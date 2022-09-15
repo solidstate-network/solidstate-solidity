@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-// From OpenZeppelin Contracts (last updated v4.6.0) (access/AccessControl.sol)
 
 pragma solidity ^0.8.0;
 
@@ -7,18 +6,12 @@ import { IAccessControl } from './IAccessControl.sol';
 import { AccessControlInternal } from './AccessControlInternal.sol';
 
 /**
- * @title Role based access control based
+ * @title Role-based access control system
+ * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
-     * @notice Grants `role` to `account`.
-     *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
+     * @inheritdoc IAccessControl
      */
     function grantRole(bytes32 role, address account)
         external
@@ -48,13 +41,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     }
 
     /**
-     * @notice Revokes `role` from `account`.
-     *
-     * If `account` had been granted `role`, emits a {RoleRevoked} event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
+     * @inheritdoc IAccessControl
      */
     function revokeRole(bytes32 role, address account)
         public
@@ -65,18 +52,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     }
 
     /**
-     * @notice Revokes `role` from the calling account.
-     *
-     * Roles are often managed via {grantRole} and {revokeRole}: this function's
-     * purpose is to provide a mechanism for accounts to lose their privileges
-     * if they are compromised (such as when a trusted device is misplaced).
-     *
-     * If the calling account had been revoked `role`, emits a {RoleRevoked}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must be `account`.
+     * @inheritdoc IAccessControl
      */
     function renounceRole(bytes32 role, address account) public virtual {
         require(

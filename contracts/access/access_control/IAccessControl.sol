@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-// From OpenZeppelin Contracts v4.4.1 (access/IAccessControl.sol)
 
 pragma solidity ^0.8.0;
 
@@ -7,11 +6,13 @@ import { IAccessControlInternal } from './IAccessControlInternal.sol';
 
 /**
  * @title AccessControl interface
- * @notice External interface of AccessControl declared to support ERC165 detection.
  */
 interface IAccessControl is IAccessControlInternal {
     /*
-     * @inheritdoc IAccessControlInternal _hasRole
+     * @notice query whether role is assigned to account
+     * @param role role to query
+     * @param account account to query
+     * @return whether role is assigned to account
      */
     function hasRole(bytes32 role, address account)
         external
@@ -19,36 +20,30 @@ interface IAccessControl is IAccessControlInternal {
         returns (bool);
 
     /*
-     * @inheritdoc IAccessControlInternal _getRoleAdmin
+     * @notice query admin role for given role
+     * @param role role to query
+     * @return admin role
      */
     function getRoleAdmin(bytes32 role) external view returns (bytes32);
 
     /*
-     * @inheritdoc IAccessControlInternal _setRoleAdmin
+     * @notice assign role to given account
+     * @param role role to assign
+     * @param account recipient of role assignment
      */
     function grantRole(bytes32 role, address account) external;
 
     /*
-     * @inheritdoc IAccessControlInternal _revokeRole
+     * @notice unassign role from given account
+     * @param role role to unassign
+     * @parm account
      */
     function revokeRole(bytes32 role, address account) external;
 
     /**
-     * @notice remove role from account
-     * @param role role to remove
-     * @param account account to remove role from
-     * @dev Revokes `role` from the calling account.
-     *
-     * Roles are often managed via {grantRole} and {revokeRole}: this function's
-     * purpose is to provide a mechanism for accounts to lose their privileges
-     * if they are compromised (such as when a trusted device is misplaced).
-     *
-     * If the calling account had been granted `role`, emits a {RoleRevoked}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must be `account`.
+     * @notice relinquish role
+     * @param role role to relinquish
+     * @param account account to remove role from (must be same as sender)
      */
     function renounceRole(bytes32 role, address account) external;
 }
