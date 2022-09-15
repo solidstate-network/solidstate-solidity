@@ -15,7 +15,6 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
      */
     function grantRole(bytes32 role, address account)
         external
-        virtual
         onlyRole(_getRoleAdmin(role))
     {
         _grantRole(role, account);
@@ -25,9 +24,8 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
      * @inheritdoc IAccessControl
      */
     function hasRole(bytes32 role, address account)
-        public
+        external
         view
-        virtual
         returns (bool)
     {
         return _hasRole(role, account);
@@ -36,7 +34,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function getRoleAdmin(bytes32 role) public view virtual returns (bytes32) {
+    function getRoleAdmin(bytes32 role) external view returns (bytes32) {
         return _getRoleAdmin(role);
     }
 
@@ -44,9 +42,8 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
      * @inheritdoc IAccessControl
      */
     function revokeRole(bytes32 role, address account)
-        public
-        virtual
-        onlyRole(getRoleAdmin(role))
+        external
+        onlyRole(_getRoleAdmin(role))
     {
         _revokeRole(role, account);
     }
@@ -54,12 +51,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function renounceRole(bytes32 role, address account) public virtual {
-        require(
-            account == msg.sender,
-            'AccessControl: can only renounce roles for self'
-        );
-
-        _revokeRole(role, account);
+    function renounceRole(bytes32 role, address account) external {
+        _renounceRole(role, account);
     }
 }

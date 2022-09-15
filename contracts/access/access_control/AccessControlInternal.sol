@@ -64,13 +64,10 @@ abstract contract AccessControlInternal is IAccessControlInternal {
         }
     }
 
-    /**
-     * @notice query admin role
+    /*
+     * @notice query admin role for given role
      * @param role role to query
-     * @dev Returns the admin role that controls `role`. See {grantRole} and
-     * {revokeRole}.
-     *
-     * To change a role's admin, use {_setRoleAdmin}.
+     * @return admin role
      */
     function _getRoleAdmin(bytes32 role)
         internal
@@ -85,9 +82,6 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @notice set role as admin role
      * @param role role to set
      * @param adminRole admin role to set
-     * @dev Sets `adminRole` as ``role``'s admin role.
-     *
-     * Emits a {RoleAdminChanged} event.
      */
     function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal virtual {
         bytes32 previousAdminRole = _getRoleAdmin(role);
@@ -95,20 +89,10 @@ abstract contract AccessControlInternal is IAccessControlInternal {
         emit RoleAdminChanged(role, previousAdminRole, adminRole);
     }
 
-    /**
-     * @notice grant role to account
-     * @param role role to grant
-     * @param account account to grant the role
-     * @dev Grants `role` to `account`.
-     *
-     *  * If `account` had not been already granted `role`, emits a {RoleGranted}
-     * event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
-     *
-     * Internal function without access restriction.
+    /*
+     * @notice assign role to given account
+     * @param role role to assign
+     * @param account recipient of role assignment
      */
     function _grantRole(bytes32 role, address account) internal virtual {
         if (!_hasRole(role, account)) {
@@ -117,24 +101,29 @@ abstract contract AccessControlInternal is IAccessControlInternal {
         }
     }
 
-    /**
-     * @notice revoke role from account
-     * @param role role to revoke
-     * @param account account to revoke the role
-     * @dev Revokes `role` from `account`.
-     *
-     * If `account` had been granted `role`, emits a {RoleRevoked} event.
-     *
-     * Requirements:
-     *
-     * - the caller must have ``role``'s admin role.
-     *
-     * Internal function without access restriction.
+    /*
+     * @notice unassign role from given account
+     * @param role role to unassign
+     * @parm account
      */
     function _revokeRole(bytes32 role, address account) internal virtual {
         if (_hasRole(role, account)) {
             AccessControlStorage.layout().roles[role].members[account] = false;
             emit RoleRevoked(role, account, msg.sender);
         }
+    }
+
+    /**
+     * @notice relinquish role
+     * @param role role to relinquish
+     * @param account account to remove role from (must be same as sender)
+     */
+    function _renounceRole(bytes32 role, address account) internal virtual {
+        require(
+            account == msg.sender,
+            'AccessControl: can only renounce roles for self'
+        );
+
+        _revokeRole(role, account);
     }
 }
