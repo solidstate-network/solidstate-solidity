@@ -116,14 +116,8 @@ abstract contract AccessControlInternal is IAccessControlInternal {
     /**
      * @notice relinquish role
      * @param role role to relinquish
-     * @param account account to remove role from (must be same as sender)
      */
-    function _renounceRole(bytes32 role, address account) internal virtual {
-        require(
-            account == msg.sender,
-            'AccessControl: can only renounce roles for self'
-        );
-
-        _revokeRole(role, account);
+    function _renounceRole(bytes32 role) internal virtual {
+        _revokeRole(role, msg.sender);
     }
 }

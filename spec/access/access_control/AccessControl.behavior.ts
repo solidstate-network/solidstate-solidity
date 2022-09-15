@@ -143,7 +143,7 @@ export function describeBehaviorOfAccessControl(
       it('removes role from sender', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        await instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
+        await instance.connect(nonAdmin).renounceRole(ROLE),
           expect(
             await instance.callStatic['hasRole(bytes32,address)'](
               ROLE,
@@ -155,15 +155,14 @@ export function describeBehaviorOfAccessControl(
       it('emits RoleRevoked event if sender has given role', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        await expect(
-          instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
-        )
+        await expect(instance.connect(nonAdmin).renounceRole(ROLE))
           .to.emit(instance, 'RoleRevoked')
           .withArgs(ROLE, nonAdmin.address, nonAdmin.address);
 
-        await expect(
-          instance.connect(nonAdmin).renounceRole(ROLE, nonAdmin.address),
-        ).not.to.emit(instance, 'RoleRevoked');
+        await expect(instance.connect(nonAdmin).renounceRole(ROLE)).not.to.emit(
+          instance,
+          'RoleRevoked',
+        );
       });
     });
   });

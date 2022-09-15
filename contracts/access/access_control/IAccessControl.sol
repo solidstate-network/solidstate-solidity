@@ -43,7 +43,6 @@ interface IAccessControl is IAccessControlInternal {
     /**
      * @notice relinquish role
      * @param role role to relinquish
-     * @param account account to remove role from (must be same as sender)
      */
-    function renounceRole(bytes32 role, address account) external;
+    function renounceRole(bytes32 role) external;
 }

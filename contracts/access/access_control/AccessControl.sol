@@ -51,7 +51,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function renounceRole(bytes32 role, address account) external {
-        _renounceRole(role, account);
+    function renounceRole(bytes32 role) external {
+        _renounceRole(role);
     }
 }
