@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC721Internal } from '../IERC721Internal.sol';
+import { IERC721Internal } from '../../../interfaces/IERC721Internal.sol';
 
 /**
  * @title ERC721Metadata interface
