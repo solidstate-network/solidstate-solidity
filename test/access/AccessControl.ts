@@ -92,7 +92,7 @@ describe('AccessControl', function () {
       );
     });
 
-    it('emits RoleAdminChanged event if new role admin is different from old role admin', async function () {
+    it('emits RoleAdminChanged event', async function () {
       const newAdminRole = ethers.utils.solidityKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
@@ -101,11 +101,6 @@ describe('AccessControl', function () {
       await expect(instance.setRoleAdmin(ROLE, newAdminRole))
         .to.emit(instance, 'RoleAdminChanged')
         .withArgs(ROLE, DEFAULT_ADMIN_ROLE, newAdminRole);
-
-      await expect(instance.setRoleAdmin(ROLE, newAdminRole)).not.to.emit(
-        instance,
-        'RoleAdminChanged',
-      );
     });
   });
 });

@@ -77,14 +77,10 @@ export function describeBehaviorOfAccessControl(
         ).to.equal(true);
       });
 
-      it('emits RoleGranted event if account does not already have role', async function () {
+      it('emits RoleGranted event', async function () {
         await expect(instance.connect(admin).grantRole(ROLE, nonAdmin.address))
           .to.emit(instance, 'RoleGranted')
           .withArgs(ROLE, nonAdmin.address, admin.address);
-
-        await expect(
-          instance.connect(admin).grantRole(ROLE, nonAdmin.address),
-        ).not.to.emit(instance, 'RoleGranted');
       });
 
       describe('reverts if', function () {
@@ -114,16 +110,12 @@ export function describeBehaviorOfAccessControl(
         ).to.equal(false);
       });
 
-      it('emits RoleRevoked event if given account has given role', async function () {
+      it('emits RoleRevoked event', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await expect(instance.connect(admin).revokeRole(ROLE, nonAdmin.address))
           .to.emit(instance, 'RoleRevoked')
           .withArgs(ROLE, nonAdmin.address, admin.address);
-
-        await expect(
-          instance.connect(admin).revokeRole(ROLE, nonAdmin.address),
-        ).not.to.emit(instance, 'RoleRevoked');
       });
 
       describe('reverts if', function () {
@@ -152,17 +144,12 @@ export function describeBehaviorOfAccessControl(
           ).to.equal(false);
       });
 
-      it('emits RoleRevoked event if sender has given role', async function () {
+      it('emits RoleRevoked event', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await expect(instance.connect(nonAdmin).renounceRole(ROLE))
           .to.emit(instance, 'RoleRevoked')
           .withArgs(ROLE, nonAdmin.address, nonAdmin.address);
-
-        await expect(instance.connect(nonAdmin).renounceRole(ROLE)).not.to.emit(
-          instance,
-          'RoleRevoked',
-        );
       });
     });
   });

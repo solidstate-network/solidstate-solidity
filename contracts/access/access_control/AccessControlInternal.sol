@@ -87,11 +87,8 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      */
     function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal virtual {
         bytes32 previousAdminRole = _getRoleAdmin(role);
-
-        if (adminRole != previousAdminRole) {
-            AccessControlStorage.layout().roles[role].adminRole = adminRole;
-            emit RoleAdminChanged(role, previousAdminRole, adminRole);
-        }
+        AccessControlStorage.layout().roles[role].adminRole = adminRole;
+        emit RoleAdminChanged(role, previousAdminRole, adminRole);
     }
 
     /*
@@ -100,9 +97,8 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @param account recipient of role assignment
      */
     function _grantRole(bytes32 role, address account) internal virtual {
-        if (AccessControlStorage.layout().roles[role].members.add(account)) {
-            emit RoleGranted(role, account, msg.sender);
-        }
+        AccessControlStorage.layout().roles[role].members.add(account);
+        emit RoleGranted(role, account, msg.sender);
     }
 
     /*
@@ -111,9 +107,8 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @parm account
      */
     function _revokeRole(bytes32 role, address account) internal virtual {
-        if (AccessControlStorage.layout().roles[role].members.remove(account)) {
-            emit RoleRevoked(role, account, msg.sender);
-        }
+        AccessControlStorage.layout().roles[role].members.remove(account);
+        emit RoleRevoked(role, account, msg.sender);
     }
 
     /**
