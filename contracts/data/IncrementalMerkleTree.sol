@@ -1,155 +1,104 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.0;
 
-/**
- * @title MerkleTree implementation
- * @dev derived from: https://www.researchgate.net/publication/342969698_End-to-End_Formal_Verification_of_Ethereum_20_Deposit_Smart_Contract
- */
-library IncrementalMerkleTree {
-    /**
-     * @dev counterintuitively, height is such that at hashes[height][0] the root of the tree is stored
-     */
-    struct MerkleTree {
-        mapping(uint256 => mapping(uint256 => bytes32)) hashes; //given by (h,i) where h is layer height, i is index in layer
-        mapping(bytes32 => uint256) indexes;
-        uint256 height;
-        uint256 emptyIndex;
-        bool initialized;
+import 'hardhat/console.sol';
+
+library IncrementalMerkleTree2 {
+    using IncrementalMerkleTree2 for Tree;
+
+    struct Tree {
+        bytes32[][] nodes;
     }
 
-    /**
-     * @notice initializes a merkle tree
-     * @param tree MerkleTree to initialize
-     * @param height height of the MerkleTree
-     * @param data array of bytes32 hashes to be stored in the tree's leaf nodes
-     */
-    function initializeTree(
-        MerkleTree storage tree,
-        uint256 height,
-        bytes32[] calldata data
-    ) internal {
-        uint256 dataLength = data.length;
-        uint256 leafNumber = 2 ^ height;
-
-        require(tree.initialized == false, 'IMT: already initialized');
-        require(dataLength < leafNumber, 'IMT: data overflow');
-
+    function root(Tree storage t) internal view returns (bytes32) {
         unchecked {
-            for (uint256 i; i < leafNumber; ) {
-                if (i < dataLength) {
-                    bytes32 hash = keccak256(abi.encode(data[i]));
-                    tree.hashes[0][i] = hash;
-                    tree.indexes[hash] = i;
-                }
-                ++i;
-            }
-
-            for (uint256 j = 1; j < height; ) {
-                uint256 hashIndex;
-                for (uint256 k = 0; k < leafNumber / (2**j); ) {
-                    tree.hashes[j][k] = keccak256(
-                        abi.encode(
-                            tree.hashes[j - 1][hashIndex],
-                            tree.hashes[j - 1][hashIndex + 1]
-                        )
-                    );
-                    hashIndex += 2;
-                }
-                j++;
-            }
+            return t.nodes[t.height() - 1][0];
         }
-
-        tree.emptyIndex = dataLength;
-
-        tree.height = height;
-        tree.initialized = true;
     }
 
     /**
-     * @notice updates a leaf node in a MerkleTree
-     * @param tree the MerkleTree to update
-     * @param index the index of the leaf node in the MerkleTree
-     * @param hash the new hash to set in the leaf node
+     * TODO: would be desirable to be able to remove the height check
      */
-    function updateNode(
-        MerkleTree storage tree,
+    function size(Tree storage t) internal view returns (uint256) {
+        return t.height() == 0 ? 0 : t.nodes[0].length;
+    }
+
+    /**
+     * TODO: it seems that tree height is traditionally zero-indexed,
+     *  but that means that we would have to use a signed integer because a
+     *  size-zero tree has a height of -1
+     */
+    function height(Tree storage t) internal view returns (uint256) {
+        return t.nodes.length;
+    }
+
+    function push(Tree storage t, bytes memory data) internal {
+        unchecked {
+            uint256 height = t.height();
+            uint256 size = t.size();
+
+            // add new layer if tree is at capacity
+
+            if (size == (1 << height) >> 1) {
+                t.nodes.push();
+                height++;
+            }
+
+            // add new columns if rows are full
+
+            uint256 row;
+            uint256 col = size;
+
+            while (row < height && t.nodes[row].length <= col) {
+                t.nodes[row].push();
+                row++;
+                col >>= 1;
+            }
+
+            // add data to tree
+
+            t.set(size, data);
+        }
+    }
+
+    function set(
+        Tree storage t,
         uint256 index,
-        bytes32 hash
+        bytes memory data
     ) internal {
-        require(index < 2 ^ tree.height, 'IMT: index out of bounds');
-
-        bytes32 left;
-        bytes32 right;
-        uint256 height = tree.height;
-        uint256 pairIndex = index % 2 == 0 ? index + 1 : index - 1;
-
-        tree.hashes[0][index] = hash;
-        tree.indexes[hash] = index;
-        bytes32 pairHash = tree.hashes[0][pairIndex];
-
-        if (pairIndex > index) {
-            left = hash;
-            right = pairHash;
-        } else {
-            left = pairHash;
-            right = hash;
+        unchecked {
+            _set(t.nodes, 0, index, t.height() - 1, keccak256(data));
         }
-        bytes32 nextUpHash = keccak256(abi.encode(left, right));
+    }
 
-        for (uint256 i = 1; i < height; ) {
-            uint256 nextUpIndex = index / (2**i);
+    function _set(
+        bytes32[][] storage nodes,
+        uint256 row,
+        uint256 col,
+        uint256 rootRow,
+        bytes32 hash
+    ) private {
+        unchecked {
+            nodes[row][col] = hash;
 
-            tree.hashes[i][nextUpIndex] = nextUpHash;
+            if (row != rootRow) {
+                // current row is not root
+                bytes32 parent;
 
-            if (nextUpIndex % 2 == 0) {
-                left = nextUpHash;
-                right = tree.hashes[i][nextUpIndex + 1];
-            } else {
-                left = tree.hashes[i][nextUpIndex - 1];
-                right = nextUpHash;
+                if (col & 1 == 1) {
+                    // sibling is on the left
+                    parent = keccak256(bytes.concat(nodes[row][col - 1], hash));
+                } else if (col + 1 < nodes[row].length) {
+                    // sibling is on the right
+                    parent = keccak256(bytes.concat(hash, nodes[row][col + 1]));
+                } else {
+                    // sibling does not exist
+                    parent = hash;
+                }
+
+                _set(nodes, row + 1, col >> 1, rootRow, parent);
             }
-
-            nextUpHash = keccak256(abi.encode(left, right));
-            ++i;
         }
-
-        require(
-            root(tree) ==
-                keccak256(
-                    abi.encodePacked(
-                        tree.hashes[height - 2][0],
-                        tree.hashes[height - 2][1]
-                    )
-                ),
-            'root mismatch'
-        );
-    }
-
-    /**
-     * @notice returns the root of the MerkleTree
-     * @param tree the MerkleTree whose root is fetched
-     * @return root the root of the MerkleTree
-     */
-    function root(MerkleTree storage tree)
-        internal
-        view
-        returns (bytes32 root)
-    {
-        root = tree.hashes[tree.height][0];
-    }
-
-    /**
-     * @notice returns the index of a given leaf node hash
-     * @param tree the MerkleTree to read from
-     * @param hash the hash of the leaf node
-     * @return index the index of the hash
-     */
-    function indexOf(MerkleTree storage tree, bytes32 hash)
-        internal
-        view
-        returns (uint256 index)
-    {
-        index = tree.indexes[hash];
     }
 }
