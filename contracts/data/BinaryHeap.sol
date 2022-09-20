@@ -161,7 +161,7 @@ library BinaryHeap {
     {
         require(
             heap._values.length > index,
-            'EnumerableHeap: index out of bounds'
+            'BinaryHeap: index out of bounds'
         );
         return heap._values[index];
     }
