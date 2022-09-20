@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 import 'hardhat/console.sol';
 
-library IncrementalMerkleTree2 {
-    using IncrementalMerkleTree2 for Tree;
+library IncrementalMerkleTree {
+    using IncrementalMerkleTree for Tree;
 
     struct Tree {
         bytes32[][] nodes;

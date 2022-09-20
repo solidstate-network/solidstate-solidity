@@ -1,6 +1,6 @@
 import {
-  IncrementalMerkleTree2Mock,
-  IncrementalMerkleTree2Mock__factory,
+  IncrementalMerkleTreeMock,
+  IncrementalMerkleTreeMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -8,11 +8,11 @@ import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
 describe('IncrementalMerkleTree2', function () {
-  let instance: IncrementalMerkleTree2Mock;
+  let instance: IncrementalMerkleTreeMock;
 
   before(async function () {
     const [deployer] = await ethers.getSigners();
-    instance = await new IncrementalMerkleTree2Mock__factory(deployer).deploy();
+    instance = await new IncrementalMerkleTreeMock__factory(deployer).deploy();
   });
 
   it('todo', async () => {
