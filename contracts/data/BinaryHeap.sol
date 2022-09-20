@@ -226,25 +226,25 @@ library BinaryHeap {
 
     function _maxHeapify(
         Heap storage heap,
-        uint256 l,
+        uint256 len,
         uint256 i
     ) private {
         uint256 largest = i;
-        uint256 lt = 2 * i + 1;
-        uint256 rt = 2 * i + 2;
+        uint256 left = 2 * i + 1;
+        uint256 right = 2 * i + 2;
 
-        if (lt < l && heap._values[largest] < heap._values[lt]) {
-            largest = lt;
+        if (left < len && heap._values[largest] < heap._values[left]) {
+            largest = left;
         }
 
-        if (rt < l && heap._values[largest] < heap._values[rt]) {
-            largest = rt;
+        if (right < len && heap._values[largest] < heap._values[right]) {
+            largest = right;
         }
 
         if (largest != i) {
             // swap until the largest node is the root node
             _swap(heap, i, largest);
-            _maxHeapify(heap, l, largest);
+            _maxHeapify(heap, len, largest);
         }
     }
 
