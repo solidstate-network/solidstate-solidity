@@ -159,10 +159,7 @@ library BinaryHeap {
         view
         returns (bytes32)
     {
-        require(
-            heap._values.length > index,
-            'BinaryHeap: index out of bounds'
-        );
+        require(heap._values.length > index, 'BinaryHeap: index out of bounds');
         return heap._values[index];
     }
 
@@ -220,11 +217,13 @@ library BinaryHeap {
     function _heapify(Heap storage heap) private {
         uint256 len = _length(heap);
         if (len > 1) {
-            uint256 i = ((len) / 2) - 1;
-            while (i >= 0) {
-                _maxHeapify(heap, len, i);
-                if (i == 0) break;
-                --i;
+            unchecked {
+                uint256 i = ((len) / 2) - 1;
+                while (i >= 0) {
+                    _maxHeapify(heap, len, i);
+                    if (i == 0) break;
+                    --i;
+                }
             }
         }
     }
@@ -235,15 +234,18 @@ library BinaryHeap {
         uint256 i
     ) private {
         uint256 largest = i;
-        uint256 left = 2 * i + 1;
-        uint256 right = 2 * i + 2;
 
-        if (left < len && heap._values[largest] < heap._values[left]) {
-            largest = left;
-        }
+        unchecked {
+            uint256 left = 2 * i + 1;
+            uint256 right = 2 * i + 2;
 
-        if (right < len && heap._values[largest] < heap._values[right]) {
-            largest = right;
+            if (left < len && heap._values[largest] < heap._values[left]) {
+                largest = left;
+            }
+
+            if (right < len && heap._values[largest] < heap._values[right]) {
+                largest = right;
+            }
         }
 
         if (largest != i) {
