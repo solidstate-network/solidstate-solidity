@@ -257,11 +257,11 @@ library BinaryHeap {
         uint256 len = _length(heap);
         if (len > 1) {
             unchecked {
-                uint256 i = ((len) / 2) - 1;
-                while (i >= 0) {
-                    _maxHeapify(heap, len, i);
-                    if (i == 0) break;
-                    --i;
+                uint256 index = ((len) / 2) - 1;
+                while (index >= 0) {
+                    _maxHeapify(heap, len, index);
+                    if (index == 0) break;
+                    --index;
                 }
             }
         }
@@ -270,13 +270,13 @@ library BinaryHeap {
     function _maxHeapify(
         Heap storage heap,
         uint256 len,
-        uint256 i
+        uint256 index
     ) private {
-        uint256 largest = i;
+        uint256 largest = index;
 
         unchecked {
-            uint256 left = 2 * i + 1;
-            uint256 right = 2 * i + 2;
+            uint256 left = 2 * index + 1;
+            uint256 right = 2 * index + 2;
 
             if (left < len && heap._values[largest] < heap._values[left]) {
                 largest = left;
@@ -287,9 +287,9 @@ library BinaryHeap {
             }
         }
 
-        if (largest != i) {
+        if (largest != index) {
             // swap until the largest node is the root node
-            _swap(heap, i, largest);
+            _swap(heap, index, largest);
             _maxHeapify(heap, len, largest);
         }
     }
