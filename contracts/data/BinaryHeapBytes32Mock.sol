@@ -9,15 +9,6 @@ contract BinaryHeapBytes32Mock {
 
     BinaryHeap.Bytes32Heap internal bytes32Heap;
 
-    function heap() external view returns (bytes32[] memory) {
-        uint256 l = bytes32Heap.length();
-        bytes32[] memory arr = new bytes32[](l);
-        for (uint256 i = 0; i < l; i++) {
-            arr[i] = bytes32Heap.at(i);
-        }
-        return arr;
-    }
-
     function at(uint256 index) external view returns (bytes32) {
         return bytes32Heap.at(index);
     }
@@ -44,5 +35,9 @@ contract BinaryHeapBytes32Mock {
 
     function remove(bytes32 value) external returns (bool) {
         return bytes32Heap.remove(value);
+    }
+
+    function toArray() external view returns (bytes32[] memory) {
+        return bytes32Heap.toArray();
     }
 }

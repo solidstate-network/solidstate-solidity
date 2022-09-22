@@ -154,6 +154,45 @@ library BinaryHeap {
         return _remove(heap._inner, bytes32(value));
     }
 
+    function toArray(Bytes32Heap storage heap)
+        internal
+        view
+        returns (bytes32[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        bytes32[] memory arr = new bytes32[](len);
+        for (uint256 index = 0; index < len; index++) {
+            arr[index] = _at(heap._inner, index);
+        }
+        return arr;
+    }
+
+    function toArray(AddressHeap storage heap)
+        internal
+        view
+        returns (address[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        address[] memory arr = new address[](len);
+        for (uint256 index = 0; index < len; index++) {
+            arr[index] = address(uint160(uint256(_at(heap._inner, index))));
+        }
+        return arr;
+    }
+
+    function toArray(UintHeap storage heap)
+        internal
+        view
+        returns (uint256[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        uint256[] memory arr = new uint256[](len);
+        for (uint256 index = 0; index < len; index++) {
+            arr[index] = uint256(_at(heap._inner, index));
+        }
+        return arr;
+    }
+
     function _at(Heap storage heap, uint256 index)
         private
         view

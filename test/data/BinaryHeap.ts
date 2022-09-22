@@ -137,7 +137,7 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](oneBytes32);
           await instance['add(bytes32)'](twoBytes32);
 
-          expect(await instance['heap()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             twoBytes32,
             zeroBytes32,
             oneBytes32,
@@ -152,7 +152,7 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](twoBytes32);
 
           await instance['remove(bytes32)'](zeroBytes32);
-          expect(await instance['heap()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             twoBytes32,
             oneBytes32,
           ]);
@@ -170,6 +170,20 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
             .be.false;
+        });
+      });
+
+      describe('#toArray()', () => {
+        it('returns the max heap as an array', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+
+          expect(await instance['toArray()']()).to.deep.equal([
+            twoBytes32,
+            zeroBytes32,
+            oneBytes32,
+          ]);
         });
       });
     });
@@ -300,7 +314,7 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](oneAddress);
           await instance['add(address)'](twoAddress);
 
-          expect(await instance['heap()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             twoAddress,
             zeroAddress,
             oneAddress,
@@ -315,7 +329,7 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](twoAddress);
 
           await instance['remove(address)'](zeroAddress);
-          expect(await instance['heap()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             twoAddress,
             oneAddress,
           ]);
@@ -333,6 +347,20 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(address)'](zeroAddress)).to
             .be.false;
+        });
+      });
+
+      describe('#toArray()', () => {
+        it('returns the max heap as an array', async () => {
+          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](twoAddress);
+
+          expect(await instance['toArray()']()).to.deep.equal([
+            twoAddress,
+            zeroAddress,
+            oneAddress,
+          ]);
         });
       });
     });
@@ -463,7 +491,7 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](one);
           await instance['add(uint256)'](two);
 
-          expect(await instance['heap()']()).to.deep.equal([two, zero, one]);
+          expect(await instance['toArray()']()).to.deep.equal([two, zero, one]);
         });
       });
 
@@ -474,7 +502,7 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](two);
 
           await instance['remove(uint256)'](zero);
-          expect(await instance['heap()']()).to.deep.equal([two, one]);
+          expect(await instance['toArray()']()).to.deep.equal([two, one]);
         });
 
         it('returns true if value is removed', async () => {
@@ -488,6 +516,16 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(uint256)'](zero)).to.be
             .false;
+        });
+      });
+
+      describe('#toArray()', () => {
+        it('returns the max heap as an array', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          expect(await instance['toArray()']()).to.deep.equal([two, zero, one]);
         });
       });
     });

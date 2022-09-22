@@ -9,15 +9,6 @@ contract BinaryHeapAddressMock {
 
     BinaryHeap.AddressHeap internal addressHeap;
 
-    function heap() external view returns (address[] memory) {
-        uint256 l = addressHeap.length();
-        address[] memory arr = new address[](l);
-        for (uint256 i = 0; i < l; i++) {
-            arr[i] = addressHeap.at(i);
-        }
-        return arr;
-    }
-
     function at(uint256 index) external view returns (address) {
         return addressHeap.at(index);
     }
@@ -44,5 +35,9 @@ contract BinaryHeapAddressMock {
 
     function remove(address value) external returns (bool) {
         return addressHeap.remove(value);
+    }
+
+    function toArray() external view returns (address[] memory) {
+        return addressHeap.toArray();
     }
 }
