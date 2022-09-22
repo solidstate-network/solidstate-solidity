@@ -105,21 +105,12 @@ describe('BinaryHeap', async () => {
       });
 
       describe('#root()', () => {
-        it('returns value of the root node', async () => {
+        it('returns the highest value in the heap', async () => {
           await instance['add(bytes32)'](zeroBytes32);
-          expect(await instance['root()']()).to.equal(zeroBytes32);
-
           await instance['add(bytes32)'](oneBytes32);
-          expect(await instance['root()']()).to.equal(oneBytes32);
-
           await instance['add(bytes32)'](twoBytes32);
+
           expect(await instance['root()']()).to.equal(twoBytes32);
-
-          await instance['remove(bytes32)'](twoBytes32);
-          expect(await instance['root()']()).to.equal(oneBytes32);
-
-          await instance['remove(bytes32)'](oneBytes32);
-          expect(await instance['root()']()).to.equal(zeroBytes32);
         });
 
         describe('reverts if', function () {
@@ -142,6 +133,15 @@ describe('BinaryHeap', async () => {
             zeroBytes32,
             oneBytes32,
           ]);
+        });
+
+        it('sets the root if the added value is greater than the root', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          expect(await instance['root()']()).to.equal(zeroBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+          expect(await instance['root()']()).to.equal(twoBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          expect(await instance['root()']()).to.equal(twoBytes32);
         });
       });
 
@@ -170,6 +170,18 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
             .be.false;
+        });
+
+        it('sets the root to the next highest value when the root is removed', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+
+          await instance['remove(bytes32)'](twoBytes32);
+          expect(await instance['root()']()).to.equal(oneBytes32);
+
+          await instance['remove(bytes32)'](oneBytes32);
+          expect(await instance['root()']()).to.equal(zeroBytes32);
         });
       });
 
@@ -282,21 +294,12 @@ describe('BinaryHeap', async () => {
       });
 
       describe('#root()', () => {
-        it('returns value of the root node', async () => {
+        it('returns the highest value in the heap', async () => {
           await instance['add(address)'](zeroAddress);
-          expect(await instance['root()']()).to.equal(zeroAddress);
-
           await instance['add(address)'](oneAddress);
-          expect(await instance['root()']()).to.equal(oneAddress);
-
           await instance['add(address)'](twoAddress);
+
           expect(await instance['root()']()).to.equal(twoAddress);
-
-          await instance['remove(address)'](twoAddress);
-          expect(await instance['root()']()).to.equal(oneAddress);
-
-          await instance['remove(address)'](oneAddress);
-          expect(await instance['root()']()).to.equal(zeroAddress);
         });
 
         describe('reverts if', function () {
@@ -319,6 +322,15 @@ describe('BinaryHeap', async () => {
             zeroAddress,
             oneAddress,
           ]);
+        });
+
+        it('sets the root if the added value is greater than the root', async () => {
+          await instance['add(address)'](zeroAddress);
+          expect(await instance['root()']()).to.equal(zeroAddress);
+          await instance['add(address)'](twoAddress);
+          expect(await instance['root()']()).to.equal(twoAddress);
+          await instance['add(address)'](oneAddress);
+          expect(await instance['root()']()).to.equal(twoAddress);
         });
       });
 
@@ -347,6 +359,18 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(address)'](zeroAddress)).to
             .be.false;
+        });
+
+        it('sets the root to the next highest value when the root is removed', async () => {
+          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](twoAddress);
+
+          await instance['remove(address)'](twoAddress);
+          expect(await instance['root()']()).to.equal(oneAddress);
+
+          await instance['remove(address)'](oneAddress);
+          expect(await instance['root()']()).to.equal(zeroAddress);
         });
       });
 
@@ -459,21 +483,12 @@ describe('BinaryHeap', async () => {
       });
 
       describe('#root()', () => {
-        it('returns value of the root node', async () => {
+        it('returns the highest value in the heap', async () => {
           await instance['add(uint256)'](zero);
-          expect(await instance['root()']()).to.equal(zero);
-
           await instance['add(uint256)'](one);
-          expect(await instance['root()']()).to.equal(one);
-
           await instance['add(uint256)'](two);
+
           expect(await instance['root()']()).to.equal(two);
-
-          await instance['remove(uint256)'](two);
-          expect(await instance['root()']()).to.equal(one);
-
-          await instance['remove(uint256)'](one);
-          expect(await instance['root()']()).to.equal(zero);
         });
 
         describe('reverts if', function () {
@@ -492,6 +507,15 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](two);
 
           expect(await instance['toArray()']()).to.deep.equal([two, zero, one]);
+        });
+
+        it('sets the root if the added value is greater than the root', async () => {
+          await instance['add(uint256)'](zero);
+          expect(await instance['root()']()).to.equal(zero);
+          await instance['add(uint256)'](two);
+          expect(await instance['root()']()).to.equal(two);
+          await instance['add(uint256)'](one);
+          expect(await instance['root()']()).to.equal(two);
         });
       });
 
@@ -516,6 +540,18 @@ describe('BinaryHeap', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(uint256)'](zero)).to.be
             .false;
+        });
+
+        it('sets the root to the next highest value when the root is removed', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          await instance['remove(uint256)'](two);
+          expect(await instance['root()']()).to.equal(one);
+
+          await instance['remove(uint256)'](one);
+          expect(await instance['root()']()).to.equal(zero);
         });
       });
 
