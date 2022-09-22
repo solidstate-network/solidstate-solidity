@@ -218,13 +218,13 @@ library BinaryHeap {
     }
 
     function _heapify(Heap storage heap) private {
-        uint256 l = _length(heap);
-        if (l > 1) {
-            uint256 i = ((l) / 2) - 1;
+        uint256 len = _length(heap);
+        if (len > 1) {
+            uint256 i = ((len) / 2) - 1;
             while (i >= 0) {
-                _maxHeapify(heap, l, i);
+                _maxHeapify(heap, len, i);
                 if (i == 0) break;
-                i--;
+                --i;
             }
         }
     }
