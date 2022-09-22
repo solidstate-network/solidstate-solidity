@@ -31,7 +31,7 @@ export function describeBehaviorOfAccessControl(
       nonAdmin = await getNonAdmin();
     });
 
-    describe('#hasRole(bytes32, address)', function () {
+    describe('#hasRole(bytes32,address)', function () {
       it('returns whether given account has given role', async function () {
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
