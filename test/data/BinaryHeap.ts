@@ -40,7 +40,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
@@ -125,7 +125,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['root()']()).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
@@ -203,7 +203,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
@@ -288,7 +288,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['root()']()).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
@@ -366,7 +366,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
@@ -451,7 +451,7 @@ describe('BinaryHeap', async () => {
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['root()']()).to.be.revertedWith(
-              'EnumerableHeap: index out of bounds',
+              'BinaryHeap: index out of bounds',
             );
           });
         });
