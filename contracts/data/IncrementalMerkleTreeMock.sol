@@ -6,7 +6,7 @@ import { IncrementalMerkleTree } from './IncrementalMerkleTree.sol';
 
 import 'hardhat/console.sol';
 
-contract IncrementalMerkleTree2Mock {
+contract IncrementalMerkleTreeMock {
     using IncrementalMerkleTree for IncrementalMerkleTree.Tree;
 
     IncrementalMerkleTree.Tree private tree;
