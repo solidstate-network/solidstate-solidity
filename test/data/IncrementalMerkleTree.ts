@@ -7,7 +7,7 @@ import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
-describe('IncrementalMerkleTree2', function () {
+describe('IncrementalMerkleTree', function () {
   let instance: IncrementalMerkleTreeMock;
 
   before(async function () {
