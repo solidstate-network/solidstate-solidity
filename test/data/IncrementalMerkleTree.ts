@@ -61,64 +61,63 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('returns Merkle root derived from elements contained in balanced tree', async () => {
-      const value0 = String(Math.random());
-      const value1 = String(Math.random());
+      const value_a = String(Math.random());
+      const value_b = String(Math.random());
 
-      const hash0 = ethers.utils.solidityKeccak256(
+      const hash_a = ethers.utils.solidityKeccak256(
         ['bytes'],
-        [ethers.utils.toUtf8Bytes(value0)],
+        [ethers.utils.toUtf8Bytes(value_a)],
       );
 
-      const hash1 = ethers.utils.solidityKeccak256(
+      const hash_b = ethers.utils.solidityKeccak256(
         ['bytes'],
-        [ethers.utils.toUtf8Bytes(value1)],
+        [ethers.utils.toUtf8Bytes(value_b)],
       );
 
       const hash = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
-        [hash0, hash1],
+        [hash_a, hash_b],
       );
 
-      await instance.push(ethers.utils.toUtf8Bytes(value0));
-      await instance.push(ethers.utils.toUtf8Bytes(value1));
+      await instance.push(ethers.utils.toUtf8Bytes(value_a));
+      await instance.push(ethers.utils.toUtf8Bytes(value_b));
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const value0 = String(Math.random());
-      const value1 = String(Math.random());
-      const value2 = String(Math.random());
+      const value_a = String(Math.random());
+      const value_b = String(Math.random());
+      const value_c = String(Math.random());
 
-      const hash0 = ethers.utils.solidityKeccak256(
+      const hash_a = ethers.utils.solidityKeccak256(
         ['bytes'],
-        [ethers.utils.toUtf8Bytes(value0)],
+        [ethers.utils.toUtf8Bytes(value_a)],
       );
 
-      const hash1 = ethers.utils.solidityKeccak256(
+      const hash_b = ethers.utils.solidityKeccak256(
         ['bytes'],
-        [ethers.utils.toUtf8Bytes(value1)],
+        [ethers.utils.toUtf8Bytes(value_b)],
       );
 
-      const hash2 = ethers.utils.solidityKeccak256(
+      const hash_c = ethers.utils.solidityKeccak256(
         ['bytes'],
-        [ethers.utils.toUtf8Bytes(value2)],
+        [ethers.utils.toUtf8Bytes(value_c)],
+      );
+
+      const hash_ab = ethers.utils.solidityKeccak256(
+        ['bytes32', 'bytes32'],
+        [hash_a, hash_b],
       );
 
       const hash = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
-        [
-          ethers.utils.solidityKeccak256(
-            ['bytes32', 'bytes32'],
-            [hash0, hash1],
-          ),
-          hash2,
-        ],
+        [hash_ab, hash_c],
       );
 
-      await instance.push(ethers.utils.toUtf8Bytes(value0));
-      await instance.push(ethers.utils.toUtf8Bytes(value1));
-      await instance.push(ethers.utils.toUtf8Bytes(value2));
+      await instance.push(ethers.utils.toUtf8Bytes(value_a));
+      await instance.push(ethers.utils.toUtf8Bytes(value_b));
+      await instance.push(ethers.utils.toUtf8Bytes(value_c));
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
