@@ -9,12 +9,6 @@ library IncrementalMerkleTree {
         bytes32[][] nodes;
     }
 
-    function root(Tree storage t) internal view returns (bytes32) {
-        unchecked {
-            return t.nodes[t.height() - 1][0];
-        }
-    }
-
     /**
      * TODO: would be desirable to be able to remove the height check
      */
@@ -29,6 +23,13 @@ library IncrementalMerkleTree {
      */
     function height(Tree storage t) internal view returns (uint256) {
         return t.nodes.length;
+    }
+
+    function root(Tree storage t) internal view returns (bytes32) {
+        unchecked {
+            uint256 height = t.height();
+            return height == 0 ? bytes32(0) : t.nodes[height - 1][0];
+        }
     }
 
     function push(Tree storage t, bytes memory data) internal {
