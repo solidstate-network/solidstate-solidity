@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.0;
 
-import { IncrementalMerkleTree2 } from './IncrementalMerkleTree2.sol';
+import { IncrementalMerkleTree } from './IncrementalMerkleTree.sol';
 
 import 'hardhat/console.sol';
 
-contract IncrementalMerkleTree2Mock {
-    using IncrementalMerkleTree2 for IncrementalMerkleTree2.Tree;
+contract IncrementalMerkleTreeMock {
+    using IncrementalMerkleTree for IncrementalMerkleTree.Tree;
 
-    IncrementalMerkleTree2.Tree private tree;
+    IncrementalMerkleTree.Tree private tree;
 
     function root() external view returns (bytes32) {
         return tree.root();
