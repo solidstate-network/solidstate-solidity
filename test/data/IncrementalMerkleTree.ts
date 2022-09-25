@@ -10,9 +10,35 @@ import { MerkleTree } from 'merkletreejs';
 describe('IncrementalMerkleTree', function () {
   let instance: IncrementalMerkleTreeMock;
 
-  before(async function () {
+  beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
     instance = await new IncrementalMerkleTreeMock__factory(deployer).deploy();
+  });
+
+  describe('#size', () => {
+    it('returns number of elements in tree', async () => {
+      expect(await instance.callStatic.size()).to.equal(0);
+
+      for (let i = 1; i < 10; i++) {
+        await instance.push(ethers.utils.randomBytes(32));
+
+        expect(await instance.callStatic.size()).to.equal(i);
+      }
+    });
+  });
+
+  describe('#height', () => {
+    it('returns one-indexed height of tree', async () => {
+      expect(await instance.callStatic.size()).to.equal(0);
+
+      for (let i = 1; i < 10; i++) {
+        await instance.push(ethers.utils.randomBytes(32));
+
+        expect(await instance.callStatic.height()).to.equal(
+          Math.ceil(Math.log2(i) + 1),
+        );
+      }
+    });
   });
 
   it('todo', async () => {

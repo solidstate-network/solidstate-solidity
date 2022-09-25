@@ -11,6 +11,14 @@ contract IncrementalMerkleTreeMock {
 
     IncrementalMerkleTree.Tree private tree;
 
+    function size() external view returns (uint256) {
+        return tree.size();
+    }
+
+    function height() external view returns (uint256) {
+        return tree.height();
+    }
+
     function root() external view returns (bytes32) {
         return tree.root();
     }
