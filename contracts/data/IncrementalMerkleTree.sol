@@ -93,7 +93,7 @@ library IncrementalMerkleTree {
                 hash = keccak256(bytes.concat(hash, row[colIndex + 1]));
             }
 
-            _set(nodes, rowIndex + 1, col >> 1, rootIndex, hash);
+            _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, hash);
         }
     }
 }
