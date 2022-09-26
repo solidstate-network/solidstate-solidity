@@ -73,31 +73,27 @@ library IncrementalMerkleTree {
 
     function _set(
         bytes32[][] storage nodes,
-        uint256 row,
-        uint256 col,
-        uint256 rootRow,
+        uint256 rowIndex,
+        uint256 colIndex,
+        uint256 rootIndex,
         bytes32 hash
     ) private {
+        bytes32[] storage row = nodes[rowIndex];
+
+        row[colIndex] = hash;
+
+        if (rowIndex == rootIndex) return;
+
         unchecked {
-            nodes[row][col] = hash;
-
-            if (row != rootRow) {
-                // current row is not root
-                bytes32 parent;
-
-                if (col & 1 == 1) {
-                    // sibling is on the left
-                    parent = keccak256(bytes.concat(nodes[row][col - 1], hash));
-                } else if (col + 1 < nodes[row].length) {
-                    // sibling is on the right
-                    parent = keccak256(bytes.concat(hash, nodes[row][col + 1]));
-                } else {
-                    // sibling does not exist
-                    parent = hash;
-                }
-
-                _set(nodes, row + 1, col >> 1, rootRow, parent);
+            if (colIndex & 1 == 1) {
+                // sibling is on the left
+                hash = keccak256(bytes.concat(row[colIndex - 1], hash));
+            } else if (colIndex + 1 < row.length) {
+                // sibling is on the right (and sibling exists)
+                hash = keccak256(bytes.concat(hash, row[colIndex + 1]));
             }
+
+            _set(nodes, rowIndex + 1, col >> 1, rootIndex, hash);
         }
     }
 }
