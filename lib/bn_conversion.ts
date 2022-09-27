@@ -10,3 +10,7 @@ export function bnToAddress(bn: BigNumber) {
 export function bnToBytes32(bn: BigNumber) {
   return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
 }
+
+export function bytes32ToNumber(bytes32: string | BigNumber) {
+  return BigNumber.from(bytes32).toNumber();
+}

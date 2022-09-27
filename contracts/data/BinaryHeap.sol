@@ -121,16 +121,22 @@ library BinaryHeap {
         return uint256(_root(heap._inner));
     }
 
-    function add(Bytes32Heap storage heap, bytes32 value) internal {
-        _add(heap._inner, value);
+    function add(Bytes32Heap storage heap, bytes32 value)
+        internal
+        returns (bool)
+    {
+        return _add(heap._inner, value);
     }
 
-    function add(AddressHeap storage heap, address value) internal {
-        _add(heap._inner, bytes32(uint256(uint160(value))));
+    function add(AddressHeap storage heap, address value)
+        internal
+        returns (bool)
+    {
+        return _add(heap._inner, bytes32(uint256(uint160(value))));
     }
 
-    function add(UintHeap storage heap, uint256 value) internal {
-        _add(heap._inner, bytes32(value));
+    function add(UintHeap storage heap, uint256 value) internal returns (bool) {
+        return _add(heap._inner, bytes32(value));
     }
 
     function remove(Bytes32Heap storage heap, bytes32 value)
@@ -228,19 +234,24 @@ library BinaryHeap {
         return _at(heap, 0);
     }
 
-    function _add(Heap storage heap, bytes32 value) private {
-        heap._values.push(value);
-        heap._indexes[value] = _length(heap);
+    function _add(Heap storage heap, bytes32 value) private returns (bool) {
+        if (!_contains(heap, value)) {
+            heap._values.push(value);
+            heap._indexes[value] = _length(heap);
+            _heapify(heap);
 
-        _heapify(heap);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function _remove(Heap storage heap, bytes32 value) private returns (bool) {
         if (_contains(heap, value)) {
-            uint256 node = _indexOf(heap, value);
+            uint256 index = _indexOf(heap, value);
 
             // move node with last element in the tree, then remove it
-            _swap(heap, node, _length(heap) - 1);
+            _swap(heap, index, _length(heap) - 1);
 
             heap._values.pop();
             delete heap._indexes[value];

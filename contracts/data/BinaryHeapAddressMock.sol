@@ -29,8 +29,8 @@ contract BinaryHeapAddressMock {
         return addressHeap.root();
     }
 
-    function add(address value) external {
-        addressHeap.add(value);
+    function add(address value) external returns (bool) {
+        return addressHeap.add(value);
     }
 
     function remove(address value) external returns (bool) {

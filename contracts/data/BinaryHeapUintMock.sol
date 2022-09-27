@@ -29,8 +29,8 @@ contract BinaryHeapUintMock {
         return uintHeap.root();
     }
 
-    function add(uint256 value) external {
-        uintHeap.add(value);
+    function add(uint256 value) external returns (bool) {
+        return uintHeap.add(value);
     }
 
     function remove(uint256 value) external returns (bool) {

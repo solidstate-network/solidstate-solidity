@@ -29,8 +29,8 @@ contract BinaryHeapBytes32Mock {
         return bytes32Heap.root();
     }
 
-    function add(bytes32 value) external {
-        bytes32Heap.add(value);
+    function add(bytes32 value) external returns (bool) {
+        return bytes32Heap.add(value);
     }
 
     function remove(bytes32 value) external returns (bool) {
