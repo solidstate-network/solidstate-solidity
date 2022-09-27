@@ -87,18 +87,22 @@ library IncrementalMerkleTree {
         unchecked {
             if (colIndex & 1 == 1) {
                 // sibling is on the left
-                bytes32 sibling = row[colIndex - 1];
-
                 assembly {
+                    mstore(0x00, row.slot)
+                    let sibling := sload(
+                        add(keccak256(0x00, 0x20), sub(colIndex, 1))
+                    )
                     mstore(0x00, sibling)
                     mstore(0x20, hash)
                     hash := keccak256(0x00, 0x40)
                 }
             } else if (colIndex + 1 < row.length) {
                 // sibling is on the right (and sibling exists)
-                bytes32 sibling = row[colIndex + 1];
-
                 assembly {
+                    mstore(0x00, row.slot)
+                    let sibling := sload(
+                        add(keccak256(0x00, 0x20), add(colIndex, 1))
+                    )
                     mstore(0x00, hash)
                     mstore(0x20, sibling)
                     hash := keccak256(0x00, 0x40)
