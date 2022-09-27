@@ -217,13 +217,13 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](sevenBytes32);
           await instance['add(bytes32)'](oneBytes32);
 
-          await instance['add(bytes32)'](sixBytes32);
+          await instance['remove(bytes32)'](sixBytes32);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(bytes32)'](fiveBytes32);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](eightBytes32);
+          await instance['remove(bytes32)'](eightBytes32);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(bytes32)'](twoBytes32);
@@ -244,7 +244,7 @@ describe('BinaryHeap', async () => {
           await instance['remove(bytes32)'](oneBytes32);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](sevenBytes32);
+          await instance['remove(bytes32)'](sevenBytes32);
           checkNodes(await instance['toArray()']());
         });
 
@@ -463,13 +463,13 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](sevenAddress);
           await instance['add(address)'](oneAddress);
 
-          await instance['add(address)'](sixAddress);
+          await instance['remove(address)'](sixAddress);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(address)'](fiveAddress);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](eightAddress);
+          await instance['remove(address)'](eightAddress);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(address)'](twoAddress);
@@ -490,7 +490,7 @@ describe('BinaryHeap', async () => {
           await instance['remove(address)'](oneAddress);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](sevenAddress);
+          await instance['remove(address)'](sevenAddress);
           checkNodes(await instance['toArray()']());
         });
 
@@ -708,13 +708,13 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](seven);
           await instance['add(uint256)'](one);
 
-          await instance['add(uint256)'](six);
+          await instance['remove(uint256)'](six);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(uint256)'](five);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](eight);
+          await instance['remove(uint256)'](eight);
           checkNodes(await instance['toArray()']());
 
           await instance['remove(uint256)'](two);
@@ -735,7 +735,7 @@ describe('BinaryHeap', async () => {
           await instance['remove(uint256)'](one);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](seven);
+          await instance['remove(uint256)'](seven);
           checkNodes(await instance['toArray()']());
         });
 
