@@ -87,13 +87,21 @@ library IncrementalMerkleTree {
         unchecked {
             if (colIndex & 1 == 1) {
                 // sibling is on the left
-                hash = keccak256(bytes.concat(row[colIndex - 1], hash));
+                hash = _hash(row[colIndex - 1], hash);
             } else if (colIndex + 1 < row.length) {
                 // sibling is on the right (and sibling exists)
-                hash = keccak256(bytes.concat(hash, row[colIndex + 1]));
+                hash = _hash(hash, row[colIndex + 1]);
             }
 
             _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, hash);
+        }
+    }
+
+    function _hash(bytes32 a, bytes32 b) private pure returns (bytes32 value) {
+        assembly {
+            mstore(0x00, a)
+            mstore(0x20, b)
+            value := keccak256(0x00, 0x40)
         }
     }
 }
