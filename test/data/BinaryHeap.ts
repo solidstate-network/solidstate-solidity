@@ -257,6 +257,30 @@ describe('BinaryHeap', async () => {
             .be.true;
         });
 
+        it('removes value from index mapping and array', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+
+          await instance['remove(bytes32)'](twoBytes32);
+          expect(await instance['length()']()).to.be.equal(2);
+          expect(await instance['indexOf(bytes32)'](twoBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(bytes32)'](oneBytes32);
+          expect(await instance['length()']()).to.be.equal(1);
+          expect(await instance['indexOf(bytes32)'](oneBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(bytes32)'](zeroBytes32);
+          expect(await instance['length()']()).to.be.equal(0);
+          expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+        });
+
         it('returns false if value does not exist', async () => {
           expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
             .be.false;
@@ -503,6 +527,30 @@ describe('BinaryHeap', async () => {
             .be.true;
         });
 
+        it('removes value from index mapping and array', async () => {
+          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](twoAddress);
+
+          await instance['remove(address)'](twoAddress);
+          expect(await instance['length()']()).to.be.equal(2);
+          expect(await instance['indexOf(address)'](twoAddress)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(address)'](oneAddress);
+          expect(await instance['length()']()).to.be.equal(1);
+          expect(await instance['indexOf(address)'](oneAddress)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(address)'](zeroAddress);
+          expect(await instance['length()']()).to.be.equal(0);
+          expect(await instance['indexOf(address)'](zeroAddress)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+        });
+
         it('returns false if value does not exist', async () => {
           expect(await instance.callStatic['remove(address)'](zeroAddress)).to
             .be.false;
@@ -745,6 +793,30 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](two);
 
           expect(await instance.callStatic['remove(uint256)'](zero)).to.be.true;
+        });
+
+        it('removes value from index mapping and array', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          await instance['remove(uint256)'](two);
+          expect(await instance['length()']()).to.be.equal(2);
+          expect(await instance['indexOf(uint256)'](two)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(uint256)'](one);
+          expect(await instance['length()']()).to.be.equal(1);
+          expect(await instance['indexOf(uint256)'](one)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(uint256)'](zero);
+          expect(await instance['length()']()).to.be.equal(0);
+          expect(await instance['indexOf(uint256)'](zero)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
         });
 
         it('returns false if value does not exist', async () => {
