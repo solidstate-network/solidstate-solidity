@@ -141,6 +141,15 @@ describe('BinaryHeap', async () => {
           expect(await instance['root()']()).to.equal(twoBytes32);
         });
 
+        it('returns the next highest value when the previous highest value is removed', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+
+          await instance['remove(bytes32)'](twoBytes32);
+          expect(await instance['root()']()).to.equal(oneBytes32);
+        });
+
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['root()']()).to.be.revertedWith(
@@ -378,6 +387,15 @@ describe('BinaryHeap', async () => {
           expect(await instance['root()']()).to.equal(twoAddress);
         });
 
+        it('returns the next highest value when the previous highest value is removed', async () => {
+          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](twoAddress);
+
+          await instance['remove(address)'](twoAddress);
+          expect(await instance['root()']()).to.equal(oneAddress);
+        });
+
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(instance['root()']()).to.be.revertedWith(
@@ -613,6 +631,15 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](two);
 
           expect(await instance['root()']()).to.equal(two);
+        });
+
+        it('returns the next highest value when the previous highest value is removed', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          await instance['remove(uint256)'](two);
+          expect(await instance['root()']()).to.equal(one);
         });
 
         describe('reverts if', function () {
