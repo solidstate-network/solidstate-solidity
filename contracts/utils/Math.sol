@@ -10,7 +10,9 @@ library Math {
      * @param b second number
      */
     function average(uint256 a, uint256 b) internal pure returns (uint256) {
-        return (a >> 1) + (b >> 1) + (((a & 1) + (b & 1)) >> 1);
+        unchecked {
+            return (a >> 1) + (b >> 1) + ((a & 1) & (b & 1));
+        }
     }
 
     /**
