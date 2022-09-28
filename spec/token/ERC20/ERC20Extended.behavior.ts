@@ -34,6 +34,17 @@ export function describeBehaviorOfERC20Extended(
     });
 
     describe('#increaseAllowance(address,uint256)', function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['increaseAllowance(address,uint256)'](
+              instance.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
       it('increases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
 
@@ -90,6 +101,17 @@ export function describeBehaviorOfERC20Extended(
     });
 
     describe('#decreaseAllowance(address,uint256)', function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['decreaseAllowance(address,uint256)'](
+              instance.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
       it('decreases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
         await instance
