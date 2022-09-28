@@ -40,6 +40,13 @@ describe('Math', function () {
             ethers.constants.MaxUint256,
           ),
         ).to.equal(ethers.constants.MaxUint256);
+
+        expect(
+          await instance.average(
+            ethers.constants.MaxUint256,
+            ethers.constants.MaxUint256.sub(ethers.constants.One),
+          ),
+        ).to.equal(ethers.constants.MaxUint256.sub(ethers.constants.One));
       });
     });
 
