@@ -164,7 +164,7 @@ export function describeBehaviorOfERC20Extended(
                 spender.address,
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('ERC20Extended: insufficient allowance');
+          ).to.be.revertedWith('ERC20: insufficient allowance');
         });
       });
     });

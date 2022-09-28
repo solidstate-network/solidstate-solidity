@@ -238,7 +238,7 @@ export function describeBehaviorOfERC20Base(
                 receiver.address,
                 amount,
               ),
-          ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
+          ).to.be.revertedWith('ERC20: insufficient allowance');
         });
       });
     });
