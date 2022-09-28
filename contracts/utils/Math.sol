@@ -11,7 +11,7 @@ library Math {
      */
     function average(uint256 a, uint256 b) internal pure returns (uint256) {
         unchecked {
-            return (a >> 1) + (b >> 1) + ((a & 1) & (b & 1));
+            return (a >> 1) + (b >> 1) + (a & b & 1);
         }
     }
 
