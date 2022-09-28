@@ -24,9 +24,7 @@ abstract contract ERC20ExtendedInternal is
         virtual
         returns (bool)
     {
-        uint256 allowance = ERC20BaseStorage.layout().allowances[msg.sender][
-            spender
-        ];
+        uint256 allowance = _allowance(msg.sender, spender);
 
         unchecked {
             require(
@@ -49,9 +47,7 @@ abstract contract ERC20ExtendedInternal is
         virtual
         returns (bool)
     {
-        uint256 allowance = ERC20BaseStorage.layout().allowances[msg.sender][
-            spender
-        ];
+        uint256 allowance = _allowance(msg.sender, spender);
 
         require(amount <= allowance, 'ERC20Extended: insufficient allowance');
 
