@@ -151,15 +151,15 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         address recipient,
         uint256 amount
     ) internal virtual returns (bool) {
-        uint256 currentAllowance = _allowance(holder, msg.sender);
+        uint256 allowance = _allowance(holder, msg.sender);
 
         require(
-            currentAllowance >= amount,
+            allowance >= amount,
             'ERC20: transfer amount exceeds allowance'
         );
 
         unchecked {
-            _approve(holder, msg.sender, currentAllowance - amount);
+            _approve(holder, msg.sender, allowance - amount);
         }
 
         _transfer(holder, recipient, amount);
