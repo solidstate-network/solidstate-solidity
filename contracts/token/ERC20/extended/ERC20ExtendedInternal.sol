@@ -47,12 +47,8 @@ abstract contract ERC20ExtendedInternal is
         virtual
         returns (bool)
     {
-        uint256 allowance = _allowance(msg.sender, spender);
+        _decreaseAllowance(msg.sender, spender, amount);
 
-        require(amount <= allowance, 'ERC20Extended: insufficient allowance');
-
-        unchecked {
-            return _approve(msg.sender, spender, allowance - amount);
-        }
+        return true;
     }
 }
