@@ -35,11 +35,7 @@ abstract contract ERC20ExtendedInternal is
                 'ERC20Extended: excessive allowance'
             );
 
-            _approve(
-                msg.sender,
-                spender,
-                allowances[spender] = allowance + amount
-            );
+            _approve(msg.sender, spender, allowance + amount);
 
             return true;
         }
@@ -67,11 +63,7 @@ abstract contract ERC20ExtendedInternal is
                 'ERC20Extended: insufficient allowance'
             );
 
-            _approve(
-                msg.sender,
-                spender,
-                allowances[spender] = allowance - amount
-            );
+            _approve(msg.sender, spender, allowance - amount);
 
             return true;
         }
