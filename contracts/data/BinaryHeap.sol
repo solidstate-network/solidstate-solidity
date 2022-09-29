@@ -299,16 +299,17 @@ library BinaryHeap {
         uint256 index
     ) private {
         uint256 largest = index;
+        bytes32[] storage values = heap._values;
 
         unchecked {
             uint256 left = 2 * index + 1;
             uint256 right = left + 1;
 
-            if (left < len && heap._values[largest] < heap._values[left]) {
+            if (left < len && values[largest] < values[left]) {
                 largest = left;
             }
 
-            if (right < len && heap._values[largest] < heap._values[right]) {
+            if (right < len && values[largest] < values[right]) {
                 largest = right;
             }
         }
