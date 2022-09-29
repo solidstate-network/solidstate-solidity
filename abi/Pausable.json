@@ -1,5 +1,15 @@
 [
   {
+    "inputs": [],
+    "name": "PausableInternal__NotPaused",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PausableInternal__Paused",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

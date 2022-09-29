@@ -1,5 +1,45 @@
 [
   {
+    "inputs": [],
+    "name": "ERC721BaseInternal__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__ERC721ReceiverNotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__InvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__NonExistentToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__NotTokenOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__TokenAlreadyMinted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721BaseInternal__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

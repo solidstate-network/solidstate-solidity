@@ -1,5 +1,25 @@
 [
   {
+    "inputs": [],
+    "name": "ManagedProxy__FetchImplementationFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OwnableInternal_NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OwnableInternal_NotTransitiveOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

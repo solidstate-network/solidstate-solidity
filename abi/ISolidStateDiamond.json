@@ -1,5 +1,15 @@
 [
   {
+    "inputs": [],
+    "name": "DiamondBase__NoFacetForSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

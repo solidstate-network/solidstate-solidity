@@ -1,5 +1,75 @@
 [
   {
+    "inputs": [],
+    "name": "ERC1155Base__ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__BurnExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__BurnFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__ERC1155ReceiverNotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__ERC1155ReceiverRejected",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__TransferExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Internal__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EnumerableSet__IndexOutOfBounds",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

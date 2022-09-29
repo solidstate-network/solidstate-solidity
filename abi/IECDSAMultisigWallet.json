@@ -1,5 +1,30 @@
 [
   {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletInternal__AmountMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletInternal__InvalidNonce",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletInternal__QuorumNotReached",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletInternal__SignerAlreadySigned",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "components": [

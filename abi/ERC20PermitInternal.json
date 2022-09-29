@@ -1,5 +1,60 @@
 [
   {
+    "inputs": [],
+    "name": "ERC20BaseInternal__ApproveFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__ApproveToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__BurnExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__BurnFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__TransferExceedsAllowance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__TransferExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__TransferFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20BaseInternal__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20PermitInternal__ExpiredDeadline",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20PermitInternal__InvalidSignature",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

@@ -7,6 +7,8 @@ pragma solidity ^0.8.8;
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
 library UintUtils {
+    error UintUtils__InsufficientHexLength();
+
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
     function toString(uint256 value) internal pure returns (string memory) {
@@ -65,7 +67,7 @@ library UintUtils {
             }
         }
 
-        require(value == 0, 'UintUtils: hex length insufficient');
+        if (value != 0) revert UintUtils__InsufficientHexLength();
 
         return string(buffer);
     }

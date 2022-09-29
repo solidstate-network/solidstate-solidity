@@ -1,5 +1,45 @@
 [
   {
+    "inputs": [],
+    "name": "DiamondBaseStorage__InvalidInitializationParameters",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__RemoveTargetNotZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__ReplaceTargetIsIdentical",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__SelectorAlreadyAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__SelectorIsImmutable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__SelectorNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__SelectorNotSpecified",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondBaseStorage__TargetHasNoCode",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

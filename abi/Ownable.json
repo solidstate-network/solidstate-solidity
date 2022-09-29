@@ -1,5 +1,15 @@
 [
   {
+    "inputs": [],
+    "name": "OwnableInternal_NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OwnableInternal_NotTransitiveOwner",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

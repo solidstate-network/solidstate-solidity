@@ -8,10 +8,12 @@ import { ReentrancyGuardStorage } from './ReentrancyGuardStorage.sol';
  * @title Utility contract for preventing reentrancy attacks
  */
 abstract contract ReentrancyGuard {
+    error ReentrancyGuard__ReentrantCall();
+
     modifier nonReentrant() {
         ReentrancyGuardStorage.Layout storage l = ReentrancyGuardStorage
             .layout();
-        require(l.status != 2, 'ReentrancyGuard: reentrant call');
+        if (l.status == 2) revert ReentrancyGuard__ReentrantCall();
         l.status = 2;
         _;
         l.status = 1;

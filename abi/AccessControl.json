@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "UintUtils__InsufficientHexLength",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
