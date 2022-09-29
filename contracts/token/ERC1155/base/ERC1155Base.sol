@@ -34,7 +34,7 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
         returns (uint256[] memory)
     {
         if (accounts.length != ids.length)
-            revert ERC1155__ArrayLengthMismatch();
+            revert ERC1155Base__ArrayLengthMismatch();
 
         mapping(uint256 => mapping(address => uint256))
             storage balances = ERC1155BaseStorage.layout().balances;
@@ -44,7 +44,7 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
         unchecked {
             for (uint256 i; i < accounts.length; i++) {
                 if (accounts[i] == address(0))
-                    revert ERC1155__BalanceQueryZeroAddress();
+                    revert ERC1155Base__BalanceQueryZeroAddress();
                 batchBalances[i] = balances[ids[i]][accounts[i]];
             }
         }
@@ -68,7 +68,7 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
      * @inheritdoc IERC1155
      */
     function setApprovalForAll(address operator, bool status) public virtual {
-        if (msg.sender == operator) revert ERC1155__SelfApproval();
+        if (msg.sender == operator) revert ERC1155Base__SelfApproval();
         ERC1155BaseStorage.layout().operatorApprovals[msg.sender][
             operator
         ] = status;
@@ -86,7 +86,7 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
         bytes memory data
     ) public virtual {
         if (from != msg.sender && isApprovedForAll(from, msg.sender) == false)
-            revert ERC1155__NotOwnerOrApproved();
+            revert ERC1155Base__NotOwnerOrApproved();
         _safeTransfer(msg.sender, from, to, id, amount, data);
     }
 
@@ -101,7 +101,7 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
         bytes memory data
     ) public virtual {
         if (from != msg.sender && isApprovedForAll(from, msg.sender) == false)
-            revert ERC1155__NotOwnerOrApproved();
+            revert ERC1155Base__NotOwnerOrApproved();
         _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
     }
 }

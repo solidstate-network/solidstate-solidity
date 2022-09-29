@@ -98,7 +98,8 @@ abstract contract ERC20PermitInternal is
         bytes32 r,
         bytes32 s
     ) internal virtual {
-        require(block.timestamp <= deadline, 'ERC20Permit: expired deadline');
+        if (block.timestamp > deadline)
+            revert ERC20PermitInternal__ExpiredDeadline();
 
         // Assembly for more efficiently computing:
         // bytes32 hashStruct = keccak256(
@@ -165,7 +166,7 @@ abstract contract ERC20PermitInternal is
 
         address signer = hash.recover(v, r, s);
 
-        require(signer == owner, 'ERC20Permit: invalid signature');
+        if (signer != owner) revert ERC20PermitInternal__InvalidSignature();
 
         l.nonces[owner]++;
         _approve(owner, spender, amount);
