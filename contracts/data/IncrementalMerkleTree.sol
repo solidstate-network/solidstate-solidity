@@ -13,7 +13,9 @@ library IncrementalMerkleTree {
      * TODO: would be desirable to be able to remove the height check
      */
     function size(Tree storage t) internal view returns (uint256) {
-        return t.height() == 0 ? 0 : t.nodes[0].length;
+        if (t.height() > 0) {
+            return t.nodes[0].length;
+        }
     }
 
     /**
