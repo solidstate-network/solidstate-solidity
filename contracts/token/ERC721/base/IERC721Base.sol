@@ -8,5 +8,6 @@ import { IERC721 } from '../../../interfaces/IERC721.sol';
  * @title ERC721 base interface
  */
 interface IERC721Base is IERC721 {
-
+    error ERC721Base__NotOwnerOrApproved();
+    error ERC721Base__SelfApproval();
 }

@@ -8,6 +8,8 @@ import { IERC721Internal } from '../../../interfaces/IERC721Internal.sol';
  * @title ERC721Metadata interface
  */
 interface IERC721Metadata is IERC721Internal {
+    error ERC721Metadata__NonExistentToken();
+
     /**
      * @notice get token name
      * @return token name

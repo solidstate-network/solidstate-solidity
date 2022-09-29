@@ -3,6 +3,8 @@
 pragma solidity ^0.8.8;
 
 library ERC1404BaseStorage {
+    error ERC1404BaseStorage__ArrayLengthMismatch();
+
     struct Layout {
         mapping(uint8 => string) restrictions;
     }
@@ -22,10 +24,8 @@ library ERC1404BaseStorage {
         uint8[] memory restrictionCodes,
         string[] memory restrictionMessages
     ) internal {
-        require(
-            restrictionCodes.length == restrictionMessages.length,
-            'ERC1404: restrictionCodes and restrictionMessages length mismatch'
-        );
+        if (restrictionCodes.length != restrictionMessages.length)
+            revert ERC1404BaseStorage__ArrayLengthMismatch();
 
         mapping(uint8 => string) storage restrictions = l.restrictions;
 

@@ -221,10 +221,8 @@ abstract contract ERC4626BaseInternal is
         virtual
         returns (uint256 shareAmount)
     {
-        require(
-            assetAmount <= _maxDeposit(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (assetAmount > _maxDeposit(receiver))
+            revert ERC4626Internal__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -242,10 +240,8 @@ abstract contract ERC4626BaseInternal is
         virtual
         returns (uint256 assetAmount)
     {
-        require(
-            shareAmount <= _maxMint(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (shareAmount > _maxMint(receiver))
+            revert ERC4626Internal__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -264,10 +260,8 @@ abstract contract ERC4626BaseInternal is
         address receiver,
         address owner
     ) internal virtual returns (uint256 shareAmount) {
-        require(
-            assetAmount <= _maxWithdraw(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (assetAmount > _maxWithdraw(owner))
+            revert ERC4626Internal__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -286,10 +280,8 @@ abstract contract ERC4626BaseInternal is
         address receiver,
         address owner
     ) internal virtual returns (uint256 assetAmount) {
-        require(
-            shareAmount <= _maxRedeem(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (shareAmount > _maxRedeem(owner))
+            revert ERC4626Internal__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -382,10 +374,8 @@ abstract contract ERC4626BaseInternal is
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
 
-            require(
-                allowance >= shareAmount,
-                'ERC4626: share amount exceeds allowance'
-            );
+            if (shareAmount > allowance)
+                revert ERC4626Internal__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);
