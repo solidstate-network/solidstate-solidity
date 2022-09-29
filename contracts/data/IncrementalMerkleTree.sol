@@ -28,9 +28,12 @@ library IncrementalMerkleTree {
     }
 
     function root(Tree storage t) internal view returns (bytes32) {
-        unchecked {
-            uint256 height = t.height();
-            return height == 0 ? bytes32(0) : t.nodes[height - 1][0];
+        uint256 height = t.height();
+
+        if (height > 0) {
+            unchecked {
+                return t.nodes[height - 1][0];
+            }
         }
     }
 
