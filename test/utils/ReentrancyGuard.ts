@@ -26,21 +26,21 @@ describe('ReentrancyGuard', function () {
         await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
 
         await expect(instance['reentrancyTest()']()).to.be.revertedWith(
-          'ReentrancyGuard: reentrant call',
+          'ReentrancyGuard__ReentrantCall()',
         );
       });
 
       describe('reverts if', function () {
         it('call is reentrant', async function () {
           await expect(instance['reentrancyTest()']()).to.be.revertedWith(
-            'ReentrancyGuard: reentrant call',
+            'ReentrancyGuard__ReentrantCall()',
           );
         });
 
         it('call is cross-function reentrant', async function () {
           await expect(
             instance['crossFunctionReentrancyTest()'](),
-          ).to.be.revertedWith('ReentrancyGuard: reentrant call');
+          ).to.be.revertedWith('ReentrancyGuard__ReentrantCall()');
         });
       });
     });
