@@ -57,7 +57,7 @@ describe('ManagedProxyOwnable', function () {
 
           await expect(
             instance.callStatic.__getImplementation(),
-          ).to.be.revertedWith('ManagedProxy: failed to fetch implementation');
+          ).to.be.revertedWith('ManagedProxy__FetchImplementationFailed()');
         });
       });
     });

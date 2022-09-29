@@ -75,7 +75,7 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
             instance
               .connect(nonOwner)
               .setImplementation(ethers.constants.AddressZero),
-          ).to.be.revertedWith('Ownable: sender must be owner');
+          ).to.be.revertedWith('OwnableInternal_NotOwner()');
         });
       });
     });

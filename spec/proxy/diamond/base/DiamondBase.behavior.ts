@@ -47,7 +47,7 @@ export function describeBehaviorOfDiamondBase(
           );
 
           await expect(contract.callStatic['function()']()).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+            'DiamondBase__NoFacetForSignature()',
           );
         });
       });
