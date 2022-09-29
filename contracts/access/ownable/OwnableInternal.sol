@@ -12,15 +12,13 @@ abstract contract OwnableInternal is IOwnableInternal {
     using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
-        require(msg.sender == _owner(), 'Ownable: sender must be owner');
+        if (msg.sender != _owner()) revert OwnableInternal_NotOwner();
         _;
     }
 
     modifier onlyTransitiveOwner() {
-        require(
-            msg.sender == _transitiveOwner(),
-            'Ownable: sender must be transitive owner'
-        );
+        if (msg.sender != _transitiveOwner())
+            revert OwnableInternal_NotTransitiveOwner();
         _;
     }
 

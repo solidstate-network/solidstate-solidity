@@ -12,10 +12,8 @@ abstract contract SafeOwnableInternal is ISafeOwnableInternal, OwnableInternal {
     using SafeOwnableStorage for SafeOwnableStorage.Layout;
 
     modifier onlyNomineeOwner() {
-        require(
-            msg.sender == _nomineeOwner(),
-            'SafeOwnable: sender must be nominee owner'
-        );
+        if (msg.sender != _nomineeOwner())
+            revert SafeOwnable__NotNomineeOwner();
         _;
     }
 
