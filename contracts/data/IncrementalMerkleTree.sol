@@ -10,7 +10,9 @@ library IncrementalMerkleTree {
     }
 
     /**
-     * TODO: would be desirable to be able to remove the height check
+     * @notice query number of elements contained in tree
+     * @param t Tree struct storage reference
+     * @return size of tree
      */
     function size(Tree storage t) internal view returns (uint256) {
         if (t.height() > 0) {
@@ -19,14 +21,20 @@ library IncrementalMerkleTree {
     }
 
     /**
-     * TODO: it seems that tree height is traditionally zero-indexed,
-     *  but that means that we would have to use a signed integer because a
-     *  size-zero tree has a height of -1
+     * @notice query one-indexed height of tree
+     * @dev conventional zero-indexed height would require the use of signed integers, so height is one-indexed instead
+     * @param t Tree struct storage reference
+     * @return one-indexed height of tree
      */
     function height(Tree storage t) internal view returns (uint256) {
         return t.nodes.length;
     }
 
+    /**
+     * @notice query Merkle root
+     * @param t Tree struct storage reference
+     * @return root hash
+     */
     function root(Tree storage t) internal view returns (bytes32) {
         uint256 height = t.height();
 
@@ -37,6 +45,11 @@ library IncrementalMerkleTree {
         }
     }
 
+    /**
+     * @notice add new element to tree
+     * @param t Tree struct storage reference
+     * @param data data to add
+     */
     function push(Tree storage t, bytes memory data) internal {
         unchecked {
             uint256 height = t.height();
@@ -66,6 +79,12 @@ library IncrementalMerkleTree {
         }
     }
 
+    /**
+     * @notice update existing element in tree
+     * @param t Tree struct storage reference
+     * @param index index to update
+     * @param data new data to add
+     */
     function set(
         Tree storage t,
         uint256 index,
@@ -76,6 +95,13 @@ library IncrementalMerkleTree {
         }
     }
 
+    /**
+     * @notice update element in tree and recursively recalculate hashes
+     * @param nodes internal tree structure storage reference
+     * @param rowIndex index of current row to update
+     * @param colIndex index of current column to update
+     * @param hash hash to store at current position
+     */
     function _set(
         bytes32[][] storage nodes,
         uint256 rowIndex,
