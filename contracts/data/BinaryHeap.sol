@@ -325,11 +325,15 @@ library BinaryHeap {
         uint256 a,
         uint256 b
     ) private {
-        (heap._indexes[heap._values[a]], heap._indexes[heap._values[b]]) = (
-            heap._indexes[heap._values[b]],
-            heap._indexes[heap._values[a]]
+        bytes32[] storage values = heap._values;
+        bytes32 aValue = values[a];
+        bytes32 bValue = values[b];
+
+        (heap._indexes[aValue], heap._indexes[bValue]) = (
+            heap._indexes[bValue],
+            heap._indexes[aValue]
         );
 
-        (heap._values[a], heap._values[b]) = (heap._values[b], heap._values[a]);
+        (values[a], values[b]) = (bValue, aValue);
     }
 }
