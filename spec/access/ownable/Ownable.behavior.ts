@@ -59,7 +59,7 @@ export function describeBehaviorOfOwnable(
             instance
               .connect(nonOwner)
               ['transferOwnership(address)'](nonOwner.address),
-          ).to.be.revertedWith('Ownable: sender must be owner');
+          ).to.be.revertedWith('OwnableInternal_NotOwner()');
         });
       });
     });

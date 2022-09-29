@@ -1,0 +1,22 @@
+[
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletStorage__AddSignerFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletStorage__InsufficientSigners",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletStorage__RemoveSignerFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWalletStorage__SignerLimitReached",
+    "type": "error"
+  }
+]

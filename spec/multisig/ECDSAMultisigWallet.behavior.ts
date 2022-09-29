@@ -238,7 +238,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
+            ).to.be.revertedWith(
+              'ECDSAMultisigWalletInternal__QuorumNotReached()',
+            );
           });
 
           it('duplicate signer is found', async function () {
@@ -268,7 +270,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { value },
               ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once',
+              'ECDSAMultisigWalletInternal__SignerAlreadySigned()',
             );
           });
 
@@ -299,7 +301,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { value },
               ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized',
+              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized()',
             );
           });
 
@@ -335,7 +337,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
+            ).to.be.revertedWith('ECDSAMultisigWalletInternal__InvalidNonce()');
           });
         });
       });
@@ -474,7 +476,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
+            ).to.be.revertedWith(
+              'ECDSAMultisigWalletInternal__QuorumNotReached()',
+            );
           });
 
           it('duplicate signer is found', async function () {
@@ -504,7 +508,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { value },
               ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once',
+              'ECDSAMultisigWalletInternal__SignerAlreadySigned()',
             );
           });
 
@@ -535,7 +539,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { value },
               ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized',
+              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized()',
             );
           });
 
@@ -568,7 +572,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 },
               ),
             ).to.be.revertedWith(
-              'ECDSAMultisigWallet: delegatecall value must match signed amount',
+              'ECDSAMultisigWalletInternal__AmountMismatch()',
             );
           });
 
@@ -604,7 +608,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
+            ).to.be.revertedWith('ECDSAMultisigWalletInternal__InvalidNonce()');
           });
         });
       });
