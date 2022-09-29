@@ -100,6 +100,7 @@ library IncrementalMerkleTree {
      * @param nodes internal tree structure storage reference
      * @param rowIndex index of current row to update
      * @param colIndex index of current column to update
+     * @param rootIndex index of root row
      * @param hash hash to store at current position
      */
     function _set(
