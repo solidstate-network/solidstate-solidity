@@ -10,6 +10,7 @@ pragma solidity ^0.8.8;
 library BinaryHeap {
     struct Heap {
         bytes32[] _values;
+        // 1-indexed to allow 0 to signify nonexistence
         mapping(bytes32 => uint256) _indexes;
     }
 
@@ -167,9 +168,13 @@ library BinaryHeap {
     {
         uint256 len = _length(heap._inner);
         bytes32[] memory arr = new bytes32[](len);
-        for (uint256 index = 0; index < len; index++) {
-            arr[index] = _at(heap._inner, index);
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
         }
+
         return arr;
     }
 
@@ -180,9 +185,13 @@ library BinaryHeap {
     {
         uint256 len = _length(heap._inner);
         address[] memory arr = new address[](len);
-        for (uint256 index = 0; index < len; index++) {
-            arr[index] = address(uint160(uint256(_at(heap._inner, index))));
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
         }
+
         return arr;
     }
 
@@ -193,9 +202,13 @@ library BinaryHeap {
     {
         uint256 len = _length(heap._inner);
         uint256[] memory arr = new uint256[](len);
-        for (uint256 index = 0; index < len; index++) {
-            arr[index] = uint256(_at(heap._inner, index));
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
         }
+
         return arr;
     }
 
@@ -250,8 +263,10 @@ library BinaryHeap {
         if (_contains(heap, value)) {
             uint256 index = _indexOf(heap, value);
 
-            // move node with last element in the tree, then remove it
-            _swap(heap, index, _length(heap) - 1);
+            unchecked {
+                // move node with last element in the tree, then remove it
+                _swap(heap, index, _length(heap) - 1);
+            }
 
             heap._values.pop();
             delete heap._indexes[value];
@@ -287,7 +302,7 @@ library BinaryHeap {
 
         unchecked {
             uint256 left = 2 * index + 1;
-            uint256 right = 2 * index + 2;
+            uint256 right = left + 1;
 
             if (left < len && heap._values[largest] < heap._values[left]) {
                 largest = left;
