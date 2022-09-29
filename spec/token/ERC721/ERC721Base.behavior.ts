@@ -387,7 +387,7 @@ export function describeBehaviorOfERC721Base(
                 tokenId,
               ),
           ).to.be.revertedWith(
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented()',
+            'ERC721: transfer to non ERC721Receiver implementer',
           );
         });
 
@@ -536,7 +536,7 @@ export function describeBehaviorOfERC721Base(
                 '0x',
               ),
           ).to.be.revertedWith(
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented()',
+            'ERC721: transfer to non ERC721Receiver implementer',
           );
         });
 
