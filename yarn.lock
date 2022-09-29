@@ -2078,7 +2078,7 @@
   dependencies:
     axios "^0.24.0"
 
-"@solidstate/library@^0.0.41":
+"@solidstate/library@^0.0.42":
   version "0.0.0"
   uid ""
 
@@ -7893,7 +7893,7 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-lerna@^5.5.1:
+lerna@^5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-5.5.2.tgz#3b96ea81bb71a0e57c110b64c6dc2cc58d7acca9"
   integrity sha512-P0ThZMfWJ4BP9xRbXaLyoOCYjlPN615FRV2ZBnTBA12lw32IlcREIgvF0N1zZX7wXtsmN56rU3CABoJ5lU8xuw==

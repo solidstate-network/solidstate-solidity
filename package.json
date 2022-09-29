@@ -33,7 +33,7 @@
     "hardhat-spdx-license-identifier": "^2.0.3",
     "husky": "^8.0.1",
     "keccak256": "^1.0.6",
-    "lerna": "^5.5.1",
+    "lerna": "^5.5.2",
     "lint-staged": "^13.0.3",
     "merkletreejs": "^0.2.32",
     "prettier": "^2.7.1",
