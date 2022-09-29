@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
+import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { EnumerableSet } from '../../utils/EnumerableSet.sol';
 import { UintUtils } from '../../utils/UintUtils.sol';
 import { IAccessControlInternal } from './IAccessControlInternal.sol';
 import { AccessControlStorage } from './AccessControlStorage.sol';
