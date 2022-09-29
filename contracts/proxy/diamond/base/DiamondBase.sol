@@ -26,10 +26,8 @@ abstract contract DiamondBase is IDiamondBase, Proxy {
 
         if (implementation == address(0)) {
             implementation = l.fallbackAddress;
-            require(
-                implementation != address(0),
-                'DiamondBase: no facet found for function signature'
-            );
+            if (implementation == address(0))
+                revert DiamondBase__NoFacetForSignature();
         }
 
         return implementation;

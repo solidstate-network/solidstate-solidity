@@ -26,7 +26,7 @@ abstract contract ManagedProxy is IManagedProxy, Proxy {
         (bool success, bytes memory data) = _getManager().staticcall(
             abi.encodePacked(MANAGER_SELECTOR)
         );
-        require(success, 'ManagedProxy: failed to fetch implementation');
+        if (!success) revert ManagedProxy__FetchImplementationFailed();
         return abi.decode(data, (address));
     }
 

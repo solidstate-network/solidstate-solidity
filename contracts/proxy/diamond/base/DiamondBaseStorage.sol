@@ -12,6 +12,15 @@ library DiamondBaseStorage {
     using AddressUtils for address;
     using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
+    error DiamondBaseStorage__InvalidInitializationParameters();
+    error DiamondBaseStorage__RemoveTargetNotZeroAddress();
+    error DiamondBaseStorage__ReplaceTargetIsIdentical();
+    error DiamondBaseStorage__SelectorAlreadyAdded();
+    error DiamondBaseStorage__SelectorIsImmutable();
+    error DiamondBaseStorage__SelectorNotFound();
+    error DiamondBaseStorage__SelectorNotSpecified();
+    error DiamondBaseStorage__TargetHasNoCode();
+
     struct Layout {
         // function selector => (facet address, selector slot position)
         mapping(bytes4 => bytes32) facets;
@@ -70,10 +79,8 @@ library DiamondBaseStorage {
                 IDiamondWritable.FacetCut memory facetCut = facetCuts[i];
                 IDiamondWritable.FacetCutAction action = facetCut.action;
 
-                require(
-                    facetCut.selectors.length > 0,
-                    'DiamondBase: no selectors specified'
-                );
+                if (facetCut.selectors.length == 0)
+                    revert DiamondBaseStorage__SelectorNotSpecified();
 
                 if (action == IDiamondWritable.FacetCutAction.ADD) {
                     (selectorCount, selectorSlot) = l.addFacetSelectors(
@@ -113,20 +120,17 @@ library DiamondBaseStorage {
         IDiamondWritable.FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
-            require(
-                facetCut.target == address(this) ||
-                    facetCut.target.isContract(),
-                'DiamondBase: ADD target has no code'
-            );
+            if (
+                facetCut.target != address(this) &&
+                facetCut.target.isContract() == false
+            ) revert DiamondBaseStorage__TargetHasNoCode();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
                 bytes32 oldFacet = l.facets[selector];
 
-                require(
-                    address(bytes20(oldFacet)) == address(0),
-                    'DiamondBase: selector already added'
-                );
+                if (address(bytes20(oldFacet)) != address(0))
+                    revert DiamondBaseStorage__SelectorAlreadyAdded();
 
                 // add facet for selector
                 l.facets[selector] =
@@ -160,10 +164,8 @@ library DiamondBaseStorage {
         IDiamondWritable.FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
-            require(
-                facetCut.target == address(0),
-                'DiamondBase: REMOVE target must be zero address'
-            );
+            if (facetCut.target != address(0))
+                revert DiamondBaseStorage__RemoveTargetNotZeroAddress();
 
             uint256 selectorSlotCount = selectorCount >> 3;
             uint256 selectorInSlotIndex = selectorCount & 7;
@@ -172,15 +174,11 @@ library DiamondBaseStorage {
                 bytes4 selector = facetCut.selectors[i];
                 bytes32 oldFacet = l.facets[selector];
 
-                require(
-                    address(bytes20(oldFacet)) != address(0),
-                    'DiamondBase: selector not found'
-                );
+                if (address(bytes20(oldFacet)) == address(0))
+                    revert DiamondBaseStorage__SelectorNotFound();
 
-                require(
-                    address(bytes20(oldFacet)) != address(this),
-                    'DiamondBase: selector is immutable'
-                );
+                if (address(bytes20(oldFacet)) == address(this))
+                    revert DiamondBaseStorage__SelectorIsImmutable();
 
                 if (selectorSlot == 0) {
                     selectorSlotCount--;
@@ -254,30 +252,20 @@ library DiamondBaseStorage {
         IDiamondWritable.FacetCut memory facetCut
     ) internal {
         unchecked {
-            require(
-                facetCut.target.isContract(),
-                'DiamondBase: REPLACE target has no code'
-            );
+            if (!facetCut.target.isContract())
+                revert DiamondBaseStorage__TargetHasNoCode();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
                 bytes32 oldFacet = l.facets[selector];
                 address oldFacetAddress = address(bytes20(oldFacet));
 
-                require(
-                    oldFacetAddress != address(0),
-                    'DiamondBase: selector not found'
-                );
-
-                require(
-                    oldFacetAddress != address(this),
-                    'DiamondBase: selector is immutable'
-                );
-
-                require(
-                    oldFacetAddress != facetCut.target,
-                    'DiamondBase: REPLACE target is identical'
-                );
+                if (oldFacetAddress == address(0))
+                    revert DiamondBaseStorage__SelectorNotFound();
+                if (oldFacetAddress == address(this))
+                    revert DiamondBaseStorage__SelectorIsImmutable();
+                if (oldFacetAddress == facetCut.target)
+                    revert DiamondBaseStorage__ReplaceTargetIsIdentical();
 
                 // replace old facet address
                 l.facets[selector] =
@@ -288,17 +276,13 @@ library DiamondBaseStorage {
     }
 
     function initialize(address target, bytes memory data) private {
-        require(
-            (target == address(0)) == (data.length == 0),
-            'DiamondBase: invalid initialization parameters'
-        );
+        if ((target == address(0)) != (data.length == 0))
+            revert DiamondBaseStorage__InvalidInitializationParameters();
 
         if (target != address(0)) {
             if (target != address(this)) {
-                require(
-                    target.isContract(),
-                    'DiamondBase: initialization target has no code'
-                );
+                if (!target.isContract())
+                    revert DiamondBaseStorage__TargetHasNoCode();
             }
 
             (bool success, ) = target.delegatecall(data);
