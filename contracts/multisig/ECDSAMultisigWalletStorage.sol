@@ -7,6 +7,11 @@ import { EnumerableSet } from '../utils/EnumerableSet.sol';
 library ECDSAMultisigWalletStorage {
     using EnumerableSet for EnumerableSet.AddressSet;
 
+    error ECDSAMultisigWalletStorage__AddSignerFailed();
+    error ECDSAMultisigWalletStorage__InsufficientSigners();
+    error ECDSAMultisigWalletStorage__RemoveSignerFailed();
+    error ECDSAMultisigWalletStorage__SignerLimitReached();
+
     struct Layout {
         uint256 quorum;
         EnumerableSet.AddressSet signers;
@@ -40,10 +45,8 @@ library ECDSAMultisigWalletStorage {
     }
 
     function setQuorum(Layout storage l, uint256 quorum) internal {
-        require(
-            quorum <= l.signers.length(),
-            'ECDSAMultisigWallet: insufficient signers to meet quorum'
-        );
+        if (quorum > l.signers.length())
+            revert ECDSAMultisigWalletStorage__InsufficientSigners();
         l.quorum = quorum;
     }
 
@@ -56,24 +59,16 @@ library ECDSAMultisigWalletStorage {
     }
 
     function addSigner(Layout storage l, address account) internal {
-        require(
-            l.signers.length() < 256,
-            'ECDSAMultisigWallet: signer limit reached'
-        );
-        require(
-            l.signers.add(account),
-            'ECDSAMultisigWallet: failed to add signer'
-        );
+        if (l.signers.length() >= 256)
+            revert ECDSAMultisigWalletStorage__SignerLimitReached();
+        if (l.signers.add(account) == false)
+            revert ECDSAMultisigWalletStorage__AddSignerFailed();
     }
 
     function removeSigner(Layout storage l, address account) internal {
-        require(
-            l.quorum <= l.signers.length() - 1,
-            'ECDSAMultisigWallet: insufficient signers to meet quorum'
-        );
-        require(
-            l.signers.remove(account),
-            'ECDSAMultisigWallet: failed to remove signer'
-        );
+        if (l.quorum > l.signers.length() - 1)
+            revert ECDSAMultisigWalletStorage__InsufficientSigners();
+        if (l.signers.remove(account) == false)
+            revert ECDSAMultisigWalletStorage__RemoveSignerFailed();
     }
 }

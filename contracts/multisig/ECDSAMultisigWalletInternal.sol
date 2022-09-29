@@ -52,10 +52,8 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
         bytes memory returndata;
 
         if (parameters.delegate) {
-            require(
-                parameters.value == msg.value,
-                'ECDSAMultisigWallet: delegatecall value must match signed amount'
-            );
+            if (parameters.value != msg.value)
+                revert ECDSAMultisigWalletInternal__AmountMismatch();
             (success, returndata) = parameters.target.delegatecall(
                 parameters.data
             );
@@ -88,10 +86,8 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
         ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
             .layout();
 
-        require(
-            signatures.length >= l.quorum,
-            'ECDSAMultisigWallet: quorum not reached'
-        );
+        if (l.quorum > signatures.length)
+            revert ECDSAMultisigWalletInternal__QuorumNotReached();
 
         uint256 signerBitmap;
 
@@ -105,24 +101,17 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
 
                 uint256 index = l.signers.indexOf(signer);
 
-                require(
-                    index < 256,
-                    'ECDSAMultisigWallet: recovered signer not authorized'
-                );
-
-                require(
-                    !l.isInvalidNonce(signer, signature.nonce),
-                    'ECDSAMultisigWallet: invalid nonce'
-                );
+                if (index >= 256)
+                    revert ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized();
+                if (l.isInvalidNonce(signer, signature.nonce))
+                    revert ECDSAMultisigWalletInternal__InvalidNonce();
 
                 l.setInvalidNonce(signer, signature.nonce);
 
                 uint256 shift = 1 << index;
 
-                require(
-                    signerBitmap & shift == 0,
-                    'ECDSAMultisigWallet: signer cannot sign more than once'
-                );
+                if (signerBitmap & shift != 0)
+                    revert ECDSAMultisigWalletInternal__SignerAlreadySigned();
 
                 signerBitmap |= shift;
             }
