@@ -7,10 +7,10 @@ pragma solidity ^0.8.8;
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library ECDSA {
-    error ECDSA__InvalidSignatureLength();
-    error ECDSA__InvalidV();
     error ECDSA__InvalidS();
     error ECDSA__InvalidSignature();
+    error ECDSA__InvalidSignatureLength();
+    error ECDSA__InvalidV();
 
     /**
      * @notice recover signer of hashed message from signature
