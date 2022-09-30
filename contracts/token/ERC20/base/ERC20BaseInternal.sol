@@ -69,6 +69,26 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
     }
 
     /**
+     * @notice decrease spend amount granted by holder to spender
+     * @param holder address on whose behalf tokens may be spent
+     * @param spender address whose allowance to decrease
+     * @param amount quantity by which to decrease allowance
+     */
+    function _decreaseAllowance(
+        address holder,
+        address spender,
+        uint256 amount
+    ) internal {
+        uint256 allowance = _allowance(holder, spender);
+
+        require(allowance >= amount, 'ERC20: insufficient allowance');
+
+        unchecked {
+            _approve(holder, spender, allowance - amount);
+        }
+    }
+
+    /**
      * @notice mint tokens for given account
      * @param account recipient of minted tokens
      * @param amount quantity of tokens minted
@@ -151,16 +171,7 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         address recipient,
         uint256 amount
     ) internal virtual returns (bool) {
-        uint256 currentAllowance = _allowance(holder, msg.sender);
-
-        require(
-            currentAllowance >= amount,
-            'ERC20: transfer amount exceeds allowance'
-        );
-
-        unchecked {
-            _approve(holder, msg.sender, currentAllowance - amount);
-        }
+        _decreaseAllowance(holder, msg.sender, amount);
 
         _transfer(holder, recipient, amount);
 
