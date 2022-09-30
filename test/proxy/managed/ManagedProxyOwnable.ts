@@ -1,3 +1,7 @@
+import {
+  MockContract,
+  deployMockContract,
+} from '@ethereum-waffle/mock-contract';
 import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
 import {
   ManagedProxyOwnableMock,
@@ -5,7 +9,6 @@ import {
   OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { MockContract, deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxyOwnable', function () {

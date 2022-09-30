@@ -1,3 +1,4 @@
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import {
@@ -6,7 +7,6 @@ import {
   ERC721BaseMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 describe('ERC721Base', function () {
