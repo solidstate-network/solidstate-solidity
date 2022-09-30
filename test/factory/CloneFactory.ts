@@ -60,7 +60,10 @@ describe('CloneFactory', function () {
 
           await expect(
             instance['__deployClone(bytes32)'](salt),
-          ).to.be.revertedWith('Factory__FailedDeployment()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
+          );
         });
       });
     });

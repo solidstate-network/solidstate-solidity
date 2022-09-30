@@ -45,7 +45,10 @@ describe('MetamorphicFactory', function () {
 
           await expect(
             instance.__deployMetamorphicContract(target, salt),
-          ).to.be.revertedWith('Factory__FailedDeployment()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
+          );
         });
       });
     });

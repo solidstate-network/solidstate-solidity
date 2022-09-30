@@ -46,8 +46,11 @@ export function describeBehaviorOfDiamondBase(
             ethers.provider,
           );
 
-          await expect(contract.callStatic['function()']()).to.be.revertedWith(
-            'DiamondBase__NoFacetForSignature()',
+          await expect(
+            contract.callStatic['function()'](),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
           );
         });
       });

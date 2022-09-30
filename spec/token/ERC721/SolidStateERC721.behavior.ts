@@ -84,8 +84,9 @@ export function describeBehaviorOfSolidStateERC721(
               .transferFrom(holder.address, holder.address, tokenId, {
                 value: ethers.constants.One,
               }),
-          ).to.be.revertedWith(
-            'SolidStateERC721__PayableTransferNotSupported()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
           );
         });
       });
@@ -106,8 +107,9 @@ export function describeBehaviorOfSolidStateERC721(
                 tokenId,
                 { value: ethers.constants.One },
               ),
-          ).to.be.revertedWith(
-            'SolidStateERC721__PayableTransferNotSupported()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
           );
         });
       });
@@ -129,8 +131,9 @@ export function describeBehaviorOfSolidStateERC721(
                 '0x',
                 { value: ethers.constants.One },
               ),
-          ).to.be.revertedWith(
-            'SolidStateERC721__PayableTransferNotSupported()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
           );
         });
       });
@@ -148,8 +151,9 @@ export function describeBehaviorOfSolidStateERC721(
               .approve(ethers.constants.AddressZero, tokenId, {
                 value: ethers.constants.One,
               }),
-          ).to.be.revertedWith(
-            'SolidStateERC721__PayableApproveNotSupported()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableApproveNotSupported',
           );
         });
       });

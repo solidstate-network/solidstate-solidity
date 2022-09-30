@@ -157,7 +157,7 @@ export function describeBehaviorOfSolidStateDiamond(
             instance
               .connect(nonOwner)
               ['setFallbackAddress(address)'](ethers.constants.AddressZero),
-          ).to.be.revertedWith('OwnableInternal_NotOwner()');
+          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
         });
       });
     });
@@ -260,7 +260,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith('DiamondBase__NoFacetForSignature()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
+          );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
@@ -322,7 +325,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith('DiamondBase__NoFacetForSignature()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
+          );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
@@ -384,7 +390,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith('DiamondBase__NoFacetForSignature()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
+          );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [

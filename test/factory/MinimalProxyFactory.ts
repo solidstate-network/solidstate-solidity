@@ -76,7 +76,10 @@ describe('MinimalProxyFactory', function () {
 
           await expect(
             instance['__deployMinimalProxy(address,bytes32)'](target, salt),
-          ).to.be.revertedWith('Factory__FailedDeployment()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
+          );
         });
       });
     });

@@ -73,7 +73,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__MintToZeroAddress',
+          );
         });
       });
     });
@@ -119,14 +122,20 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__BurnFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__BurnFromZeroAddress',
+          );
         });
 
         it('burn amount exceeds balance', async () => {
           await instance.__mint(receiver.address, 100);
           await expect(
             instance.__burn(receiver.address, 101),
-          ).to.be.revertedWith('ERC20BaseInternal__BurnExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__BurnExceedsBalance',
+          );
         });
       });
     });
@@ -175,7 +184,10 @@ describe('ERC20Base', function () {
               receiver.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__TransferFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__TransferFromZeroAddress',
+          );
         });
 
         it('receiver is the zero address', async function () {
@@ -185,7 +197,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__TransferToZeroAddress',
+          );
         });
       });
     });
@@ -234,7 +249,10 @@ describe('ERC20Base', function () {
               spender.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__ApproveFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__ApproveFromZeroAddress',
+          );
         });
 
         it('spender is the zero address', async function () {
@@ -244,7 +262,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__ApproveToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__ApproveToZeroAddress',
+          );
         });
       });
     });
@@ -315,7 +336,10 @@ describe('ERC20Base', function () {
               spender.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__ApproveFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__ApproveFromZeroAddress',
+          );
         });
 
         it('spender is the zero address', async function () {
@@ -325,7 +349,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20BaseInternal__ApproveToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__ApproveToZeroAddress',
+          );
         });
       });
     });

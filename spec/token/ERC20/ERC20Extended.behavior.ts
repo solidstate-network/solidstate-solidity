@@ -95,7 +95,10 @@ export function describeBehaviorOfERC20Extended(
                 spender.address,
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('ERC20ExtendedInternal__ExcessiveAllowance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20ExtendedInternal__ExcessiveAllowance',
+          );
         });
       });
     });
@@ -164,7 +167,10 @@ export function describeBehaviorOfERC20Extended(
                 spender.address,
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('ERC20BaseInternal__InsufficientAllowance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20BaseInternal__InsufficientAllowance',
+          );
         });
       });
     });

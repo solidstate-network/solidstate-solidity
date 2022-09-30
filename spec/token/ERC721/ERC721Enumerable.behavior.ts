@@ -48,14 +48,20 @@ export function describeBehaviorOfERC721Enumerable(
             instance.address,
             ethers.constants.Zero,
           ),
-        ).to.be.revertedWith('EnumerableSet__IndexOutOfBounds()');
+        ).to.be.revertedWithCustomError(
+          instance,
+          'EnumerableSet__IndexOutOfBounds',
+        );
 
         await expect(
           instance.callStatic.tokenOfOwnerByIndex(
             instance.address,
             ethers.constants.One,
           ),
-        ).to.be.revertedWith('EnumerableSet__IndexOutOfBounds()');
+        ).to.be.revertedWithCustomError(
+          instance,
+          'EnumerableSet__IndexOutOfBounds',
+        );
 
         await mint(instance.address, ethers.constants.One);
         await mint(instance.address, ethers.constants.Two);
@@ -82,11 +88,17 @@ export function describeBehaviorOfERC721Enumerable(
 
         await expect(
           instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero)),
-        ).to.be.revertedWith('EnumerableMap__IndexOutOfBounds()');
+        ).to.be.revertedWithCustomError(
+          instance,
+          'EnumerableMap__IndexOutOfBounds',
+        );
 
         await expect(
           instance.callStatic.tokenByIndex(index.add(ethers.constants.One)),
-        ).to.be.revertedWith('EnumerableMap__IndexOutOfBounds()');
+        ).to.be.revertedWithCustomError(
+          instance,
+          'EnumerableMap__IndexOutOfBounds',
+        );
 
         // TODO: mint to different addresses
         await mint(instance.address, ethers.constants.One);

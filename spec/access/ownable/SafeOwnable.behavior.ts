@@ -69,7 +69,7 @@ export function describeBehaviorOfSafeOwnable(
             instance
               .connect(nonOwner)
               ['transferOwnership(address)'](nonOwner.address),
-          ).to.be.revertedWith('OwnableInternal_NotOwner()');
+          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
         });
       });
     });
@@ -101,7 +101,10 @@ export function describeBehaviorOfSafeOwnable(
       it('sender is not nominee owner', async function () {
         await expect(
           instance.connect(nonOwner)['acceptOwnership()'](),
-        ).to.be.revertedWith('SafeOwnable__NotNomineeOwner()');
+        ).to.be.revertedWithCustomError(
+          instance,
+          'SafeOwnable__NotNomineeOwner',
+        );
       });
     });
   });

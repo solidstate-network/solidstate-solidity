@@ -32,8 +32,11 @@ describe('Factory', function () {
         it('contract creation fails', async function () {
           const initCode = '0xfe';
 
-          await expect(instance['__deploy(bytes)'](initCode)).to.revertedWith(
-            'Factory__FailedDeployment()',
+          await expect(
+            instance['__deploy(bytes)'](initCode),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
           );
         });
       });
@@ -70,7 +73,10 @@ describe('Factory', function () {
 
           await expect(
             instance['__deploy(bytes,bytes32)'](initCode, salt),
-          ).to.revertedWith('Factory__FailedDeployment()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
+          );
         });
 
         it('salt has already been used', async function () {
@@ -81,7 +87,10 @@ describe('Factory', function () {
 
           await expect(
             instance['__deploy(bytes,bytes32)'](initCode, salt),
-          ).to.be.revertedWith('Factory__FailedDeployment()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Factory__FailedDeployment',
+          );
         });
       });
     });

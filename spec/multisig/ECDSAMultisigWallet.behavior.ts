@@ -238,8 +238,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__QuorumNotReached()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__QuorumNotReached',
             );
           });
 
@@ -269,8 +270,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__SignerAlreadySigned()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__SignerAlreadySigned',
             );
           });
 
@@ -300,8 +302,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -337,7 +340,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWalletInternal__InvalidNonce()');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__InvalidNonce',
+            );
           });
         });
       });
@@ -476,8 +482,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__QuorumNotReached()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__QuorumNotReached',
             );
           });
 
@@ -507,8 +514,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__SignerAlreadySigned()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__SignerAlreadySigned',
             );
           });
 
@@ -538,8 +546,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -571,8 +580,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                   value: value.add(ethers.constants.One),
                 },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWalletInternal__AmountMismatch()',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__AmountMismatch',
             );
           });
 
@@ -608,7 +618,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWalletInternal__InvalidNonce()');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWalletInternal__InvalidNonce',
+            );
           });
         });
       });

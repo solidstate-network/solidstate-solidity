@@ -78,7 +78,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC1155Internal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__MintToZeroAddress',
+          );
         });
       });
     });
@@ -126,7 +129,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC1155Internal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__MintToZeroAddress',
+          );
         });
 
         it('mint is made to invalid receiver', async function () {
@@ -136,8 +142,9 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith(
-            'ERC1155Internal__ERC1155ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -182,13 +189,19 @@ describe('ERC1155Base', function () {
         it('mint is made to the zero address', async function () {
           await expect(
             instance.__mintBatch(ethers.constants.AddressZero, [], []),
-          ).to.be.revertedWith('ERC1155Internal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__MintToZeroAddress',
+          );
         });
 
         it('input array lengths do not match', async function () {
           await expect(
             instance.__mintBatch(holder.address, [ethers.constants.Zero], []),
-          ).to.be.revertedWith('ERC1155Internal__ArrayLengthMismatch()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ArrayLengthMismatch',
+          );
         });
       });
     });
@@ -232,7 +245,10 @@ describe('ERC1155Base', function () {
         it('mint is made to the zero address', async function () {
           await expect(
             instance.__safeMintBatch(ethers.constants.AddressZero, [], []),
-          ).to.be.revertedWith('ERC1155Internal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__MintToZeroAddress',
+          );
         });
 
         it('input array lengths do not match', async function () {
@@ -242,14 +258,18 @@ describe('ERC1155Base', function () {
               [ethers.constants.Zero],
               [],
             ),
-          ).to.be.revertedWith('ERC1155Internal__ArrayLengthMismatch()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ArrayLengthMismatch',
+          );
         });
 
         it('mint is made to invalid receiver', async function () {
           await expect(
             instance.__safeMintBatch(instance.address, [], []),
-          ).to.be.revertedWith(
-            'ERC1155Internal__ERC1155ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -302,7 +322,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC1155Internal__BurnFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__BurnFromZeroAddress',
+          );
         });
 
         it('burn amount exceeds balance', async function () {
@@ -312,7 +335,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.constants.One,
             ),
-          ).to.be.revertedWith('ERC1155Internal__BurnExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__BurnExceedsBalance',
+          );
         });
       });
     });
@@ -360,13 +386,19 @@ describe('ERC1155Base', function () {
         it('burn is made from the zero address', async function () {
           await expect(
             instance.__burnBatch(ethers.constants.AddressZero, [], []),
-          ).to.be.revertedWith('ERC1155Internal__BurnFromZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__BurnFromZeroAddress',
+          );
         });
 
         it('input array lengths do not match', async function () {
           await expect(
             instance.__burnBatch(holder.address, [ethers.constants.Zero], []),
-          ).to.be.revertedWith('ERC1155Internal__ArrayLengthMismatch()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ArrayLengthMismatch',
+          );
         });
 
         it('burn amount exceeds balance', async function () {
@@ -376,7 +408,10 @@ describe('ERC1155Base', function () {
               [ethers.constants.Zero],
               [ethers.constants.One],
             ),
-          ).to.be.revertedWith('ERC1155Internal__BurnExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__BurnExceedsBalance',
+          );
         });
       });
     });
@@ -460,7 +495,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferToZeroAddress',
+          );
         });
 
         it('transfer amount exceeds balance', async function () {
@@ -473,7 +511,10 @@ describe('ERC1155Base', function () {
               ethers.constants.One,
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferExceedsBalance',
+          );
         });
       });
     });
@@ -557,7 +598,10 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferToZeroAddress',
+          );
         });
 
         it('transfer amount exceeds balance', async function () {
@@ -570,7 +614,10 @@ describe('ERC1155Base', function () {
               ethers.constants.One,
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferExceedsBalance',
+          );
         });
 
         it('transfer is made to invalid receiver', async function () {
@@ -583,8 +630,9 @@ describe('ERC1155Base', function () {
               ethers.constants.Zero,
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith(
-            'ERC1155Internal__ERC1155ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -669,7 +717,10 @@ describe('ERC1155Base', function () {
               [],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferToZeroAddress',
+          );
         });
 
         it('input array lengths do not match', async function () {
@@ -682,7 +733,10 @@ describe('ERC1155Base', function () {
               [],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__ArrayLengthMismatch()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ArrayLengthMismatch',
+          );
         });
 
         it('transfer amount exceeds balance', async function () {
@@ -695,7 +749,10 @@ describe('ERC1155Base', function () {
               [ethers.constants.One],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferExceedsBalance',
+          );
         });
       });
     });
@@ -779,7 +836,10 @@ describe('ERC1155Base', function () {
               [],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferToZeroAddress',
+          );
         });
 
         it('input array lengths do not match', async function () {
@@ -792,7 +852,10 @@ describe('ERC1155Base', function () {
               [],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__ArrayLengthMismatch()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ArrayLengthMismatch',
+          );
         });
 
         it('transfer amount exceeds balance', async function () {
@@ -805,7 +868,10 @@ describe('ERC1155Base', function () {
               [ethers.constants.One],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith('ERC1155Internal__TransferExceedsBalance()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__TransferExceedsBalance',
+          );
         });
 
         it('transfer is made to invalid receiver', async function () {
@@ -818,8 +884,9 @@ describe('ERC1155Base', function () {
               [],
               ethers.utils.randomBytes(0),
             ),
-          ).to.be.revertedWith(
-            'ERC1155Internal__ERC1155ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Internal__ERC1155ReceiverNotImplemented',
           );
         });
       });

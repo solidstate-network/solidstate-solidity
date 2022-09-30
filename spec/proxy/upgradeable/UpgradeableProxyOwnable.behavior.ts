@@ -75,7 +75,7 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
             instance
               .connect(nonOwner)
               .setImplementation(ethers.constants.AddressZero),
-          ).to.be.revertedWith('OwnableInternal_NotOwner()');
+          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
         });
       });
     });

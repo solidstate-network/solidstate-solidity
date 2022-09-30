@@ -98,7 +98,10 @@ describe('ERC721Base', function () {
               ethers.constants.AddressZero,
               tokenId,
             ),
-          ).to.be.revertedWith('ERC721BaseInternal__NonExistentToken()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__NonExistentToken',
+          );
         });
       });
     });
@@ -134,7 +137,10 @@ describe('ERC721Base', function () {
         it('given account is zero address', async function () {
           await expect(
             instance.mint(ethers.constants.AddressZero, ethers.constants.Zero),
-          ).to.be.revertedWith('ERC721BaseInternal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__MintToZeroAddress',
+          );
         });
 
         it('given token already exists', async function () {
@@ -143,7 +149,10 @@ describe('ERC721Base', function () {
 
           await expect(
             instance.mint(instance.address, tokenId),
-          ).to.be.revertedWith('ERC721BaseInternal__TokenAlreadyMinted()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__TokenAlreadyMinted',
+          );
         });
       });
     });
@@ -199,7 +208,10 @@ describe('ERC721Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC721BaseInternal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__MintToZeroAddress',
+          );
         });
 
         it('given token already exists', async function () {
@@ -208,7 +220,10 @@ describe('ERC721Base', function () {
 
           await expect(
             instance['safeMint(address,uint256)'](instance.address, tokenId),
-          ).to.be.revertedWith('ERC721BaseInternal__TokenAlreadyMinted()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__TokenAlreadyMinted',
+          );
         });
 
         it('recipient is not ERC721Receiver implementer', async function () {
@@ -238,8 +253,9 @@ describe('ERC721Base', function () {
               receiverContract.address,
               ethers.constants.Two,
             ),
-          ).to.be.revertedWith(
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -310,7 +326,10 @@ describe('ERC721Base', function () {
               ethers.constants.Zero,
               '0x',
             ),
-          ).to.be.revertedWith('ERC721BaseInternal__MintToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__MintToZeroAddress',
+          );
         });
 
         it('given token already exists', async function () {
@@ -323,7 +342,10 @@ describe('ERC721Base', function () {
               tokenId,
               '0x',
             ),
-          ).to.be.revertedWith('ERC721BaseInternal__TokenAlreadyMinted()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__TokenAlreadyMinted',
+          );
         });
 
         it('recipient is not ERC721Receiver implementer', async function () {
@@ -355,8 +377,9 @@ describe('ERC721Base', function () {
               ethers.constants.Two,
               '0x',
             ),
-          ).to.be.revertedWith(
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -446,7 +469,10 @@ describe('ERC721Base', function () {
             instance
               .connect(sender)
               .transfer(ethers.constants.AddressZero, sender.address, tokenId),
-          ).to.be.revertedWith('ERC721BaseInternal__NotTokenOwner()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__NotTokenOwner',
+          );
         });
 
         it('receiver is the zero address', async function () {
@@ -457,7 +483,10 @@ describe('ERC721Base', function () {
             instance
               .connect(sender)
               .transfer(sender.address, ethers.constants.AddressZero, tokenId),
-          ).to.be.revertedWith('ERC721BaseInternal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__TransferToZeroAddress',
+          );
         });
       });
     });
@@ -524,7 +553,10 @@ describe('ERC721Base', function () {
                 tokenId,
                 '0x',
               ),
-          ).to.be.revertedWith('ERC721BaseInternal__NotTokenOwner()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__NotTokenOwner',
+          );
         });
 
         it('receiver is the zero address', async function () {
@@ -540,7 +572,10 @@ describe('ERC721Base', function () {
                 tokenId,
                 '0x',
               ),
-          ).to.be.revertedWith('ERC721BaseInternal__TransferToZeroAddress()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__TransferToZeroAddress',
+          );
         });
 
         it('recipient is not ERC721Receiver implementer', async function () {
@@ -580,8 +615,9 @@ describe('ERC721Base', function () {
               tokenId,
               '0x',
             ),
-          ).to.be.revertedWith(
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented()',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
           );
         });
       });

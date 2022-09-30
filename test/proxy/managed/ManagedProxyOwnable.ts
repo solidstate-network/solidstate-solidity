@@ -60,7 +60,10 @@ describe('ManagedProxyOwnable', function () {
 
           await expect(
             instance.callStatic.__getImplementation(),
-          ).to.be.revertedWith('ManagedProxy__FetchImplementationFailed()');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ManagedProxy__FetchImplementationFailed',
+          );
         });
       });
     });
