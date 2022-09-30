@@ -12,13 +12,11 @@ interface IERC1155BaseInternal is IERC1155Internal {
     error ERC1155Base__BalanceQueryZeroAddress();
     error ERC1155Base__NotOwnerOrApproved();
     error ERC1155Base__SelfApproval();
-    error ERC1155Internal__ArrayLengthMismatch();
-    error ERC1155Internal__BalanceQueryZeroAddress();
-    error ERC1155Internal__BurnExceedsBalance();
-    error ERC1155Internal__BurnFromZeroAddress();
-    error ERC1155Internal__ERC1155ReceiverRejected();
-    error ERC1155Internal__ERC1155ReceiverNotImplemented();
-    error ERC1155Internal__MintToZeroAddress();
-    error ERC1155Internal__TransferExceedsBalance();
-    error ERC1155Internal__TransferToZeroAddress();
+    error ERC1155Base__BurnExceedsBalance();
+    error ERC1155Base__BurnFromZeroAddress();
+    error ERC1155Base__ERC1155ReceiverRejected();
+    error ERC1155Base__ERC1155ReceiverNotImplemented();
+    error ERC1155Base__MintToZeroAddress();
+    error ERC1155Base__TransferExceedsBalance();
+    error ERC1155Base__TransferToZeroAddress();
 }

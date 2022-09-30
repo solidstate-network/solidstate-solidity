@@ -38,7 +38,7 @@ describe('Pausable', function () {
         await instance.__pause();
         await expect(instance.__pause()).to.be.revertedWithCustomError(
           instance,
-          'PausableInternal__Paused',
+          'Pausable__Paused',
         );
       });
     });
@@ -63,7 +63,7 @@ describe('Pausable', function () {
         await instance.__unpause();
         await expect(instance.__unpause()).to.be.revertedWithCustomError(
           instance,
-          'PausableInternal__NotPaused',
+          'Pausable__NotPaused',
         );
       });
     });

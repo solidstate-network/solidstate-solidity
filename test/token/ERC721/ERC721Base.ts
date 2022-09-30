@@ -100,7 +100,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__NonExistentToken',
+            'ERC721Base__NonExistentToken',
           );
         });
       });
@@ -139,7 +139,7 @@ describe('ERC721Base', function () {
             instance.mint(ethers.constants.AddressZero, ethers.constants.Zero),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__MintToZeroAddress',
+            'ERC721Base__MintToZeroAddress',
           );
         });
 
@@ -151,7 +151,7 @@ describe('ERC721Base', function () {
             instance.mint(instance.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__TokenAlreadyMinted',
+            'ERC721Base__TokenAlreadyMinted',
           );
         });
       });
@@ -210,7 +210,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__MintToZeroAddress',
+            'ERC721Base__MintToZeroAddress',
           );
         });
 
@@ -222,7 +222,7 @@ describe('ERC721Base', function () {
             instance['safeMint(address,uint256)'](instance.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__TokenAlreadyMinted',
+            'ERC721Base__TokenAlreadyMinted',
           );
         });
 
@@ -255,7 +255,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
+            'ERC721Base__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -328,7 +328,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__MintToZeroAddress',
+            'ERC721Base__MintToZeroAddress',
           );
         });
 
@@ -344,7 +344,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__TokenAlreadyMinted',
+            'ERC721Base__TokenAlreadyMinted',
           );
         });
 
@@ -379,7 +379,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
+            'ERC721Base__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -471,7 +471,7 @@ describe('ERC721Base', function () {
               .transfer(ethers.constants.AddressZero, sender.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__NotTokenOwner',
+            'ERC721Base__NotTokenOwner',
           );
         });
 
@@ -485,7 +485,7 @@ describe('ERC721Base', function () {
               .transfer(sender.address, ethers.constants.AddressZero, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__TransferToZeroAddress',
+            'ERC721Base__TransferToZeroAddress',
           );
         });
       });
@@ -555,7 +555,7 @@ describe('ERC721Base', function () {
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__NotTokenOwner',
+            'ERC721Base__NotTokenOwner',
           );
         });
 
@@ -574,7 +574,7 @@ describe('ERC721Base', function () {
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__TransferToZeroAddress',
+            'ERC721Base__TransferToZeroAddress',
           );
         });
 
@@ -617,7 +617,7 @@ describe('ERC721Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC721BaseInternal__ERC721ReceiverNotImplemented',
+            'ERC721Base__ERC721ReceiverNotImplemented',
           );
         });
       });

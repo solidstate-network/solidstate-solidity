@@ -41,12 +41,12 @@
   },
   {
     "inputs": [],
-    "name": "OwnableInternal_NotOwner",
+    "name": "Ownable__NotOwner",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "OwnableInternal_NotTransitiveOwner",
+    "name": "Ownable__NotTransitiveOwner",
     "type": "error"
   },
   {

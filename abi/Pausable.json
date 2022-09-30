@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "PausableInternal__NotPaused",
+    "name": "Pausable__NotPaused",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "PausableInternal__Paused",
+    "name": "Pausable__Paused",
     "type": "error"
   },
   {

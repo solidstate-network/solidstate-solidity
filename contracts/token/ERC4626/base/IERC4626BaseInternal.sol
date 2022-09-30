@@ -8,6 +8,6 @@ import { IERC4626Internal } from '../../../interfaces/IERC4626Internal.sol';
  * @title ERC4626 base interface
  */
 interface IERC4626BaseInternal is IERC4626Internal {
-    error ERC4626Internal__MaximumAmountExceeded();
-    error ERC4626Internal__AllowanceExceeded();
+    error ERC4626Base__MaximumAmountExceeded();
+    error ERC4626Base__AllowanceExceeded();
 }

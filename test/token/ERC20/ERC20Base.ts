@@ -75,7 +75,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__MintToZeroAddress',
+            'ERC20Base__MintToZeroAddress',
           );
         });
       });
@@ -124,7 +124,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__BurnFromZeroAddress',
+            'ERC20Base__BurnFromZeroAddress',
           );
         });
 
@@ -134,7 +134,7 @@ describe('ERC20Base', function () {
             instance.__burn(receiver.address, 101),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__BurnExceedsBalance',
+            'ERC20Base__BurnExceedsBalance',
           );
         });
       });
@@ -186,7 +186,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__TransferFromZeroAddress',
+            'ERC20Base__TransferFromZeroAddress',
           );
         });
 
@@ -199,7 +199,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__TransferToZeroAddress',
+            'ERC20Base__TransferToZeroAddress',
           );
         });
       });
@@ -251,7 +251,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__ApproveFromZeroAddress',
+            'ERC20Base__ApproveFromZeroAddress',
           );
         });
 
@@ -264,7 +264,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__ApproveToZeroAddress',
+            'ERC20Base__ApproveToZeroAddress',
           );
         });
       });
@@ -338,7 +338,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__ApproveFromZeroAddress',
+            'ERC20Base__ApproveFromZeroAddress',
           );
         });
 
@@ -351,7 +351,7 @@ describe('ERC20Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__ApproveToZeroAddress',
+            'ERC20Base__ApproveToZeroAddress',
           );
         });
       });

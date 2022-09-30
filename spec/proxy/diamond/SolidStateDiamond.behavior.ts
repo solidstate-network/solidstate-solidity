@@ -157,7 +157,7 @@ export function describeBehaviorOfSolidStateDiamond(
             instance
               .connect(nonOwner)
               ['setFallbackAddress(address)'](ethers.constants.AddressZero),
-          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
     });

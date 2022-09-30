@@ -12,13 +12,13 @@ abstract contract OwnableInternal is IOwnableInternal {
     using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
-        if (msg.sender != _owner()) revert OwnableInternal_NotOwner();
+        if (msg.sender != _owner()) revert Ownable__NotOwner();
         _;
     }
 
     modifier onlyTransitiveOwner() {
         if (msg.sender != _transitiveOwner())
-            revert OwnableInternal_NotTransitiveOwner();
+            revert Ownable__NotTransitiveOwner();
         _;
     }
 

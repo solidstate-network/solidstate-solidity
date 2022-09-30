@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "ERC4626Internal__AllowanceExceeded",
+    "name": "ERC4626Base__AllowanceExceeded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC4626Internal__MaximumAmountExceeded",
+    "name": "ERC4626Base__MaximumAmountExceeded",
     "type": "error"
   },
   {

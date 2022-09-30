@@ -8,6 +8,6 @@ import { IERC20BaseInternal } from '../base/IERC20BaseInternal.sol';
  * @title ERC20 extended internal interface
  */
 interface IERC20ExtendedInternal is IERC20BaseInternal {
-    error ERC20ExtendedInternal__ExcessiveAllowance();
-    error ERC20ExtendedInternal__InsufficientAllowance();
+    error ERC20Extended__ExcessiveAllowance();
+    error ERC20Extended__InsufficientAllowance();
 }

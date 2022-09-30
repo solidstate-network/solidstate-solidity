@@ -1,27 +1,27 @@
 [
   {
     "inputs": [],
-    "name": "ECDSAMultisigWalletInternal__AmountMismatch",
+    "name": "ECDSAMultisigWallet__AmountMismatch",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ECDSAMultisigWalletInternal__InvalidNonce",
+    "name": "ECDSAMultisigWallet__InvalidNonce",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ECDSAMultisigWalletInternal__QuorumNotReached",
+    "name": "ECDSAMultisigWallet__QuorumNotReached",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized",
+    "name": "ECDSAMultisigWallet__RecoveredSignerNotAuthorized",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ECDSAMultisigWalletInternal__SignerAlreadySigned",
+    "name": "ECDSAMultisigWallet__SignerAlreadySigned",
     "type": "error"
   }
 ]

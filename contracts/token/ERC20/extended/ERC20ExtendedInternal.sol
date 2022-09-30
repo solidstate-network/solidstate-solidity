@@ -28,7 +28,7 @@ abstract contract ERC20ExtendedInternal is
 
         unchecked {
             if (allowance > allowance + amount)
-                revert ERC20ExtendedInternal__ExcessiveAllowance();
+                revert ERC20Extended__ExcessiveAllowance();
 
             return _approve(msg.sender, spender, allowance + amount);
         }

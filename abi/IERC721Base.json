@@ -1,42 +1,27 @@
 [
   {
     "inputs": [],
-    "name": "ERC721BaseInternal__BalanceQueryZeroAddress",
+    "name": "ERC721Base__BalanceQueryZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC721BaseInternal__ERC721ReceiverNotImplemented",
+    "name": "ERC721Base__ERC721ReceiverNotImplemented",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC721BaseInternal__InvalidOwner",
+    "name": "ERC721Base__InvalidOwner",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC721BaseInternal__MintToZeroAddress",
+    "name": "ERC721Base__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC721BaseInternal__NonExistentToken",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC721BaseInternal__NotTokenOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC721BaseInternal__TokenAlreadyMinted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC721BaseInternal__TransferToZeroAddress",
+    "name": "ERC721Base__NonExistentToken",
     "type": "error"
   },
   {
@@ -46,7 +31,22 @@
   },
   {
     "inputs": [],
+    "name": "ERC721Base__NotTokenOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC721Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__TokenAlreadyMinted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__TransferToZeroAddress",
     "type": "error"
   },
   {

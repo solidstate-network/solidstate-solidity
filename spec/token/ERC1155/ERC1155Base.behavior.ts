@@ -89,7 +89,7 @@ export function describeBehaviorOfERC1155Base(
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__BalanceQueryZeroAddress',
+            'ERC1155Base__BalanceQueryZeroAddress',
           );
         });
       });
@@ -240,7 +240,7 @@ export function describeBehaviorOfERC1155Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
 
@@ -298,7 +298,7 @@ export function describeBehaviorOfERC1155Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverRejected',
+            'ERC1155Base__ERC1155ReceiverRejected',
           );
         });
       });
@@ -361,7 +361,7 @@ export function describeBehaviorOfERC1155Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
 
@@ -425,7 +425,7 @@ export function describeBehaviorOfERC1155Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverRejected',
+            'ERC1155Base__ERC1155ReceiverRejected',
           );
         });
       });

@@ -97,7 +97,7 @@ export function describeBehaviorOfERC20Extended(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20ExtendedInternal__ExcessiveAllowance',
+            'ERC20Extended__ExcessiveAllowance',
           );
         });
       });
@@ -169,7 +169,7 @@ export function describeBehaviorOfERC20Extended(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__InsufficientAllowance',
+            'ERC20Base__InsufficientAllowance',
           );
         });
       });

@@ -104,7 +104,7 @@ export function describeBehaviorOfERC20Permit(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20PermitInternal__ExpiredDeadline',
+            'ERC20Permit__ExpiredDeadline',
           );
         });
 
@@ -187,7 +187,7 @@ export function describeBehaviorOfERC20Permit(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20PermitInternal__InvalidSignature',
+            'ERC20Permit__InvalidSignature',
           );
         });
       });

@@ -69,7 +69,7 @@ export function describeBehaviorOfSafeOwnable(
             instance
               .connect(nonOwner)
               ['transferOwnership(address)'](nonOwner.address),
-          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
     });

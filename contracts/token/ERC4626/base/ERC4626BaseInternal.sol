@@ -222,7 +222,7 @@ abstract contract ERC4626BaseInternal is
         returns (uint256 shareAmount)
     {
         if (assetAmount > _maxDeposit(receiver))
-            revert ERC4626Internal__MaximumAmountExceeded();
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -241,7 +241,7 @@ abstract contract ERC4626BaseInternal is
         returns (uint256 assetAmount)
     {
         if (shareAmount > _maxMint(receiver))
-            revert ERC4626Internal__MaximumAmountExceeded();
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -261,7 +261,7 @@ abstract contract ERC4626BaseInternal is
         address owner
     ) internal virtual returns (uint256 shareAmount) {
         if (assetAmount > _maxWithdraw(owner))
-            revert ERC4626Internal__MaximumAmountExceeded();
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -281,7 +281,7 @@ abstract contract ERC4626BaseInternal is
         address owner
     ) internal virtual returns (uint256 assetAmount) {
         if (shareAmount > _maxRedeem(owner))
-            revert ERC4626Internal__MaximumAmountExceeded();
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -375,7 +375,7 @@ abstract contract ERC4626BaseInternal is
             uint256 allowance = _allowance(owner, caller);
 
             if (shareAmount > allowance)
-                revert ERC4626Internal__AllowanceExceeded();
+                revert ERC4626Base__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);

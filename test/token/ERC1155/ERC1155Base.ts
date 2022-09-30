@@ -80,7 +80,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__MintToZeroAddress',
+            'ERC1155Base__MintToZeroAddress',
           );
         });
       });
@@ -131,7 +131,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__MintToZeroAddress',
+            'ERC1155Base__MintToZeroAddress',
           );
         });
 
@@ -144,7 +144,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverNotImplemented',
+            'ERC1155Base__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -191,7 +191,7 @@ describe('ERC1155Base', function () {
             instance.__mintBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__MintToZeroAddress',
+            'ERC1155Base__MintToZeroAddress',
           );
         });
 
@@ -200,7 +200,7 @@ describe('ERC1155Base', function () {
             instance.__mintBatch(holder.address, [ethers.constants.Zero], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ArrayLengthMismatch',
+            'ERC1155Base__ArrayLengthMismatch',
           );
         });
       });
@@ -247,7 +247,7 @@ describe('ERC1155Base', function () {
             instance.__safeMintBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__MintToZeroAddress',
+            'ERC1155Base__MintToZeroAddress',
           );
         });
 
@@ -260,7 +260,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ArrayLengthMismatch',
+            'ERC1155Base__ArrayLengthMismatch',
           );
         });
 
@@ -269,7 +269,7 @@ describe('ERC1155Base', function () {
             instance.__safeMintBatch(instance.address, [], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverNotImplemented',
+            'ERC1155Base__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -324,7 +324,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__BurnFromZeroAddress',
+            'ERC1155Base__BurnFromZeroAddress',
           );
         });
 
@@ -337,7 +337,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__BurnExceedsBalance',
+            'ERC1155Base__BurnExceedsBalance',
           );
         });
       });
@@ -388,7 +388,7 @@ describe('ERC1155Base', function () {
             instance.__burnBatch(ethers.constants.AddressZero, [], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__BurnFromZeroAddress',
+            'ERC1155Base__BurnFromZeroAddress',
           );
         });
 
@@ -397,7 +397,7 @@ describe('ERC1155Base', function () {
             instance.__burnBatch(holder.address, [ethers.constants.Zero], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ArrayLengthMismatch',
+            'ERC1155Base__ArrayLengthMismatch',
           );
         });
 
@@ -410,7 +410,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__BurnExceedsBalance',
+            'ERC1155Base__BurnExceedsBalance',
           );
         });
       });
@@ -497,7 +497,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferToZeroAddress',
+            'ERC1155Base__TransferToZeroAddress',
           );
         });
 
@@ -513,7 +513,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
       });
@@ -600,7 +600,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferToZeroAddress',
+            'ERC1155Base__TransferToZeroAddress',
           );
         });
 
@@ -616,7 +616,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
 
@@ -632,7 +632,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverNotImplemented',
+            'ERC1155Base__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -719,7 +719,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferToZeroAddress',
+            'ERC1155Base__TransferToZeroAddress',
           );
         });
 
@@ -735,7 +735,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ArrayLengthMismatch',
+            'ERC1155Base__ArrayLengthMismatch',
           );
         });
 
@@ -751,7 +751,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
       });
@@ -838,7 +838,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferToZeroAddress',
+            'ERC1155Base__TransferToZeroAddress',
           );
         });
 
@@ -854,7 +854,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ArrayLengthMismatch',
+            'ERC1155Base__ArrayLengthMismatch',
           );
         });
 
@@ -870,7 +870,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__TransferExceedsBalance',
+            'ERC1155Base__TransferExceedsBalance',
           );
         });
 
@@ -886,7 +886,7 @@ describe('ERC1155Base', function () {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1155Internal__ERC1155ReceiverNotImplemented',
+            'ERC1155Base__ERC1155ReceiverNotImplemented',
           );
         });
       });

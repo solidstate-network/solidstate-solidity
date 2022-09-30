@@ -27,7 +27,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         returns (uint256)
     {
         if (account == address(0))
-            revert ERC1155Internal__BalanceQueryZeroAddress();
+            revert ERC1155Base__BalanceQueryZeroAddress();
         return ERC1155BaseStorage.layout().balances[id][account];
     }
 
@@ -45,7 +45,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        if (account == address(0)) revert ERC1155Internal__MintToZeroAddress();
+        if (account == address(0)) revert ERC1155Base__MintToZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -100,9 +100,9 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        if (account == address(0)) revert ERC1155Internal__MintToZeroAddress();
+        if (account == address(0)) revert ERC1155Base__MintToZeroAddress();
         if (ids.length != amounts.length)
-            revert ERC1155Internal__ArrayLengthMismatch();
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -162,8 +162,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         uint256 id,
         uint256 amount
     ) internal virtual {
-        if (account == address(0))
-            revert ERC1155Internal__BurnFromZeroAddress();
+        if (account == address(0)) revert ERC1155Base__BurnFromZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -180,7 +179,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
 
         unchecked {
             if (amount > balances[account])
-                revert ERC1155Internal__BurnExceedsBalance();
+                revert ERC1155Base__BurnExceedsBalance();
             balances[account] -= amount;
         }
 
@@ -198,10 +197,9 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         uint256[] memory ids,
         uint256[] memory amounts
     ) internal virtual {
-        if (account == address(0))
-            revert ERC1155Internal__BurnFromZeroAddress();
+        if (account == address(0)) revert ERC1155Base__BurnFromZeroAddress();
         if (ids.length != amounts.length)
-            revert ERC1155Internal__ArrayLengthMismatch();
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
 
@@ -212,7 +210,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
             for (uint256 i; i < ids.length; i++) {
                 uint256 id = ids[i];
                 if (amounts[i] > balances[id][account])
-                    revert ERC1155Internal__BurnExceedsBalance();
+                    revert ERC1155Base__BurnExceedsBalance();
                 balances[id][account] -= amounts[i];
             }
         }
@@ -239,7 +237,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         bytes memory data
     ) internal virtual {
         if (recipient == address(0))
-            revert ERC1155Internal__TransferToZeroAddress();
+            revert ERC1155Base__TransferToZeroAddress();
 
         _beforeTokenTransfer(
             operator,
@@ -256,7 +254,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         unchecked {
             uint256 senderBalance = balances[id][sender];
             if (amount > senderBalance)
-                revert ERC1155Internal__TransferExceedsBalance();
+                revert ERC1155Base__TransferExceedsBalance();
             balances[id][sender] = senderBalance - amount;
         }
 
@@ -313,9 +311,9 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
         bytes memory data
     ) internal virtual {
         if (recipient == address(0))
-            revert ERC1155Internal__TransferToZeroAddress();
+            revert ERC1155Base__TransferToZeroAddress();
         if (ids.length != amounts.length)
-            revert ERC1155Internal__ArrayLengthMismatch();
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
 
@@ -330,7 +328,7 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
                 uint256 senderBalance = balances[token][sender];
 
                 if (amount > senderBalance)
-                    revert ERC1155Internal__TransferExceedsBalance();
+                    revert ERC1155Base__TransferExceedsBalance();
 
                 balances[token][sender] = senderBalance - amount;
 
@@ -416,11 +414,11 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
                 )
             returns (bytes4 response) {
                 if (response != IERC1155Receiver.onERC1155Received.selector)
-                    revert ERC1155Internal__ERC1155ReceiverRejected();
+                    revert ERC1155Base__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert ERC1155Internal__ERC1155ReceiverNotImplemented();
+                revert ERC1155Base__ERC1155ReceiverNotImplemented();
             }
         }
     }
@@ -454,11 +452,11 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
             returns (bytes4 response) {
                 if (
                     response != IERC1155Receiver.onERC1155BatchReceived.selector
-                ) revert ERC1155Internal__ERC1155ReceiverRejected();
+                ) revert ERC1155Base__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert ERC1155Internal__ERC1155ReceiverNotImplemented();
+                revert ERC1155Base__ERC1155ReceiverNotImplemented();
             }
         }
     }

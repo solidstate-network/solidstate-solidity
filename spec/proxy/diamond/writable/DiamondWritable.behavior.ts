@@ -441,7 +441,7 @@ export function describeBehaviorOfDiamondWritable(
             instance
               .connect(nonOwner)
               .diamondCut([], ethers.constants.AddressZero, '0x'),
-          ).to.be.revertedWithCustomError(instance, 'OwnableInternal_NotOwner');
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
 
         it('passed FacetCutAction is invalid', async function () {

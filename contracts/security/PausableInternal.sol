@@ -10,19 +10,19 @@ import { PausableStorage } from './PausableStorage.sol';
 abstract contract PausableInternal {
     using PausableStorage for PausableStorage.Layout;
 
-    error PausableInternal__Paused();
-    error PausableInternal__NotPaused();
+    error Pausable__Paused();
+    error Pausable__NotPaused();
 
     event Paused(address account);
     event Unpaused(address account);
 
     modifier whenNotPaused() {
-        if (_paused()) revert PausableInternal__Paused();
+        if (_paused()) revert Pausable__Paused();
         _;
     }
 
     modifier whenPaused() {
-        if (!_paused()) revert PausableInternal__NotPaused();
+        if (!_paused()) revert Pausable__NotPaused();
         _;
     }
 

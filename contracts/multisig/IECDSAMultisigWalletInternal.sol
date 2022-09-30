@@ -3,11 +3,11 @@
 pragma solidity ^0.8.8;
 
 interface IECDSAMultisigWalletInternal {
-    error ECDSAMultisigWalletInternal__AmountMismatch();
-    error ECDSAMultisigWalletInternal__InvalidNonce();
-    error ECDSAMultisigWalletInternal__QuorumNotReached();
-    error ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized();
-    error ECDSAMultisigWalletInternal__SignerAlreadySigned();
+    error ECDSAMultisigWallet__AmountMismatch();
+    error ECDSAMultisigWallet__InvalidNonce();
+    error ECDSAMultisigWallet__QuorumNotReached();
+    error ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
+    error ECDSAMultisigWallet__SignerAlreadySigned();
 
     struct Parameters {
         address payable target;

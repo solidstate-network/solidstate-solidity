@@ -176,7 +176,7 @@ export function describeBehaviorOfERC20Base(
               ['transfer(address,uint256)'](holder.address, amount),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__TransferExceedsBalance',
+            'ERC20Base__TransferExceedsBalance',
           );
         });
       });
@@ -228,7 +228,7 @@ export function describeBehaviorOfERC20Base(
               ['transfer(address,uint256)'](holder.address, amount),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__TransferExceedsBalance',
+            'ERC20Base__TransferExceedsBalance',
           );
         });
 
@@ -246,7 +246,7 @@ export function describeBehaviorOfERC20Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC20BaseInternal__InsufficientAllowance',
+            'ERC20Base__InsufficientAllowance',
           );
         });
       });

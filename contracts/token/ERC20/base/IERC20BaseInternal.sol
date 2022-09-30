@@ -8,13 +8,13 @@ import { IERC20Internal } from '../../../interfaces/IERC20Internal.sol';
  * @title ERC20 base interface
  */
 interface IERC20BaseInternal is IERC20Internal {
-    error ERC20BaseInternal__ApproveFromZeroAddress();
-    error ERC20BaseInternal__ApproveToZeroAddress();
-    error ERC20BaseInternal__BurnExceedsBalance();
-    error ERC20BaseInternal__BurnFromZeroAddress();
-    error ERC20BaseInternal__InsufficientAllowance();
-    error ERC20BaseInternal__MintToZeroAddress();
-    error ERC20BaseInternal__TransferExceedsBalance();
-    error ERC20BaseInternal__TransferFromZeroAddress();
-    error ERC20BaseInternal__TransferToZeroAddress();
+    error ERC20Base__ApproveFromZeroAddress();
+    error ERC20Base__ApproveToZeroAddress();
+    error ERC20Base__BurnExceedsBalance();
+    error ERC20Base__BurnFromZeroAddress();
+    error ERC20Base__InsufficientAllowance();
+    error ERC20Base__MintToZeroAddress();
+    error ERC20Base__TransferExceedsBalance();
+    error ERC20Base__TransferFromZeroAddress();
+    error ERC20Base__TransferToZeroAddress();
 }

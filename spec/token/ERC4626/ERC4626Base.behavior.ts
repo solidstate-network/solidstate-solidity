@@ -517,7 +517,7 @@ export function describeBehaviorOfERC4626Base(
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Internal__MaximumAmountExceeded',
+            'ERC4626Base__MaximumAmountExceeded',
           );
         });
 
@@ -542,7 +542,7 @@ export function describeBehaviorOfERC4626Base(
               .withdraw(assetAmountOut, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Internal__AllowanceExceeded',
+            'ERC4626Base__AllowanceExceeded',
           );
         });
       });
@@ -686,7 +686,7 @@ export function describeBehaviorOfERC4626Base(
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Internal__MaximumAmountExceeded',
+            'ERC4626Base__MaximumAmountExceeded',
           );
         });
 
@@ -705,7 +705,7 @@ export function describeBehaviorOfERC4626Base(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Internal__AllowanceExceeded',
+            'ERC4626Base__AllowanceExceeded',
           );
         });
       });

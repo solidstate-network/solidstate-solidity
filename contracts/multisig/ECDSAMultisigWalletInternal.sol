@@ -53,7 +53,7 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
 
         if (parameters.delegate) {
             if (parameters.value != msg.value)
-                revert ECDSAMultisigWalletInternal__AmountMismatch();
+                revert ECDSAMultisigWallet__AmountMismatch();
             (success, returndata) = parameters.target.delegatecall(
                 parameters.data
             );
@@ -87,7 +87,7 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
             .layout();
 
         if (l.quorum > signatures.length)
-            revert ECDSAMultisigWalletInternal__QuorumNotReached();
+            revert ECDSAMultisigWallet__QuorumNotReached();
 
         uint256 signerBitmap;
 
@@ -102,16 +102,16 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
                 uint256 index = l.signers.indexOf(signer);
 
                 if (index >= 256)
-                    revert ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized();
+                    revert ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
                 if (l.isInvalidNonce(signer, signature.nonce))
-                    revert ECDSAMultisigWalletInternal__InvalidNonce();
+                    revert ECDSAMultisigWallet__InvalidNonce();
 
                 l.setInvalidNonce(signer, signature.nonce);
 
                 uint256 shift = 1 << index;
 
                 if (signerBitmap & shift != 0)
-                    revert ECDSAMultisigWalletInternal__SignerAlreadySigned();
+                    revert ECDSAMultisigWallet__SignerAlreadySigned();
 
                 signerBitmap |= shift;
             }

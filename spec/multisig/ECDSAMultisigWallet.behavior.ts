@@ -240,7 +240,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__QuorumNotReached',
+              'ECDSAMultisigWallet__QuorumNotReached',
             );
           });
 
@@ -272,7 +272,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__SignerAlreadySigned',
+              'ECDSAMultisigWallet__SignerAlreadySigned',
             );
           });
 
@@ -304,7 +304,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized',
+              'ECDSAMultisigWallet__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -342,7 +342,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__InvalidNonce',
+              'ECDSAMultisigWallet__InvalidNonce',
             );
           });
         });
@@ -484,7 +484,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__QuorumNotReached',
+              'ECDSAMultisigWallet__QuorumNotReached',
             );
           });
 
@@ -516,7 +516,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__SignerAlreadySigned',
+              'ECDSAMultisigWallet__SignerAlreadySigned',
             );
           });
 
@@ -548,7 +548,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__RecoveredSignerNotAuthorized',
+              'ECDSAMultisigWallet__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -582,7 +582,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__AmountMismatch',
+              'ECDSAMultisigWallet__AmountMismatch',
             );
           });
 
@@ -620,7 +620,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWalletInternal__InvalidNonce',
+              'ECDSAMultisigWallet__InvalidNonce',
             );
           });
         });

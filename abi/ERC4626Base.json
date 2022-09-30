@@ -6,57 +6,57 @@
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__ApproveFromZeroAddress",
+    "name": "ERC20Base__ApproveFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__ApproveToZeroAddress",
+    "name": "ERC20Base__ApproveToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__BurnExceedsBalance",
+    "name": "ERC20Base__BurnExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__BurnFromZeroAddress",
+    "name": "ERC20Base__BurnFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__InsufficientAllowance",
+    "name": "ERC20Base__InsufficientAllowance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__MintToZeroAddress",
+    "name": "ERC20Base__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__TransferExceedsBalance",
+    "name": "ERC20Base__TransferExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__TransferFromZeroAddress",
+    "name": "ERC20Base__TransferFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__TransferToZeroAddress",
+    "name": "ERC20Base__TransferToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC4626Internal__AllowanceExceeded",
+    "name": "ERC4626Base__AllowanceExceeded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC4626Internal__MaximumAmountExceeded",
+    "name": "ERC4626Base__MaximumAmountExceeded",
     "type": "error"
   },
   {
