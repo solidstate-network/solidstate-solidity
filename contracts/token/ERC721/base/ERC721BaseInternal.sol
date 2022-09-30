@@ -2,17 +2,17 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC721Internal } from '../../../interfaces/IERC721Internal.sol';
 import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
 import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { IERC721BaseInternal } from './IERC721BaseInternal.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 
 /**
  * @title Base ERC721 internal functions
  */
-abstract contract ERC721BaseInternal is IERC721Internal {
+abstract contract ERC721BaseInternal is IERC721BaseInternal {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;

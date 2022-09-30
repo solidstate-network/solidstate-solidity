@@ -40,6 +40,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ERC721Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__SelfApproval",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

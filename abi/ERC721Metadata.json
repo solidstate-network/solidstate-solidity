@@ -41,6 +41,16 @@
   },
   {
     "inputs": [],
+    "name": "ERC721Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC721Metadata__NonExistentToken",
     "type": "error"
   },
