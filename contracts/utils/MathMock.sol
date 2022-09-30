@@ -7,8 +7,16 @@ import { Math } from './Math.sol';
 contract MathMock {
     using Math for uint256;
 
+    function max(uint256 a, uint256 b) external pure returns (uint256) {
+        return Math.max(a, b);
+    }
+
+    function min(uint256 a, uint256 b) external pure returns (uint256) {
+        return Math.min(a, b);
+    }
+
     function average(uint256 a, uint256 b) external pure returns (uint256) {
-        return a.average(b);
+        return Math.average(a, b);
     }
 
     function sqrt(uint256 x) external pure returns (uint256) {

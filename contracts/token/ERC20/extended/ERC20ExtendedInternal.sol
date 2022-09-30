@@ -24,22 +24,13 @@ abstract contract ERC20ExtendedInternal is
         virtual
         returns (bool)
     {
-        unchecked {
-            mapping(address => uint256) storage allowances = ERC20BaseStorage
-                .layout()
-                .allowances[msg.sender];
+        uint256 allowance = _allowance(msg.sender, spender);
 
-            uint256 allowance = allowances[spender];
+        unchecked {
             if (allowance > allowance + amount)
                 revert ERC20ExtendedInternal__ExcessiveAllowance();
 
-            _approve(
-                msg.sender,
-                spender,
-                allowances[spender] = allowance + amount
-            );
-
-            return true;
+            return _approve(msg.sender, spender, allowance + amount);
         }
     }
 
@@ -54,22 +45,8 @@ abstract contract ERC20ExtendedInternal is
         virtual
         returns (bool)
     {
-        unchecked {
-            mapping(address => uint256) storage allowances = ERC20BaseStorage
-                .layout()
-                .allowances[msg.sender];
+        _decreaseAllowance(msg.sender, spender, amount);
 
-            uint256 allowance = allowances[spender];
-            if (amount > allowance)
-                revert ERC20ExtendedInternal__InsufficientAllowance();
-
-            _approve(
-                msg.sender,
-                spender,
-                allowances[spender] = allowance - amount
-            );
-
-            return true;
-        }
+        return true;
     }
 }

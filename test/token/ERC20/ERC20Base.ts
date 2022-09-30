@@ -249,6 +249,87 @@ describe('ERC20Base', function () {
       });
     });
 
+    describe('#_decreaseAllowance(address,address,uint256)', function () {
+      it('reduces approval of spender with respect to holder by given amount', async function () {
+        await instance.__approve(
+          holder.address,
+          spender.address,
+          ethers.constants.Two,
+        );
+
+        await instance
+          .connect(holder)
+          .__decreaseAllowance(
+            holder.address,
+            spender.address,
+            ethers.constants.One,
+          );
+
+        await expect(
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
+        ).to.equal(ethers.constants.One);
+
+        // decreases are cumulative
+        await instance
+          .connect(holder)
+          .__decreaseAllowance(
+            holder.address,
+            spender.address,
+            ethers.constants.One,
+          );
+
+        await expect(
+          await instance.callStatic['allowance(address,address)'](
+            holder.address,
+            spender.address,
+          ),
+        ).to.equal(ethers.constants.Zero);
+      });
+
+      it('emits Approval event', async function () {
+        await instance.__approve(
+          holder.address,
+          spender.address,
+          ethers.constants.Two,
+        );
+
+        await expect(
+          instance.__decreaseAllowance(
+            holder.address,
+            spender.address,
+            ethers.constants.One,
+          ),
+        )
+          .to.emit(instance, 'Approval')
+          .withArgs(holder.address, spender.address, ethers.constants.One);
+      });
+
+      describe('reverts if', function () {
+        it('holder is the zero address', async function () {
+          await expect(
+            instance.__decreaseAllowance(
+              ethers.constants.AddressZero,
+              spender.address,
+              ethers.constants.Zero,
+            ),
+          ).to.be.revertedWith('ERC20: approve from the zero address');
+        });
+
+        it('spender is the zero address', async function () {
+          await expect(
+            instance.__decreaseAllowance(
+              holder.address,
+              ethers.constants.AddressZero,
+              ethers.constants.Zero,
+            ),
+          ).to.be.revertedWith('ERC20: approve to the zero address');
+        });
+      });
+    });
+
     describe('#_beforeTokenTransfer(address,address,uint256)', function () {
       it('todo');
     });
