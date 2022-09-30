@@ -124,7 +124,7 @@ Publish packages via Lerna:
 yarn lerna-publish
 ```
 
-## Sponsors
+## Supporters
 
 [<img src="./premia-logo.svg" alt="premia.finance" width="200">](https://premia.finance)
 
