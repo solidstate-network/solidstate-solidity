@@ -21,12 +21,12 @@
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__MintToZeroAddress",
+    "name": "ERC20BaseInternal__InsufficientAllowance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20BaseInternal__TransferExceedsAllowance",
+    "name": "ERC20BaseInternal__MintToZeroAddress",
     "type": "error"
   },
   {

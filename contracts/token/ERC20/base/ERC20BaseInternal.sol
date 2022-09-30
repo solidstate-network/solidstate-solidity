@@ -84,7 +84,7 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
         uint256 allowance = _allowance(holder, spender);
 
         if (amount > allowance)
-            revert ERC20BaseInternal__TransferExceedsAllowance();
+            revert ERC20BaseInternal__InsufficientAllowance();
 
         unchecked {
             _approve(holder, spender, allowance - amount);

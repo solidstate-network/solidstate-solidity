@@ -315,7 +315,7 @@ describe('ERC20Base', function () {
               spender.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve from the zero address');
+          ).to.be.revertedWith('ERC20BaseInternal__ApproveFromZeroAddress()');
         });
 
         it('spender is the zero address', async function () {
@@ -325,7 +325,7 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve to the zero address');
+          ).to.be.revertedWith('ERC20BaseInternal__ApproveToZeroAddress()');
         });
       });
     });

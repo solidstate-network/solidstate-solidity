@@ -238,7 +238,7 @@ export function describeBehaviorOfERC20Base(
                 receiver.address,
                 amount,
               ),
-          ).to.be.revertedWith('ERC20BaseInternal__TransferExceedsAllowance()');
+          ).to.be.revertedWith('ERC20BaseInternal__InsufficientAllowance()');
         });
       });
     });

@@ -12,9 +12,9 @@ interface IERC20BaseInternal is IERC20Internal {
     error ERC20BaseInternal__ApproveToZeroAddress();
     error ERC20BaseInternal__BurnExceedsBalance();
     error ERC20BaseInternal__BurnFromZeroAddress();
+    error ERC20BaseInternal__InsufficientAllowance();
     error ERC20BaseInternal__MintToZeroAddress();
     error ERC20BaseInternal__TransferExceedsBalance();
-    error ERC20BaseInternal__TransferExceedsAllowance();
     error ERC20BaseInternal__TransferFromZeroAddress();
     error ERC20BaseInternal__TransferToZeroAddress();
 }
