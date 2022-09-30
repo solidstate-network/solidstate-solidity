@@ -3,13 +3,11 @@
 pragma solidity ^0.8.8;
 
 import { IERC1155 } from '../../../interfaces/IERC1155.sol';
+import { IERC1155BaseInternal } from './IERC1155BaseInternal.sol';
 
 /**
  * @title ERC1155 base interface
  */
-interface IERC1155Base is IERC1155 {
-    error ERC1155Base__ArrayLengthMismatch();
-    error ERC1155Base__BalanceQueryZeroAddress();
-    error ERC1155Base__NotOwnerOrApproved();
-    error ERC1155Base__SelfApproval();
+interface IERC1155Base is IERC1155BaseInternal, IERC1155 {
+
 }

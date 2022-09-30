@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC1155Internal } from '../../../interfaces/IERC1155Internal.sol';
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
+import { IERC1155BaseInternal } from './IERC1155BaseInternal.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
 
 /**
  * @title Base ERC1155 internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract ERC1155BaseInternal is IERC1155Internal {
+abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
     using AddressUtils for address;
 
     /**

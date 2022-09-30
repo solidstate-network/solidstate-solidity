@@ -1,6 +1,26 @@
 [
   {
     "inputs": [],
+    "name": "ERC1155Base__ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC1155Internal__ArrayLengthMismatch",
     "type": "error"
   },
