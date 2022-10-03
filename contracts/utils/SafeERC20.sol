@@ -48,7 +48,7 @@ library SafeERC20 {
         uint256 value
     ) internal {
         if ((value != 0) && (token.allowance(address(this), spender) != 0))
-            revert SafeERC20__ApproveFromNonZeroToZero();
+            revert SafeERC20__ApproveFromNonZeroToNonZero();
 
         _callOptionalReturn(
             token,
