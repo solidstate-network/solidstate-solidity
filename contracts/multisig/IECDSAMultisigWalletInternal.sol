@@ -8,6 +8,10 @@ interface IECDSAMultisigWalletInternal {
     error ECDSAMultisigWallet__QuorumNotReached();
     error ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
     error ECDSAMultisigWallet__SignerAlreadySigned();
+    error ECDSAMultisigWallet__AddSignerFailed();
+    error ECDSAMultisigWallet__InsufficientSigners();
+    error ECDSAMultisigWallet__RemoveSignerFailed();
+    error ECDSAMultisigWallet__SignerLimitReached();
 
     struct Parameters {
         address payable target;

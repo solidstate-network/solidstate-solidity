@@ -1,6 +1,16 @@
 [
   {
     "inputs": [],
+    "name": "ECDSAMultisigWallet__AddSignerFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWallet__InsufficientSigners",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ECDSAMultisigWallet__InvalidNonce",
     "type": "error"
   },
@@ -21,7 +31,17 @@
   },
   {
     "inputs": [],
+    "name": "ECDSAMultisigWallet__RemoveSignerFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ECDSAMultisigWallet__SignerAlreadySigned",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAMultisigWallet__SignerLimitReached",
     "type": "error"
   }
 ]

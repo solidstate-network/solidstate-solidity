@@ -16,6 +16,51 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
     using EnumerableSet for EnumerableSet.AddressSet;
     using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
+    function _isInvalidNonce(address account, uint256 nonce)
+        internal
+        view
+        returns (bool)
+    {
+        return ECDSAMultisigWalletStorage.layout().nonces[account][nonce];
+    }
+
+    function _setInvalidNonce(address account, uint256 nonce) internal {
+        ECDSAMultisigWalletStorage.layout().nonces[account][nonce] = true;
+    }
+
+    function _setQuorum(uint256 quorum) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (quorum > l.signers.length())
+            revert ECDSAMultisigWallet__InsufficientSigners();
+        l.quorum = quorum;
+    }
+
+    function _isSigner(address account) internal view returns (bool) {
+        return ECDSAMultisigWalletStorage.layout().signers.contains(account);
+    }
+
+    function _addSigner(address account) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (l.signers.length() >= 256)
+            revert ECDSAMultisigWallet__SignerLimitReached();
+        if (!l.signers.add(account))
+            revert ECDSAMultisigWallet__AddSignerFailed();
+    }
+
+    function _removeSigner(address account) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (l.quorum > l.signers.length() - 1)
+            revert ECDSAMultisigWallet__InsufficientSigners();
+        if (!l.signers.remove(account))
+            revert ECDSAMultisigWallet__RemoveSignerFailed();
+    }
+
     /**
      * @notice verify signatures and execute "call" or "delegatecall" with given parameters
      * @dev message parameters must be included in signature
@@ -103,10 +148,10 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
 
                 if (index >= 256)
                     revert ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
-                if (l.isInvalidNonce(signer, signature.nonce))
+                if (_isInvalidNonce(signer, signature.nonce))
                     revert ECDSAMultisigWallet__InvalidNonce();
 
-                l.setInvalidNonce(signer, signature.nonce);
+                _setInvalidNonce(signer, signature.nonce);
 
                 uint256 shift = 1 << index;
 
