@@ -1,7 +1,7 @@
 [
   {
     "inputs": [],
-    "name": "SafeERC20__ApproveFromNonZeroToZero",
+    "name": "SafeERC20__ApproveFromNonZeroToNonZero",
     "type": "error"
   },
   {
