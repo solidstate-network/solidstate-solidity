@@ -3,7 +3,7 @@
 pragma solidity ^0.8.8;
 
 interface IECDSAMultisigWalletInternal {
-    error ECDSAMultisigWallet__AmountMismatch();
+    error ECDSAMultisigWallet__MessageValueMismatch();
     error ECDSAMultisigWallet__InvalidNonce();
     error ECDSAMultisigWallet__QuorumNotReached();
     error ECDSAMultisigWallet__RecoveredSignerNotAuthorized();

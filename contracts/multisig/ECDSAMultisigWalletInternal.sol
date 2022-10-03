@@ -53,7 +53,7 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
 
         if (parameters.delegate) {
             if (parameters.value != msg.value)
-                revert ECDSAMultisigWallet__AmountMismatch();
+                revert ECDSAMultisigWallet__MessageValueMismatch();
             (success, returndata) = parameters.target.delegatecall(
                 parameters.data
             );

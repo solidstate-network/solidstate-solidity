@@ -582,7 +582,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'ECDSAMultisigWallet__AmountMismatch',
+              'ECDSAMultisigWallet__MessageValueMismatch',
             );
           });
 

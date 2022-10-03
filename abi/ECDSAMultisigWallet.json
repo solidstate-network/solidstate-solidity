@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "ECDSAMultisigWallet__AmountMismatch",
+    "name": "ECDSAMultisigWallet__InvalidNonce",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ECDSAMultisigWallet__InvalidNonce",
+    "name": "ECDSAMultisigWallet__MessageValueMismatch",
     "type": "error"
   },
   {
