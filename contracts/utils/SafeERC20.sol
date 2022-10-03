@@ -12,7 +12,7 @@ import { AddressUtils } from './AddressUtils.sol';
 library SafeERC20 {
     using AddressUtils for address;
 
-    error SafeERC20__ApproveFromNonZeroToZero();
+    error SafeERC20__ApproveFromNonZeroToNonZero();
     error SafeERC20__DecreaseAllowanceBelowZero();
     error SafeERC20__OperationFailed();
 
