@@ -122,7 +122,7 @@ library DiamondBaseStorage {
         unchecked {
             if (
                 facetCut.target != address(this) &&
-                facetCut.target.isContract() == false
+                !facetCut.target.isContract()
             ) revert DiamondBaseStorage__TargetHasNoCode();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {

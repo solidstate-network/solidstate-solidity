@@ -61,14 +61,14 @@ library ECDSAMultisigWalletStorage {
     function addSigner(Layout storage l, address account) internal {
         if (l.signers.length() >= 256)
             revert ECDSAMultisigWalletStorage__SignerLimitReached();
-        if (l.signers.add(account) == false)
+        if (!l.signers.add(account))
             revert ECDSAMultisigWalletStorage__AddSignerFailed();
     }
 
     function removeSigner(Layout storage l, address account) internal {
         if (l.quorum > l.signers.length() - 1)
             revert ECDSAMultisigWalletStorage__InsufficientSigners();
-        if (l.signers.remove(account) == false)
+        if (!l.signers.remove(account))
             revert ECDSAMultisigWalletStorage__RemoveSignerFailed();
     }
 }
