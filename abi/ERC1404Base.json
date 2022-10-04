@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "ERC1404Base__ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC20Base__ApproveFromZeroAddress",
     "type": "error"
   },
