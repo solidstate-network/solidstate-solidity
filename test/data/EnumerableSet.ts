@@ -77,7 +77,7 @@ describe('EnumerableSet', async () => {
       });
 
       describe('#length()', () => {
-        it('returns length of binary heap', async () => {
+        it('returns length of enumerable set', async () => {
           expect(await instance['length()']()).to.equal(0);
 
           await instance['add(bytes32)'](zeroBytes32);
@@ -101,16 +101,27 @@ describe('EnumerableSet', async () => {
       });
 
       describe('#add(bytes32)', () => {
-        it('adds value to heap', async () => {
+        it('adds value to set', async () => {
           await instance['add(bytes32)'](zeroBytes32);
           await instance['add(bytes32)'](oneBytes32);
           await instance['add(bytes32)'](twoBytes32);
 
-          expect(await instance['set()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             zeroBytes32,
             oneBytes32,
             twoBytes32,
           ]);
+        });
+
+        it('returns true if value is added', async () => {
+          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
+            .true;
+        });
+
+        it('returns false if value has already been added', async () => {
+          await instance.callStatic['remove(bytes32)'](zeroBytes32);
+          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
+            .be.false;
         });
       });
 
@@ -121,7 +132,7 @@ describe('EnumerableSet', async () => {
           await instance['add(bytes32)'](twoBytes32);
 
           await instance['remove(bytes32)'](zeroBytes32);
-          expect(await instance['set()']()).to.deep.equal([
+          expect(await instance['toArray()']()).to.deep.equal([
             twoBytes32,
             oneBytes32,
           ]);
@@ -139,6 +150,44 @@ describe('EnumerableSet', async () => {
         it('returns false if value is not removed', async () => {
           expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
             .be.false;
+        });
+
+        it('removes value from index mapping and array', async () => {
+          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](twoBytes32);
+
+          await instance['remove(bytes32)'](twoBytes32);
+          expect(await instance['length()']()).to.be.equal(2);
+          expect(await instance['indexOf(bytes32)'](twoBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(bytes32)'](oneBytes32);
+          expect(await instance['length()']()).to.be.equal(1);
+          expect(await instance['indexOf(bytes32)'](oneBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(bytes32)'](zeroBytes32);
+          expect(await instance['length()']()).to.be.equal(0);
+          expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+        });
+
+        describe('#toArray()', () => {
+          it('returns the set as an array', async () => {
+            await instance['add(bytes32)'](zeroBytes32);
+            await instance['add(bytes32)'](oneBytes32);
+            await instance['add(bytes32)'](twoBytes32);
+
+            expect(await instance['toArray()']()).to.deep.equal([
+              zeroBytes32,
+              oneBytes32,
+              twoBytes32,
+            ]);
+          });
         });
       });
     });
