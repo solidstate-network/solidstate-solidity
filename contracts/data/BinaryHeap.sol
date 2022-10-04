@@ -2,9 +2,15 @@
 
 pragma solidity ^0.8.8;
 
+/**
+ * @title Binary Heap implementation
+ * @dev The data strucutre is configured as a max-heap
+ */
+
 library BinaryHeap {
     struct Heap {
         bytes32[] _values;
+        // 1-indexed to allow 0 to signify nonexistence
         mapping(bytes32 => uint256) _indexes;
     }
 
@@ -116,16 +122,22 @@ library BinaryHeap {
         return uint256(_root(heap._inner));
     }
 
-    function add(Bytes32Heap storage heap, bytes32 value) internal {
-        _add(heap._inner, value);
+    function add(Bytes32Heap storage heap, bytes32 value)
+        internal
+        returns (bool)
+    {
+        return _add(heap._inner, value);
     }
 
-    function add(AddressHeap storage heap, address value) internal {
-        _add(heap._inner, bytes32(uint256(uint160(value))));
+    function add(AddressHeap storage heap, address value)
+        internal
+        returns (bool)
+    {
+        return _add(heap._inner, bytes32(uint256(uint160(value))));
     }
 
-    function add(UintHeap storage heap, uint256 value) internal {
-        _add(heap._inner, bytes32(value));
+    function add(UintHeap storage heap, uint256 value) internal returns (bool) {
+        return _add(heap._inner, bytes32(value));
     }
 
     function remove(Bytes32Heap storage heap, bytes32 value)
@@ -149,15 +161,63 @@ library BinaryHeap {
         return _remove(heap._inner, bytes32(value));
     }
 
+    function toArray(Bytes32Heap storage heap)
+        internal
+        view
+        returns (bytes32[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        bytes32[] memory arr = new bytes32[](len);
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
+        }
+
+        return arr;
+    }
+
+    function toArray(AddressHeap storage heap)
+        internal
+        view
+        returns (address[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        address[] memory arr = new address[](len);
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
+        }
+
+        return arr;
+    }
+
+    function toArray(UintHeap storage heap)
+        internal
+        view
+        returns (uint256[] memory)
+    {
+        uint256 len = _length(heap._inner);
+        uint256[] memory arr = new uint256[](len);
+
+        unchecked {
+            for (uint256 index = 0; index < len; index++) {
+                arr[index] = at(heap, index);
+            }
+        }
+
+        return arr;
+    }
+
     function _at(Heap storage heap, uint256 index)
         private
         view
         returns (bytes32)
     {
-        require(
-            heap._values.length > index,
-            'EnumerableHeap: index out of bounds'
-        );
+        require(heap._values.length > index, 'BinaryHeap: index out of bounds');
         return heap._values[index];
     }
 
@@ -187,19 +247,26 @@ library BinaryHeap {
         return _at(heap, 0);
     }
 
-    function _add(Heap storage heap, bytes32 value) private {
-        heap._values.push(value);
-        heap._indexes[value] = _length(heap);
+    function _add(Heap storage heap, bytes32 value) private returns (bool) {
+        if (!_contains(heap, value)) {
+            heap._values.push(value);
+            heap._indexes[value] = _length(heap);
+            _heapify(heap);
 
-        _heapify(heap);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function _remove(Heap storage heap, bytes32 value) private returns (bool) {
         if (_contains(heap, value)) {
-            uint256 node = _indexOf(heap, value);
+            uint256 index = _indexOf(heap, value);
 
-            // move node with last element in the tree, then remove it
-            _swap(heap, node, _length(heap) - 1);
+            unchecked {
+                // move node with last element in the tree, then remove it
+                _swap(heap, index, _length(heap) - 1);
+            }
 
             heap._values.pop();
             delete heap._indexes[value];
@@ -213,38 +280,44 @@ library BinaryHeap {
     }
 
     function _heapify(Heap storage heap) private {
-        uint256 l = _length(heap);
-        if (l > 1) {
-            uint256 i = ((l) / 2) - 1;
-            while (i >= 0) {
-                _maxHeapify(heap, l, i);
-                if (i == 0) break;
-                i--;
+        uint256 len = _length(heap);
+        if (len > 1) {
+            unchecked {
+                uint256 index = ((len) / 2) - 1;
+                while (index >= 0) {
+                    _maxHeapify(heap, len, index);
+                    if (index == 0) break;
+                    --index;
+                }
             }
         }
     }
 
     function _maxHeapify(
         Heap storage heap,
-        uint256 l,
-        uint256 i
+        uint256 len,
+        uint256 index
     ) private {
-        uint256 largest = i;
-        uint256 lt = 2 * i + 1;
-        uint256 rt = 2 * i + 2;
+        uint256 largest = index;
+        bytes32[] storage values = heap._values;
 
-        if (lt < l && heap._values[largest] < heap._values[lt]) {
-            largest = lt;
+        unchecked {
+            uint256 left = 2 * index + 1;
+            uint256 right = left + 1;
+
+            if (left < len && values[largest] < values[left]) {
+                largest = left;
+            }
+
+            if (right < len && values[largest] < values[right]) {
+                largest = right;
+            }
         }
 
-        if (rt < l && heap._values[largest] < heap._values[rt]) {
-            largest = rt;
-        }
-
-        if (largest != i) {
+        if (largest != index) {
             // swap until the largest node is the root node
-            _swap(heap, i, largest);
-            _maxHeapify(heap, l, largest);
+            _swap(heap, index, largest);
+            _maxHeapify(heap, len, largest);
         }
     }
 
@@ -253,11 +326,14 @@ library BinaryHeap {
         uint256 a,
         uint256 b
     ) private {
-        (heap._indexes[heap._values[a]], heap._indexes[heap._values[b]]) = (
-            heap._indexes[heap._values[b]],
-            heap._indexes[heap._values[a]]
-        );
+        bytes32[] storage values = heap._values;
 
-        (heap._values[a], heap._values[b]) = (heap._values[b], heap._values[a]);
+        bytes32 aValue = values[a];
+        bytes32 bValue = values[b];
+
+        (values[a], values[b]) = (bValue, aValue);
+
+        mapping(bytes32 => uint256) storage indexes = heap._indexes;
+        (indexes[aValue], indexes[bValue]) = (indexes[bValue], indexes[aValue]);
     }
 }

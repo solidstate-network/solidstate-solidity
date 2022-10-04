@@ -9,15 +9,6 @@ contract BinaryHeapUintMock {
 
     BinaryHeap.UintHeap internal uintHeap;
 
-    function heap() external view returns (uint256[] memory) {
-        uint256 l = uintHeap.length();
-        uint256[] memory arr = new uint256[](l);
-        for (uint256 i = 0; i < l; i++) {
-            arr[i] = uintHeap.at(i);
-        }
-        return arr;
-    }
-
     function at(uint256 index) external view returns (uint256) {
         return uintHeap.at(index);
     }
@@ -38,11 +29,15 @@ contract BinaryHeapUintMock {
         return uintHeap.root();
     }
 
-    function add(uint256 value) external {
-        uintHeap.add(value);
+    function add(uint256 value) external returns (bool) {
+        return uintHeap.add(value);
     }
 
     function remove(uint256 value) external returns (bool) {
         return uintHeap.remove(value);
+    }
+
+    function toArray() external view returns (uint256[] memory) {
+        return uintHeap.toArray();
     }
 }
