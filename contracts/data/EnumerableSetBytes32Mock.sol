@@ -9,15 +9,6 @@ contract EnumerableSetBytes32Mock {
 
     EnumerableSet.Bytes32Set internal bytes32Set;
 
-    function set() external view returns (bytes32[] memory) {
-        uint256 l = bytes32Set.length();
-        bytes32[] memory arr = new bytes32[](l);
-        for (uint256 i = 0; i < l; i++) {
-            arr[i] = bytes32Set.at(i);
-        }
-        return arr;
-    }
-
     function at(uint256 index) external view returns (bytes32) {
         return bytes32Set.at(index);
     }
@@ -34,11 +25,15 @@ contract EnumerableSetBytes32Mock {
         return bytes32Set.length();
     }
 
-    function add(bytes32 value) external {
-        bytes32Set.add(value);
+    function add(bytes32 value) external returns (bool) {
+        return bytes32Set.add(value);
     }
 
     function remove(bytes32 value) external returns (bool) {
         return bytes32Set.remove(value);
+    }
+
+    function toArray() external view returns (bytes32[] memory) {
+        return bytes32Set.toArray();
     }
 }
