@@ -3,17 +3,17 @@
 pragma solidity ^0.8.8;
 
 import { IERC20 } from '../../../interfaces/IERC20.sol';
-import { IERC4626Internal } from '../../../interfaces/IERC4626Internal.sol';
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { ERC20BaseInternal } from '../../ERC20/base/ERC20BaseInternal.sol';
 import { ERC20MetadataInternal } from '../../ERC20/metadata/ERC20MetadataInternal.sol';
+import { IERC4626BaseInternal } from './IERC4626BaseInternal.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base ERC4626 internal functions
  */
 abstract contract ERC4626BaseInternal is
-    IERC4626Internal,
+    IERC4626BaseInternal,
     ERC20BaseInternal,
     ERC20MetadataInternal
 {
@@ -221,10 +221,8 @@ abstract contract ERC4626BaseInternal is
         virtual
         returns (uint256 shareAmount)
     {
-        require(
-            assetAmount <= _maxDeposit(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (assetAmount > _maxDeposit(receiver))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -242,10 +240,8 @@ abstract contract ERC4626BaseInternal is
         virtual
         returns (uint256 assetAmount)
     {
-        require(
-            shareAmount <= _maxMint(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (shareAmount > _maxMint(receiver))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -264,10 +260,8 @@ abstract contract ERC4626BaseInternal is
         address receiver,
         address owner
     ) internal virtual returns (uint256 shareAmount) {
-        require(
-            assetAmount <= _maxWithdraw(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (assetAmount > _maxWithdraw(owner))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -286,10 +280,8 @@ abstract contract ERC4626BaseInternal is
         address receiver,
         address owner
     ) internal virtual returns (uint256 assetAmount) {
-        require(
-            shareAmount <= _maxRedeem(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (shareAmount > _maxRedeem(owner))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -382,10 +374,8 @@ abstract contract ERC4626BaseInternal is
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
 
-            require(
-                allowance >= shareAmount,
-                'ERC4626: share amount exceeds allowance'
-            );
+            if (shareAmount > allowance)
+                revert ERC4626Base__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);

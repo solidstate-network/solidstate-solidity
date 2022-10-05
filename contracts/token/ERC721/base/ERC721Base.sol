@@ -60,10 +60,8 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
         uint256 tokenId
     ) public payable {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
-        require(
-            _isApprovedOrOwner(msg.sender, tokenId),
-            'ERC721: transfer caller is not owner or approved'
-        );
+        if (!_isApprovedOrOwner(msg.sender, tokenId))
+            revert ERC721Base__NotOwnerOrApproved();
         _transfer(from, to, tokenId);
     }
 
@@ -88,10 +86,8 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
         bytes memory data
     ) public payable {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
-        require(
-            _isApprovedOrOwner(msg.sender, tokenId),
-            'ERC721: transfer caller is not owner or approved'
-        );
+        if (!_isApprovedOrOwner(msg.sender, tokenId))
+            revert ERC721Base__NotOwnerOrApproved();
         _safeTransfer(from, to, tokenId, data);
     }
 
@@ -101,11 +97,9 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     function approve(address operator, uint256 tokenId) public payable {
         _handleApproveMessageValue(operator, tokenId, msg.value);
         address owner = ownerOf(tokenId);
-        require(operator != owner, 'ERC721: approval to current owner');
-        require(
-            msg.sender == owner || isApprovedForAll(owner, msg.sender),
-            'ERC721: approve caller is not owner nor approved for all'
-        );
+        if (operator == owner) revert ERC721Base__SelfApproval();
+        if (msg.sender != owner && !isApprovedForAll(owner, msg.sender))
+            revert ERC721Base__NotOwnerOrApproved();
         _approve(operator, tokenId);
     }
 
@@ -113,7 +107,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
      * @inheritdoc IERC721
      */
     function setApprovalForAll(address operator, bool status) public {
-        require(operator != msg.sender, 'ERC721: approve to caller');
+        if (operator == msg.sender) revert ERC721Base__SelfApproval();
         ERC721BaseStorage.layout().operatorApprovals[msg.sender][
             operator
         ] = status;

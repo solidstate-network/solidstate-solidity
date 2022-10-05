@@ -3,6 +3,8 @@
 pragma solidity ^0.8.8;
 
 library ERC165Storage {
+    error ERC165Storage__InvalidInterfaceId();
+
     struct Layout {
         mapping(bytes4 => bool) supportedInterfaces;
     }
@@ -30,7 +32,8 @@ library ERC165Storage {
         bytes4 interfaceId,
         bool status
     ) internal {
-        require(interfaceId != 0xffffffff, 'ERC165: invalid interface id');
+        if (interfaceId == 0xffffffff)
+            revert ERC165Storage__InvalidInterfaceId();
         l.supportedInterfaces[interfaceId] = status;
     }
 }

@@ -16,31 +16,4 @@ library ERC1404BaseStorage {
             l.slot := slot
         }
     }
-
-    function setRestrictions(
-        Layout storage l,
-        uint8[] memory restrictionCodes,
-        string[] memory restrictionMessages
-    ) internal {
-        require(
-            restrictionCodes.length == restrictionMessages.length,
-            'ERC1404: restrictionCodes and restrictionMessages length mismatch'
-        );
-
-        mapping(uint8 => string) storage restrictions = l.restrictions;
-
-        unchecked {
-            for (uint256 i; i < restrictionCodes.length; i++) {
-                restrictions[restrictionCodes[i]] = restrictionMessages[i];
-            }
-        }
-    }
-
-    function getRestrictionMessage(Layout storage l, uint8 restrictionCode)
-        internal
-        view
-        returns (string memory)
-    {
-        return l.restrictions[restrictionCode];
-    }
 }
