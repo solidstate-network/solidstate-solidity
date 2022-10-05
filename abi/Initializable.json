@@ -1,17 +1,17 @@
 [
   {
     "inputs": [],
-    "name": "AlreadyInitialized",
+    "name": "Initializable__AlreadyInitialized",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "IsInitializing",
+    "name": "Initializable__IsInitializing",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotInitializing",
+    "name": "Initializable__NotInitializing",
     "type": "error"
   },
   {

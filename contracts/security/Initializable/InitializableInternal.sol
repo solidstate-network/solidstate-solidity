@@ -11,18 +11,18 @@ abstract contract InitializableInternal {
 
     event Initialized(uint8 version);
 
-    error AlreadyInitialized();
+    error Initializable__AlreadyInitialized();
 
-    error NotInitializing();
+    error Initializable__NotInitializing();
 
-    error IsInitializing();
+    error Initializable__IsInitializing();
 
     modifier initializer() {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
         bool isTopLevelCall = !l.initializing;
         bool passed = (isTopLevelCall && l.initialized < 1) ||
             (!address(this).isContract() && l.initialized == 1);
-        if (!passed) revert AlreadyInitialized();
+        if (!passed) revert Initializable__AlreadyInitialized();
         l.initialized = 1;
         if (isTopLevelCall) {
             l.initializing = true;
@@ -41,7 +41,7 @@ abstract contract InitializableInternal {
         //     'Initializable: contract is already initialized'
         // );
         bool passed = !l.initializing && l.initialized < version;
-        if (!passed) revert AlreadyInitialized();
+        if (!passed) revert Initializable__AlreadyInitialized();
         l.initialized = version;
         l.initializing = true;
         _;
@@ -51,13 +51,13 @@ abstract contract InitializableInternal {
 
     modifier onlyInitializing() {
         if (!InitializableStorage.layout().initializing)
-            revert NotInitializing();
+            revert Initializable__NotInitializing();
         _;
     }
 
     function _disableInitializers() internal virtual {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
-        if (l.initializing) revert IsInitializing();
+        if (l.initializing) revert Initializable__IsInitializing();
         if (l.initialized < type(uint8).max) {
             l.initialized = type(uint8).max;
             emit Initialized(type(uint8).max);
