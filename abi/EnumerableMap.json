@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "EnumerableMap__IndexOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EnumerableMap__NonExistentKey",
+    "type": "error"
+  }
+]

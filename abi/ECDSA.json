@@ -1,0 +1,22 @@
+[
+  {
+    "inputs": [],
+    "name": "ECDSA__InvalidS",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSA__InvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSA__InvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSA__InvalidV",
+    "type": "error"
+  }
+]

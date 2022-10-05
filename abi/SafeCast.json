@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "SafeCast__NegativeValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SafeCast__ValueDoesNotFit",
+    "type": "error"
+  }
+]

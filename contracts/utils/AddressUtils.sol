@@ -7,6 +7,10 @@ import { UintUtils } from './UintUtils.sol';
 library AddressUtils {
     using UintUtils for uint256;
 
+    error AddressUtils__InsufficientBalance();
+    error AddressUtils__NotContract();
+    error AddressUtils__SendValueFailed();
+
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
     }
@@ -21,7 +25,7 @@ library AddressUtils {
 
     function sendValue(address payable account, uint256 amount) internal {
         (bool success, ) = account.call{ value: amount }('');
-        require(success, 'AddressUtils: failed to send value');
+        if (!success) revert AddressUtils__SendValueFailed();
     }
 
     function functionCall(address target, bytes memory data)
@@ -60,10 +64,8 @@ library AddressUtils {
         uint256 value,
         string memory error
     ) internal returns (bytes memory) {
-        require(
-            address(this).balance >= value,
-            'AddressUtils: insufficient balance for call'
-        );
+        if (value > address(this).balance)
+            revert AddressUtils__InsufficientBalance();
         return _functionCallWithValue(target, data, value, error);
     }
 
@@ -73,10 +75,7 @@ library AddressUtils {
         uint256 value,
         string memory error
     ) private returns (bytes memory) {
-        require(
-            isContract(target),
-            'AddressUtils: function call to non-contract'
-        );
+        if (!isContract(target)) revert AddressUtils__NotContract();
 
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data

@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "ERC20Permit__ExpiredDeadline",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20Permit__InvalidSignature",
+    "type": "error"
+  }
+]

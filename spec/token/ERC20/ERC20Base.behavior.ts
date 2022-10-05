@@ -174,7 +174,10 @@ export function describeBehaviorOfERC20Base(
             instance
               .connect(spender)
               ['transfer(address,uint256)'](holder.address, amount),
-          ).to.be.revertedWith('ERC20: transfer amount exceeds balance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__TransferExceedsBalance',
+          );
         });
       });
     });
@@ -223,7 +226,10 @@ export function describeBehaviorOfERC20Base(
             instance
               .connect(spender)
               ['transfer(address,uint256)'](holder.address, amount),
-          ).to.be.revertedWith('ERC20: transfer amount exceeds balance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__TransferExceedsBalance',
+          );
         });
 
         it('spender not approved', async function () {
@@ -238,7 +244,10 @@ export function describeBehaviorOfERC20Base(
                 receiver.address,
                 amount,
               ),
-          ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__InsufficientAllowance',
+          );
         });
       });
     });

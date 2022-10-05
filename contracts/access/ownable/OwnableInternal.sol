@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
+import { IERC173 } from '../../interfaces/IERC173.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { IERC173 } from '../IERC173.sol';
 import { IOwnableInternal } from './IOwnableInternal.sol';
 import { OwnableStorage } from './OwnableStorage.sol';
 
@@ -12,15 +12,13 @@ abstract contract OwnableInternal is IOwnableInternal {
     using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
-        require(msg.sender == _owner(), 'Ownable: sender must be owner');
+        if (msg.sender != _owner()) revert Ownable__NotOwner();
         _;
     }
 
     modifier onlyTransitiveOwner() {
-        require(
-            msg.sender == _transitiveOwner(),
-            'Ownable: sender must be transitive owner'
-        );
+        if (msg.sender != _transitiveOwner())
+            revert Ownable__NotTransitiveOwner();
         _;
     }
 

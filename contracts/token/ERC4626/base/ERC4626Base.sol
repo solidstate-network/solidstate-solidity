@@ -2,9 +2,10 @@
 
 pragma solidity ^0.8.8;
 
+import { IERC4626 } from '../../../interfaces/IERC4626.sol';
+import { IERC4626 } from '../../../interfaces/IERC4626.sol';
 import { ERC20Base } from '../../ERC20/base/ERC20Base.sol';
 import { ERC20Metadata } from '../../ERC20/metadata/ERC20Metadata.sol';
-import { IERC4626 } from '../IERC4626.sol';
 import { IERC4626Base } from './IERC4626Base.sol';
 import { ERC4626BaseInternal } from './ERC4626BaseInternal.sol';
 

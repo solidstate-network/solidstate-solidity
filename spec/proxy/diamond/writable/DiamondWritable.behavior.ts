@@ -1,9 +1,9 @@
 import { describeBehaviorOfERC165 } from '../../../introspection';
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IDiamondWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface DiamondWritableBehaviorArgs {
@@ -99,8 +99,11 @@ export function describeBehaviorOfDiamondWritable(
           );
 
           for (let fn of functions) {
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'DiamondBase: no facet found for function signature',
+            await expect(
+              contract.callStatic[fn](),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondBase__NoFacetForSignature',
             );
           }
 
@@ -134,7 +137,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: ADD target has no code');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__TargetHasNoCode',
+            );
           });
 
           it('selector has already been added', async function () {
@@ -154,7 +160,10 @@ export function describeBehaviorOfDiamondWritable(
               instance
                 .connect(owner)
                 .diamondCut(facetCuts, ethers.constants.AddressZero, '0x'),
-            ).to.be.revertedWith('DiamondBase: selector already added');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorAlreadyAdded',
+            );
           });
         });
       });
@@ -218,7 +227,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: REPLACE target has no code');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__TargetHasNoCode',
+            );
           });
 
           it('selector has not been added', async function () {
@@ -234,7 +246,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: selector not found');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorNotFound',
+            );
           });
 
           it('selector is immutable', async function () {
@@ -264,7 +279,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: selector is immutable');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorIsImmutable',
+            );
           });
 
           it('replacement facet is same as existing facet', async function () {
@@ -294,7 +312,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: REPLACE target is identical');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__ReplaceTargetIsIdentical',
+            );
           });
         });
       });
@@ -331,8 +352,11 @@ export function describeBehaviorOfDiamondWritable(
             );
 
           for (let fn of functions) {
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
-              'DiamondBase: no facet found for function signature',
+            await expect(
+              contract.callStatic[fn](),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondBase__NoFacetForSignature',
             );
           }
         });
@@ -351,8 +375,9 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith(
-              'DiamondBase: REMOVE target must be zero address',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__RemoveTargetNotZeroAddress',
             );
           });
 
@@ -369,7 +394,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: selector not found');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorNotFound',
+            );
           });
 
           it('selector is immutable', async function () {
@@ -399,7 +427,10 @@ export function describeBehaviorOfDiamondWritable(
                 ethers.constants.AddressZero,
                 '0x',
               ),
-            ).to.be.revertedWith('DiamondBase: selector is immutable');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorIsImmutable',
+            );
           });
         });
       });
@@ -410,7 +441,7 @@ export function describeBehaviorOfDiamondWritable(
             instance
               .connect(nonOwner)
               .diamondCut([], ethers.constants.AddressZero, '0x'),
-          ).to.be.revertedWith('Ownable: sender must be owner');
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
 
         it('passed FacetCutAction is invalid', async function () {
@@ -426,7 +457,7 @@ export function describeBehaviorOfDiamondWritable(
               ethers.constants.AddressZero,
               '0x',
             ),
-          ).to.be.revertedWith("Hardhat couldn't infer the reason.");
+          ).to.be.revertedWithoutReason();
         });
 
         it('passed selector array is empty', async function () {
@@ -442,14 +473,18 @@ export function describeBehaviorOfDiamondWritable(
               ethers.constants.AddressZero,
               '0x',
             ),
-          ).to.be.revertedWith('DiamondBase: no selectors specified');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondWritable__SelectorNotSpecified',
+          );
         });
 
         it('initialization target is provided but data is not', async function () {
           await expect(
             instance.connect(owner).diamondCut([], facet.address, '0x'),
-          ).to.be.revertedWith(
-            'DiamondBase: invalid initialization parameters',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondWritable__InvalidInitializationParameters',
           );
         });
 
@@ -458,16 +493,18 @@ export function describeBehaviorOfDiamondWritable(
             instance
               .connect(owner)
               .diamondCut([], ethers.constants.AddressZero, '0x01'),
-          ).to.be.revertedWith(
-            'DiamondBase: invalid initialization parameters',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondWritable__InvalidInitializationParameters',
           );
         });
 
         it('initialization target has no code', async function () {
           await expect(
             instance.connect(owner).diamondCut([], owner.address, '0x01'),
-          ).to.be.revertedWith(
-            'DiamondBase: initialization target has no code',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondWritable__TargetHasNoCode',
           );
         });
 
