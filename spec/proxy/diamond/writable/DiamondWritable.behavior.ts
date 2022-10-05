@@ -139,7 +139,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__TargetHasNoCode',
+              'DiamondWritable__TargetHasNoCode',
             );
           });
 
@@ -162,7 +162,7 @@ export function describeBehaviorOfDiamondWritable(
                 .diamondCut(facetCuts, ethers.constants.AddressZero, '0x'),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__SelectorAlreadyAdded',
+              'DiamondWritable__SelectorAlreadyAdded',
             );
           });
         });
@@ -229,7 +229,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__TargetHasNoCode',
+              'DiamondWritable__TargetHasNoCode',
             );
           });
 
@@ -248,7 +248,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__SelectorNotFound',
+              'DiamondWritable__SelectorNotFound',
             );
           });
 
@@ -281,7 +281,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__SelectorIsImmutable',
+              'DiamondWritable__SelectorIsImmutable',
             );
           });
 
@@ -314,7 +314,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__ReplaceTargetIsIdentical',
+              'DiamondWritable__ReplaceTargetIsIdentical',
             );
           });
         });
@@ -377,7 +377,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__RemoveTargetNotZeroAddress',
+              'DiamondWritable__RemoveTargetNotZeroAddress',
             );
           });
 
@@ -396,7 +396,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__SelectorNotFound',
+              'DiamondWritable__SelectorNotFound',
             );
           });
 
@@ -429,7 +429,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBaseStorage__SelectorIsImmutable',
+              'DiamondWritable__SelectorIsImmutable',
             );
           });
         });
@@ -475,7 +475,7 @@ export function describeBehaviorOfDiamondWritable(
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBaseStorage__SelectorNotSpecified',
+            'DiamondWritable__SelectorNotSpecified',
           );
         });
 
@@ -484,7 +484,7 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut([], facet.address, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBaseStorage__InvalidInitializationParameters',
+            'DiamondWritable__InvalidInitializationParameters',
           );
         });
 
@@ -495,7 +495,7 @@ export function describeBehaviorOfDiamondWritable(
               .diamondCut([], ethers.constants.AddressZero, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBaseStorage__InvalidInitializationParameters',
+            'DiamondWritable__InvalidInitializationParameters',
           );
         });
 
@@ -504,7 +504,7 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut([], owner.address, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBaseStorage__TargetHasNoCode',
+            'DiamondWritable__TargetHasNoCode',
           );
         });
 
