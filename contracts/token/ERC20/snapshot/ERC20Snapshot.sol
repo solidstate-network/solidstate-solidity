@@ -9,6 +9,9 @@ import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInte
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
 abstract contract ERC20Snapshot is ERC20SnapshotInternal {
+    error ERC20Snapshot__SnapshotIdDoesNotExists();
+    error ERC20Snapshot__SnapshotIdIsZero();
+
     /**
      * @notice query the token balance of given account at given snapshot id
      * @param account address to query
@@ -44,13 +47,11 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
         uint256 snapshotId,
         ERC20SnapshotStorage.Snapshots storage snapshots
     ) private view returns (bool, uint256) {
-        require(snapshotId > 0, 'ERC20Snapshot: snapshot id must not be zero');
+        if (snapshotId == 0) revert ERC20Snapshot__SnapshotIdIsZero();
         ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
 
-        require(
-            snapshotId <= l.snapshotId,
-            'ERC20Snapshot: snapshot id does not exist'
-        );
+        if (snapshotId > l.snapshotId)
+            revert ERC20Snapshot__SnapshotIdDoesNotExists();
 
         uint256 index = _findUpperBound(snapshots.ids, snapshotId);
 

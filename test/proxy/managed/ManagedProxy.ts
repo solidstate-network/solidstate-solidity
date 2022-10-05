@@ -1,10 +1,13 @@
+import {
+  MockContract,
+  deployMockContract,
+} from '@ethereum-waffle/mock-contract';
 import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
 import {
   ManagedProxyMock,
   ManagedProxyMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { MockContract, deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxy', function () {
@@ -62,7 +65,10 @@ describe('ManagedProxy', function () {
 
           await expect(
             instance.callStatic.__getImplementation(),
-          ).to.be.revertedWith('ManagedProxy: failed to fetch implementation');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ManagedProxy__FetchImplementationFailed',
+          );
         });
       });
     });

@@ -38,10 +38,8 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
         virtual
         returns (string memory)
     {
-        require(
-            ERC721BaseStorage.layout().exists(tokenId),
-            'ERC721Metadata: URI query for nonexistent token'
-        );
+        if (!ERC721BaseStorage.layout().exists(tokenId))
+            revert ERC721Metadata__NonExistentToken();
 
         ERC721MetadataStorage.Layout storage l = ERC721MetadataStorage.layout();
 

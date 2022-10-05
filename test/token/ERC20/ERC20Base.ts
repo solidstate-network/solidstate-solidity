@@ -73,7 +73,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: mint to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__MintToZeroAddress',
+          );
         });
       });
     });
@@ -119,14 +122,20 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: burn from the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__BurnFromZeroAddress',
+          );
         });
 
         it('burn amount exceeds balance', async () => {
           await instance.__mint(receiver.address, 100);
           await expect(
             instance.__burn(receiver.address, 101),
-          ).to.be.revertedWith('ERC20: burn amount exceeds balance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__BurnExceedsBalance',
+          );
         });
       });
     });
@@ -175,7 +184,10 @@ describe('ERC20Base', function () {
               receiver.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: transfer from the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__TransferFromZeroAddress',
+          );
         });
 
         it('receiver is the zero address', async function () {
@@ -185,7 +197,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: transfer to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__TransferToZeroAddress',
+          );
         });
       });
     });
@@ -234,7 +249,10 @@ describe('ERC20Base', function () {
               spender.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve from the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__ApproveFromZeroAddress',
+          );
         });
 
         it('spender is the zero address', async function () {
@@ -244,7 +262,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__ApproveToZeroAddress',
+          );
         });
       });
     });
@@ -315,7 +336,10 @@ describe('ERC20Base', function () {
               spender.address,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve from the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__ApproveFromZeroAddress',
+          );
         });
 
         it('spender is the zero address', async function () {
@@ -325,7 +349,10 @@ describe('ERC20Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC20: approve to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__ApproveToZeroAddress',
+          );
         });
       });
     });

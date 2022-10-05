@@ -1,10 +1,10 @@
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   AddressUtilsMock,
   AddressUtilsMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { BytesLike, BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
@@ -67,7 +67,10 @@ describe('AddressUtils', async () => {
 
           await expect(
             instance.connect(deployer).sendValue(mock.address, value),
-          ).to.be.revertedWith('AddressUtils: failed to send value');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__SendValueFailed',
+          );
         });
       });
     });
@@ -104,7 +107,10 @@ describe('AddressUtils', async () => {
               ethers.constants.AddressZero,
               '0x',
             ),
-          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -176,7 +182,10 @@ describe('AddressUtils', async () => {
               '0x',
               '',
             ),
-          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -282,7 +291,10 @@ describe('AddressUtils', async () => {
               '0x',
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
         });
 
         it('contract balance is insufficient for the call', async () => {
@@ -294,7 +306,10 @@ describe('AddressUtils', async () => {
                 '0x',
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('AddressUtils: insufficient balance for call');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__InsufficientBalance',
+          );
         });
 
         it('target function is not payable and value is included', async () => {
@@ -365,7 +380,9 @@ describe('AddressUtils', async () => {
                 '0x',
                 ethers.constants.Zero,
               ),
-          ).to.be.revertedWith('AddressUtils: failed low-level call');
+          ).to.be.revertedWith(
+            'AddressUtils: failed low-level call with value',
+          );
         });
       });
     });
@@ -440,7 +457,10 @@ describe('AddressUtils', async () => {
               ethers.constants.Zero,
               '',
             ),
-          ).to.be.revertedWith('AddressUtils: function call to non-contract');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
         });
 
         it('contract balance is insufficient for the call', async () => {
@@ -453,7 +473,10 @@ describe('AddressUtils', async () => {
                 ethers.constants.One,
                 '',
               ),
-          ).to.be.revertedWith('AddressUtils: insufficient balance for call');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__InsufficientBalance',
+          );
         });
 
         it('target function is not payable and value is included', async () => {

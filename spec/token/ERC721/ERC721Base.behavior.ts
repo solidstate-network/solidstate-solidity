@@ -1,9 +1,9 @@
 import { describeBehaviorOfERC165 } from '../../introspection';
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC721Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
@@ -70,7 +70,10 @@ export function describeBehaviorOfERC721Base(
         it('queried address is the zero address', async function () {
           await expect(
             instance.callStatic.balanceOf(ethers.constants.AddressZero),
-          ).to.be.revertedWith('ERC721: balance query for the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__BalanceQueryZeroAddress',
+          );
         });
       });
     });
@@ -89,7 +92,10 @@ export function describeBehaviorOfERC721Base(
         it('token does not exist', async function () {
           await expect(
             instance.callStatic.ownerOf(ethers.constants.Two),
-          ).to.be.revertedWith('EnumerableMap: nonexistent key');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'EnumerableMap__NonExistentKey',
+          );
         });
 
         it('owner is zero address');
@@ -122,7 +128,10 @@ export function describeBehaviorOfERC721Base(
         it('token does not exist', async function () {
           await expect(
             instance.callStatic.getApproved(ethers.constants.Two),
-          ).to.be.revertedWith('ERC721: approved query for nonexistent token');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__NonExistentToken',
+          );
         });
       });
     });
@@ -253,8 +262,9 @@ export function describeBehaviorOfERC721Base(
                 ethers.constants.AddressZero,
                 tokenId,
               ),
-          ).to.be.revertedWith(
-            'ERC721: transfer caller is not owner or approved',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__NotOwnerOrApproved',
           );
         });
 
@@ -272,7 +282,10 @@ export function describeBehaviorOfERC721Base(
                 ethers.constants.AddressZero,
                 tokenId,
               ),
-          ).to.be.revertedWith('ERC721: transfer to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__TransferToZeroAddress',
+          );
         });
       });
     });
@@ -354,8 +367,9 @@ export function describeBehaviorOfERC721Base(
                 ethers.constants.AddressZero,
                 tokenId,
               ),
-          ).to.be.revertedWith(
-            'ERC721: transfer caller is not owner or approved',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__NotOwnerOrApproved',
           );
         });
 
@@ -373,7 +387,10 @@ export function describeBehaviorOfERC721Base(
                 ethers.constants.AddressZero,
                 tokenId,
               ),
-          ).to.be.revertedWith('ERC721: transfer to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__TransferToZeroAddress',
+          );
         });
 
         it('recipient is not ERC721Receiver implementer', async function () {
@@ -415,8 +432,9 @@ export function describeBehaviorOfERC721Base(
                 receiverContract.address,
                 tokenId,
               ),
-          ).to.be.revertedWith(
-            'ERC721: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -503,8 +521,9 @@ export function describeBehaviorOfERC721Base(
                 tokenId,
                 '0x',
               ),
-          ).to.be.revertedWith(
-            'ERC721: transfer caller is not owner or approved',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__NotOwnerOrApproved',
           );
         });
 
@@ -523,7 +542,10 @@ export function describeBehaviorOfERC721Base(
                 tokenId,
                 '0x',
               ),
-          ).to.be.revertedWith('ERC721: transfer to the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__TransferToZeroAddress',
+          );
         });
 
         it('recipient is not ERC721Receiver implementer', async function () {
@@ -567,8 +589,9 @@ export function describeBehaviorOfERC721Base(
                 tokenId,
                 '0x',
               ),
-          ).to.be.revertedWith(
-            'ERC721: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -635,7 +658,7 @@ export function describeBehaviorOfERC721Base(
 
           await expect(
             instance.connect(holder).approve(holder.address, tokenId),
-          ).to.be.revertedWith('ERC721: approval to current owner');
+          ).to.be.revertedWithCustomError(instance, 'ERC721Base__SelfApproval');
         });
 
         it('sender is not owner of given token', async function () {
@@ -644,8 +667,9 @@ export function describeBehaviorOfERC721Base(
 
           await expect(
             instance.connect(receiver).approve(receiver.address, tokenId),
-          ).to.be.revertedWith(
-            'ERC721: approve caller is not owner nor approved for all',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC721Base__NotOwnerOrApproved',
           );
         });
       });
@@ -693,7 +717,7 @@ export function describeBehaviorOfERC721Base(
         it('given operator is sender', async function () {
           await expect(
             instance.connect(holder).setApprovalForAll(holder.address, true),
-          ).to.be.revertedWith('ERC721: approve to caller');
+          ).to.be.revertedWithCustomError(instance, 'ERC721Base__SelfApproval');
         });
       });
     });

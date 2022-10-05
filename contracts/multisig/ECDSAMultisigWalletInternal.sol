@@ -16,6 +16,51 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
     using EnumerableSet for EnumerableSet.AddressSet;
     using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
+    function _isInvalidNonce(address account, uint256 nonce)
+        internal
+        view
+        returns (bool)
+    {
+        return ECDSAMultisigWalletStorage.layout().nonces[account][nonce];
+    }
+
+    function _setInvalidNonce(address account, uint256 nonce) internal {
+        ECDSAMultisigWalletStorage.layout().nonces[account][nonce] = true;
+    }
+
+    function _setQuorum(uint256 quorum) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (quorum > l.signers.length())
+            revert ECDSAMultisigWallet__InsufficientSigners();
+        l.quorum = quorum;
+    }
+
+    function _isSigner(address account) internal view returns (bool) {
+        return ECDSAMultisigWalletStorage.layout().signers.contains(account);
+    }
+
+    function _addSigner(address account) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (l.signers.length() >= 256)
+            revert ECDSAMultisigWallet__SignerLimitReached();
+        if (!l.signers.add(account))
+            revert ECDSAMultisigWallet__AddSignerFailed();
+    }
+
+    function _removeSigner(address account) internal {
+        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+            .layout();
+
+        if (l.quorum > l.signers.length() - 1)
+            revert ECDSAMultisigWallet__InsufficientSigners();
+        if (!l.signers.remove(account))
+            revert ECDSAMultisigWallet__RemoveSignerFailed();
+    }
+
     /**
      * @notice verify signatures and execute "call" or "delegatecall" with given parameters
      * @dev message parameters must be included in signature
@@ -52,10 +97,8 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
         bytes memory returndata;
 
         if (parameters.delegate) {
-            require(
-                parameters.value == msg.value,
-                'ECDSAMultisigWallet: delegatecall value must match signed amount'
-            );
+            if (parameters.value != msg.value)
+                revert ECDSAMultisigWallet__MessageValueMismatch();
             (success, returndata) = parameters.target.delegatecall(
                 parameters.data
             );
@@ -88,10 +131,8 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
         ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
             .layout();
 
-        require(
-            signatures.length >= l.quorum,
-            'ECDSAMultisigWallet: quorum not reached'
-        );
+        if (l.quorum > signatures.length)
+            revert ECDSAMultisigWallet__QuorumNotReached();
 
         uint256 signerBitmap;
 
@@ -105,24 +146,17 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
 
                 uint256 index = l.signers.indexOf(signer);
 
-                require(
-                    index < 256,
-                    'ECDSAMultisigWallet: recovered signer not authorized'
-                );
+                if (index >= 256)
+                    revert ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
+                if (_isInvalidNonce(signer, signature.nonce))
+                    revert ECDSAMultisigWallet__InvalidNonce();
 
-                require(
-                    !l.isInvalidNonce(signer, signature.nonce),
-                    'ECDSAMultisigWallet: invalid nonce'
-                );
-
-                l.setInvalidNonce(signer, signature.nonce);
+                _setInvalidNonce(signer, signature.nonce);
 
                 uint256 shift = 1 << index;
 
-                require(
-                    signerBitmap & shift == 0,
-                    'ECDSAMultisigWallet: signer cannot sign more than once'
-                );
+                if (signerBitmap & shift != 0)
+                    revert ECDSAMultisigWallet__SignerAlreadySigned();
 
                 signerBitmap |= shift;
             }

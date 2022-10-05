@@ -5,11 +5,16 @@ pragma solidity ^0.8.8;
 import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondWritable } from './IDiamondWritable.sol';
+import { DiamondWritableInternal } from './DiamondWritableInternal.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract
  */
-abstract contract DiamondWritable is IDiamondWritable, OwnableInternal {
+abstract contract DiamondWritable is
+    IDiamondWritable,
+    DiamondWritableInternal,
+    OwnableInternal
+{
     using DiamondBaseStorage for DiamondBaseStorage.Layout;
 
     /**
@@ -20,6 +25,6 @@ abstract contract DiamondWritable is IDiamondWritable, OwnableInternal {
         address target,
         bytes calldata data
     ) external onlyOwner {
-        DiamondBaseStorage.layout().diamondCut(facetCuts, target, data);
+        _diamondCut(facetCuts, target, data);
     }
 }

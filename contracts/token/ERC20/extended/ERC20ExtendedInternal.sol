@@ -27,10 +27,8 @@ abstract contract ERC20ExtendedInternal is
         uint256 allowance = _allowance(msg.sender, spender);
 
         unchecked {
-            require(
-                allowance + amount >= allowance,
-                'ERC20Extended: excessive allowance'
-            );
+            if (allowance > allowance + amount)
+                revert ERC20Extended__ExcessiveAllowance();
 
             return _approve(msg.sender, spender, allowance + amount);
         }
