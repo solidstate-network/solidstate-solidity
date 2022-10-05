@@ -2,17 +2,17 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC721Internal } from '../../../interfaces/IERC721Internal.sol';
 import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
 import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { IERC721BaseInternal } from './IERC721BaseInternal.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 
 /**
  * @title Base ERC721 internal functions
  */
-abstract contract ERC721BaseInternal is IERC721Internal {
+abstract contract ERC721BaseInternal is IERC721BaseInternal {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
@@ -24,16 +24,13 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         virtual
         returns (uint256)
     {
-        require(
-            account != address(0),
-            'ERC721: balance query for the zero address'
-        );
+        if (account == address(0)) revert ERC721Base__BalanceQueryZeroAddress();
         return ERC721BaseStorage.layout().holderTokens[account].length();
     }
 
     function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
         address owner = ERC721BaseStorage.layout().tokenOwners.get(tokenId);
-        require(owner != address(0), 'ERC721: invalid owner');
+        if (owner == address(0)) revert ERC721Base__InvalidOwner();
         return owner;
     }
 
@@ -45,10 +42,7 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     {
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
 
-        require(
-            l.exists(tokenId),
-            'ERC721: approved query for nonexistent token'
-        );
+        if (!l.exists(tokenId)) revert ERC721Base__NonExistentToken();
 
         return l.tokenApprovals[tokenId];
     }
@@ -68,10 +62,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         virtual
         returns (bool)
     {
-        require(
-            ERC721BaseStorage.layout().exists(tokenId),
-            'ERC721: query for nonexistent token'
-        );
+        if (!ERC721BaseStorage.layout().exists(tokenId))
+            revert ERC721Base__NonExistentToken();
 
         address owner = _ownerOf(tokenId);
 
@@ -81,11 +73,11 @@ abstract contract ERC721BaseInternal is IERC721Internal {
     }
 
     function _mint(address to, uint256 tokenId) internal virtual {
-        require(to != address(0), 'ERC721: mint to the zero address');
+        if (to == address(0)) revert ERC721Base__MintToZeroAddress();
 
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
 
-        require(!l.exists(tokenId), 'ERC721: token already minted');
+        if (l.exists(tokenId)) revert ERC721Base__TokenAlreadyMinted();
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
@@ -105,10 +97,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         bytes memory data
     ) internal virtual {
         _mint(to, tokenId);
-        require(
-            _checkOnERC721Received(address(0), to, tokenId, data),
-            'ERC721: transfer to non ERC721Receiver implementer'
-        );
+        if (!_checkOnERC721Received(address(0), to, tokenId, data))
+            revert ERC721Base__ERC721ReceiverNotImplemented();
     }
 
     function _burn(uint256 tokenId) internal virtual {
@@ -130,11 +120,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         address to,
         uint256 tokenId
     ) internal virtual {
-        require(
-            _ownerOf(tokenId) == from,
-            'ERC721: transfer of token that is not own'
-        );
-        require(to != address(0), 'ERC721: transfer to the zero address');
+        if (_ownerOf(tokenId) != from) revert ERC721Base__NotTokenOwner();
+        if (to == address(0)) revert ERC721Base__TransferToZeroAddress();
 
         _beforeTokenTransfer(from, to, tokenId);
 
@@ -155,10 +142,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         bytes memory data
     ) internal virtual {
         _transfer(from, to, tokenId);
-        require(
-            _checkOnERC721Received(from, to, tokenId, data),
-            'ERC721: transfer to non ERC721Receiver implementer'
-        );
+        if (!_checkOnERC721Received(from, to, tokenId, data))
+            revert ERC721Base__ERC721ReceiverNotImplemented();
     }
 
     function _approve(address operator, uint256 tokenId) internal virtual {

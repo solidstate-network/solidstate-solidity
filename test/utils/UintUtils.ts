@@ -89,7 +89,10 @@ describe('UintUtils', function () {
               ethers.BigNumber.from('100'),
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('UintUtils: hex length insufficient');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientHexLength',
+          );
         });
       });
     });

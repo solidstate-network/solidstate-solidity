@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "Factory__FailedDeployment",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "getMetamorphicImplementation",
     "outputs": [
       {

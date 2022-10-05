@@ -1,8 +1,8 @@
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signData } from '@solidstate/library';
 import { IECDSAMultisigWallet } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
@@ -238,7 +238,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__QuorumNotReached',
+            );
           });
 
           it('duplicate signer is found', async function () {
@@ -267,8 +270,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__SignerAlreadySigned',
             );
           });
 
@@ -298,8 +302,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -335,7 +340,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__InvalidNonce',
+            );
           });
         });
       });
@@ -474,7 +482,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures.slice(0, quorum.toNumber() - 1),
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: quorum not reached');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__QuorumNotReached',
+            );
           });
 
           it('duplicate signer is found', async function () {
@@ -503,8 +514,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: signer cannot sign more than once',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__SignerAlreadySigned',
             );
           });
 
@@ -534,8 +546,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: recovered signer not authorized',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__RecoveredSignerNotAuthorized',
             );
           });
 
@@ -567,8 +580,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
                   value: value.add(ethers.constants.One),
                 },
               ),
-            ).to.be.revertedWith(
-              'ECDSAMultisigWallet: delegatecall value must match signed amount',
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__MessageValueMismatch',
             );
           });
 
@@ -604,7 +618,10 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 signatures,
                 { value },
               ),
-            ).to.be.revertedWith('ECDSAMultisigWallet: invalid nonce');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'ECDSAMultisigWallet__InvalidNonce',
+            );
           });
         });
       });

@@ -27,7 +27,7 @@ abstract contract SolidStateERC721 is
         uint256 tokenId,
         uint256 value
     ) internal virtual override {
-        require(value == 0, 'ERC721: payable approve calls not supported');
+        if (value > 0) revert SolidStateERC721__PayableApproveNotSupported();
         super._handleApproveMessageValue(operator, tokenId, value);
     }
 
@@ -41,7 +41,7 @@ abstract contract SolidStateERC721 is
         uint256 tokenId,
         uint256 value
     ) internal virtual override {
-        require(value == 0, 'ERC721: payable transfer calls not supported');
+        if (value > 0) revert SolidStateERC721__PayableTransferNotSupported();
         super._handleTransferMessageValue(from, to, tokenId, value);
     }
 
