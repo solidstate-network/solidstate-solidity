@@ -12,6 +12,10 @@ import { AddressUtils } from './AddressUtils.sol';
 library SafeERC20 {
     using AddressUtils for address;
 
+    error SafeERC20__ApproveFromNonZeroToNonZero();
+    error SafeERC20__DecreaseAllowanceBelowZero();
+    error SafeERC20__OperationFailed();
+
     function safeTransfer(
         IERC20 token,
         address to,
@@ -43,10 +47,8 @@ library SafeERC20 {
         address spender,
         uint256 value
     ) internal {
-        require(
-            (value == 0) || (token.allowance(address(this), spender) == 0),
-            'SafeERC20: approve from non-zero to non-zero allowance'
-        );
+        if ((value != 0) && (token.allowance(address(this), spender) != 0))
+            revert SafeERC20__ApproveFromNonZeroToNonZero();
 
         _callOptionalReturn(
             token,
@@ -77,10 +79,8 @@ library SafeERC20 {
     ) internal {
         unchecked {
             uint256 oldAllowance = token.allowance(address(this), spender);
-            require(
-                oldAllowance >= value,
-                'SafeERC20: decreased allowance below zero'
-            );
+            if (oldAllowance < value)
+                revert SafeERC20__DecreaseAllowanceBelowZero();
             uint256 newAllowance = oldAllowance - value;
             _callOptionalReturn(
                 token,
@@ -105,10 +105,8 @@ library SafeERC20 {
         );
 
         if (returndata.length > 0) {
-            require(
-                abi.decode(returndata, (bool)),
-                'SafeERC20: ERC20 operation did not succeed'
-            );
+            if (!abi.decode(returndata, (bool)))
+                revert SafeERC20__OperationFailed();
         }
     }
 }

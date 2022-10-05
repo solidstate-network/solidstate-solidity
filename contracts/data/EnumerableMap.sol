@@ -7,6 +7,9 @@ pragma solidity ^0.8.8;
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableMap {
+    error EnumerableMap__IndexOutOfBounds();
+    error EnumerableMap__NonExistentKey();
+
     struct MapEntry {
         bytes32 _key;
         bytes32 _value;
@@ -141,10 +144,8 @@ library EnumerableMap {
         view
         returns (bytes32, bytes32)
     {
-        require(
-            map._entries.length > index,
-            'EnumerableMap: index out of bounds'
-        );
+        if (index >= map._entries.length)
+            revert EnumerableMap__IndexOutOfBounds();
 
         MapEntry storage entry = map._entries[index];
         return (entry._key, entry._value);
@@ -164,7 +165,7 @@ library EnumerableMap {
 
     function _get(Map storage map, bytes32 key) private view returns (bytes32) {
         uint256 keyIndex = map._indexes[key];
-        require(keyIndex != 0, 'EnumerableMap: nonexistent key');
+        if (keyIndex == 0) revert EnumerableMap__NonExistentKey();
         unchecked {
             return map._entries[keyIndex - 1]._value;
         }

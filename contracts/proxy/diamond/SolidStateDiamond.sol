@@ -71,11 +71,11 @@ abstract contract SolidStateDiamond is
 
         facetCuts[0] = FacetCut({
             target: address(this),
-            action: IDiamondWritable.FacetCutAction.ADD,
+            action: FacetCutAction.ADD,
             selectors: selectors
         });
 
-        DiamondBaseStorage.layout().diamondCut(facetCuts, address(0), '');
+        _diamondCut(facetCuts, address(0), '');
 
         // set owner
 

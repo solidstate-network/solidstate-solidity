@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC1155Internal } from '../../../interfaces/IERC1155Internal.sol';
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
+import { IERC1155BaseInternal } from './IERC1155BaseInternal.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
 
 /**
  * @title Base ERC1155 internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract ERC1155BaseInternal is IERC1155Internal {
+abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
     using AddressUtils for address;
 
     /**
@@ -26,10 +26,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         virtual
         returns (uint256)
     {
-        require(
-            account != address(0),
-            'ERC1155: balance query for the zero address'
-        );
+        if (account == address(0))
+            revert ERC1155Base__BalanceQueryZeroAddress();
         return ERC1155BaseStorage.layout().balances[id][account];
     }
 
@@ -47,7 +45,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        require(account != address(0), 'ERC1155: mint to the zero address');
+        if (account == address(0)) revert ERC1155Base__MintToZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -102,11 +100,9 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        require(account != address(0), 'ERC1155: mint to the zero address');
-        require(
-            ids.length == amounts.length,
-            'ERC1155: ids and amounts length mismatch'
-        );
+        if (account == address(0)) revert ERC1155Base__MintToZeroAddress();
+        if (ids.length != amounts.length)
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -166,7 +162,7 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256 id,
         uint256 amount
     ) internal virtual {
-        require(account != address(0), 'ERC1155: burn from the zero address');
+        if (account == address(0)) revert ERC1155Base__BurnFromZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -182,10 +178,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             .balances[id];
 
         unchecked {
-            require(
-                balances[account] >= amount,
-                'ERC1155: burn amount exceeds balance'
-            );
+            if (amount > balances[account])
+                revert ERC1155Base__BurnExceedsBalance();
             balances[account] -= amount;
         }
 
@@ -203,11 +197,9 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory ids,
         uint256[] memory amounts
     ) internal virtual {
-        require(account != address(0), 'ERC1155: burn from the zero address');
-        require(
-            ids.length == amounts.length,
-            'ERC1155: ids and amounts length mismatch'
-        );
+        if (account == address(0)) revert ERC1155Base__BurnFromZeroAddress();
+        if (ids.length != amounts.length)
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
 
@@ -217,10 +209,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         unchecked {
             for (uint256 i; i < ids.length; i++) {
                 uint256 id = ids[i];
-                require(
-                    balances[id][account] >= amounts[i],
-                    'ERC1155: burn amount exceeds balance'
-                );
+                if (amounts[i] > balances[id][account])
+                    revert ERC1155Base__BurnExceedsBalance();
                 balances[id][account] -= amounts[i];
             }
         }
@@ -246,10 +236,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        require(
-            recipient != address(0),
-            'ERC1155: transfer to the zero address'
-        );
+        if (recipient == address(0))
+            revert ERC1155Base__TransferToZeroAddress();
 
         _beforeTokenTransfer(
             operator,
@@ -265,10 +253,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
 
         unchecked {
             uint256 senderBalance = balances[id][sender];
-            require(
-                senderBalance >= amount,
-                'ERC1155: insufficient balances for transfer'
-            );
+            if (amount > senderBalance)
+                revert ERC1155Base__TransferExceedsBalance();
             balances[id][sender] = senderBalance - amount;
         }
 
@@ -324,14 +310,10 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        require(
-            recipient != address(0),
-            'ERC1155: transfer to the zero address'
-        );
-        require(
-            ids.length == amounts.length,
-            'ERC1155: ids and amounts length mismatch'
-        );
+        if (recipient == address(0))
+            revert ERC1155Base__TransferToZeroAddress();
+        if (ids.length != amounts.length)
+            revert ERC1155Base__ArrayLengthMismatch();
 
         _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
 
@@ -345,10 +327,8 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
             unchecked {
                 uint256 senderBalance = balances[token][sender];
 
-                require(
-                    senderBalance >= amount,
-                    'ERC1155: insufficient balances for transfer'
-                );
+                if (amount > senderBalance)
+                    revert ERC1155Base__TransferExceedsBalance();
 
                 balances[token][sender] = senderBalance - amount;
 
@@ -433,14 +413,12 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
                     data
                 )
             returns (bytes4 response) {
-                require(
-                    response == IERC1155Receiver.onERC1155Received.selector,
-                    'ERC1155: ERC1155Receiver rejected tokens'
-                );
+                if (response != IERC1155Receiver.onERC1155Received.selector)
+                    revert ERC1155Base__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert('ERC1155: transfer to non ERC1155Receiver implementer');
+                revert ERC1155Base__ERC1155ReceiverNotImplemented();
             }
         }
     }
@@ -472,15 +450,13 @@ abstract contract ERC1155BaseInternal is IERC1155Internal {
                     data
                 )
             returns (bytes4 response) {
-                require(
-                    response ==
-                        IERC1155Receiver.onERC1155BatchReceived.selector,
-                    'ERC1155: ERC1155Receiver rejected tokens'
-                );
+                if (
+                    response != IERC1155Receiver.onERC1155BatchReceived.selector
+                ) revert ERC1155Base__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert('ERC1155: transfer to non ERC1155Receiver implementer');
+                revert ERC1155Base__ERC1155ReceiverNotImplemented();
             }
         }
     }

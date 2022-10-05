@@ -1,5 +1,15 @@
 [
   {
+    "inputs": [],
+    "name": "ManagedProxy__FetchImplementationFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
     "stateMutability": "payable",
     "type": "fallback"
   }

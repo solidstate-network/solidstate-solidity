@@ -515,7 +515,10 @@ export function describeBehaviorOfERC4626Base(
               recipient.address,
               depositor.address,
             ),
-          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC4626Base__MaximumAmountExceeded',
+          );
         });
 
         it('share amount exceeds allowance', async () => {
@@ -537,7 +540,10 @@ export function describeBehaviorOfERC4626Base(
             instance
               .connect(caller)
               .withdraw(assetAmountOut, recipient.address, depositor.address),
-          ).to.be.revertedWith('ERC4626: share amount exceeds allowance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC4626Base__AllowanceExceeded',
+          );
         });
       });
     });
@@ -678,7 +684,10 @@ export function describeBehaviorOfERC4626Base(
               recipient.address,
               depositor.address,
             ),
-          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC4626Base__MaximumAmountExceeded',
+          );
         });
 
         it('share amount exceeds allowance', async () => {
@@ -694,7 +703,10 @@ export function describeBehaviorOfERC4626Base(
                 recipient.address,
                 depositor.address,
               ),
-          ).to.be.revertedWith('ERC4626: share amount exceeds allowance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC4626Base__AllowanceExceeded',
+          );
         });
       });
     });

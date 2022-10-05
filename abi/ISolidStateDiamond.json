@@ -1,5 +1,55 @@
 [
   {
+    "inputs": [],
+    "name": "DiamondBase__NoFacetForSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__InvalidInitializationParameters",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__RemoveTargetNotZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__ReplaceTargetIsIdentical",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorAlreadyAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorIsImmutable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorNotSpecified",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__TargetHasNoCode",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -10,7 +60,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritable.FacetCutAction",
+            "internalType": "enum IDiamondWritableInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -21,7 +71,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IDiamondWritable.FacetCut[]",
+        "internalType": "struct IDiamondWritableInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -81,7 +131,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritable.FacetCutAction",
+            "internalType": "enum IDiamondWritableInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -91,7 +141,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IDiamondWritable.FacetCut[]",
+        "internalType": "struct IDiamondWritableInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
