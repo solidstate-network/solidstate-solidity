@@ -28,4 +28,12 @@ contract ERC20BaseMock is ERC20Base {
     ) external {
         _approve(holder, spender, amount);
     }
+
+    function __decreaseAllowance(
+        address holder,
+        address spender,
+        uint256 amount
+    ) external {
+        _decreaseAllowance(holder, spender, amount);
+    }
 }

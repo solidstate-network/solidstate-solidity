@@ -34,6 +34,17 @@ export function describeBehaviorOfERC20Extended(
     });
 
     describe('#increaseAllowance(address,uint256)', function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['increaseAllowance(address,uint256)'](
+              instance.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
       it('increases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
 
@@ -84,12 +95,26 @@ export function describeBehaviorOfERC20Extended(
                 spender.address,
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('ERC20Extended: excessive allowance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Extended__ExcessiveAllowance',
+          );
         });
       });
     });
 
     describe('#decreaseAllowance(address,uint256)', function () {
+      it('returns true', async () => {
+        expect(
+          await instance
+            .connect(holder)
+            .callStatic['decreaseAllowance(address,uint256)'](
+              instance.address,
+              ethers.constants.Zero,
+            ),
+        ).to.be.true;
+      });
+
       it('decreases approval of spender with respect to holder by given amount', async function () {
         let amount = ethers.constants.Two;
         await instance
@@ -142,7 +167,10 @@ export function describeBehaviorOfERC20Extended(
                 spender.address,
                 ethers.constants.One,
               ),
-          ).to.be.revertedWith('ERC20Extended: insufficient allowance');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Base__InsufficientAllowance',
+          );
         });
       });
     });

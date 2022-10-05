@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC20 } from '../ERC20/IERC20.sol';
-import { IERC20Metadata } from '../ERC20/metadata/IERC20Metadata.sol';
+import { IERC20Metadata } from '../token/ERC20/metadata/IERC20Metadata.sol';
+import { IERC20 } from './IERC20.sol';
 import { IERC4626Internal } from './IERC4626Internal.sol';
 
 /**

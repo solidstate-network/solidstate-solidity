@@ -18,11 +18,14 @@ import {
   describeBehaviorOfDiamondWritable,
   DiamondWritableBehaviorArgs,
 } from './writable/DiamondWritable.behavior';
+import {
+  deployMockContract,
+  MockContract,
+} from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface SolidStateDiamondBehaviorArgs
@@ -154,7 +157,7 @@ export function describeBehaviorOfSolidStateDiamond(
             instance
               .connect(nonOwner)
               ['setFallbackAddress(address)'](ethers.constants.AddressZero),
-          ).to.be.revertedWith('Ownable: sender must be owner');
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
     });
@@ -257,8 +260,9 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
@@ -321,8 +325,9 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
@@ -385,8 +390,9 @@ export function describeBehaviorOfSolidStateDiamond(
 
           await expect(
             owner.sendTransaction({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBase__NoFacetForSignature',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(

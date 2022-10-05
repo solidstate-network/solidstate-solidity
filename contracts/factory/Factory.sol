@@ -6,6 +6,8 @@ pragma solidity ^0.8.8;
  * @title Factory for arbitrary code deployment using the "CREATE" and "CREATE2" opcodes
  */
 abstract contract Factory {
+    error Factory__FailedDeployment();
+
     /**
      * @notice deploy contract code using "CREATE" opcode
      * @param initCode contract initialization code
@@ -21,7 +23,7 @@ abstract contract Factory {
             deployment := create(0, encoded_data, encoded_size)
         }
 
-        require(deployment != address(0), 'Factory: failed deployment');
+        if (deployment == address(0)) revert Factory__FailedDeployment();
     }
 
     /**
@@ -41,7 +43,7 @@ abstract contract Factory {
             deployment := create2(0, encoded_data, encoded_size, salt)
         }
 
-        require(deployment != address(0), 'Factory: failed deployment');
+        if (deployment == address(0)) revert Factory__FailedDeployment();
     }
 
     /**

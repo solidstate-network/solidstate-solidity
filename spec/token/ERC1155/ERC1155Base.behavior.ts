@@ -1,9 +1,9 @@
 import { describeBehaviorOfERC165 } from '../../introspection';
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
@@ -87,7 +87,10 @@ export function describeBehaviorOfERC1155Base(
               ethers.constants.AddressZero,
               ethers.constants.Zero,
             ),
-          ).to.be.revertedWith('ERC1155: balance query for the zero address');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__BalanceQueryZeroAddress',
+          );
         });
       });
     });
@@ -110,7 +113,10 @@ export function describeBehaviorOfERC1155Base(
               [holder.address],
               [],
             ),
-          ).to.be.revertedWith('ERC1155: accounts and ids length mismatch');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__ArrayLengthMismatch',
+          );
         });
 
         it('balance of zero address is queried', async function () {
@@ -119,8 +125,9 @@ export function describeBehaviorOfERC1155Base(
               [ethers.constants.AddressZero],
               [ethers.constants.Zero],
             ),
-          ).to.be.revertedWith(
-            'ERC1155: batch balance query for the zero address',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__BalanceQueryZeroAddress',
           );
         });
       });
@@ -170,7 +177,10 @@ export function describeBehaviorOfERC1155Base(
             instance
               .connect(holder)
               ['setApprovalForAll(address,bool)'](holder.address, true),
-          ).to.be.revertedWith('ERC1155: setting approval status for self');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__SelfApproval',
+          );
         });
       });
     });
@@ -228,7 +238,10 @@ export function describeBehaviorOfERC1155Base(
                 amount,
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: insufficient balances for transfer');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__TransferExceedsBalance',
+          );
         });
 
         it('operator is not approved to act on behalf of sender', async function () {
@@ -242,7 +255,10 @@ export function describeBehaviorOfERC1155Base(
                 ethers.constants.Zero,
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: caller is not owner nor approved');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__NotOwnerOrApproved',
+          );
         });
 
         it('receiver is invalid ERC1155Receiver', async function () {
@@ -280,7 +296,10 @@ export function describeBehaviorOfERC1155Base(
                 ethers.constants.Zero,
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: ERC1155Receiver rejected tokens');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__ERC1155ReceiverRejected',
+          );
         });
       });
     });
@@ -340,7 +359,10 @@ export function describeBehaviorOfERC1155Base(
                 [amount],
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: insufficient balances for transfer');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__TransferExceedsBalance',
+          );
         });
 
         it('operator is not approved to act on behalf of sender', async function () {
@@ -356,7 +378,10 @@ export function describeBehaviorOfERC1155Base(
                 [],
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: caller is not owner nor approved');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__NotOwnerOrApproved',
+          );
         });
 
         it('receiver is invalid ERC1155Receiver', async function () {
@@ -398,7 +423,10 @@ export function describeBehaviorOfERC1155Base(
                 [],
                 ethers.utils.randomBytes(0),
               ),
-          ).to.be.revertedWith('ERC1155: ERC1155Receiver rejected tokens');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1155Base__ERC1155ReceiverRejected',
+          );
         });
       });
     });
