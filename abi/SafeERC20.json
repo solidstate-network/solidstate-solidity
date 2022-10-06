@@ -1,0 +1,17 @@
+[
+  {
+    "inputs": [],
+    "name": "SafeERC20__ApproveFromNonZeroToNonZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SafeERC20__DecreaseAllowanceBelowZero",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SafeERC20__OperationFailed",
+    "type": "error"
+  }
+]

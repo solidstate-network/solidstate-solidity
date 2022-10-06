@@ -1,10 +1,10 @@
+import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   UpgradeableProxyMock,
   UpgradeableProxyMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 describe('UpgradeableProxy', function () {

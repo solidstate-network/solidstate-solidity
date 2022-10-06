@@ -7,6 +7,8 @@ pragma solidity ^0.8.8;
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableSet {
+    error EnumerableSet__IndexOutOfBounds();
+
     struct Set {
         bytes32[] _values;
         // 1-indexed to allow 0 to signify nonexistence
@@ -204,10 +206,8 @@ library EnumerableSet {
         view
         returns (bytes32)
     {
-        require(
-            set._values.length > index,
-            'EnumerableSet: index out of bounds'
-        );
+        if (index >= set._values.length)
+            revert EnumerableSet__IndexOutOfBounds();
         return set._values[index];
     }
 

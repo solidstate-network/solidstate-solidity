@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC1271 } from '../IERC1271.sol';
+import { IERC1271 } from '../../interfaces/IERC1271.sol';
 import { IERC1271Base } from './IERC1271Base.sol';
 import { ERC1271BaseInternal } from './ERC1271BaseInternal.sol';
 

@@ -36,7 +36,10 @@ describe('Pausable', function () {
 
       it('reverts if paused already', async function () {
         await instance.__pause();
-        await expect(instance.__pause()).to.be.revertedWith('Pausable: paused');
+        await expect(instance.__pause()).to.be.revertedWithCustomError(
+          instance,
+          'Pausable__Paused',
+        );
       });
     });
 
@@ -58,8 +61,9 @@ describe('Pausable', function () {
 
       it('reverts if unpaused already', async function () {
         await instance.__unpause();
-        await expect(instance.__unpause()).to.be.revertedWith(
-          'Pausable: not paused',
+        await expect(instance.__unpause()).to.be.revertedWithCustomError(
+          instance,
+          'Pausable__NotPaused',
         );
       });
     });

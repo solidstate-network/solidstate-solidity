@@ -102,7 +102,10 @@ export function describeBehaviorOfERC20Permit(
                 permit.r,
                 permit.s,
               ),
-          ).to.be.revertedWith('ERC20Permit: expired deadline');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Permit__ExpiredDeadline',
+          );
         });
 
         it('signature is invalid', async () => {
@@ -134,7 +137,7 @@ export function describeBehaviorOfERC20Permit(
                 '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
                 permit.s,
               ),
-          ).to.be.revertedWith('ECDSA: invalid signature');
+          ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidSignature');
         });
 
         it('signature has already been used', async () => {
@@ -182,7 +185,10 @@ export function describeBehaviorOfERC20Permit(
                 permit.r,
                 permit.s,
               ),
-          ).to.be.revertedWith('ERC20Permit: invalid signature');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC20Permit__InvalidSignature',
+          );
         });
       });
     });

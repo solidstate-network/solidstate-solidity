@@ -19,10 +19,8 @@ abstract contract Proxy is IProxy {
     fallback() external payable virtual {
         address implementation = _getImplementation();
 
-        require(
-            implementation.isContract(),
-            'Proxy: implementation must be contract'
-        );
+        if (!implementation.isContract())
+            revert Proxy__ImplementationIsNotContract();
 
         assembly {
             calldatacopy(0, 0, calldatasize())

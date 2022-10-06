@@ -84,7 +84,10 @@ export function describeBehaviorOfSolidStateERC721(
               .transferFrom(holder.address, holder.address, tokenId, {
                 value: ethers.constants.One,
               }),
-          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
+          );
         });
       });
     });
@@ -104,7 +107,10 @@ export function describeBehaviorOfSolidStateERC721(
                 tokenId,
                 { value: ethers.constants.One },
               ),
-          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
+          );
         });
       });
     });
@@ -125,7 +131,10 @@ export function describeBehaviorOfSolidStateERC721(
                 '0x',
                 { value: ethers.constants.One },
               ),
-          ).to.be.revertedWith('ERC721: payable transfer calls not supported');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableTransferNotSupported',
+          );
         });
       });
     });
@@ -142,7 +151,10 @@ export function describeBehaviorOfSolidStateERC721(
               .approve(ethers.constants.AddressZero, tokenId, {
                 value: ethers.constants.One,
               }),
-          ).to.be.revertedWith('ERC721: payable approve calls not supported');
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SolidStateERC721__PayableApproveNotSupported',
+          );
         });
       });
     });
