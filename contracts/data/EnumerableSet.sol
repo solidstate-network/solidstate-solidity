@@ -150,51 +150,51 @@ library EnumerableSet {
         return _remove(set._inner, bytes32(value));
     }
 
-    function toArray(Bytes32Set storage heap)
+    function toArray(Bytes32Set storage set)
         internal
         view
         returns (bytes32[] memory)
     {
-        uint256 len = _length(heap._inner);
+        uint256 len = _length(set._inner);
         bytes32[] memory arr = new bytes32[](len);
 
         unchecked {
             for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
+                arr[index] = at(set, index);
             }
         }
 
         return arr;
     }
 
-    function toArray(AddressSet storage heap)
+    function toArray(AddressSet storage set)
         internal
         view
         returns (address[] memory)
     {
-        uint256 len = _length(heap._inner);
+        uint256 len = _length(set._inner);
         address[] memory arr = new address[](len);
 
         unchecked {
             for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
+                arr[index] = at(set, index);
             }
         }
 
         return arr;
     }
 
-    function toArray(UintSet storage heap)
+    function toArray(UintSet storage set)
         internal
         view
         returns (uint256[] memory)
     {
-        uint256 len = _length(heap._inner);
+        uint256 len = _length(set._inner);
         uint256[] memory arr = new uint256[](len);
 
         unchecked {
             for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
+                arr[index] = at(set, index);
             }
         }
 
