@@ -3,6 +3,8 @@ import { bnToBytes32 } from '@solidstate/library';
 import {
   EnumerableSetBytes32Mock,
   EnumerableSetBytes32Mock__factory,
+  EnumerableSetUintMock,
+  EnumerableSetUintMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -35,8 +37,11 @@ describe('EnumerableSet', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'EnumerableSet: index out of bounds',
+            await expect(
+              instance['at(uint256)'](0),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableSet__IndexOutOfBounds',
             );
           });
         });
@@ -119,9 +124,9 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance.callStatic['remove(bytes32)'](zeroBytes32);
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
-            .be.false;
+          await instance['add(bytes32)'](zeroBytes32);
+          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
+            .false;
         });
       });
 
@@ -179,15 +184,179 @@ describe('EnumerableSet', async () => {
         describe('#toArray()', () => {
           it('returns the set as an array', async () => {
             await instance['add(bytes32)'](zeroBytes32);
-            await instance['add(bytes32)'](oneBytes32);
             await instance['add(bytes32)'](twoBytes32);
+            await instance['add(bytes32)'](oneBytes32);
 
             expect(await instance['toArray()']()).to.deep.equal([
               zeroBytes32,
-              oneBytes32,
               twoBytes32,
+              oneBytes32,
             ]);
           });
+        });
+      });
+    });
+  });
+
+  describe('UintSet', async () => {
+    let instance: EnumerableSetUintMock;
+    let deployer: SignerWithAddress;
+
+    beforeEach(async () => {
+      [deployer] = await ethers.getSigners();
+      instance = await new EnumerableSetUintMock__factory(deployer).deploy();
+    });
+
+    describe('__internal', () => {
+      const zero = ethers.constants.Zero;
+      const one = ethers.constants.One;
+      const two = ethers.constants.Two;
+
+      describe('#at(uint256)', () => {
+        it('returns the value corresponding to index provided', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](one);
+
+          expect(await instance['at(uint256)'](0)).to.equal(zero);
+          expect(await instance['at(uint256)'](1)).to.equal(two);
+          expect(await instance['at(uint256)'](2)).to.equal(one);
+        });
+
+        describe('reverts if', function () {
+          it('index out of bounds', async () => {
+            await expect(
+              instance['at(uint256)'](0),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableSet__IndexOutOfBounds',
+            );
+          });
+        });
+      });
+
+      describe('#contains(uint256)', () => {
+        it('returns true if the value has been added', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](one);
+
+          expect(await instance['contains(uint256)'](zero)).to.be.true;
+          expect(await instance['contains(uint256)'](one)).to.be.true;
+          expect(await instance['contains(uint256)'](two)).to.be.true;
+        });
+
+        it('returns false if the value has not been added', async () => {
+          expect(await instance['contains(uint256)'](zero)).to.be.false;
+        });
+      });
+
+      describe('#indexOf(uint256)', () => {
+        it('returns index of the value', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](one);
+
+          expect(await instance['indexOf(uint256)'](zero)).to.equal(0);
+          expect(await instance['indexOf(uint256)'](one)).to.equal(2);
+          expect(await instance['indexOf(uint256)'](two)).to.equal(1);
+        });
+
+        it('returns max uint256 if value does not exist', async () => {
+          expect(await instance['indexOf(uint256)'](zero)).to.equal(
+            ethers.constants.MaxUint256.toString(),
+          );
+        });
+      });
+
+      describe('#length()', () => {
+        it('returns length of enumerable set', async () => {
+          expect(await instance['length()']()).to.equal(0);
+
+          await instance['add(uint256)'](zero);
+          expect(await instance['length()']()).to.equal(1);
+
+          await instance['add(uint256)'](one);
+          expect(await instance['length()']()).to.equal(2);
+
+          await instance['add(uint256)'](two);
+          expect(await instance['length()']()).to.equal(3);
+
+          await instance['remove(uint256)'](two);
+          expect(await instance['length()']()).to.equal(2);
+
+          await instance['remove(uint256)'](one);
+          expect(await instance['length()']()).to.equal(1);
+
+          await instance['remove(uint256)'](zero);
+          expect(await instance['length()']()).to.equal(0);
+        });
+      });
+
+      describe('#add(bytes32)', () => {
+        it('adds value to set', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          expect(await instance['toArray()']()).to.deep.equal([zero, one, two]);
+        });
+
+        it('returns true if value is added', async () => {
+          expect(await instance.callStatic['add(uint256)'](zero)).to.be.true;
+        });
+
+        it('returns false if value has already been added', async () => {
+          await instance['add(uint256)'](zero);
+          expect(await instance.callStatic['add(uint256)'](zero)).to.be.false;
+        });
+      });
+
+      describe('#remove(bytes32)', () => {
+        it('removes value from set', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          await instance['remove(uint256)'](zero);
+          expect(await instance['toArray()']()).to.deep.equal([two, one]);
+        });
+
+        it('returns true if value is removed', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          expect(await instance.callStatic['remove(uint256)'](zero)).to.be.true;
+        });
+
+        it('returns false if value is not removed', async () => {
+          expect(await instance.callStatic['remove(uint256)'](zero)).to.be
+            .false;
+        });
+
+        it('removes value from index mapping and array', async () => {
+          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](two);
+
+          await instance['remove(uint256)'](two);
+          expect(await instance['length()']()).to.be.equal(2);
+          expect(await instance['indexOf(uint256)'](two)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(uint256)'](one);
+          expect(await instance['length()']()).to.be.equal(1);
+          expect(await instance['indexOf(uint256)'](one)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
+
+          await instance['remove(uint256)'](zero);
+          expect(await instance['length()']()).to.be.equal(0);
+          expect(await instance['indexOf(uint256)'](zero)).to.be.equal(
+            ethers.constants.MaxUint256,
+          );
         });
       });
     });
