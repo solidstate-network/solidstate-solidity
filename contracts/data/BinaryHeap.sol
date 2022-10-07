@@ -8,6 +8,8 @@ pragma solidity ^0.8.8;
  */
 
 library BinaryHeap {
+    error BinaryHeap__IndexOutOfBounds();
+
     struct Heap {
         bytes32[] _values;
         // 1-indexed to allow 0 to signify nonexistence
@@ -217,7 +219,7 @@ library BinaryHeap {
         view
         returns (bytes32)
     {
-        require(heap._values.length > index, 'BinaryHeap: index out of bounds');
+        if (index >= heap._values.length) revert BinaryHeap__IndexOutOfBounds();
         return heap._values[index];
     }
 

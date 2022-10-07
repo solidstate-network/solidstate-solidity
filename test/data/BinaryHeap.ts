@@ -67,8 +67,11 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(
+              instance['at(uint256)'](0),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
@@ -152,8 +155,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(instance['root()']()).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
@@ -337,8 +341,11 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(
+              instance['at(uint256)'](0),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
@@ -422,8 +429,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(instance['root()']()).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
@@ -607,8 +615,11 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(
+              instance['at(uint256)'](0),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
@@ -692,8 +703,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWith(
-              'BinaryHeap: index out of bounds',
+            await expect(instance['root()']()).to.be.revertedWithCustomError(
+              instance,
+              'BinaryHeap__IndexOutOfBounds',
             );
           });
         });
