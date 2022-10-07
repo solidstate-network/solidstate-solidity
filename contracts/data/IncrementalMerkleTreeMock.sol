@@ -23,11 +23,11 @@ contract IncrementalMerkleTreeMock {
         return tree.root();
     }
 
-    function push(bytes memory data) external {
-        tree.push(data);
+    function push(bytes32 hash) external {
+        tree.push(hash);
     }
 
-    function set(uint256 index, bytes memory data) external {
-        tree.set(index, data);
+    function set(uint256 index, bytes32 hash) external {
+        tree.set(index, hash);
     }
 }

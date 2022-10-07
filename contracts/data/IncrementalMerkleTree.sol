@@ -48,9 +48,9 @@ library IncrementalMerkleTree {
     /**
      * @notice add new element to tree
      * @param t Tree struct storage reference
-     * @param data data to add
+     * @param hash to add
      */
-    function push(Tree storage t, bytes memory data) internal {
+    function push(Tree storage t, bytes32 hash) internal {
         unchecked {
             uint256 height = t.height();
             uint256 size = t.size();
@@ -73,9 +73,9 @@ library IncrementalMerkleTree {
                 col >>= 1;
             }
 
-            // add data to tree
+            // add hash to tree
 
-            t.set(size, data);
+            t.set(size, hash);
         }
     }
 
@@ -83,15 +83,15 @@ library IncrementalMerkleTree {
      * @notice update existing element in tree
      * @param t Tree struct storage reference
      * @param index index to update
-     * @param data new data to add
+     * @param hash new hash to add
      */
     function set(
         Tree storage t,
         uint256 index,
-        bytes memory data
+        bytes32 hash
     ) internal {
         unchecked {
-            _set(t.nodes, 0, index, t.height() - 1, keccak256(data));
+            _set(t.nodes, 0, index, t.height() - 1, hash);
         }
     }
 

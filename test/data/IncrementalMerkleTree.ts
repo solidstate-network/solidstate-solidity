@@ -55,7 +55,7 @@ describe('IncrementalMerkleTree', function () {
         [ethers.utils.toUtf8Bytes(value)],
       );
 
-      await instance.push(ethers.utils.toUtf8Bytes(value));
+      await instance.push(hash);
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
@@ -79,8 +79,8 @@ describe('IncrementalMerkleTree', function () {
         [hash_a, hash_b],
       );
 
-      await instance.push(ethers.utils.toUtf8Bytes(value_a));
-      await instance.push(ethers.utils.toUtf8Bytes(value_b));
+      await instance.push(hash_a);
+      await instance.push(hash_b);
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
@@ -115,9 +115,9 @@ describe('IncrementalMerkleTree', function () {
         [hash_ab, hash_c],
       );
 
-      await instance.push(ethers.utils.toUtf8Bytes(value_a));
-      await instance.push(ethers.utils.toUtf8Bytes(value_b));
-      await instance.push(ethers.utils.toUtf8Bytes(value_c));
+      await instance.push(hash_a);
+      await instance.push(hash_b);
+      await instance.push(hash_c);
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
@@ -127,15 +127,28 @@ describe('IncrementalMerkleTree', function () {
       const value_b = String(Math.random());
       const value_c = String(Math.random());
 
+      const hash_a = ethers.utils.solidityKeccak256(
+        ['bytes'],
+        [ethers.utils.toUtf8Bytes(value_a)],
+      );
+      const hash_b = ethers.utils.solidityKeccak256(
+        ['bytes'],
+        [ethers.utils.toUtf8Bytes(value_b)],
+      );
+      const hash_c = ethers.utils.solidityKeccak256(
+        ['bytes'],
+        [ethers.utils.toUtf8Bytes(value_c)],
+      );
+
       const leaves = [value_a, value_b, value_c];
       const tree = new MerkleTree(leaves, keccak256, {
         hashLeaves: true,
       });
       const root = tree.getHexRoot();
 
-      await instance.push(ethers.utils.toUtf8Bytes(value_a));
-      await instance.push(ethers.utils.toUtf8Bytes(value_b));
-      await instance.push(ethers.utils.toUtf8Bytes(value_c));
+      await instance.push(hash_a);
+      await instance.push(hash_b);
+      await instance.push(hash_c);
 
       expect(await instance.callStatic.root()).to.equal(root);
     });
@@ -143,18 +156,21 @@ describe('IncrementalMerkleTree', function () {
 
   describe('#push', () => {
     it('updates Merkle root', async () => {
-      const values = [];
+      const hashes = [];
 
       for (let i = 0; i < 10; i++) {
-        values.push(String(Math.random()));
+        const value = String(Math.random());
+        const hash = ethers.utils.solidityKeccak256(
+          ['bytes'],
+          [ethers.utils.toUtf8Bytes(value)],
+        );
+        hashes.push(hash);
       }
 
-      for (let i = 0; i < values.length; i++) {
-        await instance.push(ethers.utils.toUtf8Bytes(values[i]));
+      for (let i = 0; i < hashes.length; i++) {
+        await instance.push(hashes[i]);
 
-        const tree = new MerkleTree(values.slice(0, i + 1), keccak256, {
-          hashLeaves: true,
-        });
+        const tree = new MerkleTree(hashes.slice(0, i + 1), keccak256);
 
         expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
       }
@@ -163,22 +179,31 @@ describe('IncrementalMerkleTree', function () {
 
   describe('#set', () => {
     it('updates Merkle root', async () => {
-      const values = [];
+      const hashes = [];
 
       for (let i = 0; i < 10; i++) {
         const value = String(Math.random());
-        values.push(value);
-        await instance.push(ethers.utils.toUtf8Bytes(value));
+
+        const hash = ethers.utils.solidityKeccak256(
+          ['bytes'],
+          [ethers.utils.toUtf8Bytes(value)],
+        );
+
+        hashes.push(hash);
+        await instance.push(hash);
       }
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < hashes.length; i++) {
         const value = String(Math.random());
-        values[i] = value;
-        await instance.set(i, ethers.utils.toUtf8Bytes(value));
+        const hash = ethers.utils.solidityKeccak256(
+          ['bytes'],
+          [ethers.utils.toUtf8Bytes(value)],
+        );
 
-        const tree = new MerkleTree(values, keccak256, {
-          hashLeaves: true,
-        });
+        hashes[i] = hash;
+        await instance.set(i, hash);
+
+        const tree = new MerkleTree(hashes, keccak256);
 
         expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
       }
