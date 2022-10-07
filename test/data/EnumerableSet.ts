@@ -273,7 +273,7 @@ describe('EnumerableSet', async () => {
           );
         });
 
-        it('returns max address if value does not exist', async () => {
+        it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(address)'](zeroAddress)).to.equal(
             ethers.constants.MaxUint256.toString(),
           );
