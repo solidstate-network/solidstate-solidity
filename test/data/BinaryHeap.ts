@@ -198,9 +198,9 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance.callStatic['remove(bytes32)'](zeroBytes32);
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
-            .be.false;
+          await instance['add(bytes32)'](zeroBytes32);
+          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
+            .false;
         });
       });
 
@@ -468,9 +468,9 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance.callStatic['remove(address)'](zeroAddress);
-          expect(await instance.callStatic['remove(address)'](zeroAddress)).to
-            .be.false;
+          await instance['add(address)'](zeroAddress);
+          expect(await instance.callStatic['add(address)'](zeroAddress)).to.be
+            .false;
         });
       });
 
@@ -737,9 +737,8 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance.callStatic['remove(uint256)'](zero);
-          expect(await instance.callStatic['remove(uint256)'](zero)).to.be
-            .false;
+          await instance['add(uint256)'](zero);
+          expect(await instance.callStatic['add(uint256)'](zero)).to.be.false;
         });
       });
 
