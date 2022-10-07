@@ -49,21 +49,18 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('returns contained element for tree of size one', async () => {
-      const value = ethers.utils.randomBytes(64);
-      const hash = ethers.utils.solidityKeccak256(['bytes'], [value]);
+      const hash = ethers.utils.randomBytes(32);
 
       await instance.push(hash);
 
-      expect(await instance.callStatic.root()).to.equal(hash);
+      expect(await instance.callStatic.root()).to.equal(
+        ethers.utils.hexlify(hash),
+      );
     });
 
     it('returns Merkle root derived from elements contained in balanced tree', async () => {
-      const value_a = ethers.utils.randomBytes(64);
-      const value_b = ethers.utils.randomBytes(64);
-
-      const hash_a = ethers.utils.solidityKeccak256(['bytes'], [value_a]);
-
-      const hash_b = ethers.utils.solidityKeccak256(['bytes'], [value_b]);
+      const hash_a = ethers.utils.randomBytes(32);
+      const hash_b = ethers.utils.randomBytes(32);
 
       const hash = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
@@ -77,15 +74,9 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const value_a = ethers.utils.randomBytes(64);
-      const value_b = ethers.utils.randomBytes(64);
-      const value_c = ethers.utils.randomBytes(64);
-
-      const hash_a = ethers.utils.solidityKeccak256(['bytes'], [value_a]);
-
-      const hash_b = ethers.utils.solidityKeccak256(['bytes'], [value_b]);
-
-      const hash_c = ethers.utils.solidityKeccak256(['bytes'], [value_c]);
+      const hash_a = ethers.utils.randomBytes(32);
+      const hash_b = ethers.utils.randomBytes(32);
+      const hash_c = ethers.utils.randomBytes(32);
 
       const hash_ab = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
@@ -105,13 +96,9 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('POC: returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const value_a = ethers.utils.randomBytes(64);
-      const value_b = ethers.utils.randomBytes(64);
-      const value_c = ethers.utils.randomBytes(64);
-
-      const hash_a = ethers.utils.solidityKeccak256(['bytes'], [value_a]);
-      const hash_b = ethers.utils.solidityKeccak256(['bytes'], [value_b]);
-      const hash_c = ethers.utils.solidityKeccak256(['bytes'], [value_c]);
+      const hash_a = ethers.utils.randomBytes(32);
+      const hash_b = ethers.utils.randomBytes(32);
+      const hash_c = ethers.utils.randomBytes(32);
 
       const leaves = [hash_a, hash_b, hash_c];
       const tree = new MerkleTree(leaves, keccak256);
@@ -130,8 +117,7 @@ describe('IncrementalMerkleTree', function () {
       const hashes = [];
 
       for (let i = 0; i < 10; i++) {
-        const value = ethers.utils.randomBytes(64);
-        const hash = ethers.utils.solidityKeccak256(['bytes'], [value]);
+        const hash = ethers.utils.randomBytes(32);
         hashes.push(hash);
       }
 
@@ -150,17 +136,13 @@ describe('IncrementalMerkleTree', function () {
       const hashes = [];
 
       for (let i = 0; i < 10; i++) {
-        const value = ethers.utils.randomBytes(64);
-
-        const hash = ethers.utils.solidityKeccak256(['bytes'], [value]);
-
+        const hash = ethers.utils.randomBytes(32);
         hashes.push(hash);
         await instance.push(hash);
       }
 
       for (let i = 0; i < hashes.length; i++) {
-        const value = ethers.utils.randomBytes(64);
-        const hash = ethers.utils.solidityKeccak256(['bytes'], [value]);
+        const hash = ethers.utils.randomBytes(32);
 
         hashes[i] = hash;
         await instance.set(i, hash);
