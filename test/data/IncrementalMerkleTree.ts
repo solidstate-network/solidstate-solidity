@@ -7,6 +7,8 @@ import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
+const randomHash = () => ethers.utils.hexlify(ethers.utils.randomBytes(32));
+
 describe('IncrementalMerkleTree', function () {
   let instance: IncrementalMerkleTreeMock;
 
@@ -20,7 +22,7 @@ describe('IncrementalMerkleTree', function () {
       expect(await instance.callStatic.size()).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
-        await instance.push(ethers.utils.randomBytes(32));
+        await instance.push(randomHash());
 
         expect(await instance.callStatic.size()).to.equal(i);
       }
@@ -32,7 +34,7 @@ describe('IncrementalMerkleTree', function () {
       expect(await instance.callStatic.size()).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
-        await instance.push(ethers.utils.randomBytes(32));
+        await instance.push(randomHash());
 
         expect(await instance.callStatic.height()).to.equal(
           Math.ceil(Math.log2(i) + 1),
@@ -49,18 +51,16 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('returns contained element for tree of size one', async () => {
-      const hash = ethers.utils.randomBytes(32);
+      const hash = randomHash();
 
       await instance.push(hash);
 
-      expect(await instance.callStatic.root()).to.equal(
-        ethers.utils.hexlify(hash),
-      );
+      expect(await instance.callStatic.root()).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in balanced tree', async () => {
-      const hash_a = ethers.utils.randomBytes(32);
-      const hash_b = ethers.utils.randomBytes(32);
+      const hash_a = randomHash();
+      const hash_b = randomHash();
 
       const hash = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
@@ -74,9 +74,9 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const hash_a = ethers.utils.randomBytes(32);
-      const hash_b = ethers.utils.randomBytes(32);
-      const hash_c = ethers.utils.randomBytes(32);
+      const hash_a = randomHash();
+      const hash_b = randomHash();
+      const hash_c = randomHash();
 
       const hash_ab = ethers.utils.solidityKeccak256(
         ['bytes32', 'bytes32'],
@@ -96,9 +96,9 @@ describe('IncrementalMerkleTree', function () {
     });
 
     it('POC: returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const hash_a = ethers.utils.randomBytes(32);
-      const hash_b = ethers.utils.randomBytes(32);
-      const hash_c = ethers.utils.randomBytes(32);
+      const hash_a = randomHash();
+      const hash_b = randomHash();
+      const hash_c = randomHash();
 
       const leaves = [hash_a, hash_b, hash_c];
       const tree = new MerkleTree(leaves, keccak256);
@@ -117,8 +117,7 @@ describe('IncrementalMerkleTree', function () {
       const hashes = [];
 
       for (let i = 0; i < 10; i++) {
-        const hash = ethers.utils.randomBytes(32);
-        hashes.push(hash);
+        hashes.push(randomHash());
       }
 
       for (let i = 0; i < hashes.length; i++) {
@@ -136,13 +135,13 @@ describe('IncrementalMerkleTree', function () {
       const hashes = [];
 
       for (let i = 0; i < 10; i++) {
-        const hash = ethers.utils.randomBytes(32);
+        const hash = randomHash();
         hashes.push(hash);
         await instance.push(hash);
       }
 
       for (let i = 0; i < hashes.length; i++) {
-        const hash = ethers.utils.randomBytes(32);
+        const hash = randomHash();
 
         hashes[i] = hash;
         await instance.set(i, hash);
