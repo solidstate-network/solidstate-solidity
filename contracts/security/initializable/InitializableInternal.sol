@@ -20,9 +20,10 @@ abstract contract InitializableInternal {
     modifier initializer() {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
         bool isTopLevelCall = !l.initializing;
-        bool passed = (isTopLevelCall && l.initialized < 1) ||
-            (!address(this).isContract() && l.initialized == 1);
-        if (!passed) revert Initializable__AlreadyInitialized();
+        if (
+            (!isTopLevelCall || l.initialized >= 1) &&
+            (address(this).isContract() || l.initialized != 1)
+        ) revert Initializable__AlreadyInitialized();
         l.initialized = 1;
         if (isTopLevelCall) {
             l.initializing = true;
@@ -36,12 +37,8 @@ abstract contract InitializableInternal {
 
     modifier reinitializer(uint8 version) {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
-        // require(
-        //     !l.initializing && l.initialized < version,
-        //     'Initializable: contract is already initialized'
-        // );
-        bool passed = !l.initializing && l.initialized < version;
-        if (!passed) revert Initializable__AlreadyInitialized();
+        if (l.initializing || l.initialized >= version)
+            revert Initializable__AlreadyInitialized();
         l.initialized = version;
         l.initializing = true;
         _;
@@ -50,8 +47,7 @@ abstract contract InitializableInternal {
     }
 
     modifier onlyInitializing() {
-        if (!InitializableStorage.layout().initializing)
-            revert Initializable__NotInitializing();
+        if (!_isInitializing()) revert Initializable__NotInitializing();
         _;
     }
 

@@ -31,7 +31,8 @@ describe('Initializable', function () {
         await expect(instance.__initializer())
           .emit(instance, 'Initialized')
           .withArgs(1);
-        await expect(instance.__initializer()).revertedWith(
+        await expect(instance.__initializer()).revertedWithCustomError(
+          instance,
           'Initializable__AlreadyInitialized',
         );
       });
@@ -46,7 +47,8 @@ describe('Initializable', function () {
       });
 
       it('revert if not initializing', async function () {
-        await expect(instance.__onlyInitializing()).to.revertedWith(
+        await expect(instance.__onlyInitializing()).to.revertedWithCustomError(
+          instance,
           'Initializable__NotInitializing',
         );
       });
@@ -60,7 +62,8 @@ describe('Initializable', function () {
       });
 
       it('revert if initializing', async function () {
-        await expect(instance.mockReinitializer()).revertedWith(
+        await expect(instance.mockReinitializer()).revertedWithCustomError(
+          instance,
           'Initializable__AlreadyInitialized',
         );
       });
@@ -69,7 +72,8 @@ describe('Initializable', function () {
         await expect(instance.__reinitializer(1))
           .emit(instance, 'Initialized')
           .withArgs(1);
-        await expect(instance.__reinitializer(1)).revertedWith(
+        await expect(instance.__reinitializer(1)).revertedWithCustomError(
+          instance,
           'Initializable__AlreadyInitialized',
         );
       });
@@ -83,9 +87,9 @@ describe('Initializable', function () {
       });
 
       it('revert if initializing', async function () {
-        await expect(instance.mockDisableInitializers()).revertedWith(
-          'Initializable__IsInitializing',
-        );
+        await expect(
+          instance.mockDisableInitializers(),
+        ).revertedWithCustomError(instance, 'Initializable__IsInitializing');
       });
     });
   });
