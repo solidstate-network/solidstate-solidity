@@ -3,10 +3,5 @@
     "inputs": [],
     "name": "ERC2981Internal__RoyaltyExceedsMax",
     "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC2981Internal__RoyaltyNotSet",
-    "type": "error"
   }
 ]

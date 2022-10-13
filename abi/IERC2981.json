@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "ERC2981Internal__RoyaltyExceedsMax",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -16,12 +21,12 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "receiever",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "royaltyAmount",
         "type": "uint256"
       }
     ],
