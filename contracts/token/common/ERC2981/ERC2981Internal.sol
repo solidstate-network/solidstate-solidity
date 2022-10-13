@@ -3,7 +3,7 @@
 pragma solidity ^0.8.8;
 
 import { ERC2981Storage } from './ERC2981Storage.sol';
-import { IERC2981Internal } from './IERC2981Internal.sol';
+import { IERC2981Internal } from '../../../interfaces/IERC2981Internal.sol';
 
 /**
  * @title ERC2981 internal functions
@@ -19,22 +19,19 @@ abstract contract ERC2981Internal is IERC2981Internal {
     {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
 
-        uint256 royalty = l.royalties[tokenId] > 0
-            ? l.royalties[tokenId]
-            : l.royalty;
+        uint256 royalty = _getRoyaltyBPS(l, tokenId);
+        if (royalty > 10000) revert ERC2981Internal__RoyaltyExceedsMax();
 
-        if (0 == royalty) {
-            revert ERC2981Internal__RoyaltyNotSet();
-        }
+        return (l.receiver, (royalty * salePrice) / 10000);
+    }
 
-        if (royalty > 10000) {
-            revert ERC2981Internal__RoyaltyExceedsMax();
-        }
-
-        uint256 royaltyAmount = salePrice > 0
-            ? (royalty * salePrice) / 10000
-            : 0;
-
-        return (l.receiver, royaltyAmount);
+    function _getRoyaltyBPS(ERC2981Storage.Layout storage l, uint256 tokenId)
+        internal
+        view
+        virtual
+        returns (uint256)
+    {
+        uint16 localRoyalty = l.royalties[tokenId];
+        return localRoyalty > 0 ? localRoyalty : l.royalty;
     }
 }

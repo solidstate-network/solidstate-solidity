@@ -26,17 +26,6 @@ export function describeBehaviorOfERC2981(
 
     describe('#royaltyInfo()', () => {
       describe('reverts if', () => {
-        it('royalty == 0', async function () {
-          await instance.setRoyalty(0);
-
-          await expect(
-            instance.royaltyInfo(0, ethers.constants.One),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'ERC2981Internal__RoyaltyNotSet',
-          );
-        });
-
         it('royalty exceeds maximum', async function () {
           await expect(
             instance.royaltyInfo(tokenIdThree, ethers.constants.One),
@@ -61,12 +50,12 @@ export function describeBehaviorOfERC2981(
         expect(recipient).to.equal(await receiver.getAddress());
       });
 
-      it('calculates royalty using default if royalties[tokenId] does not exist', async function () {
+      it('calculates royalty using global if local does not exist', async function () {
         let [, royaltyAmount] = await instance.royaltyInfo(0, 10000);
         expect(royaltyAmount).to.equal(BigNumber.from(10000));
       });
 
-      it('calculates royalty using royalties[tokenId]', async function () {
+      it('calculates royalty using local', async function () {
         let [, royaltyAmount] = await instance.royaltyInfo(tokenIdOne, 10000);
         expect(royaltyAmount).to.equal(BigNumber.from(100));
 
