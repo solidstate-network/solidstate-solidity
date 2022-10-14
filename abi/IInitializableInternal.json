@@ -1,0 +1,17 @@
+[
+  {
+    "inputs": [],
+    "name": "Initializable__AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Initializable__IsInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Initializable__NotInitializing",
+    "type": "error"
+  }
+]

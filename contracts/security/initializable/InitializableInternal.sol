@@ -3,19 +3,14 @@
 pragma solidity ^0.8.8;
 
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { IInitializableInternal } from './IInitializableInternal.sol';
 import { InitializableStorage } from './InitializableStorage.sol';
 
-abstract contract InitializableInternal {
+abstract contract InitializableInternal is IInitializableInternal {
     using AddressUtils for address;
     using InitializableStorage for InitializableStorage.Layout;
 
     event Initialized(uint8 version);
-
-    error Initializable__AlreadyInitialized();
-
-    error Initializable__NotInitializing();
-
-    error Initializable__IsInitializing();
 
     modifier initializer() {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
