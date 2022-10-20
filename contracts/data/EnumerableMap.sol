@@ -35,11 +35,19 @@ library EnumerableMap {
         returns (address, address)
     {
         (bytes32 key, bytes32 value) = _at(map._inner, index);
+
         address addressKey;
+        address addressValue;
+
         assembly {
-            addressKey := mload(add(key, 20))
+            addressKey := and(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, key)
+            addressValue := and(
+                0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,
+                value
+            )
         }
-        return (addressKey, address(uint160(uint256(value))));
+
+        return (addressKey, addressValue);
     }
 
     function at(UintToAddressMap storage map, uint256 index)
