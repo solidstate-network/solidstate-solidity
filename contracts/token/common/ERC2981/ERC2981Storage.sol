@@ -4,8 +4,7 @@ pragma solidity ^0.8.8;
 
 library ERC2981Storage {
     struct Layout {
-        // any value between 0 - 10000 should be accepted
-        uint16 royalty;
+        uint16 royaltyBPS;
         // token id -> royalty
         mapping(uint256 => uint16) royalties;
         address receiver;

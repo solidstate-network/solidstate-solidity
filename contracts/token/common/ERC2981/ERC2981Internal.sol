@@ -28,7 +28,7 @@ abstract contract ERC2981Internal is IERC2981Internal {
     {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
         uint16 localRoyalty = l.royalties[tokenId];
-        return localRoyalty > 0 ? localRoyalty : l.royalty;
+        return localRoyalty > 0 ? localRoyalty : l.royaltyBPS;
     }
 
     function _royaltyReceiver() internal view virtual returns (address) {
