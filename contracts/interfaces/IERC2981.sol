@@ -11,11 +11,11 @@ import { IERC2981Internal } from './IERC2981Internal.sol';
  */
 interface IERC2981 is IERC2981Internal, IERC165 {
     /**
-     * @notice called with the sale price to determine how much royalty is owed and to whom.
-     * @param tokenId the NFT asset queried for royalty information
-     * @param salePrice the sale price of the NFT asset specified by tokenId
-     * @return receiever address of who should be sent the royalty payment
-     * @return royaltyAmount the royalty payment amount for salePrice
+     * @notice called with the sale price to determine how much royalty is owed and to whom
+     * @param tokenId the ERC721 or ERC1155 token id to query for royalty information
+     * @param salePrice the sale price of the given asset
+     * @return receiever rightful recipient of royalty
+     * @return royaltyAmount amount of royalty owed
      */
     function royaltyInfo(uint256 tokenId, uint256 salePrice)
         external
