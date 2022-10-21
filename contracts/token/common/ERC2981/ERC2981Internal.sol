@@ -17,7 +17,7 @@ abstract contract ERC2981Internal is IERC2981Internal {
     {
         uint256 royalty = _getRoyaltyBPS(tokenId);
         if (royalty > 10000) revert ERC2981Internal__RoyaltyExceedsMax();
-        return (_royaltyReceiver(), (royalty * salePrice) / 10000);
+        return (_getRoyaltyReceiver(tokenId), (royalty * salePrice) / 10000);
     }
 
     function _getRoyaltyBPS(uint256 tokenId)
@@ -31,8 +31,17 @@ abstract contract ERC2981Internal is IERC2981Internal {
         return localRoyalty > 0 ? localRoyalty : l.royaltyBPS;
     }
 
-    function _royaltyReceiver() internal view virtual returns (address) {
+    function _getRoyaltyReceiver(uint256 tokenId)
+        internal
+        view
+        virtual
+        returns (address)
+    {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
-        return l.receiver;
+        address localReceiver = l.royaltyReceivers[tokenId];
+        return
+            localReceiver == address(0)
+                ? l.defaultRoyaltyReceiver
+                : localReceiver;
     }
 }

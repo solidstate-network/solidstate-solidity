@@ -11,12 +11,12 @@ contract ERC2981Mock is ERC2981, ERC165 {
     constructor(
         uint16 royaltyBPS,
         uint16[] memory royalties,
-        address receiver
+        address defaultRoyaltyReceiver
     ) {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
 
         l.royaltyBPS = royaltyBPS;
-        l.receiver = receiver;
+        l.defaultRoyaltyReceiver = defaultRoyaltyReceiver;
 
         for (uint8 i = 0; i < royalties.length; i++) {
             l.royalties[i] = royalties[i];
