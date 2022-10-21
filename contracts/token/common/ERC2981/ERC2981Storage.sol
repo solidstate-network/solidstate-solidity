@@ -6,7 +6,6 @@ library ERC2981Storage {
     struct Layout {
         // any value between 0 - 10000 should be accepted
         uint16 royalty;
-        // 1-indexed to allow 0 to signify default royalty
         // token id -> royalty
         mapping(uint256 => uint16) royalties;
         address receiver;
