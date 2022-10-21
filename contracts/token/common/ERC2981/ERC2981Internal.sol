@@ -9,17 +9,30 @@ import { IERC2981Internal } from '../../../interfaces/IERC2981Internal.sol';
  * @title ERC2981 internal functions
  */
 abstract contract ERC2981Internal is IERC2981Internal {
+    /**
+     * @notice called with the sale price to determine how much royalty is owed and to whom
+     * @param tokenId the ERC721 or ERC1155 token id to query for royalty information
+     * @param salePrice the sale price of the given asset
+     * @return royaltyReceiver rightful recipient of royalty
+     * @return royalty amount of royalty owed
+     */
     function _royaltyInfo(uint256 tokenId, uint256 salePrice)
         internal
         view
         virtual
-        returns (address, uint256)
+        returns (address royaltyReceiver, uint256 royalty)
     {
-        uint256 royalty = _getRoyaltyBPS(tokenId);
-        if (royalty > 10000) revert ERC2981Internal__RoyaltyExceedsMax();
-        return (_getRoyaltyReceiver(tokenId), (royalty * salePrice) / 10000);
+        uint256 royaltyBPS = _getRoyaltyBPS(tokenId);
+        if (royaltyBPS > 10000) revert ERC2981Internal__RoyaltyExceedsMax();
+        return (_getRoyaltyReceiver(tokenId), (royaltyBPS * salePrice) / 10000);
     }
 
+    /**
+     * @notice query the royalty rate (denominated in basis points) for given token id
+     * @dev implementation supports per-token-id values as well as a global default
+     * @param tokenId token whose royalty rate to query
+     * @return royaltyBPS royalty rate
+     */
     function _getRoyaltyBPS(uint256 tokenId)
         internal
         view
@@ -34,6 +47,12 @@ abstract contract ERC2981Internal is IERC2981Internal {
         }
     }
 
+    /**
+     * @notice query the royalty receiver for given token id
+     * @dev implementation supports per-token-id values as well as a global default
+     * @param tokenId token whose royalty receiver to query
+     * @return royaltyReceiver royalty receiver
+     */
     function _getRoyaltyReceiver(uint256 tokenId)
         internal
         view
