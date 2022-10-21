@@ -9,8 +9,6 @@ import { IERC2981Internal } from '../../../interfaces/IERC2981Internal.sol';
  * @title ERC2981 internal functions
  */
 abstract contract ERC2981Internal is IERC2981Internal {
-    using ERC2981Storage for ERC2981Storage.Layout;
-
     function _royaltyInfo(uint256 tokenId, uint256 salePrice)
         internal
         view
