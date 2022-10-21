@@ -9,13 +9,13 @@ import { ERC165 } from '../../../introspection/ERC165.sol';
 
 contract ERC2981Mock is ERC2981, ERC165 {
     constructor(
-        uint16 royaltyBPS,
+        uint16 defaultRoyaltyBPS,
         uint16[] memory royaltiesBPS,
         address defaultRoyaltyReceiver
     ) {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
 
-        l.royaltyBPS = royaltyBPS;
+        l.defaultRoyaltyBPS = defaultRoyaltyBPS;
         l.defaultRoyaltyReceiver = defaultRoyaltyReceiver;
 
         for (uint8 i = 0; i < royaltiesBPS.length; i++) {
@@ -23,7 +23,7 @@ contract ERC2981Mock is ERC2981, ERC165 {
         }
     }
 
-    function setRoyalty(uint16 royaltyBPS) external {
-        ERC2981Storage.layout().royaltyBPS = royaltyBPS;
+    function setRoyalty(uint16 defaultRoyaltyBPS) external {
+        ERC2981Storage.layout().defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
 }
