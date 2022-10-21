@@ -24,6 +24,9 @@ abstract contract ERC2981Internal is IERC2981Internal {
     {
         uint256 royaltyBPS = _getRoyaltyBPS(tokenId);
         if (royaltyBPS > 10000) revert ERC2981Internal__RoyaltyExceedsMax();
+
+        // intermediate multiplication overflow is theoretically possible here, but
+        // not an issue in practice because of practical constraints of salePrice
         return (_getRoyaltyReceiver(tokenId), (royaltyBPS * salePrice) / 10000);
     }
 
