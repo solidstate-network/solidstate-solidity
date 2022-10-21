@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { IERC2981Internal } from './IERC2981Internal.sol';
 import { IERC165 } from './IERC165.sol';
+import { IERC2981Internal } from './IERC2981Internal.sol';
 
 /**
  * @title ERC2981 interface
