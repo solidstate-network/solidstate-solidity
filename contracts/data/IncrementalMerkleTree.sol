@@ -15,8 +15,11 @@ library IncrementalMerkleTree {
      * @return treeSize size of tree
      */
     function size(Tree storage t) internal view returns (uint256 treeSize) {
-        if (t.height() > 0) {
-            treeSize = t.nodes[0].length;
+        bytes32[][] storage nodes = t.nodes;
+
+        assembly {
+            mstore(0x00, nodes.slot)
+            treeSize := sload(keccak256(0x00, 0x20))
         }
     }
 
