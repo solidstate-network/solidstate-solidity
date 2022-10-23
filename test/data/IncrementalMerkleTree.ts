@@ -1,3 +1,4 @@
+import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import {
   IncrementalMerkleTreeMock,
   IncrementalMerkleTreeMock__factory,
@@ -96,6 +97,24 @@ describe('IncrementalMerkleTree', function () {
     });
   });
 
+  describe('#at', () => {
+    it('returns element at given index', async () => {
+      const hash = randomHash();
+
+      await instance.push(hash);
+
+      expect(await instance.callStatic.at(0)).to.equal(hash);
+    });
+
+    describe('reverts if', () => {
+      it('index is out of bounds', async () => {
+        await expect(instance.callStatic.at(0)).to.be.revertedWithPanic(
+          PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+        );
+      });
+    });
+  });
+
   describe('#push', () => {
     it('updates Merkle root', async () => {
       const hashes = [];
@@ -134,6 +153,14 @@ describe('IncrementalMerkleTree', function () {
 
         expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
       }
+    });
+
+    describe('reverts if', () => {
+      it('index is out of bounds', async () => {
+        await expect(
+          instance.callStatic.set(0, ethers.constants.HashZero),
+        ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
+      });
     });
   });
 });

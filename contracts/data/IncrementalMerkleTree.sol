@@ -45,6 +45,14 @@ library IncrementalMerkleTree {
         }
     }
 
+    function at(Tree storage t, uint256 index)
+        internal
+        view
+        returns (bytes32 hash)
+    {
+        hash = t.nodes[0][index];
+    }
+
     /**
      * @notice add new element to tree
      * @param t Tree struct storage reference

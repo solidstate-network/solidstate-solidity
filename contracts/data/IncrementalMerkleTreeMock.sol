@@ -23,6 +23,10 @@ contract IncrementalMerkleTreeMock {
         return tree.root();
     }
 
+    function at(uint256 index) external view returns (bytes32) {
+        return tree.at(index);
+    }
+
     function push(bytes32 hash) external {
         tree.push(hash);
     }
