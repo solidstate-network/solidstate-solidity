@@ -183,10 +183,13 @@ library IncrementalMerkleTree {
                 }
             }
 
-            rowLength = rowLength % 2 == 0
-                ? rowLength >> 1
-                : (rowLength >> 1) + 1;
-            _set(nodes, rowIndex + 1, colIndex >> 1, rowLength, hash);
+            _set(
+                nodes,
+                rowIndex + 1,
+                colIndex >> 1,
+                (rowLength >> 1) + (rowLength & 1),
+                hash
+            );
         }
     }
 }
