@@ -152,6 +152,17 @@ describe('EnumerableMap', () => {
             ),
           ).to.be.true;
         });
+
+        it('returns false if address value is already added at address key', async () => {
+          await instance['set(address,address)'](addressOne, addressFour);
+
+          expect(
+            await instance.callStatic['set(address,address)'](
+              addressOne,
+              addressFour,
+            ),
+          ).to.be.false;
+        });
       });
 
       describe('#remove(address)', () => {
