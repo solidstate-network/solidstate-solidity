@@ -128,7 +128,7 @@ library IncrementalMerkleTree {
         bytes32 hash
     ) internal {
         unchecked {
-            _set(t.nodes, 0, index, t.height() - 1, t.size(), hash);
+            _set(t.nodes, 0, index, t.size(), hash);
         }
     }
 
@@ -137,7 +137,6 @@ library IncrementalMerkleTree {
      * @param nodes internal tree structure storage reference
      * @param rowIndex index of current row to update
      * @param colIndex index of current column to update
-     * @param rootIndex index of root row
      * @param rowLength length of row at rowIndex
      * @param hash hash to store at current position
      */
@@ -145,7 +144,6 @@ library IncrementalMerkleTree {
         bytes32[][] storage nodes,
         uint256 rowIndex,
         uint256 colIndex,
-        uint256 rootIndex,
         uint256 rowLength,
         bytes32 hash
     ) private {
@@ -158,7 +156,7 @@ library IncrementalMerkleTree {
             sstore(add(keccak256(0x00, 0x20), colIndex), hash)
         }
 
-        if (rowIndex == rootIndex) return;
+        if (rowLength == 1) return;
 
         unchecked {
             if (colIndex & 1 == 1) {
@@ -188,14 +186,7 @@ library IncrementalMerkleTree {
             rowLength = rowLength % 2 == 0
                 ? rowLength >> 1
                 : (rowLength >> 1) + 1;
-            _set(
-                nodes,
-                rowIndex + 1,
-                colIndex >> 1,
-                rootIndex,
-                rowLength,
-                hash
-            );
+            _set(nodes, rowIndex + 1, colIndex >> 1, rowLength, hash);
         }
     }
 }
