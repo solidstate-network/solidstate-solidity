@@ -138,6 +138,7 @@ library IncrementalMerkleTree {
      * @param rowIndex index of current row to update
      * @param colIndex index of current column to update
      * @param rootIndex index of root row
+     * @param rowSize length of row at rowIndex
      * @param hash hash to store at current position
      */
     function _set(
