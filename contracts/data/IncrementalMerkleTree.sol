@@ -151,7 +151,12 @@ library IncrementalMerkleTree {
     ) private {
         bytes32[] storage row = nodes[rowIndex];
 
-        row[colIndex] = hash;
+        // store hash in array via assembly to avoid array length sload
+
+        assembly {
+            mstore(0x00, row.slot)
+            sstore(add(keccak256(0x00, 0x20), colIndex), hash)
+        }
 
         if (rowIndex == rootIndex) return;
 
