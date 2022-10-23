@@ -133,6 +133,38 @@ describe('IncrementalMerkleTree', function () {
     });
   });
 
+  describe('#pop', () => {
+    it('updates Merkle root', async () => {
+      const hashes = [];
+
+      for (let i = 0; i < 10; i++) {
+        hashes.push(randomHash());
+        await instance.push(hashes[i]);
+      }
+
+      for (let i = 0; i < hashes.length; i++) {
+        await instance.pop();
+
+        const tree = new MerkleTree(
+          hashes.slice(0, hashes.length - 1 - i),
+          keccak256,
+        );
+
+        // MerkleTree library returns truncated zero hash, so must use hexEqual matcher
+
+        expect(await instance.callStatic.root()).to.hexEqual(tree.getHexRoot());
+      }
+    });
+
+    describe('reverts if', () => {
+      it('tree is size zero', async () => {
+        await expect(instance.pop()).to.be.revertedWithPanic(
+          PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
+        );
+      });
+    });
+  });
+
   describe('#set', () => {
     it('updates Merkle root', async () => {
       const hashes = [];

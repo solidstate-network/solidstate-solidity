@@ -31,6 +31,10 @@ contract IncrementalMerkleTreeMock {
         tree.push(hash);
     }
 
+    function pop() external {
+        tree.pop();
+    }
+
     function set(uint256 index, bytes32 hash) external {
         tree.set(index, hash);
     }

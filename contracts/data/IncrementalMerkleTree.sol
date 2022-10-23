@@ -87,6 +87,37 @@ library IncrementalMerkleTree {
         }
     }
 
+    function pop(Tree storage t) internal {
+        uint256 treeHeight = t.height();
+        uint256 treeSize = t.size() - 1;
+
+        // remove layer if tree has excess capacity
+
+        if (treeSize == (1 << treeHeight) >> 2) {
+            treeHeight--;
+            // TODO: is this pop necessary, or will the row be properly deleted?
+            t.nodes[treeHeight].pop();
+            t.nodes.pop();
+        }
+
+        // remove columns if rows are too long
+
+        uint256 row;
+        uint256 col = treeSize;
+
+        while (row < treeHeight && t.nodes[row].length > col) {
+            t.nodes[row].pop();
+            row++;
+            col = (col + 1) >> 1;
+        }
+
+        // recalculate hashes
+
+        if (treeSize > 0) {
+            t.set(treeSize - 1, t.at(treeSize - 1));
+        }
+    }
+
     /**
      * @notice update existing element in tree
      * @param t Tree struct storage reference
