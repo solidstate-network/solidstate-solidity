@@ -138,7 +138,7 @@ library IncrementalMerkleTree {
      * @param rowIndex index of current row to update
      * @param colIndex index of current column to update
      * @param rootIndex index of root row
-     * @param rowSize length of row at rowIndex
+     * @param rowLength length of row at rowIndex
      * @param hash hash to store at current position
      */
     function _set(
@@ -146,7 +146,7 @@ library IncrementalMerkleTree {
         uint256 rowIndex,
         uint256 colIndex,
         uint256 rootIndex,
-        uint256 rowSize,
+        uint256 rowLength,
         bytes32 hash
     ) private {
         bytes32[] storage row = nodes[rowIndex];
@@ -172,7 +172,7 @@ library IncrementalMerkleTree {
                     mstore(0x20, hash)
                     hash := keccak256(0x00, 0x40)
                 }
-            } else if (colIndex + 1 < rowSize) {
+            } else if (colIndex < rowLength - 1) {
                 // sibling is on the right (and sibling exists)
                 assembly {
                     mstore(0x00, row.slot)
@@ -185,8 +185,17 @@ library IncrementalMerkleTree {
                 }
             }
 
-            rowSize = rowSize % 2 == 0 ? rowSize >> 1 : (rowSize >> 1) + 1;
-            _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, rowSize, hash);
+            rowLength = rowLength % 2 == 0
+                ? rowLength >> 1
+                : (rowLength >> 1) + 1;
+            _set(
+                nodes,
+                rowIndex + 1,
+                colIndex >> 1,
+                rootIndex,
+                rowLength,
+                hash
+            );
         }
     }
 }
