@@ -95,6 +95,33 @@ describe('IncrementalMerkleTree', function () {
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
+
+    it('returns result matching reference implementation regardless of previous operations', async () => {
+      const count = 5;
+      const hashes = [];
+
+      for (let i = 0; i < count; i++) {
+        hashes.push(randomHash());
+        await instance.push(hashes[i]);
+      }
+
+      for (let i = 0; i < count; i++) {
+        await instance.push(randomHash());
+      }
+
+      for (let i = 0; i < count; i++) {
+        await instance.pop();
+      }
+
+      for (let i = 0; i < count; i++) {
+        hashes.push(randomHash());
+        await instance.push(hashes[count + i]);
+
+        const tree = new MerkleTree(hashes, keccak256);
+
+        expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
+      }
+    });
   });
 
   describe('#at', () => {

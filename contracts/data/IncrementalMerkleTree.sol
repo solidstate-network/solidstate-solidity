@@ -95,8 +95,6 @@ library IncrementalMerkleTree {
 
         if (treeSize == (1 << treeHeight) >> 2) {
             treeHeight--;
-            // TODO: is this pop necessary, or will the row be properly deleted?
-            t.nodes[treeHeight].pop();
             t.nodes.pop();
         }
 
