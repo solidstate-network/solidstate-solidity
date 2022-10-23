@@ -94,22 +94,6 @@ describe('IncrementalMerkleTree', function () {
 
       expect(await instance.callStatic.root()).to.equal(hash);
     });
-
-    it('POC: returns Merkle root derived from elements contained in unbalanced tree', async () => {
-      const hash_a = randomHash();
-      const hash_b = randomHash();
-      const hash_c = randomHash();
-
-      const leaves = [hash_a, hash_b, hash_c];
-      const tree = new MerkleTree(leaves, keccak256);
-      const root = tree.getHexRoot();
-
-      await instance.push(hash_a);
-      await instance.push(hash_b);
-      await instance.push(hash_c);
-
-      expect(await instance.callStatic.root()).to.equal(root);
-    });
   });
 
   describe('#push', () => {
