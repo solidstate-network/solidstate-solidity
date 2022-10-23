@@ -12,11 +12,11 @@ library IncrementalMerkleTree {
     /**
      * @notice query number of elements contained in tree
      * @param t Tree struct storage reference
-     * @return size of tree
+     * @return treeSize size of tree
      */
-    function size(Tree storage t) internal view returns (uint256) {
+    function size(Tree storage t) internal view returns (uint256 treeSize) {
         if (t.height() > 0) {
-            return t.nodes[0].length;
+            treeSize = t.nodes[0].length;
         }
     }
 
@@ -33,14 +33,14 @@ library IncrementalMerkleTree {
     /**
      * @notice query Merkle root
      * @param t Tree struct storage reference
-     * @return root hash
+     * @return hash root hash
      */
-    function root(Tree storage t) internal view returns (bytes32) {
-        uint256 height = t.height();
+    function root(Tree storage t) internal view returns (bytes32 hash) {
+        uint256 treeHeight = t.height();
 
-        if (height > 0) {
+        if (treeHeight > 0) {
             unchecked {
-                return t.nodes[height - 1][0];
+                hash = t.nodes[treeHeight - 1][0];
             }
         }
     }
@@ -52,22 +52,22 @@ library IncrementalMerkleTree {
      */
     function push(Tree storage t, bytes32 hash) internal {
         unchecked {
-            uint256 height = t.height();
-            uint256 size = t.size();
+            uint256 treeHeight = t.height();
+            uint256 treeSize = t.size();
 
             // add new layer if tree is at capacity
 
-            if (size == (1 << height) >> 1) {
+            if (treeSize == (1 << treeHeight) >> 1) {
                 t.nodes.push();
-                height++;
+                treeHeight++;
             }
 
             // add new columns if rows are full
 
             uint256 row;
-            uint256 col = size;
+            uint256 col = treeSize;
 
-            while (row < height && t.nodes[row].length <= col) {
+            while (row < treeHeight && t.nodes[row].length <= col) {
                 t.nodes[row].push();
                 row++;
                 col >>= 1;
@@ -75,7 +75,7 @@ library IncrementalMerkleTree {
 
             // add hash to tree
 
-            t.set(size, hash);
+            t.set(treeSize, hash);
         }
     }
 
