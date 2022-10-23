@@ -128,7 +128,7 @@ library IncrementalMerkleTree {
         bytes32 hash
     ) internal {
         unchecked {
-            _set(t.nodes, 0, index, t.height() - 1, hash);
+            _set(t.nodes, 0, index, t.height() - 1, t.size(), hash);
         }
     }
 
@@ -145,6 +145,7 @@ library IncrementalMerkleTree {
         uint256 rowIndex,
         uint256 colIndex,
         uint256 rootIndex,
+        uint256 rowSize,
         bytes32 hash
     ) private {
         bytes32[] storage row = nodes[rowIndex];
@@ -165,7 +166,7 @@ library IncrementalMerkleTree {
                     mstore(0x20, hash)
                     hash := keccak256(0x00, 0x40)
                 }
-            } else if (colIndex + 1 < row.length) {
+            } else if (colIndex + 1 < rowSize) {
                 // sibling is on the right (and sibling exists)
                 assembly {
                     mstore(0x00, row.slot)
@@ -178,7 +179,8 @@ library IncrementalMerkleTree {
                 }
             }
 
-            _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, hash);
+            rowSize = rowSize % 2 == 0 ? rowSize >> 1 : (rowSize >> 1) + 1;
+            _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, rowSize, hash);
         }
     }
 }
