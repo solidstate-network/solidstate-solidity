@@ -187,7 +187,7 @@ library IncrementalMerkleTree {
                 nodes,
                 rowIndex + 1,
                 colIndex >> 1,
-                (rowLength >> 1) + (rowLength & 1),
+                (rowLength + 1) >> 1,
                 hash
             );
         }
