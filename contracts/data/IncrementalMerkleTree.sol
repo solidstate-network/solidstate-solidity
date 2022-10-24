@@ -39,10 +39,9 @@ library IncrementalMerkleTree {
      * @return hash root hash
      */
     function root(Tree storage t) internal view returns (bytes32 hash) {
-        uint256 treeHeight = t.height();
-
-        if (treeHeight > 0) {
-            assembly {
+        assembly {
+            let treeHeight := sload(t.slot)
+            if gt(treeHeight, 0) {
                 mstore(0x00, t.slot)
                 mstore(0x00, add(keccak256(0x00, 0x20), sub(treeHeight, 1)))
                 hash := sload(keccak256(0x00, 0x20))
