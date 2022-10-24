@@ -27,10 +27,14 @@ library IncrementalMerkleTree {
      * @notice query one-indexed height of tree
      * @dev conventional zero-indexed height would require the use of signed integers, so height is one-indexed instead
      * @param t Tree struct storage reference
-     * @return one-indexed height of tree
+     * @return treeHeight one-indexed height of tree
      */
-    function height(Tree storage t) internal view returns (uint256) {
-        return t.nodes.length;
+    function height(Tree storage t) internal view returns (uint256 treeHeight) {
+        bytes32[][] storage nodes = t.nodes;
+
+        assembly {
+            treeHeight := sload(nodes.slot)
+        }
     }
 
     /**
@@ -39,11 +43,15 @@ library IncrementalMerkleTree {
      * @return hash root hash
      */
     function root(Tree storage t) internal view returns (bytes32 hash) {
+        bytes32[][] storage nodes = t.nodes;
+
         uint256 treeHeight = t.height();
 
         if (treeHeight > 0) {
-            unchecked {
-                hash = t.nodes[treeHeight - 1][0];
+            assembly {
+                mstore(0x00, nodes.slot)
+                mstore(0x00, add(keccak256(0x00, 0x20), sub(treeHeight, 1)))
+                hash := sload(keccak256(0x00, 0x20))
             }
         }
     }
