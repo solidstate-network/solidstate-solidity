@@ -100,7 +100,7 @@ library IncrementalMerkleTree {
             uint256 row;
             uint256 col = updateIndex;
 
-            while (col < t.nodes[row].length) {
+            while (col != t.nodes[row].length) {
                 t.nodes[row].pop();
                 row++;
                 col >>= 1;
