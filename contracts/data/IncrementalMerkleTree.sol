@@ -91,31 +91,33 @@ library IncrementalMerkleTree {
     }
 
     function pop(Tree storage t) internal {
-        uint256 treeHeight = t.height();
-        uint256 treeSize = t.size() - 1;
+        unchecked {
+            uint256 treeHeight = t.height();
+            uint256 treeSize = t.size() - 1;
 
-        // remove layer if tree has excess capacity
+            // remove layer if tree has excess capacity
 
-        if (treeSize == (1 << treeHeight) >> 2) {
-            treeHeight--;
-            t.nodes.pop();
-        }
+            if (treeSize == (1 << treeHeight) >> 2) {
+                treeHeight--;
+                t.nodes.pop();
+            }
 
-        // remove columns if rows are too long
+            // remove columns if rows are too long
 
-        uint256 row;
-        uint256 col = treeSize;
+            uint256 row;
+            uint256 col = treeSize;
 
-        while (row < treeHeight && t.nodes[row].length > col) {
-            t.nodes[row].pop();
-            row++;
-            col = (col + 1) >> 1;
-        }
+            while (row < treeHeight && t.nodes[row].length > col) {
+                t.nodes[row].pop();
+                row++;
+                col = (col + 1) >> 1;
+            }
 
-        // recalculate hashes
+            // recalculate hashes
 
-        if (treeSize > 0) {
-            t.set(treeSize - 1, t.at(treeSize - 1));
+            if (treeSize > 0) {
+                t.set(treeSize - 1, t.at(treeSize - 1));
+            }
         }
     }
 
