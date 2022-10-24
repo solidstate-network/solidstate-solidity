@@ -95,13 +95,6 @@ library IncrementalMerkleTree {
             uint256 treeHeight = t.height();
             uint256 treeSize = t.size() - 1;
 
-            // remove layer if tree has excess capacity
-
-            if (treeSize == (1 << treeHeight) >> 2) {
-                treeHeight--;
-                t.nodes.pop();
-            }
-
             // remove columns if rows are too long
 
             uint256 row;
@@ -113,9 +106,12 @@ library IncrementalMerkleTree {
                 col = (col + 1) >> 1;
             }
 
-            // recalculate hashes
+            // if new tree is full, remove excess layer
+            // if no layer is removed, recalculate hashes
 
-            if (treeSize > 0) {
+            if (treeSize == ((1 << treeHeight) >> 2)) {
+                t.nodes.pop();
+            } else {
                 t.set(treeSize - 1, t.at(treeSize - 1));
             }
         }
