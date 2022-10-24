@@ -132,9 +132,7 @@ library IncrementalMerkleTree {
         uint256 index,
         bytes32 hash
     ) internal {
-        unchecked {
-            _set(t.nodes, 0, index, t.size(), hash);
-        }
+        _set(t.nodes, 0, index, t.size(), hash);
     }
 
     /**
