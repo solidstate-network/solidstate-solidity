@@ -186,7 +186,6 @@ library IncrementalMerkleTree {
             if (colIndex & 1 == 1) {
                 // sibling is on the left
                 assembly {
-                    mstore(0x00, row.slot)
                     let sibling := sload(
                         add(keccak256(0x00, 0x20), sub(colIndex, 1))
                     )
@@ -197,7 +196,6 @@ library IncrementalMerkleTree {
             } else if (colIndex < rowLength - 1) {
                 // sibling is on the right (and sibling exists)
                 assembly {
-                    mstore(0x00, row.slot)
                     let sibling := sload(
                         add(keccak256(0x00, 0x20), add(colIndex, 1))
                     )
@@ -206,8 +204,8 @@ library IncrementalMerkleTree {
                     hash := keccak256(0x00, 0x40)
                 }
             }
-
-            _set(t, rowIndex + 1, colIndex >> 1, (rowLength + 1) >> 1, hash);
         }
+
+        _set(t, rowIndex + 1, colIndex >> 1, (rowLength + 1) >> 1, hash);
     }
 }
