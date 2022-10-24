@@ -63,56 +63,57 @@ library IncrementalMerkleTree {
      */
     function push(Tree storage t, bytes32 hash) internal {
         unchecked {
-            uint256 treeHeight = t.height();
-            uint256 treeSize = t.size();
+            // index to add to tree
+            uint256 updateIndex = t.size();
 
             // add new layer if tree is at capacity
 
-            if (treeSize == (1 << treeHeight) >> 1) {
+            if (updateIndex == (1 << t.height()) >> 1) {
                 t.nodes.push();
-                treeHeight++;
             }
 
             // add new columns if rows are full
 
             uint256 row;
-            uint256 col = treeSize;
+            uint256 col = updateIndex;
 
-            while (row < treeHeight && t.nodes[row].length <= col) {
+            while (col == t.nodes[row].length) {
                 t.nodes[row].push();
                 row++;
+                if (col == 0) break;
                 col >>= 1;
             }
 
             // add hash to tree
 
-            t.set(treeSize, hash);
+            t.set(updateIndex, hash);
         }
     }
 
     function pop(Tree storage t) internal {
         unchecked {
-            uint256 treeHeight = t.height();
-            uint256 treeSize = t.size() - 1;
+            // index to remove from tree
+            uint256 updateIndex = t.size() - 1;
 
             // remove columns if rows are too long
 
             uint256 row;
-            uint256 col = treeSize;
+            uint256 col = updateIndex;
 
-            while (row < treeHeight && t.nodes[row].length > col) {
+            while (col < t.nodes[row].length) {
                 t.nodes[row].pop();
                 row++;
-                col = (col + 1) >> 1;
+                col >>= 1;
+                if (col == 0) break;
             }
 
             // if new tree is full, remove excess layer
             // if no layer is removed, recalculate hashes
 
-            if (treeSize == ((1 << treeHeight) >> 2)) {
+            if (updateIndex == (1 << t.height()) >> 2) {
                 t.nodes.pop();
             } else {
-                t.set(treeSize - 1, t.at(treeSize - 1));
+                t.set(updateIndex - 1, t.at(updateIndex - 1));
             }
         }
     }
