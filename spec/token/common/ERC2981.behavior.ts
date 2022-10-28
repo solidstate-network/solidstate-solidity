@@ -1,3 +1,4 @@
+import { describeBehaviorOfERC165 } from '../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC2981Mock } from '@solidstate/typechain-types';
@@ -23,6 +24,14 @@ export function describeBehaviorOfERC2981(
       receiver = (await ethers.getSigners())[1];
       instance = await deploy();
     });
+
+    describeBehaviorOfERC165(
+      deploy,
+      {
+        interfaceIds: ['0x2a55205a'],
+      },
+      skips,
+    );
 
     describe('#royaltyInfo()', () => {
       describe('reverts if', () => {
