@@ -159,7 +159,7 @@ library EnumerableSet {
         bytes32[] memory arr = new bytes32[](len);
 
         unchecked {
-            for (uint256 index = 0; index < len; index++) {
+            for (uint256 index; index < len; ++index) {
                 arr[index] = at(set, index);
             }
         }
@@ -176,7 +176,7 @@ library EnumerableSet {
         address[] memory arr = new address[](len);
 
         unchecked {
-            for (uint256 index = 0; index < len; index++) {
+            for (uint256 index; index < len; ++index) {
                 arr[index] = at(set, index);
             }
         }
@@ -193,7 +193,7 @@ library EnumerableSet {
         uint256[] memory arr = new uint256[](len);
 
         unchecked {
-            for (uint256 index = 0; index < len; index++) {
+            for (uint256 index; index < len; ++index) {
                 arr[index] = at(set, index);
             }
         }
