@@ -6,5 +6,5 @@ pragma solidity ^0.8.8;
  * @title ERC2981 interface
  */
 interface IERC2981Internal {
-    error ERC2981Internal__RoyaltyExceedsMax();
+
 }

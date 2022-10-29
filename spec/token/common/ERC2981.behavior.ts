@@ -34,17 +34,6 @@ export function describeBehaviorOfERC2981(
     );
 
     describe('#royaltyInfo()', () => {
-      describe('reverts if', () => {
-        it('royalty exceeds maximum', async function () {
-          await expect(
-            instance.royaltyInfo(tokenIdThree, ethers.constants.One),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'ERC2981Internal__RoyaltyExceedsMax',
-          );
-        });
-      });
-
       it('returns 0 if salePrice is 0', async function () {
         const [, royaltyAmount] = await instance.royaltyInfo(
           0,
