@@ -10,7 +10,8 @@ import { IERC2981Internal } from '../../../interfaces/IERC2981Internal.sol';
  */
 abstract contract ERC2981Internal is IERC2981Internal {
     /**
-     * @notice called with the sale price to determine how much royalty is owed and to whom
+     * @notice calculate how much royalty is owed and to whom
+     * @dev royalty must be paid in addition to, rather than deducted from, salePrice
      * @param tokenId the ERC721 or ERC1155 token id to query for royalty information
      * @param salePrice the sale price of the given asset
      * @return royaltyReceiver rightful recipient of royalty
