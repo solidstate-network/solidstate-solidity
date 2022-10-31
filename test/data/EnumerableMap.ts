@@ -200,6 +200,30 @@ describe('EnumerableMap', () => {
           expect(values).to.deep.equal([addressFour, addressFive, addressSix]);
         });
       });
+
+      describe('#keys()', () => {
+        it('returns array of keys in map', async () => {
+          await instance['set(address,address)'](addressOne, addressFour);
+          await instance['set(address,address)'](addressTwo, addressFive);
+          await instance['set(address,address)'](addressThree, addressSix);
+
+          const keys = await instance.callStatic['keys()']();
+
+          expect(keys).to.deep.equal([addressOne, addressTwo, addressThree]);
+        });
+      });
+
+      describe('#values()', () => {
+        it('returns array of values in map', async () => {
+          await instance['set(address,address)'](addressOne, addressFour);
+          await instance['set(address,address)'](addressTwo, addressFive);
+          await instance['set(address,address)'](addressThree, addressSix);
+
+          const values = await instance.callStatic['values()']();
+
+          expect(values).to.deep.equal([addressFour, addressFive, addressSix]);
+        });
+      });
     });
   });
 
@@ -388,6 +412,30 @@ describe('EnumerableMap', () => {
           const [keys, values] = await instance.callStatic['toArray()']();
 
           expect(keys).to.deep.equal([uintOne, uintTwo, uintThree]);
+          expect(values).to.deep.equal([addressOne, addressTwo, addressThree]);
+        });
+      });
+
+      describe('#keys()', () => {
+        it('returns array of keys in map', async () => {
+          await instance['set(uint256,address)'](uintOne, addressOne);
+          await instance['set(uint256,address)'](uintTwo, addressTwo);
+          await instance['set(uint256,address)'](uintThree, addressThree);
+
+          const keys = await instance.callStatic['keys()']();
+
+          expect(keys).to.deep.equal([uintOne, uintTwo, uintThree]);
+        });
+      });
+
+      describe('#values()', () => {
+        it('returns array of values in map', async () => {
+          await instance['set(uint256,address)'](uintOne, addressOne);
+          await instance['set(uint256,address)'](uintTwo, addressTwo);
+          await instance['set(uint256,address)'](uintThree, addressThree);
+
+          const values = await instance.callStatic['values()']();
+
           expect(values).to.deep.equal([addressOne, addressTwo, addressThree]);
         });
       });

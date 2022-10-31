@@ -40,4 +40,12 @@ contract EnumerableMapAddressToAddressMock {
     {
         (keys, values) = map.toArray();
     }
+
+    function keys() external view returns (address[] memory keys) {
+        keys = map.keys();
+    }
+
+    function values() external view returns (address[] memory values) {
+        values = map.values();
+    }
 }
