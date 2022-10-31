@@ -67,5 +67,50 @@ describe('Pausable', function () {
         );
       });
     });
+
+    describe('#_partialPause(uint8)', function () {
+      it('sets partiallyPaused(uint8) === true', async function () {
+        await instance.__partialPause(1);
+        expect(await instance.partiallyPaused(1)).to.equal(true);
+      });
+
+      it('emits partiallyPaused event', async function () {
+        await expect(instance.connect(deployer).__partialPause(1))
+          .to.emit(instance, 'PartiallyPaused')
+          .withArgs(deployer.address, 1);
+      });
+
+      it('reverts if paused already', async function () {
+        await instance.__partialPause(1);
+        await expect(instance.__partialPause(1)).to.be.revertedWithCustomError(
+          instance,
+          'Pausable__Paused',
+        );
+      });
+
+      describe('#_partialUnpause(uint8)', function () {
+        beforeEach(async function () {
+          await instance.__partialPause(1);
+        });
+
+        it('sets partiallyPaused(uint8) === false', async function () {
+          await instance.__partialUnpause(1);
+          //expect(await instance.partiallyPaused(1)).to.equal(false);
+        });
+
+        it('emits PartialUnpaused event', async function () {
+          await expect(instance.connect(deployer).__partialUnpause(1))
+            .to.emit(instance, 'PartiallyUnpaused')
+            .withArgs(deployer.address, 1);
+        });
+
+        it('reverts if partialUnpaused already', async function () {
+          await instance.__partialUnpause(1);
+          await expect(
+            instance.__partialUnpause(1),
+          ).to.be.revertedWithCustomError(instance, 'Pausable__NotPaused');
+        });
+      });
+    });
   });
 });

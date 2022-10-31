@@ -16,6 +16,9 @@ abstract contract PausableInternal {
     event Paused(address account);
     event Unpaused(address account);
 
+    event PartiallyPaused(address account, uint8 mask);
+    event PartiallyUnpaused(address account, uint8 mask);
+
     modifier whenNotPaused() {
         if (_paused()) revert Pausable__Paused();
         _;
@@ -23,6 +26,16 @@ abstract contract PausableInternal {
 
     modifier whenPaused() {
         if (!_paused()) revert Pausable__NotPaused();
+        _;
+    }
+
+    modifier whenNotPartiallyPaused(uint8 mask) {
+        if (_partiallyPaused(mask)) revert Pausable__Paused();
+        _;
+    }
+
+    modifier whenPartiallyPaused(uint8 mask) {
+        if (!_partiallyPaused(mask)) revert Pausable__NotPaused();
         _;
     }
 
@@ -48,5 +61,40 @@ abstract contract PausableInternal {
     function _unpause() internal virtual whenPaused {
         PausableStorage.layout().paused = false;
         emit Unpaused(msg.sender);
+    }
+
+    /**
+     * @notice query the contracts partialPaused state.
+     * param mask of the facet.
+     * @return true if paused, false if unpaused.
+     */
+    function _partiallyPaused(uint8 mask) internal view virtual returns (bool) {
+        return PausableStorage.layout().partialPaused[mask];
+    }
+
+    /**
+     * @notice Triggers partial paused state, when contract is partial unpaused.
+     * param mask of the facet to be paused.
+     */
+    function _partialPause(uint8 mask)
+        internal
+        virtual
+        whenNotPartiallyPaused(mask)
+    {
+        PausableStorage.layout().partialPaused[mask] = true;
+        emit PartiallyPaused(msg.sender, mask);
+    }
+
+    /**
+     * @notice Triggers partial unpaused state, when contract is partialPaused.
+     * param mask of the facet to be unpaused.
+     */
+    function _partialUnpause(uint8 mask)
+        internal
+        virtual
+        whenPartiallyPaused(mask)
+    {
+        PausableStorage.layout().partialPaused[mask] = false;
+        emit PartiallyUnpaused(msg.sender, mask);
     }
 }

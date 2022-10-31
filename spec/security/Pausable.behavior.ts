@@ -23,5 +23,11 @@ export function describeBehaviorOfPausable(
         expect(await instance.paused()).to.equal(false);
       });
     });
+
+    describe('#partiallyPaused(uint8)', function () {
+      it('returns partialPaused(mask) == false', async function () {
+        expect(await instance.partiallyPaused(1)).to.equal(false);
+      });
+    });
   });
 }

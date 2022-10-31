@@ -11,4 +11,8 @@ abstract contract Pausable is PausableInternal {
     function paused() external view virtual returns (bool) {
         return _paused();
     }
+
+    function partiallyPaused(uint8 mask) external view virtual returns (bool) {
+        return _partiallyPaused(mask);
+    }
 }

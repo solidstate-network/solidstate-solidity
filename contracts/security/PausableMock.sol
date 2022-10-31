@@ -12,4 +12,12 @@ contract PausableMock is Pausable {
     function __unpause() external {
         _unpause();
     }
+
+    function __partialPause(uint8 mask) external {
+        _partialPause(mask);
+    }
+
+    function __partialUnpause(uint8 mask) external {
+        _partialUnpause(mask);
+    }
 }
