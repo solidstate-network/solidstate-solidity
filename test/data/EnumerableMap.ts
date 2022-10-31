@@ -122,6 +122,24 @@ describe('EnumerableMap', () => {
           );
         });
 
+        it('does not increase length if overwriting value at already set key', async () => {
+          await instance['set(address,address)'](addressOne, addressThree);
+          expect(await instance.callStatic['length()']()).to.eq(1);
+          await instance['set(address,address)'](addressOne, addressTwo);
+          expect(await instance.callStatic['length()']()).to.eq(1);
+        });
+
+        it('overwrites value if key already set', async () => {
+          await instance['set(address,address)'](addressOne, addressThree);
+          let [key, value] = await instance.callStatic['at(uint256)'](0);
+          expect(key).to.eq(addressOne);
+          expect(value).to.eq(addressThree);
+          await instance['set(address,address)'](addressOne, addressFour);
+          [key, value] = await instance.callStatic['at(uint256)'](0);
+          expect(key).to.eq(addressOne);
+          expect(value).to.eq(addressFour);
+        });
+
         it('returns true if address value is added at address key', async () => {
           expect(
             await instance.callStatic['set(address,address)'](
@@ -281,6 +299,24 @@ describe('EnumerableMap', () => {
           expect(await instance.callStatic['get(uint256)'](uintOne)).to.eq(
             addressOne,
           );
+        });
+
+        it('does not increase length if overwriting value at already set key', async () => {
+          await instance['set(uint256,address)'](uintOne, addressThree);
+          expect(await instance.callStatic['length()']()).to.eq(1);
+          await instance['set(uint256,address)'](uintOne, addressTwo);
+          expect(await instance.callStatic['length()']()).to.eq(1);
+        });
+
+        it('overwrites value if key already set', async () => {
+          await instance['set(uint256,address)'](uintOne, addressThree);
+          let [key, value] = await instance.callStatic['at(uint256)'](0);
+          expect(key).to.eq(uintOne);
+          expect(value).to.eq(addressThree);
+          await instance['set(uint256,address)'](uintOne, addressTwo);
+          [key, value] = await instance.callStatic['at(uint256)'](0);
+          expect(key).to.eq(uintOne);
+          expect(value).to.eq(addressTwo);
         });
 
         it('returns true if address value is added at uint256 key', async () => {
