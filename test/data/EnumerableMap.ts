@@ -33,27 +33,17 @@ describe('EnumerableMap', () => {
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
           await instance['set(address,address)'](addressOne, addressFour);
-          await instance['set(address,address)'](addressTwo, addressFive);
-          await instance['set(address,address)'](addressThree, addressSix);
 
-          expect(await instance['at(uint256)'](0)).to.deep.equal([
-            addressOne,
-            addressFour,
-          ]);
-          expect(await instance['at(uint256)'](1)).to.deep.equal([
-            addressTwo,
-            addressFive,
-          ]);
-          expect(await instance['at(uint256)'](2)).to.deep.equal([
-            addressThree,
-            addressSix,
-          ]);
+          const [key, value] = await instance.callStatic['at(uint256)'](0);
+
+          expect(key).to.equal(addressOne);
+          expect(value).to.equal(addressFour);
         });
 
         describe('reverts if', () => {
           it('index is out of bounds', async () => {
             await expect(
-              instance['at(uint256)'](0),
+              instance.callStatic['at(uint256)'](0),
             ).to.be.revertedWithCustomError(
               instance,
               'EnumerableMap__IndexOutOfBounds',
@@ -65,60 +55,54 @@ describe('EnumerableMap', () => {
       describe('#contains(address)', () => {
         it('returns true if value has been added', async () => {
           await instance['set(address,address)'](addressOne, addressFour);
-          await instance['set(address,address)'](addressTwo, addressFive);
-          await instance['set(address,address)'](addressThree, addressSix);
 
-          expect(await instance['contains(address)'](addressOne)).to.be.true;
-          expect(await instance['contains(address)'](addressTwo)).to.be.true;
-          expect(await instance['contains(address)'](addressThree)).to.be.true;
+          expect(await instance.callStatic['contains(address)'](addressOne)).to
+            .be.true;
         });
 
         it('returns false if value has not been added', async () => {
-          expect(await instance['contains(address)'](addressFour)).to.be.false;
+          expect(await instance.callStatic['contains(address)'](addressFour)).to
+            .be.false;
         });
       });
 
       describe('#length()', () => {
         it('returns length of enumerable map', async () => {
-          expect(await instance['length()']()).to.equal(0);
+          expect(await instance.callStatic['length()']()).to.equal(0);
 
           await instance['set(address,address)'](addressOne, addressFour);
-          expect(await instance['length()']()).to.equal(1);
+          expect(await instance.callStatic['length()']()).to.equal(1);
 
           await instance['set(address,address)'](addressTwo, addressFive);
-          expect(await instance['length()']()).to.equal(2);
+          expect(await instance.callStatic['length()']()).to.equal(2);
 
           await instance['set(address,address)'](addressThree, addressSix);
-          expect(await instance['length()']()).to.equal(3);
+          expect(await instance.callStatic['length()']()).to.equal(3);
 
           await instance['remove(address)'](addressThree);
-          expect(await instance['length()']()).to.equal(2);
+          expect(await instance.callStatic['length()']()).to.equal(2);
 
           await instance['remove(address)'](addressTwo);
-          expect(await instance['length()']()).to.equal(1);
+          expect(await instance.callStatic['length()']()).to.equal(1);
 
           await instance['remove(address)'](addressOne);
-          expect(await instance['length()']()).to.equal(0);
+          expect(await instance.callStatic['length()']()).to.equal(0);
         });
       });
 
       describe('#get(address)', () => {
         it('returns address stored at key', async () => {
           await instance['set(address,address)'](addressOne, addressFour);
-          await instance['set(address,address)'](addressTwo, addressFive);
-          await instance['set(address,address)'](addressThree, addressSix);
 
-          expect(await instance['get(address)'](addressOne)).to.eq(addressFour);
-          expect(await instance['get(address)'](addressTwo)).to.eq(addressFive);
-          expect(await instance['get(address)'](addressThree)).to.eq(
-            addressSix,
+          expect(await instance.callStatic['get(address)'](addressOne)).to.eq(
+            addressFour,
           );
         });
 
         describe('reverts if', () => {
           it('key does not exist', async () => {
             await expect(
-              instance['get(address)'](addressOne),
+              instance.callStatic['get(address)'](addressOne),
             ).to.be.revertedWithCustomError(
               instance,
               'EnumerableMap__NonExistentKey',
@@ -130,17 +114,11 @@ describe('EnumerableMap', () => {
       describe('#set(address,address)', () => {
         it('sets the address value at address key', async () => {
           await instance['set(address,address)'](addressOne, addressFour);
-          await instance['set(address,address)'](addressTwo, addressFive);
-          await instance['set(address,address)'](addressThree, addressSix);
 
-          expect(await instance['contains(address)'](addressOne)).to.be.true;
-          expect(await instance['contains(address)'](addressTwo)).to.be.true;
-          expect(await instance['contains(address)'](addressThree)).to.be.true;
-
-          expect(await instance['get(address)'](addressOne)).to.eq(addressFour);
-          expect(await instance['get(address)'](addressTwo)).to.eq(addressFive);
-          expect(await instance['get(address)'](addressThree)).to.eq(
-            addressSix,
+          expect(await instance.callStatic['contains(address)'](addressOne)).to
+            .be.true;
+          expect(await instance.callStatic['get(address)'](addressOne)).to.eq(
+            addressFour,
           );
         });
 
@@ -168,37 +146,17 @@ describe('EnumerableMap', () => {
       describe('#remove(address)', () => {
         it('removes the address value at given address key', async () => {
           await instance['set(address,address)'](addressOne, addressFour);
-          await instance['set(address,address)'](addressTwo, addressFive);
-          await instance['set(address,address)'](addressThree, addressSix);
 
-          expect(await instance['length()']()).to.eq(3);
+          expect(await instance.callStatic['length()']()).to.eq(1);
 
           await instance['remove(address)'](addressOne);
           await expect(
-            instance['get(address)'](addressOne),
+            instance.callStatic['get(address)'](addressOne),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableMap__NonExistentKey',
           );
-          expect(await instance['length()']()).to.eq(2);
-
-          await instance['remove(address)'](addressTwo);
-          await expect(
-            instance['get(address)'](addressTwo),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'EnumerableMap__NonExistentKey',
-          );
-          expect(await instance['length()']()).to.eq(1);
-
-          await instance['remove(address)'](addressThree);
-          await expect(
-            instance['get(address)'](addressThree),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'EnumerableMap__NonExistentKey',
-          );
-          expect(await instance['length()']()).to.eq(0);
+          expect(await instance.callStatic['length()']()).to.eq(0);
         });
 
         it('returns true if address key removed', async () => {
@@ -226,37 +184,27 @@ describe('EnumerableMap', () => {
     });
 
     describe('__internal', () => {
-      const addressOne = bnToAddress(BigNumber.from('100'));
-      const addressTwo = bnToAddress(BigNumber.from('200'));
-      const addressThree = bnToAddress(BigNumber.from('300'));
       const uintOne = BigNumber.from('1');
       const uintTwo = BigNumber.from('2');
       const uintThree = BigNumber.from('3');
+      const addressOne = bnToAddress(BigNumber.from('100'));
+      const addressTwo = bnToAddress(BigNumber.from('200'));
+      const addressThree = bnToAddress(BigNumber.from('300'));
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
           await instance['set(uint256,address)'](uintOne, addressOne);
-          await instance['set(uint256,address)'](uintTwo, addressTwo);
-          await instance['set(uint256,address)'](uintThree, addressThree);
 
-          expect(await instance['at(uint256)'](0)).to.deep.equal([
-            uintOne,
-            addressOne,
-          ]);
-          expect(await instance['at(uint256)'](1)).to.deep.equal([
-            uintTwo,
-            addressTwo,
-          ]);
-          expect(await instance['at(uint256)'](2)).to.deep.equal([
-            uintThree,
-            addressThree,
-          ]);
+          const [key, value] = await instance.callStatic['at(uint256)'](0);
+
+          expect(key).to.equal(uintOne);
+          expect(value).to.equal(addressOne);
         });
 
         describe('reverts if', () => {
           it('index is out of bounds', async () => {
             await expect(
-              instance['at(uint256)'](0),
+              instance.callStatic['at(uint256)'](0),
             ).to.be.revertedWithCustomError(
               instance,
               'EnumerableMap__IndexOutOfBounds',
@@ -268,58 +216,54 @@ describe('EnumerableMap', () => {
       describe('#contains(uint256)', () => {
         it('returns true if value has been added', async () => {
           await instance['set(uint256,address)'](uintOne, addressOne);
-          await instance['set(uint256,address)'](uintTwo, addressTwo);
-          await instance['set(uint256,address)'](uintThree, addressThree);
 
-          expect(await instance['contains(uint256)'](uintOne)).to.be.true;
-          expect(await instance['contains(uint256)'](uintTwo)).to.be.true;
-          expect(await instance['contains(uint256)'](uintThree)).to.be.true;
+          expect(await instance.callStatic['contains(uint256)'](uintOne)).to.be
+            .true;
         });
 
         it('returns false if value has not been added', async () => {
-          expect(await instance['contains(uint256)'](uintOne)).to.be.false;
+          expect(await instance.callStatic['contains(uint256)'](uintOne)).to.be
+            .false;
         });
       });
 
       describe('#length()', () => {
         it('returns length of enumerable map', async () => {
-          expect(await instance['length()']()).to.equal(0);
+          expect(await instance.callStatic['length()']()).to.equal(0);
 
           await instance['set(uint256,address)'](uintOne, addressOne);
-          expect(await instance['length()']()).to.equal(1);
+          expect(await instance.callStatic['length()']()).to.equal(1);
 
           await instance['set(uint256,address)'](uintTwo, addressTwo);
-          expect(await instance['length()']()).to.equal(2);
+          expect(await instance.callStatic['length()']()).to.equal(2);
 
           await instance['set(uint256,address)'](uintThree, addressThree);
-          expect(await instance['length()']()).to.equal(3);
+          expect(await instance.callStatic['length()']()).to.equal(3);
 
           await instance['remove(uint256)'](uintOne);
-          expect(await instance['length()']()).to.equal(2);
+          expect(await instance.callStatic['length()']()).to.equal(2);
 
           await instance['remove(uint256)'](uintTwo);
-          expect(await instance['length()']()).to.equal(1);
+          expect(await instance.callStatic['length()']()).to.equal(1);
 
           await instance['remove(uint256)'](uintThree);
-          expect(await instance['length()']()).to.equal(0);
+          expect(await instance.callStatic['length()']()).to.equal(0);
         });
       });
 
       describe('#get(uint256)', () => {
         it('returns address stored at key', async () => {
           await instance['set(uint256,address)'](uintOne, addressOne);
-          await instance['set(uint256,address)'](uintTwo, addressTwo);
-          await instance['set(uint256,address)'](uintThree, addressThree);
 
-          expect(await instance['get(uint256)'](uintOne)).to.eq(addressOne);
-          expect(await instance['get(uint256)'](uintTwo)).to.eq(addressTwo);
-          expect(await instance['get(uint256)'](uintThree)).to.eq(addressThree);
+          expect(await instance.callStatic['get(uint256)'](uintOne)).to.eq(
+            addressOne,
+          );
         });
 
         describe('reverts if', () => {
           it('key does not exist', async () => {
             await expect(
-              instance['get(uint256)'](uintOne),
+              instance.callStatic['get(uint256)'](uintOne),
             ).to.be.revertedWithCustomError(
               instance,
               'EnumerableMap__NonExistentKey',
@@ -331,16 +275,12 @@ describe('EnumerableMap', () => {
       describe('#set(uint256,address)', () => {
         it('sets the address value at uint256 key', async () => {
           await instance['set(uint256,address)'](uintOne, addressOne);
-          await instance['set(uint256,address)'](uintTwo, addressTwo);
-          await instance['set(uint256,address)'](uintThree, addressThree);
 
-          expect(await instance['contains(uint256)'](uintOne)).to.be.true;
-          expect(await instance['contains(uint256)'](uintTwo)).to.be.true;
-          expect(await instance['contains(uint256)'](uintThree)).to.be.true;
-
-          expect(await instance['get(uint256)'](uintOne)).to.eq(addressOne);
-          expect(await instance['get(uint256)'](uintTwo)).to.eq(addressTwo);
-          expect(await instance['get(uint256)'](uintThree)).to.eq(addressThree);
+          expect(await instance.callStatic['contains(uint256)'](uintOne)).to.be
+            .true;
+          expect(await instance.callStatic['get(uint256)'](uintOne)).to.eq(
+            addressOne,
+          );
         });
 
         it('returns true if address value is added at uint256 key', async () => {
@@ -367,37 +307,16 @@ describe('EnumerableMap', () => {
       describe('#remove(uint256)', () => {
         it('removes the address value at given uint256 key', async () => {
           await instance['set(uint256,address)'](uintOne, addressOne);
-          await instance['set(uint256,address)'](uintTwo, addressTwo);
-          await instance['set(uint256,address)'](uintThree, addressThree);
 
-          expect(await instance['length()']()).to.eq(3);
+          expect(await instance.callStatic['length()']()).to.eq(1);
 
           await instance['remove(uint256)'](uintOne);
           await expect(
-            instance['get(uint256)'](uintOne),
+            instance.callStatic['get(uint256)'](uintOne),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableMap__NonExistentKey',
           );
-          expect(await instance['length()']()).to.eq(2);
-
-          await instance['remove(uint256)'](uintTwo);
-          await expect(
-            instance['get(uint256)'](uintTwo),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'EnumerableMap__NonExistentKey',
-          );
-          expect(await instance['length()']()).to.eq(1);
-
-          await instance['remove(uint256)'](uintThree);
-          await expect(
-            instance['get(uint256)'](uintThree),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'EnumerableMap__NonExistentKey',
-          );
-          expect(await instance['length()']()).to.eq(0);
         });
 
         it('returns true if uint256 key removed', async () => {
