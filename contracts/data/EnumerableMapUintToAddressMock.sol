@@ -32,4 +32,12 @@ contract EnumerableMapUintToAddressMock {
     function remove(uint256 key) external returns (bool) {
         return map.remove(key);
     }
+
+    function toArray()
+        external
+        view
+        returns (uint256[] memory keys, address[] memory values)
+    {
+        (keys, values) = map.toArray();
+    }
 }

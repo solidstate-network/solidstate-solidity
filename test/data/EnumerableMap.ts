@@ -187,6 +187,19 @@ describe('EnumerableMap', () => {
             .false;
         });
       });
+
+      describe('#toArray()', () => {
+        it('returns arrays of keys and values in map', async () => {
+          await instance['set(address,address)'](addressOne, addressFour);
+          await instance['set(address,address)'](addressTwo, addressFive);
+          await instance['set(address,address)'](addressThree, addressSix);
+
+          const [keys, values] = await instance.callStatic['toArray()']();
+
+          expect(keys).to.deep.equal([addressOne, addressTwo, addressThree]);
+          expect(values).to.deep.equal([addressFour, addressFive, addressSix]);
+        });
+      });
     });
   });
 
@@ -363,6 +376,19 @@ describe('EnumerableMap', () => {
         it('returns false if uint256 key does not exist', async () => {
           expect(await instance.callStatic['remove(uint256)'](uintOne)).to.be
             .false;
+        });
+      });
+
+      describe('#toArray()', () => {
+        it('returns arrays of keys and values in map', async () => {
+          await instance['set(uint256,address)'](uintOne, addressOne);
+          await instance['set(uint256,address)'](uintTwo, addressTwo);
+          await instance['set(uint256,address)'](uintThree, addressThree);
+
+          const [keys, values] = await instance.callStatic['toArray()']();
+
+          expect(keys).to.deep.equal([uintOne, uintTwo, uintThree]);
+          expect(values).to.deep.equal([addressOne, addressTwo, addressThree]);
         });
       });
     });
