@@ -7,6 +7,14 @@ import { UintUtils } from './UintUtils.sol';
 contract UintUtilsMock {
     using UintUtils for uint256;
 
+    function add(uint256 a, int256 b) external pure returns (uint256) {
+        return a.add(b);
+    }
+
+    function sub(uint256 a, int256 b) external pure returns (uint256) {
+        return a.sub(b);
+    }
+
     function toString(uint256 number) external pure returns (string memory) {
         return number.toString();
     }
