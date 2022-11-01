@@ -286,8 +286,7 @@ library BinaryHeap {
         unchecked {
             uint256 index = len / 2;
             while (index > 0) {
-                index--;
-                _maxHeapify(heap, len, index);
+                _maxHeapify(heap, len, --index);
             }
         }
     }
