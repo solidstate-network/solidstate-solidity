@@ -11,6 +11,14 @@ describe('Math', function () {
   });
 
   describe('__internal', function () {
+    describe('#abs(int256)', function () {
+      it('returns the absolute value of a number', async () => {
+        expect(await instance.callStatic.abs(-1)).to.equal(1);
+        expect(await instance.callStatic.abs(0)).to.equal(0);
+        expect(await instance.callStatic.abs(1)).to.equal(1);
+      });
+    });
+
     describe('#max(uint256,uint256)', function () {
       it('returns the greater of two numbers', async () => {
         expect(
