@@ -304,7 +304,7 @@ library BinaryHeap {
         bytes32[] storage values = heap._values;
 
         unchecked {
-            uint256 left = 2 * index + 1;
+            uint256 left = (index << 1) | 1;
             uint256 right = left + 1;
 
             if (left < len && values[largest] < values[left]) {
