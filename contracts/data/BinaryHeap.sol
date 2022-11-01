@@ -283,14 +283,11 @@ library BinaryHeap {
 
     function _heapify(Heap storage heap) private {
         uint256 len = _length(heap);
-        if (len > 1) {
-            unchecked {
-                uint256 index = ((len) / 2) - 1;
-                while (index >= 0) {
-                    _maxHeapify(heap, len, index);
-                    if (index == 0) break;
-                    --index;
-                }
+        unchecked {
+            uint256 index = len / 2;
+            while (index > 0) {
+                index--;
+                _maxHeapify(heap, len, index);
             }
         }
     }
