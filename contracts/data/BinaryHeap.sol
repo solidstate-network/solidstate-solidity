@@ -249,19 +249,23 @@ library BinaryHeap {
         return _at(heap, 0);
     }
 
-    function _add(Heap storage heap, bytes32 value) private returns (bool) {
+    function _add(Heap storage heap, bytes32 value)
+        private
+        returns (bool update)
+    {
         if (!_contains(heap, value)) {
             heap._values.push(value);
             heap._indexes[value] = _length(heap);
             _heapify(heap);
 
-            return true;
-        } else {
-            return false;
+            update = true;
         }
     }
 
-    function _remove(Heap storage heap, bytes32 value) private returns (bool) {
+    function _remove(Heap storage heap, bytes32 value)
+        private
+        returns (bool update)
+    {
         if (_contains(heap, value)) {
             uint256 index = _indexOf(heap, value);
 
@@ -275,9 +279,7 @@ library BinaryHeap {
 
             _heapify(heap);
 
-            return true;
-        } else {
-            return false;
+            update = true;
         }
     }
 
