@@ -6,7 +6,6 @@ pragma solidity ^0.8.8;
  * @title Binary Heap implementation
  * @dev The data structure is configured as a max-heap
  */
-
 library BinaryHeap {
     error BinaryHeap__IndexOutOfBounds();
 
