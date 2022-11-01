@@ -11,6 +11,14 @@ library UintUtils {
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
+    function add(uint256 a, int256 b) internal pure returns (uint256) {
+        return b < 0 ? sub(a, -b) : a + uint256(b);
+    }
+
+    function sub(uint256 a, int256 b) internal pure returns (uint256) {
+        return b < 0 ? add(a, -b) : a - uint256(b);
+    }
+
     function toString(uint256 value) internal pure returns (string memory) {
         if (value == 0) {
             return '0';
