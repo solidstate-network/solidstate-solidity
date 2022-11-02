@@ -303,7 +303,11 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](constants.bytes32[1]);
           await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['toArray()']()).to.deep.equal([
+          const array = await instance.callStatic['toArray()']();
+
+          expect(array.length).to.equal(3);
+
+          expect(array).to.deep.equal([
             constants.bytes32[2],
             constants.bytes32[0],
             constants.bytes32[1],
@@ -574,7 +578,11 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](constants.address[1]);
           await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['toArray()']()).to.deep.equal([
+          const array = await instance.callStatic['toArray()']();
+
+          expect(array.length).to.equal(3);
+
+          expect(array).to.deep.equal([
             constants.address[2],
             constants.address[0],
             constants.address[1],
@@ -845,7 +853,11 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](constants.uint256[1]);
           await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['toArray()']()).to.deep.equal([
+          const array = await instance.callStatic['toArray()']();
+
+          expect(array.length).to.equal(3);
+
+          expect(array).to.deep.equal([
             constants.uint256[2],
             constants.uint256[0],
             constants.uint256[1],
