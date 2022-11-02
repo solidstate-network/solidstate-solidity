@@ -21,6 +21,13 @@ const constants = {
   uint256: numbers,
 };
 
+const randomBytes32 = () => ethers.utils.randomBytes(32);
+
+const randomAddress = () =>
+  ethers.utils.getAddress(ethers.utils.hexlify(ethers.utils.randomBytes(20)));
+
+const randomUint256 = () => ethers.BigNumber.from(ethers.utils.randomBytes(32));
+
 // checks that the parent node is greater than or equal to the children nodes
 function checkNodes(nodes: string[] | BigNumber[]) {
   nodes.forEach((node, index) => {
@@ -205,7 +212,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          const [value] = constants.bytes32;
+          const value = randomBytes32();
 
           await instance['add(bytes32)'](value);
 
@@ -258,7 +265,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          const [value] = constants.bytes32;
+          const value = randomBytes32();
 
           await instance['add(bytes32)'](value);
 
@@ -456,7 +463,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          const [value] = constants.address;
+          const value = randomAddress();
 
           await instance['add(address)'](value);
 
@@ -509,7 +516,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          const [value] = constants.address;
+          const value = randomAddress();
 
           await instance['add(address)'](value);
 
@@ -707,7 +714,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          const [value] = constants.uint256;
+          const value = randomUint256();
 
           await instance['add(uint256)'](value);
 
@@ -760,7 +767,7 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          const [value] = constants.uint256;
+          const value = randomUint256();
 
           await instance['add(uint256)'](value);
 
