@@ -7,8 +7,6 @@ pragma solidity ^0.8.8;
  * @dev The data structure is configured as a max-heap
  */
 library BinaryHeap {
-    error BinaryHeap__IndexOutOfBounds();
-
     struct Heap {
         bytes32[] _values;
         // 1-indexed to allow 0 to signify nonexistence
@@ -218,7 +216,6 @@ library BinaryHeap {
         view
         returns (bytes32)
     {
-        if (index >= heap._values.length) revert BinaryHeap__IndexOutOfBounds();
         return heap._values[index];
     }
 
