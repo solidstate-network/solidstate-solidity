@@ -98,31 +98,13 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](constants.bytes32[1]);
           await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[0]),
-          ).to.equal(1);
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[1]),
-          ).to.equal(2);
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[2]),
-          ).to.equal(0);
+          const array = await instance.callStatic['toArray()']();
 
-          await instance['remove(bytes32)'](constants.bytes32[0]);
-          await instance['remove(bytes32)'](constants.bytes32[1]);
-          await instance['remove(bytes32)'](constants.bytes32[2]);
-
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[0]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[1]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(bytes32)'](constants.bytes32[2]),
-          ).to.be.equal(ethers.constants.MaxUint256);
+          for (const key in array) {
+            const value = array[key];
+            const index = await instance.callStatic['indexOf(bytes32)'](value);
+            expect(index).to.equal(key);
+          }
         });
 
         it('returns max uint256 if value does not exist', async () => {
@@ -367,31 +349,13 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](constants.address[1]);
           await instance['add(address)'](constants.address[2]);
 
-          expect(
-            await instance['indexOf(address)'](constants.address[0]),
-          ).to.equal(1);
-          expect(
-            await instance['indexOf(address)'](constants.address[1]),
-          ).to.equal(2);
-          expect(
-            await instance['indexOf(address)'](constants.address[2]),
-          ).to.equal(0);
+          const array = await instance.callStatic['toArray()']();
 
-          await instance['remove(address)'](constants.address[0]);
-          await instance['remove(address)'](constants.address[1]);
-          await instance['remove(address)'](constants.address[2]);
-
-          expect(
-            await instance['indexOf(address)'](constants.address[0]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(address)'](constants.address[1]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(address)'](constants.address[2]),
-          ).to.be.equal(ethers.constants.MaxUint256);
+          for (const key in array) {
+            const value = array[key];
+            const index = await instance.callStatic['indexOf(address)'](value);
+            expect(index).to.equal(key);
+          }
         });
 
         it('returns max uint256 if value does not exist', async () => {
@@ -636,31 +600,13 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](constants.uint256[1]);
           await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[0]),
-          ).to.equal(1);
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[1]),
-          ).to.equal(2);
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[2]),
-          ).to.equal(0);
+          const array = await instance.callStatic['toArray()']();
 
-          await instance['remove(uint256)'](constants.uint256[0]);
-          await instance['remove(uint256)'](constants.uint256[1]);
-          await instance['remove(uint256)'](constants.uint256[2]);
-
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[0]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[1]),
-          ).to.be.equal(ethers.constants.MaxUint256);
-
-          expect(
-            await instance['indexOf(uint256)'](constants.uint256[2]),
-          ).to.be.equal(ethers.constants.MaxUint256);
+          for (const key in array) {
+            const value = array[key];
+            const index = await instance.callStatic['indexOf(uint256)'](value);
+            expect(index).to.equal(key);
+          }
         });
 
         it('returns max uint256 if value does not exist', async () => {
