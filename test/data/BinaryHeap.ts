@@ -1,3 +1,4 @@
+import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { bnToBytes32, bnToAddress, bytes32ToNumber } from '@solidstate/library';
 import {
@@ -67,7 +68,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic();
+            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
@@ -166,7 +169,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWithPanic();
+            await expect(instance['root()']()).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
@@ -325,7 +330,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic();
+            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
@@ -424,7 +431,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWithPanic();
+            await expect(instance['root()']()).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
@@ -583,7 +592,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic();
+            await expect(instance['at(uint256)'](0)).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
@@ -682,7 +693,9 @@ describe('BinaryHeap', async () => {
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
-            await expect(instance['root()']()).to.be.revertedWithPanic();
+            await expect(instance['root()']()).to.be.revertedWithPanic(
+              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+            );
           });
         });
       });
