@@ -65,15 +65,12 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](constants.bytes32[1]);
           await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(
-            constants.bytes32[2],
-          );
-          expect(await instance['at(uint256)'](1)).to.equal(
-            constants.bytes32[0],
-          );
-          expect(await instance['at(uint256)'](2)).to.equal(
-            constants.bytes32[1],
-          );
+          const array = await instance.callStatic['toArray()']();
+
+          for (const key in array) {
+            const value = await instance.callStatic['at(uint256)'](key);
+            expect(value).to.equal(array[key]);
+          }
         });
 
         describe('reverts if', function () {
@@ -316,15 +313,12 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](constants.address[1]);
           await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(
-            constants.address[2],
-          );
-          expect(await instance['at(uint256)'](1)).to.equal(
-            constants.address[0],
-          );
-          expect(await instance['at(uint256)'](2)).to.equal(
-            constants.address[1],
-          );
+          const array = await instance.callStatic['toArray()']();
+
+          for (const key in array) {
+            const value = await instance.callStatic['at(uint256)'](key);
+            expect(value).to.equal(array[key]);
+          }
         });
 
         describe('reverts if', function () {
@@ -567,15 +561,12 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](constants.uint256[1]);
           await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(
-            constants.uint256[2],
-          );
-          expect(await instance['at(uint256)'](1)).to.equal(
-            constants.uint256[0],
-          );
-          expect(await instance['at(uint256)'](2)).to.equal(
-            constants.uint256[1],
-          );
+          const array = await instance.callStatic['toArray()']();
+
+          for (const key in array) {
+            const value = await instance.callStatic['at(uint256)'](key);
+            expect(value).to.equal(array[key]);
+          }
         });
 
         describe('reverts if', function () {
