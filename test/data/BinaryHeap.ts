@@ -13,27 +13,20 @@ import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
-const randomBytes32 = () => ethers.utils.hexlify(ethers.utils.randomBytes(32));
+const numbers = [0, 1, 2].map((n) => BigNumber.from(n));
+
+const constants = {
+  bytes32: numbers.map((n) => bnToBytes32(n)),
+  address: numbers.map((n) => bnToAddress(n)),
+  uint256: numbers,
+};
+
+const randomBytes32 = () => ethers.utils.randomBytes(32);
 
 const randomAddress = () =>
   ethers.utils.getAddress(ethers.utils.hexlify(ethers.utils.randomBytes(20)));
 
 const randomUint256 = () => ethers.BigNumber.from(ethers.utils.randomBytes(32));
-
-const constants = {
-  bytes32: new Array(3)
-    .fill()
-    .map(() => randomBytes32())
-    .sort(),
-  address: new Array(3)
-    .fill()
-    .map(() => randomAddress())
-    .sort(),
-  uint256: new Array(3)
-    .fill()
-    .map(() => randomUint256())
-    .sort(),
-};
 
 // checks that the parent node is greater than or equal to the children nodes
 function checkNodes(nodes: string[] | BigNumber[]) {
