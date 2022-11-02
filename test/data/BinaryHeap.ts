@@ -13,6 +13,14 @@ import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
+const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => BigNumber.from(n));
+
+const constants = {
+  bytes32: numbers.map((n) => bnToBytes32(n)),
+  address: numbers.map((n) => bnToAddress(n)),
+  uint256: numbers,
+};
+
 // checks that the parent node is greater than or equal to the children nodes
 function checkNodes(nodes: string[] | BigNumber[]) {
   nodes.forEach((node, index) => {
@@ -44,26 +52,21 @@ describe('BinaryHeap', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(BigNumber.from(0));
-      const oneBytes32 = bnToBytes32(BigNumber.from(1));
-      const twoBytes32 = bnToBytes32(BigNumber.from(2));
-      const threeBytes32 = bnToBytes32(BigNumber.from(3));
-      const fourBytes32 = bnToBytes32(BigNumber.from(4));
-      const fiveBytes32 = bnToBytes32(BigNumber.from(5));
-      const sixBytes32 = bnToBytes32(BigNumber.from(6));
-      const sevenBytes32 = bnToBytes32(BigNumber.from(7));
-      const eightBytes32 = bnToBytes32(BigNumber.from(8));
-      const nineBytes32 = bnToBytes32(BigNumber.from(9));
-
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(twoBytes32);
-          expect(await instance['at(uint256)'](1)).to.equal(zeroBytes32);
-          expect(await instance['at(uint256)'](2)).to.equal(oneBytes32);
+          expect(await instance['at(uint256)'](0)).to.equal(
+            constants.bytes32[2],
+          );
+          expect(await instance['at(uint256)'](1)).to.equal(
+            constants.bytes32[0],
+          );
+          expect(await instance['at(uint256)'](2)).to.equal(
+            constants.bytes32[1],
+          );
         });
 
         describe('reverts if', function () {
@@ -77,51 +80,61 @@ describe('BinaryHeap', async () => {
 
       describe('#contains(bytes32)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['contains(bytes32)'](zeroBytes32)).to.be.true;
-          expect(await instance['contains(bytes32)'](oneBytes32)).to.be.true;
-          expect(await instance['contains(bytes32)'](twoBytes32)).to.be.true;
+          expect(await instance['contains(bytes32)'](constants.bytes32[0])).to
+            .be.true;
+          expect(await instance['contains(bytes32)'](constants.bytes32[1])).to
+            .be.true;
+          expect(await instance['contains(bytes32)'](constants.bytes32[2])).to
+            .be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance['contains(bytes32)'](zeroBytes32)).to.be.false;
+          expect(await instance['contains(bytes32)'](constants.bytes32[0])).to
+            .be.false;
         });
       });
 
       describe('#indexOf(bytes32)', () => {
         it('returns index of the value', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.equal(1);
-          expect(await instance['indexOf(bytes32)'](oneBytes32)).to.equal(2);
-          expect(await instance['indexOf(bytes32)'](twoBytes32)).to.equal(0);
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[0]),
+          ).to.equal(1);
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[1]),
+          ).to.equal(2);
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[2]),
+          ).to.equal(0);
 
-          await instance['remove(bytes32)'](zeroBytes32);
-          await instance['remove(bytes32)'](oneBytes32);
-          await instance['remove(bytes32)'](twoBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[0]);
+          await instance['remove(bytes32)'](constants.bytes32[1]);
+          await instance['remove(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[0]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(bytes32)'](oneBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[1]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(bytes32)'](twoBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[2]),
+          ).to.be.equal(ethers.constants.MaxUint256);
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.equal(
-            ethers.constants.MaxUint256.toString(),
-          );
+          expect(
+            await instance['indexOf(bytes32)'](constants.bytes32[0]),
+          ).to.equal(ethers.constants.MaxUint256.toString());
         });
       });
 
@@ -129,42 +142,42 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           expect(await instance['length()']()).to.equal(0);
 
-          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](constants.bytes32[1]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[2]);
           expect(await instance['length()']()).to.equal(3);
 
-          await instance['remove(bytes32)'](twoBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[2]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['remove(bytes32)'](oneBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[1]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['remove(bytes32)'](zeroBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[0]);
           expect(await instance['length()']()).to.equal(0);
         });
       });
 
       describe('#root()', () => {
         it('returns the highest value in the heap', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance['root()']()).to.equal(twoBytes32);
+          expect(await instance['root()']()).to.equal(constants.bytes32[2]);
         });
 
         it('returns the next highest value when the previous highest value is removed', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          await instance['remove(bytes32)'](twoBytes32);
-          expect(await instance['root()']()).to.equal(oneBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[2]);
+          expect(await instance['root()']()).to.equal(constants.bytes32[1]);
         });
 
         describe('reverts if', function () {
@@ -178,118 +191,122 @@ describe('BinaryHeap', async () => {
 
       describe('#add(bytes32)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](zeroBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](eightBytes32);
+          await instance['add(bytes32)'](constants.bytes32[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](threeBytes32);
+          await instance['add(bytes32)'](constants.bytes32[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](sixBytes32);
+          await instance['add(bytes32)'](constants.bytes32[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](fourBytes32);
+          await instance['add(bytes32)'](constants.bytes32[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](fiveBytes32);
+          await instance['add(bytes32)'](constants.bytes32[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](nineBytes32);
+          await instance['add(bytes32)'](constants.bytes32[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](sevenBytes32);
+          await instance['add(bytes32)'](constants.bytes32[7]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](constants.bytes32[1]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
-            .true;
+          expect(
+            await instance.callStatic['add(bytes32)'](constants.bytes32[0]),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
-            .false;
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          expect(
+            await instance.callStatic['add(bytes32)'](constants.bytes32[0]),
+          ).to.be.false;
         });
       });
 
       describe('#remove(bytes32)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          await instance['add(bytes32)'](twoBytes32);
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](eightBytes32);
-          await instance['add(bytes32)'](threeBytes32);
-          await instance['add(bytes32)'](sixBytes32);
-          await instance['add(bytes32)'](fourBytes32);
-          await instance['add(bytes32)'](fiveBytes32);
-          await instance['add(bytes32)'](nineBytes32);
-          await instance['add(bytes32)'](sevenBytes32);
-          await instance['add(bytes32)'](oneBytes32);
+          await instance['add(bytes32)'](constants.bytes32[2]);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[8]);
+          await instance['add(bytes32)'](constants.bytes32[3]);
+          await instance['add(bytes32)'](constants.bytes32[6]);
+          await instance['add(bytes32)'](constants.bytes32[4]);
+          await instance['add(bytes32)'](constants.bytes32[5]);
+          await instance['add(bytes32)'](constants.bytes32[9]);
+          await instance['add(bytes32)'](constants.bytes32[7]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
 
-          await instance['remove(bytes32)'](sixBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](fiveBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](eightBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](twoBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](fourBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](zeroBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](threeBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](nineBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](oneBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[1]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(bytes32)'](sevenBytes32);
+          await instance['remove(bytes32)'](constants.bytes32[7]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
-            .be.true;
+          expect(
+            await instance.callStatic['remove(bytes32)'](constants.bytes32[0]),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
-            .be.false;
+          expect(
+            await instance.callStatic['remove(bytes32)'](constants.bytes32[0]),
+          ).to.be.false;
         });
       });
 
       describe('#toArray()', () => {
         it('returns the max heap as an array', async () => {
-          await instance['add(bytes32)'](zeroBytes32);
-          await instance['add(bytes32)'](oneBytes32);
-          await instance['add(bytes32)'](twoBytes32);
+          await instance['add(bytes32)'](constants.bytes32[0]);
+          await instance['add(bytes32)'](constants.bytes32[1]);
+          await instance['add(bytes32)'](constants.bytes32[2]);
 
           expect(await instance['toArray()']()).to.deep.equal([
-            twoBytes32,
-            zeroBytes32,
-            oneBytes32,
+            constants.bytes32[2],
+            constants.bytes32[0],
+            constants.bytes32[1],
           ]);
         });
       });
@@ -306,26 +323,21 @@ describe('BinaryHeap', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(BigNumber.from(0));
-      const oneAddress = bnToAddress(BigNumber.from(1));
-      const twoAddress = bnToAddress(BigNumber.from(2));
-      const threeAddress = bnToAddress(BigNumber.from(3));
-      const fourAddress = bnToAddress(BigNumber.from(4));
-      const fiveAddress = bnToAddress(BigNumber.from(5));
-      const sixAddress = bnToAddress(BigNumber.from(6));
-      const sevenAddress = bnToAddress(BigNumber.from(7));
-      const eightAddress = bnToAddress(BigNumber.from(8));
-      const nineAddress = bnToAddress(BigNumber.from(9));
-
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(twoAddress);
-          expect(await instance['at(uint256)'](1)).to.equal(zeroAddress);
-          expect(await instance['at(uint256)'](2)).to.equal(oneAddress);
+          expect(await instance['at(uint256)'](0)).to.equal(
+            constants.address[2],
+          );
+          expect(await instance['at(uint256)'](1)).to.equal(
+            constants.address[0],
+          );
+          expect(await instance['at(uint256)'](2)).to.equal(
+            constants.address[1],
+          );
         });
 
         describe('reverts if', function () {
@@ -339,51 +351,61 @@ describe('BinaryHeap', async () => {
 
       describe('#contains(address)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['contains(address)'](zeroAddress)).to.be.true;
-          expect(await instance['contains(address)'](oneAddress)).to.be.true;
-          expect(await instance['contains(address)'](twoAddress)).to.be.true;
+          expect(await instance['contains(address)'](constants.address[0])).to
+            .be.true;
+          expect(await instance['contains(address)'](constants.address[1])).to
+            .be.true;
+          expect(await instance['contains(address)'](constants.address[2])).to
+            .be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance['contains(address)'](zeroAddress)).to.be.false;
+          expect(await instance['contains(address)'](constants.address[0])).to
+            .be.false;
         });
       });
 
       describe('#indexOf(address)', () => {
         it('returns index of the value', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['indexOf(address)'](zeroAddress)).to.equal(1);
-          expect(await instance['indexOf(address)'](oneAddress)).to.equal(2);
-          expect(await instance['indexOf(address)'](twoAddress)).to.equal(0);
+          expect(
+            await instance['indexOf(address)'](constants.address[0]),
+          ).to.equal(1);
+          expect(
+            await instance['indexOf(address)'](constants.address[1]),
+          ).to.equal(2);
+          expect(
+            await instance['indexOf(address)'](constants.address[2]),
+          ).to.equal(0);
 
-          await instance['remove(address)'](zeroAddress);
-          await instance['remove(address)'](oneAddress);
-          await instance['remove(address)'](twoAddress);
+          await instance['remove(address)'](constants.address[0]);
+          await instance['remove(address)'](constants.address[1]);
+          await instance['remove(address)'](constants.address[2]);
 
-          expect(await instance['indexOf(address)'](zeroAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(address)'](constants.address[0]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(address)'](oneAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(address)'](constants.address[1]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(address)'](twoAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(address)'](constants.address[2]),
+          ).to.be.equal(ethers.constants.MaxUint256);
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance['indexOf(address)'](zeroAddress)).to.equal(
-            ethers.constants.MaxUint256.toString(),
-          );
+          expect(
+            await instance['indexOf(address)'](constants.address[0]),
+          ).to.equal(ethers.constants.MaxUint256.toString());
         });
       });
 
@@ -391,42 +413,42 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           expect(await instance['length()']()).to.equal(0);
 
-          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](constants.address[0]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](constants.address[1]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[2]);
           expect(await instance['length()']()).to.equal(3);
 
-          await instance['remove(address)'](twoAddress);
+          await instance['remove(address)'](constants.address[2]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['remove(address)'](oneAddress);
+          await instance['remove(address)'](constants.address[1]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['remove(address)'](zeroAddress);
+          await instance['remove(address)'](constants.address[0]);
           expect(await instance['length()']()).to.equal(0);
         });
       });
 
       describe('#root()', () => {
         it('returns the highest value in the heap', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          expect(await instance['root()']()).to.equal(twoAddress);
+          expect(await instance['root()']()).to.equal(constants.address[2]);
         });
 
         it('returns the next highest value when the previous highest value is removed', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          await instance['remove(address)'](twoAddress);
-          expect(await instance['root()']()).to.equal(oneAddress);
+          await instance['remove(address)'](constants.address[2]);
+          expect(await instance['root()']()).to.equal(constants.address[1]);
         });
 
         describe('reverts if', function () {
@@ -440,118 +462,122 @@ describe('BinaryHeap', async () => {
 
       describe('#add(address)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](zeroAddress);
+          await instance['add(address)'](constants.address[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](eightAddress);
+          await instance['add(address)'](constants.address[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](threeAddress);
+          await instance['add(address)'](constants.address[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](sixAddress);
+          await instance['add(address)'](constants.address[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](fourAddress);
+          await instance['add(address)'](constants.address[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](fiveAddress);
+          await instance['add(address)'](constants.address[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](nineAddress);
+          await instance['add(address)'](constants.address[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](sevenAddress);
+          await instance['add(address)'](constants.address[7]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](constants.address[1]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(address)'](zeroAddress)).to.be
-            .true;
+          expect(
+            await instance.callStatic['add(address)'](constants.address[0]),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(address)'](zeroAddress);
-          expect(await instance.callStatic['add(address)'](zeroAddress)).to.be
-            .false;
+          await instance['add(address)'](constants.address[0]);
+          expect(
+            await instance.callStatic['add(address)'](constants.address[0]),
+          ).to.be.false;
         });
       });
 
       describe('#remove(address)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          await instance['add(address)'](twoAddress);
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](eightAddress);
-          await instance['add(address)'](threeAddress);
-          await instance['add(address)'](sixAddress);
-          await instance['add(address)'](fourAddress);
-          await instance['add(address)'](fiveAddress);
-          await instance['add(address)'](nineAddress);
-          await instance['add(address)'](sevenAddress);
-          await instance['add(address)'](oneAddress);
+          await instance['add(address)'](constants.address[2]);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[8]);
+          await instance['add(address)'](constants.address[3]);
+          await instance['add(address)'](constants.address[6]);
+          await instance['add(address)'](constants.address[4]);
+          await instance['add(address)'](constants.address[5]);
+          await instance['add(address)'](constants.address[9]);
+          await instance['add(address)'](constants.address[7]);
+          await instance['add(address)'](constants.address[1]);
 
-          await instance['remove(address)'](sixAddress);
+          await instance['remove(address)'](constants.address[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](fiveAddress);
+          await instance['remove(address)'](constants.address[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](eightAddress);
+          await instance['remove(address)'](constants.address[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](twoAddress);
+          await instance['remove(address)'](constants.address[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](fourAddress);
+          await instance['remove(address)'](constants.address[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](zeroAddress);
+          await instance['remove(address)'](constants.address[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](threeAddress);
+          await instance['remove(address)'](constants.address[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](nineAddress);
+          await instance['remove(address)'](constants.address[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](oneAddress);
+          await instance['remove(address)'](constants.address[1]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(address)'](sevenAddress);
+          await instance['remove(address)'](constants.address[7]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
-          expect(await instance.callStatic['remove(address)'](zeroAddress)).to
-            .be.true;
+          expect(
+            await instance.callStatic['remove(address)'](constants.address[0]),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(address)'](zeroAddress)).to
-            .be.false;
+          expect(
+            await instance.callStatic['remove(address)'](constants.address[0]),
+          ).to.be.false;
         });
       });
 
       describe('#toArray()', () => {
         it('returns the max heap as an array', async () => {
-          await instance['add(address)'](zeroAddress);
-          await instance['add(address)'](oneAddress);
-          await instance['add(address)'](twoAddress);
+          await instance['add(address)'](constants.address[0]);
+          await instance['add(address)'](constants.address[1]);
+          await instance['add(address)'](constants.address[2]);
 
           expect(await instance['toArray()']()).to.deep.equal([
-            twoAddress,
-            zeroAddress,
-            oneAddress,
+            constants.address[2],
+            constants.address[0],
+            constants.address[1],
           ]);
         });
       });
@@ -568,26 +594,21 @@ describe('BinaryHeap', async () => {
     });
 
     describe('__internal', () => {
-      const zero = BigNumber.from(0);
-      const one = BigNumber.from(1);
-      const two = BigNumber.from(2);
-      const three = BigNumber.from(3);
-      const four = BigNumber.from(4);
-      const five = BigNumber.from(5);
-      const six = BigNumber.from(6);
-      const seven = BigNumber.from(7);
-      const eight = BigNumber.from(8);
-      const nine = BigNumber.from(9);
-
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['at(uint256)'](0)).to.equal(two);
-          expect(await instance['at(uint256)'](1)).to.equal(zero);
-          expect(await instance['at(uint256)'](2)).to.equal(one);
+          expect(await instance['at(uint256)'](0)).to.equal(
+            constants.uint256[2],
+          );
+          expect(await instance['at(uint256)'](1)).to.equal(
+            constants.uint256[0],
+          );
+          expect(await instance['at(uint256)'](2)).to.equal(
+            constants.uint256[1],
+          );
         });
 
         describe('reverts if', function () {
@@ -601,51 +622,61 @@ describe('BinaryHeap', async () => {
 
       describe('#contains(uint256)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['contains(uint256)'](zero)).to.be.true;
-          expect(await instance['contains(uint256)'](one)).to.be.true;
-          expect(await instance['contains(uint256)'](two)).to.be.true;
+          expect(await instance['contains(uint256)'](constants.uint256[0])).to
+            .be.true;
+          expect(await instance['contains(uint256)'](constants.uint256[1])).to
+            .be.true;
+          expect(await instance['contains(uint256)'](constants.uint256[2])).to
+            .be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance['contains(uint256)'](zero)).to.be.false;
+          expect(await instance['contains(uint256)'](constants.uint256[0])).to
+            .be.false;
         });
       });
 
       describe('#indexOf(uint256)', () => {
         it('returns index of the value', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['indexOf(uint256)'](zero)).to.equal(1);
-          expect(await instance['indexOf(uint256)'](one)).to.equal(2);
-          expect(await instance['indexOf(uint256)'](two)).to.equal(0);
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[0]),
+          ).to.equal(1);
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[1]),
+          ).to.equal(2);
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[2]),
+          ).to.equal(0);
 
-          await instance['remove(uint256)'](zero);
-          await instance['remove(uint256)'](one);
-          await instance['remove(uint256)'](two);
+          await instance['remove(uint256)'](constants.uint256[0]);
+          await instance['remove(uint256)'](constants.uint256[1]);
+          await instance['remove(uint256)'](constants.uint256[2]);
 
-          expect(await instance['indexOf(uint256)'](zero)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[0]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(uint256)'](one)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[1]),
+          ).to.be.equal(ethers.constants.MaxUint256);
 
-          expect(await instance['indexOf(uint256)'](two)).to.be.equal(
-            ethers.constants.MaxUint256,
-          );
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[2]),
+          ).to.be.equal(ethers.constants.MaxUint256);
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance['indexOf(uint256)'](zero)).to.equal(
-            ethers.constants.MaxUint256.toString(),
-          );
+          expect(
+            await instance['indexOf(uint256)'](constants.uint256[0]),
+          ).to.equal(ethers.constants.MaxUint256.toString());
         });
       });
 
@@ -653,42 +684,42 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           expect(await instance['length()']()).to.equal(0);
 
-          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](constants.uint256[0]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](constants.uint256[1]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[2]);
           expect(await instance['length()']()).to.equal(3);
 
-          await instance['remove(uint256)'](two);
+          await instance['remove(uint256)'](constants.uint256[2]);
           expect(await instance['length()']()).to.equal(2);
 
-          await instance['remove(uint256)'](one);
+          await instance['remove(uint256)'](constants.uint256[1]);
           expect(await instance['length()']()).to.equal(1);
 
-          await instance['remove(uint256)'](zero);
+          await instance['remove(uint256)'](constants.uint256[0]);
           expect(await instance['length()']()).to.equal(0);
         });
       });
 
       describe('#root()', () => {
         it('returns the highest value in the heap', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['root()']()).to.equal(two);
+          expect(await instance['root()']()).to.equal(constants.uint256[2]);
         });
 
         it('returns the next highest value when the previous highest value is removed', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          await instance['remove(uint256)'](two);
-          expect(await instance['root()']()).to.equal(one);
+          await instance['remove(uint256)'](constants.uint256[2]);
+          expect(await instance['root()']()).to.equal(constants.uint256[1]);
         });
 
         describe('reverts if', function () {
@@ -702,112 +733,123 @@ describe('BinaryHeap', async () => {
 
       describe('#add(uint256)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](zero);
+          await instance['add(uint256)'](constants.uint256[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](eight);
+          await instance['add(uint256)'](constants.uint256[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](three);
+          await instance['add(uint256)'](constants.uint256[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](six);
+          await instance['add(uint256)'](constants.uint256[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](four);
+          await instance['add(uint256)'](constants.uint256[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](five);
+          await instance['add(uint256)'](constants.uint256[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](nine);
+          await instance['add(uint256)'](constants.uint256[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](seven);
+          await instance['add(uint256)'](constants.uint256[7]);
           checkNodes(await instance['toArray()']());
 
-          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](constants.uint256[1]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(uint256)'](zero)).to.be.true;
+          expect(
+            await instance.callStatic['add(uint256)'](constants.uint256[0]),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(uint256)'](zero);
-          expect(await instance.callStatic['add(uint256)'](zero)).to.be.false;
+          await instance['add(uint256)'](constants.uint256[0]);
+          expect(
+            await instance.callStatic['add(uint256)'](constants.uint256[0]),
+          ).to.be.false;
         });
       });
 
       describe('#remove(uint256)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          await instance['add(uint256)'](two);
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](eight);
-          await instance['add(uint256)'](three);
-          await instance['add(uint256)'](six);
-          await instance['add(uint256)'](four);
-          await instance['add(uint256)'](five);
-          await instance['add(uint256)'](nine);
-          await instance['add(uint256)'](seven);
-          await instance['add(uint256)'](one);
+          await instance['add(uint256)'](constants.uint256[2]);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[8]);
+          await instance['add(uint256)'](constants.uint256[3]);
+          await instance['add(uint256)'](constants.uint256[6]);
+          await instance['add(uint256)'](constants.uint256[4]);
+          await instance['add(uint256)'](constants.uint256[5]);
+          await instance['add(uint256)'](constants.uint256[9]);
+          await instance['add(uint256)'](constants.uint256[7]);
+          await instance['add(uint256)'](constants.uint256[1]);
 
-          await instance['remove(uint256)'](six);
+          await instance['remove(uint256)'](constants.uint256[6]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](five);
+          await instance['remove(uint256)'](constants.uint256[5]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](eight);
+          await instance['remove(uint256)'](constants.uint256[8]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](two);
+          await instance['remove(uint256)'](constants.uint256[2]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](four);
+          await instance['remove(uint256)'](constants.uint256[4]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](zero);
+          await instance['remove(uint256)'](constants.uint256[0]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](three);
+          await instance['remove(uint256)'](constants.uint256[3]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](nine);
+          await instance['remove(uint256)'](constants.uint256[9]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](one);
+          await instance['remove(uint256)'](constants.uint256[1]);
           checkNodes(await instance['toArray()']());
 
-          await instance['remove(uint256)'](seven);
+          await instance['remove(uint256)'](constants.uint256[7]);
           checkNodes(await instance['toArray()']());
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance.callStatic['remove(uint256)'](zero)).to.be.true;
+          expect(
+            await instance.callStatic['remove(uint256)'](constants.uint256[0]),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(uint256)'](zero)).to.be
-            .false;
+          expect(
+            await instance.callStatic['remove(uint256)'](constants.uint256[0]),
+          ).to.be.false;
         });
       });
 
       describe('#toArray()', () => {
         it('returns the max heap as an array', async () => {
-          await instance['add(uint256)'](zero);
-          await instance['add(uint256)'](one);
-          await instance['add(uint256)'](two);
+          await instance['add(uint256)'](constants.uint256[0]);
+          await instance['add(uint256)'](constants.uint256[1]);
+          await instance['add(uint256)'](constants.uint256[2]);
 
-          expect(await instance['toArray()']()).to.deep.equal([two, zero, one]);
+          expect(await instance['toArray()']()).to.deep.equal([
+            constants.uint256[2],
+            constants.uint256[0],
+            constants.uint256[1],
+          ]);
         });
       });
     });
