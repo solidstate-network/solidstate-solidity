@@ -51,10 +51,9 @@ function checkNodes(nodes: string[] | BigNumber[]) {
 describe('BinaryHeap', async () => {
   describe('Bytes32Heap', async () => {
     let instance: BinaryHeapBytes32Mock;
-    let deployer: SignerWithAddress;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      const [deployer] = await ethers.getSigners();
       instance = await new BinaryHeapBytes32Mock__factory(deployer).deploy();
     });
 
@@ -299,10 +298,9 @@ describe('BinaryHeap', async () => {
 
   describe('AddressHeap', async () => {
     let instance: BinaryHeapAddressMock;
-    let deployer: SignerWithAddress;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      const [deployer] = await ethers.getSigners();
       instance = await new BinaryHeapAddressMock__factory(deployer).deploy();
     });
 
@@ -547,10 +545,9 @@ describe('BinaryHeap', async () => {
 
   describe('UintHeap', async () => {
     let instance: BinaryHeapUintMock;
-    let deployer: SignerWithAddress;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      const [deployer] = await ethers.getSigners();
       instance = await new BinaryHeapUintMock__factory(deployer).deploy();
     });
 
