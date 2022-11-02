@@ -81,14 +81,8 @@ describe('BinaryHeap', async () => {
       describe('#contains(bytes32)', () => {
         it('returns true if the value has been added', async () => {
           await instance['add(bytes32)'](constants.bytes32[0]);
-          await instance['add(bytes32)'](constants.bytes32[1]);
-          await instance['add(bytes32)'](constants.bytes32[2]);
 
           expect(await instance['contains(bytes32)'](constants.bytes32[0])).to
-            .be.true;
-          expect(await instance['contains(bytes32)'](constants.bytes32[1])).to
-            .be.true;
-          expect(await instance['contains(bytes32)'](constants.bytes32[2])).to
             .be.true;
         });
 
@@ -229,10 +223,11 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(bytes32)'](constants.bytes32[0]);
-          expect(
-            await instance.callStatic['add(bytes32)'](constants.bytes32[0]),
-          ).to.be.false;
+          const [value] = constants.bytes32;
+
+          await instance['add(bytes32)'](value);
+
+          expect(await instance.callStatic['add(bytes32)'](value)).to.be.false;
         });
       });
 
@@ -281,13 +276,12 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(bytes32)'](constants.bytes32[0]);
-          await instance['add(bytes32)'](constants.bytes32[1]);
-          await instance['add(bytes32)'](constants.bytes32[2]);
+          const [value] = constants.bytes32;
 
-          expect(
-            await instance.callStatic['remove(bytes32)'](constants.bytes32[0]),
-          ).to.be.true;
+          await instance['add(bytes32)'](value);
+
+          expect(await instance.callStatic['remove(bytes32)'](value)).to.be
+            .true;
         });
 
         it('returns false if value does not exist', async () => {
@@ -356,14 +350,8 @@ describe('BinaryHeap', async () => {
       describe('#contains(address)', () => {
         it('returns true if the value has been added', async () => {
           await instance['add(address)'](constants.address[0]);
-          await instance['add(address)'](constants.address[1]);
-          await instance['add(address)'](constants.address[2]);
 
           expect(await instance['contains(address)'](constants.address[0])).to
-            .be.true;
-          expect(await instance['contains(address)'](constants.address[1])).to
-            .be.true;
-          expect(await instance['contains(address)'](constants.address[2])).to
             .be.true;
         });
 
@@ -504,10 +492,11 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(address)'](constants.address[0]);
-          expect(
-            await instance.callStatic['add(address)'](constants.address[0]),
-          ).to.be.false;
+          const [value] = constants.address;
+
+          await instance['add(address)'](value);
+
+          expect(await instance.callStatic['add(address)'](value)).to.be.false;
         });
       });
 
@@ -556,13 +545,12 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(address)'](constants.address[0]);
-          await instance['add(address)'](constants.address[1]);
-          await instance['add(address)'](constants.address[2]);
+          const [value] = constants.address;
 
-          expect(
-            await instance.callStatic['remove(address)'](constants.address[0]),
-          ).to.be.true;
+          await instance['add(address)'](value);
+
+          expect(await instance.callStatic['remove(address)'](value)).to.be
+            .true;
         });
 
         it('returns false if value does not exist', async () => {
@@ -631,14 +619,8 @@ describe('BinaryHeap', async () => {
       describe('#contains(uint256)', () => {
         it('returns true if the value has been added', async () => {
           await instance['add(uint256)'](constants.uint256[0]);
-          await instance['add(uint256)'](constants.uint256[1]);
-          await instance['add(uint256)'](constants.uint256[2]);
 
           expect(await instance['contains(uint256)'](constants.uint256[0])).to
-            .be.true;
-          expect(await instance['contains(uint256)'](constants.uint256[1])).to
-            .be.true;
-          expect(await instance['contains(uint256)'](constants.uint256[2])).to
             .be.true;
         });
 
@@ -779,10 +761,11 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['add(uint256)'](constants.uint256[0]);
-          expect(
-            await instance.callStatic['add(uint256)'](constants.uint256[0]),
-          ).to.be.false;
+          const [value] = constants.uint256;
+
+          await instance['add(uint256)'](value);
+
+          expect(await instance.callStatic['add(uint256)'](value)).to.be.false;
         });
       });
 
@@ -831,13 +814,12 @@ describe('BinaryHeap', async () => {
         });
 
         it('returns true if value is removed', async () => {
-          await instance['add(uint256)'](constants.uint256[0]);
-          await instance['add(uint256)'](constants.uint256[1]);
-          await instance['add(uint256)'](constants.uint256[2]);
+          const [value] = constants.uint256;
 
-          expect(
-            await instance.callStatic['remove(uint256)'](constants.uint256[0]),
-          ).to.be.true;
+          await instance['add(uint256)'](value);
+
+          expect(await instance.callStatic['remove(uint256)'](value)).to.be
+            .true;
         });
 
         it('returns false if value does not exist', async () => {
