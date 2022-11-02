@@ -59,7 +59,7 @@ describe('BinaryHeap', async () => {
     });
 
     describe('__internal', () => {
-      describe('#at(uint256)', () => {
+      describe('#at(bytes32)', () => {
         it('returns the value corresponding to index provided', async () => {
           await instance['add(bytes32)'](constants.bytes32[0]);
           await instance['add(bytes32)'](constants.bytes32[1]);
@@ -310,7 +310,7 @@ describe('BinaryHeap', async () => {
     });
 
     describe('__internal', () => {
-      describe('#at(uint256)', () => {
+      describe('#at(address)', () => {
         it('returns the value corresponding to index provided', async () => {
           await instance['add(address)'](constants.address[0]);
           await instance['add(address)'](constants.address[1]);
