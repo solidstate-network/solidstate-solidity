@@ -11,7 +11,6 @@
     "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types' && yarn upgrade"
   },
   "devDependencies": {
-    "@ethereum-waffle/mock-contract": "^3.4.4",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@solidstate/hardhat-4byte-uploader": "^1.0.2",

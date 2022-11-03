@@ -1,21 +1,11 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { bnToBytes32, bnToAddress } from '@solidstate/library';
 import {
   ArrayUtilsMock,
   ArrayUtilsMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-
-const bnToAddress = (bn: BigNumber) => {
-  return ethers.utils.getAddress(
-    ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 20),
-  );
-};
-
-const bnToBytes32 = (bn: BigNumber) => {
-  return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
-};
 
 describe('ArrayUtils', async () => {
   let instance: ArrayUtilsMock;
