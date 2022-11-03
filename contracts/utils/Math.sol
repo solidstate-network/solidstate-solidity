@@ -4,6 +4,15 @@ pragma solidity ^0.8.8;
 
 library Math {
     /**
+     * @notice calculate the absolute value of a number
+     * @param a number whose absoluve value to calculate
+     * @return absolute value
+     */
+    function abs(int256 a) internal pure returns (uint256) {
+        return uint256(a < 0 ? -a : a);
+    }
+
+    /**
      * @notice select the greater of two numbers
      * @param a first number
      * @param b second number
