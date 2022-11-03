@@ -1,3 +1,4 @@
+export * from './common';
 export * from './ERC20';
 export * from './ERC721';
 export * from './ERC1155';

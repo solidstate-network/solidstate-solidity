@@ -1,3 +1,4 @@
+import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import {
   UintUtilsMock,
   UintUtilsMock__factory,
@@ -14,6 +15,36 @@ describe('UintUtils', function () {
   });
 
   describe('__internal', function () {
+    describe('#add(uint256,int256)', function () {
+      it('adds unsigned and signed integers', async () => {
+        expect(await instance.callStatic.add(1, 1)).to.equal(2);
+        expect(await instance.callStatic.add(1, -1)).to.equal(0);
+      });
+
+      describe('reverts if', () => {
+        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
+          await expect(instance.callStatic.add(0, -1)).to.be.revertedWithPanic(
+            PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
+          );
+        });
+      });
+    });
+
+    describe('#sub(uint256,int256)', function () {
+      it('subtracts unsigned and signed integers', async () => {
+        expect(await instance.callStatic.sub(1, 1)).to.equal(0);
+        expect(await instance.callStatic.sub(1, -1)).to.equal(2);
+      });
+
+      describe('reverts if', () => {
+        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
+          await expect(instance.callStatic.sub(0, 1)).to.be.revertedWithPanic(
+            PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
+          );
+        });
+      });
+    });
+
     describe('#toString(uint256)', function () {
       it('returns base-10 string representation of number', async function () {
         for (let i = 0; i < 12; i++) {

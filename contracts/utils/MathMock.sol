@@ -7,6 +7,10 @@ import { Math } from './Math.sol';
 contract MathMock {
     using Math for uint256;
 
+    function abs(int256 a) external pure returns (uint256) {
+        return Math.abs(a);
+    }
+
     function max(uint256 a, uint256 b) external pure returns (uint256) {
         return Math.max(a, b);
     }
