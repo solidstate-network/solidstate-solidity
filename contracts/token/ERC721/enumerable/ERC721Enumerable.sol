@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.8;
 
-import { EnumerableMap } from '../../../utils/EnumerableMap.sol';
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { EnumerableMap } from '../../../data/EnumerableMap.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
 import { IERC721Enumerable } from './IERC721Enumerable.sol';
 import { ERC721EnumerableInternal } from './ERC721EnumerableInternal.sol';

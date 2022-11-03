@@ -35,11 +35,11 @@ library EnumerableMap {
         returns (address, address)
     {
         (bytes32 key, bytes32 value) = _at(map._inner, index);
-        address addressKey;
-        assembly {
-            addressKey := mload(add(key, 20))
-        }
-        return (addressKey, address(uint160(uint256(value))));
+
+        return (
+            address(uint160(uint256(key))),
+            address(uint160(uint256(value)))
+        );
     }
 
     function at(UintToAddressMap storage map, uint256 index)
@@ -137,6 +137,108 @@ library EnumerableMap {
         returns (bool)
     {
         return _remove(map._inner, bytes32(key));
+    }
+
+    function toArray(AddressToAddressMap storage map)
+        internal
+        view
+        returns (address[] memory keys, address[] memory values)
+    {
+        uint256 len = map._inner._entries.length;
+        keys = new address[](len);
+        values = new address[](len);
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                keys[i] = address(
+                    uint160(uint256(map._inner._entries[i]._key))
+                );
+                values[i] = address(
+                    uint160(uint256(map._inner._entries[i]._value))
+                );
+            }
+        }
+    }
+
+    function toArray(UintToAddressMap storage map)
+        internal
+        view
+        returns (uint256[] memory keys, address[] memory values)
+    {
+        uint256 len = map._inner._entries.length;
+        keys = new uint256[](len);
+        values = new address[](len);
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                keys[i] = uint256(map._inner._entries[i]._key);
+                values[i] = address(
+                    uint160(uint256(map._inner._entries[i]._value))
+                );
+            }
+        }
+    }
+
+    function keys(AddressToAddressMap storage map)
+        internal
+        view
+        returns (address[] memory keys)
+    {
+        uint256 len = map._inner._entries.length;
+        keys = new address[](len);
+
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                keys[i] = address(
+                    uint160(uint256(map._inner._entries[i]._key))
+                );
+            }
+        }
+    }
+
+    function keys(UintToAddressMap storage map)
+        internal
+        view
+        returns (uint256[] memory keys)
+    {
+        uint256 len = map._inner._entries.length;
+        keys = new uint256[](len);
+
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                keys[i] = uint256(map._inner._entries[i]._key);
+            }
+        }
+    }
+
+    function values(AddressToAddressMap storage map)
+        internal
+        view
+        returns (address[] memory values)
+    {
+        uint256 len = map._inner._entries.length;
+        values = new address[](len);
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                values[i] = address(
+                    uint160(uint256(map._inner._entries[i]._value))
+                );
+            }
+        }
+    }
+
+    function values(UintToAddressMap storage map)
+        internal
+        view
+        returns (address[] memory values)
+    {
+        uint256 len = map._inner._entries.length;
+        values = new address[](len);
+        unchecked {
+            for (uint256 i; i < len; ++i) {
+                values[i] = address(
+                    uint160(uint256(map._inner._entries[i]._value))
+                );
+            }
+        }
     }
 
     function _at(Map storage map, uint256 index)

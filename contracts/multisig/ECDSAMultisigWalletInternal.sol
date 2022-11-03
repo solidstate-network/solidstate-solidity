@@ -3,7 +3,7 @@
 pragma solidity ^0.8.8;
 
 import { ECDSA } from '../cryptography/ECDSA.sol';
-import { EnumerableSet } from '../utils/EnumerableSet.sol';
+import { EnumerableSet } from '../data/EnumerableSet.sol';
 import { IECDSAMultisigWalletInternal } from './IECDSAMultisigWalletInternal.sol';
 import { ECDSAMultisigWalletStorage } from './ECDSAMultisigWalletStorage.sol';
 
