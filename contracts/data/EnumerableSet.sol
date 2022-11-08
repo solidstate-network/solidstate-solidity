@@ -225,8 +225,6 @@ library EnumerableSet {
             set._values.push(value);
             set._indexes[value] = set._values.length;
             return true;
-        } else {
-            return false;
         }
     }
 
@@ -248,8 +246,6 @@ library EnumerableSet {
             delete set._indexes[value];
 
             return true;
-        } else {
-            return false;
         }
     }
 }
