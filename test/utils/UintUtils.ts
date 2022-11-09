@@ -73,43 +73,36 @@ describe('UintUtils', function () {
       });
 
       it('returns correct hexadecimal string representation of a number', async () => {
-        const inputValues = ['1000', '1', '12345', '85746201361230', '999983'];
-        const outputValues = [
-          '0x03e8',
-          '0x01',
-          '0x3039',
-          '0x4dfc57df7b4e',
-          '0x0f422f',
-        ];
-        for (let i = 0; i < inputValues.length; i++) {
+        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
+          (v) => ethers.BigNumber.from(v),
+        );
+
+        for (const value of values) {
           expect(
-            await instance.callStatic['toHexString(uint256)'](
-              ethers.BigNumber.from(inputValues[i]),
-            ),
-          ).to.equal(outputValues[i]);
+            await instance.callStatic['toHexString(uint256)'](value),
+          ).to.equal(value.toHexString());
         }
       });
     });
 
     describe('#toHexString(uint256,uint256)', function () {
       it('returns hexadecimal string representation for matching value and length pairs', async () => {
-        const inputValues = ['1000', '1', '12345', '85746201361230', '999983'];
-        const inputLengths = ['2', '1', '2', '6', '3'];
-        const outputValues = [
-          '0x03e8',
-          '0x01',
-          '0x3039',
-          '0x4dfc57df7b4e',
-          '0x0f422f',
-        ];
+        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
+          (v) => ethers.BigNumber.from(v),
+        );
 
-        for (let i = 0; i < inputValues.length; i++) {
-          expect(
-            await instance.callStatic['toHexString(uint256,uint256)'](
-              ethers.BigNumber.from(inputValues[i]),
-              ethers.BigNumber.from(inputLengths[i]),
-            ),
-          ).to.equal(outputValues[i]);
+        for (let i = 0; i < values.length; i++) {
+          const value = values[i];
+
+          const string = await instance.callStatic[
+            'toHexString(uint256,uint256)'
+          ](value, (value.toHexString().length - 2) / 2 + i);
+
+          expect(string.length).to.equal(value.toHexString().length + i * 2);
+
+          expect(string).to.hexEqual(
+            await instance.callStatic['toHexString(uint256)'](value),
+          );
         }
       });
 
