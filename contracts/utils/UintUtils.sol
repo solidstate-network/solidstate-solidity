@@ -28,15 +28,19 @@ library UintUtils {
         uint256 digits;
 
         while (temp != 0) {
-            digits++;
+            unchecked {
+                digits++;
+            }
             temp /= 10;
         }
 
         bytes memory buffer = new bytes(digits);
 
         while (value != 0) {
-            digits -= 1;
-            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            unchecked {
+                digits--;
+                buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            }
             value /= 10;
         }
 
