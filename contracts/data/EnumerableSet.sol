@@ -155,16 +155,7 @@ library EnumerableSet {
         view
         returns (bytes32[] memory)
     {
-        uint256 len = _length(set._inner);
-        bytes32[] memory arr = new bytes32[](len);
-
-        unchecked {
-            for (uint256 index; index < len; ++index) {
-                arr[index] = at(set, index);
-            }
-        }
-
-        return arr;
+        return set._inner._values;
     }
 
     function toArray(AddressSet storage set)
@@ -172,16 +163,14 @@ library EnumerableSet {
         view
         returns (address[] memory)
     {
-        uint256 len = _length(set._inner);
-        address[] memory arr = new address[](len);
+        bytes32[] storage values = set._inner._values;
+        address[] storage array;
 
-        unchecked {
-            for (uint256 index; index < len; ++index) {
-                arr[index] = at(set, index);
-            }
+        assembly {
+            array.slot := values.slot
         }
 
-        return arr;
+        return array;
     }
 
     function toArray(UintSet storage set)
@@ -189,16 +178,14 @@ library EnumerableSet {
         view
         returns (uint256[] memory)
     {
-        uint256 len = _length(set._inner);
-        uint256[] memory arr = new uint256[](len);
+        bytes32[] storage values = set._inner._values;
+        uint256[] storage array;
 
-        unchecked {
-            for (uint256 index; index < len; ++index) {
-                arr[index] = at(set, index);
-            }
+        assembly {
+            array.slot := values.slot
         }
 
-        return arr;
+        return array;
     }
 
     function _at(Set storage set, uint256 index)
@@ -238,8 +225,6 @@ library EnumerableSet {
             set._values.push(value);
             set._indexes[value] = set._values.length;
             return true;
-        } else {
-            return false;
         }
     }
 
@@ -261,8 +246,6 @@ library EnumerableSet {
             delete set._indexes[value];
 
             return true;
-        } else {
-            return false;
         }
     }
 }
