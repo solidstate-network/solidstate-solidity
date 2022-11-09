@@ -58,7 +58,7 @@ abstract contract ERC721MetadataInternal is
         } else if (bytes(tokenIdURI).length > 0) {
             return string(abi.encodePacked(baseURI, tokenIdURI));
         } else {
-            return string(abi.encodePacked(baseURI, tokenId.toString()));
+            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
         }
     }
 

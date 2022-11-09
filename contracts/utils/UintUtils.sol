@@ -19,7 +19,7 @@ library UintUtils {
         return b < 0 ? add(a, -b) : a - uint256(b);
     }
 
-    function toString(uint256 value) internal pure returns (string memory) {
+    function toDecString(uint256 value) internal pure returns (string memory) {
         if (value == 0) {
             return '0';
         }
@@ -32,10 +32,10 @@ library UintUtils {
             }
         }
 
-        return toString(value, length);
+        return toDecString(value, length);
     }
 
-    function toString(uint256 value, uint256 length)
+    function toDecString(uint256 value, uint256 length)
         internal
         pure
         returns (string memory)

@@ -15,16 +15,16 @@ contract UintUtilsMock {
         return a.sub(b);
     }
 
-    function toString(uint256 number) external pure returns (string memory) {
-        return number.toString();
+    function toDecString(uint256 number) external pure returns (string memory) {
+        return number.toDecString();
     }
 
-    function toString(uint256 number, uint256 length)
+    function toDecString(uint256 number, uint256 length)
         external
         pure
         returns (string memory)
     {
-        return number.toString(length);
+        return number.toDecString(length);
     }
 
     function toHexString(uint256 value) external pure returns (string memory) {
