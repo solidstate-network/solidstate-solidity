@@ -24,22 +24,20 @@ library UintUtils {
             return '0';
         }
 
-        uint256 temp = value;
-        uint256 digits;
+        uint256 length;
 
-        while (temp != 0) {
+        for (uint256 temp = value; temp != 0; temp /= 10) {
             unchecked {
-                digits++;
+                length++;
             }
-            temp /= 10;
         }
 
-        bytes memory buffer = new bytes(digits);
+        bytes memory buffer = new bytes(length);
 
         while (value != 0) {
             unchecked {
-                digits--;
-                buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+                length--;
+                buffer[length] = bytes1(uint8(48 + uint256(value % 10)));
             }
             value /= 10;
         }
@@ -52,7 +50,7 @@ library UintUtils {
             return '0x00';
         }
 
-        uint256 length = 0;
+        uint256 length;
 
         for (uint256 temp = value; temp != 0; temp >>= 8) {
             unchecked {
@@ -68,13 +66,18 @@ library UintUtils {
         pure
         returns (string memory)
     {
-        bytes memory buffer = new bytes(2 * length + 2);
+        // convert length in bytes to length in characters
+        // add two for the leading "0x"
+        length = (length << 1) + 2;
+
+        bytes memory buffer = new bytes(length);
         buffer[0] = '0';
         buffer[1] = 'x';
 
         unchecked {
-            for (uint256 i = 2 * length + 1; i > 1; --i) {
-                buffer[i] = HEX_SYMBOLS[value & 0xf];
+            while (length > 2) {
+                length--;
+                buffer[length] = HEX_SYMBOLS[value & 0xf];
                 value >>= 4;
             }
         }
