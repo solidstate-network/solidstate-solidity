@@ -46,7 +46,7 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256)', function () {
-      it('returns base-10 string representation of number', async function () {
+      it('returns decimal string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
           const number = ethers.BigNumber.from(string);
@@ -60,6 +60,47 @@ describe('UintUtils', function () {
             ethers.constants.MaxUint256,
           ),
         ).to.equal(ethers.constants.MaxUint256.toString());
+      });
+    });
+
+    describe('#toString(uint256,uint256)', function () {
+      it('returns decimal string representation of a number with specified padding', async () => {
+        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
+          (v) => ethers.BigNumber.from(v),
+        );
+
+        for (let i = 0; i < values.length; i++) {
+          const value = values[i];
+
+          const string = await instance.callStatic['toString(uint256,uint256)'](
+            value,
+            value.toString().length + i,
+          );
+
+          expect(string.length).to.equal(value.toString().length + i);
+
+          expect(BigInt(string)).to.equal(
+            BigInt(await instance.callStatic['toString(uint256)'](value)),
+          );
+        }
+      });
+
+      describe('reverts if', function () {
+        it('padding is insufficient', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](1n, 0n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](10n, 1n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+        });
       });
     });
 
@@ -86,7 +127,7 @@ describe('UintUtils', function () {
     });
 
     describe('#toHexString(uint256,uint256)', function () {
-      it('returns hexadecimal string representation for matching value and length pairs', async () => {
+      it('returns hexadecimal string representation of a number with specified padding', async () => {
         const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
           (v) => ethers.BigNumber.from(v),
         );
@@ -107,15 +148,19 @@ describe('UintUtils', function () {
       });
 
       describe('reverts if', () => {
-        it('length input is 0 and value is nonzero', async () => {
+        it('padding is insufficient', async () => {
           await expect(
-            instance.callStatic['toHexString(uint256,uint256)'](
-              ethers.BigNumber.from('100'),
-              ethers.constants.Zero,
-            ),
+            instance.callStatic['toHexString(uint256,uint256)'](1n, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientHexLength',
+            'UintUtils__InsufficientPadding',
+          );
+
+          await expect(
+            instance.callStatic['toHexString(uint256,uint256)'](256n, 1n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
           );
         });
       });

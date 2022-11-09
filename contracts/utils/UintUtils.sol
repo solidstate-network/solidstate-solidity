@@ -7,7 +7,7 @@ pragma solidity ^0.8.8;
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
 library UintUtils {
-    error UintUtils__InsufficientHexLength();
+    error UintUtils__InsufficientPadding();
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
@@ -32,15 +32,25 @@ library UintUtils {
             }
         }
 
+        return toString(value, length);
+    }
+
+    function toString(uint256 value, uint256 length)
+        internal
+        pure
+        returns (string memory)
+    {
         bytes memory buffer = new bytes(length);
 
-        while (value != 0) {
+        while (length > 0) {
             unchecked {
                 length--;
                 buffer[length] = bytes1(uint8(48 + uint256(value % 10)));
             }
             value /= 10;
         }
+
+        if (value != 0) revert UintUtils__InsufficientPadding();
 
         return string(buffer);
     }
@@ -82,7 +92,7 @@ library UintUtils {
             }
         }
 
-        if (value != 0) revert UintUtils__InsufficientHexLength();
+        if (value != 0) revert UintUtils__InsufficientPadding();
 
         return string(buffer);
     }
