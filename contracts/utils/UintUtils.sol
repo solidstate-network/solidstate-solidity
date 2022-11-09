@@ -19,14 +19,18 @@ library UintUtils {
         return b < 0 ? add(a, -b) : a - uint256(b);
     }
 
-    function toDecString(uint256 value) internal pure returns (string memory) {
+    function toString(uint256 value, uint256 base)
+        internal
+        pure
+        returns (string memory)
+    {
         if (value == 0) {
             return '0';
         }
 
         uint256 length;
 
-        for (uint256 temp = value; temp != 0; temp /= 10) {
+        for (uint256 temp = value; temp != 0; temp /= base) {
             unchecked {
                 length++;
             }
@@ -35,24 +39,36 @@ library UintUtils {
         return toDecString(value, length);
     }
 
-    function toDecString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toString(
+        uint256 value,
+        uint256 base,
+        uint256 length
+    ) internal pure returns (string memory) {
         bytes memory buffer = new bytes(length);
 
         while (length > 0) {
             unchecked {
                 length--;
-                buffer[length] = bytes1(uint8(48 + uint256(value % 10)));
+                buffer[length] = bytes1(uint8(48 + uint256(value % base)));
             }
-            value /= 10;
+            value /= base;
         }
 
         if (value != 0) revert UintUtils__InsufficientPadding();
 
         return string(buffer);
+    }
+
+    function toDecString(uint256 value) internal pure returns (string memory) {
+        return toString(value, 10);
+    }
+
+    function toDecString(uint256 value, uint256 length)
+        internal
+        pure
+        returns (string memory)
+    {
+        return toString(value, 10, length);
     }
 
     function toHexString(uint256 value) internal pure returns (string memory) {

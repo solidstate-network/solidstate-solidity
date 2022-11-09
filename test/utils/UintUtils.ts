@@ -45,6 +45,20 @@ describe('UintUtils', function () {
       });
     });
 
+    describe('#toString(uint256,uint256)', function () {
+      it('returns string representation of number in given base');
+    });
+
+    describe('#toString(uint256,uint256,uint256)', function () {
+      it(
+        'returns string representation of number in given base with specified padding',
+      );
+
+      describe('reverts if', () => {
+        it('padding is insufficient');
+      });
+    });
+
     describe('#toDecString(uint256)', function () {
       it('returns decimal string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
