@@ -25,6 +25,7 @@
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
   "dependencies": {
+    "cli-table3": "^0.6.3",
     "eth-permit": "^0.1.10"
   },
   "files": [
