@@ -165,16 +165,7 @@ library BinaryHeap {
         view
         returns (bytes32[] memory)
     {
-        uint256 len = _length(heap._inner);
-        bytes32[] memory arr = new bytes32[](len);
-
-        unchecked {
-            for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
-            }
-        }
-
-        return arr;
+        return heap._inner._values;
     }
 
     function toArray(AddressHeap storage heap)
@@ -182,16 +173,14 @@ library BinaryHeap {
         view
         returns (address[] memory)
     {
-        uint256 len = _length(heap._inner);
-        address[] memory arr = new address[](len);
+        bytes32[] storage values = heap._inner._values;
+        address[] storage array;
 
-        unchecked {
-            for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
-            }
+        assembly {
+            array.slot := values.slot
         }
 
-        return arr;
+        return array;
     }
 
     function toArray(UintHeap storage heap)
@@ -199,16 +188,14 @@ library BinaryHeap {
         view
         returns (uint256[] memory)
     {
-        uint256 len = _length(heap._inner);
-        uint256[] memory arr = new uint256[](len);
+        bytes32[] storage values = heap._inner._values;
+        uint256[] storage array;
 
-        unchecked {
-            for (uint256 index = 0; index < len; index++) {
-                arr[index] = at(heap, index);
-            }
+        assembly {
+            array.slot := values.slot
         }
 
-        return arr;
+        return array;
     }
 
     function _at(Heap storage heap, uint256 index)
