@@ -36,7 +36,7 @@ library UintUtils {
             }
         }
 
-        return toDecString(value, length);
+        return toString(value, base, length);
     }
 
     function toString(
