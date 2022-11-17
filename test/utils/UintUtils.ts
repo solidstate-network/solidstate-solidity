@@ -179,36 +179,30 @@ describe('UintUtils', function () {
       });
 
       it('returns correct hexadecimal string representation of a number', async () => {
-        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
-          (v) => ethers.BigNumber.from(v),
-        );
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
         for (const value of values) {
           expect(
             await instance.callStatic['toHexString(uint256)'](value),
-          ).to.equal(value.toHexString());
+          ).to.equal(ethers.utils.hexlify(value));
         }
       });
     });
 
     describe('#toHexString(uint256,uint256)', function () {
       it('returns hexadecimal string representation of a number with specified padding', async () => {
-        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
-          (v) => ethers.BigNumber.from(v),
-        );
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
-        for (let i = 0; i < values.length; i++) {
-          const value = values[i];
+        for (let value of values) {
+          const string = ethers.utils.hexlify(value);
+          const length = string.length - 2;
 
-          const string = await instance.callStatic[
+          const result = await instance.callStatic[
             'toHexString(uint256,uint256)'
-          ](value, (value.toHexString().length - 2) / 2 + i);
+          ](value, length / 2);
 
-          expect(string.length).to.equal(value.toHexString().length + i * 2);
-
-          expect(string).to.hexEqual(
-            await instance.callStatic['toHexString(uint256)'](value),
-          );
+          expect(BigInt(result)).to.equal(value);
+          expect(result.length - 2).to.equal(length);
         }
       });
 
