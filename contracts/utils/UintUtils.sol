@@ -49,7 +49,7 @@ library UintUtils {
         while (length > 0) {
             unchecked {
                 length--;
-                buffer[length] = bytes1(uint8(48 + uint256(value % base)));
+                buffer[length] = bytes1(uint8((value % base) + 48));
             }
             value /= base;
         }
