@@ -59,6 +59,60 @@ describe('UintUtils', function () {
       });
     });
 
+    describe('#toBinString(uint256)', function () {
+      it('returns binary string representation of number', async function () {
+        for (let i = 0; i < 12; i++) {
+          const value = BigInt(i);
+          const string = value.toString(2);
+          expect(
+            await instance.callStatic['toBinString(uint256)'](value),
+          ).to.equal(string);
+        }
+
+        expect(
+          await instance.callStatic['toBinString(uint256)'](
+            ethers.constants.MaxUint256,
+          ),
+        ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(2));
+      });
+    });
+
+    describe('#toBinString(uint256,uint256)', function () {
+      it('returns binary string representation of a number with specified padding', async () => {
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
+
+        for (let value of values) {
+          const string = value.toString(2);
+          const length = string.length;
+
+          const result = await instance.callStatic[
+            'toBinString(uint256,uint256)'
+          ](value, length);
+
+          expect(BigInt(`0b${result}`)).to.equal(value);
+          expect(result.length).to.equal(length);
+        }
+      });
+
+      describe('reverts if', function () {
+        it('padding is insufficient', async () => {
+          await expect(
+            instance.callStatic['toBinString(uint256,uint256)'](0b1, 0n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+
+          await expect(
+            instance.callStatic['toBinString(uint256,uint256)'](0b10, 1n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+        });
+      });
+    });
+
     describe('#toDecString(uint256)', function () {
       it('returns decimal string representation of number', async function () {
         for (let i = 0; i < 12; i++) {

@@ -15,6 +15,18 @@ contract UintUtilsMock {
         return a.sub(b);
     }
 
+    function toBinString(uint256 number) external pure returns (string memory) {
+        return number.toBinString();
+    }
+
+    function toBinString(uint256 number, uint256 length)
+        external
+        pure
+        returns (string memory)
+    {
+        return number.toBinString(length);
+    }
+
     function toDecString(uint256 number) external pure returns (string memory) {
         return number.toDecString();
     }

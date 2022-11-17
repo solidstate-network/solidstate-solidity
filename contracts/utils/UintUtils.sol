@@ -59,6 +59,18 @@ library UintUtils {
         return string(buffer);
     }
 
+    function toBinString(uint256 value) internal pure returns (string memory) {
+        return toString(value, 2);
+    }
+
+    function toBinString(uint256 value, uint256 length)
+        internal
+        pure
+        returns (string memory)
+    {
+        return toString(value, 2, length);
+    }
+
     function toDecString(uint256 value) internal pure returns (string memory) {
         return toString(value, 10);
     }
