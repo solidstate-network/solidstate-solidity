@@ -170,7 +170,7 @@ describe('UintUtils', function () {
     });
 
     describe('#toHexString(uint256)', function () {
-      it('returns 0 if input is 0', async () => {
+      it('returns 0x00 if input is 0', async () => {
         expect(
           await instance.callStatic['toHexString(uint256)'](
             ethers.constants.Zero,
@@ -199,7 +199,7 @@ describe('UintUtils', function () {
 
           const result = await instance.callStatic[
             'toHexString(uint256,uint256)'
-          ](value, length / 2);
+          ](value, length);
 
           expect(BigInt(result)).to.equal(value);
           expect(result.length - 2).to.equal(length);

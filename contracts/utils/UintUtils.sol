@@ -92,7 +92,7 @@ library UintUtils {
 
         for (uint256 temp = value; temp != 0; temp >>= 8) {
             unchecked {
-                length++;
+                length += 2;
             }
         }
 
@@ -104,9 +104,8 @@ library UintUtils {
         pure
         returns (string memory)
     {
-        // convert length in bytes to length in characters
-        // add two for the leading "0x"
-        length = (length << 1) + 2;
+        // add two to length for the leading "0x"
+        length += 2;
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';
