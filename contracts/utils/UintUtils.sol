@@ -49,8 +49,10 @@ library UintUtils {
         while (length > 0) {
             unchecked {
                 length--;
-                buffer[length] = bytes1(uint8((value % base) + 48));
             }
+
+            // 48 can be added using bitwise-or because its binary is 00110000
+            buffer[length] = bytes1(uint8(value % base | 48));
             value /= base;
         }
 
@@ -111,12 +113,13 @@ library UintUtils {
         buffer[0] = '0';
         buffer[1] = 'x';
 
-        unchecked {
-            while (length > 2) {
+        while (length > 2) {
+            unchecked {
                 length--;
-                buffer[length] = HEX_SYMBOLS[value & 0xf];
-                value >>= 4;
             }
+
+            buffer[length] = HEX_SYMBOLS[value & 0xf];
+            value >>= 4;
         }
 
         if (value != 0) revert UintUtils__InsufficientPadding();
