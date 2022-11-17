@@ -64,6 +64,7 @@ describe('UintUtils', function () {
         for (let i = 0; i < 12; i++) {
           const value = BigInt(i);
           const string = value.toString(2);
+
           expect(
             await instance.callStatic['toBinString(uint256)'](value),
           ).to.equal(string);
@@ -116,10 +117,11 @@ describe('UintUtils', function () {
     describe('#toDecString(uint256)', function () {
       it('returns decimal string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
-          const string = i.toString();
-          const number = ethers.BigNumber.from(string);
+          const value = BigInt(i);
+          const string = value.toString();
+
           expect(
-            await instance.callStatic['toDecString(uint256)'](number),
+            await instance.callStatic['toDecString(uint256)'](value),
           ).to.equal(string);
         }
 
@@ -133,22 +135,18 @@ describe('UintUtils', function () {
 
     describe('#toDecString(uint256,uint256)', function () {
       it('returns decimal string representation of a number with specified padding', async () => {
-        const values = ['1000', '1', '12345', '85746201361230', '999983'].map(
-          (v) => ethers.BigNumber.from(v),
-        );
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
-        for (let i = 0; i < values.length; i++) {
-          const value = values[i];
+        for (let value of values) {
+          const string = value.toString();
+          const length = string.length;
 
-          const string = await instance.callStatic[
+          const result = await instance.callStatic[
             'toDecString(uint256,uint256)'
-          ](value, value.toString().length + i);
+          ](value, length);
 
-          expect(string.length).to.equal(value.toString().length + i);
-
-          expect(BigInt(string)).to.equal(
-            BigInt(await instance.callStatic['toDecString(uint256)'](value)),
-          );
+          expect(BigInt(result)).to.equal(value);
+          expect(result.length).to.equal(length);
         }
       });
 
