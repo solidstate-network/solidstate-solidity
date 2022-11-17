@@ -51,8 +51,19 @@ library UintUtils {
                 length--;
             }
 
+            uint256 mod = value % base;
             // 48 can be added using bitwise-or because its binary is 00110000
-            buffer[length] = bytes1(uint8(value % base | 48));
+            uint256 char;
+
+            if (mod < 10) {
+                char = mod | 48;
+            } else {
+                unchecked {
+                    char = mod + 87;
+                }
+            }
+
+            buffer[length] = bytes1(uint8(char));
             value /= base;
         }
 

@@ -46,8 +46,8 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256)', function () {
-      it('returns string representation of number in given base up to 10', async () => {
-        for (let base = 2; base <= 10; base++) {
+      it('returns string representation of number in given base up to 36', async () => {
+        for (let base = 2; base <= 36; base++) {
           for (let i = 0; i < 12; i++) {
             const value = BigInt(i);
             const string = value.toString(base);
@@ -71,10 +71,10 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256,uint256)', function () {
-      it('returns string representation of number in given base up to 10 with specified padding', async () => {
+      it('returns string representation of number in given base up to 36 with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
-        for (let base = 2; base <= 10; base++) {
+        for (let base = 2; base <= 36; base++) {
           for (let value of values) {
             const string = value.toString(base);
             const length = string.length;
@@ -91,7 +91,7 @@ describe('UintUtils', function () {
 
       describe('reverts if', () => {
         it('padding is insufficient', async () => {
-          for (let base = 2; base <= 10; base++) {
+          for (let base = 2; base <= 36; base++) {
             await expect(
               instance.callStatic['toString(uint256,uint256,uint256)'](
                 1n,
