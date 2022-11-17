@@ -46,6 +46,14 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256)', function () {
+      it('returns 0 if input is 0', async () => {
+        for (let base = 2; base <= 10; base++) {
+          expect(
+            await instance.callStatic['toString(uint256,uint256)'](0n, base),
+          ).to.equal('0');
+        }
+      });
+
       it('returns string representation of number in given base up to 10', async () => {
         for (let base = 2; base <= 10; base++) {
           for (let i = 0; i < 12; i++) {
@@ -93,6 +101,18 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256,uint256)', function () {
+      it('returns empty string if input is 0 and length is 0', async () => {
+        for (let base = 2; base <= 10; base++) {
+          expect(
+            await instance.callStatic['toString(uint256,uint256,uint256)'](
+              0n,
+              base,
+              0n,
+            ),
+          ).to.equal('');
+        }
+      });
+
       it('returns string representation of number in given base up to 10 with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
