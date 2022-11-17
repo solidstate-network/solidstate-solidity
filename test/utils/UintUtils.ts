@@ -46,6 +46,14 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256)', function () {
+      it('returns 0 if input is 0', async () => {
+        for (let base = 2; base <= 36; base++) {
+          expect(
+            await instance.callStatic['toString(uint256,uint256)'](0n, base),
+          ).to.equal('0');
+        }
+      });
+
       it('returns string representation of number in given base up to 36', async () => {
         for (let base = 2; base <= 36; base++) {
           for (let i = 0; i < 12; i++) {
@@ -68,9 +76,43 @@ describe('UintUtils', function () {
           ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(base));
         }
       });
+
+      describe('reverts if', () => {
+        it('base is 0', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](0n, 0n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](1n, 0n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+        });
+
+        it('base is 1', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](0n, 1n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](1n, 1n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+        });
+      });
     });
 
     describe('#toString(uint256,uint256,uint256)', function () {
+      it('returns empty string if input is 0 and length is 0', async () => {
+        for (let base = 2; base <= 36; base++) {
+          expect(
+            await instance.callStatic['toString(uint256,uint256,uint256)'](
+              0n,
+              base,
+              0n,
+            ),
+          ).to.equal('');
+        }
+      });
+
       it('returns string representation of number in given base up to 36 with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
@@ -90,6 +132,44 @@ describe('UintUtils', function () {
       });
 
       describe('reverts if', () => {
+        describe('reverts if', () => {
+          it('base is 0', async () => {
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                0n,
+                0n,
+                0n,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                1n,
+                0n,
+                0n,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          });
+
+          it('base is 1', async () => {
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                0n,
+                1n,
+                0n,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                1n,
+                1n,
+                0n,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          });
+        });
+
         it('padding is insufficient', async () => {
           for (let base = 2; base <= 36; base++) {
             await expect(
@@ -119,6 +199,12 @@ describe('UintUtils', function () {
     });
 
     describe('#toBinString(uint256)', function () {
+      it('returns 0 if input is 0', async () => {
+        expect(await instance.callStatic['toBinString(uint256)'](0n)).to.equal(
+          '0',
+        );
+      });
+
       it('returns binary string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
           const value = BigInt(i);
@@ -138,6 +224,12 @@ describe('UintUtils', function () {
     });
 
     describe('#toBinString(uint256,uint256)', function () {
+      it('returns empty string if input is 0 and length is 0', async () => {
+        expect(
+          await instance.callStatic['toBinString(uint256,uint256)'](0n, 0n),
+        ).to.equal('');
+      });
+
       it('returns binary string representation of a number with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
@@ -174,6 +266,12 @@ describe('UintUtils', function () {
     });
 
     describe('#toDecString(uint256)', function () {
+      it('returns 0 if input is 0', async () => {
+        expect(await instance.callStatic['toDecString(uint256)'](0n)).to.equal(
+          '0',
+        );
+      });
+
       it('returns decimal string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
           const value = BigInt(i);
@@ -193,6 +291,12 @@ describe('UintUtils', function () {
     });
 
     describe('#toDecString(uint256,uint256)', function () {
+      it('returns empty string if input is 0 and length is 0', async () => {
+        expect(
+          await instance.callStatic['toDecString(uint256,uint256)'](0n, 0n),
+        ).to.equal('');
+      });
+
       it('returns decimal string representation of a number with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
@@ -230,11 +334,9 @@ describe('UintUtils', function () {
 
     describe('#toHexString(uint256)', function () {
       it('returns 0x00 if input is 0', async () => {
-        expect(
-          await instance.callStatic['toHexString(uint256)'](
-            ethers.constants.Zero,
-          ),
-        ).to.equal('0x00');
+        expect(await instance.callStatic['toHexString(uint256)'](0n)).to.equal(
+          '0x00',
+        );
       });
 
       it('returns correct hexadecimal string representation of a number', async () => {
@@ -249,6 +351,12 @@ describe('UintUtils', function () {
     });
 
     describe('#toHexString(uint256,uint256)', function () {
+      it('returns empty hex-prefixed string if input is 0 and length is 0', async () => {
+        expect(
+          await instance.callStatic['toHexString(uint256,uint256)'](0n, 0n),
+        ).to.equal('0x');
+      });
+
       it('returns hexadecimal string representation of a number with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
