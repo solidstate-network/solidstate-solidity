@@ -8,6 +8,7 @@ pragma solidity ^0.8.8;
  */
 library UintUtils {
     error UintUtils__InsufficientPadding();
+    error UintUtils__InvalidBase();
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
@@ -24,15 +25,19 @@ library UintUtils {
         pure
         returns (string memory)
     {
-        if (value == 0) {
-            return '0';
+        if (base < 2) {
+            revert UintUtils__InvalidBase();
         }
 
         uint256 length;
 
-        for (uint256 temp = value; temp != 0; temp /= base) {
-            unchecked {
-                length++;
+        if (value == 0) {
+            length = 1;
+        } else {
+            for (uint256 temp = value; temp != 0; temp /= base) {
+                unchecked {
+                    length++;
+                }
             }
         }
 
@@ -44,6 +49,10 @@ library UintUtils {
         uint256 base,
         uint256 length
     ) internal pure returns (string memory) {
+        if (base < 2) {
+            revert UintUtils__InvalidBase();
+        }
+
         bytes memory buffer = new bytes(length);
 
         while (length > 0) {
@@ -86,15 +95,15 @@ library UintUtils {
     }
 
     function toHexString(uint256 value) internal pure returns (string memory) {
-        if (value == 0) {
-            return '0x00';
-        }
-
         uint256 length;
 
-        for (uint256 temp = value; temp != 0; temp >>= 8) {
-            unchecked {
-                length += 2;
+        if (value == 0) {
+            length = 2;
+        } else {
+            for (uint256 temp = value; temp != 0; temp >>= 8) {
+                unchecked {
+                    length += 2;
+                }
             }
         }
 
