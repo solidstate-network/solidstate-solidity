@@ -46,16 +46,75 @@ describe('UintUtils', function () {
     });
 
     describe('#toString(uint256,uint256)', function () {
-      it('returns string representation of number in given base');
+      it('returns string representation of number in given base up to 10', async () => {
+        for (let base = 2; base <= 10; base++) {
+          for (let i = 0; i < 12; i++) {
+            const value = BigInt(i);
+            const string = value.toString(base);
+
+            expect(
+              await instance.callStatic['toString(uint256,uint256)'](
+                value,
+                base,
+              ),
+            ).to.equal(string);
+          }
+
+          expect(
+            await instance.callStatic['toString(uint256,uint256)'](
+              ethers.constants.MaxUint256,
+              base,
+            ),
+          ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(base));
+        }
+      });
     });
 
     describe('#toString(uint256,uint256,uint256)', function () {
-      it(
-        'returns string representation of number in given base with specified padding',
-      );
+      it('returns string representation of number in given base up to 10 with specified padding', async () => {
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
+
+        for (let base = 2; base <= 10; base++) {
+          for (let value of values) {
+            const string = value.toString(base);
+            const length = string.length;
+
+            const result = await instance.callStatic[
+              'toString(uint256,uint256,uint256)'
+            ](value, base, length);
+
+            expect(BigInt(parseInt(result, base))).to.equal(value);
+            expect(result.length).to.equal(length);
+          }
+        }
+      });
 
       describe('reverts if', () => {
-        it('padding is insufficient');
+        it('padding is insufficient', async () => {
+          for (let base = 2; base <= 10; base++) {
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                1n,
+                base,
+                0n,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'UintUtils__InsufficientPadding',
+            );
+
+            await expect(
+              instance.callStatic['toString(uint256,uint256,uint256)'](
+                base,
+                base,
+                1n,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'UintUtils__InsufficientPadding',
+            );
+          }
+        });
       });
     });
 
