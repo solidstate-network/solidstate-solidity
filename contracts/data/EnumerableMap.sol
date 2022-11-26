@@ -131,16 +131,22 @@ library EnumerableMap {
 
     function toArray(
         AddressToAddressMap storage map
-    ) internal view returns (address[] memory keys, address[] memory values) {
+    )
+        internal
+        view
+        returns (address[] memory keysOut, address[] memory valuesOut)
+    {
         uint256 len = map._inner._entries.length;
-        keys = new address[](len);
-        values = new address[](len);
+
+        keysOut = new address[](len);
+        valuesOut = new address[](len);
+
         unchecked {
             for (uint256 i; i < len; ++i) {
-                keys[i] = address(
+                keysOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._key))
                 );
-                values[i] = address(
+                valuesOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._value))
                 );
             }
@@ -149,14 +155,20 @@ library EnumerableMap {
 
     function toArray(
         UintToAddressMap storage map
-    ) internal view returns (uint256[] memory keys, address[] memory values) {
+    )
+        internal
+        view
+        returns (uint256[] memory keysOut, address[] memory valuesOut)
+    {
         uint256 len = map._inner._entries.length;
-        keys = new uint256[](len);
-        values = new address[](len);
+
+        keysOut = new uint256[](len);
+        valuesOut = new address[](len);
+
         unchecked {
             for (uint256 i; i < len; ++i) {
-                keys[i] = uint256(map._inner._entries[i]._key);
-                values[i] = address(
+                keysOut[i] = uint256(map._inner._entries[i]._key);
+                valuesOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._value))
                 );
             }
@@ -165,13 +177,14 @@ library EnumerableMap {
 
     function keys(
         AddressToAddressMap storage map
-    ) internal view returns (address[] memory keys) {
+    ) internal view returns (address[] memory keysOut) {
         uint256 len = map._inner._entries.length;
-        keys = new address[](len);
+
+        keysOut = new address[](len);
 
         unchecked {
             for (uint256 i; i < len; ++i) {
-                keys[i] = address(
+                keysOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._key))
                 );
             }
@@ -180,25 +193,28 @@ library EnumerableMap {
 
     function keys(
         UintToAddressMap storage map
-    ) internal view returns (uint256[] memory keys) {
+    ) internal view returns (uint256[] memory keysOut) {
         uint256 len = map._inner._entries.length;
-        keys = new uint256[](len);
+
+        keysOut = new uint256[](len);
 
         unchecked {
             for (uint256 i; i < len; ++i) {
-                keys[i] = uint256(map._inner._entries[i]._key);
+                keysOut[i] = uint256(map._inner._entries[i]._key);
             }
         }
     }
 
     function values(
         AddressToAddressMap storage map
-    ) internal view returns (address[] memory values) {
+    ) internal view returns (address[] memory valuesOut) {
         uint256 len = map._inner._entries.length;
-        values = new address[](len);
+
+        valuesOut = new address[](len);
+
         unchecked {
             for (uint256 i; i < len; ++i) {
-                values[i] = address(
+                valuesOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._value))
                 );
             }
@@ -207,12 +223,14 @@ library EnumerableMap {
 
     function values(
         UintToAddressMap storage map
-    ) internal view returns (address[] memory values) {
+    ) internal view returns (address[] memory valuesOut) {
         uint256 len = map._inner._entries.length;
-        values = new address[](len);
+
+        valuesOut = new address[](len);
+
         unchecked {
             for (uint256 i; i < len; ++i) {
-                values[i] = address(
+                valuesOut[i] = address(
                     uint160(uint256(map._inner._entries[i]._value))
                 );
             }
