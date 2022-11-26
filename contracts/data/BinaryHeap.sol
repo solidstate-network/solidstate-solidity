@@ -25,75 +25,66 @@ library BinaryHeap {
         Heap _inner;
     }
 
-    function at(Bytes32Heap storage heap, uint256 index)
-        internal
-        view
-        returns (bytes32)
-    {
+    function at(
+        Bytes32Heap storage heap,
+        uint256 index
+    ) internal view returns (bytes32) {
         return _at(heap._inner, index);
     }
 
-    function at(AddressHeap storage heap, uint256 index)
-        internal
-        view
-        returns (address)
-    {
+    function at(
+        AddressHeap storage heap,
+        uint256 index
+    ) internal view returns (address) {
         return address(uint160(uint256(_at(heap._inner, index))));
     }
 
-    function at(UintHeap storage heap, uint256 index)
-        internal
-        view
-        returns (uint256)
-    {
+    function at(
+        UintHeap storage heap,
+        uint256 index
+    ) internal view returns (uint256) {
         return uint256(_at(heap._inner, index));
     }
 
-    function contains(Bytes32Heap storage heap, bytes32 value)
-        internal
-        view
-        returns (bool)
-    {
+    function contains(
+        Bytes32Heap storage heap,
+        bytes32 value
+    ) internal view returns (bool) {
         return _contains(heap._inner, value);
     }
 
-    function contains(AddressHeap storage heap, address value)
-        internal
-        view
-        returns (bool)
-    {
+    function contains(
+        AddressHeap storage heap,
+        address value
+    ) internal view returns (bool) {
         return _contains(heap._inner, bytes32(uint256(uint160(value))));
     }
 
-    function contains(UintHeap storage heap, uint256 value)
-        internal
-        view
-        returns (bool)
-    {
+    function contains(
+        UintHeap storage heap,
+        uint256 value
+    ) internal view returns (bool) {
         return _contains(heap._inner, bytes32(value));
     }
 
-    function indexOf(Bytes32Heap storage heap, bytes32 value)
-        internal
-        view
-        returns (uint256)
-    {
+    function indexOf(
+        Bytes32Heap storage heap,
+        bytes32 value
+    ) internal view returns (uint256) {
         return _indexOf(heap._inner, value);
     }
 
-    function indexOf(AddressHeap storage heap, address value)
-        internal
-        view
-        returns (uint256)
-    {
+    function indexOf(
+        AddressHeap storage heap,
+        address value
+    ) internal view returns (uint256) {
         return _indexOf(heap._inner, bytes32(uint256(uint160(value))));
     }
 
-    function indexOf(UintHeap storage heap, uint256 value)
-        internal
-        view
-        returns (uint256)
-    {
+    function indexOf(
+        UintHeap storage heap,
+        uint256 value
+    ) internal view returns (uint256) {
         return _indexOf(heap._inner, bytes32(value));
     }
 
@@ -121,17 +112,17 @@ library BinaryHeap {
         return uint256(_root(heap._inner));
     }
 
-    function add(Bytes32Heap storage heap, bytes32 value)
-        internal
-        returns (bool)
-    {
+    function add(
+        Bytes32Heap storage heap,
+        bytes32 value
+    ) internal returns (bool) {
         return _add(heap._inner, value);
     }
 
-    function add(AddressHeap storage heap, address value)
-        internal
-        returns (bool)
-    {
+    function add(
+        AddressHeap storage heap,
+        address value
+    ) internal returns (bool) {
         return _add(heap._inner, bytes32(uint256(uint160(value))));
     }
 
@@ -139,40 +130,36 @@ library BinaryHeap {
         return _add(heap._inner, bytes32(value));
     }
 
-    function remove(Bytes32Heap storage heap, bytes32 value)
-        internal
-        returns (bool)
-    {
+    function remove(
+        Bytes32Heap storage heap,
+        bytes32 value
+    ) internal returns (bool) {
         return _remove(heap._inner, value);
     }
 
-    function remove(AddressHeap storage heap, address value)
-        internal
-        returns (bool)
-    {
+    function remove(
+        AddressHeap storage heap,
+        address value
+    ) internal returns (bool) {
         return _remove(heap._inner, bytes32(uint256(uint160(value))));
     }
 
-    function remove(UintHeap storage heap, uint256 value)
-        internal
-        returns (bool)
-    {
+    function remove(
+        UintHeap storage heap,
+        uint256 value
+    ) internal returns (bool) {
         return _remove(heap._inner, bytes32(value));
     }
 
-    function toArray(Bytes32Heap storage heap)
-        internal
-        view
-        returns (bytes32[] memory)
-    {
+    function toArray(
+        Bytes32Heap storage heap
+    ) internal view returns (bytes32[] memory) {
         return heap._inner._values;
     }
 
-    function toArray(AddressHeap storage heap)
-        internal
-        view
-        returns (address[] memory)
-    {
+    function toArray(
+        AddressHeap storage heap
+    ) internal view returns (address[] memory) {
         bytes32[] storage values = heap._inner._values;
         address[] storage array;
 
@@ -183,11 +170,9 @@ library BinaryHeap {
         return array;
     }
 
-    function toArray(UintHeap storage heap)
-        internal
-        view
-        returns (uint256[] memory)
-    {
+    function toArray(
+        UintHeap storage heap
+    ) internal view returns (uint256[] memory) {
         bytes32[] storage values = heap._inner._values;
         uint256[] storage array;
 
@@ -198,27 +183,24 @@ library BinaryHeap {
         return array;
     }
 
-    function _at(Heap storage heap, uint256 index)
-        private
-        view
-        returns (bytes32)
-    {
+    function _at(
+        Heap storage heap,
+        uint256 index
+    ) private view returns (bytes32) {
         return heap._values[index];
     }
 
-    function _contains(Heap storage heap, bytes32 value)
-        private
-        view
-        returns (bool)
-    {
+    function _contains(
+        Heap storage heap,
+        bytes32 value
+    ) private view returns (bool) {
         return heap._indexes[value] != 0;
     }
 
-    function _indexOf(Heap storage heap, bytes32 value)
-        private
-        view
-        returns (uint256)
-    {
+    function _indexOf(
+        Heap storage heap,
+        bytes32 value
+    ) private view returns (uint256) {
         unchecked {
             return heap._indexes[value] - 1;
         }
@@ -232,10 +214,10 @@ library BinaryHeap {
         return _at(heap, 0);
     }
 
-    function _add(Heap storage heap, bytes32 value)
-        private
-        returns (bool update)
-    {
+    function _add(
+        Heap storage heap,
+        bytes32 value
+    ) private returns (bool update) {
         if (!_contains(heap, value)) {
             heap._values.push(value);
             heap._indexes[value] = _length(heap);
@@ -245,10 +227,10 @@ library BinaryHeap {
         }
     }
 
-    function _remove(Heap storage heap, bytes32 value)
-        private
-        returns (bool update)
-    {
+    function _remove(
+        Heap storage heap,
+        bytes32 value
+    ) private returns (bool update) {
         if (_contains(heap, value)) {
             uint256 index = _indexOf(heap, value);
 
@@ -304,11 +286,7 @@ library BinaryHeap {
         }
     }
 
-    function _swap(
-        Heap storage heap,
-        uint256 a,
-        uint256 b
-    ) private {
+    function _swap(Heap storage heap, uint256 a, uint256 b) private {
         bytes32[] storage values = heap._values;
 
         bytes32 aValue = values[a];

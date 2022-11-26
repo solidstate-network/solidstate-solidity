@@ -26,10 +26,9 @@ abstract contract CloneFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return cloneContract address of deployed contract
      */
-    function _deployClone(bytes32 salt)
-        internal
-        returns (address cloneContract)
-    {
+    function _deployClone(
+        bytes32 salt
+    ) internal returns (address cloneContract) {
         return _deploy(CLONE_INIT_CODE, salt);
     }
 
@@ -38,11 +37,9 @@ abstract contract CloneFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address
      */
-    function _calculateCloneDeploymentAddress(bytes32 salt)
-        internal
-        view
-        returns (address)
-    {
+    function _calculateCloneDeploymentAddress(
+        bytes32 salt
+    ) internal view returns (address) {
         return _calculateDeploymentAddress(CLONE_INIT_CODE_HASH, salt);
     }
 }

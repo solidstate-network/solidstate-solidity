@@ -14,10 +14,10 @@ interface IAccessControl is IAccessControlInternal {
      * @param account account to query
      * @return whether role is assigned to account
      */
-    function hasRole(bytes32 role, address account)
-        external
-        view
-        returns (bool);
+    function hasRole(
+        bytes32 role,
+        address account
+    ) external view returns (bool);
 
     /*
      * @notice query admin role for given role

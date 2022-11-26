@@ -17,11 +17,10 @@ abstract contract ERC721EnumerableInternal {
     /**
      * @notice TODO
      */
-    function _tokenOfOwnerByIndex(address owner, uint256 index)
-        internal
-        view
-        returns (uint256)
-    {
+    function _tokenOfOwnerByIndex(
+        address owner,
+        uint256 index
+    ) internal view returns (uint256) {
         return ERC721BaseStorage.layout().tokenOfOwnerByIndex(owner, index);
     }
 

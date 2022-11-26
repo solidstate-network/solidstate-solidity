@@ -11,10 +11,9 @@ abstract contract Multicall is IMulticall {
     /**
      * @inheritdoc IMulticall
      */
-    function multicall(bytes[] calldata data)
-        external
-        returns (bytes[] memory results)
-    {
+    function multicall(
+        bytes[] calldata data
+    ) external returns (bytes[] memory results) {
         results = new bytes[](data.length);
 
         unchecked {

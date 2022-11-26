@@ -15,7 +15,10 @@ abstract contract ERC20ImplicitApproval is
     ERC20Base,
     ERC20ImplicitApprovalInternal
 {
-    function _allowance(address holder, address spender)
+    function _allowance(
+        address holder,
+        address spender
+    )
         internal
         view
         virtual

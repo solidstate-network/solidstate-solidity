@@ -39,12 +39,9 @@ abstract contract ERC721MetadataInternal is
      * @notice get generated URI for given token
      * @return token URI
      */
-    function _tokenURI(uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (string memory)
-    {
+    function _tokenURI(
+        uint256 tokenId
+    ) internal view virtual returns (string memory) {
         if (!ERC721BaseStorage.layout().exists(tokenId))
             revert ERC721Metadata__NonExistentToken();
 

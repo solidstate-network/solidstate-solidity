@@ -25,11 +25,9 @@ abstract contract SafeOwnable is ISafeOwnable, Ownable, SafeOwnableInternal {
         _acceptOwnership();
     }
 
-    function _transferOwnership(address account)
-        internal
-        virtual
-        override(OwnableInternal, SafeOwnableInternal)
-    {
+    function _transferOwnership(
+        address account
+    ) internal virtual override(OwnableInternal, SafeOwnableInternal) {
         super._transferOwnership(account);
     }
 }

@@ -16,11 +16,10 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
     using EnumerableSet for EnumerableSet.AddressSet;
     using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
-    function _isInvalidNonce(address account, uint256 nonce)
-        internal
-        view
-        returns (bool)
-    {
+    function _isInvalidNonce(
+        address account,
+        uint256 nonce
+    ) internal view returns (bool) {
         return ECDSAMultisigWalletStorage.layout().nonces[account][nonce];
     }
 
@@ -88,11 +87,9 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
      * @notice execute low-level "call" or "delegatecall"
      * @param parameters structured call parameters (target, data, value, delegate)
      */
-    function _executeCall(Parameters memory parameters)
-        internal
-        virtual
-        returns (bytes memory)
-    {
+    function _executeCall(
+        Parameters memory parameters
+    ) internal virtual returns (bytes memory) {
         bool success;
         bytes memory returndata;
 
@@ -124,10 +121,10 @@ abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
      * @param data packed data payload
      * @param signatures array of structured signature data (signature, nonce)
      */
-    function _verifySignatures(bytes memory data, Signature[] memory signatures)
-        internal
-        virtual
-    {
+    function _verifySignatures(
+        bytes memory data,
+        Signature[] memory signatures
+    ) internal virtual {
         ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
             .layout();
 

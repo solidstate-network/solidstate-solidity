@@ -17,9 +17,8 @@ abstract contract ERC1271BaseInternal {
      * @param signature signed hash
      * @return magicValue ERC1271 magic value or null bytes
      */
-    function _isValidSignature(bytes32 hash, bytes memory signature)
-        internal
-        view
-        virtual
-        returns (bytes4 magicValue);
+    function _isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) internal view virtual returns (bytes4 magicValue);
 }

@@ -17,12 +17,10 @@ abstract contract ERC2981Internal is IERC2981Internal {
      * @return royaltyReceiver rightful recipient of royalty
      * @return royalty amount of royalty owed
      */
-    function _royaltyInfo(uint256 tokenId, uint256 salePrice)
-        internal
-        view
-        virtual
-        returns (address royaltyReceiver, uint256 royalty)
-    {
+    function _royaltyInfo(
+        uint256 tokenId,
+        uint256 salePrice
+    ) internal view virtual returns (address royaltyReceiver, uint256 royalty) {
         uint256 royaltyBPS = _getRoyaltyBPS(tokenId);
 
         // intermediate multiplication overflow is theoretically possible here, but
@@ -36,12 +34,9 @@ abstract contract ERC2981Internal is IERC2981Internal {
      * @param tokenId token whose royalty rate to query
      * @return royaltyBPS royalty rate
      */
-    function _getRoyaltyBPS(uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (uint16 royaltyBPS)
-    {
+    function _getRoyaltyBPS(
+        uint256 tokenId
+    ) internal view virtual returns (uint16 royaltyBPS) {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
         royaltyBPS = l.royaltiesBPS[tokenId];
 
@@ -56,12 +51,9 @@ abstract contract ERC2981Internal is IERC2981Internal {
      * @param tokenId token whose royalty receiver to query
      * @return royaltyReceiver royalty receiver
      */
-    function _getRoyaltyReceiver(uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (address royaltyReceiver)
-    {
+    function _getRoyaltyReceiver(
+        uint256 tokenId
+    ) internal view virtual returns (address royaltyReceiver) {
         ERC2981Storage.Layout storage l = ERC2981Storage.layout();
         royaltyReceiver = l.royaltyReceivers[tokenId];
 

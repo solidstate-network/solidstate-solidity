@@ -28,10 +28,10 @@ library AddressUtils {
         if (!success) revert AddressUtils__SendValueFailed();
     }
 
-    function functionCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
+    function functionCall(
+        address target,
+        bytes memory data
+    ) internal returns (bytes memory) {
         return
             functionCall(target, data, 'AddressUtils: failed low-level call');
     }

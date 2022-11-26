@@ -15,18 +15,17 @@ interface IERC721Enumerable {
      * @param index position in owner's token list to query
      * @return tokenId id of retrieved token
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index)
-        external
-        view
-        returns (uint256 tokenId);
+    function tokenOfOwnerByIndex(
+        address owner,
+        uint256 index
+    ) external view returns (uint256 tokenId);
 
     /**
      * @notice get token at given internal storage index
      * @param index position in global token list to query
      * @return tokenId id of retrieved token
      */
-    function tokenByIndex(uint256 index)
-        external
-        view
-        returns (uint256 tokenId);
+    function tokenByIndex(
+        uint256 index
+    ) external view returns (uint256 tokenId);
 }

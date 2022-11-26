@@ -11,7 +11,7 @@ interface IMulticall {
      * @param data array of function call data payloads
      * @return results array of function call results
      */
-    function multicall(bytes[] calldata data)
-        external
-        returns (bytes[] memory results);
+    function multicall(
+        bytes[] calldata data
+    ) external returns (bytes[] memory results);
 }

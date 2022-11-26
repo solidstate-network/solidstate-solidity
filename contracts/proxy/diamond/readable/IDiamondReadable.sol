@@ -23,10 +23,9 @@ interface IDiamondReadable {
      * @param facet address of facet to query
      * @return selectors array of function selectors
      */
-    function facetFunctionSelectors(address facet)
-        external
-        view
-        returns (bytes4[] memory selectors);
+    function facetFunctionSelectors(
+        address facet
+    ) external view returns (bytes4[] memory selectors);
 
     /**
      * @notice get addresses of all facets used by diamond
@@ -42,8 +41,7 @@ interface IDiamondReadable {
      * @param selector function selector to query
      * @return facet facet address (zero address if not found)
      */
-    function facetAddress(bytes4 selector)
-        external
-        view
-        returns (address facet);
+    function facetAddress(
+        bytes4 selector
+    ) external view returns (address facet);
 }

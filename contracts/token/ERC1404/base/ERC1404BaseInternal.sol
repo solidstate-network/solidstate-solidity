@@ -40,12 +40,9 @@ abstract contract ERC1404BaseInternal is
         uint256 amount
     ) internal view virtual returns (uint8);
 
-    function _messageForTransferRestriction(uint8 restrictionCode)
-        internal
-        view
-        virtual
-        returns (string memory)
-    {
+    function _messageForTransferRestriction(
+        uint8 restrictionCode
+    ) internal view virtual returns (string memory) {
         return ERC1404BaseStorage.layout().restrictions[restrictionCode];
     }
 

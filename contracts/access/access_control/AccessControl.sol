@@ -13,21 +13,20 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function grantRole(bytes32 role, address account)
-        external
-        onlyRole(_getRoleAdmin(role))
-    {
+    function grantRole(
+        bytes32 role,
+        address account
+    ) external onlyRole(_getRoleAdmin(role)) {
         _grantRole(role, account);
     }
 
     /**
      * @inheritdoc IAccessControl
      */
-    function hasRole(bytes32 role, address account)
-        external
-        view
-        returns (bool)
-    {
+    function hasRole(
+        bytes32 role,
+        address account
+    ) external view returns (bool) {
         return _hasRole(role, account);
     }
 
@@ -41,10 +40,10 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function revokeRole(bytes32 role, address account)
-        external
-        onlyRole(_getRoleAdmin(role))
-    {
+    function revokeRole(
+        bytes32 role,
+        address account
+    ) external onlyRole(_getRoleAdmin(role)) {
         _revokeRole(role, account);
     }
 
