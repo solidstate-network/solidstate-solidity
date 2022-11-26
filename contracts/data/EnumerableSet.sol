@@ -202,15 +202,21 @@ library EnumerableSet {
         return set._values.length;
     }
 
-    function _add(Set storage set, bytes32 value) private returns (bool) {
+    function _add(
+        Set storage set,
+        bytes32 value
+    ) private returns (bool status) {
         if (!_contains(set, value)) {
             set._values.push(value);
             set._indexes[value] = set._values.length;
-            return true;
+            status = true;
         }
     }
 
-    function _remove(Set storage set, bytes32 value) private returns (bool) {
+    function _remove(
+        Set storage set,
+        bytes32 value
+    ) private returns (bool status) {
         uint256 valueIndex = set._indexes[value];
 
         if (valueIndex != 0) {
@@ -227,7 +233,7 @@ library EnumerableSet {
             set._values.pop();
             delete set._indexes[value];
 
-            return true;
+            status = true;
         }
     }
 }
