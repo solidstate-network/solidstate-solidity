@@ -4,13 +4,14 @@ pragma solidity ^0.8.8;
 
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { IDiamondFallback } from './IDiamondFallback.sol';
 
 // TODO: DiamondFallback interface
 
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy
  */
-abstract contract DiamondFallback is DiamondBase {
+abstract contract DiamondFallback is IDiamondFallback, DiamondBase {
     /**
      * @inheritdoc DiamondBase
      * @notice query custom fallback address is no implementation is found
