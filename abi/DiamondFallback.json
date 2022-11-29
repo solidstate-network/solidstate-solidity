@@ -1,0 +1,16 @@
+[
+  {
+    "inputs": [],
+    "name": "DiamondBase__NoFacetForSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  }
+]
