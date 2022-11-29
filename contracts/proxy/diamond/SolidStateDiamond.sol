@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { IOwnable, Ownable, OwnableInternal, OwnableStorage } from '../../access/ownable/Ownable.sol';
+import { IOwnable, Ownable, OwnableInternal } from '../../access/ownable/Ownable.sol';
 import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
@@ -26,7 +26,6 @@ abstract contract SolidStateDiamond is
 {
     using DiamondBaseStorage for DiamondBaseStorage.Layout;
     using ERC165Storage for ERC165Storage.Layout;
-    using OwnableStorage for OwnableStorage.Layout;
 
     constructor() {
         ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
@@ -90,7 +89,7 @@ abstract contract SolidStateDiamond is
 
         // set owner
 
-        OwnableStorage.layout().setOwner(msg.sender);
+        _setOwner(msg.sender);
     }
 
     receive() external payable {}
