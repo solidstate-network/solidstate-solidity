@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.8;
 
+import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondFallback } from './IDiamondFallback.sol';
@@ -11,7 +12,29 @@ import { IDiamondFallback } from './IDiamondFallback.sol';
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy
  */
-abstract contract DiamondFallback is IDiamondFallback, DiamondBase {
+abstract contract DiamondFallback is
+    IDiamondFallback,
+    OwnableInternal,
+    DiamondBase
+{
+    /**
+     * @inheritdoc IDiamondFallback
+     */
+    function getFallbackAddress()
+        external
+        view
+        returns (address fallbackAddress)
+    {
+        fallbackAddress = _getFallbackAddress();
+    }
+
+    /**
+     * @inheritdoc IDiamondFallback
+     */
+    function setFallbackAddress(address fallbackAddress) external onlyOwner {
+        _setFallbackAddress(fallbackAddress);
+    }
+
     /**
      * @inheritdoc DiamondBase
      * @notice query custom fallback address is no implementation is found

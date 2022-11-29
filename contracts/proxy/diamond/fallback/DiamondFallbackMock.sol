@@ -9,16 +9,4 @@ contract DiamondFallbackMock is DiamondFallback, DiamondWritableInternal {
     constructor(FacetCut[] memory cuts) {
         _diamondCut(cuts, address(0), '');
     }
-
-    function getFallbackAddress()
-        external
-        view
-        returns (address fallbackAddress)
-    {
-        fallbackAddress = _getFallbackAddress();
-    }
-
-    function setFallbackAddress(address fallbackAddress) external {
-        _setFallbackAddress(fallbackAddress);
-    }
 }

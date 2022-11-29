@@ -18,19 +18,4 @@ interface ISolidStateDiamond is
     IERC165
 {
     receive() external payable;
-
-    /**
-     * @notice query the address of the fallback implementation
-     * @return fallbackAddress address of fallback implementation
-     */
-    function getFallbackAddress()
-        external
-        view
-        returns (address fallbackAddress);
-
-    /**
-     * @notice set the address of the fallback implementation
-     * @param fallbackAddress address of fallback implementation
-     */
-    function setFallbackAddress(address fallbackAddress) external;
 }
