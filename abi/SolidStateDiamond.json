@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "DiamondBase__NoFacetForSignature",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "DiamondWritable__InvalidInitializationParameters",
     "type": "error"
   },

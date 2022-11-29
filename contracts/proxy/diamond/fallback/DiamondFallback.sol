@@ -26,8 +26,6 @@ abstract contract DiamondFallback is IDiamondFallback, DiamondBase {
 
         if (implementation == address(0)) {
             implementation = _getFallbackAddress();
-            if (implementation == address(0))
-                revert DiamondBase__NoFacetForSignature();
         }
     }
 
