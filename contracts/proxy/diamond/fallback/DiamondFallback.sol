@@ -19,6 +19,7 @@ abstract contract DiamondFallback is IDiamondFallback, DiamondBase {
     function _getImplementation()
         internal
         view
+        virtual
         override
         returns (address implementation)
     {

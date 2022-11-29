@@ -7,6 +7,7 @@ import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol'
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
+import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
 import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
 import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
 import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
@@ -17,6 +18,7 @@ import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
 abstract contract SolidStateDiamond is
     ISolidStateDiamond,
     DiamondBase,
+    DiamondFallback,
     DiamondReadable,
     DiamondWritable,
     SafeOwnable,
@@ -87,20 +89,36 @@ abstract contract SolidStateDiamond is
     /**
      * @inheritdoc ISolidStateDiamond
      */
-    function getFallbackAddress() external view returns (address) {
-        return DiamondBaseStorage.layout().fallbackAddress;
+    function getFallbackAddress()
+        external
+        view
+        returns (address fallbackAddress)
+    {
+        fallbackAddress = _getFallbackAddress();
     }
 
     /**
      * @inheritdoc ISolidStateDiamond
      */
     function setFallbackAddress(address fallbackAddress) external onlyOwner {
-        DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
+        _setFallbackAddress(fallbackAddress);
     }
 
     function _transferOwnership(
         address account
     ) internal virtual override(OwnableInternal, SafeOwnable) {
         super._transferOwnership(account);
+    }
+
+    /**
+     * @inheritdoc DiamondFallback
+     */
+    function _getImplementation()
+        internal
+        view
+        override(DiamondBase, DiamondFallback)
+        returns (address implementation)
+    {
+        implementation = super._getImplementation();
     }
 }

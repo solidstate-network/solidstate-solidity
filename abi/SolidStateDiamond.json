@@ -258,7 +258,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "fallbackAddress",
         "type": "address"
       }
     ],
