@@ -19,19 +19,11 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
         );
     }
 
-    function __mint(
-        address account,
-        uint256 id,
-        uint256 amount
-    ) external {
+    function __mint(address account, uint256 id, uint256 amount) external {
         _mint(account, id, amount, '');
     }
 
-    function __safeMint(
-        address account,
-        uint256 id,
-        uint256 amount
-    ) external {
+    function __safeMint(address account, uint256 id, uint256 amount) external {
         _safeMint(account, id, amount, '');
     }
 
@@ -51,11 +43,7 @@ contract ERC1155BaseMock is ERC1155Base, ERC165 {
         _safeMintBatch(account, ids, amounts, '');
     }
 
-    function __burn(
-        address account,
-        uint256 id,
-        uint256 amount
-    ) external {
+    function __burn(address account, uint256 id, uint256 amount) external {
         _burn(account, id, amount);
     }
 

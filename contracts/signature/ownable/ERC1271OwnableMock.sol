@@ -10,11 +10,10 @@ contract ERC1271OwnableMock is ERC1271Ownable {
         OwnableStorage.layout().owner = owner;
     }
 
-    function __isValidSignature(bytes32 hash, bytes memory signature)
-        external
-        view
-        returns (bytes4)
-    {
+    function __isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) external view returns (bytes4) {
         return _isValidSignature(hash, signature);
     }
 }

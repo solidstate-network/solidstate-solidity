@@ -16,10 +16,10 @@ interface IERC1155 is IERC1155Internal, IERC165 {
      * @param id token to query
      * @return token balance
      */
-    function balanceOf(address account, uint256 id)
-        external
-        view
-        returns (uint256);
+    function balanceOf(
+        address account,
+        uint256 id
+    ) external view returns (uint256);
 
     /**
      * @notice query the balances of given tokens held by given addresses
@@ -27,10 +27,10 @@ interface IERC1155 is IERC1155Internal, IERC165 {
      * @param ids tokens to query
      * @return token balances
      */
-    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids)
-        external
-        view
-        returns (uint256[] memory);
+    function balanceOfBatch(
+        address[] calldata accounts,
+        uint256[] calldata ids
+    ) external view returns (uint256[] memory);
 
     /**
      * @notice query approval status of given operator with respect to given address
@@ -38,10 +38,10 @@ interface IERC1155 is IERC1155Internal, IERC165 {
      * @param operator address to query for approval received
      * @return whether operator is approved to spend tokens held by account
      */
-    function isApprovedForAll(address account, address operator)
-        external
-        view
-        returns (bool);
+    function isApprovedForAll(
+        address account,
+        address operator
+    ) external view returns (bool);
 
     /**
      * @notice grant approval to or revoke approval from given operator to spend held tokens

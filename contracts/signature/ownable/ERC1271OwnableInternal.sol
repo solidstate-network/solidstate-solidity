@@ -16,12 +16,10 @@ abstract contract ERC1271OwnableInternal is ERC1271BaseInternal {
      * @inheritdoc ERC1271BaseInternal
      * @notice return whether given signature is signed by contract owner
      */
-    function _isValidSignature(bytes32 hash, bytes memory signature)
-        internal
-        view
-        override
-        returns (bytes4 magicValue)
-    {
+    function _isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) internal view override returns (bytes4 magicValue) {
         return
             hash.toEthSignedMessageHash().recover(signature) ==
                 OwnableStorage.layout().owner

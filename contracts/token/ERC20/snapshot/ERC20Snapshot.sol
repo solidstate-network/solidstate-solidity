@@ -18,11 +18,10 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
      * @param snapshotId snapshot id to query
      * @return token balance
      */
-    function balanceOfAt(address account, uint256 snapshotId)
-        public
-        view
-        returns (uint256)
-    {
+    function balanceOfAt(
+        address account,
+        uint256 snapshotId
+    ) public view returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
             ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]
@@ -70,11 +69,10 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
      * @param query element to search for
      * @return index of query or array length if query is not found or exceeded
      */
-    function _findUpperBound(uint256[] storage array, uint256 query)
-        private
-        view
-        returns (uint256)
-    {
+    function _findUpperBound(
+        uint256[] storage array,
+        uint256 query
+    ) private view returns (uint256) {
         unchecked {
             if (array.length == 0) {
                 return 0;

@@ -28,12 +28,10 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @param account account to query
      * @return whether role is assigned to account
      */
-    function _hasRole(bytes32 role, address account)
-        internal
-        view
-        virtual
-        returns (bool)
-    {
+    function _hasRole(
+        bytes32 role,
+        address account
+    ) internal view virtual returns (bool) {
         return
             AccessControlStorage.layout().roles[role].members.contains(account);
     }
@@ -71,12 +69,9 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      * @param role role to query
      * @return admin role
      */
-    function _getRoleAdmin(bytes32 role)
-        internal
-        view
-        virtual
-        returns (bytes32)
-    {
+    function _getRoleAdmin(
+        bytes32 role
+    ) internal view virtual returns (bytes32) {
         return AccessControlStorage.layout().roles[role].adminRole;
     }
 

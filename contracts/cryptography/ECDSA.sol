@@ -18,11 +18,10 @@ library ECDSA {
      * @param signature signed data payload
      * @return recovered message signer
      */
-    function recover(bytes32 hash, bytes memory signature)
-        internal
-        pure
-        returns (address)
-    {
+    function recover(
+        bytes32 hash,
+        bytes memory signature
+    ) internal pure returns (address) {
         if (signature.length != 65) revert ECDSA__InvalidSignatureLength();
 
         bytes32 r;
@@ -79,11 +78,9 @@ library ECDSA {
      * @param hash hashed data payload
      * @return signed message hash
      */
-    function toEthSignedMessageHash(bytes32 hash)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function toEthSignedMessageHash(
+        bytes32 hash
+    ) internal pure returns (bytes32) {
         return
             keccak256(
                 abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)

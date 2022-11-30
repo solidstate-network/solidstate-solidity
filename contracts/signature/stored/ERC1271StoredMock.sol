@@ -10,11 +10,10 @@ contract ERC1271StoredMock is ERC1271Stored {
         ERC1271StoredStorage.layout().hashes[hash] = true;
     }
 
-    function __isValidSignature(bytes32 hash, bytes memory signature)
-        external
-        view
-        returns (bytes4)
-    {
+    function __isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) external view returns (bytes4) {
         return _isValidSignature(hash, signature);
     }
 
