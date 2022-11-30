@@ -8,9 +8,10 @@ import { ManagedProxy, ManagedProxyOwnable } from './ManagedProxyOwnable.sol';
 contract ManagedProxyOwnableMock is ManagedProxyOwnable {
     using OwnableStorage for OwnableStorage.Layout;
 
-    constructor(address manager, bytes4 managerSelector)
-        ManagedProxy(managerSelector)
-    {
+    constructor(
+        address manager,
+        bytes4 managerSelector
+    ) ManagedProxy(managerSelector) {
         setOwner(manager);
     }
 

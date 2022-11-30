@@ -26,11 +26,10 @@ library ERC721BaseStorage {
         }
     }
 
-    function exists(Layout storage l, uint256 tokenId)
-        internal
-        view
-        returns (bool)
-    {
+    function exists(
+        Layout storage l,
+        uint256 tokenId
+    ) internal view returns (bool) {
         return l.tokenOwners.contains(tokenId);
     }
 
@@ -46,11 +45,10 @@ library ERC721BaseStorage {
         return l.holderTokens[owner].at(index);
     }
 
-    function tokenByIndex(Layout storage l, uint256 index)
-        internal
-        view
-        returns (uint256)
-    {
+    function tokenByIndex(
+        Layout storage l,
+        uint256 index
+    ) internal view returns (uint256) {
         (uint256 tokenId, ) = l.tokenOwners.at(index);
         return tokenId;
     }

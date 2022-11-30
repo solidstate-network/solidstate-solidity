@@ -18,12 +18,9 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    function _balanceOf(address account)
-        internal
-        view
-        virtual
-        returns (uint256)
-    {
+    function _balanceOf(
+        address account
+    ) internal view virtual returns (uint256) {
         if (account == address(0)) revert ERC721Base__BalanceQueryZeroAddress();
         return ERC721BaseStorage.layout().holderTokens[account].length();
     }
@@ -34,12 +31,9 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
         return owner;
     }
 
-    function _getApproved(uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (address)
-    {
+    function _getApproved(
+        uint256 tokenId
+    ) internal view virtual returns (address) {
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
 
         if (!l.exists(tokenId)) revert ERC721Base__NonExistentToken();
@@ -47,21 +41,17 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
         return l.tokenApprovals[tokenId];
     }
 
-    function _isApprovedForAll(address account, address operator)
-        internal
-        view
-        virtual
-        returns (bool)
-    {
+    function _isApprovedForAll(
+        address account,
+        address operator
+    ) internal view virtual returns (bool) {
         return ERC721BaseStorage.layout().operatorApprovals[account][operator];
     }
 
-    function _isApprovedOrOwner(address spender, uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (bool)
-    {
+    function _isApprovedOrOwner(
+        address spender,
+        uint256 tokenId
+    ) internal view virtual returns (bool) {
         if (!ERC721BaseStorage.layout().exists(tokenId))
             revert ERC721Base__NonExistentToken();
 

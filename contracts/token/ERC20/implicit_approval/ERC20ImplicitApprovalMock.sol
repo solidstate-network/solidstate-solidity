@@ -15,11 +15,9 @@ contract ERC20ImplicitApprovalMock is ERC20ImplicitApproval {
         }
     }
 
-    function __isImplicitlyApproved(address account)
-        external
-        view
-        returns (bool)
-    {
+    function __isImplicitlyApproved(
+        address account
+    ) external view returns (bool) {
         return _isImplicitlyApproved(account);
     }
 

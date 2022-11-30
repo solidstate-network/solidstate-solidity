@@ -19,19 +19,14 @@ contract ERC721BaseMock is ERC721Base, ERC165 {
         );
     }
 
-    function isApprovedOrOwner(address spender, uint256 tokenId)
-        external
-        view
-        returns (bool)
-    {
+    function isApprovedOrOwner(
+        address spender,
+        uint256 tokenId
+    ) external view returns (bool) {
         return _isApprovedOrOwner(spender, tokenId);
     }
 
-    function transfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) external {
+    function transfer(address from, address to, uint256 tokenId) external {
         _transfer(from, to, tokenId);
     }
 

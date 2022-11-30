@@ -24,8 +24,7 @@ interface IERC1404 is IERC1404Internal, IERC20 {
      * @notice return the appropriate error message for given restriction code
      * @return error message
      */
-    function messageForTransferRestriction(uint8 restrictionCode)
-        external
-        view
-        returns (string memory);
+    function messageForTransferRestriction(
+        uint8 restrictionCode
+    ) external view returns (string memory);
 }

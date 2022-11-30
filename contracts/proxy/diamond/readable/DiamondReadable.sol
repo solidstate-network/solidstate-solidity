@@ -88,11 +88,9 @@ abstract contract DiamondReadable is IDiamondReadable {
     /**
      * @inheritdoc IDiamondReadable
      */
-    function facetFunctionSelectors(address facet)
-        external
-        view
-        returns (bytes4[] memory selectors)
-    {
+    function facetFunctionSelectors(
+        address facet
+    ) external view returns (bytes4[] memory selectors) {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
         selectors = new bytes4[](l.selectorCount);
@@ -188,11 +186,9 @@ abstract contract DiamondReadable is IDiamondReadable {
     /**
      * @inheritdoc IDiamondReadable
      */
-    function facetAddress(bytes4 selector)
-        external
-        view
-        returns (address facet)
-    {
+    function facetAddress(
+        bytes4 selector
+    ) external view returns (address facet) {
         facet = address(bytes20(DiamondBaseStorage.layout().facets[selector]));
     }
 }

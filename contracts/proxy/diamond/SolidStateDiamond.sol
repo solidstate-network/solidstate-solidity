@@ -98,11 +98,9 @@ abstract contract SolidStateDiamond is
         DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
     }
 
-    function _transferOwnership(address account)
-        internal
-        virtual
-        override(OwnableInternal, SafeOwnable)
-    {
+    function _transferOwnership(
+        address account
+    ) internal virtual override(OwnableInternal, SafeOwnable) {
         super._transferOwnership(account);
     }
 }
