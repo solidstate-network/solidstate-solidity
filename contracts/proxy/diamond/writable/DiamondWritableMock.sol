@@ -2,23 +2,16 @@
 
 pragma solidity ^0.8.8;
 
-import { ERC165, IERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
+import { IERC165 } from '../../../interfaces/IERC165.sol';
+import { ERC165Base, ERC165BaseStorage } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondWritable, IDiamondWritable } from './DiamondWritable.sol';
 
-contract DiamondWritableMock is DiamondBase, DiamondWritable, ERC165 {
-    using ERC165Storage for ERC165Storage.Layout;
-
+contract DiamondWritableMock is DiamondBase, DiamondWritable, ERC165Base {
     constructor() {
         _setOwner(msg.sender);
-        ERC165Storage.layout().setSupportedInterface(
-            type(IERC165).interfaceId,
-            true
-        );
-        ERC165Storage.layout().setSupportedInterface(
-            type(IDiamondWritable).interfaceId,
-            true
-        );
+        _setSupportsInterface(type(IERC165).interfaceId, true);
+        _setSupportsInterface(type(IDiamondWritable).interfaceId, true);
     }
 
     /**
