@@ -10,7 +10,7 @@ import {
   BinaryHeapUintMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
+import { BigNumber, Bytes } from 'ethers';
 import { ethers } from 'hardhat';
 
 const numbers = [0, 1, 2].map((n) => BigNumber.from(n));
@@ -197,7 +197,7 @@ describe('BinaryHeap', async () => {
 
       describe('#remove(bytes32)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          const values = [];
+          const values: Bytes[] = [];
 
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
@@ -390,7 +390,7 @@ describe('BinaryHeap', async () => {
 
       describe('#remove(address)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          const values = [];
+          const values: string[] = [];
 
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
@@ -583,7 +583,7 @@ describe('BinaryHeap', async () => {
 
       describe('#remove(uint256)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          const values = [];
+          const values: number[] = [];
 
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
