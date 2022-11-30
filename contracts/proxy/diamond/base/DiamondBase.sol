@@ -14,7 +14,13 @@ abstract contract DiamondBase is IDiamondBase, Proxy {
     /**
      * @inheritdoc Proxy
      */
-    function _getImplementation() internal view override returns (address) {
+    function _getImplementation()
+        internal
+        view
+        virtual
+        override
+        returns (address implementation)
+    {
         // inline storage layout retrieval uses less gas
         DiamondBaseStorage.Layout storage l;
         bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
@@ -22,14 +28,6 @@ abstract contract DiamondBase is IDiamondBase, Proxy {
             l.slot := slot
         }
 
-        address implementation = address(bytes20(l.facets[msg.sig]));
-
-        if (implementation == address(0)) {
-            implementation = l.fallbackAddress;
-            if (implementation == address(0))
-                revert DiamondBase__NoFacetForSignature();
-        }
-
-        return implementation;
+        implementation = address(bytes20(l.facets[msg.sig]));
     }
 }

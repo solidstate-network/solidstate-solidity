@@ -9,15 +9,15 @@ import { ethers } from 'hardhat';
 
 describe('SolidStateDiamond', function () {
   let owner: SignerWithAddress;
-  let getNomineeOwner: SignerWithAddress;
-  let getNonOwner: SignerWithAddress;
+  let nomineeOwner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
 
   let instance: SolidStateDiamond;
 
   let facetCuts: any[] = [];
 
   before(async function () {
-    [owner, getNomineeOwner, getNonOwner] = await ethers.getSigners();
+    [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
   });
 
   beforeEach(async function () {
@@ -39,8 +39,8 @@ describe('SolidStateDiamond', function () {
     async () => instance,
     {
       getOwner: async () => owner,
-      getNomineeOwner: async () => getNomineeOwner,
-      getNonOwner: async () => getNonOwner,
+      getNomineeOwner: async () => nomineeOwner,
+      getNonOwner: async () => nonOwner,
       facetFunction: '',
       facetFunctionArgs: [],
       facetCuts,

@@ -103,7 +103,7 @@ export function describeBehaviorOfDiamondWritable(
               contract.callStatic[fn](),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBase__NoFacetForSignature',
+              'Proxy__ImplementationIsNotContract',
             );
           }
 
@@ -356,7 +356,7 @@ export function describeBehaviorOfDiamondWritable(
               contract.callStatic[fn](),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondBase__NoFacetForSignature',
+              'Proxy__ImplementationIsNotContract',
             );
           }
         });
