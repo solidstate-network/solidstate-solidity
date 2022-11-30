@@ -25,18 +25,16 @@ abstract contract OwnableInternal is IOwnableInternal {
         return OwnableStorage.layout().owner;
     }
 
-    function _transitiveOwner() internal view virtual returns (address) {
-        address owner = _owner();
+    function _transitiveOwner() internal view virtual returns (address owner) {
+        owner = _owner();
 
         while (owner.isContract()) {
             try IERC173(owner).owner() returns (address transitiveOwner) {
                 owner = transitiveOwner;
             } catch {
-                return owner;
+                break;
             }
         }
-
-        return owner;
     }
 
     function _transferOwnership(address account) internal virtual {
