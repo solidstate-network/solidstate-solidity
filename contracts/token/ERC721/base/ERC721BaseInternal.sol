@@ -13,7 +13,6 @@ import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
  * @title Base ERC721 internal functions
  */
 abstract contract ERC721BaseInternal is IERC721BaseInternal {
-    using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -31,14 +30,16 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
         return owner;
     }
 
+    function _exists(uint256 tokenId) internal view virtual returns (bool) {
+        return ERC721BaseStorage.layout().tokenOwners.contains(tokenId);
+    }
+
     function _getApproved(
         uint256 tokenId
     ) internal view virtual returns (address) {
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
+        if (!_exists(tokenId)) revert ERC721Base__NonExistentToken();
 
-        if (!l.exists(tokenId)) revert ERC721Base__NonExistentToken();
-
-        return l.tokenApprovals[tokenId];
+        return ERC721BaseStorage.layout().tokenApprovals[tokenId];
     }
 
     function _isApprovedForAll(
@@ -52,8 +53,7 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
         address spender,
         uint256 tokenId
     ) internal view virtual returns (bool) {
-        if (!ERC721BaseStorage.layout().exists(tokenId))
-            revert ERC721Base__NonExistentToken();
+        if (!_exists(tokenId)) revert ERC721Base__NonExistentToken();
 
         address owner = _ownerOf(tokenId);
 
@@ -64,12 +64,11 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
 
     function _mint(address to, uint256 tokenId) internal virtual {
         if (to == address(0)) revert ERC721Base__MintToZeroAddress();
-
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
-
-        if (l.exists(tokenId)) revert ERC721Base__TokenAlreadyMinted();
+        if (_exists(tokenId)) revert ERC721Base__TokenAlreadyMinted();
 
         _beforeTokenTransfer(address(0), to, tokenId);
+
+        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
 
         l.holderTokens[to].add(tokenId);
         l.tokenOwners.set(tokenId, to);
