@@ -6,7 +6,7 @@ import { IOwnable, Ownable, OwnableInternal } from '../../access/ownable/Ownable
 import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
-import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
+import { DiamondBase } from './base/DiamondBase.sol';
 import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
 import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
 import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
@@ -24,7 +24,6 @@ abstract contract SolidStateDiamond is
     SafeOwnable,
     ERC165
 {
-    using DiamondBaseStorage for DiamondBaseStorage.Layout;
     using ERC165Storage for ERC165Storage.Layout;
 
     constructor() {
