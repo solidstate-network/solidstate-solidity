@@ -2,12 +2,10 @@
 
 pragma solidity ^0.8.8;
 
-import { SafeOwnable, OwnableStorage } from './SafeOwnable.sol';
+import { SafeOwnable } from './SafeOwnable.sol';
 
 contract SafeOwnableMock is SafeOwnable {
-    using OwnableStorage for OwnableStorage.Layout;
-
     constructor(address owner) {
-        OwnableStorage.layout().setOwner(owner);
+        _setOwner(owner);
     }
 }

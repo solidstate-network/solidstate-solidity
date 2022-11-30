@@ -2,12 +2,9 @@
 
 pragma solidity ^0.8.8;
 
-import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { ManagedProxy, ManagedProxyOwnable } from './ManagedProxyOwnable.sol';
 
 contract ManagedProxyOwnableMock is ManagedProxyOwnable {
-    using OwnableStorage for OwnableStorage.Layout;
-
     constructor(
         address manager,
         bytes4 managerSelector
@@ -24,11 +21,11 @@ contract ManagedProxyOwnableMock is ManagedProxyOwnable {
     }
 
     function getOwner() external view returns (address) {
-        return OwnableStorage.layout().owner;
+        return _owner();
     }
 
     function setOwner(address owner) public {
-        OwnableStorage.layout().setOwner(owner);
+        _setOwner(owner);
     }
 
     /**
