@@ -13,10 +13,9 @@ abstract contract Factory {
      * @param initCode contract initialization code
      * @return deployment address of deployed contract
      */
-    function _deploy(bytes memory initCode)
-        internal
-        returns (address deployment)
-    {
+    function _deploy(
+        bytes memory initCode
+    ) internal returns (address deployment) {
         assembly {
             let encoded_data := add(0x20, initCode)
             let encoded_size := mload(initCode)
@@ -33,10 +32,10 @@ abstract contract Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address of deployed contract
      */
-    function _deploy(bytes memory initCode, bytes32 salt)
-        internal
-        returns (address deployment)
-    {
+    function _deploy(
+        bytes memory initCode,
+        bytes32 salt
+    ) internal returns (address deployment) {
         assembly {
             let encoded_data := add(0x20, initCode)
             let encoded_size := mload(initCode)
@@ -52,11 +51,10 @@ abstract contract Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address
      */
-    function _calculateDeploymentAddress(bytes32 initCodeHash, bytes32 salt)
-        internal
-        view
-        returns (address)
-    {
+    function _calculateDeploymentAddress(
+        bytes32 initCodeHash,
+        bytes32 salt
+    ) internal view returns (address) {
         return
             address(
                 uint160(

@@ -25,11 +25,10 @@ abstract contract ERC721Enumerable is
     /**
      * @inheritdoc IERC721Enumerable
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index)
-        public
-        view
-        returns (uint256)
-    {
+    function tokenOfOwnerByIndex(
+        address owner,
+        uint256 index
+    ) public view returns (uint256) {
         return _tokenOfOwnerByIndex(owner, index);
     }
 

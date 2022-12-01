@@ -36,10 +36,10 @@ abstract contract MetamorphicFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return metamorphicContract address of deployed metamorphic implementation
      */
-    function _deployMetamorphicContract(address target, bytes32 salt)
-        internal
-        returns (address metamorphicContract)
-    {
+    function _deployMetamorphicContract(
+        address target,
+        bytes32 salt
+    ) internal returns (address metamorphicContract) {
         MetamorphicFactoryStorage.Layout storage l = MetamorphicFactoryStorage
             .layout();
         l.setMetamorphicImplementation(target);
@@ -52,11 +52,9 @@ abstract contract MetamorphicFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address
      */
-    function _calculateMetamorphicDeploymentAddress(bytes32 salt)
-        internal
-        view
-        returns (address)
-    {
+    function _calculateMetamorphicDeploymentAddress(
+        bytes32 salt
+    ) internal view returns (address) {
         return _calculateDeploymentAddress(METAMORPHIC_INIT_CODE_HASH, salt);
     }
 }

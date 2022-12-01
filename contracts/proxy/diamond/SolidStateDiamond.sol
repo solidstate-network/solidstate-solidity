@@ -7,6 +7,7 @@ import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol'
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
 import { DiamondBase, DiamondBaseStorage } from './base/DiamondBase.sol';
+import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
 import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
 import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
 import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
@@ -17,6 +18,7 @@ import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
 abstract contract SolidStateDiamond is
     ISolidStateDiamond,
     DiamondBase,
+    DiamondFallback,
     DiamondReadable,
     DiamondWritable,
     SafeOwnable,
@@ -29,41 +31,50 @@ abstract contract SolidStateDiamond is
     constructor() {
         ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
         bytes4[] memory selectors = new bytes4[](12);
+        uint256 selectorIndex;
+
+        // register DiamondFallback
+
+        selectors[selectorIndex++] = IDiamondFallback
+            .getFallbackAddress
+            .selector;
+        selectors[selectorIndex++] = IDiamondFallback
+            .setFallbackAddress
+            .selector;
+
+        erc165.setSupportedInterface(type(IDiamondFallback).interfaceId, true);
 
         // register DiamondWritable
 
-        selectors[0] = IDiamondWritable.diamondCut.selector;
+        selectors[selectorIndex++] = IDiamondWritable.diamondCut.selector;
 
         erc165.setSupportedInterface(type(IDiamondWritable).interfaceId, true);
 
         // register DiamondReadable
 
-        selectors[1] = IDiamondReadable.facets.selector;
-        selectors[2] = IDiamondReadable.facetFunctionSelectors.selector;
-        selectors[3] = IDiamondReadable.facetAddresses.selector;
-        selectors[4] = IDiamondReadable.facetAddress.selector;
+        selectors[selectorIndex++] = IDiamondReadable.facets.selector;
+        selectors[selectorIndex++] = IDiamondReadable
+            .facetFunctionSelectors
+            .selector;
+        selectors[selectorIndex++] = IDiamondReadable.facetAddresses.selector;
+        selectors[selectorIndex++] = IDiamondReadable.facetAddress.selector;
 
         erc165.setSupportedInterface(type(IDiamondReadable).interfaceId, true);
 
         // register ERC165
 
-        selectors[5] = IERC165.supportsInterface.selector;
+        selectors[selectorIndex++] = IERC165.supportsInterface.selector;
 
         erc165.setSupportedInterface(type(IERC165).interfaceId, true);
 
         // register SafeOwnable
 
-        selectors[6] = Ownable.owner.selector;
-        selectors[7] = SafeOwnable.nomineeOwner.selector;
-        selectors[8] = Ownable.transferOwnership.selector;
-        selectors[9] = SafeOwnable.acceptOwnership.selector;
+        selectors[selectorIndex++] = Ownable.owner.selector;
+        selectors[selectorIndex++] = SafeOwnable.nomineeOwner.selector;
+        selectors[selectorIndex++] = Ownable.transferOwnership.selector;
+        selectors[selectorIndex++] = SafeOwnable.acceptOwnership.selector;
 
         erc165.setSupportedInterface(type(IERC173).interfaceId, true);
-
-        // register Diamond
-
-        selectors[10] = SolidStateDiamond.getFallbackAddress.selector;
-        selectors[11] = SolidStateDiamond.setFallbackAddress.selector;
 
         // diamond cut
 
@@ -84,25 +95,21 @@ abstract contract SolidStateDiamond is
 
     receive() external payable {}
 
-    /**
-     * @inheritdoc ISolidStateDiamond
-     */
-    function getFallbackAddress() external view returns (address) {
-        return DiamondBaseStorage.layout().fallbackAddress;
-    }
-
-    /**
-     * @inheritdoc ISolidStateDiamond
-     */
-    function setFallbackAddress(address fallbackAddress) external onlyOwner {
-        DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
-    }
-
-    function _transferOwnership(address account)
-        internal
-        virtual
-        override(OwnableInternal, SafeOwnable)
-    {
+    function _transferOwnership(
+        address account
+    ) internal virtual override(OwnableInternal, SafeOwnable) {
         super._transferOwnership(account);
+    }
+
+    /**
+     * @inheritdoc DiamondFallback
+     */
+    function _getImplementation()
+        internal
+        view
+        override(DiamondBase, DiamondFallback)
+        returns (address implementation)
+    {
+        implementation = super._getImplementation();
     }
 }

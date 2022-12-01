@@ -22,12 +22,9 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
      * @param account address to query
      * @return token balance
      */
-    function _balanceOf(address account)
-        internal
-        view
-        virtual
-        returns (uint256)
-    {
+    function _balanceOf(
+        address account
+    ) internal view virtual returns (uint256) {
         return ERC20BaseStorage.layout().balances[account];
     }
 
@@ -37,12 +34,10 @@ abstract contract ERC20BaseInternal is IERC20BaseInternal {
      * @param spender recipient of allowance
      * @return token allowance
      */
-    function _allowance(address holder, address spender)
-        internal
-        view
-        virtual
-        returns (uint256)
-    {
+    function _allowance(
+        address holder,
+        address spender
+    ) internal view virtual returns (uint256) {
         return ERC20BaseStorage.layout().allowances[holder][spender];
     }
 
