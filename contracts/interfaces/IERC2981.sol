@@ -17,8 +17,8 @@ interface IERC2981 is IERC2981Internal, IERC165 {
      * @return receiever rightful recipient of royalty
      * @return royaltyAmount amount of royalty owed
      */
-    function royaltyInfo(uint256 tokenId, uint256 salePrice)
-        external
-        view
-        returns (address receiever, uint256 royaltyAmount);
+    function royaltyInfo(
+        uint256 tokenId,
+        uint256 salePrice
+    ) external view returns (address receiever, uint256 royaltyAmount);
 }

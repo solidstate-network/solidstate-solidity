@@ -23,11 +23,10 @@ contract UintUtilsMock {
         return value.toHexString();
     }
 
-    function toHexString(uint256 value, uint256 length)
-        external
-        pure
-        returns (string memory)
-    {
+    function toHexString(
+        uint256 value,
+        uint256 length
+    ) external pure returns (string memory) {
         return value.toHexString(length);
     }
 }

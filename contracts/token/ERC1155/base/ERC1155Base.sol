@@ -15,24 +15,20 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
     /**
      * @inheritdoc IERC1155
      */
-    function balanceOf(address account, uint256 id)
-        public
-        view
-        virtual
-        returns (uint256)
-    {
+    function balanceOf(
+        address account,
+        uint256 id
+    ) public view virtual returns (uint256) {
         return _balanceOf(account, id);
     }
 
     /**
      * @inheritdoc IERC1155
      */
-    function balanceOfBatch(address[] memory accounts, uint256[] memory ids)
-        public
-        view
-        virtual
-        returns (uint256[] memory)
-    {
+    function balanceOfBatch(
+        address[] memory accounts,
+        uint256[] memory ids
+    ) public view virtual returns (uint256[] memory) {
         if (accounts.length != ids.length)
             revert ERC1155Base__ArrayLengthMismatch();
 
@@ -55,12 +51,10 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
     /**
      * @inheritdoc IERC1155
      */
-    function isApprovedForAll(address account, address operator)
-        public
-        view
-        virtual
-        returns (bool)
-    {
+    function isApprovedForAll(
+        address account,
+        address operator
+    ) public view virtual returns (bool) {
         return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
     }
 

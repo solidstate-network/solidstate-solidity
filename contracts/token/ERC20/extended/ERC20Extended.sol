@@ -13,20 +13,20 @@ abstract contract ERC20Extended is IERC20Extended, ERC20ExtendedInternal {
     /**
      * @inheritdoc IERC20Extended
      */
-    function increaseAllowance(address spender, uint256 amount)
-        external
-        returns (bool)
-    {
+    function increaseAllowance(
+        address spender,
+        uint256 amount
+    ) external returns (bool) {
         return _increaseAllowance(spender, amount);
     }
 
     /**
      * @inheritdoc IERC20Extended
      */
-    function decreaseAllowance(address spender, uint256 amount)
-        external
-        returns (bool)
-    {
+    function decreaseAllowance(
+        address spender,
+        uint256 amount
+    ) external returns (bool) {
         return _decreaseAllowance(spender, amount);
     }
 }

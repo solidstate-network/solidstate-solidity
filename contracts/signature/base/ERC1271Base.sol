@@ -14,11 +14,10 @@ abstract contract ERC1271Base is IERC1271Base, ERC1271BaseInternal {
     /**
      * @inheritdoc IERC1271
      */
-    function isValidSignature(bytes32 hash, bytes memory signature)
-        external
-        view
-        returns (bytes4)
-    {
+    function isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) external view returns (bytes4) {
         return _isValidSignature(hash, signature);
     }
 }

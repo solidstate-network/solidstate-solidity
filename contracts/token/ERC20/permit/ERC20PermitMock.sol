@@ -7,8 +7,8 @@ import { ERC20MetadataStorage } from '../metadata/ERC20MetadataStorage.sol';
 import { ERC20Permit } from './ERC20Permit.sol';
 
 contract ERC20PermitMock is ERC20Permit, ERC20Base {
-    constructor(string memory name) {
-        ERC20MetadataStorage.layout().name = name;
+    constructor(string memory tokenName) {
+        ERC20MetadataStorage.layout().name = tokenName;
     }
 
     /**

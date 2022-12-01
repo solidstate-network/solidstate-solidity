@@ -56,11 +56,10 @@ library IncrementalMerkleTree {
         }
     }
 
-    function at(Tree storage t, uint256 index)
-        internal
-        view
-        returns (bytes32 hash)
-    {
+    function at(
+        Tree storage t,
+        uint256 index
+    ) internal view returns (bytes32 hash) {
         hash = t.nodes[0][index];
     }
 
@@ -132,11 +131,7 @@ library IncrementalMerkleTree {
      * @param index index to update
      * @param hash new hash to add
      */
-    function set(
-        Tree storage t,
-        uint256 index,
-        bytes32 hash
-    ) internal {
+    function set(Tree storage t, uint256 index, bytes32 hash) internal {
         _set(t.nodes, 0, index, t.size(), hash);
     }
 

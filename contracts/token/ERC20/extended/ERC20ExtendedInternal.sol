@@ -19,11 +19,10 @@ abstract contract ERC20ExtendedInternal is
      * @param amount quantity by which to increase allowance
      * @return success status (always true; otherwise function will revert)
      */
-    function _increaseAllowance(address spender, uint256 amount)
-        internal
-        virtual
-        returns (bool)
-    {
+    function _increaseAllowance(
+        address spender,
+        uint256 amount
+    ) internal virtual returns (bool) {
         uint256 allowance = _allowance(msg.sender, spender);
 
         unchecked {
@@ -40,11 +39,10 @@ abstract contract ERC20ExtendedInternal is
      * @param amount quantity by which to decrease allowance
      * @return success status (always true; otherwise function will revert)
      */
-    function _decreaseAllowance(address spender, uint256 amount)
-        internal
-        virtual
-        returns (bool)
-    {
+    function _decreaseAllowance(
+        address spender,
+        uint256 amount
+    ) internal virtual returns (bool) {
         _decreaseAllowance(msg.sender, spender, amount);
 
         return true;
