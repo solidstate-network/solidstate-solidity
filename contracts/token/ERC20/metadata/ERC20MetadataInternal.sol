@@ -32,4 +32,16 @@ abstract contract ERC20MetadataInternal is IERC20MetadataInternal {
     function _decimals() internal view virtual returns (uint8) {
         return ERC20MetadataStorage.layout().decimals;
     }
+
+    function _setName(string memory name) internal virtual {
+        ERC20MetadataStorage.layout().name = name;
+    }
+
+    function _setSymbol(string memory symbol) internal virtual {
+        ERC20MetadataStorage.layout().symbol = symbol;
+    }
+
+    function _setDecimals(uint8 decimals) internal virtual {
+        ERC20MetadataStorage.layout().decimals = decimals;
+    }
 }
