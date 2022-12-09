@@ -1,7 +1,7 @@
 [
   {
     "inputs": [],
-    "name": "ERC165Storage__InvalidInterfaceId",
+    "name": "ERC165Base__InvalidInterfaceId",
     "type": "error"
   }
 ]

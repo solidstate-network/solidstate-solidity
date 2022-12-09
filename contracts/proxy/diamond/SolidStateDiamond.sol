@@ -4,8 +4,9 @@ pragma solidity ^0.8.8;
 
 import { IOwnable, Ownable, OwnableInternal } from '../../access/ownable/Ownable.sol';
 import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
+import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC173 } from '../../interfaces/IERC173.sol';
-import { ERC165, IERC165, ERC165Storage } from '../../introspection/ERC165.sol';
+import { ERC165Base, ERC165BaseStorage } from '../../introspection/ERC165/base/ERC165Base.sol';
 import { DiamondBase } from './base/DiamondBase.sol';
 import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
 import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
@@ -22,12 +23,9 @@ abstract contract SolidStateDiamond is
     DiamondReadable,
     DiamondWritable,
     SafeOwnable,
-    ERC165
+    ERC165Base
 {
-    using ERC165Storage for ERC165Storage.Layout;
-
     constructor() {
-        ERC165Storage.Layout storage erc165 = ERC165Storage.layout();
         bytes4[] memory selectors = new bytes4[](12);
         uint256 selectorIndex;
 
@@ -40,13 +38,13 @@ abstract contract SolidStateDiamond is
             .setFallbackAddress
             .selector;
 
-        erc165.setSupportedInterface(type(IDiamondFallback).interfaceId, true);
+        _setSupportsInterface(type(IDiamondFallback).interfaceId, true);
 
         // register DiamondWritable
 
         selectors[selectorIndex++] = IDiamondWritable.diamondCut.selector;
 
-        erc165.setSupportedInterface(type(IDiamondWritable).interfaceId, true);
+        _setSupportsInterface(type(IDiamondWritable).interfaceId, true);
 
         // register DiamondReadable
 
@@ -57,13 +55,13 @@ abstract contract SolidStateDiamond is
         selectors[selectorIndex++] = IDiamondReadable.facetAddresses.selector;
         selectors[selectorIndex++] = IDiamondReadable.facetAddress.selector;
 
-        erc165.setSupportedInterface(type(IDiamondReadable).interfaceId, true);
+        _setSupportsInterface(type(IDiamondReadable).interfaceId, true);
 
         // register ERC165
 
         selectors[selectorIndex++] = IERC165.supportsInterface.selector;
 
-        erc165.setSupportedInterface(type(IERC165).interfaceId, true);
+        _setSupportsInterface(type(IERC165).interfaceId, true);
 
         // register SafeOwnable
 
@@ -72,7 +70,7 @@ abstract contract SolidStateDiamond is
         selectors[selectorIndex++] = Ownable.transferOwnership.selector;
         selectors[selectorIndex++] = SafeOwnable.acceptOwnership.selector;
 
-        erc165.setSupportedInterface(type(IERC173).interfaceId, true);
+        _setSupportsInterface(type(IERC173).interfaceId, true);
 
         // diamond cut
 
