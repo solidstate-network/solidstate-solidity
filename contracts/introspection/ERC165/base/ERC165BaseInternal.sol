@@ -10,7 +10,9 @@ import { ERC165BaseStorage } from './ERC165BaseStorage.sol';
  */
 abstract contract ERC165BaseInternal is IERC165BaseInternal {
     /**
-     * @notice TODO
+     * @notice indicates whether an interface is already supported based on the interfaceId
+     * @param interfaceId id of interface to check
+     * @return bool indicating whether interface is supported
      */
     function _supportsInterface(
         bytes4 interfaceId
@@ -19,7 +21,9 @@ abstract contract ERC165BaseInternal is IERC165BaseInternal {
     }
 
     /**
-     * @notice TODO
+     * @notice sets status of interface support
+     * @param interfaceId id of interface to set status for
+     * @param status boolean indicating whether interface will be set as supported
      */
     function _setSupportsInterface(bytes4 interfaceId, bool status) internal {
         if (interfaceId == 0xffffffff) revert ERC165Base__InvalidInterfaceId();
