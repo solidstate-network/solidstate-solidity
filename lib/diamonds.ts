@@ -4,8 +4,6 @@ import {
 } from '@solidstate/typechain-types';
 import { Contract, constants } from 'ethers';
 
-type Diamond = IDiamondReadable & IDiamondWritable;
-
 export interface Facet {
   target: string;
   selectors: string[];
@@ -55,7 +53,7 @@ export function selectorExistsInFacets(
 
 // adds unregistered selectors
 export async function addUnregisteredSelectors(
-  diamond: Diamond,
+  diamond: IDiamondReadable,
   contracts: Contract[],
   exclude: string[] = [],
 ): Promise<FacetCut[]> {
@@ -86,7 +84,7 @@ export async function addUnregisteredSelectors(
 
 // replace registered selectors
 export async function replaceRegisteredSelectors(
-  diamond: Diamond,
+  diamond: IDiamondReadable,
   contracts: Contract[],
   exclude: string[] = [],
 ): Promise<FacetCut[]> {
@@ -120,7 +118,7 @@ export async function replaceRegisteredSelectors(
 
 // removes registered selectors
 export async function removeRegisteredSelectors(
-  diamond: Diamond,
+  diamond: IDiamondReadable,
   contracts: Contract[],
   exclude: string[] = [],
 ): Promise<FacetCut[]> {
@@ -155,7 +153,7 @@ export async function removeRegisteredSelectors(
 }
 
 export async function diamondCut(
-  diamond: Diamond,
+  diamond: IDiamondWritable,
   facetCut: FacetCut[],
   target: string = constants.AddressZero,
   data: string = '0x',
