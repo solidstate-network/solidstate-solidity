@@ -25,6 +25,8 @@
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
   "dependencies": {
+    "@ethersproject/constants": "^5.7.1",
+    "@ethersproject/contracts": "^5.7.1",
     "eth-permit": "^0.1.10"
   },
   "files": [

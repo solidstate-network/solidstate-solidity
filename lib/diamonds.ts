@@ -1,8 +1,9 @@
+import { AddressZero } from '@ethersproject/constants';
+import { Contract } from '@ethersproject/contracts';
 import {
   IDiamondReadable,
   IDiamondWritable,
 } from '@solidstate/typechain-types';
-import { Contract, constants } from 'ethers';
 
 export interface Facet {
   target: string;
@@ -100,7 +101,7 @@ export async function replaceRegisteredSelectors(
 
       if (
         target != oldTarget &&
-        target != constants.AddressZero &&
+        target != AddressZero &&
         target != diamond.address &&
         selector.length > 0 &&
         selectorExistsInFacets(selector, diamondFacets) &&
@@ -132,18 +133,14 @@ export async function removeRegisteredSelectors(
       const target = diamondFacet.target;
 
       if (
-        target != constants.AddressZero &&
+        target != AddressZero &&
         target != diamond.address &&
         selector.length > 0 &&
         !selectorExistsInFacets(selector, facets) &&
         !exclude.includes(selector)
       ) {
         facetCuts.push(
-          printFacetCuts(
-            constants.AddressZero,
-            [selector],
-            FacetCutAction.Remove,
-          ),
+          printFacetCuts(AddressZero, [selector], FacetCutAction.Remove),
         );
       }
     }
@@ -155,7 +152,7 @@ export async function removeRegisteredSelectors(
 export async function diamondCut(
   diamond: IDiamondWritable,
   facetCut: FacetCut[],
-  target: string = constants.AddressZero,
+  target: string = AddressZero,
   data: string = '0x',
 ) {
   (await diamond.diamondCut(facetCut, target, data)).wait(1);
