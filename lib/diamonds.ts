@@ -9,7 +9,7 @@ export interface Facet {
   selectors: string[];
 }
 
-enum FacetCutAction {
+export enum FacetCutAction {
   Add,
   Replace,
   Remove,
