@@ -42,11 +42,10 @@ library LinkedList {
      * @param _node a node to search for
      * @return bool true if node exists, false otherwise
      */
-    function nodeExists(List storage self, uint256 _node)
-        internal
-        view
-        returns (bool)
-    {
+    function nodeExists(
+        List storage self,
+        uint256 _node
+    ) internal view returns (bool) {
         if (self.list[_node][PREV] == HEAD && self.list[_node][NEXT] == HEAD) {
             if (self.list[HEAD][NEXT] == _node) {
                 return true;
@@ -74,15 +73,10 @@ library LinkedList {
      * @param _node id of the node to get
      * @return bool, uint256, uint256 true if node exists or false otherwise, previous node, next node
      */
-    function getNode(List storage self, uint256 _node)
-        internal
-        view
-        returns (
-            bool,
-            uint256,
-            uint256
-        )
-    {
+    function getNode(
+        List storage self,
+        uint256 _node
+    ) internal view returns (bool, uint256, uint256) {
         if (!nodeExists(self, _node)) {
             return (false, 0, 0);
         } else {
@@ -116,11 +110,10 @@ library LinkedList {
      * @param _node id of the node to step from
      * @return next node (MAX_UINT if no match)
      */
-    function getNextNode(List storage self, uint256 _node)
-        internal
-        view
-        returns (uint256)
-    {
+    function getNextNode(
+        List storage self,
+        uint256 _node
+    ) internal view returns (uint256) {
         return getAdjacent(self, _node, NEXT);
     }
 
@@ -130,11 +123,10 @@ library LinkedList {
      * @param _node id of the node to step from
      * @return previous node (0 if no match)
      */
-    function getPreviousNode(List storage self, uint256 _node)
-        internal
-        view
-        returns (uint256)
-    {
+    function getPreviousNode(
+        List storage self,
+        uint256 _node
+    ) internal view returns (uint256) {
         return getAdjacent(self, _node, PREV);
     }
 
@@ -180,10 +172,10 @@ library LinkedList {
      * @param _node node to remove from the list
      * @return uint256 the removed node
      */
-    function remove(List storage self, uint256 _node)
-        internal
-        returns (uint256)
-    {
+    function remove(
+        List storage self,
+        uint256 _node
+    ) internal returns (uint256) {
         if ((_node == NULL) || (!nodeExists(self, _node))) {
             return 0;
         }
@@ -202,10 +194,10 @@ library LinkedList {
      * @param _node new entry to push to the head
      * @return bool true if success, false otherwise
      */
-    function pushFront(List storage self, uint256 _node)
-        internal
-        returns (bool)
-    {
+    function pushFront(
+        List storage self,
+        uint256 _node
+    ) internal returns (bool) {
         return _push(self, _node, NEXT);
     }
 
@@ -215,10 +207,10 @@ library LinkedList {
      * @param _node new entry to push to the tail
      * @return bool true if success, false otherwise
      */
-    function pushBack(List storage self, uint256 _node)
-        internal
-        returns (bool)
-    {
+    function pushBack(
+        List storage self,
+        uint256 _node
+    ) internal returns (bool) {
         return _push(self, _node, PREV);
     }
 
@@ -261,10 +253,10 @@ library LinkedList {
      * @param _direction pop from the head (_NEXT) or the tail (_PREV)
      * @return uint256 the removed node
      */
-    function _pop(List storage self, bool _direction)
-        private
-        returns (uint256)
-    {
+    function _pop(
+        List storage self,
+        bool _direction
+    ) private returns (uint256) {
         uint256 adj = getAdjacent(self, HEAD, _direction);
         return remove(self, adj);
     }
