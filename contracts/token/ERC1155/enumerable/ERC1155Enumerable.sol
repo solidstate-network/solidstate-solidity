@@ -34,24 +34,18 @@ abstract contract ERC1155Enumerable is
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function accountsByToken(uint256 id)
-        public
-        view
-        virtual
-        returns (address[] memory)
-    {
+    function accountsByToken(
+        uint256 id
+    ) public view virtual returns (address[] memory) {
         return _accountsByToken(id);
     }
 
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function tokensByAccount(address account)
-        public
-        view
-        virtual
-        returns (uint256[] memory)
-    {
+    function tokensByAccount(
+        address account
+    ) public view virtual returns (uint256[] memory) {
         return _tokensByAccount(account);
     }
 }

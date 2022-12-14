@@ -27,18 +27,16 @@ interface IERC1155Enumerable is IERC1155BaseInternal {
      * @param id token id to query
      * @return list of holder addresses
      */
-    function accountsByToken(uint256 id)
-        external
-        view
-        returns (address[] memory);
+    function accountsByToken(
+        uint256 id
+    ) external view returns (address[] memory);
 
     /**
      * @notice query tokens held by given address
      * @param account address to query
      * @return list of token ids
      */
-    function tokensByAccount(address account)
-        external
-        view
-        returns (uint256[] memory);
+    function tokensByAccount(
+        address account
+    ) external view returns (uint256[] memory);
 }

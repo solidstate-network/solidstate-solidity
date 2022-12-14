@@ -7,9 +7,10 @@ import { ManagedProxy } from './ManagedProxy.sol';
 contract ManagedProxyMock is ManagedProxy {
     address private _manager;
 
-    constructor(address manager, bytes4 managerSelector)
-        ManagedProxy(managerSelector)
-    {
+    constructor(
+        address manager,
+        bytes4 managerSelector
+    ) ManagedProxy(managerSelector) {
         setManager(manager);
     }
 

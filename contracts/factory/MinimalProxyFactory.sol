@@ -19,10 +19,9 @@ abstract contract MinimalProxyFactory is Factory {
      * @param target implementation contract to proxy
      * @return minimalProxy address of deployed proxy
      */
-    function _deployMinimalProxy(address target)
-        internal
-        returns (address minimalProxy)
-    {
+    function _deployMinimalProxy(
+        address target
+    ) internal returns (address minimalProxy) {
         return _deploy(_generateMinimalProxyInitCode(target));
     }
 
@@ -33,10 +32,10 @@ abstract contract MinimalProxyFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return minimalProxy address of deployed proxy
      */
-    function _deployMinimalProxy(address target, bytes32 salt)
-        internal
-        returns (address minimalProxy)
-    {
+    function _deployMinimalProxy(
+        address target,
+        bytes32 salt
+    ) internal returns (address minimalProxy) {
         return _deploy(_generateMinimalProxyInitCode(target), salt);
     }
 
@@ -62,11 +61,9 @@ abstract contract MinimalProxyFactory is Factory {
      * @param target implementation contract to proxy
      * @return bytes memory initialization code
      */
-    function _generateMinimalProxyInitCode(address target)
-        internal
-        pure
-        returns (bytes memory)
-    {
+    function _generateMinimalProxyInitCode(
+        address target
+    ) internal pure returns (bytes memory) {
         return
             abi.encodePacked(
                 MINIMAL_PROXY_INIT_CODE_PREFIX,

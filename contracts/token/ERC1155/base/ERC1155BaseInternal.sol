@@ -20,12 +20,10 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
      * @param id token to query
      * @return token balance
      */
-    function _balanceOf(address account, uint256 id)
-        internal
-        view
-        virtual
-        returns (uint256)
-    {
+    function _balanceOf(
+        address account,
+        uint256 id
+    ) internal view virtual returns (uint256) {
         if (account == address(0))
             revert ERC1155Base__BalanceQueryZeroAddress();
         return ERC1155BaseStorage.layout().balances[id][account];
@@ -376,11 +374,9 @@ abstract contract ERC1155BaseInternal is IERC1155BaseInternal {
      * @param element element to wrap
      * @return singleton array
      */
-    function _asSingletonArray(uint256 element)
-        private
-        pure
-        returns (uint256[] memory)
-    {
+    function _asSingletonArray(
+        uint256 element
+    ) private pure returns (uint256[] memory) {
         uint256[] memory array = new uint256[](1);
         array[0] = element;
         return array;

@@ -9,13 +9,10 @@ import { ERC1271StoredStorage } from './ERC1271StoredStorage.sol';
  * @title ERC1271Stored internal functions
  */
 abstract contract ERC1271StoredInternal is ERC1271BaseInternal {
-    function _isValidSignature(bytes32 hash, bytes memory)
-        internal
-        view
-        virtual
-        override
-        returns (bytes4 magicValue)
-    {
+    function _isValidSignature(
+        bytes32 hash,
+        bytes memory
+    ) internal view virtual override returns (bytes4 magicValue) {
         return
             ERC1271StoredStorage.layout().hashes[hash]
                 ? MAGIC_VALUE
