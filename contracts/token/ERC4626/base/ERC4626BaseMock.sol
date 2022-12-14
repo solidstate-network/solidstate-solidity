@@ -7,8 +7,6 @@ import { ERC4626Base } from './ERC4626Base.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 contract ERC4626BaseMock is ERC4626Base {
-    using ERC4626BaseStorage for ERC4626BaseStorage.Layout;
-
     event AfterDepositCheck(
         address receiver,
         uint256 assetAmount,

@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.8;
 
-import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
-import { ECDSA } from '../../cryptography/ECDSA.sol';
 import { ERC1271Base } from '../base/ERC1271Base.sol';
 import { IERC1271Ownable } from './IERC1271Ownable.sol';
 import { ERC1271OwnableInternal } from './ERC1271OwnableInternal.sol';
