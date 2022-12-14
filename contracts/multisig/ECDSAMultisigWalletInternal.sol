@@ -14,7 +14,6 @@ import { ECDSAMultisigWalletStorage } from './ECDSAMultisigWalletStorage.sol';
 abstract contract ECDSAMultisigWalletInternal is IECDSAMultisigWalletInternal {
     using ECDSA for bytes32;
     using EnumerableSet for EnumerableSet.AddressSet;
-    using ECDSAMultisigWalletStorage for ECDSAMultisigWalletStorage.Layout;
 
     function _isInvalidNonce(
         address account,

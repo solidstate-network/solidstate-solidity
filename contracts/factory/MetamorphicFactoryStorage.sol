@@ -16,11 +16,4 @@ library MetamorphicFactoryStorage {
             l.slot := slot
         }
     }
-
-    function setMetamorphicImplementation(
-        Layout storage l,
-        address metamorphicImplementation
-    ) internal {
-        l.metamorphicImplementation = metamorphicImplementation;
-    }
 }
