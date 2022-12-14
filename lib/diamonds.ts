@@ -62,6 +62,8 @@ export async function addUnregisteredSelectors(
 ): Promise<FacetCut[]> {
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
+
+  let selectorsAdded = false;
   let facetCuts: FacetCut[] = [];
 
   // if facet selector is unregistered then it should be added to the diamond.
@@ -78,8 +80,14 @@ export async function addUnregisteredSelectors(
         facetCuts.push(
           printFacetCuts(facet.target, [selector], FacetCutAction.Add),
         );
+
+        selectorsAdded = true;
       }
     }
+  }
+
+  if (!selectorsAdded) {
+    throw new Error('No selectors were added to FacetCut');
   }
 
   return groupFacetCuts(facetCuts);
@@ -93,6 +101,8 @@ export async function replaceRegisteredSelectors(
 ): Promise<FacetCut[]> {
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
+
+  let selectorsReplaced = false;
   let facetCuts: FacetCut[] = [];
 
   // if a facet selector is registered with a different target address, the target will be replaced
@@ -112,8 +122,14 @@ export async function replaceRegisteredSelectors(
         facetCuts.push(
           printFacetCuts(target, [selector], FacetCutAction.Replace),
         );
+
+        selectorsReplaced = true;
       }
     }
+  }
+
+  if (!selectorsReplaced) {
+    throw new Error('No selectors were replaced in FacetCut');
   }
 
   return groupFacetCuts(facetCuts);
@@ -127,6 +143,8 @@ export async function removeRegisteredSelectors(
 ): Promise<FacetCut[]> {
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
+
+  let selectorsRemoved = false;
   let facetCuts: FacetCut[] = [];
 
   // if a registered selector is not found in the facets then it should be removed from the diamond
@@ -144,8 +162,14 @@ export async function removeRegisteredSelectors(
         facetCuts.push(
           printFacetCuts(AddressZero, [selector], FacetCutAction.Remove),
         );
+
+        selectorsRemoved = true;
       }
     }
+  }
+
+  if (!selectorsRemoved) {
+    throw new Error('No selectors were removed from FacetCut');
   }
 
   return groupFacetCuts(facetCuts);
