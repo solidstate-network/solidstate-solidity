@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.8;
 
-library OwnableStorage {
+library ERC165BaseStorage {
     struct Layout {
-        address owner;
+        mapping(bytes4 => bool) supportedInterfaces;
     }
 
     bytes32 internal constant STORAGE_SLOT =
-        keccak256('solidstate.contracts.storage.Ownable');
+        keccak256('solidstate.contracts.storage.ERC165Base');
 
     function layout() internal pure returns (Layout storage l) {
         bytes32 slot = STORAGE_SLOT;

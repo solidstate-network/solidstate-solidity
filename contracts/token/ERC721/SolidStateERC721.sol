@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import { ERC165 } from '../../introspection/ERC165.sol';
+import { ERC165Base } from '../../introspection/ERC165/base/ERC165Base.sol';
 import { ERC721Base, ERC721BaseInternal } from './base/ERC721Base.sol';
 import { ERC721Enumerable } from './enumerable/ERC721Enumerable.sol';
 import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
@@ -16,7 +16,7 @@ abstract contract SolidStateERC721 is
     ERC721Base,
     ERC721Enumerable,
     ERC721Metadata,
-    ERC165
+    ERC165Base
 {
     /**
      * @notice ERC721 hook: revert if value is included in external approve function call

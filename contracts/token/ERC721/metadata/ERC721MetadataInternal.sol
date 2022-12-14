@@ -16,7 +16,6 @@ abstract contract ERC721MetadataInternal is
     IERC721MetadataInternal,
     ERC721BaseInternal
 {
-    using ERC721BaseStorage for ERC721BaseStorage.Layout;
     using UintUtils for uint256;
 
     /**
@@ -42,8 +41,7 @@ abstract contract ERC721MetadataInternal is
     function _tokenURI(
         uint256 tokenId
     ) internal view virtual returns (string memory) {
-        if (!ERC721BaseStorage.layout().exists(tokenId))
-            revert ERC721Metadata__NonExistentToken();
+        if (!_exists(tokenId)) revert ERC721Metadata__NonExistentToken();
 
         ERC721MetadataStorage.Layout storage l = ERC721MetadataStorage.layout();
 

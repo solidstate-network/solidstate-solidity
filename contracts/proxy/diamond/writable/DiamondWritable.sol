@@ -3,7 +3,6 @@
 pragma solidity ^0.8.8;
 
 import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
-import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondWritable } from './IDiamondWritable.sol';
 import { DiamondWritableInternal } from './DiamondWritableInternal.sol';
 
@@ -15,8 +14,6 @@ abstract contract DiamondWritable is
     DiamondWritableInternal,
     OwnableInternal
 {
-    using DiamondBaseStorage for DiamondBaseStorage.Layout;
-
     /**
      * @inheritdoc IDiamondWritable
      */
