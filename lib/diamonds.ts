@@ -216,10 +216,7 @@ export function printFacetCuts(
 }
 
 // generates table of diamond and facet selectors
-export async function printDiamond(
-  diamond: IDiamondReadable,
-  contracts: Contract[],
-) {
+async function printDiamond(diamond: IDiamondReadable, contracts: Contract[]) {
   const padding = 2;
 
   const table = new Table({
