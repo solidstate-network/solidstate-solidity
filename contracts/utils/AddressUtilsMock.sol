@@ -20,10 +20,10 @@ contract AddressUtilsMock {
         account.sendValue(amount);
     }
 
-    function functionCall(address target, bytes memory data)
-        external
-        returns (bytes memory)
-    {
+    function functionCall(
+        address target,
+        bytes memory data
+    ) external returns (bytes memory) {
         return target.functionCall(data);
     }
 

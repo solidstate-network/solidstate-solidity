@@ -47,11 +47,9 @@ abstract contract ERC20SnapshotInternal is ERC20BaseInternal {
         }
     }
 
-    function _lastSnapshotId(uint256[] storage ids)
-        private
-        view
-        returns (uint256)
-    {
+    function _lastSnapshotId(
+        uint256[] storage ids
+    ) private view returns (uint256) {
         return ids.length == 0 ? 0 : ids[ids.length - 1];
     }
 

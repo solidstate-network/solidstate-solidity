@@ -10,8 +10,6 @@ import { UpgradeableProxyStorage } from './UpgradeableProxyStorage.sol';
  * @title Proxy with upgradeable implementation
  */
 abstract contract UpgradeableProxy is IUpgradeableProxy, Proxy {
-    using UpgradeableProxyStorage for UpgradeableProxyStorage.Layout;
-
     /**
      * @inheritdoc Proxy
      */
@@ -31,6 +29,6 @@ abstract contract UpgradeableProxy is IUpgradeableProxy, Proxy {
      * @param implementation implementation address
      */
     function _setImplementation(address implementation) internal {
-        UpgradeableProxyStorage.layout().setImplementation(implementation);
+        UpgradeableProxyStorage.layout().implementation = implementation;
     }
 }

@@ -16,10 +16,4 @@ library UpgradeableProxyStorage {
             l.slot := slot
         }
     }
-
-    function setImplementation(Layout storage l, address implementation)
-        internal
-    {
-        l.implementation = implementation;
-    }
 }

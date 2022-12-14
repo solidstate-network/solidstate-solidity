@@ -8,8 +8,6 @@ import { PausableStorage } from './PausableStorage.sol';
  * @title Internal functions for Pausable security control module.
  */
 abstract contract PausableInternal {
-    using PausableStorage for PausableStorage.Layout;
-
     error Pausable__Paused();
     error Pausable__NotPaused();
 

@@ -26,11 +26,9 @@ abstract contract ERC1404Base is IERC1404Base, ERC1404BaseInternal, ERC20Base {
      * @dev this implementation reads restriction messages from storage
      * @inheritdoc IERC1404
      */
-    function messageForTransferRestriction(uint8 restrictionCode)
-        public
-        view
-        returns (string memory)
-    {
+    function messageForTransferRestriction(
+        uint8 restrictionCode
+    ) public view returns (string memory) {
         return _messageForTransferRestriction(restrictionCode);
     }
 

@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes4",

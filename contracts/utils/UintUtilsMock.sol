@@ -15,11 +15,10 @@ contract UintUtilsMock {
         return a.sub(b);
     }
 
-    function toString(uint256 number, uint256 base)
-        external
-        pure
-        returns (string memory)
-    {
+    function toString(
+        uint256 number,
+        uint256 base
+    ) external pure returns (string memory) {
         return number.toString(base);
     }
 
@@ -35,11 +34,10 @@ contract UintUtilsMock {
         return number.toBinString();
     }
 
-    function toBinString(uint256 number, uint256 length)
-        external
-        pure
-        returns (string memory)
-    {
+    function toBinString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
         return number.toBinString(length);
     }
 
@@ -47,11 +45,10 @@ contract UintUtilsMock {
         return number.toDecString();
     }
 
-    function toDecString(uint256 number, uint256 length)
-        external
-        pure
-        returns (string memory)
-    {
+    function toDecString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
         return number.toDecString(length);
     }
 
@@ -59,11 +56,10 @@ contract UintUtilsMock {
         return value.toHexString();
     }
 
-    function toHexString(uint256 value, uint256 length)
-        external
-        pure
-        returns (string memory)
-    {
+    function toHexString(
+        uint256 value,
+        uint256 length
+    ) external pure returns (string memory) {
         return value.toHexString(length);
     }
 }

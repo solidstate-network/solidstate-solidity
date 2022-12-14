@@ -16,11 +16,7 @@ library SafeERC20 {
     error SafeERC20__DecreaseAllowanceBelowZero();
     error SafeERC20__OperationFailed();
 
-    function safeTransfer(
-        IERC20 token,
-        address to,
-        uint256 value
-    ) internal {
+    function safeTransfer(IERC20 token, address to, uint256 value) internal {
         _callOptionalReturn(
             token,
             abi.encodeWithSelector(token.transfer.selector, to, value)

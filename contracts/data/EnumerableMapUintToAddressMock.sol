@@ -36,16 +36,16 @@ contract EnumerableMapUintToAddressMock {
     function toArray()
         external
         view
-        returns (uint256[] memory keys, address[] memory values)
+        returns (uint256[] memory keysOut, address[] memory valuesOut)
     {
-        (keys, values) = map.toArray();
+        (keysOut, valuesOut) = map.toArray();
     }
 
-    function keys() external view returns (uint256[] memory keys) {
-        keys = map.keys();
+    function keys() external view returns (uint256[] memory keysOut) {
+        keysOut = map.keys();
     }
 
-    function values() external view returns (address[] memory values) {
-        values = map.values();
+    function values() external view returns (address[] memory valuesOut) {
+        valuesOut = map.values();
     }
 }
