@@ -20,11 +20,10 @@ library UintUtils {
         return b < 0 ? add(a, -b) : a - uint256(b);
     }
 
-    function toString(uint256 value, uint256 base)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toString(
+        uint256 value,
+        uint256 base
+    ) internal pure returns (string memory) {
         if (base < 2) {
             revert UintUtils__InvalidBase();
         }
@@ -85,11 +84,10 @@ library UintUtils {
         return toString(value, 2);
     }
 
-    function toBinString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toBinString(
+        uint256 value,
+        uint256 length
+    ) internal pure returns (string memory) {
         return toString(value, 2, length);
     }
 
@@ -97,11 +95,10 @@ library UintUtils {
         return toString(value, 10);
     }
 
-    function toDecString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toDecString(
+        uint256 value,
+        uint256 length
+    ) internal pure returns (string memory) {
         return toString(value, 10, length);
     }
 
@@ -121,11 +118,10 @@ library UintUtils {
         return toHexString(value, length);
     }
 
-    function toHexString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toHexString(
+        uint256 value,
+        uint256 length
+    ) internal pure returns (string memory) {
         // add two to length for the leading "0x"
         length += 2;
 

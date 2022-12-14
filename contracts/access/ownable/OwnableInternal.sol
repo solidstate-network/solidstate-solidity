@@ -9,7 +9,6 @@ import { OwnableStorage } from './OwnableStorage.sol';
 
 abstract contract OwnableInternal is IOwnableInternal {
     using AddressUtils for address;
-    using OwnableStorage for OwnableStorage.Layout;
 
     modifier onlyOwner() {
         if (msg.sender != _owner()) revert Ownable__NotOwner();
@@ -26,22 +25,25 @@ abstract contract OwnableInternal is IOwnableInternal {
         return OwnableStorage.layout().owner;
     }
 
-    function _transitiveOwner() internal view virtual returns (address) {
-        address owner = _owner();
+    function _transitiveOwner() internal view virtual returns (address owner) {
+        owner = _owner();
 
         while (owner.isContract()) {
             try IERC173(owner).owner() returns (address transitiveOwner) {
                 owner = transitiveOwner;
             } catch {
-                return owner;
+                break;
             }
         }
-
-        return owner;
     }
 
     function _transferOwnership(address account) internal virtual {
-        OwnableStorage.layout().setOwner(account);
-        emit OwnershipTransferred(msg.sender, account);
+        _setOwner(account);
+    }
+
+    function _setOwner(address account) internal virtual {
+        OwnableStorage.Layout storage l = OwnableStorage.layout();
+        emit OwnershipTransferred(l.owner, account);
+        l.owner = account;
     }
 }

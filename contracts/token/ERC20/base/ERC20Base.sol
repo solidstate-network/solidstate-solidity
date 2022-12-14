@@ -28,34 +28,30 @@ abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
     /**
      * @inheritdoc IERC20
      */
-    function allowance(address holder, address spender)
-        public
-        view
-        virtual
-        returns (uint256)
-    {
+    function allowance(
+        address holder,
+        address spender
+    ) public view virtual returns (uint256) {
         return _allowance(holder, spender);
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function approve(address spender, uint256 amount)
-        public
-        virtual
-        returns (bool)
-    {
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual returns (bool) {
         return _approve(msg.sender, spender, amount);
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function transfer(address recipient, uint256 amount)
-        public
-        virtual
-        returns (bool)
-    {
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) public virtual returns (bool) {
         return _transfer(msg.sender, recipient, amount);
     }
 

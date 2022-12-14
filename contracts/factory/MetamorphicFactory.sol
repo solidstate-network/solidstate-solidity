@@ -10,8 +10,6 @@ import { MetamorphicFactoryStorage } from './MetamorphicFactoryStorage.sol';
  * @dev derived from https://github.com/0age/metamorphic (MIT license)
  */
 abstract contract MetamorphicFactory is Factory {
-    using MetamorphicFactoryStorage for MetamorphicFactoryStorage.Layout;
-
     bytes private constant METAMORPHIC_INIT_CODE =
         hex'5860208158601c335a63_9c223603_8752fa158151803b80938091923cf3';
     bytes32 private constant METAMORPHIC_INIT_CODE_HASH =
@@ -36,15 +34,13 @@ abstract contract MetamorphicFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return metamorphicContract address of deployed metamorphic implementation
      */
-    function _deployMetamorphicContract(address target, bytes32 salt)
-        internal
-        returns (address metamorphicContract)
-    {
-        MetamorphicFactoryStorage.Layout storage l = MetamorphicFactoryStorage
-            .layout();
-        l.setMetamorphicImplementation(target);
+    function _deployMetamorphicContract(
+        address target,
+        bytes32 salt
+    ) internal returns (address metamorphicContract) {
+        _setMetamorphicImplementation(target);
         metamorphicContract = _deploy(METAMORPHIC_INIT_CODE, salt);
-        l.setMetamorphicImplementation(address(0));
+        _setMetamorphicImplementation(address(0));
     }
 
     /**
@@ -52,11 +48,17 @@ abstract contract MetamorphicFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address
      */
-    function _calculateMetamorphicDeploymentAddress(bytes32 salt)
-        internal
-        view
-        returns (address)
-    {
+    function _calculateMetamorphicDeploymentAddress(
+        bytes32 salt
+    ) internal view returns (address) {
         return _calculateDeploymentAddress(METAMORPHIC_INIT_CODE_HASH, salt);
+    }
+
+    function _setMetamorphicImplementation(
+        address metamorphicImplementation
+    ) private {
+        MetamorphicFactoryStorage
+            .layout()
+            .metamorphicImplementation = metamorphicImplementation;
     }
 }

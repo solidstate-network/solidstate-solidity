@@ -9,8 +9,8 @@ interface IERC1271 {
      * @param signature signed hash
      * @return magicValue ERC1271 magic value or null bytes
      */
-    function isValidSignature(bytes32 hash, bytes memory signature)
-        external
-        view
-        returns (bytes4 magicValue);
+    function isValidSignature(
+        bytes32 hash,
+        bytes memory signature
+    ) external view returns (bytes4 magicValue);
 }

@@ -14,9 +14,10 @@ interface IERC20Extended is IERC20ExtendedInternal {
      * @param amount quantity by which to increase allowance
      * @return success status (always true; otherwise function will revert)
      */
-    function increaseAllowance(address spender, uint256 amount)
-        external
-        returns (bool);
+    function increaseAllowance(
+        address spender,
+        uint256 amount
+    ) external returns (bool);
 
     /**
      * @notice decrease spend amount granted to spender
@@ -24,7 +25,8 @@ interface IERC20Extended is IERC20ExtendedInternal {
      * @param amount quantity by which to decrease allowance
      * @return success status (always true; otherwise function will revert)
      */
-    function decreaseAllowance(address spender, uint256 amount)
-        external
-        returns (bool);
+    function decreaseAllowance(
+        address spender,
+        uint256 amount
+    ) external returns (bool);
 }

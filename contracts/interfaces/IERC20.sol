@@ -28,10 +28,10 @@ interface IERC20 is IERC20Internal {
      * @param spender recipient of allowance
      * @return token allowance
      */
-    function allowance(address holder, address spender)
-        external
-        view
-        returns (uint256);
+    function allowance(
+        address holder,
+        address spender
+    ) external view returns (uint256);
 
     /**
      * @notice grant approval to spender to spend tokens
@@ -48,9 +48,10 @@ interface IERC20 is IERC20Internal {
      * @param amount quantity of tokens to transfer
      * @return success status (always true; otherwise function should revert)
      */
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool);
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
 
     /**
      * @notice transfer tokens to given recipient on behalf of given holder

@@ -13,13 +13,10 @@ abstract contract ERC20ImplicitApprovalInternal is ERC20BaseInternal {
      * @inheritdoc ERC20BaseInternal
      * @dev internally stored allowance is ignored for implicitly approved spenders
      */
-    function _allowance(address holder, address spender)
-        internal
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function _allowance(
+        address holder,
+        address spender
+    ) internal view virtual override returns (uint256) {
         if (_isImplicitlyApproved(spender)) {
             return type(uint256).max;
         } else {
@@ -49,12 +46,9 @@ abstract contract ERC20ImplicitApprovalInternal is ERC20BaseInternal {
      * @param account address to query
      * @return implicit approval status
      */
-    function _isImplicitlyApproved(address account)
-        internal
-        view
-        virtual
-        returns (bool)
-    {
+    function _isImplicitlyApproved(
+        address account
+    ) internal view virtual returns (bool) {
         return ERC20ImplicitApprovalStorage.layout().implicitApprovals[account];
     }
 }

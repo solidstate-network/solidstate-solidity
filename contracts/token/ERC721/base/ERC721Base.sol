@@ -43,11 +43,10 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function isApprovedForAll(address account, address operator)
-        public
-        view
-        returns (bool)
-    {
+    function isApprovedForAll(
+        address account,
+        address operator
+    ) public view returns (bool) {
         return _isApprovedForAll(account, operator);
     }
 
