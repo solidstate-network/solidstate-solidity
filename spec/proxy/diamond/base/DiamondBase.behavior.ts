@@ -39,7 +39,7 @@ export function describeBehaviorOfDiamondBase(
       it('forwards data without matching selector to fallback contract');
 
       describe('reverts if', function () {
-        it('no selector matches data and fallback contract is not defined', async function () {
+        it('no selector matches data', async function () {
           let contract = new ethers.Contract(
             instance.address,
             ['function function()'],
@@ -50,7 +50,7 @@ export function describeBehaviorOfDiamondBase(
             contract.callStatic['function()'](),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBase__NoFacetForSignature',
+            'Proxy__ImplementationIsNotContract',
           );
         });
       });

@@ -14,8 +14,6 @@ abstract contract ERC1404BaseInternal is
     IERC1404BaseInternal,
     ERC20BaseInternal
 {
-    using ERC1404BaseStorage for ERC1404BaseStorage.Layout;
-
     function _setRestrictions(
         uint8[] memory restrictionCodes,
         string[] memory restrictionMessages

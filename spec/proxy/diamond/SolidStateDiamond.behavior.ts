@@ -2,14 +2,15 @@ import {
   describeBehaviorOfSafeOwnable,
   SafeOwnableBehaviorArgs,
 } from '../../access';
-import {
-  describeBehaviorOfERC165,
-  ERC165BehaviorArgs,
-} from '../../introspection';
+import { describeBehaviorOfERC165Base } from '../../introspection';
 import {
   describeBehaviorOfDiamondBase,
   DiamondBaseBehaviorArgs,
 } from './base/DiamondBase.behavior';
+import {
+  describeBehaviorOfDiamondFallback,
+  DiamondFallbackBehaviorArgs,
+} from './fallback/DiamondFallback.behavior';
 import {
   describeBehaviorOfDiamondReadable,
   DiamondReadableBehaviorArgs,
@@ -30,23 +31,14 @@ import { ethers } from 'hardhat';
 
 export interface SolidStateDiamondBehaviorArgs
   extends DiamondBaseBehaviorArgs,
+    DiamondFallbackBehaviorArgs,
     DiamondReadableBehaviorArgs,
     DiamondWritableBehaviorArgs,
-    SafeOwnableBehaviorArgs {
-  fallbackAddress: string;
-}
+    SafeOwnableBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateDiamond(
   deploy: () => Promise<ISolidStateDiamond>,
-  {
-    getOwner,
-    getNomineeOwner,
-    getNonOwner,
-    facetFunction,
-    facetFunctionArgs,
-    facetCuts,
-    fallbackAddress,
-  }: SolidStateDiamondBehaviorArgs,
+  args: SolidStateDiamondBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -58,42 +50,27 @@ export function describeBehaviorOfSolidStateDiamond(
     let instance: ISolidStateDiamond;
 
     before(async function () {
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
     beforeEach(async function () {
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondBase(
-      deploy,
-      {
-        facetFunction,
-        facetFunctionArgs,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondBase(deploy, args, skips);
 
-    describeBehaviorOfDiamondReadable(
-      deploy,
-      {
-        facetCuts,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondFallback(deploy, args, [
+      '::DiamondBase',
+      ...(skips ?? []),
+    ]);
 
-    describeBehaviorOfDiamondWritable(
-      deploy,
-      {
-        getOwner,
-        getNonOwner,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondReadable(deploy, args, skips);
+
+    describeBehaviorOfDiamondWritable(deploy, args, skips);
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165(
+    describeBehaviorOfERC165Base(
       deploy as any,
       {
         interfaceIds: ['0x7f5828d0'],
@@ -101,15 +78,7 @@ export function describeBehaviorOfSolidStateDiamond(
       skips,
     );
 
-    describeBehaviorOfSafeOwnable(
-      deploy,
-      {
-        getOwner,
-        getNomineeOwner,
-        getNonOwner,
-      },
-      skips,
-    );
+    describeBehaviorOfSafeOwnable(deploy, args, skips);
 
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
@@ -119,46 +88,6 @@ export function describeBehaviorOfSolidStateDiamond(
         await expect(() =>
           signer.sendTransaction({ to: instance.address, value }),
         ).to.changeEtherBalance(instance, value);
-      });
-    });
-
-    describe('#getFallbackAddress()', function () {
-      it('returns the fallback address', async function () {
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
-          fallbackAddress,
-        );
-      });
-    });
-
-    describe('#setFallbackAddress(address)', function () {
-      it('updates the fallback address', async function () {
-        const fallback = await deployMockContract(owner, []);
-
-        await instance
-          .connect(owner)
-          ['setFallbackAddress(address)'](fallback.address);
-
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
-          fallback.address,
-        );
-
-        // call reverts, but with mock-specific message
-        await expect(
-          owner.sendTransaction({
-            to: instance.address,
-            data: ethers.utils.randomBytes(4),
-          }),
-        ).to.be.revertedWith('Mock on the method is not initialized');
-      });
-
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
-          await expect(
-            instance
-              .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
-          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
-        });
       });
     });
 
@@ -203,7 +132,7 @@ export function describeBehaviorOfSolidStateDiamond(
           ).to.be.revertedWith('Mock on the method is not initialized');
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members([
-            ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+            ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
@@ -262,12 +191,12 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBase__NoFacetForSignature',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
@@ -327,12 +256,12 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBase__NoFacetForSignature',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
@@ -392,12 +321,12 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBase__NoFacetForSignature',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );

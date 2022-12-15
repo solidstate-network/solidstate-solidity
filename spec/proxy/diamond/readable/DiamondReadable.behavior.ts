@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC165 } from '../../../introspection';
+import { describeBehaviorOfERC165Base } from '../../../introspection';
 import { describeFilter } from '@solidstate/library';
 import { IDiamondReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -24,7 +24,7 @@ export function describeBehaviorOfDiamondReadable(
     });
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165(
+    describeBehaviorOfERC165Base(
       deploy as any,
       {
         interfaceIds: ['0x48e2b093'],
