@@ -236,6 +236,57 @@ export async function removeRegisteredSelectors(
   return groupFacetCuts(facetCuts);
 }
 
+// previews the facet cuts
+export async function previewFacetCut(
+  diamond: IDiamondReadable,
+  contracts: Contract[],
+  only: FacetFilter[][] = [[], [], []],
+  exclude: FacetFilter[][] = [[], [], []],
+): Promise<FacetCut[]> {
+  let addFacetCuts: FacetCut[] = [];
+  let replaceFacetCuts: FacetCut[] = [];
+  let removeFacetCuts: FacetCut[] = [];
+
+  try {
+    addFacetCuts = await addUnregisteredSelectors(
+      diamond,
+      contracts,
+      only[0],
+      exclude[0],
+    );
+  } catch (error) {
+    console.log(`WARNING: ${(error as Error).message}`);
+  }
+
+  try {
+    replaceFacetCuts = await replaceRegisteredSelectors(
+      diamond,
+      contracts,
+      only[1],
+      exclude[1],
+    );
+  } catch (error) {
+    console.log(`WARNING: ${(error as Error).message}`);
+  }
+
+  try {
+    removeFacetCuts = await removeRegisteredSelectors(
+      diamond,
+      contracts,
+      only[2],
+      exclude[2],
+    );
+  } catch (error) {
+    console.log(`WARNING: ${(error as Error).message}`);
+  }
+
+  return groupFacetCuts([
+    ...addFacetCuts,
+    ...replaceFacetCuts,
+    ...removeFacetCuts,
+  ]);
+}
+
 export async function diamondCut(
   diamond: IDiamondWritable,
   facetCut: FacetCut[],
