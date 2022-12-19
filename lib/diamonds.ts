@@ -50,16 +50,71 @@ export function selectorExistsInFacets(
   for (const facet of facets) {
     if (facet.selectors.includes(selector)) return true;
   }
+  return false;
+}
+
+interface FacetFilter {
+  contract: string;
+  selectors: string[];
+}
+
+function selectorIsFiltered(
+  only: FacetFilter[],
+  exclude: FacetFilter[],
+  contract: string,
+  selector: string,
+): boolean {
+  if (only.length > 0) {
+    // include selectors found in only, exclude all others
+    return isFiltered(only, contract, selector);
+  }
+
+  if (exclude.length > 0) {
+    // exclude selectors found in exclude, include all others
+    return !isFiltered(exclude, contract, selector);
+  }
+
+  // if neither only or exclude are used, then include all selectors
+  return true;
+}
+
+function isFiltered(
+  filters: FacetFilter[],
+  contract: string,
+  selector: string,
+): boolean {
+  for (const filter of filters) {
+    if (filter.contract === contract || AddressZero === contract) {
+      return filter.selectors.includes(selector);
+    }
+  }
 
   return false;
+}
+
+function validateFilters(only: FacetFilter[], exclude: FacetFilter[]) {
+  if (only.length > 0 && exclude.length > 0) {
+    for (const onlyFilter of only) {
+      for (const excludeFilter of exclude) {
+        if (onlyFilter.contract === excludeFilter.contract) {
+          throw new Error(
+            'only and exclude filters cannot contain the same contract',
+          );
+        }
+      }
+    }
+  }
 }
 
 // adds unregistered selectors
 export async function addUnregisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  exclude: string[] = [],
+  only: FacetFilter[] = [],
+  exclude: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  validateFilters(only, exclude);
+
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
 
@@ -75,7 +130,7 @@ export async function addUnregisteredSelectors(
         target !== diamond.address &&
         selector.length > 0 &&
         !selectorExistsInFacets(selector, diamondFacets) &&
-        !exclude.includes(selector)
+        selectorIsFiltered(only, exclude, target, selector)
       ) {
         facetCuts.push(
           printFacetCuts(facet.target, [selector], FacetCutAction.Add),
@@ -97,8 +152,11 @@ export async function addUnregisteredSelectors(
 export async function replaceRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  exclude: string[] = [],
+  only: FacetFilter[] = [],
+  exclude: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  validateFilters(only, exclude);
+
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
 
@@ -117,7 +175,7 @@ export async function replaceRegisteredSelectors(
         target != diamond.address &&
         selector.length > 0 &&
         selectorExistsInFacets(selector, diamondFacets) &&
-        !exclude.includes(selector)
+        selectorIsFiltered(only, exclude, target, selector)
       ) {
         facetCuts.push(
           printFacetCuts(target, [selector], FacetCutAction.Replace),
@@ -139,8 +197,11 @@ export async function replaceRegisteredSelectors(
 export async function removeRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  exclude: string[] = [],
+  only: FacetFilter[] = [],
+  exclude: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  validateFilters(only, exclude);
+
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
 
@@ -157,7 +218,7 @@ export async function removeRegisteredSelectors(
         target != diamond.address &&
         selector.length > 0 &&
         !selectorExistsInFacets(selector, facets) &&
-        !exclude.includes(selector)
+        selectorIsFiltered(only, exclude, AddressZero, selector)
       ) {
         facetCuts.push(
           printFacetCuts(AddressZero, [selector], FacetCutAction.Remove),
