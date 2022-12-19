@@ -5,8 +5,6 @@ import {
   IDiamondWritable,
 } from '@solidstate/typechain-types';
 
-const Table = require('cli-table3');
-
 export interface Facet {
   target: string;
   selectors: string[];
@@ -349,110 +347,4 @@ export function printFacetCuts(
     action: action,
     selectors: selectors,
   };
-}
-
-// generates table of diamond and facet selectors
-async function printDiamond(diamond: IDiamondReadable, contracts: Contract[]) {
-  const padding = 2;
-
-  const table = new Table({
-    style: {
-      head: [],
-      border: [],
-      'padding-left': padding,
-      'padding-right': padding,
-    },
-    chars: {
-      mid: '·',
-      'top-mid': '|',
-      'left-mid': ' ·',
-      'mid-mid': '|',
-      'right-mid': '·',
-      left: ' |',
-      'top-left': ' ·',
-      'top-right': '·',
-      'bottom-left': ' ·',
-      'bottom-right': '·',
-      middle: '·',
-      top: '-',
-      bottom: '-',
-      'bottom-mid': '|',
-    },
-  });
-
-  table.push([
-    {
-      hAlign: 'center',
-      content: `Target`,
-    },
-    {
-      hAlign: 'center',
-      content: `Signature`,
-    },
-    {
-      hAlign: 'center',
-      content: `Selector`,
-    },
-    {
-      hAlign: 'center',
-      content: `Registered`,
-    },
-  ]);
-
-  let diamondTable = [];
-  const signatures = await getSignatures(diamond);
-
-  for (const signature of signatures) {
-    diamondTable.push({
-      target: diamond.address,
-      signature: signature,
-      selector: diamond.interface.getSighash(signature),
-      registered: true,
-    });
-  }
-
-  for (const contract of contracts) {
-    const signatures = await getSignatures(contract);
-    for (const signature of signatures) {
-      diamondTable.push({
-        target: contract.address,
-        signature: signature,
-        selector: contract.interface.getSighash(signature),
-        registered: false,
-      });
-    }
-  }
-
-  const diamondFacets: Facet[] = await diamond.facets();
-
-  for (const facet of diamondFacets) {
-    const target = facet.target;
-
-    for (const selector of facet.selectors) {
-      for (const row of diamondTable) {
-        if (row.target == target && row.selector == selector) {
-          row.registered = true;
-        }
-      }
-    }
-  }
-
-  for (const row of diamondTable) {
-    table.push([
-      {
-        content: row.target,
-      },
-      {
-        content: row.signature,
-      },
-      {
-        content: row.selector,
-      },
-      {
-        content: row.registered,
-      },
-    ]);
-  }
-
-  console.log(table.toString());
 }
