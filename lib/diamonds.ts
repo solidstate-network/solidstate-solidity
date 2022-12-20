@@ -20,10 +20,12 @@ export interface FacetCut extends Facet {
   action: FacetCutAction;
 }
 
+// returns a list of signatures for a contract
 export function getSignatures(contract: Contract): string[] {
   return Object.keys(contract.interface.functions);
 }
 
+// returns a list of selectors for a contract
 export function getSelectors(contract: Contract): string[] {
   const signatures = getSignatures(contract);
   return signatures.reduce((acc: string[], val: string) => {
@@ -32,6 +34,7 @@ export function getSelectors(contract: Contract): string[] {
   }, []);
 }
 
+// returns a list of Facets for a contract
 export function getFacets(contracts: Contract[]): Facet[] {
   return contracts.map((contract) => {
     return {
@@ -41,6 +44,7 @@ export function getFacets(contracts: Contract[]): Facet[] {
   });
 }
 
+// returns true if the selector is found in the facets
 export function selectorExistsInFacets(
   selector: string,
   facets: Facet[],
@@ -56,6 +60,7 @@ interface FacetFilter {
   selectors: string[];
 }
 
+// returns true if the selector is found in the only or exclude filters
 function selectorIsFiltered(
   only: FacetFilter[],
   exclude: FacetFilter[],
@@ -64,19 +69,20 @@ function selectorIsFiltered(
 ): boolean {
   if (only.length > 0) {
     // include selectors found in only, exclude all others
-    return isFiltered(only, contract, selector);
+    return includes(only, contract, selector);
   }
 
   if (exclude.length > 0) {
     // exclude selectors found in exclude, include all others
-    return !isFiltered(exclude, contract, selector);
+    return !includes(exclude, contract, selector);
   }
 
   // if neither only or exclude are used, then include all selectors
   return true;
 }
 
-function isFiltered(
+// returns true if the selector is found in the filters
+function includes(
   filters: FacetFilter[],
   contract: string,
   selector: string,
@@ -90,6 +96,7 @@ function isFiltered(
   return false;
 }
 
+// validates that only and exclude filters do not contain the same contract
 function validateFilters(only: FacetFilter[], exclude: FacetFilter[]) {
   if (only.length > 0 && exclude.length > 0) {
     for (const onlyFilter of only) {
@@ -104,7 +111,7 @@ function validateFilters(only: FacetFilter[], exclude: FacetFilter[]) {
   }
 }
 
-// adds unregistered selectors
+// preview FacetCut which adds unregistered selectors
 export async function addUnregisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
@@ -146,7 +153,7 @@ export async function addUnregisteredSelectors(
   return groupFacetCuts(facetCuts);
 }
 
-// replace registered selectors
+// preview FacetCut which replaces registered selectors with unregistered selectors
 export async function replaceRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
@@ -161,7 +168,8 @@ export async function replaceRegisteredSelectors(
   let selectorsReplaced = false;
   let facetCuts: FacetCut[] = [];
 
-  // if a facet selector is registered with a different target address, the target will be replaced
+  // if a facet selector is registered with a different target address, the target will
+  // be replaced
   for (const facet of facets) {
     for (const selector of facet.selectors) {
       const target = facet.target;
@@ -191,7 +199,7 @@ export async function replaceRegisteredSelectors(
   return groupFacetCuts(facetCuts);
 }
 
-// removes registered selectors
+// preview FacetCut which removes registered selectors
 export async function removeRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
@@ -206,7 +214,8 @@ export async function removeRegisteredSelectors(
   let selectorsRemoved = false;
   let facetCuts: FacetCut[] = [];
 
-  // if a registered selector is not found in the facets then it should be removed from the diamond
+  // if a registered selector is not found in the facets then it should be removed
+  // from the diamond
   for (const diamondFacet of diamondFacets) {
     for (const selector of diamondFacet.selectors) {
       const target = diamondFacet.target;
@@ -234,7 +243,7 @@ export async function removeRegisteredSelectors(
   return groupFacetCuts(facetCuts);
 }
 
-// previews the facet cuts
+// preview a FacetCut which adds, replaces, or removes selectors, as needed
 export async function previewFacetCut(
   diamond: IDiamondReadable,
   contracts: Contract[],
@@ -285,6 +294,7 @@ export async function previewFacetCut(
   ]);
 }
 
+// executes a DiamondCut using the provided FacetCut
 export async function diamondCut(
   diamond: IDiamondWritable,
   facetCut: FacetCut[],
