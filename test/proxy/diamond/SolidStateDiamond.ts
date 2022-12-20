@@ -1,4 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { FacetCutAction } from '@solidstate/library';
 import { describeBehaviorOfSolidStateDiamond } from '@solidstate/spec';
 import {
   SolidStateDiamond,
@@ -30,7 +31,7 @@ describe('SolidStateDiamond', function () {
 
     facetCuts[0] = {
       target: instance.address,
-      action: 0,
+      action: FacetCutAction.ADD,
       selectors: facets[0].selectors,
     };
   });

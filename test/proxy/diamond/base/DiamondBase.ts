@@ -1,3 +1,4 @@
+import { FacetCutAction } from '@solidstate/library';
 import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
   DiamondBaseMock,
@@ -18,7 +19,7 @@ describe('DiamondBase', function () {
     instance = await new DiamondBaseMock__factory(deployer).deploy([
       {
         target: facetInstance.address,
-        action: 0,
+        action: FacetCutAction.ADD,
         selectors: [facetInstance.interface.getSighash('owner()')],
       },
     ]);

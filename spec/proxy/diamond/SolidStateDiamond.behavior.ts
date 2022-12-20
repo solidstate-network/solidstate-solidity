@@ -24,7 +24,7 @@ import {
   MockContract,
 } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeFilter } from '@solidstate/library';
+import { describeFilter, FacetCutAction } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -116,13 +116,17 @@ export function describeBehaviorOfSolidStateDiamond(
         const expectedSelectors = [];
 
         for (let selector of selectors) {
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [{ target: facet.address, action: 0, selectors: [selector] }],
-              ethers.constants.AddressZero,
-              '0x',
-            );
+          await instance.connect(owner).diamondCut(
+            [
+              {
+                target: facet.address,
+                action: FacetCutAction.ADD,
+                selectors: [selector],
+              },
+            ],
+            ethers.constants.AddressZero,
+            '0x',
+          );
 
           expectedSelectors.push(selector);
 
@@ -152,7 +156,7 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ target: facet.address, action: FacetCutAction.ADD, selectors }],
             ethers.constants.AddressZero,
             '0x',
           );
@@ -164,7 +168,7 @@ export function describeBehaviorOfSolidStateDiamond(
             [
               {
                 target: ethers.constants.AddressZero,
-                action: 2,
+                action: FacetCutAction.REMOVE,
                 selectors: [selector],
               },
             ],
@@ -217,7 +221,7 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ target: facet.address, action: FacetCutAction.ADD, selectors }],
             ethers.constants.AddressZero,
             '0x',
           );
@@ -229,7 +233,7 @@ export function describeBehaviorOfSolidStateDiamond(
             [
               {
                 target: ethers.constants.AddressZero,
-                action: 2,
+                action: FacetCutAction.REMOVE,
                 selectors: [selector],
               },
             ],
@@ -282,7 +286,7 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ target: facet.address, action: FacetCutAction.ADD, selectors }],
             ethers.constants.AddressZero,
             '0x',
           );
@@ -294,7 +298,7 @@ export function describeBehaviorOfSolidStateDiamond(
             [
               {
                 target: ethers.constants.AddressZero,
-                action: 2,
+                action: FacetCutAction.REMOVE,
                 selectors: [selector],
               },
             ],
