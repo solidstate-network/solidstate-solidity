@@ -61,9 +61,9 @@ export async function addUnregisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
   only: FacetFilter[] = [],
-  exclude: FacetFilter[] = [],
+  except: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
-  validateFilters(only, exclude);
+  validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
@@ -80,7 +80,7 @@ export async function addUnregisteredSelectors(
         target !== diamond.address &&
         selector.length > 0 &&
         !selectorExistsInFacets(selector, diamondFacets) &&
-        selectorIsFiltered(only, exclude, target, selector)
+        selectorIsFiltered(only, except, target, selector)
       ) {
         facetCuts.push(
           printFacetCuts(facet.target, [selector], FacetCutAction.ADD),
@@ -103,9 +103,9 @@ export async function replaceRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
   only: FacetFilter[] = [],
-  exclude: FacetFilter[] = [],
+  except: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
-  validateFilters(only, exclude);
+  validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
@@ -126,7 +126,7 @@ export async function replaceRegisteredSelectors(
         target != diamond.address &&
         selector.length > 0 &&
         selectorExistsInFacets(selector, diamondFacets) &&
-        selectorIsFiltered(only, exclude, target, selector)
+        selectorIsFiltered(only, except, target, selector)
       ) {
         facetCuts.push(
           printFacetCuts(target, [selector], FacetCutAction.REPLACE),
@@ -149,9 +149,9 @@ export async function removeRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
   only: FacetFilter[] = [],
-  exclude: FacetFilter[] = [],
+  except: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
-  validateFilters(only, exclude);
+  validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
   const facets = getFacets(contracts);
@@ -170,7 +170,7 @@ export async function removeRegisteredSelectors(
         target != diamond.address &&
         selector.length > 0 &&
         !selectorExistsInFacets(selector, facets) &&
-        selectorIsFiltered(only, exclude, AddressZero, selector)
+        selectorIsFiltered(only, except, AddressZero, selector)
       ) {
         facetCuts.push(
           printFacetCuts(AddressZero, [selector], FacetCutAction.REMOVE),
@@ -193,7 +193,7 @@ export async function previewFacetCut(
   diamond: IDiamondReadable,
   contracts: Contract[],
   only: FacetFilter[][] = [[], [], []],
-  exclude: FacetFilter[][] = [[], [], []],
+  except: FacetFilter[][] = [[], [], []],
 ): Promise<FacetCut[]> {
   let addFacetCuts: FacetCut[] = [];
   let replaceFacetCuts: FacetCut[] = [];
@@ -204,7 +204,7 @@ export async function previewFacetCut(
       diamond,
       contracts,
       only[0],
-      exclude[0],
+      except[0],
     );
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);
@@ -215,7 +215,7 @@ export async function previewFacetCut(
       diamond,
       contracts,
       only[1],
-      exclude[1],
+      except[1],
     );
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);
@@ -226,7 +226,7 @@ export async function previewFacetCut(
       diamond,
       contracts,
       only[2],
-      exclude[2],
+      except[2],
     );
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);

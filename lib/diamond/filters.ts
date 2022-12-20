@@ -5,10 +5,10 @@ export interface FacetFilter {
   selectors: string[];
 }
 
-// returns true if the selector is found in the only or exclude filters
+// returns true if the selector is found in the only or except filters
 export function selectorIsFiltered(
   only: FacetFilter[],
-  exclude: FacetFilter[],
+  except: FacetFilter[],
   contract: string,
   selector: string,
 ): boolean {
@@ -17,12 +17,12 @@ export function selectorIsFiltered(
     return includes(only, contract, selector);
   }
 
-  if (exclude.length > 0) {
-    // exclude selectors found in exclude, include all others
-    return !includes(exclude, contract, selector);
+  if (except.length > 0) {
+    // exclude selectors found in except, include all others
+    return !includes(except, contract, selector);
   }
 
-  // if neither only or exclude are used, then include all selectors
+  // if neither only or except are used, then include all selectors
   return true;
 }
 
@@ -41,14 +41,14 @@ export function includes(
   return false;
 }
 
-// validates that only and exclude filters do not contain the same contract
-export function validateFilters(only: FacetFilter[], exclude: FacetFilter[]) {
-  if (only.length > 0 && exclude.length > 0) {
+// validates that only and except filters do not contain the same contract
+export function validateFilters(only: FacetFilter[], except: FacetFilter[]) {
+  if (only.length > 0 && except.length > 0) {
     for (const onlyFilter of only) {
-      for (const excludeFilter of exclude) {
-        if (onlyFilter.contract === excludeFilter.contract) {
+      for (const exceptFilter of except) {
+        if (onlyFilter.contract === exceptFilter.contract) {
           throw new Error(
-            'only and exclude filters cannot contain the same contract',
+            'only and except filters cannot contain the same contract',
           );
         }
       }
