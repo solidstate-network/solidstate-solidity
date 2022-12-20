@@ -11,9 +11,9 @@ export interface Facet {
 }
 
 export enum FacetCutAction {
-  Add,
-  Replace,
-  Remove,
+  ADD,
+  REPLACE,
+  REMOVE,
 }
 
 export interface FacetCut extends Facet {
@@ -131,7 +131,7 @@ export async function addUnregisteredSelectors(
         selectorIsFiltered(only, exclude, target, selector)
       ) {
         facetCuts.push(
-          printFacetCuts(facet.target, [selector], FacetCutAction.Add),
+          printFacetCuts(facet.target, [selector], FacetCutAction.ADD),
         );
 
         selectorsAdded = true;
@@ -176,7 +176,7 @@ export async function replaceRegisteredSelectors(
         selectorIsFiltered(only, exclude, target, selector)
       ) {
         facetCuts.push(
-          printFacetCuts(target, [selector], FacetCutAction.Replace),
+          printFacetCuts(target, [selector], FacetCutAction.REPLACE),
         );
 
         selectorsReplaced = true;
@@ -219,7 +219,7 @@ export async function removeRegisteredSelectors(
         selectorIsFiltered(only, exclude, AddressZero, selector)
       ) {
         facetCuts.push(
-          printFacetCuts(AddressZero, [selector], FacetCutAction.Remove),
+          printFacetCuts(AddressZero, [selector], FacetCutAction.REMOVE),
         );
 
         selectorsRemoved = true;
