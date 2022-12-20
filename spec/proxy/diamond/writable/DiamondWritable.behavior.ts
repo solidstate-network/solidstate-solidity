@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC165 } from '../../../introspection';
+import { describeBehaviorOfERC165Base } from '../../../introspection';
 import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
@@ -55,7 +55,7 @@ export function describeBehaviorOfDiamondWritable(
     });
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165(
+    describeBehaviorOfERC165Base(
       deploy as any,
       {
         interfaceIds: ['0x1f931c1c'],
