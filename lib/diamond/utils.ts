@@ -6,15 +6,15 @@ import {
   IDiamondWritable,
 } from '@solidstate/typechain-types';
 
-export interface Facet {
-  target: string;
-  selectors: string[];
-}
-
 export enum FacetCutAction {
   ADD,
   REPLACE,
   REMOVE,
+}
+
+export interface Facet {
+  target: string;
+  selectors: string[];
 }
 
 export interface FacetCut extends Facet {
