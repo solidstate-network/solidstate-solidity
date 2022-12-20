@@ -1,4 +1,5 @@
 import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { FacetCutAction } from '@solidstate/library';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
   DiamondReadableMock,
@@ -35,7 +36,7 @@ describe('DiamondReadable', function () {
 
     facetCuts.push({
       target: facet.address,
-      action: 0,
+      action: FacetCutAction.ADD,
       selectors,
     });
   });
