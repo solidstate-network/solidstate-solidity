@@ -23,124 +23,124 @@ library Queue {
         QueueInternal _inner;
     }
 
-    function contains(
-        Bytes32Queue storage queue,
-        bytes32 value
-    ) internal view returns (bool) {
-        return _contains(queue._inner, value);
-    }
-
-    function contains(
-        AddressQueue storage queue,
-        address value
-    ) internal view returns (bool) {
-        return _contains(queue._inner, bytes32(uint256(uint160(value))));
-    }
-
-    function contains(
-        UintQueue storage queue,
-        uint256 value
-    ) internal view returns (bool) {
-        return _contains(queue._inner, bytes32(value));
-    }
-
-    function prev(
-        Bytes32Queue storage queue,
-        bytes32 value
-    ) internal view returns (bytes32) {
-        return _prev(queue._inner, value);
-    }
-
-    function prev(
-        AddressQueue storage queue,
-        address value
-    ) internal view returns (address) {
-        return
-            address(
-                uint160(
-                    uint256(
-                        _prev(queue._inner, bytes32(uint256(uint160(value))))
-                    )
-                )
-            );
-    }
-
-    function prev(
-        UintQueue storage queue,
-        uint256 value
-    ) internal view returns (uint256) {
-        return uint256(_prev(queue._inner, bytes32(value)));
-    }
-
-    function next(
-        Bytes32Queue storage queue,
-        bytes32 value
-    ) internal view returns (bytes32) {
-        return _next(queue._inner, value);
-    }
-
-    function next(
-        AddressQueue storage queue,
-        address value
-    ) internal view returns (address) {
-        return
-            address(
-                uint160(
-                    uint256(
-                        _next(queue._inner, bytes32(uint256(uint160(value))))
-                    )
-                )
-            );
-    }
-
-    function next(
-        UintQueue storage queue,
-        uint256 value
-    ) internal view returns (uint256) {
-        return uint256(_next(queue._inner, bytes32(value)));
-    }
-
-    function add(
-        Bytes32Queue storage queue,
-        bytes32 value
-    ) internal returns (bool) {
-        return _add(queue._inner, value);
-    }
-
-    function add(
-        AddressQueue storage queue,
-        address value
-    ) internal returns (bool) {
-        return _add(queue._inner, bytes32(uint256(uint160(value))));
-    }
-
-    function add(
-        UintQueue storage queue,
-        uint256 value
-    ) internal returns (bool) {
-        return _add(queue._inner, bytes32(value));
-    }
-
-    function remove(
-        Bytes32Queue storage queue,
-        bytes32 value
-    ) internal returns (bool) {
-        return _remove(queue._inner, value);
-    }
-
-    function remove(
-        AddressQueue storage queue,
-        address value
-    ) internal returns (bool) {
-        return _remove(queue._inner, bytes32(uint256(uint160(value))));
-    }
-
-    function remove(
-        UintQueue storage queue,
-        uint256 value
-    ) internal returns (bool) {
-        return _remove(queue._inner, bytes32(value));
-    }
+    // function contains(
+    //     Bytes32Queue storage queue,
+    //     bytes32 value
+    // ) internal view returns (bool) {
+    //     return _contains(queue._inner, value);
+    // }
+    //
+    // function contains(
+    //     AddressQueue storage queue,
+    //     address value
+    // ) internal view returns (bool) {
+    //     return _contains(queue._inner, bytes32(uint256(uint160(value))));
+    // }
+    //
+    // function contains(
+    //     UintQueue storage queue,
+    //     uint256 value
+    // ) internal view returns (bool) {
+    //     return _contains(queue._inner, bytes32(value));
+    // }
+    //
+    // function prev(
+    //     Bytes32Queue storage queue,
+    //     bytes32 value
+    // ) internal view returns (bytes32) {
+    //     return _prev(queue._inner, value);
+    // }
+    //
+    // function prev(
+    //     AddressQueue storage queue,
+    //     address value
+    // ) internal view returns (address) {
+    //     return
+    //         address(
+    //             uint160(
+    //                 uint256(
+    //                     _prev(queue._inner, bytes32(uint256(uint160(value))))
+    //                 )
+    //             )
+    //         );
+    // }
+    //
+    // function prev(
+    //     UintQueue storage queue,
+    //     uint256 value
+    // ) internal view returns (uint256) {
+    //     return uint256(_prev(queue._inner, bytes32(value)));
+    // }
+    //
+    // function next(
+    //     Bytes32Queue storage queue,
+    //     bytes32 value
+    // ) internal view returns (bytes32) {
+    //     return _next(queue._inner, value);
+    // }
+    //
+    // function next(
+    //     AddressQueue storage queue,
+    //     address value
+    // ) internal view returns (address) {
+    //     return
+    //         address(
+    //             uint160(
+    //                 uint256(
+    //                     _next(queue._inner, bytes32(uint256(uint160(value))))
+    //                 )
+    //             )
+    //         );
+    // }
+    //
+    // function next(
+    //     UintQueue storage queue,
+    //     uint256 value
+    // ) internal view returns (uint256) {
+    //     return uint256(_next(queue._inner, bytes32(value)));
+    // }
+    //
+    // function add(
+    //     Bytes32Queue storage queue,
+    //     bytes32 value
+    // ) internal returns (bool) {
+    //     return _add(queue._inner, value);
+    // }
+    //
+    // function add(
+    //     AddressQueue storage queue,
+    //     address value
+    // ) internal returns (bool) {
+    //     return _add(queue._inner, bytes32(uint256(uint160(value))));
+    // }
+    //
+    // function add(
+    //     UintQueue storage queue,
+    //     uint256 value
+    // ) internal returns (bool) {
+    //     return _add(queue._inner, bytes32(value));
+    // }
+    //
+    // function remove(
+    //     Bytes32Queue storage queue,
+    //     bytes32 value
+    // ) internal returns (bool) {
+    //     return _remove(queue._inner, value);
+    // }
+    //
+    // function remove(
+    //     AddressQueue storage queue,
+    //     address value
+    // ) internal returns (bool) {
+    //     return _remove(queue._inner, bytes32(uint256(uint160(value))));
+    // }
+    //
+    // function remove(
+    //     UintQueue storage queue,
+    //     uint256 value
+    // ) internal returns (bool) {
+    //     return _remove(queue._inner, bytes32(value));
+    // }
 
     function _contains(
         QueueInternal storage queue,
