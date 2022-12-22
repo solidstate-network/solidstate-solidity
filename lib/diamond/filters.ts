@@ -32,13 +32,7 @@ export function includes(
   contract: string,
   selector: string,
 ): boolean {
-  for (const filter of filters) {
-    if (filter.contract === contract || AddressZero === contract) {
-      return filter.selectors.includes(selector);
-    }
-  }
-
-  return false;
+  return filters.some((filter) => [filter.contract, AddressZero].includes(contract) && filter.selectors.includes(selector));
 }
 
 // validates that only and except filters do not contain the same contract
