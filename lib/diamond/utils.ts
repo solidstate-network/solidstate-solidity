@@ -28,11 +28,7 @@ export function getSignatures(contract: Contract): string[] {
 
 // returns a list of selectors for a contract
 export function getSelectors(contract: Contract): string[] {
-  const signatures = getSignatures(contract);
-  return signatures.reduce((acc: string[], val: string) => {
-    acc.push(contract.interface.getSighash(val));
-    return acc;
-  }, []);
+  return getSignatures(contract).map((signature) => contract.interface.getSighash(signature));
 }
 
 // returns a list of Facets for a contract
