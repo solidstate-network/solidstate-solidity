@@ -9,10 +9,6 @@ contract LinkedListMock {
 
     LinkedList.List private list;
 
-    function listExists() external view returns (bool) {
-        return list.listExists();
-    }
-
     function nodeExists(uint256 node) external view returns (bool) {
         return list.nodeExists(node);
     }

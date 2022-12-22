@@ -23,20 +23,6 @@ library LinkedList {
     }
 
     /**
-     * @dev Checks if the list exists
-     * @param self stored linked list from contract
-     * @return bool true if list exists, false otherwise
-     */
-    function listExists(List storage self) internal view returns (bool) {
-        // if the head nodes previous or next pointers both point to itself, then there are no items in the list
-        if (self.list[HEAD][PREV] != HEAD || self.list[HEAD][NEXT] != HEAD) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * @dev Checks if the node exists
      * @param self stored linked list from contract
      * @param _node a node to search for
