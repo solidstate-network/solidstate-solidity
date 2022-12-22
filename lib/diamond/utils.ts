@@ -43,6 +43,19 @@ export function getFacets(contracts: Contract[]): Facet[] {
   });
 }
 
+// returns a FacetCut
+export function getFacetCut(
+  target: string,
+  selectors: string[],
+  action: number = 0,
+): FacetCut {
+  return {
+    target: target,
+    action: action,
+    selectors: selectors,
+  };
+}
+
 // returns true if the selector is found in the facets
 export function selectorExistsInFacets(
   selector: string,
@@ -78,7 +91,7 @@ export async function addUnregisteredSelectors(
         selectorIsFiltered(only, except, target, selector)
       ) {
         facetCuts.push(
-          printFacetCuts(facet.target, [selector], FacetCutAction.ADD),
+          getFacetCut(facet.target, [selector], FacetCutAction.ADD),
         );
 
         selectorsAdded = true;
@@ -123,9 +136,7 @@ export async function replaceRegisteredSelectors(
         selectorExistsInFacets(selector, diamondFacets) &&
         selectorIsFiltered(only, except, target, selector)
       ) {
-        facetCuts.push(
-          printFacetCuts(target, [selector], FacetCutAction.REPLACE),
-        );
+        facetCuts.push(getFacetCut(target, [selector], FacetCutAction.REPLACE));
 
         selectorsReplaced = true;
       }
@@ -168,7 +179,7 @@ export async function removeRegisteredSelectors(
         selectorIsFiltered(only, except, AddressZero, selector)
       ) {
         facetCuts.push(
-          printFacetCuts(AddressZero, [selector], FacetCutAction.REMOVE),
+          getFacetCut(AddressZero, [selector], FacetCutAction.REMOVE),
         );
 
         selectorsRemoved = true;
@@ -285,16 +296,4 @@ export function groupFacetCuts(facetCuts: FacetCut[]): FacetCut[] {
   });
 
   return cuts;
-}
-
-export function printFacetCuts(
-  target: string,
-  selectors: string[],
-  action: number = 0,
-): FacetCut {
-  return {
-    target: target,
-    action: action,
-    selectors: selectors,
-  };
 }
