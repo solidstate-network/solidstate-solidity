@@ -46,10 +46,7 @@ export function selectorExistsInFacets(
   selector: string,
   facets: Facet[],
 ): boolean {
-  for (const facet of facets) {
-    if (facet.selectors.includes(selector)) return true;
-  }
-  return false;
+  return facets.some((facet) => facet.selectors.includes(selector));
 }
 
 // preview FacetCut which adds unregistered selectors
