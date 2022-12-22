@@ -1,4 +1,9 @@
-import { FacetFilter, selectorIsFiltered, validateFilters } from './filters';
+import {
+  FacetFilter,
+  destructureFilters,
+  selectorIsFiltered,
+  validateFilters,
+} from './filters';
 import { AddressZero } from '@ethersproject/constants';
 import { Contract, ContractReceipt } from '@ethersproject/contracts';
 import {
@@ -68,9 +73,9 @@ export function selectorExistsInFacets(
 export async function addUnregisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  only: FacetFilter[] = [],
-  except: FacetFilter[] = [],
+  filters: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  const { only, except } = destructureFilters(filters, FacetCutAction.ADD);
   validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
@@ -110,9 +115,9 @@ export async function addUnregisteredSelectors(
 export async function replaceRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  only: FacetFilter[] = [],
-  except: FacetFilter[] = [],
+  filters: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  const { only, except } = destructureFilters(filters, FacetCutAction.REPLACE);
   validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
@@ -154,9 +159,9 @@ export async function replaceRegisteredSelectors(
 export async function removeRegisteredSelectors(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  only: FacetFilter[] = [],
-  except: FacetFilter[] = [],
+  filters: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
+  const { only, except } = destructureFilters(filters, FacetCutAction.REMOVE);
   validateFilters(only, except);
 
   const diamondFacets: Facet[] = await diamond.facets();
@@ -198,20 +203,14 @@ export async function removeRegisteredSelectors(
 export async function previewFacetCut(
   diamond: IDiamondReadable,
   contracts: Contract[],
-  only: FacetFilter[][] = [[], [], []],
-  except: FacetFilter[][] = [[], [], []],
+  filters: FacetFilter[] = [],
 ): Promise<FacetCut[]> {
   let addFacetCuts: FacetCut[] = [];
   let replaceFacetCuts: FacetCut[] = [];
   let removeFacetCuts: FacetCut[] = [];
 
   try {
-    addFacetCuts = await addUnregisteredSelectors(
-      diamond,
-      contracts,
-      only[0],
-      except[0],
-    );
+    addFacetCuts = await addUnregisteredSelectors(diamond, contracts, filters);
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);
   }
@@ -220,8 +219,7 @@ export async function previewFacetCut(
     replaceFacetCuts = await replaceRegisteredSelectors(
       diamond,
       contracts,
-      only[1],
-      except[1],
+      filters,
     );
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);
@@ -231,8 +229,7 @@ export async function previewFacetCut(
     removeFacetCuts = await removeRegisteredSelectors(
       diamond,
       contracts,
-      only[2],
-      except[2],
+      filters,
     );
   } catch (error) {
     console.log(`WARNING: ${(error as Error).message}`);
