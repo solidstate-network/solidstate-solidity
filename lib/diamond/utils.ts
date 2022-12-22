@@ -21,7 +21,7 @@ export interface FacetCut extends Facet {
   action: FacetCutAction;
 }
 
-// returns a list of signatures for a contract
+// returns a list of function signatures for a contract
 export function getFuntionSignatures(contract: Contract): string[] {
   return Object.keys(contract.interface.functions);
 }
