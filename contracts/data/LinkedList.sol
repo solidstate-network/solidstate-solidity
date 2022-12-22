@@ -18,7 +18,6 @@ library LinkedList {
     error LinkedList__InsertInvalid();
 
     struct List {
-        uint256 size;
         mapping(uint256 => mapping(bool => uint256)) list;
     }
 
@@ -159,8 +158,6 @@ library LinkedList {
         delete self.list[_node][PREV];
         delete self.list[_node][NEXT];
 
-        self.size -= 1; // NOT: SafeMath library should be used here to decrement.
-
         return _node;
     }
 
@@ -249,8 +246,6 @@ library LinkedList {
             uint256 c = self.list[_node][_direction];
             _createLink(self, _node, _new, _direction);
             _createLink(self, _new, c, _direction);
-
-            self.size += 1; // NOT: SafeMath library should be used here to increment.
 
             return true;
         }
