@@ -43,16 +43,6 @@ library LinkedList {
         }
     }
 
-    // ToDo : Remove ?
-    /**
-     * @dev Returns the number of elements in the list
-     * @param self stored linked list from contract
-     * @return uint256
-     */
-    function sizeOf(List storage self) internal view returns (uint256) {
-        return self.size;
-    }
-
     /**
      * @dev Returns the links of a node as a tuple
      * @param self stored linked list from contract

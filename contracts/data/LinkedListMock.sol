@@ -13,10 +13,6 @@ contract LinkedListMock {
         return list.nodeExists(node);
     }
 
-    function sizeOf() external view returns (uint256) {
-        return list.sizeOf();
-    }
-
     function getNode(
         uint256 node
     ) external view returns (bool, uint256, uint256) {
