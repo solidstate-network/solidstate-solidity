@@ -1,6 +1,6 @@
 import { FacetFilter, selectorIsFiltered, validateFilters } from './filters';
 import { AddressZero } from '@ethersproject/constants';
-import { Contract } from '@ethersproject/contracts';
+import { Contract, ContractReceipt } from '@ethersproject/contracts';
 import {
   IDiamondReadable,
   IDiamondWritable,
@@ -251,8 +251,8 @@ export async function diamondCut(
   facetCut: FacetCut[],
   target: string = AddressZero,
   data: string = '0x',
-) {
-  (await diamond.diamondCut(facetCut, target, data)).wait(1);
+): Promise<ContractReceipt> {
+  return (await diamond.diamondCut(facetCut, target, data)).wait();
 }
 
 // groups facet cuts by target address and action type
