@@ -22,13 +22,15 @@ export interface FacetCut extends Facet {
 }
 
 // returns a list of signatures for a contract
-export function getSignatures(contract: Contract): string[] {
+export function getFuntionSignatures(contract: Contract): string[] {
   return Object.keys(contract.interface.functions);
 }
 
 // returns a list of selectors for a contract
 export function getSelectors(contract: Contract): string[] {
-  return getSignatures(contract).map((signature) => contract.interface.getSighash(signature));
+  return getFuntionSignatures(contract).map((signature) =>
+    contract.interface.getSighash(signature),
+  );
 }
 
 // returns a list of Facets for a contract
