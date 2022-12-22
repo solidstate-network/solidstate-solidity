@@ -162,16 +162,6 @@ library LinkedList {
     }
 
     /**
-     * @dev Pushes an entry to the head of the linked list
-     * @param self stored linked list from contract
-     * @param _node new entry to push to the head
-     * @return bool true if success, false otherwise
-     */
-    function unshift(List storage self, uint256 _node) internal returns (bool) {
-        return _push(self, _node, NEXT);
-    }
-
-    /**
      * @dev Pushes an entry to the tail of the linked list
      * @param self stored linked list from contract
      * @param _node new entry to push to the tail
@@ -179,6 +169,15 @@ library LinkedList {
      */
     function push(List storage self, uint256 _node) internal returns (bool) {
         return _push(self, _node, PREV);
+    }
+
+    /**
+     * @dev Pops the first entry from the tail of the linked list
+     * @param self stored linked list from contract
+     * @return uint256 the removed node
+     */
+    function pop(List storage self) internal returns (uint256) {
+        return _pop(self, PREV);
     }
 
     /**
@@ -191,12 +190,13 @@ library LinkedList {
     }
 
     /**
-     * @dev Pops the first entry from the tail of the linked list
+     * @dev Pushes an entry to the head of the linked list
      * @param self stored linked list from contract
-     * @return uint256 the removed node
+     * @param _node new entry to push to the head
+     * @return bool true if success, false otherwise
      */
-    function pop(List storage self) internal returns (uint256) {
-        return _pop(self, PREV);
+    function unshift(List storage self, uint256 _node) internal returns (bool) {
+        return _push(self, _node, NEXT);
     }
 
     /**

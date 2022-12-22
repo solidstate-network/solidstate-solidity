@@ -52,19 +52,19 @@ contract LinkedListMock {
         return list.remove(node);
     }
 
-    function unshift(uint256 node) external returns (bool) {
-        return list.unshift(node);
-    }
-
     function push(uint256 node) external returns (bool) {
         return list.push(node);
+    }
+
+    function pop() external returns (uint256) {
+        return list.pop();
     }
 
     function shift() external returns (uint256) {
         return list.shift();
     }
 
-    function pop() external returns (uint256) {
-        return list.pop();
+    function unshift(uint256 node) external returns (bool) {
+        return list.unshift(node);
     }
 }
