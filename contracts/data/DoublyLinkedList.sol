@@ -355,6 +355,20 @@ library DoublyLinkedList {
         }
     }
 
+    function _replace(
+        DoublyLinkedListInternal storage self,
+        bytes32 oldValue,
+        bytes32 newValue
+    ) private returns (bool status) {
+        if (_contains(self, oldValue) && !_contains(self, newValue)) {
+            _link(self, _prev(self, oldValue), newValue);
+            _link(self, newValue, _next(self, oldValue));
+            delete self._desc[oldValue];
+            delete self._asc[oldValue];
+            status = true;
+        }
+    }
+
     function _link(
         DoublyLinkedListInternal storage self,
         bytes32 prevValue,
