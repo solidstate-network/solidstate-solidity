@@ -11,50 +11,50 @@ library DoublyLinkedList {
         mapping(bytes32 => bytes32) _desc;
     }
 
-    struct Bytes32DoublyLinkedList {
+    struct Bytes32List {
         DoublyLinkedListInternal _inner;
     }
 
-    struct AddressDoublyLinkedList {
+    struct AddressList {
         DoublyLinkedListInternal _inner;
     }
 
-    struct UintDoublyLinkedList {
+    struct Uint256List {
         DoublyLinkedListInternal _inner;
     }
 
     error DoublyLinkedList__InvalidValue();
 
     function contains(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal view returns (bool) {
         return _contains(self._inner, value);
     }
 
     function contains(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal view returns (bool) {
         return _contains(self._inner, bytes32(uint256(uint160(value))));
     }
 
     function contains(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal view returns (bool) {
         return _contains(self._inner, bytes32(value));
     }
 
     function prev(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal view returns (bytes32) {
         return _prev(self._inner, value);
     }
 
     function prev(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal view returns (address) {
         return
@@ -68,21 +68,21 @@ library DoublyLinkedList {
     }
 
     function prev(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal view returns (uint256) {
         return uint256(_prev(self._inner, bytes32(value)));
     }
 
     function next(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal view returns (bytes32) {
         return _next(self._inner, value);
     }
 
     function next(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal view returns (address) {
         return
@@ -96,14 +96,14 @@ library DoublyLinkedList {
     }
 
     function next(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal view returns (uint256) {
         return uint256(_next(self._inner, bytes32(value)));
     }
 
     function insertBefore(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 nextValue,
         bytes32 newValue
     ) internal returns (bool status) {
@@ -111,7 +111,7 @@ library DoublyLinkedList {
     }
 
     function insertBefore(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address nextValue,
         address newValue
     ) internal returns (bool status) {
@@ -123,7 +123,7 @@ library DoublyLinkedList {
     }
 
     function insertBefore(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 nextValue,
         uint256 newValue
     ) internal returns (bool status) {
@@ -135,7 +135,7 @@ library DoublyLinkedList {
     }
 
     function insertAfter(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 prevValue,
         bytes32 newValue
     ) internal returns (bool status) {
@@ -143,7 +143,7 @@ library DoublyLinkedList {
     }
 
     function insertAfter(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address prevValue,
         address newValue
     ) internal returns (bool status) {
@@ -155,7 +155,7 @@ library DoublyLinkedList {
     }
 
     function insertAfter(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 prevValue,
         uint256 newValue
     ) internal returns (bool status) {
@@ -167,99 +167,87 @@ library DoublyLinkedList {
     }
 
     function push(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal returns (bool status) {
         status = _push(self._inner, value);
     }
 
     function push(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal returns (bool status) {
         status = _push(self._inner, bytes32(uint256(uint160(value))));
     }
 
     function push(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal returns (bool status) {
         status = _push(self._inner, bytes32(value));
     }
 
-    function pop(
-        Bytes32DoublyLinkedList storage self
-    ) internal returns (bytes32 value) {
+    function pop(Bytes32List storage self) internal returns (bytes32 value) {
         value = _pop(self._inner);
     }
 
-    function pop(
-        AddressDoublyLinkedList storage self
-    ) internal returns (address value) {
+    function pop(AddressList storage self) internal returns (address value) {
         value = address(uint160(uint256(_pop(self._inner))));
     }
 
-    function pop(
-        UintDoublyLinkedList storage self
-    ) internal returns (uint256 value) {
+    function pop(Uint256List storage self) internal returns (uint256 value) {
         value = uint256(_pop(self._inner));
     }
 
-    function shift(
-        Bytes32DoublyLinkedList storage self
-    ) internal returns (bytes32 value) {
+    function shift(Bytes32List storage self) internal returns (bytes32 value) {
         value = _shift(self._inner);
     }
 
-    function shift(
-        AddressDoublyLinkedList storage self
-    ) internal returns (address value) {
+    function shift(AddressList storage self) internal returns (address value) {
         value = address(uint160(uint256(_shift(self._inner))));
     }
 
-    function shift(
-        UintDoublyLinkedList storage self
-    ) internal returns (uint256 value) {
+    function shift(Uint256List storage self) internal returns (uint256 value) {
         value = uint256(_shift(self._inner));
     }
 
     function unshift(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal returns (bool status) {
         status = _unshift(self._inner, value);
     }
 
     function unshift(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal returns (bool status) {
         status = _unshift(self._inner, bytes32(uint256(uint160(value))));
     }
 
     function unshift(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal returns (bool status) {
         status = _unshift(self._inner, bytes32(value));
     }
 
     function remove(
-        Bytes32DoublyLinkedList storage self,
+        Bytes32List storage self,
         bytes32 value
     ) internal returns (bool status) {
         status = _remove(self._inner, value);
     }
 
     function remove(
-        AddressDoublyLinkedList storage self,
+        AddressList storage self,
         address value
     ) internal returns (bool status) {
         status = _remove(self._inner, bytes32(uint256(uint160(value))));
     }
 
     function remove(
-        UintDoublyLinkedList storage self,
+        Uint256List storage self,
         uint256 value
     ) internal returns (bool status) {
         status = _remove(self._inner, bytes32(value));
