@@ -165,25 +165,35 @@ library Queue {
 
     function _insertBefore(
         QueueInternal storage queue,
-        bytes32 value,
+        bytes32 nextValue,
         bytes32 newValue
     ) private returns (bool status) {
-        status = _insert(queue, _prev(queue, value), newValue, value);
+        status = _insertBetween(
+            queue,
+            _prev(queue, nextValue),
+            nextValue,
+            newValue
+        );
     }
 
     function _insertAfter(
         QueueInternal storage queue,
-        bytes32 value,
+        bytes32 prevValue,
         bytes32 newValue
     ) private returns (bool status) {
-        status = _insert(queue, value, newValue, _next(queue, value));
+        status = _insertBetween(
+            queue,
+            prevValue,
+            _next(queue, prevValue),
+            newValue
+        );
     }
 
-    function _insert(
+    function _insertBetween(
         QueueInternal storage queue,
         bytes32 prevValue,
-        bytes32 newValue,
-        bytes32 nextValue
+        bytes32 nextValue,
+        bytes32 newValue
     ) private returns (bool status) {
         if (!_contains(queue, newValue)) {
             _link(queue, prevValue, newValue);
@@ -196,7 +206,7 @@ library Queue {
         QueueInternal storage queue,
         bytes32 value
     ) private returns (bool status) {
-        status = _insert(queue, _prev(queue, 0), value, 0);
+        status = _insertBetween(queue, _prev(queue, 0), 0, value);
     }
 
     function _pop(QueueInternal storage queue) private returns (bytes32 value) {
@@ -215,7 +225,7 @@ library Queue {
         QueueInternal storage queue,
         bytes32 value
     ) private returns (bool status) {
-        status = _insert(queue, 0, value, _next(queue, 0));
+        status = _insertBetween(queue, 0, _next(queue, 0), value);
     }
 
     function _remove(
