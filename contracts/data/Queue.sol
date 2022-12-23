@@ -23,6 +23,8 @@ library Queue {
         QueueInternal _inner;
     }
 
+    error Queue__InvalidValue();
+
     // function contains(
     //     Bytes32Queue storage queue,
     //     bytes32 value
@@ -195,6 +197,8 @@ library Queue {
         bytes32 nextValue,
         bytes32 newValue
     ) private returns (bool status) {
+        if (newValue == bytes32(0)) revert Queue__InvalidValue();
+
         if (!_contains(queue, newValue)) {
             _link(queue, prevValue, newValue);
             _link(queue, newValue, nextValue);
