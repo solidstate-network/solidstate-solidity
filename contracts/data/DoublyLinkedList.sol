@@ -253,6 +253,34 @@ library DoublyLinkedList {
         status = _remove(self._inner, bytes32(value));
     }
 
+    function replace(
+        Bytes32List storage self,
+        bytes32 oldValue,
+        bytes32 newValue
+    ) internal returns (bool status) {
+        status = _replace(self._inner, oldValue, newValue);
+    }
+
+    function replace(
+        AddressList storage self,
+        address oldValue,
+        address newValue
+    ) internal returns (bool status) {
+        status = _replace(
+            self._inner,
+            bytes32(uint256(uint160(oldValue))),
+            bytes32(uint256(uint160(newValue)))
+        );
+    }
+
+    function replace(
+        Uint256List storage self,
+        uint256 oldValue,
+        uint256 newValue
+    ) internal returns (bool status) {
+        status = _replace(self._inner, bytes32(oldValue), bytes32(newValue));
+    }
+
     function _contains(
         DoublyLinkedListInternal storage self,
         bytes32 value
@@ -360,6 +388,8 @@ library DoublyLinkedList {
         bytes32 oldValue,
         bytes32 newValue
     ) private returns (bool status) {
+        if (newValue == bytes32(0)) revert DoublyLinkedList__InvalidValue();
+
         if (_contains(self, oldValue) && !_contains(self, newValue)) {
             _link(self, _prev(self, oldValue), newValue);
             _link(self, newValue, _next(self, oldValue));
