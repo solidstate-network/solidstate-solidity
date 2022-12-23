@@ -25,124 +25,237 @@ library Queue {
 
     error Queue__InvalidValue();
 
-    // function contains(
-    //     Bytes32Queue storage queue,
-    //     bytes32 value
-    // ) internal view returns (bool) {
-    //     return _contains(queue._inner, value);
-    // }
-    //
-    // function contains(
-    //     AddressQueue storage queue,
-    //     address value
-    // ) internal view returns (bool) {
-    //     return _contains(queue._inner, bytes32(uint256(uint160(value))));
-    // }
-    //
-    // function contains(
-    //     UintQueue storage queue,
-    //     uint256 value
-    // ) internal view returns (bool) {
-    //     return _contains(queue._inner, bytes32(value));
-    // }
-    //
-    // function prev(
-    //     Bytes32Queue storage queue,
-    //     bytes32 value
-    // ) internal view returns (bytes32) {
-    //     return _prev(queue._inner, value);
-    // }
-    //
-    // function prev(
-    //     AddressQueue storage queue,
-    //     address value
-    // ) internal view returns (address) {
-    //     return
-    //         address(
-    //             uint160(
-    //                 uint256(
-    //                     _prev(queue._inner, bytes32(uint256(uint160(value))))
-    //                 )
-    //             )
-    //         );
-    // }
-    //
-    // function prev(
-    //     UintQueue storage queue,
-    //     uint256 value
-    // ) internal view returns (uint256) {
-    //     return uint256(_prev(queue._inner, bytes32(value)));
-    // }
-    //
-    // function next(
-    //     Bytes32Queue storage queue,
-    //     bytes32 value
-    // ) internal view returns (bytes32) {
-    //     return _next(queue._inner, value);
-    // }
-    //
-    // function next(
-    //     AddressQueue storage queue,
-    //     address value
-    // ) internal view returns (address) {
-    //     return
-    //         address(
-    //             uint160(
-    //                 uint256(
-    //                     _next(queue._inner, bytes32(uint256(uint160(value))))
-    //                 )
-    //             )
-    //         );
-    // }
-    //
-    // function next(
-    //     UintQueue storage queue,
-    //     uint256 value
-    // ) internal view returns (uint256) {
-    //     return uint256(_next(queue._inner, bytes32(value)));
-    // }
-    //
-    // function add(
-    //     Bytes32Queue storage queue,
-    //     bytes32 value
-    // ) internal returns (bool) {
-    //     return _add(queue._inner, value);
-    // }
-    //
-    // function add(
-    //     AddressQueue storage queue,
-    //     address value
-    // ) internal returns (bool) {
-    //     return _add(queue._inner, bytes32(uint256(uint160(value))));
-    // }
-    //
-    // function add(
-    //     UintQueue storage queue,
-    //     uint256 value
-    // ) internal returns (bool) {
-    //     return _add(queue._inner, bytes32(value));
-    // }
-    //
-    // function remove(
-    //     Bytes32Queue storage queue,
-    //     bytes32 value
-    // ) internal returns (bool) {
-    //     return _remove(queue._inner, value);
-    // }
-    //
-    // function remove(
-    //     AddressQueue storage queue,
-    //     address value
-    // ) internal returns (bool) {
-    //     return _remove(queue._inner, bytes32(uint256(uint160(value))));
-    // }
-    //
-    // function remove(
-    //     UintQueue storage queue,
-    //     uint256 value
-    // ) internal returns (bool) {
-    //     return _remove(queue._inner, bytes32(value));
-    // }
+    function contains(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal view returns (bool) {
+        return _contains(queue._inner, value);
+    }
+
+    function contains(
+        AddressQueue storage queue,
+        address value
+    ) internal view returns (bool) {
+        return _contains(queue._inner, bytes32(uint256(uint160(value))));
+    }
+
+    function contains(
+        UintQueue storage queue,
+        uint256 value
+    ) internal view returns (bool) {
+        return _contains(queue._inner, bytes32(value));
+    }
+
+    function prev(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal view returns (bytes32) {
+        return _prev(queue._inner, value);
+    }
+
+    function prev(
+        AddressQueue storage queue,
+        address value
+    ) internal view returns (address) {
+        return
+            address(
+                uint160(
+                    uint256(
+                        _prev(queue._inner, bytes32(uint256(uint160(value))))
+                    )
+                )
+            );
+    }
+
+    function prev(
+        UintQueue storage queue,
+        uint256 value
+    ) internal view returns (uint256) {
+        return uint256(_prev(queue._inner, bytes32(value)));
+    }
+
+    function next(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal view returns (bytes32) {
+        return _next(queue._inner, value);
+    }
+
+    function next(
+        AddressQueue storage queue,
+        address value
+    ) internal view returns (address) {
+        return
+            address(
+                uint160(
+                    uint256(
+                        _next(queue._inner, bytes32(uint256(uint160(value))))
+                    )
+                )
+            );
+    }
+
+    function next(
+        UintQueue storage queue,
+        uint256 value
+    ) internal view returns (uint256) {
+        return uint256(_next(queue._inner, bytes32(value)));
+    }
+
+    function insertBefore(
+        Bytes32Queue storage queue,
+        bytes32 nextValue,
+        bytes32 newValue
+    ) internal returns (bool status) {
+        status = _insertBefore(queue._inner, nextValue, newValue);
+    }
+
+    function insertBefore(
+        AddressQueue storage queue,
+        address nextValue,
+        address newValue
+    ) internal returns (bool status) {
+        status = _insertBefore(
+            queue._inner,
+            bytes32(uint256(uint160(nextValue))),
+            bytes32(uint256(uint160(newValue)))
+        );
+    }
+
+    function insertBefore(
+        UintQueue storage queue,
+        uint256 nextValue,
+        uint256 newValue
+    ) internal returns (bool status) {
+        status = _insertBefore(
+            queue._inner,
+            bytes32(nextValue),
+            bytes32(newValue)
+        );
+    }
+
+    function insertAfter(
+        Bytes32Queue storage queue,
+        bytes32 prevValue,
+        bytes32 newValue
+    ) internal returns (bool status) {
+        status = _insertAfter(queue._inner, prevValue, newValue);
+    }
+
+    function insertAfter(
+        AddressQueue storage queue,
+        address prevValue,
+        address newValue
+    ) internal returns (bool status) {
+        status = _insertAfter(
+            queue._inner,
+            bytes32(uint256(uint160(prevValue))),
+            bytes32(uint256(uint160(newValue)))
+        );
+    }
+
+    function insertAfter(
+        UintQueue storage queue,
+        uint256 prevValue,
+        uint256 newValue
+    ) internal returns (bool status) {
+        status = _insertAfter(
+            queue._inner,
+            bytes32(prevValue),
+            bytes32(newValue)
+        );
+    }
+
+    function push(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal returns (bool status) {
+        status = _push(queue._inner, value);
+    }
+
+    function push(
+        AddressQueue storage queue,
+        address value
+    ) internal returns (bool status) {
+        status = _push(queue._inner, bytes32(uint256(uint160(value))));
+    }
+
+    function push(
+        UintQueue storage queue,
+        uint256 value
+    ) internal returns (bool status) {
+        status = _push(queue._inner, bytes32(value));
+    }
+
+    function pop(Bytes32Queue storage queue) internal returns (bytes32 value) {
+        value = _pop(queue._inner);
+    }
+
+    function pop(AddressQueue storage queue) internal returns (address value) {
+        value = address(uint160(uint256(_pop(queue._inner))));
+    }
+
+    function pop(UintQueue storage queue) internal returns (uint256 value) {
+        value = uint256(_pop(queue._inner));
+    }
+
+    function shift(
+        Bytes32Queue storage queue
+    ) internal returns (bytes32 value) {
+        value = _shift(queue._inner);
+    }
+
+    function shift(
+        AddressQueue storage queue
+    ) internal returns (address value) {
+        value = address(uint160(uint256(_shift(queue._inner))));
+    }
+
+    function shift(UintQueue storage queue) internal returns (uint256 value) {
+        value = uint256(_shift(queue._inner));
+    }
+
+    function unshift(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal returns (bool status) {
+        status = _unshift(queue._inner, value);
+    }
+
+    function unshift(
+        AddressQueue storage queue,
+        address value
+    ) internal returns (bool status) {
+        status = _unshift(queue._inner, bytes32(uint256(uint160(value))));
+    }
+
+    function unshift(
+        UintQueue storage queue,
+        uint256 value
+    ) internal returns (bool status) {
+        status = _unshift(queue._inner, bytes32(value));
+    }
+
+    function remove(
+        Bytes32Queue storage queue,
+        bytes32 value
+    ) internal returns (bool status) {
+        status = _remove(queue._inner, value);
+    }
+
+    function remove(
+        AddressQueue storage queue,
+        address value
+    ) internal returns (bool status) {
+        status = _remove(queue._inner, bytes32(uint256(uint160(value))));
+    }
+
+    function remove(
+        UintQueue storage queue,
+        uint256 value
+    ) internal returns (bool status) {
+        status = _remove(queue._inner, bytes32(value));
+    }
 
     function _contains(
         QueueInternal storage queue,
