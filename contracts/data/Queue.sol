@@ -146,15 +146,7 @@ library Queue {
         QueueInternal storage queue,
         bytes32 value
     ) private view returns (bool) {
-        return _contains(value, queue._asc, queue._desc);
-    }
-
-    function _contains(
-        bytes32 value,
-        mapping(bytes32 => bytes32) storage asc,
-        mapping(bytes32 => bytes32) storage desc
-    ) private view returns (bool) {
-        return asc[value] != 0 || desc[0] == value;
+        return queue._asc[value] != 0 || queue._desc[0] == value;
     }
 
     function _prev(
@@ -171,39 +163,79 @@ library Queue {
         return queue._asc[value];
     }
 
-    function _add(
+    function _insertBefore(
+        QueueInternal storage queue,
+        bytes32 value,
+        bytes32 newValue
+    ) private returns (bool status) {
+        status = _insert(queue, _prev(queue, value), newValue, value);
+    }
+
+    function _insertAfter(
+        QueueInternal storage queue,
+        bytes32 value,
+        bytes32 newValue
+    ) private returns (bool status) {
+        status = _insert(queue, value, newValue, _next(queue, value));
+    }
+
+    function _insert(
+        QueueInternal storage queue,
+        bytes32 prevValue,
+        bytes32 newValue,
+        bytes32 nextValue
+    ) private returns (bool status) {
+        if (!_contains(queue, newValue)) {
+            _link(queue, prevValue, newValue);
+            _link(queue, newValue, nextValue);
+            status = true;
+        }
+    }
+
+    function _push(
         QueueInternal storage queue,
         bytes32 value
-    ) private returns (bool) {
-        mapping(bytes32 => bytes32) storage asc = queue._asc;
-        mapping(bytes32 => bytes32) storage desc = queue._desc;
+    ) private returns (bool status) {
+        status = _insert(queue, _prev(queue, 0), value, 0);
+    }
 
-        if (_contains(value, asc, desc)) return false;
+    function _pop(QueueInternal storage queue) private returns (bytes32 value) {
+        value = _prev(queue, 0);
+        _remove(queue, value);
+    }
 
-        bytes32 last = desc[0];
-        asc[last] = value;
-        desc[value] = last;
-        desc[0] = value;
+    function _shift(
+        QueueInternal storage queue
+    ) private returns (bytes32 value) {
+        value = _next(queue, 0);
+        _remove(queue, value);
+    }
 
-        return true;
+    function _unshift(
+        QueueInternal storage queue,
+        bytes32 value
+    ) private returns (bool status) {
+        status = _insert(queue, 0, value, _next(queue, 0));
     }
 
     function _remove(
         QueueInternal storage queue,
         bytes32 value
-    ) private returns (bool) {
-        mapping(bytes32 => bytes32) storage asc = queue._asc;
-        mapping(bytes32 => bytes32) storage desc = queue._desc;
+    ) private returns (bool status) {
+        if (_contains(queue, value)) {
+            _link(queue, _prev(queue, value), _next(queue, value));
+            delete queue._desc[value];
+            delete queue._asc[value];
+            status = true;
+        }
+    }
 
-        if (!_contains(value, asc, desc)) return false;
-
-        bytes32 prevValue = desc[value];
-        bytes32 nextValue = asc[value];
-        asc[prevValue] = nextValue;
-        desc[nextValue] = prevValue;
-        delete asc[value];
-        delete desc[value];
-
-        return true;
+    function _link(
+        QueueInternal storage queue,
+        bytes32 prevValue,
+        bytes32 nextValue
+    ) private {
+        queue._asc[prevValue] = nextValue;
+        queue._desc[nextValue] = prevValue;
     }
 }
