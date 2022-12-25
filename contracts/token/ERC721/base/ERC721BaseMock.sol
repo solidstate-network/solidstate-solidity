@@ -53,7 +53,8 @@ contract ERC721BaseMock is ERC721Base, ERC165Base {
     }
 
     function __approve(address to, uint256 tokenId) external {
-        _approve(to, tokenId);
+        // TODO: fix function name
+        _approveInternal(to, tokenId);
     }
 
     function checkOnERC721Received(
