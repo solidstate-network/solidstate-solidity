@@ -458,6 +458,17 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['next(bytes32)'](newValue)).to.eq(threeBytes32);
           expect(await instance['prev(bytes32)'](threeBytes32)).to.eq(newValue);
         });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['replace(bytes32,bytes32)'](oneBytes32, zeroBytes32),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
       });
     });
   });
