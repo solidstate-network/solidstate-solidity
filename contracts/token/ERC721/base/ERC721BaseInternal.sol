@@ -95,7 +95,7 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
 
         _beforeTokenTransfer(owner, address(0), tokenId);
 
-        _approveInternal(address(0), tokenId);
+        _approve(owner, address(0), tokenId);
 
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
         l.holderTokens[owner].remove(tokenId);
@@ -109,12 +109,14 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
         address to,
         uint256 tokenId
     ) internal virtual {
-        if (_ownerOf(tokenId) != from) revert ERC721Base__NotTokenOwner();
+        address owner = _ownerOf(tokenId);
+
+        if (owner != from) revert ERC721Base__NotTokenOwner();
         if (to == address(0)) revert ERC721Base__TransferToZeroAddress();
 
         _beforeTokenTransfer(from, to, tokenId);
 
-        _approveInternal(address(0), tokenId);
+        _approve(owner, address(0), tokenId);
 
         ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout();
         l.holderTokens[from].remove(tokenId);
@@ -168,19 +170,23 @@ abstract contract ERC721BaseInternal is IERC721BaseInternal {
 
     function _approve(address operator, uint256 tokenId) internal virtual {
         _handleApproveMessageValue(operator, tokenId, msg.value);
+
         address owner = _ownerOf(tokenId);
+
         if (operator == owner) revert ERC721Base__SelfApproval();
         if (msg.sender != owner && !_isApprovedForAll(owner, msg.sender))
             revert ERC721Base__NotOwnerOrApproved();
-        _approveInternal(operator, tokenId);
+
+        _approve(owner, operator, tokenId);
     }
 
-    function _approveInternal(
+    function _approve(
+        address owner,
         address operator,
         uint256 tokenId
     ) internal virtual {
         ERC721BaseStorage.layout().tokenApprovals[tokenId] = operator;
-        emit Approval(_ownerOf(tokenId), operator, tokenId);
+        emit Approval(owner, operator, tokenId);
     }
 
     function _setApprovalForAll(
