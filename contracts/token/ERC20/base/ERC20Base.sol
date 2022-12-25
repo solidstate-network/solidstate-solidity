@@ -14,14 +14,14 @@ abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
     /**
      * @inheritdoc IERC20
      */
-    function totalSupply() public view virtual returns (uint256) {
+    function totalSupply() public view returns (uint256) {
         return _totalSupply();
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function balanceOf(address account) public view virtual returns (uint256) {
+    function balanceOf(address account) public view returns (uint256) {
         return _balanceOf(account);
     }
 
@@ -31,27 +31,21 @@ abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
     function allowance(
         address holder,
         address spender
-    ) public view virtual returns (uint256) {
+    ) public view returns (uint256) {
         return _allowance(holder, spender);
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function approve(
-        address spender,
-        uint256 amount
-    ) public virtual returns (bool) {
+    function approve(address spender, uint256 amount) public returns (bool) {
         return _approve(msg.sender, spender, amount);
     }
 
     /**
      * @inheritdoc IERC20
      */
-    function transfer(
-        address recipient,
-        uint256 amount
-    ) public virtual returns (bool) {
+    function transfer(address recipient, uint256 amount) public returns (bool) {
         return _transfer(msg.sender, recipient, amount);
     }
 
@@ -62,7 +56,7 @@ abstract contract ERC20Base is IERC20Base, ERC20BaseInternal {
         address holder,
         address recipient,
         uint256 amount
-    ) public virtual returns (bool) {
+    ) public returns (bool) {
         return _transferFrom(holder, recipient, amount);
     }
 }
