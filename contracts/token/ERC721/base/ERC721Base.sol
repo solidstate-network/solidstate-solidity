@@ -22,21 +22,23 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function balanceOf(address account) public view returns (uint256) {
+    function balanceOf(address account) public view virtual returns (uint256) {
         return _balanceOf(account);
     }
 
     /**
      * @inheritdoc IERC721
      */
-    function ownerOf(uint256 tokenId) public view returns (address) {
+    function ownerOf(uint256 tokenId) public view virtual returns (address) {
         return _ownerOf(tokenId);
     }
 
     /**
      * @inheritdoc IERC721
      */
-    function getApproved(uint256 tokenId) public view returns (address) {
+    function getApproved(
+        uint256 tokenId
+    ) public view virtual returns (address) {
         return _getApproved(tokenId);
     }
 
@@ -46,7 +48,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     function isApprovedForAll(
         address account,
         address operator
-    ) public view returns (bool) {
+    ) public view virtual returns (bool) {
         return _isApprovedForAll(account, operator);
     }
 
@@ -57,7 +59,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
         address from,
         address to,
         uint256 tokenId
-    ) public payable {
+    ) public payable virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         if (!_isApprovedOrOwner(msg.sender, tokenId))
             revert ERC721Base__NotOwnerOrApproved();
@@ -71,7 +73,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
         address from,
         address to,
         uint256 tokenId
-    ) public payable {
+    ) public payable virtual {
         safeTransferFrom(from, to, tokenId, '');
     }
 
@@ -83,7 +85,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) public payable {
+    ) public payable virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         if (!_isApprovedOrOwner(msg.sender, tokenId))
             revert ERC721Base__NotOwnerOrApproved();
@@ -93,7 +95,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function approve(address operator, uint256 tokenId) public payable {
+    function approve(address operator, uint256 tokenId) public payable virtual {
         _handleApproveMessageValue(operator, tokenId, msg.value);
         address owner = ownerOf(tokenId);
         if (operator == owner) revert ERC721Base__SelfApproval();
@@ -105,7 +107,7 @@ abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     /**
      * @inheritdoc IERC721
      */
-    function setApprovalForAll(address operator, bool status) public {
+    function setApprovalForAll(address operator, bool status) public virtual {
         if (operator == msg.sender) revert ERC721Base__SelfApproval();
         ERC721BaseStorage.layout().operatorApprovals[msg.sender][
             operator
