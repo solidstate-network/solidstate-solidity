@@ -402,7 +402,9 @@ library DoublyLinkedList {
     ) private returns (bool status) {
         if (newValue == bytes32(0)) revert DoublyLinkedList__InvalidValue();
 
-        if (_contains(self, oldValue) && !_contains(self, newValue)) {
+        if (!_contains(self, oldValue)) revert DoublyLinkedList__InvalidValue();
+
+        if (!_contains(self, newValue)) {
             _link(self, _prev(self, oldValue), newValue);
             _link(self, newValue, _next(self, oldValue));
             delete self._prevValues[oldValue];

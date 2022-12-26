@@ -437,13 +437,6 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('returns false if value is not replaced', async () => {
-          expect(
-            await instance.callStatic['replace(bytes32,bytes32)'](
-              oneBytes32,
-              twoBytes32,
-            ),
-          ).to.be.false;
-
           await instance['push(bytes32)'](oneBytes32);
           await instance['push(bytes32)'](twoBytes32);
 
@@ -479,6 +472,18 @@ describe('DoublyLinkedList', async () => {
           it('new value is zero', async () => {
             await expect(
               instance['replace(bytes32,bytes32)'](oneBytes32, zeroBytes32),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+
+          it('old value is not contained in list', async () => {
+            await expect(
+              instance.callStatic['replace(bytes32,bytes32)'](
+                oneBytes32,
+                twoBytes32,
+              ),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidValue',
@@ -913,13 +918,6 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('returns false if value is not replaced', async () => {
-          expect(
-            await instance.callStatic['replace(address,address)'](
-              oneAddress,
-              twoAddress,
-            ),
-          ).to.be.false;
-
           await instance['push(address)'](oneAddress);
           await instance['push(address)'](twoAddress);
 
@@ -955,6 +953,18 @@ describe('DoublyLinkedList', async () => {
           it('new value is zero', async () => {
             await expect(
               instance['replace(address,address)'](oneAddress, zeroAddress),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+
+          it('old value is not contained in list', async () => {
+            await expect(
+              instance.callStatic['replace(address,address)'](
+                oneAddress,
+                twoAddress,
+              ),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidValue',
@@ -1389,13 +1399,6 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('returns false if value is not replaced', async () => {
-          expect(
-            await instance.callStatic['replace(uint256,uint256)'](
-              oneUint256,
-              twoUint256,
-            ),
-          ).to.be.false;
-
           await instance['push(uint256)'](oneUint256);
           await instance['push(uint256)'](twoUint256);
 
@@ -1431,6 +1434,18 @@ describe('DoublyLinkedList', async () => {
           it('new value is zero', async () => {
             await expect(
               instance['replace(uint256,uint256)'](oneUint256, zeroUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+
+          it('old value is not contained in list', async () => {
+            await expect(
+              instance.callStatic['replace(uint256,uint256)'](
+                oneUint256,
+                twoUint256,
+              ),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidValue',
