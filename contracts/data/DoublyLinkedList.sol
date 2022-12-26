@@ -7,8 +7,8 @@ pragma solidity ^0.8.0;
  */
 library DoublyLinkedList {
     struct DoublyLinkedListInternal {
-        mapping(bytes32 => bytes32) _asc;
-        mapping(bytes32 => bytes32) _desc;
+        mapping(bytes32 => bytes32) _nextValues;
+        mapping(bytes32 => bytes32) _prevValues;
     }
 
     struct Bytes32List {
@@ -285,14 +285,16 @@ library DoublyLinkedList {
         DoublyLinkedListInternal storage self,
         bytes32 value
     ) private view returns (bool) {
-        return value != 0 && (self._asc[value] != 0 || self._desc[0] == value);
+        return
+            value != 0 &&
+            (self._nextValues[value] != 0 || self._prevValues[0] == value);
     }
 
     function _prev(
         DoublyLinkedListInternal storage self,
         bytes32 nextValue
     ) private view returns (bytes32 prevValue) {
-        prevValue = self._desc[nextValue];
+        prevValue = self._prevValues[nextValue];
         if (
             nextValue != 0 &&
             prevValue == 0 &&
@@ -304,7 +306,7 @@ library DoublyLinkedList {
         DoublyLinkedListInternal storage self,
         bytes32 prevValue
     ) private view returns (bytes32 nextValue) {
-        nextValue = self._asc[prevValue];
+        nextValue = self._nextValues[prevValue];
         if (
             prevValue != 0 &&
             nextValue == 0 &&
@@ -387,8 +389,8 @@ library DoublyLinkedList {
     ) private returns (bool status) {
         if (_contains(self, value)) {
             _link(self, _prev(self, value), _next(self, value));
-            delete self._desc[value];
-            delete self._asc[value];
+            delete self._prevValues[value];
+            delete self._nextValues[value];
             status = true;
         }
     }
@@ -403,8 +405,8 @@ library DoublyLinkedList {
         if (_contains(self, oldValue) && !_contains(self, newValue)) {
             _link(self, _prev(self, oldValue), newValue);
             _link(self, newValue, _next(self, oldValue));
-            delete self._desc[oldValue];
-            delete self._asc[oldValue];
+            delete self._prevValues[oldValue];
+            delete self._nextValues[oldValue];
             status = true;
         }
     }
@@ -414,7 +416,7 @@ library DoublyLinkedList {
         bytes32 prevValue,
         bytes32 nextValue
     ) private {
-        self._asc[prevValue] = nextValue;
-        self._desc[nextValue] = prevValue;
+        self._nextValues[prevValue] = nextValue;
+        self._prevValues[nextValue] = prevValue;
     }
 }
