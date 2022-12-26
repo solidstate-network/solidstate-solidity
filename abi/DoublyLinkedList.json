@@ -1,7 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "DoublyLinkedList__InvalidValue",
+    "name": "DoublyLinkedList__InvalidInput",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DoublyLinkedList__InvalidReference",
     "type": "error"
   }
 ]

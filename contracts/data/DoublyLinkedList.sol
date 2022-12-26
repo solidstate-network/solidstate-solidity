@@ -23,7 +23,8 @@ library DoublyLinkedList {
         DoublyLinkedListInternal _inner;
     }
 
-    error DoublyLinkedList__InvalidValue();
+    error DoublyLinkedList__InvalidInput();
+    error DoublyLinkedList__InvalidReference();
 
     function contains(
         Bytes32List storage self,
@@ -299,7 +300,7 @@ library DoublyLinkedList {
             nextValue != 0 &&
             prevValue == 0 &&
             _next(self, prevValue) != nextValue
-        ) revert DoublyLinkedList__InvalidValue();
+        ) revert DoublyLinkedList__InvalidReference();
     }
 
     function _next(
@@ -311,7 +312,7 @@ library DoublyLinkedList {
             prevValue != 0 &&
             nextValue == 0 &&
             _prev(self, nextValue) != prevValue
-        ) revert DoublyLinkedList__InvalidValue();
+        ) revert DoublyLinkedList__InvalidReference();
     }
 
     function _insertBefore(
@@ -346,7 +347,7 @@ library DoublyLinkedList {
         bytes32 nextValue,
         bytes32 newValue
     ) private returns (bool status) {
-        if (newValue == 0) revert DoublyLinkedList__InvalidValue();
+        if (newValue == 0) revert DoublyLinkedList__InvalidInput();
 
         if (!_contains(self, newValue)) {
             _link(self, prevValue, newValue);
@@ -400,9 +401,10 @@ library DoublyLinkedList {
         bytes32 oldValue,
         bytes32 newValue
     ) private returns (bool status) {
-        if (newValue == 0) revert DoublyLinkedList__InvalidValue();
+        if (newValue == 0) revert DoublyLinkedList__InvalidInput();
 
-        if (!_contains(self, oldValue)) revert DoublyLinkedList__InvalidValue();
+        if (!_contains(self, oldValue))
+            revert DoublyLinkedList__InvalidReference();
 
         if (!_contains(self, newValue)) {
             _link(self, _prev(self, oldValue), newValue);
