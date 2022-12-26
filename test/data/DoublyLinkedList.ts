@@ -468,6 +468,24 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['prev(bytes32)'](threeBytes32)).to.eq(newValue);
         });
 
+        it('does nothing if new value matches existing value', async () => {
+          await instance['push(bytes32)'](oneBytes32);
+          await instance['push(bytes32)'](twoBytes32);
+
+          await instance['replace(bytes32,bytes32)'](oneBytes32, oneBytes32);
+
+          expect(await instance['contains(bytes32)'](oneBytes32)).to.be.true;
+
+          expect(await instance['next(bytes32)'](zeroBytes32)).to.eq(
+            oneBytes32,
+          );
+          expect(await instance['prev(bytes32)'](oneBytes32)).to.eq(
+            zeroBytes32,
+          );
+          expect(await instance['next(bytes32)'](oneBytes32)).to.eq(twoBytes32);
+          expect(await instance['prev(bytes32)'](twoBytes32)).to.eq(oneBytes32);
+        });
+
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await instance['push(bytes32)'](oneBytes32);
@@ -951,6 +969,24 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['prev(address)'](threeAddress)).to.eq(newValue);
         });
 
+        it('does nothing if new value matches existing value', async () => {
+          await instance['push(address)'](oneAddress);
+          await instance['push(address)'](twoAddress);
+
+          await instance['replace(address,address)'](oneAddress, oneAddress);
+
+          expect(await instance['contains(address)'](oneAddress)).to.be.true;
+
+          expect(await instance['next(address)'](zeroAddress)).to.eq(
+            oneAddress,
+          );
+          expect(await instance['prev(address)'](oneAddress)).to.eq(
+            zeroAddress,
+          );
+          expect(await instance['next(address)'](oneAddress)).to.eq(twoAddress);
+          expect(await instance['prev(address)'](twoAddress)).to.eq(oneAddress);
+        });
+
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await instance['push(address)'](oneAddress);
@@ -1432,6 +1468,24 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['prev(uint256)'](newValue)).to.eq(oneUint256);
           expect(await instance['next(uint256)'](newValue)).to.eq(threeUint256);
           expect(await instance['prev(uint256)'](threeUint256)).to.eq(newValue);
+        });
+
+        it('does nothing if new value matches existing value', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          await instance['replace(uint256,uint256)'](oneUint256, oneUint256);
+
+          expect(await instance['contains(uint256)'](oneUint256)).to.be.true;
+
+          expect(await instance['next(uint256)'](zeroUint256)).to.eq(
+            oneUint256,
+          );
+          expect(await instance['prev(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(twoUint256);
+          expect(await instance['prev(uint256)'](twoUint256)).to.eq(oneUint256);
         });
 
         describe('reverts if', () => {
