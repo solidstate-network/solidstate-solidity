@@ -5,8 +5,8 @@ import {
   DoublyLinkedListBytes32Mock__factory,
   DoublyLinkedListAddressMock,
   DoublyLinkedListAddressMock__factory,
-  DoublyLinkedListUintMock,
-  DoublyLinkedListUintMock__factory,
+  DoublyLinkedListUint256Mock,
+  DoublyLinkedListUint256Mock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
@@ -955,6 +955,482 @@ describe('DoublyLinkedList', async () => {
           it('new value is zero', async () => {
             await expect(
               instance['replace(address,address)'](oneAddress, zeroAddress),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+    });
+  });
+
+  describe('Uint256List', async () => {
+    let instance: DoublyLinkedListUint256Mock;
+    let deployer: SignerWithAddress;
+
+    beforeEach(async () => {
+      [deployer] = await ethers.getSigners();
+      instance = await new DoublyLinkedListUint256Mock__factory(
+        deployer,
+      ).deploy();
+    });
+
+    describe('__internal', () => {
+      const zeroUint256 = ethers.constants.Zero;
+      const oneUint256 = ethers.constants.One;
+      const twoUint256 = ethers.constants.Two;
+      const threeUint256 = BigNumber.from('3');
+
+      describe('#contains(uint256)', () => {
+        it('returns true if the value has been added', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['contains(uint256)'](oneUint256)).to.be.true;
+          expect(await instance['contains(uint256)'](twoUint256)).to.be.true;
+        });
+
+        it('returns false if the value has not been added', async () => {
+          expect(await instance['contains(uint256)'](oneUint256)).to.be.false;
+          await instance['push(uint256)'](oneUint256);
+          expect(await instance['contains(uint256)'](twoUint256)).to.be.false;
+        });
+
+        it('returns false for zero value', async () => {
+          expect(await instance['contains(uint256)'](zeroUint256)).to.be.false;
+        });
+      });
+
+      describe('#prev(uint256)', () => {
+        it('returns the previous value in the list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['prev(uint256)'](twoUint256)).to.eq(oneUint256);
+        });
+
+        it('returns zero if the value is at the beginning of the list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(await instance['prev(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+        });
+
+        it('returns last value in list if input is zero', async () => {
+          expect(await instance['next(uint256)'](zeroUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['prev(uint256)'](zeroUint256)).to.eq(
+            twoUint256,
+          );
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['prev(uint256)'](oneUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#next(uint256)', () => {
+        it('returns the next value in the list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(twoUint256);
+        });
+
+        it('returns zero if the value is at the end of the list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+        });
+
+        it('returns first value in list if input is zero', async () => {
+          expect(await instance['next(uint256)'](zeroUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['next(uint256)'](zeroUint256)).to.eq(
+            oneUint256,
+          );
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['next(uint256)'](oneUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#insertBefore(uint256,uint256)', () => {
+        it('returns true if value is added to list', async () => {
+          expect(
+            await instance.callStatic['insertBefore(uint256,uint256)'](
+              zeroUint256,
+              oneUint256,
+            ),
+          ).to.be.true;
+        });
+
+        it('returns false if value is not added to list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(
+            await instance.callStatic['insertBefore(uint256,uint256)'](
+              zeroUint256,
+              oneUint256,
+            ),
+          ).to.be.false;
+        });
+
+        it('adds new value to list in position before existing value', async () => {
+          await instance['insertBefore(uint256,uint256)'](
+            zeroUint256,
+            oneUint256,
+          );
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['insertBefore(uint256,uint256)'](
+            oneUint256,
+            twoUint256,
+          );
+
+          expect(await instance['next(uint256)'](twoUint256)).to.eq(oneUint256);
+        });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['insertBefore(uint256,uint256)'](
+                zeroUint256,
+                zeroUint256,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['insertBefore(uint256,uint256)'](oneUint256, twoUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#insertAfter(uint256,uint256)', () => {
+        it('returns true if value is added to list', async () => {
+          expect(
+            await instance.callStatic['insertAfter(uint256,uint256)'](
+              zeroUint256,
+              oneUint256,
+            ),
+          ).to.be.true;
+        });
+
+        it('returns false if value is not added to list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(
+            await instance.callStatic['insertAfter(uint256,uint256)'](
+              zeroUint256,
+              oneUint256,
+            ),
+          ).to.be.false;
+        });
+
+        it('adds new value to list in position before existing value', async () => {
+          await instance['insertAfter(uint256,uint256)'](
+            zeroUint256,
+            oneUint256,
+          );
+
+          expect(await instance['prev(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['insertAfter(uint256,uint256)'](
+            oneUint256,
+            twoUint256,
+          );
+
+          expect(await instance['prev(uint256)'](twoUint256)).to.eq(oneUint256);
+        });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['insertAfter(uint256,uint256)'](
+                zeroUint256,
+                zeroUint256,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['insertAfter(uint256,uint256)'](oneUint256, twoUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#push(uint256)', () => {
+        it('returns true if value is added to list', async () => {
+          expect(await instance.callStatic['push(uint256)'](oneUint256)).to.be
+            .true;
+        });
+
+        it('returns false if value is not added to list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(await instance.callStatic['push(uint256)'](oneUint256)).to.be
+            .false;
+        });
+
+        it('adds new value to end of list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(twoUint256);
+        });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['push(uint256)'](zeroUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#pop()', () => {
+        it('returns last value in list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance.callStatic['pop()']()).to.eq(twoUint256);
+        });
+
+        it('returns zero if list is empty', async () => {
+          expect(await instance.callStatic['pop()']()).to.eq(zeroUint256);
+        });
+
+        it('removes last value from list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          await instance['pop()']();
+
+          expect(await instance['contains(uint256)'](twoUint256)).to.be.false;
+
+          expect(await instance['prev(uint256)'](zeroUint256)).to.eq(
+            oneUint256,
+          );
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+        });
+      });
+
+      describe('#shift()', () => {
+        it('returns first value in list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(await instance.callStatic['shift()']()).to.eq(oneUint256);
+        });
+
+        it('returns zero if list is empty', async () => {
+          expect(await instance.callStatic['shift()']()).to.eq(zeroUint256);
+        });
+
+        it('removes first value from list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          await instance['shift()']();
+
+          expect(await instance['contains(uint256)'](oneUint256)).to.be.false;
+
+          expect(await instance['next(uint256)'](zeroUint256)).to.eq(
+            twoUint256,
+          );
+
+          expect(await instance['prev(uint256)'](twoUint256)).to.eq(
+            zeroUint256,
+          );
+        });
+      });
+
+      describe('#unshift(uint256)', () => {
+        it('returns true if value is added to list', async () => {
+          expect(await instance.callStatic['unshift(uint256)'](oneUint256)).to
+            .be.true;
+        });
+
+        it('returns false if value is not added to list', async () => {
+          await instance['unshift(uint256)'](oneUint256);
+
+          expect(await instance.callStatic['unshift(uint256)'](oneUint256)).to
+            .be.false;
+        });
+
+        it('adds new value to beginning of list', async () => {
+          await instance['unshift(uint256)'](oneUint256);
+
+          expect(await instance['prev(uint256)'](oneUint256)).to.eq(
+            zeroUint256,
+          );
+
+          await instance['unshift(uint256)'](twoUint256);
+
+          expect(await instance['prev(uint256)'](oneUint256)).to.eq(twoUint256);
+        });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['unshift(uint256)'](zeroUint256),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
+      });
+
+      describe('#remove(uint256)', () => {
+        it('returns true if value is removed from list', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(await instance.callStatic['remove(uint256)'](oneUint256)).to.be
+            .true;
+        });
+
+        it('returns false if value is not removed from list', async () => {
+          expect(await instance.callStatic['remove(uint256)'](oneUint256)).to.be
+            .false;
+        });
+
+        it('removes value from list', async () => {
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+          await instance['push(uint256)'](threeUint256);
+
+          await instance['remove(uint256)'](twoUint256);
+
+          expect(await instance['contains(uint256)'](twoUint256)).to.be.false;
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(
+            threeUint256,
+          );
+
+          expect(await instance['prev(uint256)'](threeUint256)).to.eq(
+            oneUint256,
+          );
+        });
+      });
+
+      describe('#replace(uint256,uint256)', () => {
+        it('returns true if value is replaced', async () => {
+          await instance['push(uint256)'](oneUint256);
+
+          expect(
+            await instance.callStatic['replace(uint256,uint256)'](
+              oneUint256,
+              twoUint256,
+            ),
+          ).to.be.true;
+        });
+
+        it('returns false if value is not replaced', async () => {
+          expect(
+            await instance.callStatic['replace(uint256,uint256)'](
+              oneUint256,
+              twoUint256,
+            ),
+          ).to.be.false;
+
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+
+          expect(
+            await instance.callStatic['replace(uint256,uint256)'](
+              oneUint256,
+              twoUint256,
+            ),
+          ).to.be.false;
+        });
+
+        it('replaces existing value with new value', async () => {
+          const newValue = BigNumber.from('4');
+
+          await instance['push(uint256)'](oneUint256);
+          await instance['push(uint256)'](twoUint256);
+          await instance['push(uint256)'](threeUint256);
+
+          expect(await instance['contains(uint256)'](newValue)).to.be.false;
+
+          await instance['replace(uint256,uint256)'](twoUint256, newValue);
+
+          expect(await instance['contains(uint256)'](twoUint256)).to.be.false;
+          expect(await instance['contains(uint256)'](newValue)).to.be.true;
+
+          expect(await instance['next(uint256)'](oneUint256)).to.eq(newValue);
+          expect(await instance['prev(uint256)'](newValue)).to.eq(oneUint256);
+          expect(await instance['next(uint256)'](newValue)).to.eq(threeUint256);
+          expect(await instance['prev(uint256)'](threeUint256)).to.eq(newValue);
+        });
+
+        describe('reverts if', () => {
+          it('new value is zero', async () => {
+            await expect(
+              instance['replace(uint256,uint256)'](oneUint256, zeroUint256),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidValue',
