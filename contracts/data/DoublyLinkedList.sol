@@ -285,7 +285,7 @@ library DoublyLinkedList {
         DoublyLinkedListInternal storage self,
         bytes32 value
     ) private view returns (bool) {
-        return self._asc[value] != 0 || self._desc[0] == value;
+        return value != 0 && (self._asc[value] != 0 || self._desc[0] == value);
     }
 
     function _prev(
