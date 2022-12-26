@@ -470,6 +470,8 @@ describe('DoublyLinkedList', async () => {
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
+            await instance['push(bytes32)'](oneBytes32);
+
             await expect(
               instance['replace(bytes32,bytes32)'](oneBytes32, zeroBytes32),
             ).to.be.revertedWithCustomError(
@@ -951,6 +953,8 @@ describe('DoublyLinkedList', async () => {
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
+            await instance['push(address)'](oneAddress);
+
             await expect(
               instance['replace(address,address)'](oneAddress, zeroAddress),
             ).to.be.revertedWithCustomError(
@@ -1432,6 +1436,8 @@ describe('DoublyLinkedList', async () => {
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
+            await instance['push(uint256)'](oneUint256);
+
             await expect(
               instance['replace(uint256,uint256)'](oneUint256, zeroUint256),
             ).to.be.revertedWithCustomError(
