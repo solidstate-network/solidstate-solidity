@@ -290,16 +290,26 @@ library DoublyLinkedList {
 
     function _prev(
         DoublyLinkedListInternal storage self,
-        bytes32 value
-    ) private view returns (bytes32) {
-        return self._desc[value];
+        bytes32 nextValue
+    ) private view returns (bytes32 prevValue) {
+        prevValue = self._desc[nextValue];
+        if (
+            nextValue != 0 &&
+            prevValue == 0 &&
+            _next(self, prevValue) != nextValue
+        ) revert DoublyLinkedList__InvalidValue();
     }
 
     function _next(
         DoublyLinkedListInternal storage self,
-        bytes32 value
-    ) private view returns (bytes32) {
-        return self._asc[value];
+        bytes32 prevValue
+    ) private view returns (bytes32 nextValue) {
+        nextValue = self._asc[prevValue];
+        if (
+            prevValue != 0 &&
+            nextValue == 0 &&
+            _prev(self, nextValue) != prevValue
+        ) revert DoublyLinkedList__InvalidValue();
     }
 
     function _insertBefore(

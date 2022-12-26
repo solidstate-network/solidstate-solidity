@@ -58,12 +58,6 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['prev(bytes32)'](twoBytes32)).to.eq(oneBytes32);
         });
 
-        it('returns zero if the value has not been added', async () => {
-          expect(await instance['prev(bytes32)'](oneBytes32)).to.eq(
-            zeroBytes32,
-          );
-        });
-
         it('returns zero if the value is at the beginning of the list', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
@@ -84,6 +78,17 @@ describe('DoublyLinkedList', async () => {
             twoBytes32,
           );
         });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['prev(bytes32)'](oneBytes32),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
+        });
       });
 
       describe('#next(bytes32)', () => {
@@ -92,12 +97,6 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](twoBytes32);
 
           expect(await instance['next(bytes32)'](oneBytes32)).to.eq(twoBytes32);
-        });
-
-        it('returns zero if the value has not been added', async () => {
-          expect(await instance['next(bytes32)'](oneBytes32)).to.eq(
-            zeroBytes32,
-          );
         });
 
         it('returns zero if the value is at the end of the list', async () => {
@@ -119,6 +118,17 @@ describe('DoublyLinkedList', async () => {
           expect(await instance['next(bytes32)'](zeroBytes32)).to.eq(
             oneBytes32,
           );
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['next(bytes32)'](oneBytes32),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
+          });
         });
       });
 
@@ -174,10 +184,13 @@ describe('DoublyLinkedList', async () => {
             );
           });
 
-          it('existing value is not contained in list', async () => {
+          it('value is not contained in list', async () => {
             await expect(
               instance['insertBefore(bytes32,bytes32)'](oneBytes32, twoBytes32),
-            ).to.be.revertedWithCustomError(instance, 'TODO');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
           });
         });
       });
@@ -234,10 +247,13 @@ describe('DoublyLinkedList', async () => {
             );
           });
 
-          it('existing value is not contained in list', async () => {
+          it('value is not contained in list', async () => {
             await expect(
               instance['insertAfter(bytes32,bytes32)'](oneBytes32, twoBytes32),
-            ).to.be.revertedWithCustomError(instance, 'TODO');
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__InvalidValue',
+            );
           });
         });
       });
