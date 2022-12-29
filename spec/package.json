@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Portable specifications for SolidState contracts",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@ethereum-waffle/mock-contract": "^3.4.4",
-    "@solidstate/library": "^0.0.51"
+    "@solidstate/library": "^0.0.52"
   },
   "files": [
     "dist/"
