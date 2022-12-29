@@ -85,7 +85,7 @@ describe('DoublyLinkedList', async () => {
               instance['prev(bytes32)'](oneBytes32),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -126,7 +126,7 @@ describe('DoublyLinkedList', async () => {
               instance['next(bytes32)'](oneBytes32),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -189,7 +189,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertBefore(bytes32,bytes32)'](oneBytes32, twoBytes32),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -252,7 +252,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertAfter(bytes32,bytes32)'](oneBytes32, twoBytes32),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -506,7 +506,7 @@ describe('DoublyLinkedList', async () => {
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -586,7 +586,7 @@ describe('DoublyLinkedList', async () => {
               instance['prev(address)'](oneAddress),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -627,7 +627,7 @@ describe('DoublyLinkedList', async () => {
               instance['next(address)'](oneAddress),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -690,7 +690,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertBefore(address,address)'](oneAddress, twoAddress),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -753,7 +753,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertAfter(address,address)'](oneAddress, twoAddress),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1007,7 +1007,7 @@ describe('DoublyLinkedList', async () => {
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1087,7 +1087,7 @@ describe('DoublyLinkedList', async () => {
               instance['prev(uint256)'](oneUint256),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1128,7 +1128,7 @@ describe('DoublyLinkedList', async () => {
               instance['next(uint256)'](oneUint256),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1191,7 +1191,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertBefore(uint256,uint256)'](oneUint256, twoUint256),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1254,7 +1254,7 @@ describe('DoublyLinkedList', async () => {
               instance['insertAfter(uint256,uint256)'](oneUint256, twoUint256),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -1508,7 +1508,7 @@ describe('DoublyLinkedList', async () => {
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidReference',
+              'DoublyLinkedList__NonExistentEntry',
             );
           });
         });

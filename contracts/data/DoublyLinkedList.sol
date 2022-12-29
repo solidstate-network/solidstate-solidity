@@ -24,7 +24,7 @@ library DoublyLinkedList {
     }
 
     error DoublyLinkedList__InvalidInput();
-    error DoublyLinkedList__InvalidReference();
+    error DoublyLinkedList__NonExistentEntry();
 
     function contains(
         Bytes32List storage self,
@@ -300,7 +300,7 @@ library DoublyLinkedList {
             nextValue != 0 &&
             prevValue == 0 &&
             _next(self, prevValue) != nextValue
-        ) revert DoublyLinkedList__InvalidReference();
+        ) revert DoublyLinkedList__NonExistentEntry();
     }
 
     function _next(
@@ -312,7 +312,7 @@ library DoublyLinkedList {
             prevValue != 0 &&
             nextValue == 0 &&
             _prev(self, nextValue) != prevValue
-        ) revert DoublyLinkedList__InvalidReference();
+        ) revert DoublyLinkedList__NonExistentEntry();
     }
 
     function _insertBefore(
@@ -402,7 +402,7 @@ library DoublyLinkedList {
         bytes32 newValue
     ) private returns (bool status) {
         if (!_contains(self, oldValue))
-            revert DoublyLinkedList__InvalidReference();
+            revert DoublyLinkedList__NonExistentEntry();
 
         status = _insertBetween(
             self,

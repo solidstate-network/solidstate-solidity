@@ -6,7 +6,7 @@
   },
   {
     "inputs": [],
-    "name": "DoublyLinkedList__InvalidReference",
+    "name": "DoublyLinkedList__NonExistentEntry",
     "type": "error"
   }
 ]
