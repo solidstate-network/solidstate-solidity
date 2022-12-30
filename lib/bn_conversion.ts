@@ -7,6 +7,10 @@ export function bnToAddress(bn: BigNumber) {
   );
 }
 
+export function bnToBytes16(bn: BigNumber) {
+  return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 16);
+}
+
 export function bnToBytes32(bn: BigNumber) {
   return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
 }
