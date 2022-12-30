@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
-import 'hardhat/console.sol';
 
 /**
  * @title Doubly linked list implementation with enumeration functions
@@ -197,12 +196,6 @@ library PackedDoublyLinkedList {
     ) private view returns (bytes16 prevValue, bytes16 nextValue) {
         (prevValue, nextValue) = _parseLinks(self._links[value]);
 
-        // console.log('adjacent');
-        // console.logBytes16(value);
-        // console.logBytes32(prevValue);
-        // console.logBytes32(nextValue);
-        // console.log(_contains(self, value));
-
         if (
             value != 0 &&
             prevValue == 0 &&
@@ -273,16 +266,6 @@ library PackedDoublyLinkedList {
                 _formatLinks(newValue, 0);
 
             status = true;
-
-            // console.log('insert');
-            // console.logBytes16(prevValue);
-            // console.logBytes16(nextValue);
-            // console.logBytes16(newValue);
-            // console.logBytes32(self._links[0]);
-            // console.logBytes32(self._links[newValue]);
-            // console.log(_contains(self, newValue));
-            // console.logBytes16(_prev(self, 0));
-            // console.logBytes16(_next(self, 0));
         }
     }
 
