@@ -132,69 +132,67 @@ describe('UintUtils', function () {
       });
 
       describe('reverts if', () => {
-        describe('reverts if', () => {
-          it('base is 0', async () => {
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                0n,
-                0n,
-                0n,
-              ),
-            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+        it('base is 0', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              0n,
+              0n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
 
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                1n,
-                0n,
-                0n,
-              ),
-            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
-          });
-
-          it('base is 1', async () => {
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                0n,
-                1n,
-                0n,
-              ),
-            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
-
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                1n,
-                1n,
-                0n,
-              ),
-            ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
-          });
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              1n,
+              0n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
 
-        it('padding is insufficient', async () => {
-          for (let base = 2; base <= 10; base++) {
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                1n,
-                base,
-                0n,
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'UintUtils__InsufficientPadding',
-            );
+        it('base is 1', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              0n,
+              1n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
 
-            await expect(
-              instance.callStatic['toString(uint256,uint256,uint256)'](
-                base,
-                base,
-                1n,
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'UintUtils__InsufficientPadding',
-            );
-          }
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              1n,
+              1n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
+      });
+
+      it('padding is insufficient', async () => {
+        for (let base = 2; base <= 10; base++) {
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              1n,
+              base,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              base,
+              base,
+              1n,
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+        }
       });
     });
 
