@@ -11,7 +11,7 @@ export function getLogs(
 
   for (const log of receipt.logs) {
     try {
-      let description = contractInterface.parseLog(log);
+      const description = contractInterface.parseLog(log);
 
       if (only.length > 0 && !only.includes(description.name)) {
         continue;
