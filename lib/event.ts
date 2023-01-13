@@ -11,13 +11,13 @@ export function getLogs(
 
   for (const log of receipt.logs) {
     try {
-      const description = contractInterface.parseLog(log);
+      const parsedLog = contractInterface.parseLog(log);
 
-      if (only.length > 0 && !only.includes(description.name)) {
+      if (only.length > 0 && !only.includes(parsedLog.name)) {
         continue;
       }
 
-      events.push(description);
+      events.push(parsedLog);
     } catch (e) {
       console.log(e);
       throw Error('could not parse logs');
