@@ -17,7 +17,7 @@ export function getLogs(
         continue;
       }
 
-      events.push(contractInterface.parseLog(log));
+      events.push(description);
     } catch (e) {
       console.log(e);
       throw Error('could not parse logs');
