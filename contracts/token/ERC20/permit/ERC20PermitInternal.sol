@@ -2,6 +2,7 @@
 pragma solidity ^0.8.8;
 
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
+import { EIP712 } from '../../../cryptography/EIP712.sol';
 import { ERC20BaseInternal } from '../base/ERC20BaseInternal.sol';
 import { ERC20MetadataInternal } from '../metadata/ERC20MetadataInternal.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
@@ -28,11 +29,13 @@ abstract contract ERC20PermitInternal is
         returns (bytes32 domainSeparator)
     {
         domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            _chainId()
+            EIP712.chainId()
         ];
 
         if (domainSeparator == 0x00) {
-            domainSeparator = _calculateDomainSeparator();
+            domainSeparator = EIP712.calculateDomainSeparator(
+                keccak256(bytes(_name()))
+            );
         }
     }
 
@@ -42,39 +45,6 @@ abstract contract ERC20PermitInternal is
      */
     function _nonces(address owner) internal view returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
-    }
-
-    /**
-     * @notice calculate unique EIP-712 domain separator
-     * @return domainSeparator domain separator
-     */
-    function _calculateDomainSeparator()
-        internal
-        view
-        returns (bytes32 domainSeparator)
-    {
-        // no need for assembly, running very rarely
-        domainSeparator = keccak256(
-            abi.encode(
-                keccak256(
-                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
-                ),
-                keccak256(bytes(_name())), // ERC-20 Name
-                keccak256(bytes('1')), // Version
-                _chainId(),
-                address(this)
-            )
-        );
-    }
-
-    /**
-     * @notice get the current chain ID
-     * @return chainId chain ID
-     */
-    function _chainId() private view returns (uint256 chainId) {
-        assembly {
-            chainId := chainid()
-        }
     }
 
     /**
@@ -135,11 +105,13 @@ abstract contract ERC20PermitInternal is
             hashStruct := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = l.domainSeparators[_chainId()];
+        bytes32 domainSeparator = l.domainSeparators[EIP712.chainId()];
 
         if (domainSeparator == 0x00) {
-            domainSeparator = _calculateDomainSeparator();
-            l.domainSeparators[_chainId()] = domainSeparator;
+            domainSeparator = EIP712.calculateDomainSeparator(
+                keccak256(bytes(_name()))
+            );
+            l.domainSeparators[EIP712.chainId()] = domainSeparator;
         }
 
         // Assembly for more efficient computing:
