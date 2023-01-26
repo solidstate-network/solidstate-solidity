@@ -23,19 +23,9 @@ library EIP712 {
                 ),
                 nameHash,
                 keccak256(bytes('1')), // Version
-                chainId(),
+                block.chainid,
                 address(this)
             )
         );
-    }
-
-    /**
-     * @notice get the current chain ID
-     * @return chainId chain ID
-     */
-    function chainId() internal view returns (uint256 chainId) {
-        assembly {
-            chainId := chainid()
-        }
     }
 }

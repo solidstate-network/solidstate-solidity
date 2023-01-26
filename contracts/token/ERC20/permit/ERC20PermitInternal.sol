@@ -29,7 +29,7 @@ abstract contract ERC20PermitInternal is
         returns (bytes32 domainSeparator)
     {
         domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            EIP712.chainId()
+            block.chainid
         ];
 
         if (domainSeparator == 0x00) {
@@ -105,13 +105,13 @@ abstract contract ERC20PermitInternal is
             hashStruct := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = l.domainSeparators[EIP712.chainId()];
+        bytes32 domainSeparator = l.domainSeparators[block.chainid];
 
         if (domainSeparator == 0x00) {
             domainSeparator = EIP712.calculateDomainSeparator(
                 keccak256(bytes(_name()))
             );
-            l.domainSeparators[EIP712.chainId()] = domainSeparator;
+            l.domainSeparators[block.chainid] = domainSeparator;
         }
 
         // Assembly for more efficient computing:
