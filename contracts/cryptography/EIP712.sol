@@ -7,6 +7,11 @@ pragma solidity ^0.8.0;
  * @dev see https://eips.ethereum.org/EIPS/eip-712
  */
 library EIP712 {
+    bytes32 internal constant EIP712_TYPE_HASH =
+        keccak256(
+            'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
+        );
+
     /**
      * @notice calculate unique EIP-712 domain separator
      * @param nameHash hash of ERC20Metadata token name
@@ -20,9 +25,7 @@ library EIP712 {
         // no need for assembly, running very rarely
         domainSeparator = keccak256(
             abi.encode(
-                keccak256(
-                    'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
-                ),
+                EIP712_TYPE_HASH,
                 nameHash,
                 versionHash,
                 block.chainid,

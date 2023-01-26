@@ -19,6 +19,11 @@ abstract contract ERC20PermitInternal is
 {
     using ECDSA for bytes32;
 
+    bytes32 internal constant EIP712_TYPE_HASH =
+        keccak256(
+            'Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)'
+        );
+
     /**
      * @notice return the EIP-712 domain separator unique to contract and chain
      * @return domainSeparator domain separator
@@ -96,11 +101,11 @@ abstract contract ERC20PermitInternal is
         // Assembly for more efficiently computing:
         // bytes32 hashStruct = keccak256(
         //   abi.encode(
-        //     _PERMIT_TYPEHASH,
+        //     EIP712_TYPE_HASH,
         //     owner,
         //     spender,
         //     amount,
-        //     _nonces[owner].current(),
+        //     nonce,
         //     deadline
         //   )
         // );
@@ -110,15 +115,13 @@ abstract contract ERC20PermitInternal is
         bytes32 hashStruct;
         uint256 nonce = l.nonces[owner];
 
+        bytes32 typeHash = EIP712_TYPE_HASH;
+
         assembly {
             // Load free memory pointer
             let pointer := mload(64)
 
-            // keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)")
-            mstore(
-                pointer,
-                0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), owner)
             mstore(add(pointer, 64), spender)
             mstore(add(pointer, 96), amount)
