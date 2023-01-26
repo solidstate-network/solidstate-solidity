@@ -33,9 +33,7 @@ abstract contract ERC20PermitInternal is
         ];
 
         if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name()))
-            );
+            domainSeparator = EIP712.calculateDomainSeparator(_nameHash());
         }
     }
 
@@ -45,6 +43,14 @@ abstract contract ERC20PermitInternal is
      */
     function _nonces(address owner) internal view returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
+    }
+
+    /**
+     * @notice calculate the hash of the ERC20Metadata token name
+     * @return nameHash hash of token name
+     */
+    function _nameHash() internal view virtual returns (bytes32 nameHash) {
+        nameHash = keccak256(bytes(_name()));
     }
 
     /**
@@ -108,9 +114,7 @@ abstract contract ERC20PermitInternal is
         bytes32 domainSeparator = l.domainSeparators[block.chainid];
 
         if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name()))
-            );
+            domainSeparator = EIP712.calculateDomainSeparator(_nameHash());
             l.domainSeparators[block.chainid] = domainSeparator;
         }
 
