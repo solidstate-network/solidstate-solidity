@@ -203,9 +203,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(BigNumber.from(0));
-      const oneAddress = bnToAddress(BigNumber.from(1));
-      const twoAddress = bnToAddress(BigNumber.from(2));
+      const zeroAddress = bnToAddress(0);
+      const oneAddress = bnToAddress(1);
+      const twoAddress = bnToAddress(2);
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {

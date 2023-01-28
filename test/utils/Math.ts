@@ -85,26 +85,11 @@ describe('Math', function () {
 
     describe('#average(uint256,uint256)', function () {
       it('returns the average of two positive numbers from 0 to maxUint256', async function () {
-        expect(
-          await instance.callStatic.average(
-            ethers.BigNumber.from('11'),
-            ethers.BigNumber.from('5'),
-          ),
-        ).to.equal(ethers.BigNumber.from('8'));
+        expect(await instance.callStatic.average(11, 5)).to.equal(8);
 
-        expect(
-          await instance.callStatic.average(
-            ethers.BigNumber.from('6'),
-            ethers.BigNumber.from('5'),
-          ),
-        ).to.equal(ethers.BigNumber.from('5'));
+        expect(await instance.callStatic.average(6, 5)).to.equal(5);
 
-        expect(
-          await instance.callStatic.average(
-            ethers.BigNumber.from('0'),
-            ethers.BigNumber.from('0'),
-          ),
-        ).to.equal(ethers.BigNumber.from('0'));
+        expect(await instance.callStatic.average(0, 0)).to.equal(0);
 
         expect(
           await instance.callStatic.average(
@@ -124,27 +109,17 @@ describe('Math', function () {
 
     describe('#sqrt(uint256)', function () {
       it('returns the sqrt of a positive integer from 0 to maxUint256', async function () {
-        expect(
-          await instance.callStatic.sqrt(ethers.BigNumber.from('16')),
-        ).to.eq(ethers.BigNumber.from('4'));
+        expect(await instance.callStatic.sqrt(16)).to.eq(4);
 
         for (let i = 10; i < 16; i++) {
-          expect(
-            await instance.callStatic.sqrt(ethers.BigNumber.from(i.toString())),
-          ).to.eq(ethers.BigNumber.from('3'));
+          expect(await instance.callStatic.sqrt(i.toString())).to.eq(3);
         }
 
-        expect(
-          await instance.callStatic.sqrt(ethers.BigNumber.from('0')),
-        ).to.eq(ethers.BigNumber.from('0'));
+        expect(await instance.callStatic.sqrt(0)).to.eq(0);
 
         expect(
-          await instance.callStatic.sqrt(
-            ethers.constants.MaxUint256.sub(ethers.BigNumber.from('1')),
-          ),
-        ).to.eq(
-          ethers.BigNumber.from('340282366920938463463374607431768211455'),
-        );
+          await instance.callStatic.sqrt(ethers.constants.MaxUint256.sub(1)),
+        ).to.eq(BigInt('340282366920938463463374607431768211455'));
       });
     });
   });

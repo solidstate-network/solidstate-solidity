@@ -23,12 +23,12 @@ describe('EnumerableMap', () => {
     });
 
     describe('__internal', () => {
-      const addressOne = bnToAddress(BigNumber.from('100'));
-      const addressTwo = bnToAddress(BigNumber.from('200'));
-      const addressThree = bnToAddress(BigNumber.from('300'));
-      const addressFour = bnToAddress(BigNumber.from('400'));
-      const addressFive = bnToAddress(BigNumber.from('500'));
-      const addressSix = bnToAddress(BigNumber.from('600'));
+      const addressOne = bnToAddress(100);
+      const addressTwo = bnToAddress(200);
+      const addressThree = bnToAddress(300);
+      const addressFour = bnToAddress(400);
+      const addressFive = bnToAddress(500);
+      const addressSix = bnToAddress(600);
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
@@ -239,12 +239,12 @@ describe('EnumerableMap', () => {
     });
 
     describe('__internal', () => {
-      const uintOne = BigNumber.from('1');
-      const uintTwo = BigNumber.from('2');
-      const uintThree = BigNumber.from('3');
-      const addressOne = bnToAddress(BigNumber.from('100'));
-      const addressTwo = bnToAddress(BigNumber.from('200'));
-      const addressThree = bnToAddress(BigNumber.from('300'));
+      const uintOne = 1;
+      const uintTwo = 2;
+      const uintThree = 3;
+      const addressOne = bnToAddress(100);
+      const addressTwo = bnToAddress(200);
+      const addressThree = bnToAddress(300);
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {

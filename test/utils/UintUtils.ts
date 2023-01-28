@@ -83,9 +83,7 @@ describe('UintUtils', function () {
         ];
         for (let i = 0; i < inputValues.length; i++) {
           expect(
-            await instance.callStatic['toHexString(uint256)'](
-              ethers.BigNumber.from(inputValues[i]),
-            ),
+            await instance.callStatic['toHexString(uint256)'](inputValues[i]),
           ).to.equal(outputValues[i]);
         }
       });
@@ -106,8 +104,8 @@ describe('UintUtils', function () {
         for (let i = 0; i < inputValues.length; i++) {
           expect(
             await instance.callStatic['toHexString(uint256,uint256)'](
-              ethers.BigNumber.from(inputValues[i]),
-              ethers.BigNumber.from(inputLengths[i]),
+              inputValues[i],
+              inputLengths[i],
             ),
           ).to.equal(outputValues[i]);
         }
@@ -117,7 +115,7 @@ describe('UintUtils', function () {
         it('length input is 0 and value is nonzero', async () => {
           await expect(
             instance.callStatic['toHexString(uint256,uint256)'](
-              ethers.BigNumber.from('100'),
+              100,
               ethers.constants.Zero,
             ),
           ).to.be.revertedWithCustomError(

@@ -60,7 +60,7 @@ describe('ERC4626Base', () => {
   describe('__internal', () => {
     describe('#_deposit(uint256,address)', () => {
       it('calls the _afterDeposit hook', async () => {
-        const assetAmount = BigNumber.from('10');
+        const assetAmount = 10;
 
         await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
