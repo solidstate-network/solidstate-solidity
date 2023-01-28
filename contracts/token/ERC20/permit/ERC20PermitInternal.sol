@@ -169,4 +169,13 @@ abstract contract ERC20PermitInternal is
         l.nonces[owner]++;
         _approve(owner, spender, amount);
     }
+
+    /**
+     * @inheritdoc ERC20MetadataInternal
+     * @notice set new token name and invalidate cached domain separator
+     */
+    function _setName(string memory name) internal virtual override {
+        super._setName(name);
+        delete ERC20PermitStorage.layout().domainSeparators[block.chainid];
+    }
 }
