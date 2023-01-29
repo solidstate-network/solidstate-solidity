@@ -1,14 +1,15 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC721Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
-import { ethers } from 'hardhat';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 export interface ERC721EnumerableBehaviorArgs {
-  mint: (address: string, tokenId: BigNumber) => Promise<ContractTransaction>;
-  burn: (tokenId: BigNumber) => Promise<ContractTransaction>;
-  supply: BigNumber;
+  mint: (
+    address: string,
+    tokenId: BigNumber | BigNumberish,
+  ) => Promise<ContractTransaction>;
+  burn: (tokenId: BigNumber | BigNumberish) => Promise<ContractTransaction>;
+  supply: BigNumber | BigNumberish;
 }
 
 export function describeBehaviorOfERC721Enumerable(
@@ -29,12 +30,12 @@ export function describeBehaviorOfERC721Enumerable(
       it('returns total token supply', async function () {
         expect(await instance.totalSupply()).to.equal(supply);
 
-        await mint(instance.address, ethers.constants.Two);
+        await mint(instance.address, 2);
         expect(await instance.totalSupply()).to.equal(
-          supply.add(ethers.constants.One),
+          BigNumber.from(supply).add(1),
         );
 
-        await burn(ethers.constants.Two);
+        await burn(2);
         expect(await instance.totalSupply()).to.equal(supply);
       });
     });
@@ -44,41 +45,29 @@ export function describeBehaviorOfERC721Enumerable(
         // TODO: query balance to determine starting index
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(
-            instance.address,
-            ethers.constants.Zero,
-          ),
+          instance.callStatic.tokenOfOwnerByIndex(instance.address, 0),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
         );
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(
-            instance.address,
-            ethers.constants.One,
-          ),
+          instance.callStatic.tokenOfOwnerByIndex(instance.address, 1),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
         );
 
-        await mint(instance.address, ethers.constants.One);
-        await mint(instance.address, ethers.constants.Two);
+        await mint(instance.address, 1);
+        await mint(instance.address, 2);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(
-            instance.address,
-            ethers.constants.Zero,
-          ),
-        ).to.equal(ethers.constants.One);
+          await instance.callStatic.tokenOfOwnerByIndex(instance.address, 0),
+        ).to.equal(1);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(
-            instance.address,
-            ethers.constants.One,
-          ),
-        ).to.equal(ethers.constants.Two);
+          await instance.callStatic.tokenOfOwnerByIndex(instance.address, 1),
+        ).to.equal(2);
       });
     });
 
@@ -87,34 +76,30 @@ export function describeBehaviorOfERC721Enumerable(
         const index = await instance.callStatic.totalSupply();
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(ethers.constants.Zero)),
+          instance.callStatic.tokenByIndex(index.add(0)),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
         );
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(ethers.constants.One)),
+          instance.callStatic.tokenByIndex(index.add(1)),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
         );
 
         // TODO: mint to different addresses
-        await mint(instance.address, ethers.constants.One);
-        await mint(instance.address, ethers.constants.Two);
+        await mint(instance.address, 1);
+        await mint(instance.address, 2);
 
-        expect(
-          await instance.callStatic.tokenByIndex(
-            index.add(ethers.constants.Zero),
-          ),
-        ).to.equal(ethers.constants.One);
+        expect(await instance.callStatic.tokenByIndex(index.add(0))).to.equal(
+          1,
+        );
 
-        expect(
-          await instance.callStatic.tokenByIndex(
-            index.add(ethers.constants.One),
-          ),
-        ).to.equal(ethers.constants.Two);
+        expect(await instance.callStatic.tokenByIndex(index.add(1))).to.equal(
+          2,
+        );
       });
     });
   });

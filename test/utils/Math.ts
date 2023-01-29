@@ -21,65 +21,29 @@ describe('Math', function () {
 
     describe('#max(uint256,uint256)', function () {
       it('returns the greater of two numbers', async () => {
-        expect(
-          await instance.callStatic.max(
-            ethers.constants.One,
-            ethers.constants.Two,
-          ),
-        ).to.equal(ethers.constants.Two);
+        expect(await instance.callStatic.max(1, 2)).to.equal(2);
+
+        expect(await instance.callStatic.max(2, 1)).to.equal(2);
+
+        expect(await instance.callStatic.max(1, 1)).to.equal(1);
 
         expect(
-          await instance.callStatic.max(
-            ethers.constants.Two,
-            ethers.constants.One,
-          ),
-        ).to.equal(ethers.constants.Two);
-
-        expect(
-          await instance.callStatic.max(
-            ethers.constants.One,
-            ethers.constants.One,
-          ),
-        ).to.equal(ethers.constants.One);
-
-        expect(
-          await instance.callStatic.max(
-            ethers.constants.Zero,
-            ethers.constants.MaxUint256,
-          ),
+          await instance.callStatic.max(0, ethers.constants.MaxUint256),
         ).to.equal(ethers.constants.MaxUint256);
       });
     });
 
     describe('#min(uint256,uint256)', function () {
       it('returns the lesser of two numbers', async () => {
-        expect(
-          await instance.callStatic.min(
-            ethers.constants.One,
-            ethers.constants.Two,
-          ),
-        ).to.equal(ethers.constants.One);
+        expect(await instance.callStatic.min(1, 2)).to.equal(1);
+
+        expect(await instance.callStatic.min(2, 1)).to.equal(1);
+
+        expect(await instance.callStatic.min(1, 1)).to.equal(1);
 
         expect(
-          await instance.callStatic.min(
-            ethers.constants.Two,
-            ethers.constants.One,
-          ),
-        ).to.equal(ethers.constants.One);
-
-        expect(
-          await instance.callStatic.min(
-            ethers.constants.One,
-            ethers.constants.One,
-          ),
-        ).to.equal(ethers.constants.One);
-
-        expect(
-          await instance.callStatic.min(
-            ethers.constants.Zero,
-            ethers.constants.MaxUint256,
-          ),
-        ).to.equal(ethers.constants.Zero);
+          await instance.callStatic.min(0, ethers.constants.MaxUint256),
+        ).to.equal(0);
       });
     });
 
@@ -101,9 +65,9 @@ describe('Math', function () {
         expect(
           await instance.callStatic.average(
             ethers.constants.MaxUint256,
-            ethers.constants.MaxUint256.sub(ethers.constants.One),
+            ethers.constants.MaxUint256.sub(1),
           ),
-        ).to.equal(ethers.constants.MaxUint256.sub(ethers.constants.One));
+        ).to.equal(ethers.constants.MaxUint256.sub(1));
       });
     });
 

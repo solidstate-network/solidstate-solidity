@@ -1,16 +1,16 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { ethers } from 'hardhat';
 
-export function bnToAddress(bn: BigNumber) {
+export function bnToAddress(bn: BigNumber | BigNumberish) {
   return ethers.utils.getAddress(
     ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 20),
   );
 }
 
-export function bnToBytes32(bn: BigNumber) {
+export function bnToBytes32(bn: BigNumber | BigNumberish) {
   return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
 }
 
-export function bytes32ToNumber(bytes32: string | BigNumber) {
+export function bytes32ToNumber(bytes32: string | BigNumber | BigNumberish) {
   return BigNumber.from(bytes32).toNumber();
 }

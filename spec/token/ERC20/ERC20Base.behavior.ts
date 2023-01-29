@@ -2,13 +2,19 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction, BigNumberish } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20BaseBehaviorArgs {
-  supply: BigNumber;
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
+  supply: BigNumber | BigNumberish;
+  mint: (
+    address: string,
+    amount: BigNumber | BigNumberish,
+  ) => Promise<ContractTransaction>;
+  burn: (
+    address: string,
+    amount: BigNumber | BigNumberish,
+  ) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(
@@ -38,12 +44,12 @@ export function describeBehaviorOfERC20Base(
       it('returns the total supply of tokens', async function () {
         expect(await instance.callStatic['totalSupply()']()).to.equal(supply);
 
-        const amount = ethers.constants.Two;
+        const amount = 2;
 
         await mint(holder.address, amount);
 
         expect(await instance.callStatic['totalSupply()']()).to.equal(
-          supply.add(amount),
+          BigNumber.from(supply).add(amount),
         );
 
         await burn(holder.address, amount);
@@ -58,9 +64,9 @@ export function describeBehaviorOfERC20Base(
           await instance.callStatic['balanceOf(address)'](
             ethers.constants.AddressZero,
           ),
-        ).to.equal(ethers.constants.Zero);
+        ).to.equal(0);
 
-        const amount = ethers.constants.Two;
+        const amount = 2;
 
         await expect(() => mint(holder.address, amount)).to.changeTokenBalance(
           instance,
@@ -83,9 +89,9 @@ export function describeBehaviorOfERC20Base(
             holder.address,
             spender.address,
           ),
-        ).to.equal(ethers.constants.Zero);
+        ).to.equal(0);
 
-        let amount = ethers.constants.Two;
+        let amount = 2;
         await instance
           .connect(holder)
           ['approve(address,uint256)'](spender.address, amount);
@@ -101,7 +107,7 @@ export function describeBehaviorOfERC20Base(
 
     describe('#approve(address,uint256)', function () {
       it('returns true', async () => {
-        const amount = ethers.constants.Two;
+        const amount = 2;
 
         expect(
           await instance
@@ -111,7 +117,7 @@ export function describeBehaviorOfERC20Base(
       });
 
       it('enables given spender to spend tokens on behalf of sender', async function () {
-        let amount = ethers.constants.Two;
+        let amount = 2;
         await instance
           .connect(holder)
           ['approve(address,uint256)'](spender.address, amount);
@@ -127,7 +133,7 @@ export function describeBehaviorOfERC20Base(
       });
 
       it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
+        let amount = 2;
 
         await expect(
           instance
@@ -144,15 +150,12 @@ export function describeBehaviorOfERC20Base(
         expect(
           await instance
             .connect(holder)
-            .callStatic['transfer(address,uint256)'](
-              receiver.address,
-              ethers.constants.Zero,
-            ),
+            .callStatic['transfer(address,uint256)'](receiver.address, 0),
         ).to.be.true;
       });
 
       it('transfers amount from holder to receiver', async function () {
-        const amount = ethers.constants.Two;
+        const amount = 2;
         await mint(holder.address, amount);
 
         await expect(() =>
@@ -168,7 +171,7 @@ export function describeBehaviorOfERC20Base(
 
       describe('reverts if', function () {
         it('has insufficient balance', async function () {
-          const amount = ethers.constants.Two;
+          const amount = 2;
 
           await expect(
             instance
@@ -190,13 +193,13 @@ export function describeBehaviorOfERC20Base(
             .callStatic['transferFrom(address,address,uint256)'](
               holder.address,
               receiver.address,
-              ethers.constants.Zero,
+              0,
             ),
         ).to.be.true;
       });
 
       it('transfers amount on behalf of holder', async function () {
-        const amount = ethers.constants.Two;
+        const amount = 2;
         await mint(holder.address, amount);
 
         await instance
@@ -220,7 +223,7 @@ export function describeBehaviorOfERC20Base(
 
       describe('reverts if', function () {
         it('has insufficient balance', async function () {
-          const amount = ethers.constants.Two;
+          const amount = 2;
 
           await expect(
             instance
@@ -233,7 +236,7 @@ export function describeBehaviorOfERC20Base(
         });
 
         it('spender not approved', async function () {
-          const amount = ethers.constants.Two;
+          const amount = 2;
           await mint(sender.address, amount);
 
           await expect(

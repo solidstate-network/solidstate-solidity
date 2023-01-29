@@ -30,6 +30,6 @@ describe('SolidStateERC1404', function () {
     name: '',
     symbol: '',
     decimals: 0,
-    supply: ethers.constants.Zero,
+    supply: 0,
   });
 });

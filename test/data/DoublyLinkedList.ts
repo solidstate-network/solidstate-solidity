@@ -25,9 +25,9 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(ethers.constants.Zero);
-      const oneBytes32 = bnToBytes32(ethers.constants.One);
-      const twoBytes32 = bnToBytes32(ethers.constants.Two);
+      const zeroBytes32 = bnToBytes32(0);
+      const oneBytes32 = bnToBytes32(1);
+      const twoBytes32 = bnToBytes32(2);
       const threeBytes32 = bnToBytes32(3);
 
       describe('#contains(bytes32)', () => {
@@ -526,9 +526,9 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(ethers.constants.Zero);
-      const oneAddress = bnToAddress(ethers.constants.One);
-      const twoAddress = bnToAddress(ethers.constants.Two);
+      const zeroAddress = bnToAddress(0);
+      const oneAddress = bnToAddress(1);
+      const twoAddress = bnToAddress(2);
       const threeAddress = bnToAddress(3);
 
       describe('#contains(address)', () => {
@@ -1027,9 +1027,9 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroUint256 = ethers.constants.Zero;
-      const oneUint256 = ethers.constants.One;
-      const twoUint256 = ethers.constants.Two;
+      const zeroUint256 = 0;
+      const oneUint256 = 1;
+      const twoUint256 = 2;
       const threeUint256 = 3;
 
       describe('#contains(uint256)', () => {

@@ -65,11 +65,9 @@ describe('UintUtils', function () {
 
     describe('#toHexString(uint256)', function () {
       it('returns 0 if input is 0', async () => {
-        expect(
-          await instance.callStatic['toHexString(uint256)'](
-            ethers.constants.Zero,
-          ),
-        ).to.equal('0x00');
+        expect(await instance.callStatic['toHexString(uint256)'](0)).to.equal(
+          '0x00',
+        );
       });
 
       it('returns correct hexadecimal string representation of a number', async () => {
@@ -114,10 +112,7 @@ describe('UintUtils', function () {
       describe('reverts if', () => {
         it('length input is 0 and value is nonzero', async () => {
           await expect(
-            instance.callStatic['toHexString(uint256,uint256)'](
-              100,
-              ethers.constants.Zero,
-            ),
+            instance.callStatic['toHexString(uint256,uint256)'](100, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'UintUtils__InsufficientHexLength',

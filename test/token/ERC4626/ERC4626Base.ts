@@ -1,16 +1,13 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
-  describeBehaviorOfCloneFactory,
-  describeBehaviorOfERC4626Base,
-} from '@solidstate/spec';
-import {
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
+  SolidStateERC20Mock,
+  SolidStateERC20Mock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
@@ -32,7 +29,7 @@ describe('ERC4626Base', () => {
       '',
       '',
       0,
-      ethers.constants.Zero,
+      0,
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
@@ -45,12 +42,12 @@ describe('ERC4626Base', () => {
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
-    supply: ethers.constants.Zero,
-    mint: (recipient: string, amount: BigNumber) =>
+    supply: 0,
+    mint: (recipient: string, amount: BigNumber | BigNumberish) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigNumber) =>
+    burn: (recipient: string, amount: BigNumber | BigNumberish) =>
       instance.__burn(recipient, amount),
-    mintAsset: (recipient: string, amount: BigNumber) =>
+    mintAsset: (recipient: string, amount: BigNumber | BigNumberish) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,

@@ -83,7 +83,7 @@ export function describeBehaviorOfSolidStateDiamond(
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
         let [signer] = await ethers.getSigners();
-        let value = ethers.constants.One;
+        let value = 1;
 
         await expect(() =>
           signer.sendTransaction({ to: instance.address, value }),

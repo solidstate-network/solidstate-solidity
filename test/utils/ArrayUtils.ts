@@ -21,11 +21,11 @@ describe('ArrayUtils', async () => {
       it('returns the minimum bytes32 value in given array', async () => {
         expect(
           await instance.callStatic['min(bytes32[])']([
-            bnToBytes32(ethers.constants.One),
-            bnToBytes32(ethers.constants.Zero),
-            bnToBytes32(ethers.constants.Two),
+            bnToBytes32(1),
+            bnToBytes32(0),
+            bnToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(ethers.constants.Zero));
+        ).to.equal(bnToBytes32(0));
       });
 
       it('returns the max bytes32 value if array is empty', async () => {
@@ -39,29 +39,25 @@ describe('ArrayUtils', async () => {
       it('returns the minimum address in given array', async () => {
         expect(
           await instance.callStatic['min(address[])']([
-            bnToAddress(ethers.constants.One),
-            bnToAddress(ethers.constants.Zero),
-            bnToAddress(ethers.constants.Two),
+            bnToAddress(1),
+            bnToAddress(0),
+            bnToAddress(2),
           ]),
-        ).to.equal(bnToAddress(ethers.constants.Zero));
+        ).to.equal(bnToAddress(0));
       });
 
       it('returns the max address if array is empty', async () => {
         expect(await instance.callStatic['min(address[])']([])).to.equal(
-          bnToAddress(ethers.constants.Two.pow(160).sub(ethers.constants.One)),
+          bnToAddress(ethers.BigNumber.from(2).pow(160).sub(1)),
         );
       });
     });
 
     describe('#min(uint256[])', () => {
       it('returns the minimum uint256 in given array', async () => {
-        expect(
-          await instance.callStatic['min(uint256[])']([
-            ethers.constants.One,
-            ethers.constants.Zero,
-            ethers.constants.Two,
-          ]),
-        ).to.equal(ethers.constants.Zero);
+        expect(await instance.callStatic['min(uint256[])']([1, 0, 2])).to.equal(
+          0,
+        );
       });
 
       it('returns the max uint256 if array is empty', async () => {
@@ -75,11 +71,11 @@ describe('ArrayUtils', async () => {
       it('returns the maximum bytes32 value in given array', async () => {
         expect(
           await instance.callStatic['max(bytes32[])']([
-            bnToBytes32(ethers.constants.One),
-            bnToBytes32(ethers.constants.Zero),
-            bnToBytes32(ethers.constants.Two),
+            bnToBytes32(1),
+            bnToBytes32(0),
+            bnToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(ethers.constants.Two));
+        ).to.equal(bnToBytes32(2));
       });
 
       it('returns empty bytes if array is empty', async () => {
@@ -93,11 +89,11 @@ describe('ArrayUtils', async () => {
       it('returns the maximum address in given array', async () => {
         expect(
           await instance.callStatic['max(address[])']([
-            bnToAddress(ethers.constants.One),
-            bnToAddress(ethers.constants.Zero),
-            bnToAddress(ethers.constants.Two),
+            bnToAddress(1),
+            bnToAddress(0),
+            bnToAddress(2),
           ]),
-        ).to.equal(bnToAddress(ethers.constants.Two));
+        ).to.equal(bnToAddress(2));
       });
 
       it('returns zero address if array is empty', async () => {
@@ -109,19 +105,13 @@ describe('ArrayUtils', async () => {
 
     describe('#max(uint256[])', () => {
       it('returns the maximum uint256 in given array', async () => {
-        expect(
-          await instance.callStatic['max(uint256[])']([
-            ethers.constants.One,
-            ethers.constants.Zero,
-            ethers.constants.Two,
-          ]),
-        ).to.equal(ethers.constants.Two);
+        expect(await instance.callStatic['max(uint256[])']([1, 0, 2])).to.equal(
+          2,
+        );
       });
 
       it('returns zero if array is empty', async () => {
-        expect(await instance.callStatic['max(uint256[])']([])).to.equal(
-          ethers.constants.Zero,
-        );
+        expect(await instance.callStatic['max(uint256[])']([])).to.equal(0);
       });
     });
   });
