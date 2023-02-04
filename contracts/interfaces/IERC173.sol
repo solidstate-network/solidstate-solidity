@@ -11,7 +11,7 @@ import { IERC173Internal } from './IERC173Internal.sol';
 interface IERC173 is IERC173Internal {
     /**
      * @notice get the ERC173 contract owner
-     * @return conrtact owner
+     * @return contract owner
      */
     function owner() external view returns (address);
 
