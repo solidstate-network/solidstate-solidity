@@ -8,6 +8,7 @@ import { ERC721BaseInternal } from './ERC721BaseInternal.sol';
 
 /**
  * @title Base ERC721 implementation, excluding optional extensions
+ * @dev inheritor must either implement ERC165 supportsInterface or inherit ERC165Base
  */
 abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
     /**

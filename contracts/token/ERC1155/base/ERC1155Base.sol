@@ -10,6 +10,7 @@ import { ERC1155BaseInternal, ERC1155BaseStorage } from './ERC1155BaseInternal.s
 /**
  * @title Base ERC1155 contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
+ * @dev inheritor must either implement ERC165 supportsInterface or inherit ERC165Base
  */
 abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
     /**
