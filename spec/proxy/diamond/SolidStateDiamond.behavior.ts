@@ -136,7 +136,10 @@ export function describeBehaviorOfSolidStateDiamond(
           ).to.be.revertedWith('Mock on the method is not initialized');
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members([
-            ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
+            ...args.facetCuts.map((fc) => [
+              fc.facetAddress,
+              fc.functionSelectors,
+            ]),
             [facet.address, expectedSelectors],
           ]);
 
@@ -200,7 +203,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map<[any, any[]]>((fc) => [
+                fc.facetAddress,
+                fc.functionSelectors,
+              ]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
@@ -265,7 +271,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map<[any, any[]]>((fc) => [
+                fc.facetAddress,
+                fc.functionSelectors,
+              ]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
@@ -332,7 +341,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
             [
-              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map<[any, any[]]>((fc) => [
+                fc.facetAddress,
+                fc.functionSelectors,
+              ]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
