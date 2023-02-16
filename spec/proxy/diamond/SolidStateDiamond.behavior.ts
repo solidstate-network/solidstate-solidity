@@ -92,7 +92,7 @@ export function describeBehaviorOfSolidStateDiamond(
     });
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
-      const selectors: string[] = [];
+      const functionSelectors: string[] = [];
       const abi: string[] = [];
       let facet: MockContract;
 
@@ -100,7 +100,7 @@ export function describeBehaviorOfSolidStateDiamond(
         for (let i = 0; i < 24; i++) {
           const fn = `fn${i}()`;
           abi.push(`function ${fn}`);
-          selectors.push(
+          functionSelectors.push(
             ethers.utils.hexDataSlice(
               ethers.utils.solidityKeccak256(['string'], [fn]),
               0,
@@ -115,14 +115,18 @@ export function describeBehaviorOfSolidStateDiamond(
       it('adds selectors one-by-one', async function () {
         const expectedSelectors = [];
 
-        for (let selector of selectors) {
-          await instance
-            .connect(owner)
-            .diamondCut(
-              [{ target: facet.address, action: 0, selectors: [selector] }],
-              ethers.constants.AddressZero,
-              '0x',
-            );
+        for (let selector of functionSelectors) {
+          await instance.connect(owner).diamondCut(
+            [
+              {
+                facetAddress: facet.address,
+                action: 0,
+                functionSelectors: [selector],
+              },
+            ],
+            ethers.constants.AddressZero,
+            '0x',
+          );
 
           expectedSelectors.push(selector);
 
@@ -152,20 +156,20 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ facetAddress: facet.address, action: 0, functionSelectors }],
             ethers.constants.AddressZero,
             '0x',
           );
 
-        const expectedSelectors = [...selectors];
+        const expectedSelectors = [...functionSelectors];
 
-        for (let selector of selectors) {
+        for (let selector of functionSelectors) {
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                facetAddress: ethers.constants.AddressZero,
                 action: 2,
-                selectors: [selector],
+                functionSelectors: [selector],
               },
             ],
             ethers.constants.AddressZero,
@@ -217,20 +221,20 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ facetAddress: facet.address, action: 0, functionSelectors }],
             ethers.constants.AddressZero,
             '0x',
           );
 
-        const expectedSelectors = [...selectors];
+        const expectedSelectors = [...functionSelectors];
 
-        for (let selector of [...selectors].reverse()) {
+        for (let selector of [...functionSelectors].reverse()) {
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                facetAddress: ethers.constants.AddressZero,
                 action: 2,
-                selectors: [selector],
+                functionSelectors: [selector],
               },
             ],
             ethers.constants.AddressZero,
@@ -282,20 +286,22 @@ export function describeBehaviorOfSolidStateDiamond(
         await instance
           .connect(owner)
           .diamondCut(
-            [{ target: facet.address, action: 0, selectors }],
+            [{ facetAddress: facet.address, action: 0, functionSelectors }],
             ethers.constants.AddressZero,
             '0x',
           );
 
-        const expectedSelectors = [...selectors];
+        const expectedSelectors = [...functionSelectors];
 
-        for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
+        for (let selector of [...functionSelectors].sort(
+          () => 0.5 - Math.random(),
+        )) {
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                facetAddress: ethers.constants.AddressZero,
                 action: 2,
-                selectors: [selector],
+                functionSelectors: [selector],
               },
             ],
             ethers.constants.AddressZero,
