@@ -16,7 +16,7 @@ abstract contract ERC165BaseInternal is IERC165BaseInternal {
      */
     function _supportsInterface(
         bytes4 interfaceId
-    ) internal view returns (bool) {
+    ) internal view virtual returns (bool) {
         return ERC165BaseStorage.layout().supportedInterfaces[interfaceId];
     }
 
@@ -25,7 +25,10 @@ abstract contract ERC165BaseInternal is IERC165BaseInternal {
      * @param interfaceId id of interface to set status for
      * @param status boolean indicating whether interface will be set as supported
      */
-    function _setSupportsInterface(bytes4 interfaceId, bool status) internal {
+    function _setSupportsInterface(
+        bytes4 interfaceId,
+        bool status
+    ) internal virtual {
         if (interfaceId == 0xffffffff) revert ERC165Base__InvalidInterfaceId();
         ERC165BaseStorage.layout().supportedInterfaces[interfaceId] = status;
     }

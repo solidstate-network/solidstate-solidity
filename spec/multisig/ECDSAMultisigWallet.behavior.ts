@@ -123,13 +123,16 @@ export function describeBehaviorOfECDSAMultisigWallet(
             signatures.push({ data: sig, nonce });
           }
 
-          await expect(async function () {
-            return instance.verifyAndExecute(
+          // the changeEtherBalances matcher requires a getAddress function to work
+          const addressableMock = { getAddress: () => mock.address };
+
+          await expect(() =>
+            instance.verifyAndExecute(
               { target, data, value, delegate },
               signatures,
               { value },
-            );
-          }).to.changeEtherBalances([mock, instance], [value, 0]);
+            ),
+          ).to.changeEtherBalances([addressableMock, instance], [value, 0]);
         });
 
         it('forwards return data from called function', async function () {
