@@ -10,8 +10,11 @@ import { ReentrancyGuardStorage } from './ReentrancyGuardStorage.sol';
 abstract contract ReentrancyGuard {
     error ReentrancyGuard__ReentrantCall();
 
+    uint256 internal constant REENTRANCY_STATUS_LOCKED = 2;
+    uint256 internal constant REENTRANCY_STATUS_UNLOCKED = 1;
+
     modifier nonReentrant() {
-        if (ReentrancyGuardStorage.layout().status == 2)
+        if (ReentrancyGuardStorage.layout().status == REENTRANCY_STATUS_LOCKED)
             revert ReentrancyGuard__ReentrantCall();
         _lockReentrancyGuard();
         _;
@@ -22,13 +25,13 @@ abstract contract ReentrancyGuard {
      * @notice lock functions that use the nonReentrant modifier
      */
     function _lockReentrancyGuard() internal virtual {
-        ReentrancyGuardStorage.layout().status = 2;
+        ReentrancyGuardStorage.layout().status = REENTRANCY_STATUS_LOCKED;
     }
 
     /**
      * @notice unlock funtions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual {
-        ReentrancyGuardStorage.layout().status = 1;
+        ReentrancyGuardStorage.layout().status = REENTRANCY_STATUS_UNLOCKED;
     }
 }
