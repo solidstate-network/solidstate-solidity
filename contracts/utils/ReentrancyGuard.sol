@@ -11,11 +11,18 @@ abstract contract ReentrancyGuard {
     error ReentrancyGuard__ReentrantCall();
 
     modifier nonReentrant() {
-        ReentrancyGuardStorage.Layout storage l = ReentrancyGuardStorage
-            .layout();
-        if (l.status == 2) revert ReentrancyGuard__ReentrantCall();
-        l.status = 2;
+        if (ReentrancyGuardStorage.layout().status == 2)
+            revert ReentrancyGuard__ReentrantCall();
+        _lockReentrancyGuard();
         _;
-        l.status = 1;
+        _unlockReentrancyGuard();
+    }
+
+    function _lockReentrancyGuard() internal virtual {
+        ReentrancyGuardStorage.layout().status = 2;
+    }
+
+    function _unlockReentrancyGuard() internal virtual {
+        ReentrancyGuardStorage.layout().status = 1;
     }
 }
