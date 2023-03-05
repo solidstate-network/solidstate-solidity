@@ -26,7 +26,7 @@ abstract contract ReentrancyGuard {
     }
 
     /**
-     * @noticer unlock funtions that use the nonReentrant modifier
+     * @notice unlock funtions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual {
         ReentrancyGuardStorage.layout().status = 1;
