@@ -1,4 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { FacetCutAction } from '@solidstate/library';
 import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
   DiamondFallbackMock,
@@ -25,7 +26,7 @@ describe('DiamondFallback', function () {
     instance = await new DiamondFallbackMock__factory(deployer).deploy([
       {
         target: facetInstance.address,
-        action: 0,
+        action: FacetCutAction.ADD,
         selectors: [facetInstance.interface.getSighash('owner()')],
       },
     ]);
