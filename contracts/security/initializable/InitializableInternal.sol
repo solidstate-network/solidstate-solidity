@@ -10,8 +10,6 @@ abstract contract InitializableInternal is IInitializableInternal {
     using AddressUtils for address;
     using InitializableStorage for InitializableStorage.Layout;
 
-    event Initialized(uint8 version);
-
     modifier initializer() {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
         bool isTopLevelCall = !l.initializing;
