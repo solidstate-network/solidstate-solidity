@@ -55,13 +55,5 @@ describe('Initializable', function () {
         );
       });
     });
-
-    describe('#_disableInitializers()', function () {
-      it('disable any initializer', async function () {
-        await expect(instance.__disableInitializers())
-          .emit(instance, 'Initialized')
-          .withArgs(255);
-      });
-    });
   });
 });

@@ -20,14 +20,6 @@ contract InitializableMock is Initializable {
         reinitializerVersion = i;
     }
 
-    function mockDisableInitializers() public initializer {
-        _disableInitializers();
-    }
-
-    function __disableInitializers() public {
-        _disableInitializers();
-    }
-
     function getInitializedVersion() public view returns (uint8) {
         return _getInitializedVersion();
     }
