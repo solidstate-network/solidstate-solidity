@@ -12,20 +12,12 @@ abstract contract InitializableInternal is IInitializableInternal {
 
     modifier initializer() {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
-        bool isTopLevelCall = !l.initializing;
-        if (
-            (!isTopLevelCall || l.initialized >= 1) &&
-            (address(this).isContract() || l.initialized != 1)
-        ) revert Initializable__AlreadyInitialized();
+        if (l.initialized >= 1) revert Initializable__AlreadyInitialized();
         l.initialized = 1;
-        if (isTopLevelCall) {
-            l.initializing = true;
-        }
+        l.initializing = true;
         _;
-        if (isTopLevelCall) {
-            l.initializing = false;
-            emit Initialized(1);
-        }
+        l.initializing = false;
+        emit Initialized(1);
     }
 
     modifier reinitializer(uint8 version) {
