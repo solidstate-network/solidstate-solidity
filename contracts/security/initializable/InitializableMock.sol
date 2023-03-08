@@ -6,19 +6,10 @@ import { Initializable } from './Initializable.sol';
 
 contract InitializableMock is Initializable {
     bool public initializerRan;
-    bool public onlyInitializingRan;
     uint8 public reinitializerVersion;
 
     function __initializer() public initializer {
         initializerRan = true;
-    }
-
-    function mockInitializing() public initializer {
-        __onlyInitializing();
-    }
-
-    function __onlyInitializing() public onlyInitializing {
-        onlyInitializingRan = true;
     }
 
     function mockReinitializer() public initializer {
@@ -39,9 +30,5 @@ contract InitializableMock is Initializable {
 
     function getInitializedVersion() public view returns (uint8) {
         return _getInitializedVersion();
-    }
-
-    function isInitializing() public view returns (bool) {
-        return _isInitializing();
     }
 }

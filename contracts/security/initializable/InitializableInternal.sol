@@ -14,31 +14,21 @@ abstract contract InitializableInternal is IInitializableInternal {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
         if (l.initialized >= 1) revert Initializable__AlreadyInitialized();
         l.initialized = 1;
-        l.initializing = true;
         _;
-        l.initializing = false;
         emit Initialized(1);
     }
 
     modifier reinitializer(uint8 version) {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
-        if (l.initializing || l.initialized >= version)
+        if (l.initialized >= version)
             revert Initializable__AlreadyInitialized();
         l.initialized = version;
-        l.initializing = true;
         _;
-        l.initializing = false;
         emit Initialized(version);
-    }
-
-    modifier onlyInitializing() {
-        if (!_isInitializing()) revert Initializable__NotInitializing();
-        _;
     }
 
     function _disableInitializers() internal virtual {
         InitializableStorage.Layout storage l = InitializableStorage.layout();
-        if (l.initializing) revert Initializable__IsInitializing();
         if (l.initialized < type(uint8).max) {
             l.initialized = type(uint8).max;
             emit Initialized(type(uint8).max);
@@ -47,9 +37,5 @@ abstract contract InitializableInternal is IInitializableInternal {
 
     function _getInitializedVersion() internal view returns (uint8) {
         return InitializableStorage.layout().initialized;
-    }
-
-    function _isInitializing() internal view returns (bool) {
-        return InitializableStorage.layout().initializing;
     }
 }

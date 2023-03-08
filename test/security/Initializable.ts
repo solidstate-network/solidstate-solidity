@@ -38,34 +38,11 @@ describe('Initializable', function () {
       });
     });
 
-    describe('#_onlyInitializing()', function () {
-      it('set onlyInitializingRan === true', async function () {
-        await expect(instance.mockInitializing())
-          .emit(instance, 'Initialized')
-          .withArgs(1);
-        expect(await instance.onlyInitializingRan()).to.equal(true);
-      });
-
-      it('revert if not initializing', async function () {
-        await expect(instance.__onlyInitializing()).to.revertedWithCustomError(
-          instance,
-          'Initializable__NotInitializing',
-        );
-      });
-    });
-
     describe('#_reinitializer()', function () {
       it('set reinitializerVersion === 2', async function () {
         await expect(instance.__reinitializer(2))
           .emit(instance, 'Initialized')
           .withArgs(2);
-      });
-
-      it('revert if initializing', async function () {
-        await expect(instance.mockReinitializer()).revertedWithCustomError(
-          instance,
-          'Initializable__AlreadyInitialized',
-        );
       });
 
       it('revert if version initialized', async function () {
@@ -84,12 +61,6 @@ describe('Initializable', function () {
         await expect(instance.__disableInitializers())
           .emit(instance, 'Initialized')
           .withArgs(255);
-      });
-
-      it('revert if initializing', async function () {
-        await expect(
-          instance.mockDisableInitializers(),
-        ).revertedWithCustomError(instance, 'Initializable__IsInitializing');
       });
     });
   });

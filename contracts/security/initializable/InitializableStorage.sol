@@ -5,7 +5,6 @@ pragma solidity ^0.8.8;
 library InitializableStorage {
     struct Layout {
         uint8 initialized;
-        bool initializing;
     }
 
     bytes32 internal constant STORAGE_SLOT =
