@@ -2,14 +2,13 @@
 
 pragma solidity ^0.8.8;
 
+import { IReentrancyGuard } from './IReentrancyGuard.sol';
 import { ReentrancyGuardStorage } from './ReentrancyGuardStorage.sol';
 
 /**
  * @title Utility contract for preventing reentrancy attacks
  */
-abstract contract ReentrancyGuard {
-    error ReentrancyGuard__ReentrantCall();
-
+abstract contract ReentrancyGuard is IReentrancyGuard {
     uint256 internal constant REENTRANCY_STATUS_LOCKED = 2;
     uint256 internal constant REENTRANCY_STATUS_UNLOCKED = 1;
 
