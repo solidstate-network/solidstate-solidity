@@ -4,7 +4,7 @@ pragma solidity ^0.8.8;
 
 library PausableStorage {
     struct Layout {
-        bool paused;
+        uint256 paused;
     }
 
     bytes32 internal constant STORAGE_SLOT =
