@@ -1,0 +1,30 @@
+[
+  {
+    "inputs": [],
+    "name": "Initializable__AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Initializable__IsInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Initializable__NotInitializing",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  }
+]
