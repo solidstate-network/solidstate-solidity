@@ -59,7 +59,7 @@ abstract contract PausableInternal is IPausableInternal {
         bytes32 key
     ) internal virtual whenNotPartiallyPaused(key) {
         PausableStorage.layout().partiallyPaused[key] = true;
-        emit Paused(msg.sender);
+        emit Paused(msg.sender, key);
     }
 
     /**
@@ -74,6 +74,6 @@ abstract contract PausableInternal is IPausableInternal {
         bytes32 key
     ) internal virtual whenPartiallyPaused(key) {
         PausableStorage.layout().partiallyPaused[key] = false;
-        emit Unpaused(msg.sender);
+        emit Unpaused(msg.sender, key);
     }
 }
