@@ -34,7 +34,7 @@ abstract contract PausableInternal is IPausableInternal {
      * @return status whether contract is paused
      */
     function _paused() internal view virtual returns (bool status) {
-        status = PausableStorage.layout().paused == 1;
+        status = PausableStorage.layout().paused;
     }
 
     /**
@@ -44,21 +44,21 @@ abstract contract PausableInternal is IPausableInternal {
     function _partiallyPaused(
         uint256 mask
     ) internal view virtual returns (bool status) {
-        status = PausableStorage.layout().paused & mask != 0;
+        status = _paused() || PausableStorage.layout().partiallyPaused[mask];
     }
 
     /**
      * @notice Triggers paused state, when contract is unpaused.
      */
     function _pause() internal virtual whenNotPaused {
-        PausableStorage.layout().paused = 1;
+        PausableStorage.layout().paused = true;
         emit Paused(msg.sender);
     }
 
     function _partiallyPause(
         uint256 mask
     ) internal virtual whenNotPartiallyPaused(mask) {
-        PausableStorage.layout().paused ^= mask;
+        PausableStorage.layout().partiallyPaused[mask] = true;
         emit Paused(msg.sender);
     }
 
@@ -66,14 +66,14 @@ abstract contract PausableInternal is IPausableInternal {
      * @notice Triggers unpaused state, when contract is paused.
      */
     function _unpause() internal virtual whenPaused {
-        PausableStorage.layout().paused = 0;
+        PausableStorage.layout().paused = false;
         emit Unpaused(msg.sender);
     }
 
     function _partiallyUnpause(
         uint256 mask
     ) internal virtual whenPartiallyPaused(mask) {
-        PausableStorage.layout().paused ^= mask;
+        PausableStorage.layout().partiallyPaused[mask] = false;
         emit Unpaused(msg.sender);
     }
 }
