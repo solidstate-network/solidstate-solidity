@@ -19,13 +19,13 @@ abstract contract PausableInternal is IPausableInternal {
         _;
     }
 
-    modifier whenNotPartiallyPaused(uint256 mask) {
-        if (_partiallyPaused(mask)) revert Pausable__Paused();
+    modifier whenNotPartiallyPaused(bytes32 key) {
+        if (_partiallyPaused(key)) revert Pausable__Paused();
         _;
     }
 
-    modifier whenPartiallyPaused(uint256 mask) {
-        if (!_partiallyPaused(mask)) revert Pausable__NotPaused();
+    modifier whenPartiallyPaused(bytes32 key) {
+        if (!_partiallyPaused(key)) revert Pausable__NotPaused();
         _;
     }
 
@@ -38,13 +38,13 @@ abstract contract PausableInternal is IPausableInternal {
     }
 
     /**
-     * @notice query whether contract is paused in the scope of the given mask
-     * @return status whether contract is paused in the scope of the given mask
+     * @notice query whether contract is paused in the scope of the given key
+     * @return status whether contract is paused in the scope of the given key
      */
     function _partiallyPaused(
-        uint256 mask
+        bytes32 key
     ) internal view virtual returns (bool status) {
-        status = _paused() || PausableStorage.layout().partiallyPaused[mask];
+        status = _paused() || PausableStorage.layout().partiallyPaused[key];
     }
 
     /**
@@ -56,9 +56,9 @@ abstract contract PausableInternal is IPausableInternal {
     }
 
     function _partiallyPause(
-        uint256 mask
-    ) internal virtual whenNotPartiallyPaused(mask) {
-        PausableStorage.layout().partiallyPaused[mask] = true;
+        bytes32 key
+    ) internal virtual whenNotPartiallyPaused(key) {
+        PausableStorage.layout().partiallyPaused[key] = true;
         emit Paused(msg.sender);
     }
 
@@ -71,9 +71,9 @@ abstract contract PausableInternal is IPausableInternal {
     }
 
     function _partiallyUnpause(
-        uint256 mask
-    ) internal virtual whenPartiallyPaused(mask) {
-        PausableStorage.layout().partiallyPaused[mask] = false;
+        bytes32 key
+    ) internal virtual whenPartiallyPaused(key) {
+        PausableStorage.layout().partiallyPaused[key] = false;
         emit Unpaused(msg.sender);
     }
 }
