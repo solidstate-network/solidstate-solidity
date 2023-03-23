@@ -16,4 +16,12 @@ contract ReentrancyGuardMock is ReentrancyGuard {
     function crossFunctionReentrancyTest() external nonReentrant {
         this.reentrancyTest();
     }
+
+    function __lockReentrancyGuard() external {
+        _lockReentrancyGuard();
+    }
+
+    function __unlockReentrancyGuard() external {
+        _unlockReentrancyGuard();
+    }
 }
