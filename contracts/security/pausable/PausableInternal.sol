@@ -66,14 +66,14 @@ abstract contract PausableInternal is IPausableInternal {
      * @notice Triggers unpaused state, when contract is paused.
      */
     function _unpause() internal virtual whenPaused {
-        PausableStorage.layout().paused = false;
+        delete PausableStorage.layout().paused;
         emit Unpaused(msg.sender);
     }
 
     function _partiallyUnpause(
         bytes32 key
     ) internal virtual whenPartiallyPaused(key) {
-        PausableStorage.layout().partiallyPaused[key] = false;
+        delete PausableStorage.layout().partiallyPaused[key];
         emit UnpausedWithKey(msg.sender, key);
     }
 }
