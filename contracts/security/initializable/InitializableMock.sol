@@ -5,22 +5,19 @@ pragma solidity ^0.8.8;
 import { Initializable } from './Initializable.sol';
 
 contract InitializableMock is Initializable {
-    bool public initializerRan;
-    uint8 public reinitializerVersion;
-
-    function __initializer() public initializer {
-        initializerRan = true;
+    function initializerTest() external initializer {
+        // do nothing
     }
 
-    function mockReinitializer() public initializer {
-        __reinitializer(2);
+    function reinitializerTest(uint8 version) external reinitializer(version) {
+        // do nothing
     }
 
-    function __reinitializer(uint8 i) public reinitializer(i) {
-        reinitializerVersion = i;
+    function __setInitializedVersion(uint8 version) external {
+        _setInitializedVersion(version);
     }
 
-    function getInitializedVersion() public view returns (uint8) {
-        return _getInitializedVersion();
+    function __getInitializedVersion() external view returns (uint8 version) {
+        version = _getInitializedVersion();
     }
 }
