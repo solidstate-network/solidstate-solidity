@@ -17,7 +17,7 @@ describe('ReentrancyGuard', function () {
   describeBehaviorOfReentrancyGuard(async () => instance, {});
 
   describe('__internal', function () {
-    describe('nonReentrant modifier', function () {
+    describe('nonReentrant() modifier', function () {
       it('does not revert non-reentrant call', async function () {
         await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
 
