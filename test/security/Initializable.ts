@@ -21,7 +21,7 @@ describe('Initializable', function () {
   describe('__internal', function () {
     describe('initializer() modifier', function () {
       it('sets initialized version to 1', async () => {
-        await instance.initializerTest();
+        await instance.modifier_initializer();
 
         expect(await instance.callStatic.__getInitializedVersion()).to.equal(
           1n,
@@ -30,10 +30,10 @@ describe('Initializable', function () {
 
       describe('reverts if', () => {
         it('initializer has already been called', async () => {
-          await instance.initializerTest();
+          await instance.modifier_initializer();
 
           await expect(
-            instance.initializerTest(),
+            instance.modifier_initializer(),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
@@ -44,31 +44,31 @@ describe('Initializable', function () {
 
     describe('reinitializer(uint8) modifier', function () {
       it('sets monotonically increasing initialized version', async () => {
-        await instance.reinitializerTest(1n);
-        await instance.reinitializerTest(2n);
-        await instance.reinitializerTest(100n);
+        await instance.modifier_reinitializer(1n);
+        await instance.modifier_reinitializer(2n);
+        await instance.modifier_reinitializer(100n);
       });
 
       describe('reverts if', () => {
         it('version is less than or equal to previously initialized version', async () => {
           await expect(
-            instance.reinitializerTest(0n),
+            instance.modifier_reinitializer(0n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
           );
 
-          await instance.reinitializerTest(2n);
+          await instance.modifier_reinitializer(2n);
 
           await expect(
-            instance.reinitializerTest(1n),
+            instance.modifier_reinitializer(1n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
           );
 
           await expect(
-            instance.reinitializerTest(2n),
+            instance.modifier_reinitializer(2n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
@@ -76,10 +76,10 @@ describe('Initializable', function () {
         });
 
         it('initialier has already been called and reinitialization version is 1', async () => {
-          await instance.initializerTest();
+          await instance.modifier_initializer();
 
           await expect(
-            instance.reinitializerTest(1n),
+            instance.modifier_reinitializer(1n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
@@ -112,7 +112,7 @@ describe('Initializable', function () {
       describe('reverts if', () => {
         it('version is less than or equal to previously initialized version', async () => {
           await expect(
-            instance.reinitializerTest(0n),
+            instance.modifier_reinitializer(0n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
@@ -121,14 +121,14 @@ describe('Initializable', function () {
           await instance.__setInitializedVersion(2n);
 
           await expect(
-            instance.reinitializerTest(1n),
+            instance.modifier_reinitializer(1n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
           );
 
           await expect(
-            instance.reinitializerTest(2n),
+            instance.modifier_reinitializer(2n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',

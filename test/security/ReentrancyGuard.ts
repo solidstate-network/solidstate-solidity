@@ -19,11 +19,11 @@ describe('ReentrancyGuard', function () {
   describe('__internal', function () {
     describe('nonReentrant() modifier', function () {
       it('does not revert non-reentrant call', async function () {
-        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
+        await expect(instance['modifier_nonReentrant()']()).not.to.be.reverted;
 
         // test subsequent calls
 
-        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
+        await expect(instance['modifier_nonReentrant()']()).not.to.be.reverted;
 
         await expect(
           instance['reentrancyTest()'](),
@@ -63,7 +63,7 @@ describe('ReentrancyGuard', function () {
         await instance.__lockReentrancyGuard();
 
         await expect(
-          instance.nonReentrancyTest(),
+          instance.modifier_nonReentrant(),
         ).to.be.revertedWithCustomError(
           instance,
           'ReentrancyGuard__ReentrantCall',
@@ -77,7 +77,7 @@ describe('ReentrancyGuard', function () {
 
         await instance.__unlockReentrancyGuard();
 
-        await expect(instance.nonReentrancyTest()).not.to.be.reverted;
+        await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
       });
     });
   });
