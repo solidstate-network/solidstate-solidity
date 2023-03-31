@@ -39,7 +39,35 @@ describe('ECDSA', function () {
     });
 
     describe('#recover(bytes32,uint8,bytes32,bytes32)', function () {
-      it('todo');
+      it('returns message signer', async function () {
+        const [signer] = await ethers.getSigners();
+
+        const data = {
+          types: ['uint256'],
+          values: [ethers.constants.One],
+          nonce: ethers.constants.One,
+          address: instance.address,
+        };
+
+        const hash = hashData(data);
+        const sig = await signData(signer, data);
+
+        const r = ethers.utils.hexDataSlice(sig, 0, 32);
+        const s = ethers.utils.hexDataSlice(sig, 32, 64);
+        const v = ethers.utils.hexDataSlice(sig, 64, 65);
+
+        expect(
+          await instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
+            ethers.utils.solidityKeccak256(
+              ['string', 'bytes32'],
+              ['\x19Ethereum Signed Message:\n32', hash],
+            ),
+            v,
+            r,
+            s,
+          ),
+        ).to.equal(signer.address);
+      });
     });
 
     describe('#toEthSignedMessageHash(bytes32)', function () {
