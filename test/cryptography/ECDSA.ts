@@ -3,6 +3,9 @@ import { ECDSAMock, ECDSAMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const MAX_S_VALUE =
+  '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0';
+
 describe('ECDSA', function () {
   let instance: ECDSAMock;
 
@@ -36,6 +39,30 @@ describe('ECDSA', function () {
           ),
         ).to.equal(signer.address);
       });
+
+      describe('reverts if', () => {
+        it('signaure length is invalid', async () => {
+          await expect(
+            instance.callStatic['recover(bytes32,bytes)'](
+              ethers.utils.randomBytes(32),
+              ethers.utils.randomBytes(64),
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ECDSA__InvalidSignatureLength',
+          );
+
+          await expect(
+            instance.callStatic['recover(bytes32,bytes)'](
+              ethers.utils.randomBytes(32),
+              ethers.utils.randomBytes(66),
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ECDSA__InvalidSignatureLength',
+          );
+        });
+      });
     });
 
     describe('#recover(bytes32,uint8,bytes32,bytes32)', function () {
@@ -67,6 +94,72 @@ describe('ECDSA', function () {
             s,
           ),
         ).to.equal(signer.address);
+      });
+
+      describe('reverts if', () => {
+        it('S is invalid', async () => {
+          const hash = ethers.utils.randomBytes(32);
+          const v = 27;
+          const r = ethers.utils.randomBytes(32);
+          const s = ethers.BigNumber.from(MAX_S_VALUE).add(1n);
+
+          // s must be less than or equal to MAX_S_VALUE
+
+          await expect(
+            instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
+              hash,
+              v,
+              r,
+              s,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidS');
+        });
+
+        it('V is invalid', async () => {
+          const hash = ethers.utils.randomBytes(32);
+          const r = ethers.utils.randomBytes(32);
+          const s = MAX_S_VALUE;
+
+          // V must be 27 or 28
+
+          for (let v = 0; v <= 26; v++) {
+            await expect(
+              instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
+                hash,
+                v,
+                r,
+                s,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidV');
+          }
+
+          for (let v = 29; v <= 255; v++) {
+            await expect(
+              instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
+                hash,
+                v,
+                r,
+                s,
+              ),
+            ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidV');
+          }
+        });
+
+        it('recovered signature is invalid', async () => {
+          const hash = ethers.utils.randomBytes(32);
+          const v = 27;
+          const r = ethers.utils.randomBytes(32);
+          const s = MAX_S_VALUE;
+
+          await expect(
+            instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
+              hash,
+              v,
+              r,
+              s,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidSignature');
+        });
       });
     });
 
