@@ -3,6 +3,7 @@ import {
   ERC165BaseMock,
   ERC165BaseMock__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ERC165Base', function () {
@@ -15,5 +16,43 @@ describe('ERC165Base', function () {
 
   describeBehaviorOfERC165Base(async () => instance, {
     interfaceIds: [],
+  });
+
+  describe('__internal', () => {
+    describe('#_supportsInterface(bytes4)', () => {
+      it('returns whether interface ID is supported', async () => {
+        const interfaceId = ethers.utils.randomBytes(4);
+
+        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+          .false;
+        await instance.__setSupportsInterface(interfaceId, true);
+        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+          .true;
+      });
+    });
+
+    describe('#_setSupportsInterface(bytes4,bool)', () => {
+      it('updates support status forgiven interface', async () => {
+        const interfaceId = ethers.utils.randomBytes(4);
+
+        await instance.__setSupportsInterface(interfaceId, true);
+        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+          .true;
+        await instance.__setSupportsInterface(interfaceId, false);
+        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+          .false;
+      });
+
+      describe('reverts if', () => {
+        it('specified interface ID is 0xffffffff', async () => {
+          await expect(
+            instance.__setSupportsInterface('0xffffffff', true),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC165Base__InvalidInterfaceId',
+          );
+        });
+      });
+    });
   });
 });
