@@ -101,7 +101,6 @@ describe('ECDSA', function () {
           const hash = ethers.utils.randomBytes(32);
           const v = 27;
           const r = ethers.utils.randomBytes(32);
-          const s = ethers.BigNumber.from(MAX_S_VALUE).add(1n);
 
           // s must be less than or equal to MAX_S_VALUE
 
@@ -110,7 +109,7 @@ describe('ECDSA', function () {
               hash,
               v,
               r,
-              s,
+              ethers.BigNumber.from(MAX_S_VALUE).add(1n),
             ),
           ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidS');
         });
@@ -146,16 +145,16 @@ describe('ECDSA', function () {
         });
 
         it('recovered signature is invalid', async () => {
-          const hash = ethers.utils.randomBytes(32);
           const v = 27;
-          const r = ethers.utils.randomBytes(32);
           const s = MAX_S_VALUE;
+
+          // hash and r generated randomly, known not to yield valid signer
 
           await expect(
             instance.callStatic['recover(bytes32,uint8,bytes32,bytes32)'](
-              hash,
+              '0xfb78d190a6ff9c55a28ae24c65cb006029ae15140557db9017a6474592d3fd59',
               v,
-              r,
+              '0xe1a6fa655db25741b29a03d2f8ec44fb5590d0a1ce91c789886b59e54c08f509',
               s,
             ),
           ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidSignature');
