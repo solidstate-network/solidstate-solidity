@@ -20,12 +20,18 @@ abstract contract PausableInternal is IPausableInternal {
     }
 
     modifier whenNotPartiallyPaused(bytes32 key) {
-        if (_partiallyPaused(key)) revert Pausable__Paused();
+        {
+            (bool status, ) = _partiallyPaused(key);
+            if (status) revert Pausable__Paused();
+        }
         _;
     }
 
     modifier whenPartiallyPaused(bytes32 key) {
-        if (!_partiallyPaused(key)) revert Pausable__NotPaused();
+        {
+            (bool status, ) = _partiallyPaused(key);
+            if (!status) revert Pausable__NotPaused();
+        }
         _;
     }
 
@@ -39,12 +45,14 @@ abstract contract PausableInternal is IPausableInternal {
 
     /**
      * @notice query whether contract is paused in the scope of the given key
-     * @return status whether contract is paused in the scope of the given key
+     * @return status whether contract is paused, either in the scope of the given key or globally
+     * @return partialStatus whether contract is paused specifically in the scope of the given key
      */
     function _partiallyPaused(
         bytes32 key
-    ) internal view virtual returns (bool status) {
-        status = _paused() || PausableStorage.layout().partiallyPaused[key];
+    ) internal view virtual returns (bool status, bool partialStatus) {
+        partialStatus = PausableStorage.layout().partiallyPaused[key];
+        status = _paused() || partialStatus;
     }
 
     /**
