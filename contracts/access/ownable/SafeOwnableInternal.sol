@@ -29,9 +29,16 @@ abstract contract SafeOwnableInternal is ISafeOwnableInternal, OwnableInternal {
     }
 
     /**
-     * @notice set nominee owner, granting permission to call acceptOwnership
+     * @notice grant permission to given address to claim contract ownership
      */
     function _transferOwnership(address account) internal virtual override {
+        _setNomineeOwner(account);
+    }
+
+    /**
+     * @notice set nominee owner
+     */
+    function _setNomineeOwner(address account) internal virtual {
         SafeOwnableStorage.layout().nomineeOwner = account;
     }
 }
