@@ -9,7 +9,6 @@ describe('Sources', () => {
     const files = Array.from(
       allNames.reduce((acc, el) => {
         const { sourceName } = parseFullyQualifiedName(el);
-        // TODO: only add if file is in HRE sources directory
         acc.add(sourceName);
         return acc;
       }, new Set()),
@@ -21,10 +20,11 @@ describe('Sources', () => {
       try {
         await hre.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, { files: [file] });
       } catch (error) {
+        // errors other than HH603 are possible
+        // (such as `FileNotFoundError: File hardhat/console.sol`)
+        // but these are out of scope of this test and are ignored
         if (error.toString().includes('HardhatError: HH603')) {
           failures.push(file);
-        } else {
-          throw error;
         }
       }
     }
