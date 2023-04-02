@@ -32,7 +32,7 @@ describe('ERC165Base', function () {
     });
 
     describe('#_setSupportsInterface(bytes4,bool)', () => {
-      it('updates support status forgiven interface', async () => {
+      it('updates support status for given interface', async () => {
         const interfaceId = ethers.utils.randomBytes(4);
 
         await instance.__setSupportsInterface(interfaceId, true);
