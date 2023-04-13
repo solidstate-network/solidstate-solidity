@@ -23,10 +23,12 @@ describe('Pausable', function () {
 
   describe('__internal', function () {
     describe('whenNotPaused() modifier', () => {
-      it('todo');
+      it('does not revert if contract is not paused', async () => {
+        await expect(instance.modifier_whenNotPaused()).not.to.be.reverted;
+      });
 
       describe('reverts if', () => {
-        it('contract is globally paused', async () => {
+        it('contract is paused', async () => {
           await instance.__pause();
 
           await expect(
@@ -37,10 +39,14 @@ describe('Pausable', function () {
     });
 
     describe('whenPaused() modifier', () => {
-      it('todo');
+      it('does not revert if contract is paused', async () => {
+        await instance.__pause();
+
+        await expect(instance.modifier_whenPaused()).not.to.be.reverted;
+      });
 
       describe('reverts if', () => {
-        it('contract is not globally paused', async () => {
+        it('contract is not paused', async () => {
           await expect(
             instance.modifier_whenPaused(),
           ).to.be.revertedWithCustomError(instance, 'Pausable__NotPaused');
@@ -49,7 +55,7 @@ describe('Pausable', function () {
     });
 
     describe('#_paused()', () => {
-      it('returns whether contract is globally paused', async () => {
+      it('returns whether contract is paused', async () => {
         expect(await instance.callStatic.__paused()).to.be.false;
         await instance.__pause();
         expect(await instance.callStatic.__paused()).to.be.true;

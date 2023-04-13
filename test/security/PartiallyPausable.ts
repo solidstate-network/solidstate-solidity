@@ -23,18 +23,50 @@ describe('PartiallyPausable', function () {
 
   describe('__internal', function () {
     describe('whenNotPartiallyPaused(bytes32) modifier', () => {
-      it('todo');
+      it('does not revert if contract is not paused', async () => {
+        const key = ethers.utils.randomBytes(32);
+
+        await expect(instance.modifier_whenNotPartiallyPaused(key)).not.to.be
+          .reverted;
+      });
 
       describe('reverts if', () => {
-        it('todo');
+        it('contract is paused', async () => {
+          const key = ethers.utils.randomBytes(32);
+
+          await instance.__partiallyPause(key);
+
+          await expect(
+            instance.modifier_whenNotPartiallyPaused(key),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'PartiallyPausable__PartiallyPaused',
+          );
+        });
       });
     });
 
     describe('whenPartiallyPaused(bytes32) modifier', () => {
-      it('todo');
+      it('does not revert if contract is paused', async () => {
+        const key = ethers.utils.randomBytes(32);
+
+        await instance.__partiallyPause(key);
+
+        await expect(instance.modifier_whenPartiallyPaused(key)).not.to.be
+          .reverted;
+      });
 
       describe('reverts if', () => {
-        it('todo');
+        it('contract is not paused', async () => {
+          const key = ethers.utils.randomBytes(32);
+
+          await expect(
+            instance.modifier_whenPartiallyPaused(key),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'PartiallyPausable__NotPartiallyPaused',
+          );
+        });
       });
     });
 
