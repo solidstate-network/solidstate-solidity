@@ -91,7 +91,14 @@ describe('PartiallyPausable', function () {
           .withArgs(deployer.address, key);
       });
 
-      it('todo: does not affect other keys');
+      it('does not affect other keys', async () => {
+        const key = ethers.utils.randomBytes(32);
+        const otherKey = ethers.utils.randomBytes(32);
+
+        await instance.__partiallyPause(key);
+
+        expect(await instance.__partiallyPaused(otherKey)).to.be.false;
+      });
 
       describe('reverts if', () => {
         it('contract is partially paused already', async function () {
@@ -129,7 +136,16 @@ describe('PartiallyPausable', function () {
           .withArgs(deployer.address, key);
       });
 
-      it('todo: does not affect other keys');
+      it('does not affect other keys', async () => {
+        const key = ethers.utils.randomBytes(32);
+        const otherKey = ethers.utils.randomBytes(32);
+
+        await instance.__partiallyPause(key);
+        await instance.__partiallyPause(otherKey);
+        await instance.__partiallyUnpause(key);
+
+        expect(await instance.__partiallyPaused(otherKey)).to.be.true;
+      });
 
       describe('reverts if', () => {
         it('contract is not partially paused', async function () {
