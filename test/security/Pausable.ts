@@ -22,6 +22,40 @@ describe('Pausable', function () {
   describeBehaviorOfPausable(async () => instance, {});
 
   describe('__internal', function () {
+    describe('whenNotPaused() modifier', () => {
+      it('todo');
+
+      describe('reverts if', () => {
+        it('contract is globally paused', async () => {
+          await instance.__pause();
+
+          await expect(
+            instance.modifier_whenNotPaused(),
+          ).to.be.revertedWithCustomError(instance, 'Pausable__Paused');
+        });
+      });
+    });
+
+    describe('whenPaused() modifier', () => {
+      it('todo');
+
+      describe('reverts if', () => {
+        it('contract is not globally paused', async () => {
+          await expect(
+            instance.modifier_whenPaused(),
+          ).to.be.revertedWithCustomError(instance, 'Pausable__NotPaused');
+        });
+      });
+    });
+
+    describe('#_paused()', () => {
+      it('returns whether contract is globally paused', async () => {
+        expect(await instance.callStatic.__paused()).to.be.false;
+        await instance.__pause();
+        expect(await instance.callStatic.__paused()).to.be.true;
+      });
+    });
+
     describe('#_pause()', function () {
       it('sets paused status to true', async function () {
         await instance.__pause();
@@ -41,50 +75,6 @@ describe('Pausable', function () {
             instance,
             'Pausable__Paused',
           );
-        });
-      });
-    });
-
-    describe('#_partiallyPause()', function () {
-      it('sets paused status to true', async function () {
-        const key = ethers.utils.randomBytes(32);
-
-        await instance.__partiallyPause(key);
-        // TODO: expose external partiallyPaused function on interface?
-        const [status, partialStatus] = await instance.__partiallyPaused(key);
-        expect(status).to.be.true;
-        expect(partialStatus).to.be.true;
-      });
-
-      it('emits PausedWithKey event', async function () {
-        const key = ethers.utils.randomBytes(32);
-
-        await expect(instance.connect(deployer).__partiallyPause(key))
-          .to.emit(instance, 'PausedWithKey')
-          .withArgs(deployer.address, key);
-      });
-
-      it('todo: does not affect other keys');
-
-      describe('reverts if', () => {
-        it('contract is partially paused already', async function () {
-          const key = ethers.utils.randomBytes(32);
-
-          await instance.__partiallyPause(key);
-
-          await expect(
-            instance.__partiallyPause(key),
-          ).to.be.revertedWithCustomError(instance, 'Pausable__Paused');
-        });
-
-        it('contract is globally paused already', async function () {
-          const key = ethers.utils.randomBytes(32);
-
-          await instance.__pause();
-
-          await expect(
-            instance.__partiallyPause(key),
-          ).to.be.revertedWithCustomError(instance, 'Pausable__Paused');
         });
       });
     });
@@ -111,42 +101,6 @@ describe('Pausable', function () {
             instance,
             'Pausable__NotPaused',
           );
-        });
-      });
-    });
-
-    describe('#_partiallyUnpause()', function () {
-      it('sets paused status to false', async function () {
-        const key = ethers.utils.randomBytes(32);
-
-        await instance.__partiallyPause(key);
-
-        await instance.__partiallyUnpause(key);
-        // TODO: expose external partiallyPaused function on interface?
-        const [status, partialStatus] = await instance.__partiallyPaused(key);
-        expect(status).to.be.false;
-        expect(partialStatus).to.be.false;
-      });
-
-      it('emits UnpausedWithKey event', async function () {
-        const key = ethers.utils.randomBytes(32);
-
-        await instance.__partiallyPause(key);
-
-        await expect(instance.connect(deployer).__partiallyUnpause(key))
-          .to.emit(instance, 'UnpausedWithKey')
-          .withArgs(deployer.address, key);
-      });
-
-      it('todo: does not affect other keys');
-
-      describe('reverts if', () => {
-        it('contract is not partially paused', async function () {
-          const key = ethers.utils.randomBytes(32);
-
-          await expect(
-            instance.__partiallyUnpause(key),
-          ).to.be.revertedWithCustomError(instance, 'Pausable__NotPaused');
         });
       });
     });

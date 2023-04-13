@@ -30,47 +30,9 @@
         "internalType": "address",
         "name": "account",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "PausedWithKey",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
       }
     ],
     "name": "Unpaused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "UnpausedWithKey",
     "type": "event"
   },
   {
