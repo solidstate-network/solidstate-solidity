@@ -30,6 +30,10 @@ abstract contract PartiallyPausableInternal is IPartiallyPausableInternal {
         status = PartiallyPausableStorage.layout().partiallyPaused[key];
     }
 
+    /**
+     * @notice pause contract in the scope of given key
+     * @param key key whose scope to pause
+     */
     function _partiallyPause(
         bytes32 key
     ) internal virtual whenNotPartiallyPaused(key) {
@@ -38,8 +42,8 @@ abstract contract PartiallyPausableInternal is IPartiallyPausableInternal {
     }
 
     /**
-     * @notice TODO
-     * TODO: how to know whether this will revert?  `partiallyPaused` function will return `true` if either global or local pause is set
+     * @notice unpause contract in the scope of given key
+     * @param key key whose scope to unpause
      */
     function _partiallyUnpause(
         bytes32 key
