@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "Pausable__NotPaused",
+    "name": "PartiallyPausable__NotPartiallyPaused",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "Pausable__Paused",
+    "name": "PartiallyPausable__PartiallyPaused",
     "type": "error"
   },
   {
@@ -17,9 +17,15 @@
         "internalType": "address",
         "name": "account",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
       }
     ],
-    "name": "Paused",
+    "name": "PartiallyPaused",
     "type": "event"
   },
   {
@@ -30,14 +36,26 @@
         "internalType": "address",
         "name": "account",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
       }
     ],
-    "name": "Unpaused",
+    "name": "PartiallyUnpaused",
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "paused",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "partiallyPaused",
     "outputs": [
       {
         "internalType": "bool",
