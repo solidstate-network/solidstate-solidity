@@ -3,5 +3,6 @@
 pragma solidity ^0.8.8;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { IOwnableInternal } from './IOwnableInternal.sol';
 
-interface IOwnable is IERC173 {}
+interface IOwnable is IOwnableInternal, IERC173 {}

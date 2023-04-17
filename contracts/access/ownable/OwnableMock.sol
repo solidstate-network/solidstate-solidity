@@ -9,8 +9,24 @@ contract OwnableMock is Ownable {
         _setOwner(owner);
     }
 
-    function setOwner(address owner) external {
+    function modifier_onlyOwner() external onlyOwner {
+        // do nothing
+    }
+
+    function modifier_onlyTransitiveOwner() external onlyTransitiveOwner {
+        // do nothing
+    }
+
+    function __transferOwnership(address owner) external {
+        _transferOwnership(owner);
+    }
+
+    function __setOwner(address owner) external {
         _setOwner(owner);
+    }
+
+    function __owner() external view returns (address) {
+        return _owner();
     }
 
     function __transitiveOwner() external view returns (address) {
