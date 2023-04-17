@@ -11,8 +11,6 @@ It consists of the following packages:
 | `@solidstate/library`   | functions for interacting with and validating contracts                               | [📖](./lib/README.md)       |
 | `@solidstate/spec`      | portable tests which may be run against third-party implementations of core contracts | [📖](./spec/README.md)      |
 
-> **Note**: A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
-
 ### Contracts
 
 All contracts are designed to either be deployed through the standard `constructor` method, or referenced by a proxy. To this end, the [diamond storage](https://medium.com/1milliondevs/new-storage-layout-for-proxy-contracts-and-diamonds-98d01d0eadb) pattern is employed exclusively.
