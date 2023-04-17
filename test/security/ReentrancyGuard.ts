@@ -17,13 +17,13 @@ describe('ReentrancyGuard', function () {
   describeBehaviorOfReentrancyGuard(async () => instance, {});
 
   describe('__internal', function () {
-    describe('nonReentrant modifier', function () {
+    describe('nonReentrant() modifier', function () {
       it('does not revert non-reentrant call', async function () {
-        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
+        await expect(instance['modifier_nonReentrant()']()).not.to.be.reverted;
 
         // test subsequent calls
 
-        await expect(instance['nonReentrancyTest()']()).not.to.be.reverted;
+        await expect(instance['modifier_nonReentrant()']()).not.to.be.reverted;
 
         await expect(
           instance['reentrancyTest()'](),
@@ -50,7 +50,34 @@ describe('ReentrancyGuard', function () {
             instance,
             'ReentrancyGuard__ReentrantCall',
           );
+
+          // call function again with different contract state to avoid false-negative test coverage
+          await instance.__lockReentrancyGuard();
+          await expect(instance.crossFunctionReentrancyTest()).to.be.reverted;
         });
+      });
+    });
+
+    describe('#_lockReentrancyGuard()', () => {
+      it('causes nonReentrant functions to revert', async () => {
+        await instance.__lockReentrancyGuard();
+
+        await expect(
+          instance.modifier_nonReentrant(),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'ReentrancyGuard__ReentrantCall',
+        );
+      });
+    });
+
+    describe('#_unlockReentrancyGuard()', () => {
+      it('causes nonReentrant functions to pass', async () => {
+        await instance.__lockReentrancyGuard();
+
+        await instance.__unlockReentrancyGuard();
+
+        await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
       });
     });
   });
