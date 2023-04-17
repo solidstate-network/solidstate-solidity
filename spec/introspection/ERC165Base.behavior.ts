@@ -1,20 +1,20 @@
 import { describeFilter } from '@solidstate/library';
-import { IERC165 } from '@solidstate/typechain-types';
+import { ERC165Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
-export interface ERC165BehaviorArgs {
+export interface ERC165BaseBehaviorArgs {
   interfaceIds: string[];
 }
 
-export function describeBehaviorOfERC165(
-  deploy: () => Promise<IERC165>,
-  { interfaceIds }: ERC165BehaviorArgs,
+export function describeBehaviorOfERC165Base(
+  deploy: () => Promise<ERC165Base>,
+  { interfaceIds }: ERC165BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC165', function () {
-    let instance: IERC165;
+  describe('::ERC165Base', function () {
+    let instance: ERC165Base;
 
     beforeEach(async function () {
       instance = await deploy();

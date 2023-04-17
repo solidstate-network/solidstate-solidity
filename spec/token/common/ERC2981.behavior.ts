@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC165 } from '../../introspection';
+import { describeBehaviorOfERC165Base } from '../../introspection';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC2981Mock } from '@solidstate/typechain-types';
@@ -25,7 +25,7 @@ export function describeBehaviorOfERC2981(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC165(
+    describeBehaviorOfERC165Base(
       deploy,
       {
         interfaceIds: ['0x2a55205a'],
