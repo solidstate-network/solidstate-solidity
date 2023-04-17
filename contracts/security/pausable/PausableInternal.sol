@@ -2,18 +2,13 @@
 
 pragma solidity ^0.8.8;
 
+import { IPausableInternal } from './IPausableInternal.sol';
 import { PausableStorage } from './PausableStorage.sol';
 
 /**
  * @title Internal functions for Pausable security control module.
  */
-abstract contract PausableInternal {
-    error Pausable__Paused();
-    error Pausable__NotPaused();
-
-    event Paused(address account);
-    event Unpaused(address account);
-
+abstract contract PausableInternal is IPausableInternal {
     modifier whenNotPaused() {
         if (_paused()) revert Pausable__Paused();
         _;
@@ -25,11 +20,11 @@ abstract contract PausableInternal {
     }
 
     /**
-     * @notice query the contracts paused state.
-     * @return true if paused, false if unpaused.
+     * @notice query whether contract is paused
+     * @return status whether contract is paused
      */
-    function _paused() internal view virtual returns (bool) {
-        return PausableStorage.layout().paused;
+    function _paused() internal view virtual returns (bool status) {
+        status = PausableStorage.layout().paused;
     }
 
     /**
@@ -44,7 +39,7 @@ abstract contract PausableInternal {
      * @notice Triggers unpaused state, when contract is paused.
      */
     function _unpause() internal virtual whenPaused {
-        PausableStorage.layout().paused = false;
+        delete PausableStorage.layout().paused;
         emit Unpaused(msg.sender);
     }
 }

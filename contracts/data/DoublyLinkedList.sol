@@ -23,7 +23,14 @@ library DoublyLinkedList {
         DoublyLinkedListInternal _inner;
     }
 
+    /**
+     * @notice indicate that an attempt was made to insert 0 into a list
+     */
     error DoublyLinkedList__InvalidInput();
+
+    /**
+     * @notice indicate that a non-existent value was used as a reference for insertion or lookup
+     */
     error DoublyLinkedList__NonExistentEntry();
 
     function contains(
