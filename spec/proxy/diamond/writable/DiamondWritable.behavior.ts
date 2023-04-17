@@ -1,15 +1,15 @@
-import { describeBehaviorOfERC165Base } from '../../../introspection';
+import { OwnableBehaviorArgs, describeBehaviorOfERC165Base } from '../../../';
 import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondWritable } from '@solidstate/typechain-types';
+import {
+  IDiamondWritable,
+  IDiamondReadable__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondWritableBehaviorArgs {
-  getOwner: () => Promise<SignerWithAddress>;
-  getNonOwner: () => Promise<SignerWithAddress>;
-}
+export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondWritable(
   deploy: () => Promise<IDiamondWritable>,

@@ -1,8 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import {
-  describeBehaviorOfCloneFactory,
-  describeBehaviorOfERC4626Base,
-} from '@solidstate/spec';
+import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
   SolidStateERC20Mock,
   SolidStateERC20Mock__factory,

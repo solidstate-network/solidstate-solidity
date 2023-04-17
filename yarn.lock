@@ -1983,7 +1983,7 @@
   dependencies:
     axios "^0.24.0"
 
-"@solidstate/library@^0.0.51":
+"@solidstate/library@^0.0.54":
   version "0.0.0"
   uid ""
 
@@ -4660,6 +4660,13 @@ hardhat-gas-reporter@^1.0.9:
     array-uniq "1.0.3"
     eth-gas-reporter "^0.2.25"
     sha1 "^1.1.1"
+
+hardhat-linearization@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/hardhat-linearization/-/hardhat-linearization-0.1.0.tgz#1ee92c4394869173f93309bc2972d606b9dab97c"
+  integrity sha512-1iUR2/2HsP5o0bvo+6o2yEdxHwQ7MFYVLGkY9zYI+1+9iyr8i83JaZz+xQ/NKkTMbGQ1k+bFxzAIfMb79KKnhQ==
+  dependencies:
+    solidity-ast "^0.4.35"
 
 hardhat-spdx-license-identifier@^2.1.0:
   version "2.1.0"
@@ -7632,6 +7639,11 @@ solc@0.7.3:
     require-from-string "^2.0.0"
     semver "^5.5.0"
     tmp "0.0.33"
+
+solidity-ast@^0.4.35:
+  version "0.4.46"
+  resolved "https://registry.yarnpkg.com/solidity-ast/-/solidity-ast-0.4.46.tgz#d0745172dced937741d07464043564e35b147c59"
+  integrity sha512-MlPZQfPhjWXqh7YxWcBGDXaPZIfMYCOHYoLEhGDWulNwEPIQQZuB7mA9eP17CU0jY/bGR4avCEUVVpvHtT2gbA==
 
 solidity-comments-extractor@^0.0.7:
   version "0.0.7"
