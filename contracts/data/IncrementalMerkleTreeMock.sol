@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 
 import { IncrementalMerkleTree } from './IncrementalMerkleTree.sol';
 
-import 'hardhat/console.sol';
-
 contract IncrementalMerkleTreeMock {
     using IncrementalMerkleTree for IncrementalMerkleTree.Tree;
 
