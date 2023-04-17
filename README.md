@@ -122,9 +122,3 @@ Publish packages via Lerna:
 ```bash
 yarn lerna-publish
 ```
-
-## Supporters
-
-[<img src="./premia-logo.svg" alt="premia.finance" width="200">](https://premia.finance)
-
-[<img src="./frexa-logo.svg" alt="frexa.io" width="200">](https://frexa.io)
