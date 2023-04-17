@@ -5,7 +5,7 @@ pragma solidity ^0.8.8;
 import { ReentrancyGuard } from './ReentrancyGuard.sol';
 
 contract ReentrancyGuardMock is ReentrancyGuard {
-    function nonReentrancyTest() external nonReentrant {
+    function modifier_nonReentrant() external nonReentrant {
         // do nothing
     }
 
@@ -15,5 +15,13 @@ contract ReentrancyGuardMock is ReentrancyGuard {
 
     function crossFunctionReentrancyTest() external nonReentrant {
         this.reentrancyTest();
+    }
+
+    function __lockReentrancyGuard() external {
+        _lockReentrancyGuard();
+    }
+
+    function __unlockReentrancyGuard() external {
+        _unlockReentrancyGuard();
     }
 }

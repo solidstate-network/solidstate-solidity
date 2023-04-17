@@ -7,7 +7,6 @@ import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
 import { ERC721BaseInternal } from '../base/ERC721Base.sol';
 import { IERC721MetadataInternal } from './IERC721MetadataInternal.sol';
 import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
-import { ERC721MetadataInternal } from './ERC721MetadataInternal.sol';
 
 /**
  * @title ERC721Metadata internal functions
