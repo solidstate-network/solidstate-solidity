@@ -11,4 +11,14 @@ contract ERC165BaseMock is ERC165Base {
     constructor() {
         _setSupportsInterface(type(IERC165).interfaceId, true);
     }
+
+    function __supportsInterface(
+        bytes4 interfaceId
+    ) external view returns (bool) {
+        return _supportsInterface(interfaceId);
+    }
+
+    function __setSupportsInterface(bytes4 interfaceId, bool status) external {
+        _setSupportsInterface(interfaceId, status);
+    }
 }

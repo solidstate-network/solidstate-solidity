@@ -29,6 +29,7 @@
     "hardhat-abi-exporter": "^2.10.1",
     "hardhat-contract-sizer": "^2.6.1",
     "hardhat-gas-reporter": "^1.0.9",
+    "hardhat-linearization": "^0.1.0",
     "hardhat-spdx-license-identifier": "^2.1.0",
     "husky": "^8.0.2",
     "keccak256": "^1.0.6",
