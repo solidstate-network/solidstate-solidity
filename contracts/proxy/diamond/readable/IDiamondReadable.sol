@@ -2,16 +2,13 @@
 
 pragma solidity ^0.8.8;
 
+import { IDiamondReadableInternal } from './IDiamondReadableInternal.sol';
+
 /**
  * @title Diamond proxy introspection interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IDiamondReadable {
-    struct Facet {
-        address target;
-        bytes4[] selectors;
-    }
-
+interface IDiamondReadable is IDiamondReadableInternal {
     /**
      * @notice get all facets and their selectors
      * @return diamondFacets array of structured facet data
