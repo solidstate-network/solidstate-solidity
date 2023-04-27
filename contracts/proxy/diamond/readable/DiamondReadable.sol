@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.8;
 
+import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondReadable } from './IDiamondReadable.sol';
 import { DiamondReadableInternal } from './DiamondReadableInternal.sol';
@@ -12,14 +13,14 @@ import { DiamondReadableInternal } from './DiamondReadableInternal.sol';
  */
 abstract contract DiamondReadable is IDiamondReadable, DiamondReadableInternal {
     /**
-     * @inheritdoc IDiamondReadable
+     * @inheritdoc IERC2535DiamondLoupe
      */
     function facets() external view returns (Facet[] memory diamondFacets) {
         diamondFacets = _facets();
     }
 
     /**
-     * @inheritdoc IDiamondReadable
+     * @inheritdoc IERC2535DiamondLoupe
      */
     function facetFunctionSelectors(
         address facet
@@ -28,7 +29,7 @@ abstract contract DiamondReadable is IDiamondReadable, DiamondReadableInternal {
     }
 
     /**
-     * @inheritdoc IDiamondReadable
+     * @inheritdoc IERC2535DiamondLoupe
      */
     function facetAddresses()
         external
@@ -39,7 +40,7 @@ abstract contract DiamondReadable is IDiamondReadable, DiamondReadableInternal {
     }
 
     /**
-     * @inheritdoc IDiamondReadable
+     * @inheritdoc IERC2535DiamondLoupe
      */
     function facetAddress(
         bytes4 selector
