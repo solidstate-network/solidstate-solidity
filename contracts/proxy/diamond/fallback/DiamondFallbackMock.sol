@@ -10,4 +10,9 @@ contract DiamondFallbackMock is DiamondFallback, DiamondWritableInternal {
         _setOwner(msg.sender);
         _diamondCut(cuts, address(0), '');
     }
+
+    /**
+     * @dev suppress compiler warning
+     */
+    receive() external payable {}
 }
