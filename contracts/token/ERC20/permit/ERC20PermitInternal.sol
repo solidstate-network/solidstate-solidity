@@ -63,8 +63,8 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * @notice calculate the hash of the ERC20Metadata token name
-     * @return versionHash hash of token name
+     * @notice calculate the hash of the signing domain version
+     * @return versionHash hash of signing domain version
      */
     function _versionHash()
         internal
