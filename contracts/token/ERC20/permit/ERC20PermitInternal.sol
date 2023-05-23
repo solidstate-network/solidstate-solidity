@@ -39,8 +39,8 @@ abstract contract ERC20PermitInternal is
 
         if (domainSeparator == 0x00) {
             domainSeparator = EIP712.calculateDomainSeparator(
-                _nameHash(),
-                _versionHash()
+                keccak256(bytes(_name())),
+                keccak256(bytes(_version()))
             );
         }
     }
@@ -54,25 +54,11 @@ abstract contract ERC20PermitInternal is
     }
 
     /**
-     * @notice calculate the hash of the human-readable signing domain name
-     * @dev ERC20Metadata token name is used as signing domain name
-     * @return nameHash hash of signing domain name
+     * @notice query signing domain version
+     * @return version signing domain version
      */
-    function _nameHash() internal view virtual returns (bytes32 nameHash) {
-        nameHash = keccak256(bytes(_name()));
-    }
-
-    /**
-     * @notice calculate the hash of the signing domain version
-     * @return versionHash hash of signing domain version
-     */
-    function _versionHash()
-        internal
-        view
-        virtual
-        returns (bytes32 versionHash)
-    {
-        versionHash = keccak256(bytes('1'));
+    function _version() internal view virtual returns (string memory version) {
+        version = '1';
     }
 
     /**
@@ -135,8 +121,8 @@ abstract contract ERC20PermitInternal is
 
         if (domainSeparator == 0x00) {
             domainSeparator = EIP712.calculateDomainSeparator(
-                _nameHash(),
-                _versionHash()
+                keccak256(bytes(_name())),
+                keccak256(bytes(_version()))
             );
             l.domainSeparators[block.chainid] = domainSeparator;
         }
