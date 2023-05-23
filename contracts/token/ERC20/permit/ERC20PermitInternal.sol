@@ -70,8 +70,6 @@ abstract contract ERC20PermitInternal is
      * @param v secp256k1 'v' value
      * @param r secp256k1 'r' value
      * @param s secp256k1 's' value
-     * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
-     * EIP712 Domain Separator is automatically recalculated.
      */
     function _permit(
         address owner,
@@ -84,7 +82,10 @@ abstract contract ERC20PermitInternal is
     ) internal virtual {
         if (deadline < block.timestamp) revert ERC20Permit__ExpiredDeadline();
 
-        // Assembly for more efficiently computing:
+        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
+
+        // execute EIP-712 hashStruct procedure using assembly, equavalent to:
+        //
         // bytes32 structHash = keccak256(
         //   abi.encode(
         //     EIP712_TYPE_HASH,
@@ -96,15 +97,13 @@ abstract contract ERC20PermitInternal is
         //   )
         // );
 
-        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
-
         bytes32 structHash;
         uint256 nonce = l.nonces[owner];
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
         assembly {
-            // Load free memory pointer
+            // load free memory pointer
             let pointer := mload(64)
 
             mstore(pointer, typeHash)
@@ -127,26 +126,35 @@ abstract contract ERC20PermitInternal is
             l.domainSeparators[block.chainid] = domainSeparator;
         }
 
-        // Assembly for more efficient computing:
+        // recreate and hash data payload using assembly, equivalent to:
+        //
         // bytes32 hash = keccak256(
-        //   abi.encodePacked(uint16(0x1901), domainSeparator, structHash)
+        //   abi.encodePacked(
+        //     uint16(0x1901),
+        //     domainSeparator,
+        //     structHash
+        //   )
         // );
 
         bytes32 hash;
 
         assembly {
-            // Load free memory pointer
+            // load free memory pointer
             let pointer := mload(64)
 
+            // this magic value is the EIP-191 signed data header, consisting of
+            // the hardcoded 0x19 and the one-byte version 0x01
             mstore(
                 pointer,
                 0x1901000000000000000000000000000000000000000000000000000000000000
-            ) // EIP191 header
-            mstore(add(pointer, 2), domainSeparator) // EIP712 domain hash
-            mstore(add(pointer, 34), structHash) // Hash of struct
+            )
+            mstore(add(pointer, 2), domainSeparator)
+            mstore(add(pointer, 34), structHash)
 
             hash := keccak256(pointer, 66)
         }
+
+        // validate signature
 
         address signer = hash.recover(v, r, s);
 
