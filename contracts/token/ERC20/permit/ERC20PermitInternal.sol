@@ -85,7 +85,7 @@ abstract contract ERC20PermitInternal is
         if (block.timestamp > deadline) revert ERC20Permit__ExpiredDeadline();
 
         // Assembly for more efficiently computing:
-        // bytes32 hashStruct = keccak256(
+        // bytes32 structHash = keccak256(
         //   abi.encode(
         //     EIP712_TYPE_HASH,
         //     owner,
@@ -98,7 +98,7 @@ abstract contract ERC20PermitInternal is
 
         ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
 
-        bytes32 hashStruct;
+        bytes32 structHash;
         uint256 nonce = l.nonces[owner];
 
         bytes32 typeHash = EIP712_TYPE_HASH;
@@ -114,7 +114,7 @@ abstract contract ERC20PermitInternal is
             mstore(add(pointer, 128), nonce)
             mstore(add(pointer, 160), deadline)
 
-            hashStruct := keccak256(pointer, 192)
+            structHash := keccak256(pointer, 192)
         }
 
         bytes32 domainSeparator = l.domainSeparators[block.chainid];
@@ -129,7 +129,7 @@ abstract contract ERC20PermitInternal is
 
         // Assembly for more efficient computing:
         // bytes32 hash = keccak256(
-        //   abi.encodePacked(uint16(0x1901), domainSeparator, hashStruct)
+        //   abi.encodePacked(uint16(0x1901), domainSeparator, structHash)
         // );
 
         bytes32 hash;
@@ -143,7 +143,7 @@ abstract contract ERC20PermitInternal is
                 0x1901000000000000000000000000000000000000000000000000000000000000
             ) // EIP191 header
             mstore(add(pointer, 2), domainSeparator) // EIP712 domain hash
-            mstore(add(pointer, 34), hashStruct) // Hash of struct
+            mstore(add(pointer, 34), structHash) // Hash of struct
 
             hash := keccak256(pointer, 66)
         }
