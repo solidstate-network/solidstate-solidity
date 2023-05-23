@@ -170,6 +170,7 @@ abstract contract ERC20PermitInternal is
      * @dev domain separator is not immediately recalculated, and will ultimately depend on the output of the _name view function
      */
     function _setName(string memory name) internal virtual override {
+        // TODO: cache invalidation can fail if chainid is reverted to a previous value
         super._setName(name);
         delete ERC20PermitStorage.layout().domainSeparators[block.chainid];
     }
