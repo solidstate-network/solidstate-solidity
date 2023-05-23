@@ -16,7 +16,7 @@ library EIP712 {
      * @notice calculate unique EIP-712 domain separator
      * @dev name and version inputs are hashed as required by EIP-712 because they are of dynamic-length types
      * @dev implementation of EIP712Domain struct type excludes the optional salt parameter
-     * @param nameHash hash of ERC20Metadata token name
+     * @param nameHash hash of human-readable signing domain name
      * @param versionHash hash of signing domain version
      * @return domainSeparator domain separator
      */
