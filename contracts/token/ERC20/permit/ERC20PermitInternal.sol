@@ -167,6 +167,7 @@ abstract contract ERC20PermitInternal is
     /**
      * @inheritdoc ERC20MetadataInternal
      * @notice set new token name and invalidate cached domain separator
+     * @dev domain separator is not immediately recalculated, and will ultimately depend on the output of the _name view function
      */
     function _setName(string memory name) internal virtual override {
         super._setName(name);
