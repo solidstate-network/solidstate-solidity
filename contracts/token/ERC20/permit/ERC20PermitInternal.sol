@@ -82,7 +82,7 @@ abstract contract ERC20PermitInternal is
         bytes32 r,
         bytes32 s
     ) internal virtual {
-        if (block.timestamp > deadline) revert ERC20Permit__ExpiredDeadline();
+        if (deadline < block.timestamp) revert ERC20Permit__ExpiredDeadline();
 
         // Assembly for more efficiently computing:
         // bytes32 structHash = keccak256(
