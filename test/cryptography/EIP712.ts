@@ -26,15 +26,13 @@ describe('EIP712', function () {
 
         const chainId = await ethers.provider.send('eth_chainId');
 
-        const domainSeparator = ethers.utils.solidityKeccak256(
-          ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
-          [
-            typeHash,
-            nameHash,
-            versionHash,
-            chainId,
-            ethers.utils.hexZeroPad(instance.address, 32),
-          ],
+        // use keccak256 + defaultAbiCoder rather than solidityKeccak256 because the latter forces packed encoding
+
+        const domainSeparator = ethers.utils.keccak256(
+          ethers.utils.defaultAbiCoder.encode(
+            ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
+            [typeHash, nameHash, versionHash, chainId, instance.address],
+          ),
         );
 
         expect(
