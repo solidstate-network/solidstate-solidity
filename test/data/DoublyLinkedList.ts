@@ -25,10 +25,10 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(ethers.constants.Zero);
-      const oneBytes32 = bnToBytes32(ethers.constants.One);
-      const twoBytes32 = bnToBytes32(ethers.constants.Two);
-      const threeBytes32 = bnToBytes32(BigNumber.from('3'));
+      const zeroBytes32 = bnToBytes32(0);
+      const oneBytes32 = bnToBytes32(1);
+      const twoBytes32 = bnToBytes32(2);
+      const threeBytes32 = bnToBytes32(3);
 
       describe('#contains(bytes32)', () => {
         it('returns true if the value has been added', async () => {
@@ -449,7 +449,7 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = bnToBytes32(BigNumber.from('4'));
+          const newValue = bnToBytes32(4);
 
           await instance['push(bytes32)'](oneBytes32);
           await instance['push(bytes32)'](twoBytes32);
@@ -526,10 +526,10 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(ethers.constants.Zero);
-      const oneAddress = bnToAddress(ethers.constants.One);
-      const twoAddress = bnToAddress(ethers.constants.Two);
-      const threeAddress = bnToAddress(BigNumber.from('3'));
+      const zeroAddress = bnToAddress(0);
+      const oneAddress = bnToAddress(1);
+      const twoAddress = bnToAddress(2);
+      const threeAddress = bnToAddress(3);
 
       describe('#contains(address)', () => {
         it('returns true if the value has been added', async () => {
@@ -950,7 +950,7 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = bnToAddress(BigNumber.from('4'));
+          const newValue = bnToAddress(4);
 
           await instance['push(address)'](oneAddress);
           await instance['push(address)'](twoAddress);
@@ -1027,10 +1027,10 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroUint256 = ethers.constants.Zero;
-      const oneUint256 = ethers.constants.One;
-      const twoUint256 = ethers.constants.Two;
-      const threeUint256 = BigNumber.from('3');
+      const zeroUint256 = 0;
+      const oneUint256 = 1;
+      const twoUint256 = 2;
+      const threeUint256 = 3;
 
       describe('#contains(uint256)', () => {
         it('returns true if the value has been added', async () => {
@@ -1451,7 +1451,7 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = BigNumber.from('4');
+          const newValue = 4;
 
           await instance['push(uint256)'](oneUint256);
           await instance['push(uint256)'](twoUint256);

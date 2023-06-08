@@ -41,7 +41,7 @@ export function describeBehaviorOfERC1404Base(
           await instance.callStatic.detectTransferRestriction(
             ethers.constants.AddressZero,
             ethers.constants.AddressZero,
-            ethers.constants.One,
+            1,
           ),
         ).to.equal(0);
       });

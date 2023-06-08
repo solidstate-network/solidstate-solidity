@@ -6,7 +6,6 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC20ImplicitApproval } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ImplicitApprovalBehaviorArgs
@@ -65,7 +64,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
 
     describe('#transferFrom(address,address,uint256)', function () {
       it('does not require approval for implicitly approved sender', async function () {
-        const amount = ethers.constants.One;
+        const amount = 1;
 
         await mint(holder.address, amount);
 

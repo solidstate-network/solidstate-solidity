@@ -6,10 +6,10 @@ import { expect } from 'chai';
 import { BigNumber, BigNumberish, BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
-let currentNonce = ethers.constants.Zero;
+let currentNonce = BigNumber.from(0);
 
 const nextNonce = function () {
-  currentNonce = currentNonce.add(ethers.constants.One);
+  currentNonce = currentNonce.add(1);
   return currentNonce;
 };
 
@@ -81,7 +81,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
         let [signer] = signers;
-        let value = ethers.constants.One;
+        let value = 1;
 
         await expect(() =>
           signer.sendTransaction({ to: instance.address, value }),
@@ -106,7 +106,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           const { data } = (await mock.populateTransaction.fn()) as {
             data: BytesLike;
           };
-          let value = ethers.constants.One;
+          let value = 1;
           let signatures: Signature[] = [];
 
           for (let signer of signers) {
@@ -146,7 +146,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           const { data } = (await mock.populateTransaction.fn()) as {
             data: BytesLike;
           };
-          let value = ethers.constants.Zero;
+          let value = 0;
           let signatures: Signature[] = [];
 
           for (let signer of signers) {
@@ -190,7 +190,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             const { data } = (await mock.populateTransaction.fn()) as {
               data: BytesLike;
             };
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers) {
@@ -219,7 +219,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('quorum is not reached', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
@@ -250,7 +250,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
@@ -282,7 +282,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('recovered signer is not authorized', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([nonSigner])) {
@@ -314,7 +314,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('nonce has been used', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers) {
@@ -364,7 +364,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           let target = receiver.address;
           let data = ethers.randomBytes(0);
-          let value = ethers.constants.One;
+          let value = 1;
           let signatures: Signature[] = [];
 
           for (let signer of signers) {
@@ -394,7 +394,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           // TODO: test non-empty return data
           let target = ethers.constants.AddressZero;
           let data = ethers.randomBytes(0);
-          let value = ethers.constants.Zero;
+          let value = 0;
           let signatures: Signature[] = [];
 
           for (let signer of signers) {
@@ -430,7 +430,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             const { data } = (await mock.populateTransaction.fn()) as {
               data: BytesLike;
             };
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers) {
@@ -451,7 +451,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
             await expect(
               instance.verifyAndExecute(
-                { target, data, value: ethers.constants.Zero, delegate: true },
+                { target, data, value: 0, delegate: true },
                 signatures,
                 {
                   value,
@@ -463,7 +463,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('quorum is not reached', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
@@ -494,7 +494,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([signers[0]])) {
@@ -526,7 +526,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('recovered signer is not authorized', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers.concat([nonSigner])) {
@@ -580,7 +580,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures,
                 {
-                  value: value.add(ethers.constants.One),
+                  value: value.add(1),
                 },
               ),
             ).to.be.revertedWithCustomError(
@@ -592,7 +592,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           it('nonce has been used', async function () {
             let target = ethers.constants.AddressZero;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0;
             let signatures: Signature[] = [];
 
             for (let signer of signers) {

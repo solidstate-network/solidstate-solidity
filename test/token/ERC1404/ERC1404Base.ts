@@ -7,8 +7,8 @@ import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 let restrictions = [
-  { code: ethers.BigNumber.from(1), message: 'one' },
-  { code: ethers.BigNumber.from(3), message: 'three' },
+  { code: 1, message: 'one' },
+  { code: 3, message: 'three' },
 ];
 
 describe('ERC1404Base', function () {
@@ -24,7 +24,7 @@ describe('ERC1404Base', function () {
 
   describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
-    supply: ethers.constants.Zero,
+    supply: 0,
     mint: (recipient: string, amount: BigNumber) =>
       instance.__mint(recipient, amount),
     burn: (recipient: string, amount: BigNumber) =>

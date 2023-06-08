@@ -6,8 +6,8 @@ import {
 import { ethers } from 'hardhat';
 
 let restrictions = [
-  { code: ethers.BigNumber.from(1), message: 'one' },
-  { code: ethers.BigNumber.from(3), message: 'three' },
+  { code: 1, message: 'one' },
+  { code: 3, message: 'three' },
 ];
 
 describe('SolidStateERC1404', function () {
@@ -30,6 +30,6 @@ describe('SolidStateERC1404', function () {
     name: '',
     symbol: '',
     decimals: 0,
-    supply: ethers.constants.Zero,
+    supply: 0,
   });
 });

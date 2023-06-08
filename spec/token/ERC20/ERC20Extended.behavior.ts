@@ -40,13 +40,13 @@ export function describeBehaviorOfERC20Extended(
             .connect(holder)
             .callStatic['increaseAllowance(address,uint256)'](
               instance.address,
-              ethers.constants.Zero,
+              0,
             ),
         ).to.be.true;
       });
 
       it('increases approval of spender with respect to holder by given amount', async function () {
-        let amount = ethers.constants.Two;
+        let amount = BigNumber.from(2);
 
         await instance
           .connect(holder)
@@ -68,7 +68,7 @@ export function describeBehaviorOfERC20Extended(
       });
 
       it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
+        let amount = BigNumber.from(2);
 
         await expect(
           instance
@@ -91,10 +91,7 @@ export function describeBehaviorOfERC20Extended(
           await expect(
             instance
               .connect(holder)
-              ['increaseAllowance(address,uint256)'](
-                spender.address,
-                ethers.constants.One,
-              ),
+              ['increaseAllowance(address,uint256)'](spender.address, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Extended__ExcessiveAllowance',
@@ -110,18 +107,18 @@ export function describeBehaviorOfERC20Extended(
             .connect(holder)
             .callStatic['decreaseAllowance(address,uint256)'](
               instance.address,
-              ethers.constants.Zero,
+              0,
             ),
         ).to.be.true;
       });
 
       it('decreases approval of spender with respect to holder by given amount', async function () {
-        let amount = ethers.constants.Two;
+        let amount = BigNumber.from(2);
         await instance
           .connect(holder)
           ['increaseAllowance(address,uint256)'](
             spender.address,
-            amount.mul(ethers.constants.Two),
+            amount.mul(2),
           );
 
         await instance
@@ -137,14 +134,14 @@ export function describeBehaviorOfERC20Extended(
           ['decreaseAllowance(address,uint256)'](spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
-          ethers.constants.Zero,
+          0,
         );
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
       it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
+        let amount = BigNumber.from(2);
         await instance
           .connect(holder)
           ['increaseAllowance(address,uint256)'](spender.address, amount);
@@ -155,7 +152,7 @@ export function describeBehaviorOfERC20Extended(
             ['decreaseAllowance(address,uint256)'](spender.address, amount),
         )
           .to.emit(instance, 'Approval')
-          .withArgs(holder.address, spender.address, ethers.constants.Zero);
+          .withArgs(holder.address, spender.address, 0);
       });
 
       describe('reverts if', function () {
@@ -163,10 +160,7 @@ export function describeBehaviorOfERC20Extended(
           await expect(
             instance
               .connect(holder)
-              ['decreaseAllowance(address,uint256)'](
-                spender.address,
-                ethers.constants.One,
-              ),
+              ['decreaseAllowance(address,uint256)'](spender.address, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__InsufficientAllowance',

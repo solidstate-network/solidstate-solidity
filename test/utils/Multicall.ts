@@ -30,9 +30,7 @@ describe('Multicall', function () {
         '0x0000000000000000000000000000000000000000000000000000000000000001',
       ]);
 
-      expect(result.map(ethers.BigNumber.from)).to.deep.equal([
-        ethers.constants.One,
-      ]);
+      expect(result.map(ethers.BigNumber.from)).to.deep.equal([1]);
     });
 
     describe('reverts if', function () {

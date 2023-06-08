@@ -39,7 +39,7 @@ export function describeBehaviorOfERC20Permit(
       it('should increase allowance using permit', async () => {
         const { timestamp } = await ethers.provider.getBlock('latest');
 
-        const amount = ethers.constants.Two;
+        const amount = 2;
         const deadline = timestamp + 100;
 
         const permit = await signERC2612Permit(
@@ -74,7 +74,7 @@ export function describeBehaviorOfERC20Permit(
         it('deadline has passed', async () => {
           const { timestamp } = await ethers.provider.getBlock('latest');
 
-          const amount = ethers.constants.Two;
+          const amount = 2;
           const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(
@@ -111,7 +111,7 @@ export function describeBehaviorOfERC20Permit(
         it('signature is invalid', async () => {
           const { timestamp } = await ethers.provider.getBlock('latest');
 
-          const amount = ethers.constants.Two;
+          const amount = 2;
           const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(
@@ -143,7 +143,7 @@ export function describeBehaviorOfERC20Permit(
         it('signature has already been used', async () => {
           const { timestamp } = await ethers.provider.getBlock('latest');
 
-          const amount = ethers.constants.Two;
+          const amount = 2;
           const deadline = timestamp + 100;
 
           const permit = await signERC2612Permit(

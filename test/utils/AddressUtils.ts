@@ -40,7 +40,7 @@ describe('AddressUtils', async () => {
 
     describe('#sendValue(address,uint256)', () => {
       it('transfers given value to given address', async () => {
-        const value = ethers.constants.Two;
+        const value = BigNumber.from(2);
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -56,7 +56,7 @@ describe('AddressUtils', async () => {
 
       describe('reverts if', () => {
         it('target contract rejects transfer', async () => {
-          const value = ethers.constants.Two;
+          const value = BigNumber.from(2);
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
@@ -92,7 +92,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             .callStatic['functionCall(address,bytes)'](target, data),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
       });
 
       describe('reverts if', () => {
@@ -161,7 +161,7 @@ describe('AddressUtils', async () => {
               data,
               revertReason,
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
       });
 
       describe('reverts if', () => {
@@ -234,13 +234,13 @@ describe('AddressUtils', async () => {
             .callStatic['functionCallWithValue(address,bytes,uint256)'](
               target,
               data,
-              ethers.constants.Zero,
+              0,
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
       });
 
       it('transfers given value to target contract', async () => {
-        const value = ethers.constants.Two;
+        const value = BigNumber.from(2);
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -274,7 +274,7 @@ describe('AddressUtils', async () => {
             instance['functionCallWithValue(address,bytes,uint256)'](
               ethers.constants.AddressZero,
               '0x',
-              ethers.constants.Zero,
+              0,
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -289,7 +289,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256)'](
                 instance.address,
                 '0x',
-                ethers.constants.One,
+                1,
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -298,7 +298,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = ethers.constants.Two;
+          const value = BigNumber.from(2);
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
@@ -315,7 +315,7 @@ describe('AddressUtils', async () => {
 
           const { data } = (await targetContract.populateTransaction.sendValue(
             ethers.constants.AddressZero,
-            ethers.constants.Zero,
+            0,
           )) as { data: BytesLike };
 
           await expect(
@@ -348,11 +348,7 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](
-                target,
-                data,
-                ethers.constants.Zero,
-              ),
+              ['functionCallWithValue(address,bytes,uint256)'](target, data, 0),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -363,7 +359,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256)'](
                 instance.address,
                 '0x',
-                ethers.constants.Zero,
+                0,
               ),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
@@ -391,14 +387,14 @@ describe('AddressUtils', async () => {
             .callStatic['functionCallWithValue(address,bytes,uint256,string)'](
               target,
               data,
-              ethers.constants.Zero,
+              0,
               '',
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
       });
 
       it('transfers given value to target contract', async () => {
-        const value = ethers.constants.Two;
+        const value = BigNumber.from(2);
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -434,7 +430,7 @@ describe('AddressUtils', async () => {
             instance['functionCallWithValue(address,bytes,uint256,string)'](
               ethers.constants.AddressZero,
               '0x',
-              ethers.constants.Zero,
+              0,
               '',
             ),
           ).to.be.revertedWithCustomError(
@@ -450,7 +446,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256,string)'](
                 instance.address,
                 '0x',
-                ethers.constants.One,
+                1,
                 '',
               ),
           ).to.be.revertedWithCustomError(
@@ -460,7 +456,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = ethers.constants.Two;
+          const value = BigNumber.from(2);
           const revertReason = 'REVERT_REASON';
 
           await ethers.provider.send('hardhat_setBalance', [
@@ -478,7 +474,7 @@ describe('AddressUtils', async () => {
 
           const { data } = (await targetContract.populateTransaction.sendValue(
             ethers.constants.AddressZero,
-            ethers.constants.Zero,
+            0,
           )) as { data: BytesLike };
 
           await expect(
@@ -513,7 +509,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256,string)'](
                 target,
                 data,
-                ethers.constants.Zero,
+                0,
                 '',
               ),
           ).to.be.revertedWith(revertReason);
@@ -528,7 +524,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256,string)'](
                 instance.address,
                 '0x',
-                ethers.constants.Zero,
+                0,
                 revertReason,
               ),
           ).to.be.revertedWith(revertReason);

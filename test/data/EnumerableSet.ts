@@ -23,9 +23,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(ethers.constants.Zero);
-      const oneBytes32 = bnToBytes32(ethers.constants.One);
-      const twoBytes32 = bnToBytes32(ethers.constants.Two);
+      const zeroBytes32 = bnToBytes32(0);
+      const oneBytes32 = bnToBytes32(1);
+      const twoBytes32 = bnToBytes32(2);
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
@@ -203,9 +203,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(BigNumber.from(0));
-      const oneAddress = bnToAddress(BigNumber.from(1));
-      const twoAddress = bnToAddress(BigNumber.from(2));
+      const zeroAddress = bnToAddress(0);
+      const oneAddress = bnToAddress(1);
+      const twoAddress = bnToAddress(2);
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
@@ -383,9 +383,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zero = ethers.constants.Zero;
-      const one = ethers.constants.One;
-      const two = ethers.constants.Two;
+      const zero = 0;
+      const one = 1;
+      const two = 2;
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {

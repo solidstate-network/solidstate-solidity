@@ -13,7 +13,7 @@ import { expect } from 'chai';
 import { BigNumber, Bytes } from 'ethers';
 import { ethers } from 'hardhat';
 
-const numbers = [0, 1, 2].map((n) => BigNumber.from(n));
+const numbers = [0, 1, 2].map((n) => n);
 
 const constants = {
   bytes32: numbers.map((n) => bnToBytes32(n)),

@@ -23,7 +23,7 @@ describe('SolidStateERC4626', function () {
       name,
       symbol,
       decimals,
-      ethers.constants.Zero,
+      0,
     );
 
     instance = await new SolidStateERC4626Mock__factory(deployer).deploy(
@@ -45,6 +45,6 @@ describe('SolidStateERC4626', function () {
     name,
     symbol,
     decimals,
-    supply: ethers.constants.Zero,
+    supply: 0,
   });
 });
