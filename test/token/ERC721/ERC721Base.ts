@@ -245,7 +245,7 @@ describe('ERC721Base', function () {
           ]);
 
           await receiverContract.mock.onERC721Received.returns(
-            ethers.utils.randomBytes(4),
+            ethers.randomBytes(4),
           );
 
           await expect(
@@ -368,7 +368,7 @@ describe('ERC721Base', function () {
           ]);
 
           await receiverContract.mock.onERC721Received.returns(
-            ethers.utils.randomBytes(4),
+            ethers.randomBytes(4),
           );
 
           await expect(
@@ -605,7 +605,7 @@ describe('ERC721Base', function () {
           ]);
 
           await receiverContract.mock.onERC721Received.returns(
-            ethers.utils.randomBytes(4),
+            ethers.randomBytes(4),
           );
 
           await expect(
@@ -658,7 +658,7 @@ describe('ERC721Base', function () {
         ]);
 
         await receiverContract.mock.onERC721Received.returns(
-          ethers.utils.randomBytes(4),
+          ethers.randomBytes(4),
         );
 
         expect(

@@ -37,8 +37,8 @@ export function describeBehaviorOfDiamondWritable(
         const fn = `fn${i}()`;
         functions.push(fn);
         selectors.push(
-          ethers.utils.hexDataSlice(
-            ethers.utils.solidityKeccak256(['string'], [fn]),
+          ethers.hexDataSlice(
+            ethers.solidityPackedKeccak256(['string'], [fn]),
             0,
             4,
           ),
@@ -69,7 +69,7 @@ export function describeBehaviorOfDiamondWritable(
           {
             target: facet.address,
             action: 0,
-            selectors: [ethers.utils.hexlify(ethers.utils.randomBytes(4))],
+            selectors: [ethers.hexlify(ethers.randomBytes(4))],
           },
         ];
         const target = ethers.constants.AddressZero;
@@ -131,7 +131,7 @@ export function describeBehaviorOfDiamondWritable(
                   {
                     target: ethers.constants.AddressZero,
                     action: 0,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
                 ethers.constants.AddressZero,
@@ -148,7 +148,7 @@ export function describeBehaviorOfDiamondWritable(
               {
                 target: facet.address,
                 action: 0,
-                selectors: [ethers.utils.randomBytes(4)],
+                selectors: [ethers.randomBytes(4)],
               },
             ];
 
@@ -221,7 +221,7 @@ export function describeBehaviorOfDiamondWritable(
                   {
                     target: ethers.constants.AddressZero,
                     action: 1,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
                 ethers.constants.AddressZero,
@@ -240,7 +240,7 @@ export function describeBehaviorOfDiamondWritable(
                   {
                     target: facet.address,
                     action: 1,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
                 ethers.constants.AddressZero,
@@ -253,7 +253,7 @@ export function describeBehaviorOfDiamondWritable(
           });
 
           it('selector is immutable', async function () {
-            const selector = ethers.utils.randomBytes(4);
+            const selector = ethers.randomBytes(4);
 
             await instance.connect(owner).diamondCut(
               [
@@ -286,7 +286,7 @@ export function describeBehaviorOfDiamondWritable(
           });
 
           it('replacement facet is same as existing facet', async function () {
-            const selector = ethers.utils.randomBytes(4);
+            const selector = ethers.randomBytes(4);
 
             await instance.connect(owner).diamondCut(
               [
@@ -369,7 +369,7 @@ export function describeBehaviorOfDiamondWritable(
                   {
                     target: instance.address,
                     action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
                 ethers.constants.AddressZero,
@@ -388,7 +388,7 @@ export function describeBehaviorOfDiamondWritable(
                   {
                     target: ethers.constants.AddressZero,
                     action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
                 ethers.constants.AddressZero,
@@ -401,7 +401,7 @@ export function describeBehaviorOfDiamondWritable(
           });
 
           it('selector is immutable', async function () {
-            const selector = ethers.utils.randomBytes(4);
+            const selector = ethers.randomBytes(4);
 
             await instance.connect(owner).diamondCut(
               [

@@ -21,12 +21,12 @@ const constants = {
   uint256: numbers,
 };
 
-const randomBytes32 = () => ethers.utils.randomBytes(32);
+const randomBytes32 = () => ethers.randomBytes(32);
 
 const randomAddress = () =>
-  ethers.utils.getAddress(ethers.utils.hexlify(ethers.utils.randomBytes(20)));
+  ethers.getAddress(ethers.hexlify(ethers.randomBytes(20)));
 
-const randomUint256 = () => ethers.BigNumber.from(ethers.utils.randomBytes(32));
+const randomUint256 = () => ethers.BigNumber.from(ethers.randomBytes(32));
 
 // checks that the parent node is greater than or equal to the children nodes
 function checkNodes(nodes: string[] | BigNumber[]) {

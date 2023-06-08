@@ -6,7 +6,7 @@ import { ethers } from 'hardhat';
 
 const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
+const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 interface AccessControlBehaviorArgs {
   deploy: () => Promise<AccessControl>;

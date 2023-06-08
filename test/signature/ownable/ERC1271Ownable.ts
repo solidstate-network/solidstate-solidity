@@ -30,8 +30,8 @@ describe('ERC1271Ownable', function () {
   describe('__internal', function () {
     describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns magic value for signature created by owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await owner.signMessage(ethers.utils.arrayify(hash));
+        let hash = ethers.randomBytes(32);
+        let signature = await owner.signMessage(ethers.arrayify(hash));
 
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](
@@ -42,8 +42,8 @@ describe('ERC1271Ownable', function () {
       });
 
       it('returns null bytes for signature created by non-owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
+        let hash = ethers.randomBytes(32);
+        let signature = await nonOwner.signMessage(ethers.arrayify(hash));
 
         expect(
           await instance.callStatic['__isValidSignature(bytes32,bytes)'](

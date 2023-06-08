@@ -24,7 +24,7 @@ describe('SolidStateERC1155', function () {
           to.address,
           tokenId,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),

@@ -36,7 +36,7 @@ describe('CloneFactory', function () {
 
     describe('#_deployClone(bytes32)', function () {
       it('deploys clone and returns deployment address', async function () {
-        const salt = ethers.utils.randomBytes(32);
+        const salt = ethers.randomBytes(32);
 
         const address = await instance.callStatic['__deployClone(bytes32)'](
           salt,
@@ -54,7 +54,7 @@ describe('CloneFactory', function () {
         it('contract creation fails');
 
         it('salt has already been used', async function () {
-          const salt = ethers.utils.randomBytes(32);
+          const salt = ethers.randomBytes(32);
 
           await instance['__deployClone(bytes32)'](salt);
 
@@ -71,13 +71,13 @@ describe('CloneFactory', function () {
     describe('#_calculateCloneDeploymentAddress(bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode = '0x58333b90818180333cf3';
-        const initCodeHash = ethers.utils.keccak256(initCode);
-        const salt = ethers.utils.randomBytes(32);
+        const initCodeHash = ethers.keccak256(initCode);
+        const salt = ethers.randomBytes(32);
 
         expect(
           await instance.callStatic.__calculateCloneDeploymentAddress(salt),
         ).to.equal(
-          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(instance.address, salt, initCodeHash),
         );
       });
     });

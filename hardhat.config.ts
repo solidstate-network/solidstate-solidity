@@ -1,5 +1,5 @@
 import '@nomicfoundation/hardhat-chai-matchers';
-import '@nomiclabs/hardhat-ethers';
+import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import 'hardhat-abi-exporter';

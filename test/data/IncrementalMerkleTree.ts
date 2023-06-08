@@ -8,7 +8,7 @@ import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
-const randomHash = () => ethers.utils.hexlify(ethers.utils.randomBytes(32));
+const randomHash = () => ethers.hexlify(ethers.randomBytes(32));
 
 describe('IncrementalMerkleTree', function () {
   let instance: IncrementalMerkleTreeMock;
@@ -63,7 +63,7 @@ describe('IncrementalMerkleTree', function () {
       const hash_a = randomHash();
       const hash_b = randomHash();
 
-      const hash = ethers.utils.solidityKeccak256(
+      const hash = ethers.solidityPackedKeccak256(
         ['bytes32', 'bytes32'],
         [hash_a, hash_b],
       );
@@ -79,12 +79,12 @@ describe('IncrementalMerkleTree', function () {
       const hash_b = randomHash();
       const hash_c = randomHash();
 
-      const hash_ab = ethers.utils.solidityKeccak256(
+      const hash_ab = ethers.solidityPackedKeccak256(
         ['bytes32', 'bytes32'],
         [hash_a, hash_b],
       );
 
-      const hash = ethers.utils.solidityKeccak256(
+      const hash = ethers.solidityPackedKeccak256(
         ['bytes32', 'bytes32'],
         [hash_ab, hash_c],
       );

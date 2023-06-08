@@ -206,7 +206,7 @@ export function describeBehaviorOfERC1155Base(
             holder.address,
             id,
             amount,
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           );
 
         expect(
@@ -236,7 +236,7 @@ export function describeBehaviorOfERC1155Base(
                 holder.address,
                 id,
                 amount,
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -253,7 +253,7 @@ export function describeBehaviorOfERC1155Base(
                 holder.address,
                 ethers.constants.Zero,
                 ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -274,7 +274,7 @@ export function describeBehaviorOfERC1155Base(
                 mock.address,
                 ethers.constants.Zero,
                 ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
@@ -294,7 +294,7 @@ export function describeBehaviorOfERC1155Base(
                 mock.address,
                 ethers.constants.Zero,
                 ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -325,7 +325,7 @@ export function describeBehaviorOfERC1155Base(
             holder.address,
             [id],
             [amount],
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           );
 
         expect(
@@ -357,7 +357,7 @@ export function describeBehaviorOfERC1155Base(
                 holder.address,
                 [id],
                 [amount],
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -371,13 +371,7 @@ export function describeBehaviorOfERC1155Base(
               .connect(holder)
               [
                 'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
-                spender.address,
-                holder.address,
-                [],
-                [],
-                ethers.utils.randomBytes(0),
-              ),
+              ](spender.address, holder.address, [], [], ethers.randomBytes(0)),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__NotOwnerOrApproved',
@@ -394,13 +388,7 @@ export function describeBehaviorOfERC1155Base(
               .connect(spender)
               [
                 'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
-                spender.address,
-                mock.address,
-                [],
-                [],
-                ethers.utils.randomBytes(0),
-              ),
+              ](spender.address, mock.address, [], [], ethers.randomBytes(0)),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
 
@@ -416,13 +404,7 @@ export function describeBehaviorOfERC1155Base(
               .connect(spender)
               [
                 'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
-                spender.address,
-                mock.address,
-                [],
-                [],
-                ethers.utils.randomBytes(0),
-              ),
+              ](spender.address, mock.address, [], [], ethers.randomBytes(0)),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverRejected',

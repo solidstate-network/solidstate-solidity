@@ -21,7 +21,7 @@ export function describeBehaviorOfPartiallyPausable(
 
     describe('#partiallyPaused()', function () {
       it('returns paused == false', async function () {
-        const key = ethers.utils.randomBytes(32);
+        const key = ethers.randomBytes(32);
         expect(await instance.partiallyPaused(key)).to.equal(false);
       });
     });

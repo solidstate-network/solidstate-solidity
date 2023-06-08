@@ -45,8 +45,8 @@ describe('Factory', function () {
     describe('#_deploy(bytes,bytes32)', function () {
       it('deploys bytecode and returns deployment address', async function () {
         const initCode = await instance.deployTransaction.data;
-        const initCodeHash = ethers.utils.keccak256(initCode);
-        const salt = ethers.utils.randomBytes(32);
+        const initCodeHash = ethers.keccak256(initCode);
+        const salt = ethers.randomBytes(32);
 
         const address = await instance.callStatic['__deploy(bytes,bytes32)'](
           initCode,
@@ -69,7 +69,7 @@ describe('Factory', function () {
       describe('reverts if', function () {
         it('contract creation fails', async function () {
           const initCode = '0xfe';
-          const salt = ethers.utils.randomBytes(32);
+          const salt = ethers.randomBytes(32);
 
           await expect(
             instance['__deploy(bytes,bytes32)'](initCode, salt),
@@ -81,7 +81,7 @@ describe('Factory', function () {
 
         it('salt has already been used', async function () {
           const initCode = instance.deployTransaction.data;
-          const salt = ethers.utils.randomBytes(32);
+          const salt = ethers.randomBytes(32);
 
           await instance['__deploy(bytes,bytes32)'](initCode, salt);
 
@@ -98,8 +98,8 @@ describe('Factory', function () {
     describe('#_calculateDeploymentAddress(bytes32,bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode = instance.deployTransaction.data;
-        const initCodeHash = ethers.utils.keccak256(initCode);
-        const salt = ethers.utils.randomBytes(32);
+        const initCodeHash = ethers.keccak256(initCode);
+        const salt = ethers.randomBytes(32);
 
         expect(
           await instance.callStatic.__calculateDeploymentAddress(
@@ -107,7 +107,7 @@ describe('Factory', function () {
             salt,
           ),
         ).to.equal(
-          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(instance.address, salt, initCodeHash),
         );
       });
     });

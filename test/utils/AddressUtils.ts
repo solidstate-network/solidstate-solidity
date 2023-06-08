@@ -21,7 +21,7 @@ describe('AddressUtils', async () => {
     describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(
-          ethers.utils.getAddress(
+          ethers.getAddress(
             await instance['toString(address)'](deployer.address),
           ),
         ).to.eq(deployer.address);
@@ -44,7 +44,7 @@ describe('AddressUtils', async () => {
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
+          ethers.hexStripZeros(value.toHexString()),
         ]);
 
         const target = deployer;
@@ -60,7 +60,7 @@ describe('AddressUtils', async () => {
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
+            ethers.hexStripZeros(value.toHexString()),
           ]);
 
           const mock = await deployMockContract(deployer, []);
@@ -92,12 +92,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             .callStatic['functionCall(address,bytes)'](target, data),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
       });
 
       describe('reverts if', () => {
@@ -166,12 +161,7 @@ describe('AddressUtils', async () => {
               data,
               revertReason,
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
       });
 
       describe('reverts if', () => {
@@ -246,12 +236,7 @@ describe('AddressUtils', async () => {
               data,
               ethers.constants.Zero,
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
       });
 
       it('transfers given value to target contract', async () => {
@@ -259,7 +244,7 @@ describe('AddressUtils', async () => {
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
+          ethers.hexStripZeros(value.toHexString()),
         ]);
 
         const mock = await deployMockContract(deployer, [
@@ -317,7 +302,7 @@ describe('AddressUtils', async () => {
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
+            ethers.hexStripZeros(value.toHexString()),
           ]);
 
           const targetContract = await new AddressUtilsMock__factory(
@@ -409,12 +394,7 @@ describe('AddressUtils', async () => {
               ethers.constants.Zero,
               '',
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.hexZeroPad(ethers.hexlify(ethers.constants.One), 32));
       });
 
       it('transfers given value to target contract', async () => {
@@ -422,7 +402,7 @@ describe('AddressUtils', async () => {
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
+          ethers.hexStripZeros(value.toHexString()),
         ]);
 
         const mock = await deployMockContract(deployer, [
@@ -485,7 +465,7 @@ describe('AddressUtils', async () => {
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
+            ethers.hexStripZeros(value.toHexString()),
           ]);
 
           const targetContract = await new AddressUtilsMock__factory(

@@ -164,7 +164,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           }
 
           expect(
-            ethers.utils.defaultAbiCoder.decode(
+            ethers.defaultAbiCoder.decode(
               mock.interface.functions['fn()'].outputs ?? [],
               await instance.callStatic.verifyAndExecute(
                 { target, data, value, delegate },
@@ -218,7 +218,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('quorum is not reached', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -249,7 +249,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -281,7 +281,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('recovered signer is not authorized', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -313,7 +313,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('nonce has been used', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -363,7 +363,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           );
 
           let target = receiver.address;
-          let data = ethers.utils.randomBytes(0);
+          let data = ethers.randomBytes(0);
           let value = ethers.constants.One;
           let signatures: Signature[] = [];
 
@@ -393,7 +393,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
         it('forwards return data from called function', async function () {
           // TODO: test non-empty return data
           let target = ethers.constants.AddressZero;
-          let data = ethers.utils.randomBytes(0);
+          let data = ethers.randomBytes(0);
           let value = ethers.constants.Zero;
           let signatures: Signature[] = [];
 
@@ -462,7 +462,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('quorum is not reached', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -493,7 +493,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('duplicate signer is found', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -525,7 +525,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('recovered signer is not authorized', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -557,7 +557,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('message value is incorrect', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 
@@ -591,7 +591,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
           it('nonce has been used', async function () {
             let target = ethers.constants.AddressZero;
-            let data = ethers.utils.randomBytes(32);
+            let data = ethers.randomBytes(32);
             let value = ethers.constants.Zero;
             let signatures: Signature[] = [];
 

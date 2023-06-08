@@ -30,16 +30,14 @@ export function describeBehaviorOfERC1271Ownable(
       deploy,
       {
         getValidParams: async function () {
-          let hash = ethers.utils.randomBytes(32);
-          let signature = await owner.signMessage(ethers.utils.arrayify(hash));
-          return [hash, ethers.utils.arrayify(signature)];
+          let hash = ethers.randomBytes(32);
+          let signature = await owner.signMessage(ethers.arrayify(hash));
+          return [hash, ethers.arrayify(signature)];
         },
         getInvalidParams: async function () {
-          let hash = ethers.utils.randomBytes(32);
-          let signature = await nonOwner.signMessage(
-            ethers.utils.arrayify(hash),
-          );
-          return [hash, ethers.utils.arrayify(signature)];
+          let hash = ethers.randomBytes(32);
+          let signature = await nonOwner.signMessage(ethers.arrayify(hash));
+          return [hash, ethers.arrayify(signature)];
         },
       },
       skips,

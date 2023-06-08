@@ -63,7 +63,7 @@ export function describeBehaviorOfDiamondFallback(
         await expect(
           owner.sendTransaction({
             to: instance.address,
-            data: ethers.utils.randomBytes(4),
+            data: ethers.randomBytes(4),
           }),
         ).to.be.revertedWith('Mock on the method is not initialized');
       });

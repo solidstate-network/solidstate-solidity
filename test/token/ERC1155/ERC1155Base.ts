@@ -439,7 +439,7 @@ describe('ERC1155Base', function () {
           recipient.address,
           id,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         );
 
         let finalSenderBalance = await instance.callStatic.balanceOf(
@@ -471,7 +471,7 @@ describe('ERC1155Base', function () {
             recipient.address,
             id,
             amount,
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           ),
         )
           .to.emit(instance, 'TransferSingle')
@@ -493,7 +493,7 @@ describe('ERC1155Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -509,7 +509,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               ethers.constants.Zero,
               ethers.constants.One,
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -542,7 +542,7 @@ describe('ERC1155Base', function () {
           recipient.address,
           id,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         );
 
         let finalSenderBalance = await instance.callStatic.balanceOf(
@@ -574,7 +574,7 @@ describe('ERC1155Base', function () {
             recipient.address,
             id,
             amount,
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           ),
         )
           .to.emit(instance, 'TransferSingle')
@@ -596,7 +596,7 @@ describe('ERC1155Base', function () {
               ethers.constants.AddressZero,
               ethers.constants.Zero,
               ethers.constants.Zero,
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -612,7 +612,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               ethers.constants.Zero,
               ethers.constants.One,
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -628,7 +628,7 @@ describe('ERC1155Base', function () {
               invalidReceiver,
               ethers.constants.Zero,
               ethers.constants.Zero,
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -661,7 +661,7 @@ describe('ERC1155Base', function () {
           recipient.address,
           [id],
           [amount],
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         );
 
         let finalSenderBalance = await instance.callStatic.balanceOf(
@@ -693,7 +693,7 @@ describe('ERC1155Base', function () {
             recipient.address,
             [id],
             [amount],
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           ),
         )
           .to.emit(instance, 'TransferBatch')
@@ -715,7 +715,7 @@ describe('ERC1155Base', function () {
               ethers.constants.AddressZero,
               [],
               [],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -731,7 +731,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               [ethers.constants.Zero],
               [],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -747,7 +747,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               [ethers.constants.Zero],
               [ethers.constants.One],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -780,7 +780,7 @@ describe('ERC1155Base', function () {
           recipient.address,
           [id],
           [amount],
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         );
 
         let finalSenderBalance = await instance.callStatic.balanceOf(
@@ -812,7 +812,7 @@ describe('ERC1155Base', function () {
             recipient.address,
             [id],
             [amount],
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           ),
         )
           .to.emit(instance, 'TransferBatch')
@@ -834,7 +834,7 @@ describe('ERC1155Base', function () {
               ethers.constants.AddressZero,
               [],
               [],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -850,7 +850,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               [ethers.constants.Zero],
               [],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -866,7 +866,7 @@ describe('ERC1155Base', function () {
               recipient.address,
               [ethers.constants.Zero],
               [ethers.constants.One],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -882,7 +882,7 @@ describe('ERC1155Base', function () {
               invalidReceiver,
               [],
               [],
-              ethers.utils.randomBytes(0),
+              ethers.randomBytes(0),
             ),
           ).to.be.revertedWithCustomError(
             instance,

@@ -9,7 +9,7 @@ import { ethers } from 'hardhat';
 
 const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
+const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 describe('AccessControl', function () {
   let admin: SignerWithAddress;
@@ -80,7 +80,7 @@ describe('AccessControl', function () {
 
   describe('#_setRoleAdmin(bytes32,bytes32)', function () {
     it('updates role admin', async function () {
-      const newAdminRole = ethers.utils.solidityKeccak256(
+      const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
       );
@@ -93,7 +93,7 @@ describe('AccessControl', function () {
     });
 
     it('emits RoleAdminChanged event', async function () {
-      const newAdminRole = ethers.utils.solidityKeccak256(
+      const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
       );

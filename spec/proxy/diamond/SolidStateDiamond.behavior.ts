@@ -101,8 +101,8 @@ export function describeBehaviorOfSolidStateDiamond(
           const fn = `fn${i}()`;
           abi.push(`function ${fn}`);
           selectors.push(
-            ethers.utils.hexDataSlice(
-              ethers.utils.solidityKeccak256(['string'], [fn]),
+            ethers.hexDataSlice(
+              ethers.solidityPackedKeccak256(['string'], [fn]),
               0,
               4,
             ),

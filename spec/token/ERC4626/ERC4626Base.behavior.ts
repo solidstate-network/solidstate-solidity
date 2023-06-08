@@ -139,7 +139,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#previewDeposit(uint256)', () => {
       it('returns the deposit input amount converted to shares', async () => {
-        const assetAmount = ethers.utils.parseUnits('1', 18);
+        const assetAmount = ethers.parseUnits('1', 18);
 
         // result is rounded down
 
@@ -205,7 +205,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#previewRedeem(uint256)', () => {
       it('returns the redeem input amount converted to assets', async () => {
-        const shareAmount = ethers.utils.parseUnits('1', 18);
+        const shareAmount = ethers.parseUnits('1', 18);
 
         // result is rounded down
 

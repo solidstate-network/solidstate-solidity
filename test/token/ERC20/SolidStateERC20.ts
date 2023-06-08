@@ -8,7 +8,7 @@ import { ethers } from 'hardhat';
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
 const decimals = 18;
-const supply = ethers.utils.parseEther('1');
+const supply = ethers.parseEther('1');
 
 describe('SolidStateERC20', function () {
   let instance: SolidStateERC20Mock;
