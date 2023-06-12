@@ -69,7 +69,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', function () {
         it('queried address is the zero address', async function () {
           await expect(
-            instance.callStatic.balanceOf(ethers.constants.AddressZero),
+            instance.callStatic.balanceOf(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__BalanceQueryZeroAddress',
@@ -108,7 +108,7 @@ export function describeBehaviorOfERC721Base(
         await mint(holder.address, tokenId);
 
         expect(await instance.callStatic.getApproved(tokenId)).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
 
         await instance.connect(holder).approve(instance.address, tokenId);
@@ -116,11 +116,9 @@ export function describeBehaviorOfERC721Base(
           instance.address,
         );
 
-        await instance
-          .connect(holder)
-          .approve(ethers.constants.AddressZero, tokenId);
+        await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
         expect(await instance.callStatic.getApproved(tokenId)).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
       });
 
@@ -253,11 +251,7 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              .transferFrom(
-                holder.address,
-                ethers.constants.AddressZero,
-                tokenId,
-              ),
+              .transferFrom(holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotOwnerOrApproved',
@@ -273,11 +267,7 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              .transferFrom(
-                holder.address,
-                ethers.constants.AddressZero,
-                tokenId,
-              ),
+              .transferFrom(holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -356,7 +346,7 @@ export function describeBehaviorOfERC721Base(
               .connect(spender)
               ['safeTransferFrom(address,address,uint256)'](
                 holder.address,
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 tokenId,
               ),
           ).to.be.revertedWithCustomError(
@@ -376,7 +366,7 @@ export function describeBehaviorOfERC721Base(
               .connect(spender)
               ['safeTransferFrom(address,address,uint256)'](
                 holder.address,
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 tokenId,
               ),
           ).to.be.revertedWithCustomError(
@@ -505,7 +495,7 @@ export function describeBehaviorOfERC721Base(
               .connect(spender)
               ['safeTransferFrom(address,address,uint256,bytes)'](
                 holder.address,
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 tokenId,
                 '0x',
               ),
@@ -526,7 +516,7 @@ export function describeBehaviorOfERC721Base(
               .connect(spender)
               ['safeTransferFrom(address,address,uint256,bytes)'](
                 holder.address,
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 tokenId,
                 '0x',
               ),
@@ -591,7 +581,7 @@ export function describeBehaviorOfERC721Base(
         await mint(holder.address, tokenId);
 
         expect(await instance.callStatic.getApproved(tokenId)).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
 
         await instance.connect(holder).approve(spender.address, tokenId);
@@ -606,9 +596,7 @@ export function describeBehaviorOfERC721Base(
             .callStatic.transferFrom(holder.address, spender.address, tokenId),
         ).not.to.be.reverted;
 
-        await instance
-          .connect(holder)
-          .approve(ethers.constants.AddressZero, tokenId);
+        await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
 
         await expect(
           instance

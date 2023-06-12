@@ -94,10 +94,7 @@ describe('ERC721Base', function () {
           const tokenId = 2;
 
           await expect(
-            instance.callStatic.isApprovedOrOwner(
-              ethers.constants.AddressZero,
-              tokenId,
-            ),
+            instance.callStatic.isApprovedOrOwner(ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NonExistentToken',
@@ -130,13 +127,13 @@ describe('ERC721Base', function () {
 
         await expect(instance.mint(receiver.address, tokenId))
           .to.emit(instance, 'Transfer')
-          .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+          .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
 
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance.mint(ethers.constants.AddressZero, 0),
+            instance.mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -183,7 +180,7 @@ describe('ERC721Base', function () {
           instance['safeMint(address,uint256)'](receiver.address, tokenId),
         )
           .to.emit(instance, 'Transfer')
-          .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+          .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
 
       it('does not revert if given account is ERC721Receiver implementer', async function () {
@@ -201,10 +198,7 @@ describe('ERC721Base', function () {
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance['safeMint(address,uint256)'](
-              ethers.constants.AddressZero,
-              0,
-            ),
+            instance['safeMint(address,uint256)'](ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -290,7 +284,7 @@ describe('ERC721Base', function () {
           ),
         )
           .to.emit(instance, 'Transfer')
-          .withArgs(ethers.constants.AddressZero, receiver.address, tokenId);
+          .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
 
       it('does not revert if given account is ERC721Receiver implementer', async function () {
@@ -313,7 +307,7 @@ describe('ERC721Base', function () {
         it('given account is zero address', async function () {
           await expect(
             instance['safeMint(address,uint256,bytes)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               0,
               '0x',
             ),
@@ -405,7 +399,7 @@ describe('ERC721Base', function () {
 
         await expect(instance['burn(uint256)'](tokenId))
           .to.emit(instance, 'Transfer')
-          .withArgs(receiver.address, ethers.constants.AddressZero, tokenId);
+          .withArgs(receiver.address, ethers.ZeroAddress, tokenId);
       });
     });
 
@@ -455,7 +449,7 @@ describe('ERC721Base', function () {
           await expect(
             instance
               .connect(sender)
-              .transfer(ethers.constants.AddressZero, sender.address, tokenId),
+              .transfer(ethers.ZeroAddress, sender.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotTokenOwner',
@@ -469,7 +463,7 @@ describe('ERC721Base', function () {
           await expect(
             instance
               .connect(sender)
-              .transfer(sender.address, ethers.constants.AddressZero, tokenId),
+              .transfer(sender.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -530,12 +524,7 @@ describe('ERC721Base', function () {
           await expect(
             instance
               .connect(sender)
-              .safeTransfer(
-                ethers.constants.AddressZero,
-                sender.address,
-                tokenId,
-                '0x',
-              ),
+              .safeTransfer(ethers.ZeroAddress, sender.address, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotTokenOwner',
@@ -549,12 +538,7 @@ describe('ERC721Base', function () {
           await expect(
             instance
               .connect(sender)
-              .safeTransfer(
-                sender.address,
-                ethers.constants.AddressZero,
-                tokenId,
-                '0x',
-              ),
+              .safeTransfer(sender.address, ethers.ZeroAddress, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -610,7 +594,7 @@ describe('ERC721Base', function () {
       it('returns true if recipient is not a contract', async function () {
         expect(
           await instance.callStatic.checkOnERC721Received(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             receiver.address,
             0,
             '0x',
@@ -627,7 +611,7 @@ describe('ERC721Base', function () {
 
         expect(
           await instance.callStatic.checkOnERC721Received(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             receiverContract.address,
             0,
             '0x',
@@ -646,7 +630,7 @@ describe('ERC721Base', function () {
 
         expect(
           await instance.callStatic.checkOnERC721Received(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             receiverContract.address,
             0,
             '0x',
@@ -660,7 +644,7 @@ describe('ERC721Base', function () {
 
           await expect(
             instance.callStatic.checkOnERC721Received(
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               instance.address,
               0,
               '0x',

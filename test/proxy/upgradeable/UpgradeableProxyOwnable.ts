@@ -22,7 +22,7 @@ describe('UpgradeableProxyOwnable', function () {
       'OwnableMock',
     );
     const implementationInstance = await implementationFactory.deploy(
-      ethers.constants.AddressZero,
+      ethers.ZeroAddress,
     );
     await implementationInstance.deployed();
 

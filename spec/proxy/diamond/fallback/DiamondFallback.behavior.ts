@@ -73,7 +73,7 @@ export function describeBehaviorOfDiamondFallback(
           await expect(
             instance
               .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
+              ['setFallbackAddress(address)'](ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

@@ -7,7 +7,7 @@ import {
 import { ethers } from 'hardhat';
 
 describe('ECDSAMultisigWallet', function () {
-  const quorum = ethers.constants.One;
+  const quorum = 1n;
   let signers: SignerWithAddress[];
   let nonSigner: SignerWithAddress;
   let instance: ECDSAMultisigWalletMock;

@@ -120,33 +120,29 @@ describe('Ownable', function () {
 
     describe('#_transferOwnership', () => {
       it('sets new owner', async function () {
-        await instance.__transferOwnership(ethers.constants.AddressZero);
+        await instance.__transferOwnership(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
-        await expect(instance.__transferOwnership(ethers.constants.AddressZero))
+        await expect(instance.__transferOwnership(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
     });
 
     describe('#_setOwner', () => {
       it('sets new owner', async function () {
-        await instance.__setOwner(ethers.constants.AddressZero);
+        await instance.__setOwner(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
-        await expect(instance.__setOwner(ethers.constants.AddressZero))
+        await expect(instance.__setOwner(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
     });
   });

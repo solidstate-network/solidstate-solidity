@@ -81,21 +81,21 @@ describe('EnumerableSet', async () => {
           await instance['remove(bytes32)'](twoBytes32);
 
           expect(await instance['indexOf(bytes32)'](twoBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(bytes32)'](oneBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.equal(
-            ethers.constants.MaxUint256.toString(),
+            ethers.MaxUint256.toString(),
           );
         });
       });
@@ -261,21 +261,21 @@ describe('EnumerableSet', async () => {
           await instance['remove(address)'](twoAddress);
 
           expect(await instance['indexOf(address)'](twoAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(address)'](oneAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(address)'](zeroAddress)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(address)'](zeroAddress)).to.equal(
-            ethers.constants.MaxUint256.toString(),
+            ethers.MaxUint256.toString(),
           );
         });
       });
@@ -441,21 +441,21 @@ describe('EnumerableSet', async () => {
           await instance['remove(uint256)'](two);
 
           expect(await instance['indexOf(uint256)'](two)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(uint256)'](one)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
 
           expect(await instance['indexOf(uint256)'](zero)).to.be.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(uint256)'](zero)).to.equal(
-            ethers.constants.MaxUint256.toString(),
+            ethers.MaxUint256.toString(),
           );
         });
       });

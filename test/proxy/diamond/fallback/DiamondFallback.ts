@@ -36,6 +36,6 @@ describe('DiamondFallback', function () {
     getNonOwner: async () => nonOwner,
     facetFunction: 'owner()',
     facetFunctionArgs: [],
-    fallbackAddress: ethers.constants.AddressZero,
+    fallbackAddress: ethers.ZeroAddress,
   });
 });

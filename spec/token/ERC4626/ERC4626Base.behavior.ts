@@ -98,7 +98,7 @@ export function describeBehaviorOfERC4626Base(
     describe('#maxDeposit(address)', () => {
       it('returns maximum uint256', async () => {
         expect(await instance.callStatic.maxDeposit(depositor.address)).to.eq(
-          ethers.constants.MaxUint256,
+          ethers.MaxUint256,
         );
       });
     });
@@ -106,7 +106,7 @@ export function describeBehaviorOfERC4626Base(
     describe('#maxMint(address)', () => {
       it('returns maximum uint256', async () => {
         expect(await instance.callStatic.maxMint(depositor.address)).to.eq(
-          ethers.constants.MaxUint256,
+          ethers.MaxUint256,
         );
       });
     });
@@ -292,7 +292,7 @@ export function describeBehaviorOfERC4626Base(
         it.skip('deposit amount is too large', async () => {
           await expect(
             instance['deposit(uint256,address)'](
-              ethers.constants.MaxUint256,
+              ethers.MaxUint256,
               depositor.address,
             ),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
@@ -379,7 +379,7 @@ export function describeBehaviorOfERC4626Base(
       describe('reverts if', () => {
         it.skip('mint amount is too large', async () => {
           await expect(
-            instance.mint(ethers.constants.MaxUint256, depositor.address),
+            instance.mint(ethers.MaxUint256, depositor.address),
           ).to.be.revertedWith('ERC4626: maximum amount exceeded');
         });
       });
@@ -465,7 +465,7 @@ export function describeBehaviorOfERC4626Base(
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
         await instance
           .connect(depositor)
-          .approve(caller.address, ethers.constants.MaxUint256);
+          .approve(caller.address, ethers.MaxUint256);
 
         const assetAmountOut = await instance.callStatic.convertToAssets(
           await instance.callStatic.balanceOf(depositor.address),
@@ -625,7 +625,7 @@ export function describeBehaviorOfERC4626Base(
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
         await instance
           .connect(depositor)
-          .approve(caller.address, ethers.constants.MaxUint256);
+          .approve(caller.address, ethers.MaxUint256);
 
         const shareAmount = await instance.callStatic.balanceOf(
           depositor.address,

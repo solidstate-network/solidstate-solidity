@@ -72,9 +72,7 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
       describe('reverts if', () => {
         it('sender is not owner', async () => {
           await expect(
-            instance
-              .connect(nonOwner)
-              .setImplementation(ethers.constants.AddressZero),
+            instance.connect(nonOwner).setImplementation(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

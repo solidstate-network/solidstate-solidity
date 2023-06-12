@@ -30,7 +30,7 @@ describe('ArrayUtils', async () => {
 
       it('returns the max bytes32 value if array is empty', async () => {
         expect(await instance.callStatic['min(bytes32[])']([])).to.equal(
-          bnToBytes32(ethers.constants.MaxUint256),
+          bnToBytes32(ethers.MaxUint256),
         );
       });
     });
@@ -62,7 +62,7 @@ describe('ArrayUtils', async () => {
 
       it('returns the max uint256 if array is empty', async () => {
         expect(await instance.callStatic['min(uint256[])']([])).to.equal(
-          ethers.constants.MaxUint256,
+          ethers.MaxUint256,
         );
       });
     });
@@ -80,7 +80,7 @@ describe('ArrayUtils', async () => {
 
       it('returns empty bytes if array is empty', async () => {
         expect(await instance.callStatic['max(bytes32[])']([])).to.equal(
-          ethers.constants.HashZero,
+          ethers.ZeroHash,
         );
       });
     });
@@ -98,7 +98,7 @@ describe('ArrayUtils', async () => {
 
       it('returns zero address if array is empty', async () => {
         expect(await instance.callStatic['max(address[])']([])).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
       });
     });

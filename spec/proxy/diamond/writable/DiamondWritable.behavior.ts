@@ -72,7 +72,7 @@ export function describeBehaviorOfDiamondWritable(
             selectors: [ethers.hexlify(ethers.randomBytes(4))],
           },
         ];
-        const target = ethers.constants.AddressZero;
+        const target = ethers.ZeroAddress;
         const data = '0x';
 
         let tx = instance.connect(owner).diamondCut(facets, target, data);
@@ -111,7 +111,7 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -129,12 +129,12 @@ export function describeBehaviorOfDiamondWritable(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 0,
                     selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -154,12 +154,12 @@ export function describeBehaviorOfDiamondWritable(
 
             await instance
               .connect(owner)
-              .diamondCut(facetCuts, ethers.constants.AddressZero, '0x');
+              .diamondCut(facetCuts, ethers.ZeroAddress, '0x');
 
             await expect(
               instance
                 .connect(owner)
-                .diamondCut(facetCuts, ethers.constants.AddressZero, '0x'),
+                .diamondCut(facetCuts, ethers.ZeroAddress, '0x'),
             ).to.be.revertedWithCustomError(
               instance,
               'DiamondWritable__SelectorAlreadyAdded',
@@ -180,7 +180,7 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -201,7 +201,7 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facetReplacement.address, action: 1, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -219,12 +219,12 @@ export function describeBehaviorOfDiamondWritable(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 1,
                     selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -243,7 +243,7 @@ export function describeBehaviorOfDiamondWritable(
                     selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -263,7 +263,7 @@ export function describeBehaviorOfDiamondWritable(
                   selectors: [selector],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -276,7 +276,7 @@ export function describeBehaviorOfDiamondWritable(
                     selectors: [selector],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -296,7 +296,7 @@ export function describeBehaviorOfDiamondWritable(
                   selectors: [selector],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -309,7 +309,7 @@ export function describeBehaviorOfDiamondWritable(
                     selectors: [selector],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -332,7 +332,7 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -346,8 +346,8 @@ export function describeBehaviorOfDiamondWritable(
           await instance
             .connect(owner)
             .diamondCut(
-              [{ target: ethers.constants.AddressZero, action: 2, selectors }],
-              ethers.constants.AddressZero,
+              [{ target: ethers.ZeroAddress, action: 2, selectors }],
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -372,7 +372,7 @@ export function describeBehaviorOfDiamondWritable(
                     selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -386,12 +386,12 @@ export function describeBehaviorOfDiamondWritable(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 2,
                     selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -411,7 +411,7 @@ export function describeBehaviorOfDiamondWritable(
                   selectors: [selector],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -419,12 +419,12 @@ export function describeBehaviorOfDiamondWritable(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 2,
                     selectors: [selector],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -438,9 +438,7 @@ export function describeBehaviorOfDiamondWritable(
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance
-              .connect(nonOwner)
-              .diamondCut([], ethers.constants.AddressZero, '0x'),
+            instance.connect(nonOwner).diamondCut([], ethers.ZeroAddress, '0x'),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
 
@@ -449,12 +447,12 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut(
               [
                 {
-                  target: ethers.constants.AddressZero,
+                  target: ethers.ZeroAddress,
                   action: 3,
                   selectors: [],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             ),
           ).to.be.revertedWithoutReason();
@@ -465,12 +463,12 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut(
               [
                 {
-                  target: ethers.constants.AddressZero,
+                  target: ethers.ZeroAddress,
                   action: 0,
                   selectors: [],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             ),
           ).to.be.revertedWithCustomError(
@@ -490,9 +488,7 @@ export function describeBehaviorOfDiamondWritable(
 
         it('initialization data is provided but target is not', async function () {
           await expect(
-            instance
-              .connect(owner)
-              .diamondCut([], ethers.constants.AddressZero, '0x01'),
+            instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
             'DiamondWritable__InvalidInitializationParameters',

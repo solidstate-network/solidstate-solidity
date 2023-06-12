@@ -146,11 +146,9 @@ export function describeBehaviorOfSolidStateERC721(
           await mint(holder.address, tokenId);
 
           await expect(
-            instance
-              .connect(holder)
-              .approve(ethers.constants.AddressZero, tokenId, {
-                value: 1,
-              }),
+            instance.connect(holder).approve(ethers.ZeroAddress, tokenId, {
+              value: 1,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableApproveNotSupported',

@@ -44,7 +44,7 @@ export function describeBehaviorOfSafeOwnable(
     describe('#nomineeOwner()', function () {
       it('returns address of nominee owner', async function () {
         expect(await instance.callStatic['nomineeOwner()']()).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
         await instance
           .connect(owner)

@@ -217,7 +217,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('quorum is not reached', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -248,7 +248,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('duplicate signer is found', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -280,7 +280,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('recovered signer is not authorized', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -312,7 +312,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('nonce has been used', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -358,7 +358,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
         it('does not transfer value to target address', async function () {
           let receiver = new ethers.VoidSigner(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             ethers.provider,
           );
 
@@ -392,7 +392,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
         it('forwards return data from called function', async function () {
           // TODO: test non-empty return data
-          let target = ethers.constants.AddressZero;
+          let target = ethers.ZeroAddress;
           let data = ethers.randomBytes(0);
           let value = 0;
           let signatures: Signature[] = [];
@@ -461,7 +461,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('quorum is not reached', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -492,7 +492,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('duplicate signer is found', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -524,7 +524,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('recovered signer is not authorized', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];
@@ -556,9 +556,9 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('message value is incorrect', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
-            let value = ethers.constants.Zero;
+            let value = 0n;
             let signatures: Signature[] = [];
 
             for (let signer of signers) {
@@ -590,7 +590,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           });
 
           it('nonce has been used', async function () {
-            let target = ethers.constants.AddressZero;
+            let target = ethers.ZeroAddress;
             let data = ethers.randomBytes(32);
             let value = 0;
             let signatures: Signature[] = [];

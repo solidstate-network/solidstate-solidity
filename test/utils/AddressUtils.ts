@@ -98,10 +98,7 @@ describe('AddressUtils', async () => {
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCall(address,bytes)'](
-              ethers.constants.AddressZero,
-              '0x',
-            ),
+            instance['functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -168,7 +165,7 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCall(address,bytes,string)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
               '',
             ),
@@ -272,7 +269,7 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCallWithValue(address,bytes,uint256)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
               0,
             ),
@@ -314,7 +311,7 @@ describe('AddressUtils', async () => {
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
           const { data } = (await targetContract.populateTransaction.sendValue(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             0,
           )) as { data: BytesLike };
 
@@ -428,7 +425,7 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCallWithValue(address,bytes,uint256,string)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
               0,
               '',
@@ -473,7 +470,7 @@ describe('AddressUtils', async () => {
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
           const { data } = (await targetContract.populateTransaction.sendValue(
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             0,
           )) as { data: BytesLike };
 

@@ -44,7 +44,7 @@ describe('SolidStateDiamond', function () {
       facetFunction: '',
       facetFunctionArgs: [],
       facetCuts,
-      fallbackAddress: ethers.constants.AddressZero,
+      fallbackAddress: ethers.ZeroAddress,
     },
     ['fallback()'],
   );

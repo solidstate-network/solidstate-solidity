@@ -19,7 +19,7 @@ describe('ManagedProxy', function () {
       'OwnableMock',
     );
     const implementationInstance = await implementationFactory.deploy(
-      ethers.constants.AddressZero,
+      ethers.ZeroAddress,
     );
     await implementationInstance.deployed();
 
@@ -54,7 +54,7 @@ describe('ManagedProxy', function () {
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance.setManager(ethers.constants.AddressZero);
+          await instance.setManager(ethers.ZeroAddress);
 
           await expect(instance.callStatic.__getImplementation()).to.be
             .reverted;

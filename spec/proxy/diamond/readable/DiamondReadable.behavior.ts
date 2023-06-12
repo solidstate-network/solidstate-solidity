@@ -62,7 +62,7 @@ export function describeBehaviorOfDiamondReadable(
       it('returns empty array for unrecognized facet', async function () {
         expect(
           await instance.callStatic['facetFunctionSelectors(address)'](
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
           ),
         ).to.have.lengthOf(0);
       });
@@ -82,7 +82,7 @@ export function describeBehaviorOfDiamondReadable(
       it('returns zero address for unrecognized selector', async function () {
         expect(
           await instance.callStatic['facetAddress(bytes4)']('0x00000000'),
-        ).to.equal(ethers.constants.AddressZero);
+        ).to.equal(ethers.ZeroAddress);
       });
     });
   });

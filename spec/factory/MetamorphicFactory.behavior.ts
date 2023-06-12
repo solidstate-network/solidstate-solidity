@@ -30,7 +30,7 @@ export function describeBehaviorOfMetamorphicFactory(
       it('returns zero address', async function () {
         expect(
           await instance.callStatic['getMetamorphicImplementation()'](),
-        ).to.equal(ethers.constants.AddressZero);
+        ).to.equal(ethers.ZeroAddress);
       });
     });
   });

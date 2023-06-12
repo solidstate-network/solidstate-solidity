@@ -46,9 +46,7 @@ describe('IncrementalMerkleTree', function () {
 
   describe('#root', () => {
     it('returns zero bytes for tree of size zero', async () => {
-      expect(await instance.callStatic.root()).to.equal(
-        ethers.constants.HashZero,
-      );
+      expect(await instance.callStatic.root()).to.equal(ethers.ZeroHash);
     });
 
     it('returns contained element for tree of size one', async () => {
@@ -217,7 +215,7 @@ describe('IncrementalMerkleTree', function () {
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
         await expect(
-          instance.callStatic.set(0, ethers.constants.HashZero),
+          instance.callStatic.set(0, ethers.ZeroHash),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });

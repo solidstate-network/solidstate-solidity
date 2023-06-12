@@ -71,8 +71,8 @@ describe('ECDSA', function () {
 
         const data = {
           types: ['uint256'],
-          values: [ethers.constants.One],
-          nonce: ethers.constants.One,
+          values: [1n],
+          nonce: 1n,
           address: instance.address,
         };
 

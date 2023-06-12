@@ -63,13 +63,13 @@ describe('ERC20Base', function () {
 
         await expect(instance.__mint(receiver.address, amount))
           .to.emit(instance, 'Transfer')
-          .withArgs(ethers.constants.AddressZero, receiver.address, amount);
+          .withArgs(ethers.ZeroAddress, receiver.address, amount);
       });
 
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance.__mint(ethers.constants.AddressZero, 0),
+            instance.__mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__MintToZeroAddress',
@@ -105,13 +105,13 @@ describe('ERC20Base', function () {
 
         await expect(instance.__burn(receiver.address, amount))
           .to.emit(instance, 'Transfer')
-          .withArgs(receiver.address, ethers.constants.AddressZero, amount);
+          .withArgs(receiver.address, ethers.ZeroAddress, amount);
       });
 
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance.__burn(ethers.constants.AddressZero, 0),
+            instance.__burn(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__BurnFromZeroAddress',
@@ -169,11 +169,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('sender is the zero address', async function () {
           await expect(
-            instance.__transfer(
-              ethers.constants.AddressZero,
-              receiver.address,
-              0,
-            ),
+            instance.__transfer(ethers.ZeroAddress, receiver.address, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__TransferFromZeroAddress',
@@ -182,11 +178,7 @@ describe('ERC20Base', function () {
 
         it('receiver is the zero address', async function () {
           await expect(
-            instance.__transfer(
-              sender.address,
-              ethers.constants.AddressZero,
-              0,
-            ),
+            instance.__transfer(sender.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__TransferToZeroAddress',
@@ -234,11 +226,7 @@ describe('ERC20Base', function () {
       describe('reverts if', function () {
         it('holder is the zero address', async function () {
           await expect(
-            instance.__approve(
-              ethers.constants.AddressZero,
-              spender.address,
-              0,
-            ),
+            instance.__approve(ethers.ZeroAddress, spender.address, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__ApproveFromZeroAddress',
@@ -247,7 +235,7 @@ describe('ERC20Base', function () {
 
         it('spender is the zero address', async function () {
           await expect(
-            instance.__approve(holder.address, ethers.constants.AddressZero, 0),
+            instance.__approve(holder.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__ApproveToZeroAddress',
@@ -298,7 +286,7 @@ describe('ERC20Base', function () {
         it('holder is the zero address', async function () {
           await expect(
             instance.__decreaseAllowance(
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               spender.address,
               0,
             ),
@@ -310,11 +298,7 @@ describe('ERC20Base', function () {
 
         it('spender is the zero address', async function () {
           await expect(
-            instance.__decreaseAllowance(
-              holder.address,
-              ethers.constants.AddressZero,
-              0,
-            ),
+            instance.__decreaseAllowance(holder.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__ApproveToZeroAddress',

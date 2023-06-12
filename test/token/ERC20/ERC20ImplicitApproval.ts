@@ -36,9 +36,7 @@ describe('ERC20ImplicitApproval', function () {
     describe('#_isImplicitlyApproved(address)', function () {
       it('returns implicit approval status of address', async function () {
         expect(
-          await instance.callStatic.__isImplicitlyApproved(
-            ethers.constants.AddressZero,
-          ),
+          await instance.callStatic.__isImplicitlyApproved(ethers.ZeroAddress),
         ).to.be.false;
 
         expect(

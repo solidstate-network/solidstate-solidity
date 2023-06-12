@@ -113,7 +113,7 @@ describe('BinaryHeap', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(bytes32)'](randomBytes32())).to.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
       });
@@ -306,7 +306,7 @@ describe('BinaryHeap', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(address)'](randomAddress())).to.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
       });
@@ -499,7 +499,7 @@ describe('BinaryHeap', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(uint256)'](randomUint256())).to.equal(
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
           );
         });
       });

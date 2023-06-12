@@ -85,7 +85,7 @@ export function describeBehaviorOfERC20Extended(
             .connect(holder)
             ['increaseAllowance(address,uint256)'](
               spender.address,
-              ethers.constants.MaxUint256,
+              ethers.MaxUint256,
             );
 
           await expect(

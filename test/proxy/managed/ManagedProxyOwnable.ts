@@ -49,7 +49,7 @@ describe('ManagedProxyOwnable', function () {
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance['setOwner(address)'](ethers.constants.AddressZero);
+          await instance['setOwner(address)'](ethers.ZeroAddress);
 
           await expect(instance.callStatic.__getImplementation()).to.be
             .reverted;

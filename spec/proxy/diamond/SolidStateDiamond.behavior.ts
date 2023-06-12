@@ -120,7 +120,7 @@ export function describeBehaviorOfSolidStateDiamond(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors: [selector] }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -153,7 +153,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -163,12 +163,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -209,7 +209,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(
             await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          ).to.equal(ethers.ZeroAddress);
         }
       });
 
@@ -218,7 +218,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -228,12 +228,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -274,7 +274,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(
             await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          ).to.equal(ethers.ZeroAddress);
         }
       });
 
@@ -283,7 +283,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -293,12 +293,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -339,7 +339,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
           expect(
             await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          ).to.equal(ethers.ZeroAddress);
         }
       });
     });

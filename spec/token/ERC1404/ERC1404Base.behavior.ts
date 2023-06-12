@@ -39,8 +39,8 @@ export function describeBehaviorOfERC1404Base(
       it('returns zero if no restriction exists', async function () {
         expect(
           await instance.callStatic.detectTransferRestriction(
-            ethers.constants.AddressZero,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
+            ethers.ZeroAddress,
             1,
           ),
         ).to.equal(0);

@@ -35,22 +35,16 @@ export function describeBehaviorOfOwnable(
 
     describe('#transferOwnership(address)', function () {
       it('sets new owner', async function () {
-        await instance
-          .connect(owner)
-          .transferOwnership(ethers.constants.AddressZero);
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+        await instance.connect(owner).transferOwnership(ethers.ZeroAddress);
+        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
         await expect(
-          instance
-            .connect(owner)
-            .transferOwnership(ethers.constants.AddressZero),
+          instance.connect(owner).transferOwnership(ethers.ZeroAddress),
         )
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
 
       describe('reverts if', function () {

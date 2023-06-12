@@ -52,7 +52,7 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#balanceOf(address,uint256)', function () {
       it('returns the balance of given token held by given address', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
+        const id = tokenId ?? 0n;
         expect(
           await instance.callStatic['balanceOf(address,uint256)'](
             holder.address,
@@ -60,7 +60,7 @@ export function describeBehaviorOfERC1155Base(
           ),
         ).to.equal(0);
 
-        const amount = ethers.constants.Two;
+        const amount = 2n;
         await mint(holder.address, id, amount);
 
         expect(
@@ -84,8 +84,8 @@ export function describeBehaviorOfERC1155Base(
         it('balance of zero address is queried', async function () {
           await expect(
             instance.callStatic['balanceOf(address,uint256)'](
-              ethers.constants.AddressZero,
-              ethers.constants.Zero,
+              ethers.ZeroAddress,
+              0n,
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -100,9 +100,9 @@ export function describeBehaviorOfERC1155Base(
         expect(
           await instance.callStatic['balanceOfBatch(address[],uint256[])'](
             [holder.address],
-            [ethers.constants.Zero],
+            [0n],
           ),
-        ).to.have.deep.members([ethers.constants.Zero]);
+        ).to.have.deep.members([0n]);
         // TODO: test delta
       });
 
@@ -122,8 +122,8 @@ export function describeBehaviorOfERC1155Base(
         it('balance of zero address is queried', async function () {
           await expect(
             instance.callStatic['balanceOfBatch(address[],uint256[])'](
-              [ethers.constants.AddressZero],
-              [ethers.constants.Zero],
+              [ethers.ZeroAddress],
+              [0n],
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -187,8 +187,8 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', function () {
       it('sends amount from A to B', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         await mint(spender.address, id, amount);
 
@@ -214,7 +214,7 @@ export function describeBehaviorOfERC1155Base(
             spender.address,
             id,
           ),
-        ).to.equal(ethers.constants.Zero);
+        ).to.equal(0n);
         expect(
           await instance.callStatic['balanceOf(address,uint256)'](
             holder.address,
@@ -225,8 +225,8 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', function () {
         it('sender has insufficient balance', async function () {
-          const id = tokenId ?? ethers.constants.Zero;
-          const amount = ethers.constants.Two;
+          const id = tokenId ?? 0n;
+          const amount = 2n;
 
           await expect(
             instance
@@ -251,8 +251,8 @@ export function describeBehaviorOfERC1155Base(
               ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
                 spender.address,
                 holder.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
+                0n,
+                0n,
                 ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
@@ -272,8 +272,8 @@ export function describeBehaviorOfERC1155Base(
               ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
                 spender.address,
                 mock.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
+                0n,
+                0n,
                 ethers.randomBytes(0),
               ),
           ).to.be.revertedWith('Mock on the method is not initialized');
@@ -292,8 +292,8 @@ export function describeBehaviorOfERC1155Base(
               ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
                 spender.address,
                 mock.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
+                0n,
+                0n,
                 ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
@@ -306,8 +306,8 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', function () {
       it('sends amount from A to B, batch version', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         await mint(spender.address, id, amount);
 
@@ -333,7 +333,7 @@ export function describeBehaviorOfERC1155Base(
             [spender.address],
             [id],
           ),
-        ).to.have.deep.members([ethers.constants.Zero]);
+        ).to.have.deep.members([0n]);
         expect(
           await instance.callStatic['balanceOfBatch(address[],uint256[])'](
             [holder.address],
@@ -344,8 +344,8 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', function () {
         it('sender has insufficient balance', async function () {
-          const id = tokenId ?? ethers.constants.Zero;
-          const amount = ethers.constants.Two;
+          const id = tokenId ?? 0n;
+          const amount = 2n;
 
           await expect(
             instance

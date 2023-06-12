@@ -77,7 +77,7 @@ describe('SafeOwnable', function () {
         await instance.connect(nomineeOwner).__acceptOwnership();
 
         expect(await instance.callStatic.__nomineeOwner()).to.equal(
-          ethers.constants.AddressZero,
+          ethers.ZeroAddress,
         );
       });
     });

@@ -27,9 +27,9 @@ describe('Math', function () {
 
         expect(await instance.callStatic.max(1, 1)).to.equal(1);
 
-        expect(
-          await instance.callStatic.max(0, ethers.constants.MaxUint256),
-        ).to.equal(ethers.constants.MaxUint256);
+        expect(await instance.callStatic.max(0, ethers.MaxUint256)).to.equal(
+          ethers.MaxUint256,
+        );
       });
     });
 
@@ -41,9 +41,7 @@ describe('Math', function () {
 
         expect(await instance.callStatic.min(1, 1)).to.equal(1);
 
-        expect(
-          await instance.callStatic.min(0, ethers.constants.MaxUint256),
-        ).to.equal(0);
+        expect(await instance.callStatic.min(0, ethers.MaxUint256)).to.equal(0);
       });
     });
 
@@ -57,17 +55,17 @@ describe('Math', function () {
 
         expect(
           await instance.callStatic.average(
-            ethers.constants.MaxUint256,
-            ethers.constants.MaxUint256,
+            ethers.MaxUint256,
+            ethers.MaxUint256,
           ),
-        ).to.equal(ethers.constants.MaxUint256);
+        ).to.equal(ethers.MaxUint256);
 
         expect(
           await instance.callStatic.average(
-            ethers.constants.MaxUint256,
-            ethers.constants.MaxUint256.sub(1),
+            ethers.MaxUint256,
+            ethers.MaxUint256.sub(1),
           ),
-        ).to.equal(ethers.constants.MaxUint256.sub(1));
+        ).to.equal(ethers.MaxUint256.sub(1));
       });
     });
 
@@ -81,9 +79,9 @@ describe('Math', function () {
 
         expect(await instance.callStatic.sqrt(0)).to.eq(0);
 
-        expect(
-          await instance.callStatic.sqrt(ethers.constants.MaxUint256.sub(1)),
-        ).to.eq(BigInt('340282366920938463463374607431768211455'));
+        expect(await instance.callStatic.sqrt(ethers.MaxUint256.sub(1))).to.eq(
+          BigInt('340282366920938463463374607431768211455'),
+        );
       });
     });
   });

@@ -55,10 +55,10 @@ export function describeBehaviorOfERC20ImplicitApproval(
       it('returns maximum uint256 for implicitly approved spender', async function () {
         expect(
           await instance.callStatic['allowance(address,address)'](
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             implicitlyApprovedSpender.address,
           ),
-        ).to.equal(ethers.constants.MaxUint256);
+        ).to.equal(ethers.MaxUint256);
       });
     });
 
@@ -70,10 +70,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
 
         await instance
           .connect(holder)
-          .approve(
-            implicitlyApprovedSpender.address,
-            ethers.constants.AddressZero,
-          );
+          .approve(implicitlyApprovedSpender.address, ethers.ZeroAddress);
 
         await expect(
           instance

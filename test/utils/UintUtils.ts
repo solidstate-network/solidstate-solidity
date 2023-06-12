@@ -56,10 +56,8 @@ describe('UintUtils', function () {
         }
 
         expect(
-          await instance.callStatic['toString(uint256)'](
-            ethers.constants.MaxUint256,
-          ),
-        ).to.equal(ethers.constants.MaxUint256.toString());
+          await instance.callStatic['toString(uint256)'](ethers.MaxUint256),
+        ).to.equal(ethers.MaxUint256.toString());
       });
     });
 

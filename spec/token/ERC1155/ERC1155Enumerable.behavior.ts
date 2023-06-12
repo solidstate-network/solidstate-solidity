@@ -42,8 +42,8 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalSupply(uint256)', function () {
       it('returns supply of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
           0,
@@ -72,8 +72,8 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalHolders(uint256)', function () {
       it('returns number of holders of given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
           0,
@@ -102,8 +102,8 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#accountsByToken(uint256)', function () {
       it('returns list of addresses holding given token', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         expect(
           await instance.callStatic['accountsByToken(uint256)'](id),
@@ -132,8 +132,8 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#tokensByAccount(address)', function () {
       it('returns list of tokens held by given address', async function () {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         expect(
           await instance.callStatic['tokensByAccount(address)'](

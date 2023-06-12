@@ -43,7 +43,7 @@ export function describeBehaviorOfAccessControl(
         expect(
           await instance.callStatic['hasRole(bytes32,address)'](
             DEFAULT_ADMIN_ROLE,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
           ),
         ).to.equal(false);
       });

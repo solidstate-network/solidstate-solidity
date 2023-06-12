@@ -61,9 +61,7 @@ export function describeBehaviorOfERC20Base(
     describe('#balanceOf(address)', function () {
       it('returns the token balance of given address', async function () {
         expect(
-          await instance.callStatic['balanceOf(address)'](
-            ethers.constants.AddressZero,
-          ),
+          await instance.callStatic['balanceOf(address)'](ethers.ZeroAddress),
         ).to.equal(0);
 
         const amount = 2;

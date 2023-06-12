@@ -63,7 +63,7 @@ describe('ERC1155Base', function () {
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             holder.address,
             id,
             amount,
@@ -73,7 +73,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance.__mint(ethers.constants.AddressZero, 0, 0),
+            instance.__mint(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -110,7 +110,7 @@ describe('ERC1155Base', function () {
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             holder.address,
             id,
             amount,
@@ -120,7 +120,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance.__safeMint(ethers.constants.AddressZero, 0, 0),
+            instance.__safeMint(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -166,7 +166,7 @@ describe('ERC1155Base', function () {
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             holder.address,
             [id],
             [amount],
@@ -176,7 +176,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance.__mintBatch(ethers.constants.AddressZero, [], []),
+            instance.__mintBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -222,7 +222,7 @@ describe('ERC1155Base', function () {
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             holder.address,
             [id],
             [amount],
@@ -232,7 +232,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('mint is made to the zero address', async function () {
           await expect(
-            instance.__safeMintBatch(ethers.constants.AddressZero, [], []),
+            instance.__safeMintBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -292,7 +292,7 @@ describe('ERC1155Base', function () {
           .withArgs(
             holder.address,
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             id,
             amount,
           );
@@ -301,7 +301,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('burn is made from the zero address', async function () {
           await expect(
-            instance.__burn(ethers.constants.AddressZero, 0, 0),
+            instance.__burn(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -352,7 +352,7 @@ describe('ERC1155Base', function () {
           .withArgs(
             holder.address,
             holder.address,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             [id],
             [amount],
           );
@@ -361,7 +361,7 @@ describe('ERC1155Base', function () {
       describe('reverts if', function () {
         it('burn is made from the zero address', async function () {
           await expect(
-            instance.__burnBatch(ethers.constants.AddressZero, [], []),
+            instance.__burnBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -462,7 +462,7 @@ describe('ERC1155Base', function () {
             instance.__transfer(
               instance.address,
               holder.address,
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               0,
               0,
               ethers.randomBytes(0),
@@ -565,7 +565,7 @@ describe('ERC1155Base', function () {
             instance.__safeTransfer(
               instance.address,
               holder.address,
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               0,
               0,
               ethers.randomBytes(0),
@@ -684,7 +684,7 @@ describe('ERC1155Base', function () {
             instance.__transferBatch(
               instance.address,
               holder.address,
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               [],
               [],
               ethers.randomBytes(0),
@@ -803,7 +803,7 @@ describe('ERC1155Base', function () {
             instance.__safeTransferBatch(
               instance.address,
               holder.address,
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               [],
               [],
               ethers.randomBytes(0),
