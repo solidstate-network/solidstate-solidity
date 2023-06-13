@@ -14,11 +14,11 @@ export function hashData({ types, values, nonce, address }: SignDataArgs) {
     [...values, nonce, address],
   );
 
-  return ethers.arrayify(hash);
+  return ethers.getBytes(hash);
 }
 
 export async function signData(signer: SignerWithAddress, data: SignDataArgs) {
   const signature = await signer.signMessage(hashData(data));
 
-  return ethers.arrayify(signature);
+  return ethers.getBytes(signature);
 }

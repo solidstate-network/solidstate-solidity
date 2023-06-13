@@ -23,7 +23,7 @@ describe('ECDSA', function () {
           types: ['uint256'],
           values: [1],
           nonce: 1,
-          address: instance.address,
+          address: await instance.getAddress(),
         };
 
         const hash = hashData(data);
@@ -73,15 +73,15 @@ describe('ECDSA', function () {
           types: ['uint256'],
           values: [1n],
           nonce: 1n,
-          address: instance.address,
+          address: await instance.getAddress(),
         };
 
         const hash = hashData(data);
         const sig = await signData(signer, data);
 
-        const r = ethers.hexDataSlice(sig, 0, 32);
-        const s = ethers.hexDataSlice(sig, 32, 64);
-        const v = ethers.hexDataSlice(sig, 64, 65);
+        const r = ethers.dataSlice(sig, 0, 32);
+        const s = ethers.dataSlice(sig, 32, 64);
+        const v = ethers.dataSlice(sig, 64, 65);
 
         expect(
           await instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
@@ -109,7 +109,7 @@ describe('ECDSA', function () {
               hash,
               v,
               r,
-              BigInt(MAX_S_VALUE) + 1n,
+              ethers.toQuantity(BigInt(MAX_S_VALUE) + 1n),
             ),
           ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidS');
         });
