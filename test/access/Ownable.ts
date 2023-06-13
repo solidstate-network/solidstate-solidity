@@ -49,7 +49,7 @@ describe('Ownable', function () {
           owner.address,
         );
 
-        await instance.__setOwner(intermediateOwner.address);
+        await instance.__setOwner(await intermediateOwner.getAddress());
 
         await expect(
           instance.connect(owner)['modifier_onlyTransitiveOwner()'](),
@@ -61,15 +61,18 @@ describe('Ownable', function () {
           const intermediateOwner = await new OwnableMock__factory(
             owner,
           ).deploy(owner.address);
+          const intermediateOwnerAddress = await intermediateOwner.getAddress();
 
           await ethers.provider.send('hardhat_impersonateAccount', [
-            intermediateOwner.address,
+            intermediateOwnerAddress,
           ]);
 
-          const signer = await ethers.getSigner(intermediateOwner.address);
+          const signer = await ethers.getSigner(intermediateOwnerAddress);
 
           await expect(
-            instance.connect(signer)['modifier_onlyTransitiveOwner()'](),
+            instance
+              .connect(signer)
+              ['modifier_onlyTransitiveOwner()'].staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Ownable__NotTransitiveOwner',
@@ -93,11 +96,12 @@ describe('Ownable', function () {
 
       it('returns owner if owner is not Ownable', async () => {
         const ownerInstance = await deployMockContract(owner, []);
+        const ownerInstanceAddress = await ownerInstance.getAddress();
 
-        await instance.__setOwner(ownerInstance.address);
+        await instance.__setOwner(ownerInstanceAddress);
 
         expect(await instance.__transitiveOwner.staticCall()).to.equal(
-          ownerInstance.address,
+          ownerInstanceAddress,
         );
       });
 
@@ -107,10 +111,10 @@ describe('Ownable', function () {
         ).deploy(owner.address);
 
         const firstOwnerInstance = await new OwnableMock__factory(owner).deploy(
-          secondOwnerInstance.address,
+          await secondOwnerInstance.getAddress(),
         );
 
-        await instance.__setOwner(firstOwnerInstance.address);
+        await instance.__setOwner(await firstOwnerInstance.getAddress());
 
         expect(await instance.__transitiveOwner.staticCall()).to.equal(
           owner.address,
