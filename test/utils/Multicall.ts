@@ -23,7 +23,7 @@ describe('Multicall', function () {
 
     it('returns array of response data', async function () {
       const result = await instance.multicall.staticCall([
-        (await instance.populateTransaction.callTest()).data as BytesLike,
+        (await instance.callTest.populateTransaction()).data as BytesLike,
       ]);
 
       expect(result).to.deep.equal([
@@ -35,9 +35,9 @@ describe('Multicall', function () {
       it('component function call reverts', async function () {
         await expect(
           instance.multicall([
-            (await instance.populateTransaction.callTest()).data as BytesLike,
+            (await instance.callTest.populateTransaction()).data as BytesLike,
             (
-              await instance.populateTransaction.callRevertTest()
+              await instance.callRevertTest.populateTransaction()
             ).data as BytesLike,
           ]),
         ).to.be.revertedWith('revert');
