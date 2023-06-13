@@ -24,6 +24,8 @@ library UintUtils {
         uint256 value,
         uint256 base
     ) internal pure returns (string memory) {
+        // this check is repeated in the internal call to #toString(uint256,uint256,uint256)
+        // but is still needed here to avoid zero division (base = 0) or infinite loop (base = 1)
         if (base < 2) {
             revert UintUtils__InvalidBase();
         }

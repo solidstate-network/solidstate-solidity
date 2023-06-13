@@ -112,6 +112,16 @@ describe('UintUtils', function () {
             instance.callStatic['toString(uint256,uint256)'](1n, 1n),
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
+
+        it('base is greater than 36', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](0n, 37n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256)'](1n, 37n),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+        });
       });
     });
 
