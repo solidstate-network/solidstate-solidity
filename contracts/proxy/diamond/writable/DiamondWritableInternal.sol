@@ -24,7 +24,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
-    ) internal {
+    ) internal virtual {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
         unchecked {
