@@ -128,7 +128,7 @@ describe('UintUtils', function () {
         }
       });
 
-      it('returns string representation of number in given base up to 36 with specified padding', async () => {
+      it('returns string representation of number in given base up to 36', async () => {
         for (let base = 2; base <= 36; base++) {
           for (let value of values) {
             const string = value.toString(base);
@@ -140,6 +140,19 @@ describe('UintUtils', function () {
 
             expect(result).to.equal(string);
           }
+        }
+      });
+
+      it('returns string with specified zero padding', async () => {
+        for (let base = 2; base <= 36; base++) {
+          const value = 1;
+          const length = 100;
+
+          const result = await instance.callStatic[
+            'toString(uint256,uint256,uint256)'
+          ](value, base, length);
+
+          expect(result).to.have.length.of(length);
         }
       });
 
@@ -249,7 +262,7 @@ describe('UintUtils', function () {
         ).to.equal('0b');
       });
 
-      it('returns binary string representation of a number with specified padding', async () => {
+      it('returns 0b-prefixed binary string representation of a number', async () => {
         for (let value of values) {
           const string = `0b${value.toString(2)}`;
           const length = string.length - 2;
@@ -258,9 +271,19 @@ describe('UintUtils', function () {
             'toBinString(uint256,uint256)'
           ](value, length);
 
-          expect(BigInt(result)).to.equal(value);
-          expect(result.length - 2).to.equal(length);
+          expect(result).to.equal(string);
         }
+      });
+
+      it('returns string with specified zero padding', async () => {
+        const value = 1;
+        const length = 100;
+
+        const result = await instance.callStatic[
+          'toBinString(uint256,uint256)'
+        ](value, length);
+
+        expect(result).to.have.length.of(length + 2);
       });
 
       describe('reverts if', () => {
@@ -305,7 +328,7 @@ describe('UintUtils', function () {
         ).to.equal('0o');
       });
 
-      it('returns octal string representation of a number with specified padding', async () => {
+      it('returns 0o-prefixed octal string representation of a number', async () => {
         for (let value of values) {
           const string = `0o${value.toString(8)}`;
           const length = string.length - 2;
@@ -314,9 +337,19 @@ describe('UintUtils', function () {
             'toOctString(uint256,uint256)'
           ](value, length);
 
-          expect(BigInt(result)).to.equal(value);
-          expect(result.length - 2).to.equal(length);
+          expect(result).to.equal(string);
         }
+      });
+
+      it('returns string with specified zero padding', async () => {
+        const value = 1;
+        const length = 100;
+
+        const result = await instance.callStatic[
+          'toOctString(uint256,uint256)'
+        ](value, length);
+
+        expect(result).to.have.length.of(length + 2);
       });
 
       describe('reverts if', () => {
@@ -370,7 +403,7 @@ describe('UintUtils', function () {
         ).to.equal('');
       });
 
-      it('returns decimal string representation of a number with specified padding', async () => {
+      it('returns decimal string representation of a number', async () => {
         for (let value of values) {
           const string = value.toString();
           const length = string.length;
@@ -379,9 +412,22 @@ describe('UintUtils', function () {
             'toDecString(uint256,uint256)'
           ](value, length);
 
+          expect(result).to.equal(string);
+
           expect(BigInt(result)).to.equal(value);
           expect(result.length).to.equal(length);
         }
+      });
+
+      it('returns string with specified zero padding', async () => {
+        const value = 1;
+        const length = 100;
+
+        const result = await instance.callStatic[
+          'toDecString(uint256,uint256)'
+        ](value, length);
+
+        expect(result).to.have.length.of(length);
       });
 
       describe('reverts if', function () {
@@ -426,7 +472,7 @@ describe('UintUtils', function () {
         ).to.equal('0x');
       });
 
-      it('returns hexadecimal string representation of a number with specified padding', async () => {
+      it('returns 0x-prefixed hexadecimal string representation of a number', async () => {
         for (let value of values) {
           const string = ethers.utils.hexlify(value);
           const length = string.length - 2;
@@ -435,9 +481,19 @@ describe('UintUtils', function () {
             'toHexString(uint256,uint256)'
           ](value, length);
 
-          expect(BigInt(result)).to.equal(value);
-          expect(result.length - 2).to.equal(length);
+          expect(result).to.equal(string);
         }
+      });
+
+      it('returns string with specified zero padding', async () => {
+        const value = 1;
+        const length = 100;
+
+        const result = await instance.callStatic[
+          'toHexString(uint256,uint256)'
+        ](value, length);
+
+        expect(result).to.have.length.of(length + 2);
       });
 
       describe('reverts if', () => {
