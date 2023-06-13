@@ -24,12 +24,12 @@ const constants = {
 const randomBytes32 = () => ethers.randomBytes(32);
 
 const randomAddress = () =>
-  ethers.getAddress(ethers.hexlify(ethers.randomBytes(20)));
+  ethers.getAddress(ethers.zeroPadValue(ethers.randomBytes(20), 20));
 
-const randomUint256 = () => BigInt(ethers.randomBytes(32));
+const randomUint256 = () => BigInt(ethers.toQuantity(ethers.randomBytes(32)));
 
 // checks that the parent node is greater than or equal to the children nodes
-function checkNodes(nodes: string[] | BigInt[]) {
+function checkNodes(nodes: BigInt[]) {
   nodes.forEach((node, index) => {
     const left = 2 * index + 1;
     const right = 2 * index + 2;
@@ -173,7 +173,8 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
             await instance['add(bytes32)'](value);
-            checkNodes(await instance['toArray()'].staticCall());
+            const nodes = await instance['toArray()'].staticCall();
+            checkNodes(Array.from(nodes));
           }
         });
 
@@ -366,7 +367,8 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
             await instance['add(address)'](value);
-            checkNodes(await instance['toArray()'].staticCall());
+            const nodes = await instance['toArray()'].staticCall();
+            checkNodes(Array.from(nodes));
           }
         });
 
@@ -559,7 +561,8 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
             await instance['add(uint256)'](value);
-            checkNodes(await instance['toArray()'].staticCall());
+            const nodes = await instance['toArray()'].staticCall();
+            checkNodes(Array.from(nodes));
           }
         });
 
