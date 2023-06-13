@@ -197,54 +197,47 @@ describe('UintUtils', function () {
     });
 
     describe('#toBinString(uint256)', function () {
-      it('returns 0 if input is 0', async () => {
+      it('returns 0b0 if input is 0', async () => {
         expect(await instance.callStatic['toBinString(uint256)'](0n)).to.equal(
-          '0',
+          '0b0',
         );
       });
 
-      it('returns binary string representation of number', async function () {
-        for (let i = 0; i < 12; i++) {
-          const value = BigInt(i);
-          const string = value.toString(2);
+      it('returns binary string representation of a number', async () => {
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
+        for (const value of values) {
           expect(
             await instance.callStatic['toBinString(uint256)'](value),
-          ).to.equal(string);
+          ).to.equal(`0b${value.toString(2)}`);
         }
-
-        expect(
-          await instance.callStatic['toBinString(uint256)'](
-            ethers.constants.MaxUint256,
-          ),
-        ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(2));
       });
     });
 
     describe('#toBinString(uint256,uint256)', function () {
-      it('returns empty string if input is 0 and length is 0', async () => {
+      it('returns empty 0b-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance.callStatic['toBinString(uint256,uint256)'](0n, 0n),
-        ).to.equal('');
+        ).to.equal('0b');
       });
 
       it('returns binary string representation of a number with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
         for (let value of values) {
-          const string = value.toString(2);
-          const length = string.length;
+          const string = `0b${value.toString(2)}`;
+          const length = string.length - 2;
 
           const result = await instance.callStatic[
             'toBinString(uint256,uint256)'
           ](value, length);
 
-          expect(BigInt(`0b${result}`)).to.equal(value);
-          expect(result.length).to.equal(length);
+          expect(BigInt(result)).to.equal(value);
+          expect(result.length - 2).to.equal(length);
         }
       });
 
-      describe('reverts if', function () {
+      describe('reverts if', () => {
         it('padding is insufficient', async () => {
           await expect(
             instance.callStatic['toBinString(uint256,uint256)'](0b1, 0n),
@@ -264,64 +257,57 @@ describe('UintUtils', function () {
     });
 
     describe('#toOctString(uint256)', function () {
-      it('returns 0 if input is 0', async () => {
+      it('returns 0o0 if input is 0', async () => {
         expect(await instance.callStatic['toOctString(uint256)'](0n)).to.equal(
-          '0',
+          '0o0',
         );
       });
 
-      it('returns octal string representation of number', async function () {
-        for (let i = 0; i < 12; i++) {
-          const value = BigInt(i);
-          const string = value.toString(8);
+      it('returns octal string representation of a number', async () => {
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
+        for (const value of values) {
           expect(
             await instance.callStatic['toOctString(uint256)'](value),
-          ).to.equal(string);
+          ).to.equal(`0o${value.toString(8)}`);
         }
-
-        expect(
-          await instance.callStatic['toOctString(uint256)'](
-            ethers.constants.MaxUint256,
-          ),
-        ).to.equal(BigInt(ethers.constants.MaxUint256.toString()).toString(8));
       });
     });
 
     describe('#toOctString(uint256,uint256)', function () {
-      it('returns empty string if input is 0 and length is 0', async () => {
+      it('returns empty 0o-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance.callStatic['toOctString(uint256,uint256)'](0n, 0n),
-        ).to.equal('');
+        ).to.equal('0o');
       });
 
       it('returns octal string representation of a number with specified padding', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
         for (let value of values) {
-          const string = value.toString(8);
-          const length = string.length;
+          const string = `0o${value.toString(8)}`;
+          const length = string.length - 2;
 
           const result = await instance.callStatic[
             'toOctString(uint256,uint256)'
           ](value, length);
 
-          expect(BigInt(`0o${result}`)).to.equal(value);
-          expect(result.length).to.equal(length);
+          expect(BigInt(result)).to.equal(value);
+          expect(result.length - 2).to.equal(length);
         }
       });
 
-      describe('reverts if', function () {
+      describe('reverts if', () => {
         it('padding is insufficient', async () => {
           await expect(
-            instance.callStatic['toOctString(uint256,uint256)'](1n, 0n),
+            instance.callStatic['toOctString(uint256,uint256)'](0o1, 0n),
           ).to.be.revertedWithCustomError(
             instance,
             'UintUtils__InsufficientPadding',
           );
 
           await expect(
-            instance.callStatic['toOctString(uint256,uint256)'](10n, 1n),
+            instance.callStatic['toOctString(uint256,uint256)'](0o10, 1n),
           ).to.be.revertedWithCustomError(
             instance,
             'UintUtils__InsufficientPadding',
@@ -404,7 +390,7 @@ describe('UintUtils', function () {
         );
       });
 
-      it('returns correct hexadecimal string representation of a number', async () => {
+      it('returns hexadecimal string representation of a number', async () => {
         const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
 
         for (const value of values) {
@@ -416,7 +402,7 @@ describe('UintUtils', function () {
     });
 
     describe('#toHexString(uint256,uint256)', function () {
-      it('returns empty hex-prefixed string if input is 0 and length is 0', async () => {
+      it('returns empty 0x-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance.callStatic['toHexString(uint256,uint256)'](0n, 0n),
         ).to.equal('0x');

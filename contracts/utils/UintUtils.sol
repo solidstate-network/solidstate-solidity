@@ -81,25 +81,85 @@ library UintUtils {
     }
 
     function toBinString(uint256 value) internal pure returns (string memory) {
-        return toString(value, 2);
+        uint256 length;
+
+        if (value == 0) {
+            length = 1;
+        } else {
+            for (uint256 temp = value; temp != 0; temp >>= 1) {
+                unchecked {
+                    length++;
+                }
+            }
+        }
+
+        return toBinString(value, length);
     }
 
     function toBinString(
         uint256 value,
         uint256 length
     ) internal pure returns (string memory) {
-        return toString(value, 2, length);
+        // add two to length for the leading "0b"
+        length += 2;
+
+        bytes memory buffer = new bytes(length);
+        buffer[0] = '0';
+        buffer[1] = 'b';
+
+        while (length > 2) {
+            unchecked {
+                length--;
+            }
+
+            buffer[length] = HEX_SYMBOLS[value & 1];
+            value >>= 1;
+        }
+
+        if (value != 0) revert UintUtils__InsufficientPadding();
+
+        return string(buffer);
     }
 
     function toOctString(uint256 value) internal pure returns (string memory) {
-        return toString(value, 8);
+        uint256 length;
+
+        if (value == 0) {
+            length = 1;
+        } else {
+            for (uint256 temp = value; temp != 0; temp >>= 3) {
+                unchecked {
+                    length++;
+                }
+            }
+        }
+
+        return toOctString(value, length);
     }
 
     function toOctString(
         uint256 value,
         uint256 length
     ) internal pure returns (string memory) {
-        return toString(value, 8, length);
+        // add two to length for the leading "0o"
+        length += 2;
+
+        bytes memory buffer = new bytes(length);
+        buffer[0] = '0';
+        buffer[1] = 'o';
+
+        while (length > 2) {
+            unchecked {
+                length--;
+            }
+
+            buffer[length] = HEX_SYMBOLS[value & 7];
+            value >>= 3;
+        }
+
+        if (value != 0) revert UintUtils__InsufficientPadding();
+
+        return string(buffer);
     }
 
     function toDecString(uint256 value) internal pure returns (string memory) {
@@ -145,7 +205,7 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 0xf];
+            buffer[length] = HEX_SYMBOLS[value & 15];
             value >>= 4;
         }
 
