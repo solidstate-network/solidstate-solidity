@@ -41,6 +41,17 @@ contract UintUtilsMock {
         return number.toBinString(length);
     }
 
+    function toOctString(uint256 number) external pure returns (string memory) {
+        return number.toOctString();
+    }
+
+    function toOctString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
+        return number.toOctString(length);
+    }
+
     function toDecString(uint256 number) external pure returns (string memory) {
         return number.toDecString();
     }

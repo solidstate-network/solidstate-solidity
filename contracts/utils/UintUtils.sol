@@ -91,6 +91,17 @@ library UintUtils {
         return toString(value, 2, length);
     }
 
+    function toOctString(uint256 value) internal pure returns (string memory) {
+        return toString(value, 8);
+    }
+
+    function toOctString(
+        uint256 value,
+        uint256 length
+    ) internal pure returns (string memory) {
+        return toString(value, 8, length);
+    }
+
     function toDecString(uint256 value) internal pure returns (string memory) {
         return toString(value, 10);
     }

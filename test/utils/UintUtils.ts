@@ -263,6 +263,73 @@ describe('UintUtils', function () {
       });
     });
 
+    describe('#toOctString(uint256)', function () {
+      it('returns 0 if input is 0', async () => {
+        expect(await instance.callStatic['toOctString(uint256)'](0n)).to.equal(
+          '0',
+        );
+      });
+
+      it('returns octal string representation of number', async function () {
+        for (let i = 0; i < 12; i++) {
+          const value = BigInt(i);
+          const string = value.toString(8);
+
+          expect(
+            await instance.callStatic['toOctString(uint256)'](value),
+          ).to.equal(string);
+        }
+
+        expect(
+          await instance.callStatic['toOctString(uint256)'](
+            ethers.constants.MaxUint256,
+          ),
+        ).to.equal(BigInt(ethers.constants.MaxUint256.toString()).toString(8));
+      });
+    });
+
+    describe('#toOctString(uint256,uint256)', function () {
+      it('returns empty string if input is 0 and length is 0', async () => {
+        expect(
+          await instance.callStatic['toOctString(uint256,uint256)'](0n, 0n),
+        ).to.equal('');
+      });
+
+      it('returns octal string representation of a number with specified padding', async () => {
+        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
+
+        for (let value of values) {
+          const string = value.toString(8);
+          const length = string.length;
+
+          const result = await instance.callStatic[
+            'toOctString(uint256,uint256)'
+          ](value, length);
+
+          expect(BigInt(`0o${result}`)).to.equal(value);
+          expect(result.length).to.equal(length);
+        }
+      });
+
+      describe('reverts if', function () {
+        it('padding is insufficient', async () => {
+          await expect(
+            instance.callStatic['toOctString(uint256,uint256)'](1n, 0n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+
+          await expect(
+            instance.callStatic['toOctString(uint256,uint256)'](10n, 1n),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'UintUtils__InsufficientPadding',
+          );
+        });
+      });
+    });
+
     describe('#toDecString(uint256)', function () {
       it('returns 0 if input is 0', async () => {
         expect(await instance.callStatic['toDecString(uint256)'](0n)).to.equal(
