@@ -179,6 +179,24 @@ describe('UintUtils', function () {
             ),
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
+
+        it('base is greater than 36', async () => {
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              0n,
+              37n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+
+          await expect(
+            instance.callStatic['toString(uint256,uint256,uint256)'](
+              1n,
+              37n,
+              0n,
+            ),
+          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+        });
       });
 
       it('padding is insufficient', async () => {

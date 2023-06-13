@@ -48,7 +48,7 @@ library UintUtils {
         uint256 base,
         uint256 length
     ) internal pure returns (string memory) {
-        if (base < 2) {
+        if (base < 2 || base > 36) {
             revert UintUtils__InvalidBase();
         }
 
