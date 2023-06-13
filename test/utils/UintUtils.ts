@@ -8,6 +8,21 @@ import { ethers } from 'hardhat';
 
 describe('UintUtils', function () {
   let instance: UintUtilsMock;
+  const values = [
+    0n,
+    1n,
+    0b10 - 1,
+    0b10,
+    0o10 - 1,
+    0o10,
+    10 - 1,
+    10,
+    0x10,
+    0x10 - 1,
+    1000n,
+    85746201361230n,
+    BigInt(ethers.constants.MaxUint256),
+  ];
 
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
@@ -114,8 +129,6 @@ describe('UintUtils', function () {
       });
 
       it('returns string representation of number in given base up to 36 with specified padding', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (let base = 2; base <= 36; base++) {
           for (let value of values) {
             const string = value.toString(base);
@@ -125,8 +138,7 @@ describe('UintUtils', function () {
               'toString(uint256,uint256,uint256)'
             ](value, base, length);
 
-            expect(BigInt(parseInt(result, base))).to.equal(value);
-            expect(result.length).to.equal(length);
+            expect(result).to.equal(string);
           }
         }
       });
@@ -204,8 +216,6 @@ describe('UintUtils', function () {
       });
 
       it('returns binary string representation of a number', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (const value of values) {
           expect(
             await instance.callStatic['toBinString(uint256)'](value),
@@ -222,8 +232,6 @@ describe('UintUtils', function () {
       });
 
       it('returns binary string representation of a number with specified padding', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (let value of values) {
           const string = `0b${value.toString(2)}`;
           const length = string.length - 2;
@@ -264,8 +272,6 @@ describe('UintUtils', function () {
       });
 
       it('returns octal string representation of a number', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (const value of values) {
           expect(
             await instance.callStatic['toOctString(uint256)'](value),
@@ -282,8 +288,6 @@ describe('UintUtils', function () {
       });
 
       it('returns octal string representation of a number with specified padding', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (let value of values) {
           const string = `0o${value.toString(8)}`;
           const length = string.length - 2;
@@ -349,8 +353,6 @@ describe('UintUtils', function () {
       });
 
       it('returns decimal string representation of a number with specified padding', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (let value of values) {
           const string = value.toString();
           const length = string.length;
@@ -391,8 +393,6 @@ describe('UintUtils', function () {
       });
 
       it('returns hexadecimal string representation of a number', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (const value of values) {
           expect(
             await instance.callStatic['toHexString(uint256)'](value),
@@ -409,8 +409,6 @@ describe('UintUtils', function () {
       });
 
       it('returns hexadecimal string representation of a number with specified padding', async () => {
-        const values = [1000n, 1n, 12345n, 85746201361230n, 999983n];
-
         for (let value of values) {
           const string = ethers.utils.hexlify(value);
           const length = string.length - 2;
