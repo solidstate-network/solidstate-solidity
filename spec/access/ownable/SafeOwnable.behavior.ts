@@ -6,7 +6,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'ethers';
+import { ethers } from 'hardhat';
 
 export interface SafeOwnableBehaviorArgs extends OwnableBehaviorArgs {
   getNomineeOwner: () => Promise<SignerWithAddress>;
