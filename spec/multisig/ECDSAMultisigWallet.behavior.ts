@@ -163,7 +163,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
           }
 
           expect(
-            ethers.defaultAbiCoder.decode(
+            ethers.AbiCoder.defaultAbiCoder().decode(
               mock.interface.functions['fn()'].outputs ?? [],
               await instance.verifyAndExecute.staticCall(
                 { target, data, value, delegate },

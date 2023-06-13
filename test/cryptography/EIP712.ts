@@ -29,9 +29,15 @@ describe('EIP712', function () {
         // use keccak256 + defaultAbiCoder rather than solidityPackedKeccak256 because the latter forces packed encoding
 
         const domainSeparator = ethers.keccak256(
-          ethers.defaultAbiCoder.encode(
+          ethers.AbiCoder.defaultAbiCoder().encode(
             ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
-            [typeHash, nameHash, versionHash, chainId, instance.address],
+            [
+              typeHash,
+              nameHash,
+              versionHash,
+              chainId,
+              await instance.getAddress(),
+            ],
           ),
         );
 
