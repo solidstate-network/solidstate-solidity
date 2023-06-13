@@ -25,7 +25,7 @@ describe('CloneFactory', function () {
         await instance['__deployClone()']();
 
         expect(await ethers.provider.getCode(address)).to.equal(
-          await ethers.provider.getCode(instance.address),
+          await ethers.provider.getCode(await instance.getAddress()),
         );
       });
 
@@ -46,7 +46,7 @@ describe('CloneFactory', function () {
         await instance['__deployClone(bytes32)'](salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
-          await ethers.provider.getCode(instance.address),
+          await ethers.provider.getCode(await instance.getAddress()),
         );
       });
 
@@ -77,7 +77,11 @@ describe('CloneFactory', function () {
         expect(
           await instance.__calculateCloneDeploymentAddress.staticCall(salt),
         ).to.equal(
-          ethers.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(
+            await instance.getAddress(),
+            salt,
+            initCodeHash,
+          ),
         );
       });
     });
