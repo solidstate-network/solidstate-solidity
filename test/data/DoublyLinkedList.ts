@@ -135,7 +135,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertBefore(bytes32,bytes32)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertBefore(bytes32,bytes32)'](
+            await instance['insertBefore(bytes32,bytes32)'].staticCall(
               zeroBytes32,
               oneBytes32,
             ),
@@ -146,7 +146,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
           expect(
-            await instance.callStatic['insertBefore(bytes32,bytes32)'](
+            await instance['insertBefore(bytes32,bytes32)'].staticCall(
               zeroBytes32,
               oneBytes32,
             ),
@@ -198,7 +198,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertAfter(bytes32,bytes32)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertAfter(bytes32,bytes32)'](
+            await instance['insertAfter(bytes32,bytes32)'].staticCall(
               zeroBytes32,
               oneBytes32,
             ),
@@ -209,7 +209,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
           expect(
-            await instance.callStatic['insertAfter(bytes32,bytes32)'](
+            await instance['insertAfter(bytes32,bytes32)'].staticCall(
               zeroBytes32,
               oneBytes32,
             ),
@@ -260,14 +260,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#push(bytes32)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['push(bytes32)'](oneBytes32)).to.be
+          expect(await instance['push(bytes32)'].staticCall(oneBytes32)).to.be
             .true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
-          expect(await instance.callStatic['push(bytes32)'](oneBytes32)).to.be
+          expect(await instance['push(bytes32)'].staticCall(oneBytes32)).to.be
             .false;
         });
 
@@ -300,11 +300,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](oneBytes32);
           await instance['push(bytes32)'](twoBytes32);
 
-          expect(await instance.callStatic['pop()']()).to.eq(twoBytes32);
+          expect(await instance['pop()'].staticCall()).to.eq(twoBytes32);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['pop()']()).to.eq(zeroBytes32);
+          expect(await instance['pop()'].staticCall()).to.eq(zeroBytes32);
         });
 
         it('removes last value from list', async () => {
@@ -330,11 +330,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](oneBytes32);
           await instance['push(bytes32)'](twoBytes32);
 
-          expect(await instance.callStatic['shift()']()).to.eq(oneBytes32);
+          expect(await instance['shift()'].staticCall()).to.eq(oneBytes32);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['shift()']()).to.eq(zeroBytes32);
+          expect(await instance['shift()'].staticCall()).to.eq(zeroBytes32);
         });
 
         it('removes first value from list', async () => {
@@ -357,14 +357,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#unshift(bytes32)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['unshift(bytes32)'](oneBytes32)).to
+          expect(await instance['unshift(bytes32)'].staticCall(oneBytes32)).to
             .be.true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['unshift(bytes32)'](oneBytes32);
 
-          expect(await instance.callStatic['unshift(bytes32)'](oneBytes32)).to
+          expect(await instance['unshift(bytes32)'].staticCall(oneBytes32)).to
             .be.false;
         });
 
@@ -396,12 +396,12 @@ describe('DoublyLinkedList', async () => {
         it('returns true if value is removed from list', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
-          expect(await instance.callStatic['remove(bytes32)'](oneBytes32)).to.be
+          expect(await instance['remove(bytes32)'].staticCall(oneBytes32)).to.be
             .true;
         });
 
         it('returns false if value is not removed from list', async () => {
-          expect(await instance.callStatic['remove(bytes32)'](oneBytes32)).to.be
+          expect(await instance['remove(bytes32)'].staticCall(oneBytes32)).to.be
             .false;
         });
 
@@ -429,7 +429,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](oneBytes32);
 
           expect(
-            await instance.callStatic['replace(bytes32,bytes32)'](
+            await instance['replace(bytes32,bytes32)'].staticCall(
               oneBytes32,
               twoBytes32,
             ),
@@ -441,7 +441,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(bytes32)'](twoBytes32);
 
           expect(
-            await instance.callStatic['replace(bytes32,bytes32)'](
+            await instance['replace(bytes32,bytes32)'].staticCall(
               oneBytes32,
               twoBytes32,
             ),
@@ -500,7 +500,7 @@ describe('DoublyLinkedList', async () => {
 
           it('old value is not contained in list', async () => {
             await expect(
-              instance.callStatic['replace(bytes32,bytes32)'](
+              instance['replace(bytes32,bytes32)'].staticCall(
                 oneBytes32,
                 twoBytes32,
               ),
@@ -636,7 +636,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertBefore(address,address)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertBefore(address,address)'](
+            await instance['insertBefore(address,address)'].staticCall(
               zeroAddress,
               oneAddress,
             ),
@@ -647,7 +647,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](oneAddress);
 
           expect(
-            await instance.callStatic['insertBefore(address,address)'](
+            await instance['insertBefore(address,address)'].staticCall(
               zeroAddress,
               oneAddress,
             ),
@@ -699,7 +699,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertAfter(address,address)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertAfter(address,address)'](
+            await instance['insertAfter(address,address)'].staticCall(
               zeroAddress,
               oneAddress,
             ),
@@ -710,7 +710,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](oneAddress);
 
           expect(
-            await instance.callStatic['insertAfter(address,address)'](
+            await instance['insertAfter(address,address)'].staticCall(
               zeroAddress,
               oneAddress,
             ),
@@ -761,14 +761,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#push(address)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['push(address)'](oneAddress)).to.be
+          expect(await instance['push(address)'].staticCall(oneAddress)).to.be
             .true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['push(address)'](oneAddress);
 
-          expect(await instance.callStatic['push(address)'](oneAddress)).to.be
+          expect(await instance['push(address)'].staticCall(oneAddress)).to.be
             .false;
         });
 
@@ -801,11 +801,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](oneAddress);
           await instance['push(address)'](twoAddress);
 
-          expect(await instance.callStatic['pop()']()).to.eq(twoAddress);
+          expect(await instance['pop()'].staticCall()).to.eq(twoAddress);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['pop()']()).to.eq(zeroAddress);
+          expect(await instance['pop()'].staticCall()).to.eq(zeroAddress);
         });
 
         it('removes last value from list', async () => {
@@ -831,11 +831,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](oneAddress);
           await instance['push(address)'](twoAddress);
 
-          expect(await instance.callStatic['shift()']()).to.eq(oneAddress);
+          expect(await instance['shift()'].staticCall()).to.eq(oneAddress);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['shift()']()).to.eq(zeroAddress);
+          expect(await instance['shift()'].staticCall()).to.eq(zeroAddress);
         });
 
         it('removes first value from list', async () => {
@@ -858,14 +858,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#unshift(address)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['unshift(address)'](oneAddress)).to
+          expect(await instance['unshift(address)'].staticCall(oneAddress)).to
             .be.true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['unshift(address)'](oneAddress);
 
-          expect(await instance.callStatic['unshift(address)'](oneAddress)).to
+          expect(await instance['unshift(address)'].staticCall(oneAddress)).to
             .be.false;
         });
 
@@ -897,12 +897,12 @@ describe('DoublyLinkedList', async () => {
         it('returns true if value is removed from list', async () => {
           await instance['push(address)'](oneAddress);
 
-          expect(await instance.callStatic['remove(address)'](oneAddress)).to.be
+          expect(await instance['remove(address)'].staticCall(oneAddress)).to.be
             .true;
         });
 
         it('returns false if value is not removed from list', async () => {
-          expect(await instance.callStatic['remove(address)'](oneAddress)).to.be
+          expect(await instance['remove(address)'].staticCall(oneAddress)).to.be
             .false;
         });
 
@@ -930,7 +930,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](oneAddress);
 
           expect(
-            await instance.callStatic['replace(address,address)'](
+            await instance['replace(address,address)'].staticCall(
               oneAddress,
               twoAddress,
             ),
@@ -942,7 +942,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(address)'](twoAddress);
 
           expect(
-            await instance.callStatic['replace(address,address)'](
+            await instance['replace(address,address)'].staticCall(
               oneAddress,
               twoAddress,
             ),
@@ -1001,7 +1001,7 @@ describe('DoublyLinkedList', async () => {
 
           it('old value is not contained in list', async () => {
             await expect(
-              instance.callStatic['replace(address,address)'](
+              instance['replace(address,address)'].staticCall(
                 oneAddress,
                 twoAddress,
               ),
@@ -1137,7 +1137,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertBefore(uint256,uint256)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertBefore(uint256,uint256)'](
+            await instance['insertBefore(uint256,uint256)'].staticCall(
               zeroUint256,
               oneUint256,
             ),
@@ -1148,7 +1148,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](oneUint256);
 
           expect(
-            await instance.callStatic['insertBefore(uint256,uint256)'](
+            await instance['insertBefore(uint256,uint256)'].staticCall(
               zeroUint256,
               oneUint256,
             ),
@@ -1200,7 +1200,7 @@ describe('DoublyLinkedList', async () => {
       describe('#insertAfter(uint256,uint256)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertAfter(uint256,uint256)'](
+            await instance['insertAfter(uint256,uint256)'].staticCall(
               zeroUint256,
               oneUint256,
             ),
@@ -1211,7 +1211,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](oneUint256);
 
           expect(
-            await instance.callStatic['insertAfter(uint256,uint256)'](
+            await instance['insertAfter(uint256,uint256)'].staticCall(
               zeroUint256,
               oneUint256,
             ),
@@ -1262,14 +1262,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#push(uint256)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['push(uint256)'](oneUint256)).to.be
+          expect(await instance['push(uint256)'].staticCall(oneUint256)).to.be
             .true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['push(uint256)'](oneUint256);
 
-          expect(await instance.callStatic['push(uint256)'](oneUint256)).to.be
+          expect(await instance['push(uint256)'].staticCall(oneUint256)).to.be
             .false;
         });
 
@@ -1302,11 +1302,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](oneUint256);
           await instance['push(uint256)'](twoUint256);
 
-          expect(await instance.callStatic['pop()']()).to.eq(twoUint256);
+          expect(await instance['pop()'].staticCall()).to.eq(twoUint256);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['pop()']()).to.eq(zeroUint256);
+          expect(await instance['pop()'].staticCall()).to.eq(zeroUint256);
         });
 
         it('removes last value from list', async () => {
@@ -1332,11 +1332,11 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](oneUint256);
           await instance['push(uint256)'](twoUint256);
 
-          expect(await instance.callStatic['shift()']()).to.eq(oneUint256);
+          expect(await instance['shift()'].staticCall()).to.eq(oneUint256);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['shift()']()).to.eq(zeroUint256);
+          expect(await instance['shift()'].staticCall()).to.eq(zeroUint256);
         });
 
         it('removes first value from list', async () => {
@@ -1359,14 +1359,14 @@ describe('DoublyLinkedList', async () => {
 
       describe('#unshift(uint256)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['unshift(uint256)'](oneUint256)).to
+          expect(await instance['unshift(uint256)'].staticCall(oneUint256)).to
             .be.true;
         });
 
         it('returns false if value is not added to list', async () => {
           await instance['unshift(uint256)'](oneUint256);
 
-          expect(await instance.callStatic['unshift(uint256)'](oneUint256)).to
+          expect(await instance['unshift(uint256)'].staticCall(oneUint256)).to
             .be.false;
         });
 
@@ -1398,12 +1398,12 @@ describe('DoublyLinkedList', async () => {
         it('returns true if value is removed from list', async () => {
           await instance['push(uint256)'](oneUint256);
 
-          expect(await instance.callStatic['remove(uint256)'](oneUint256)).to.be
+          expect(await instance['remove(uint256)'].staticCall(oneUint256)).to.be
             .true;
         });
 
         it('returns false if value is not removed from list', async () => {
-          expect(await instance.callStatic['remove(uint256)'](oneUint256)).to.be
+          expect(await instance['remove(uint256)'].staticCall(oneUint256)).to.be
             .false;
         });
 
@@ -1431,7 +1431,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](oneUint256);
 
           expect(
-            await instance.callStatic['replace(uint256,uint256)'](
+            await instance['replace(uint256,uint256)'].staticCall(
               oneUint256,
               twoUint256,
             ),
@@ -1443,7 +1443,7 @@ describe('DoublyLinkedList', async () => {
           await instance['push(uint256)'](twoUint256);
 
           expect(
-            await instance.callStatic['replace(uint256,uint256)'](
+            await instance['replace(uint256,uint256)'].staticCall(
               oneUint256,
               twoUint256,
             ),
@@ -1502,7 +1502,7 @@ describe('DoublyLinkedList', async () => {
 
           it('old value is not contained in list', async () => {
             await expect(
-              instance.callStatic['replace(uint256,uint256)'](
+              instance['replace(uint256,uint256)'].staticCall(
                 oneUint256,
                 twoUint256,
               ),

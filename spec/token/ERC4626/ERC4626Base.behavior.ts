@@ -49,26 +49,26 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {
-        expect(await instance.callStatic.asset()).to.eq(assetInstance.address);
+        expect(await instance.asset.staticCall()).to.eq(assetInstance.address);
       });
     });
 
     describe('#convertToShares(uint256)', () => {
       it('returns input amount if share supply is zero', async () => {
-        expect(await instance.callStatic.convertToShares(2)).to.eq(2);
+        expect(await instance.convertToShares.staticCall(2)).to.eq(2);
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
         await args.mint(instance.address, BigNumber.from('10'));
 
-        const supply = await instance.callStatic.totalSupply();
-        const assets = await instance.callStatic.totalAssets();
+        const supply = await instance.totalSupply.staticCall();
+        const assets = await instance.totalAssets.staticCall();
 
         const assetAmount = BigNumber.from('3');
 
         // result is rounded down
 
-        expect(await instance.callStatic.convertToShares(assetAmount)).to.eq(
+        expect(await instance.convertToShares.staticCall(assetAmount)).to.eq(
           assetAmount.mul(supply).div(assets),
         );
       });
@@ -76,20 +76,20 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#convertToAssets(uint256)', () => {
       it('returns input amount if share supply is zero', async () => {
-        expect(await instance.callStatic.convertToAssets(2)).to.eq(2);
+        expect(await instance.convertToAssets.staticCall(2)).to.eq(2);
       });
 
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
         await args.mint(instance.address, BigNumber.from('10'));
 
-        const supply = await instance.callStatic.totalSupply();
-        const assets = await instance.callStatic.totalAssets();
+        const supply = await instance.totalSupply.staticCall();
+        const assets = await instance.totalAssets.staticCall();
 
         const shareAmount = BigNumber.from('3');
 
         // result is rounded down
 
-        expect(await instance.callStatic.convertToAssets(shareAmount)).to.eq(
+        expect(await instance.convertToAssets.staticCall(shareAmount)).to.eq(
           shareAmount.mul(assets).div(supply),
         );
       });
@@ -97,7 +97,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#maxDeposit(address)', () => {
       it('returns maximum uint256', async () => {
-        expect(await instance.callStatic.maxDeposit(depositor.address)).to.eq(
+        expect(await instance.maxDeposit.staticCall(depositor.address)).to.eq(
           ethers.MaxUint256,
         );
       });
@@ -105,7 +105,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#maxMint(address)', () => {
       it('returns maximum uint256', async () => {
-        expect(await instance.callStatic.maxMint(depositor.address)).to.eq(
+        expect(await instance.maxMint.staticCall(depositor.address)).to.eq(
           ethers.MaxUint256,
         );
       });
@@ -114,10 +114,10 @@ export function describeBehaviorOfERC4626Base(
     describe('#maxWithdraw(address)', () => {
       it('returns asset value of share balance of given account', async () => {
         await args.mint(depositor.address, 2);
-        const balance = await instance.callStatic.balanceOf(depositor.address);
+        const balance = await instance.balanceOf.staticCall(depositor.address);
 
-        expect(await instance.callStatic.maxWithdraw(depositor.address)).to.eq(
-          await instance.callStatic.convertToAssets(balance),
+        expect(await instance.maxWithdraw.staticCall(depositor.address)).to.eq(
+          await instance.convertToAssets.staticCall(balance),
         );
       });
     });
@@ -125,9 +125,9 @@ export function describeBehaviorOfERC4626Base(
     describe('#maxRedeem(address)', () => {
       it('returns share balance of given account', async () => {
         await args.mint(depositor.address, 2);
-        const balance = await instance.callStatic.balanceOf(depositor.address);
+        const balance = await instance.balanceOf.staticCall(depositor.address);
 
-        expect(await instance.callStatic.maxRedeem(depositor.address)).to.eq(
+        expect(await instance.maxRedeem.staticCall(depositor.address)).to.eq(
           balance,
         );
       });
@@ -142,8 +142,8 @@ export function describeBehaviorOfERC4626Base(
         expect(
           await instance
             .connect(depositor)
-            .callStatic.previewDeposit(assetAmount),
-        ).to.eq(await instance.callStatic.convertToShares(assetAmount));
+            .previewDeposit.staticCall(assetAmount),
+        ).to.eq(await instance.convertToShares.staticCall(assetAmount));
       });
     });
 
@@ -153,8 +153,8 @@ export function describeBehaviorOfERC4626Base(
       it('returns the mint input amount converted to assets', async () => {
         await args.mint(instance.address, BigNumber.from('10'));
 
-        const supply = await instance.callStatic.totalSupply();
-        const assets = await instance.callStatic.totalAssets();
+        const supply = await instance.totalSupply.staticCall();
+        const assets = await instance.totalAssets.staticCall();
 
         const shareAmount = BigNumber.from('3');
 
@@ -163,9 +163,9 @@ export function describeBehaviorOfERC4626Base(
         // result is rounded up
 
         expect(
-          await instance.connect(depositor).callStatic.previewMint(shareAmount),
+          await instance.connect(depositor).previewMint.staticCall(shareAmount),
         ).to.eq(
-          (await instance.callStatic.convertToAssets(shareAmount)).add(err),
+          (await instance.convertToAssets.staticCall(shareAmount)).add(err),
         );
       });
     });
@@ -176,8 +176,8 @@ export function describeBehaviorOfERC4626Base(
       it('returns the withdraw input amount converted to shares', async () => {
         await args.mint(instance.address, BigNumber.from('10'));
 
-        const supply = await instance.callStatic.totalSupply();
-        const assets = await instance.callStatic.totalAssets();
+        const supply = await instance.totalSupply.staticCall();
+        const assets = await instance.totalAssets.staticCall();
 
         const assetAmount = BigNumber.from('3');
 
@@ -188,9 +188,9 @@ export function describeBehaviorOfERC4626Base(
         expect(
           await instance
             .connect(depositor)
-            .callStatic.previewWithdraw(assetAmount),
+            .previewWithdraw.staticCall(assetAmount),
         ).to.eq(
-          (await instance.callStatic.convertToShares(assetAmount)).add(err),
+          (await instance.convertToShares.staticCall(assetAmount)).add(err),
         );
       });
     });
@@ -204,8 +204,8 @@ export function describeBehaviorOfERC4626Base(
         expect(
           await instance
             .connect(depositor)
-            .callStatic.previewRedeem(shareAmount),
-        ).to.eq(await instance.callStatic.convertToAssets(shareAmount));
+            .previewRedeem.staticCall(shareAmount),
+        ).to.eq(await instance.convertToAssets.staticCall(shareAmount));
       });
     });
 
@@ -241,9 +241,9 @@ export function describeBehaviorOfERC4626Base(
 
         const shareAmount = await instance
           .connect(depositor)
-          .callStatic.previewDeposit(assetAmount);
+          .previewDeposit.staticCall(assetAmount);
 
-        const oldBalance = await instance.callStatic.balanceOf(
+        const oldBalance = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
@@ -251,7 +251,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmount, depositor.address);
 
-        const newBalance = await instance.callStatic.balanceOf(
+        const newBalance = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
@@ -272,7 +272,7 @@ export function describeBehaviorOfERC4626Base(
 
         const shareAmount = await instance
           .connect(depositor)
-          .callStatic.previewDeposit(assetAmount);
+          .previewDeposit.staticCall(assetAmount);
 
         await expect(
           instance
@@ -305,26 +305,26 @@ export function describeBehaviorOfERC4626Base(
         const shareAmount = BigNumber.from('10');
         const assetAmount = await instance
           .connect(depositor)
-          .callStatic.previewMint(shareAmount);
+          .previewMint.staticCall(shareAmount);
 
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        const oldCallerBalance = await assetInstance.callStatic.balanceOf(
+        const oldCallerBalance = await assetInstance.balanceOf.staticCall(
           depositor.address,
         );
-        const oldInstanceBalance = await assetInstance.callStatic.balanceOf(
+        const oldInstanceBalance = await assetInstance.balanceOf.staticCall(
           instance.address,
         );
 
         await instance.connect(depositor).mint(shareAmount, depositor.address);
 
-        const newCallerBalance = await assetInstance.callStatic.balanceOf(
+        const newCallerBalance = await assetInstance.balanceOf.staticCall(
           depositor.address,
         );
-        const newInstanceBalance = await assetInstance.callStatic.balanceOf(
+        const newInstanceBalance = await assetInstance.balanceOf.staticCall(
           instance.address,
         );
 
@@ -341,7 +341,7 @@ export function describeBehaviorOfERC4626Base(
         const shareAmount = BigNumber.from('10');
         const assetAmount = await instance
           .connect(depositor)
-          .callStatic.previewMint(shareAmount);
+          .previewMint.staticCall(shareAmount);
 
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
@@ -357,7 +357,7 @@ export function describeBehaviorOfERC4626Base(
         const shareAmount = BigNumber.from('10');
         const assetAmount = await instance
           .connect(depositor)
-          .callStatic.previewMint(shareAmount);
+          .previewMint.staticCall(shareAmount);
 
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
@@ -397,13 +397,13 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
-        const assetAmountOut = await instance.callStatic.convertToAssets(
-          await instance.callStatic.balanceOf(depositor.address),
+        const assetAmountOut = await instance.convertToAssets.staticCall(
+          await instance.balanceOf.staticCall(depositor.address),
         );
 
         const shareAmount = await instance
           .connect(depositor)
-          .callStatic.previewWithdraw(assetAmountOut);
+          .previewWithdraw.staticCall(assetAmountOut);
 
         await expect(() =>
           instance
@@ -427,15 +427,15 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
-        const assetAmountOut = await instance.callStatic.convertToAssets(
-          await instance.callStatic.balanceOf(depositor.address),
+        const assetAmountOut = await instance.convertToAssets.staticCall(
+          await instance.balanceOf.staticCall(depositor.address),
         );
 
         const shareAmount = await instance
           .connect(depositor)
-          .callStatic.previewWithdraw(assetAmountOut);
+          .previewWithdraw.staticCall(assetAmountOut);
 
-        const oldBalance = await instance.callStatic.balanceOf(
+        const oldBalance = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
@@ -443,7 +443,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .withdraw(assetAmountOut, recipient.address, depositor.address);
 
-        const newBalance = await instance.callStatic.balanceOf(
+        const newBalance = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
@@ -467,13 +467,13 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(caller.address, ethers.MaxUint256);
 
-        const assetAmountOut = await instance.callStatic.convertToAssets(
-          await instance.callStatic.balanceOf(depositor.address),
+        const assetAmountOut = await instance.convertToAssets.staticCall(
+          await instance.balanceOf.staticCall(depositor.address),
         );
 
         const shareAmount = await instance
           .connect(depositor)
-          .callStatic.previewWithdraw(assetAmountOut);
+          .previewWithdraw.staticCall(assetAmountOut);
 
         await expect(
           instance
@@ -493,13 +493,13 @@ export function describeBehaviorOfERC4626Base(
       describe('reverts if', () => {
         it('withdraw amount is too large', async () => {
           const assetAmount = BigNumber.from('10');
-          const shareAmount = await instance.callStatic.convertToShares(
+          const shareAmount = await instance.convertToShares.staticCall(
             assetAmount,
           );
 
           await args.mint(depositor.address, shareAmount);
 
-          const max = await instance.callStatic.maxWithdraw(depositor.address);
+          const max = await instance.maxWithdraw.staticCall(depositor.address);
 
           await expect(
             instance.withdraw(max.add(1), recipient.address, depositor.address),
@@ -520,8 +520,8 @@ export function describeBehaviorOfERC4626Base(
             .connect(depositor)
             ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
-          const assetAmountOut = await instance.callStatic.convertToAssets(
-            await instance.callStatic.balanceOf(depositor.address),
+          const assetAmountOut = await instance.convertToAssets.staticCall(
+            await instance.balanceOf.staticCall(depositor.address),
           );
 
           await expect(
@@ -548,18 +548,18 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
-        const shareAmount = await instance.callStatic.balanceOf(
+        const shareAmount = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
         const assetAmountOut = await instance
           .connect(depositor)
-          .callStatic.previewRedeem(shareAmount);
+          .previewRedeem.staticCall(shareAmount);
 
-        const oldInstanceBalance = await assetInstance.callStatic.balanceOf(
+        const oldInstanceBalance = await assetInstance.balanceOf.staticCall(
           instance.address,
         );
-        const oldReceiverBalance = await assetInstance.callStatic.balanceOf(
+        const oldReceiverBalance = await assetInstance.balanceOf.staticCall(
           recipient.address,
         );
 
@@ -571,10 +571,10 @@ export function describeBehaviorOfERC4626Base(
             depositor.address,
           );
 
-        const newInstanceBalance = await assetInstance.callStatic.balanceOf(
+        const newInstanceBalance = await assetInstance.balanceOf.staticCall(
           instance.address,
         );
-        const newReceiverBalance = await assetInstance.callStatic.balanceOf(
+        const newReceiverBalance = await assetInstance.balanceOf.staticCall(
           recipient.address,
         );
 
@@ -598,7 +598,7 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
 
-        const shareAmount = await instance.callStatic.balanceOf(
+        const shareAmount = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
@@ -627,13 +627,13 @@ export function describeBehaviorOfERC4626Base(
           .connect(depositor)
           .approve(caller.address, ethers.MaxUint256);
 
-        const shareAmount = await instance.callStatic.balanceOf(
+        const shareAmount = await instance.balanceOf.staticCall(
           depositor.address,
         );
 
         const assetAmountOut = await instance
           .connect(depositor)
-          .callStatic.previewRedeem(shareAmount);
+          .previewRedeem.staticCall(shareAmount);
 
         await expect(
           instance
@@ -660,7 +660,7 @@ export function describeBehaviorOfERC4626Base(
 
           await args.mint(depositor.address, shareAmount);
 
-          const max = await instance.callStatic.maxRedeem(depositor.address);
+          const max = await instance.maxRedeem.staticCall(depositor.address);
 
           await expect(
             instance['redeem(uint256,address,address)'](

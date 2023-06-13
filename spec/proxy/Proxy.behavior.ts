@@ -31,7 +31,7 @@ export function describeBehaviorOfProxy(
         );
 
         await expect(
-          contract.callStatic[implementationFunction](
+          contract[implementationFunction].staticCall(
             ...implementationFunctionArgs,
           ),
         ).not.to.be.reverted;

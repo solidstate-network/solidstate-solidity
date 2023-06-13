@@ -24,7 +24,7 @@ describe('SolidStateDiamond', function () {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateDiamondMock__factory(deployer).deploy();
 
-    const facets = await instance.callStatic['facets()']();
+    const facets = await instance['facets()'].staticCall();
 
     expect(facets).to.have.lengthOf(1);
 

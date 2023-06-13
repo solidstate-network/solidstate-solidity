@@ -23,10 +23,10 @@ describe('ERC165Base', function () {
       it('returns whether interface ID is supported', async () => {
         const interfaceId = ethers.randomBytes(4);
 
-        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+        expect(await instance.__supportsInterface.staticCall(interfaceId)).to.be
           .false;
         await instance.__setSupportsInterface(interfaceId, true);
-        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+        expect(await instance.__supportsInterface.staticCall(interfaceId)).to.be
           .true;
       });
     });
@@ -36,10 +36,10 @@ describe('ERC165Base', function () {
         const interfaceId = ethers.randomBytes(4);
 
         await instance.__setSupportsInterface(interfaceId, true);
-        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+        expect(await instance.__supportsInterface.staticCall(interfaceId)).to.be
           .true;
         await instance.__setSupportsInterface(interfaceId, false);
-        expect(await instance.callStatic.__supportsInterface(interfaceId)).to.be
+        expect(await instance.__supportsInterface.staticCall(interfaceId)).to.be
           .false;
       });
 

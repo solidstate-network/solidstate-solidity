@@ -41,7 +41,7 @@ export function describeBehaviorOfDiamondFallback(
 
     describe('#getFallbackAddress()', function () {
       it('returns the fallback address', async function () {
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+        expect(await instance['getFallbackAddress()'].staticCall()).to.equal(
           args.fallbackAddress,
         );
       });
@@ -55,7 +55,7 @@ export function describeBehaviorOfDiamondFallback(
           .connect(owner)
           ['setFallbackAddress(address)'](fallback.address);
 
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+        expect(await instance['getFallbackAddress()'].staticCall()).to.equal(
           fallback.address,
         );
 

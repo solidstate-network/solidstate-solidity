@@ -66,7 +66,7 @@ describe('SafeOwnable', function () {
       it('sets message sender as owner', async () => {
         await instance.connect(nomineeOwner).__acceptOwnership();
 
-        expect(await instance.callStatic.__owner()).to.equal(
+        expect(await instance.__owner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });
@@ -76,7 +76,7 @@ describe('SafeOwnable', function () {
 
         await instance.connect(nomineeOwner).__acceptOwnership();
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
           ethers.ZeroAddress,
         );
       });
@@ -86,7 +86,7 @@ describe('SafeOwnable', function () {
       it('sets nominee owner to given address', async () => {
         await instance.__transferOwnership(nomineeOwner.address);
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });
@@ -94,7 +94,7 @@ describe('SafeOwnable', function () {
       it('does not update owner address', async () => {
         await instance.__transferOwnership(nomineeOwner.address);
 
-        expect(await instance.callStatic.__owner()).to.equal(owner.address);
+        expect(await instance.__owner.staticCall()).to.equal(owner.address);
       });
     });
 
@@ -102,7 +102,7 @@ describe('SafeOwnable', function () {
       it('sets nominee owner to given address', async () => {
         await instance.__setNomineeOwner(nomineeOwner.address);
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });

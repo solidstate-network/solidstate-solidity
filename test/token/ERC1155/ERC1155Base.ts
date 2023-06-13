@@ -40,14 +40,14 @@ describe('ERC1155Base', function () {
         let id = 0;
         let amount = 2;
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__mint(holder.address, id, amount);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -87,14 +87,14 @@ describe('ERC1155Base', function () {
         let id = 0;
         let amount = 2;
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__safeMint(holder.address, id, amount);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -143,14 +143,14 @@ describe('ERC1155Base', function () {
         let id = 0;
         let amount = 2;
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__mintBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -199,14 +199,14 @@ describe('ERC1155Base', function () {
         let id = 0;
         let amount = 2;
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__safeMintBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -266,14 +266,14 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__burn(holder.address, id, amount);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -326,14 +326,14 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialBalance = await instance.callStatic.balanceOf(
+        let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
         await instance.__burnBatch(holder.address, [id], [amount]);
 
-        let finalBalance = await instance.callStatic.balanceOf(
+        let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
@@ -395,12 +395,12 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance.callStatic.balanceOf(
+        let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let initialRecipientBalance = await instance.callStatic.balanceOf(
+        let initialRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -414,12 +414,12 @@ describe('ERC1155Base', function () {
           ethers.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance.callStatic.balanceOf(
+        let finalSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let finalRecipientBalance = await instance.callStatic.balanceOf(
+        let finalRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -498,12 +498,12 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance.callStatic.balanceOf(
+        let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let initialRecipientBalance = await instance.callStatic.balanceOf(
+        let initialRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -517,12 +517,12 @@ describe('ERC1155Base', function () {
           ethers.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance.callStatic.balanceOf(
+        let finalSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let finalRecipientBalance = await instance.callStatic.balanceOf(
+        let finalRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -617,12 +617,12 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance.callStatic.balanceOf(
+        let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let initialRecipientBalance = await instance.callStatic.balanceOf(
+        let initialRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -636,12 +636,12 @@ describe('ERC1155Base', function () {
           ethers.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance.callStatic.balanceOf(
+        let finalSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let finalRecipientBalance = await instance.callStatic.balanceOf(
+        let finalRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -736,12 +736,12 @@ describe('ERC1155Base', function () {
 
         await instance.__mint(holder.address, id, amount);
 
-        let initialSenderBalance = await instance.callStatic.balanceOf(
+        let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let initialRecipientBalance = await instance.callStatic.balanceOf(
+        let initialRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );
@@ -755,12 +755,12 @@ describe('ERC1155Base', function () {
           ethers.randomBytes(0),
         );
 
-        let finalSenderBalance = await instance.callStatic.balanceOf(
+        let finalSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        let finalRecipientBalance = await instance.callStatic.balanceOf(
+        let finalRecipientBalance = await instance.balanceOf.staticCall(
           recipient.address,
           id,
         );

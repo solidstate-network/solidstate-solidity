@@ -34,7 +34,7 @@ export function describeBehaviorOfDiamondReadable(
 
     describe('#facets()', function () {
       it('returns facet cuts', async function () {
-        expect(await instance.callStatic['facets()']()).to.have.deep.members(
+        expect(await instance['facets()'].staticCall()).to.have.deep.members(
           facetCuts.map((fc) => [fc.target, fc.selectors]),
         );
       });
@@ -42,7 +42,7 @@ export function describeBehaviorOfDiamondReadable(
 
     describe('#facetAddresses()', function () {
       it('returns facets', async function () {
-        expect(await instance.callStatic['facetAddresses()']()).to.have.members(
+        expect(await instance['facetAddresses()'].staticCall()).to.have.members(
           facetCuts.map((fc) => fc.target),
         );
       });
@@ -52,7 +52,7 @@ export function describeBehaviorOfDiamondReadable(
       it('returns selectors for given facet', async function () {
         for (let facet of facetCuts) {
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
+            await instance['facetFunctionSelectors(address)'].staticCall(
               facet.target,
             ),
           ).to.have.members(facet.selectors);
@@ -61,7 +61,7 @@ export function describeBehaviorOfDiamondReadable(
 
       it('returns empty array for unrecognized facet', async function () {
         expect(
-          await instance.callStatic['facetFunctionSelectors(address)'](
+          await instance['facetFunctionSelectors(address)'].staticCall(
             ethers.ZeroAddress,
           ),
         ).to.have.lengthOf(0);
@@ -73,7 +73,7 @@ export function describeBehaviorOfDiamondReadable(
         for (let facet of facetCuts) {
           for (let selector of facet.selectors) {
             expect(
-              await instance.callStatic['facetAddress(bytes4)'](selector),
+              await instance['facetAddress(bytes4)'].staticCall(selector),
             ).to.equal(facet.target);
           }
         }
@@ -81,7 +81,7 @@ export function describeBehaviorOfDiamondReadable(
 
       it('returns zero address for unrecognized selector', async function () {
         expect(
-          await instance.callStatic['facetAddress(bytes4)']('0x00000000'),
+          await instance['facetAddress(bytes4)'].staticCall('0x00000000'),
         ).to.equal(ethers.ZeroAddress);
       });
     });

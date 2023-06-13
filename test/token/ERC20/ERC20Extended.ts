@@ -18,6 +18,6 @@ describe('ERC20Extended', function () {
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>
-      instance.callStatic.allowance(holder, spender),
+      instance.allowance.staticCall(holder, spender),
   });
 });

@@ -45,14 +45,14 @@ export function describeBehaviorOfERC721Enumerable(
         // TODO: query balance to determine starting index
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(instance.address, 0),
+          instance.tokenOfOwnerByIndex.staticCall(instance.address, 0),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
         );
 
         await expect(
-          instance.callStatic.tokenOfOwnerByIndex(instance.address, 1),
+          instance.tokenOfOwnerByIndex.staticCall(instance.address, 1),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
@@ -62,28 +62,28 @@ export function describeBehaviorOfERC721Enumerable(
         await mint(instance.address, 2);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(instance.address, 0),
+          await instance.tokenOfOwnerByIndex.staticCall(instance.address, 0),
         ).to.equal(1);
 
         expect(
-          await instance.callStatic.tokenOfOwnerByIndex(instance.address, 1),
+          await instance.tokenOfOwnerByIndex.staticCall(instance.address, 1),
         ).to.equal(2);
       });
     });
 
     describe('#tokenByIndex(uint256)', function () {
       it('returns token id held globally at given index', async function () {
-        const index = await instance.callStatic.totalSupply();
+        const index = await instance.totalSupply.staticCall();
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(0)),
+          instance.tokenByIndex.staticCall(index.add(0)),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
         );
 
         await expect(
-          instance.callStatic.tokenByIndex(index.add(1)),
+          instance.tokenByIndex.staticCall(index.add(1)),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
@@ -93,11 +93,11 @@ export function describeBehaviorOfERC721Enumerable(
         await mint(instance.address, 1);
         await mint(instance.address, 2);
 
-        expect(await instance.callStatic.tokenByIndex(index.add(0))).to.equal(
+        expect(await instance.tokenByIndex.staticCall(index.add(0))).to.equal(
           1,
         );
 
-        expect(await instance.callStatic.tokenByIndex(index.add(1))).to.equal(
+        expect(await instance.tokenByIndex.staticCall(index.add(1))).to.equal(
           2,
         );
       });

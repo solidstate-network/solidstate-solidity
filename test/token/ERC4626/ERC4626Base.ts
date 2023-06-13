@@ -65,7 +65,7 @@ describe('ERC4626Base', () => {
           .connect(depositor)
           .approve(instance.address, assetAmount);
 
-        const shareAmount = await instance.callStatic.previewDeposit(
+        const shareAmount = await instance.previewDeposit.staticCall(
           assetAmount,
         );
 

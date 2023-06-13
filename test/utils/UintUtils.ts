@@ -17,13 +17,13 @@ describe('UintUtils', function () {
   describe('__internal', function () {
     describe('#add(uint256,int256)', function () {
       it('adds unsigned and signed integers', async () => {
-        expect(await instance.callStatic.add(1, 1)).to.equal(2);
-        expect(await instance.callStatic.add(1, -1)).to.equal(0);
+        expect(await instance.add.staticCall(1, 1)).to.equal(2);
+        expect(await instance.add.staticCall(1, -1)).to.equal(0);
       });
 
       describe('reverts if', () => {
         it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          await expect(instance.callStatic.add(0, -1)).to.be.revertedWithPanic(
+          expect(await instance.add.staticCall(0, -1)).to.be.revertedWithPanic(
             PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
           );
         });
@@ -32,13 +32,13 @@ describe('UintUtils', function () {
 
     describe('#sub(uint256,int256)', function () {
       it('subtracts unsigned and signed integers', async () => {
-        expect(await instance.callStatic.sub(1, 1)).to.equal(0);
-        expect(await instance.callStatic.sub(1, -1)).to.equal(2);
+        expect(await instance.sub.staticCall(1, 1)).to.equal(0);
+        expect(await instance.sub.staticCall(1, -1)).to.equal(2);
       });
 
       describe('reverts if', () => {
         it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          await expect(instance.callStatic.sub(0, 1)).to.be.revertedWithPanic(
+          expect(await instance.sub.staticCall(0, 1)).to.be.revertedWithPanic(
             PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
           );
         });
@@ -51,19 +51,19 @@ describe('UintUtils', function () {
           const string = i.toString();
           const number = ethers.BigNumber.from(string);
           expect(
-            await instance.callStatic['toString(uint256)'](number),
+            await instance['toString(uint256)'].staticCall(number),
           ).to.equal(string);
         }
 
         expect(
-          await instance.callStatic['toString(uint256)'](ethers.MaxUint256),
+          await instance['toString(uint256)'].staticCall(ethers.MaxUint256),
         ).to.equal(ethers.MaxUint256.toString());
       });
     });
 
     describe('#toHexString(uint256)', function () {
       it('returns 0 if input is 0', async () => {
-        expect(await instance.callStatic['toHexString(uint256)'](0)).to.equal(
+        expect(await instance['toHexString(uint256)'].staticCall(0)).to.equal(
           '0x00',
         );
       });
@@ -79,7 +79,7 @@ describe('UintUtils', function () {
         ];
         for (let i = 0; i < inputValues.length; i++) {
           expect(
-            await instance.callStatic['toHexString(uint256)'](inputValues[i]),
+            await instance['toHexString(uint256)'].staticCall(inputValues[i]),
           ).to.equal(outputValues[i]);
         }
       });
@@ -99,7 +99,7 @@ describe('UintUtils', function () {
 
         for (let i = 0; i < inputValues.length; i++) {
           expect(
-            await instance.callStatic['toHexString(uint256,uint256)'](
+            await instance['toHexString(uint256,uint256)'].staticCall(
               inputValues[i],
               inputLengths[i],
             ),
@@ -110,7 +110,7 @@ describe('UintUtils', function () {
       describe('reverts if', () => {
         it('length input is 0 and value is nonzero', async () => {
           await expect(
-            instance.callStatic['toHexString(uint256,uint256)'](100, 0),
+            instance['toHexString(uint256,uint256)'].staticCall(100, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'UintUtils__InsufficientHexLength',

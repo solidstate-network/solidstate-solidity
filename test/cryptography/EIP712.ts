@@ -36,7 +36,7 @@ describe('EIP712', function () {
         );
 
         expect(
-          await instance.callStatic.calculateDomainSeparator(
+          await instance.calculateDomainSeparator.staticCall(
             nameHash,
             versionHash,
           ),

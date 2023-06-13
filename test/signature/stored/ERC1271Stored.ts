@@ -29,7 +29,7 @@ describe('ERC1271Stored', function () {
     describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns magic value if signature is stored', async function () {
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
             validParams[0],
             validParams[1],
           ),
@@ -38,7 +38,7 @@ describe('ERC1271Stored', function () {
 
       it('returns null bytes if signature is not stored', async function () {
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
             ethers.randomBytes(32),
             ethers.randomBytes(0),
           ),
@@ -52,19 +52,19 @@ describe('ERC1271Stored', function () {
         let signature = ethers.randomBytes(0);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
 
         await instance.__setValidSignature(hash, true);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
 
         await instance.__setValidSignature(hash, false);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

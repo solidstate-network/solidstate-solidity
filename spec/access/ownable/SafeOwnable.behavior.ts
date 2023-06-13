@@ -43,13 +43,13 @@ export function describeBehaviorOfSafeOwnable(
 
     describe('#nomineeOwner()', function () {
       it('returns address of nominee owner', async function () {
-        expect(await instance.callStatic['nomineeOwner()']()).to.equal(
+        expect(await instance['nomineeOwner()'].staticCall()).to.equal(
           ethers.ZeroAddress,
         );
         await instance
           .connect(owner)
           ['transferOwnership(address)'](nomineeOwner.address);
-        expect(await instance.callStatic['nomineeOwner()']()).to.equal(
+        expect(await instance['nomineeOwner()'].staticCall()).to.equal(
           nomineeOwner.address,
         );
       });
@@ -60,7 +60,7 @@ export function describeBehaviorOfSafeOwnable(
         await instance
           .connect(owner)
           ['transferOwnership(address)'](nomineeOwner.address);
-        expect(await instance.callStatic['owner()']()).to.equal(owner.address);
+        expect(await instance['owner()'].staticCall()).to.equal(owner.address);
       });
 
       describe('reverts if', function () {
@@ -81,7 +81,7 @@ export function describeBehaviorOfSafeOwnable(
           ['transferOwnership(address)'](nomineeOwner.address);
 
         await instance.connect(nomineeOwner)['acceptOwnership()']();
-        expect(await instance.callStatic['owner()']()).to.equal(
+        expect(await instance['owner()'].staticCall()).to.equal(
           nomineeOwner.address,
         );
       });

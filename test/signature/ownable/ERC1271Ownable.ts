@@ -34,7 +34,7 @@ describe('ERC1271Ownable', function () {
         let signature = await owner.signMessage(ethers.arrayify(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
             hash,
             signature,
           ),
@@ -46,7 +46,7 @@ describe('ERC1271Ownable', function () {
         let signature = await nonOwner.signMessage(ethers.arrayify(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
             hash,
             signature,
           ),

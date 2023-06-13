@@ -45,25 +45,25 @@ export function describeBehaviorOfERC1155Enumerable(
         const id = tokenId ?? 0n;
         const amount = 2n;
 
-        expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
+        expect(await instance['totalSupply(uint256)'].staticCall(id)).to.equal(
           0,
         );
 
         await mint(holder0.address, id, amount);
 
-        expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
+        expect(await instance['totalSupply(uint256)'].staticCall(id)).to.equal(
           amount,
         );
 
         await transfer(holder0, holder1, id, amount);
 
-        expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
+        expect(await instance['totalSupply(uint256)'].staticCall(id)).to.equal(
           amount,
         );
 
         await burn(holder1.address, id, amount);
 
-        expect(await instance.callStatic['totalSupply(uint256)'](id)).to.equal(
+        expect(await instance['totalSupply(uint256)'].staticCall(id)).to.equal(
           0,
         );
       });
@@ -75,25 +75,25 @@ export function describeBehaviorOfERC1155Enumerable(
         const id = tokenId ?? 0n;
         const amount = 2n;
 
-        expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
+        expect(await instance['totalHolders(uint256)'].staticCall(id)).to.equal(
           0,
         );
 
         await mint(holder0.address, id, amount);
 
-        expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
+        expect(await instance['totalHolders(uint256)'].staticCall(id)).to.equal(
           1,
         );
 
         await transfer(holder0, holder1, id, amount);
 
-        expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
+        expect(await instance['totalHolders(uint256)'].staticCall(id)).to.equal(
           1,
         );
 
         await burn(holder1.address, id, amount);
 
-        expect(await instance.callStatic['totalHolders(uint256)'](id)).to.equal(
+        expect(await instance['totalHolders(uint256)'].staticCall(id)).to.equal(
           0,
         );
       });
@@ -106,25 +106,25 @@ export function describeBehaviorOfERC1155Enumerable(
         const amount = 2n;
 
         expect(
-          await instance.callStatic['accountsByToken(uint256)'](id),
+          await instance['accountsByToken(uint256)'].staticCall(id),
         ).to.eql([]);
 
         await mint(holder0.address, id, amount);
 
         expect(
-          await instance.callStatic['accountsByToken(uint256)'](id),
+          await instance['accountsByToken(uint256)'].staticCall(id),
         ).to.eql([holder0.address]);
 
         await transfer(holder0, holder1, id, amount);
 
         expect(
-          await instance.callStatic['accountsByToken(uint256)'](id),
+          await instance['accountsByToken(uint256)'].staticCall(id),
         ).to.eql([holder1.address]);
 
         await burn(holder1.address, id, amount);
 
         expect(
-          await instance.callStatic['accountsByToken(uint256)'](id),
+          await instance['accountsByToken(uint256)'].staticCall(id),
         ).to.eql([]);
       });
     });
@@ -136,12 +136,12 @@ export function describeBehaviorOfERC1155Enumerable(
         const amount = 2n;
 
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder0.address,
           ),
         ).to.eql([]);
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder1.address,
           ),
         ).to.eql([]);
@@ -149,12 +149,12 @@ export function describeBehaviorOfERC1155Enumerable(
         await mint(holder0.address, id, amount);
 
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder0.address,
           ),
         ).to.eql([id]);
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder1.address,
           ),
         ).to.eql([]);
@@ -162,12 +162,12 @@ export function describeBehaviorOfERC1155Enumerable(
         await transfer(holder0, holder1, id, amount);
 
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder0.address,
           ),
         ).to.eql([]);
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder1.address,
           ),
         ).to.eql([id]);
@@ -175,12 +175,12 @@ export function describeBehaviorOfERC1155Enumerable(
         await burn(holder1.address, id, amount);
 
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder0.address,
           ),
         ).to.eql([]);
         expect(
-          await instance.callStatic['tokensByAccount(address)'](
+          await instance['tokensByAccount(address)'].staticCall(
             holder1.address,
           ),
         ).to.eql([]);

@@ -22,7 +22,7 @@ describe('MetamorphicFactory', function () {
         const target = instance.address;
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.callStatic.__deployMetamorphicContract(
+        const address = await instance.__deployMetamorphicContract.staticCall(
           target,
           salt,
         );
@@ -61,7 +61,7 @@ describe('MetamorphicFactory', function () {
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateMetamorphicDeploymentAddress(
+          await instance.__calculateMetamorphicDeploymentAddress.staticCall(
             salt,
           ),
         ).to.equal(

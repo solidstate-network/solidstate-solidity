@@ -48,7 +48,7 @@ export function describeBehaviorOfERC721Base(
     describe('#balanceOf(address)', function () {
       it('returns the token balance of given address', async function () {
         expect(
-          await instance.callStatic['balanceOf(address)'](holder.address),
+          await instance['balanceOf(address)'].staticCall(holder.address),
         ).to.equal(0);
 
         const tokenId = BigNumber.from(2);
@@ -69,7 +69,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', function () {
         it('queried address is the zero address', async function () {
           await expect(
-            instance.callStatic.balanceOf(ethers.ZeroAddress),
+            instance.balanceOf.staticCall(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__BalanceQueryZeroAddress',
@@ -83,7 +83,7 @@ export function describeBehaviorOfERC721Base(
         const tokenId = BigNumber.from(2);
         await mint(holder.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
       });
@@ -91,7 +91,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', function () {
         it('token does not exist', async function () {
           await expect(
-            instance.callStatic.ownerOf(2),
+            instance.ownerOf.staticCall(2),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableMap__NonExistentKey',
@@ -107,17 +107,17 @@ export function describeBehaviorOfERC721Base(
         const tokenId = BigNumber.from(2);
         await mint(holder.address, tokenId);
 
-        expect(await instance.callStatic.getApproved(tokenId)).to.equal(
+        expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           ethers.ZeroAddress,
         );
 
         await instance.connect(holder).approve(instance.address, tokenId);
-        expect(await instance.callStatic.getApproved(tokenId)).to.equal(
+        expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           instance.address,
         );
 
         await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
-        expect(await instance.callStatic.getApproved(tokenId)).to.equal(
+        expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           ethers.ZeroAddress,
         );
       });
@@ -125,7 +125,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', function () {
         it('token does not exist', async function () {
           await expect(
-            instance.callStatic.getApproved(2),
+            instance.getApproved.staticCall(2),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NonExistentToken',
@@ -137,7 +137,7 @@ export function describeBehaviorOfERC721Base(
     describe('#isApprovedForAll(address,address)', function () {
       it('returns whether given operator is approved to spend all tokens of given holder', async function () {
         expect(
-          await instance.callStatic.isApprovedForAll(
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
@@ -145,7 +145,7 @@ export function describeBehaviorOfERC721Base(
 
         await instance.connect(holder).setApprovalForAll(spender.address, true);
         expect(
-          await instance.callStatic.isApprovedForAll(
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
@@ -155,7 +155,7 @@ export function describeBehaviorOfERC721Base(
           .connect(holder)
           .setApprovalForAll(spender.address, false);
         expect(
-          await instance.callStatic.isApprovedForAll(
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
@@ -183,7 +183,7 @@ export function describeBehaviorOfERC721Base(
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
 
@@ -191,7 +191,7 @@ export function describeBehaviorOfERC721Base(
           .connect(spender)
           .transferFrom(holder.address, receiver.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
         );
       });
@@ -300,7 +300,7 @@ export function describeBehaviorOfERC721Base(
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
 
@@ -312,7 +312,7 @@ export function describeBehaviorOfERC721Base(
             tokenId,
           );
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
         );
       });
@@ -447,7 +447,7 @@ export function describeBehaviorOfERC721Base(
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
 
@@ -460,7 +460,7 @@ export function describeBehaviorOfERC721Base(
             '0x',
           );
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
         );
       });
@@ -580,20 +580,20 @@ export function describeBehaviorOfERC721Base(
         const tokenId = BigNumber.from(2);
         await mint(holder.address, tokenId);
 
-        expect(await instance.callStatic.getApproved(tokenId)).to.equal(
+        expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           ethers.ZeroAddress,
         );
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
-        expect(await instance.callStatic.getApproved(tokenId)).to.equal(
+        expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           spender.address,
         );
 
         await expect(
           instance
             .connect(spender)
-            .callStatic.transferFrom(holder.address, spender.address, tokenId),
+            .transferFrom.staticCall(holder.address, spender.address, tokenId),
         ).not.to.be.reverted;
 
         await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
@@ -601,7 +601,7 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(spender)
-            .callStatic.transferFrom(holder.address, spender.address, tokenId),
+            .transferFrom.staticCall(holder.address, spender.address, tokenId),
         ).to.be.reverted;
       });
 
@@ -661,7 +661,7 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(spender)
-            .callStatic.transferFrom(holder.address, spender.address, tokenId),
+            .transferFrom.staticCall(holder.address, spender.address, tokenId),
         ).not.to.be.reverted;
 
         await instance
@@ -671,7 +671,7 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(spender)
-            .callStatic.transferFrom(holder.address, spender.address, tokenId),
+            .transferFrom.staticCall(holder.address, spender.address, tokenId),
         ).to.be.reverted;
       });
 

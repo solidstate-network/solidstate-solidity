@@ -138,13 +138,13 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
+          expect(await instance['add(bytes32)'].staticCall(zeroBytes32)).to.be
             .true;
         });
 
         it('returns false if value has already been added', async () => {
           await instance['add(bytes32)'](zeroBytes32);
-          expect(await instance.callStatic['add(bytes32)'](zeroBytes32)).to.be
+          expect(await instance['add(bytes32)'].staticCall(zeroBytes32)).to.be
             .false;
         });
       });
@@ -167,12 +167,12 @@ describe('EnumerableSet', async () => {
           await instance['add(bytes32)'](oneBytes32);
           await instance['add(bytes32)'](twoBytes32);
 
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
+          expect(await instance['remove(bytes32)'].staticCall(zeroBytes32)).to
             .be.true;
         });
 
         it('returns false if value is not removed', async () => {
-          expect(await instance.callStatic['remove(bytes32)'](zeroBytes32)).to
+          expect(await instance['remove(bytes32)'].staticCall(zeroBytes32)).to
             .be.false;
         });
       });
@@ -318,13 +318,13 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(address)'](zeroAddress)).to.be
+          expect(await instance['add(address)'].staticCall(zeroAddress)).to.be
             .true;
         });
 
         it('returns false if value has already been added', async () => {
           await instance['add(address)'](zeroAddress);
-          expect(await instance.callStatic['add(address)'](zeroAddress)).to.be
+          expect(await instance['add(address)'].staticCall(zeroAddress)).to.be
             .false;
         });
       });
@@ -347,12 +347,12 @@ describe('EnumerableSet', async () => {
           await instance['add(address)'](oneAddress);
           await instance['add(address)'](twoAddress);
 
-          expect(await instance.callStatic['remove(address)'](zeroAddress)).to
+          expect(await instance['remove(address)'].staticCall(zeroAddress)).to
             .be.true;
         });
 
         it('returns false if value is not removed', async () => {
-          expect(await instance.callStatic['remove(address)'](zeroAddress)).to
+          expect(await instance['remove(address)'].staticCall(zeroAddress)).to
             .be.false;
         });
       });
@@ -494,12 +494,12 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(uint256)'](zero)).to.be.true;
+          expect(await instance['add(uint256)'].staticCall(zero)).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
           await instance['add(uint256)'](zero);
-          expect(await instance.callStatic['add(uint256)'](zero)).to.be.false;
+          expect(await instance['add(uint256)'].staticCall(zero)).to.be.false;
         });
       });
 
@@ -518,11 +518,11 @@ describe('EnumerableSet', async () => {
           await instance['add(uint256)'](one);
           await instance['add(uint256)'](two);
 
-          expect(await instance.callStatic['remove(uint256)'](zero)).to.be.true;
+          expect(await instance['remove(uint256)'].staticCall(zero)).to.be.true;
         });
 
         it('returns false if value is not removed', async () => {
-          expect(await instance.callStatic['remove(uint256)'](zero)).to.be
+          expect(await instance['remove(uint256)'].staticCall(zero)).to.be
             .false;
         });
       });

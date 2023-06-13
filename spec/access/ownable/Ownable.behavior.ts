@@ -29,14 +29,14 @@ export function describeBehaviorOfOwnable(
 
     describe('#owner()', function () {
       it('returns address of owner', async function () {
-        expect(await instance.callStatic.owner()).to.equal(owner.address);
+        expect(await instance.owner.staticCall()).to.equal(owner.address);
       });
     });
 
     describe('#transferOwnership(address)', function () {
       it('sets new owner', async function () {
         await instance.connect(owner).transferOwnership(ethers.ZeroAddress);
-        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {

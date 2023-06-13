@@ -18,7 +18,7 @@ describe('Factory', function () {
       it('deploys bytecode and returns deployment address', async function () {
         const initCode = instance.deployTransaction.data;
 
-        const address = await instance.callStatic['__deploy(bytes)'](initCode);
+        const address = await instance['__deploy(bytes)'].staticCall(initCode);
         expect(address).to.be.properAddress;
 
         await instance['__deploy(bytes)'](initCode);
@@ -48,12 +48,12 @@ describe('Factory', function () {
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.callStatic['__deploy(bytes,bytes32)'](
+        const address = await instance['__deploy(bytes,bytes32)'].staticCall(
           initCode,
           salt,
         );
         expect(address).to.equal(
-          await instance.callStatic.__calculateDeploymentAddress(
+          await instance.__calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),
@@ -102,7 +102,7 @@ describe('Factory', function () {
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateDeploymentAddress(
+          await instance.__calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),

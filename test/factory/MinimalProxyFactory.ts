@@ -21,9 +21,9 @@ describe('MinimalProxyFactory', function () {
       it('deploys minimal proxy and returns deployment address', async function () {
         const target = instance.address;
 
-        const address = await instance.callStatic[
+        const address = await instance[
           '__deployMinimalProxy(address)'
-        ](target);
+        ].staticCall(target);
         expect(address).to.be.properAddress;
 
         await instance['__deployMinimalProxy(address)'](target);
@@ -48,9 +48,9 @@ describe('MinimalProxyFactory', function () {
         const target = instance.address;
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.callStatic[
+        const address = await instance[
           '__deployMinimalProxy(address,bytes32)'
-        ](target, salt);
+        ].staticCall(target, salt);
         expect(address).to.be.properAddress;
 
         await instance['__deployMinimalProxy(address,bytes32)'](target, salt);
@@ -88,12 +88,12 @@ describe('MinimalProxyFactory', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const target = instance.address;
         const initCode =
-          await instance.callStatic.__generateMinimalProxyInitCode(target);
+          await instance.__generateMinimalProxyInitCode.staticCall(target);
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateMinimalProxyDeploymentAddress(
+          await instance.__calculateMinimalProxyDeploymentAddress.staticCall(
             target,
             salt,
           ),
@@ -105,7 +105,7 @@ describe('MinimalProxyFactory', function () {
       it('returns packed encoding of initialization code prefix, target address, and initialization code suffix', async function () {
         const target = instance.address;
         const initCode =
-          await instance.callStatic.__generateMinimalProxyInitCode(target);
+          await instance.__generateMinimalProxyInitCode.staticCall(target);
 
         expect(initCode).to.equal(
           '0x' +

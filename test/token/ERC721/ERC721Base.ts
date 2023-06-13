@@ -56,7 +56,7 @@ describe('ERC721Base', function () {
         await instance.connect(holder).approve(spender.address, tokenId);
 
         expect(
-          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId),
+          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
         ).to.be.true;
       });
 
@@ -67,7 +67,7 @@ describe('ERC721Base', function () {
         await instance.connect(holder).setApprovalForAll(spender.address, true);
 
         expect(
-          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId),
+          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
         ).to.be.true;
       });
 
@@ -76,7 +76,7 @@ describe('ERC721Base', function () {
         await instance.mint(holder.address, tokenId);
 
         expect(
-          await instance.callStatic.isApprovedOrOwner(holder.address, tokenId),
+          await instance.isApprovedOrOwner.staticCall(holder.address, tokenId),
         ).to.be.true;
       });
 
@@ -85,7 +85,7 @@ describe('ERC721Base', function () {
         await instance.mint(holder.address, tokenId);
 
         expect(
-          await instance.callStatic.isApprovedOrOwner(spender.address, tokenId),
+          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
         ).to.be.false;
       });
 
@@ -94,7 +94,7 @@ describe('ERC721Base', function () {
           const tokenId = 2;
 
           await expect(
-            instance.callStatic.isApprovedOrOwner(ethers.ZeroAddress, tokenId),
+            instance.isApprovedOrOwner.staticCall(ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NonExistentToken',
@@ -106,10 +106,10 @@ describe('ERC721Base', function () {
     describe('#_mint(address,uint256)', function () {
       it('creates token with given id for given account', async function () {
         const tokenId = 2;
-        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+        await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
         await instance.mint(holder.address, tokenId);
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
       });
@@ -157,10 +157,10 @@ describe('ERC721Base', function () {
     describe('#_safeMint(address,uint256)', function () {
       it('creates token with given id for given account', async function () {
         const tokenId = 2;
-        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+        await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
         await instance['safeMint(address,uint256)'](holder.address, tokenId);
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
       });
@@ -249,14 +249,14 @@ describe('ERC721Base', function () {
     describe('#_safeMint(address,uint256,bytes)', function () {
       it('creates token with given id for given account', async function () {
         const tokenId = 2;
-        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+        await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
         await instance['safeMint(address,uint256,bytes)'](
           holder.address,
           tokenId,
           '0x',
         );
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
       });
@@ -375,12 +375,12 @@ describe('ERC721Base', function () {
         const tokenId = 2;
 
         await instance.mint(holder.address, tokenId);
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
 
         await instance.burn(tokenId);
-        await expect(instance.callStatic.ownerOf(tokenId)).to.be.reverted;
+        await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
       });
 
       it('decreases balance of owner by one', async function () {
@@ -417,13 +417,13 @@ describe('ERC721Base', function () {
         const tokenId = 2;
         await instance.mint(sender.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           sender.address,
         );
 
         await instance.transfer(sender.address, receiver.address, tokenId);
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
         );
       });
@@ -498,7 +498,7 @@ describe('ERC721Base', function () {
           '0x',
         );
 
-        expect(await instance.callStatic.ownerOf(tokenId)).to.equal(
+        expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
         );
       });
@@ -593,7 +593,7 @@ describe('ERC721Base', function () {
     describe('#_checkOnERC721Received(address,address,uint256,bytes)', function () {
       it('returns true if recipient is not a contract', async function () {
         expect(
-          await instance.callStatic.checkOnERC721Received(
+          await instance.checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiver.address,
             0,
@@ -610,7 +610,7 @@ describe('ERC721Base', function () {
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
         expect(
-          await instance.callStatic.checkOnERC721Received(
+          await instance.checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiverContract.address,
             0,
@@ -629,7 +629,7 @@ describe('ERC721Base', function () {
         );
 
         expect(
-          await instance.callStatic.checkOnERC721Received(
+          await instance.checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiverContract.address,
             0,
@@ -643,7 +643,7 @@ describe('ERC721Base', function () {
           // TODO: test against contract other than self
 
           await expect(
-            instance.callStatic.checkOnERC721Received(
+            instance.checkOnERC721Received.staticCall(
               ethers.ZeroAddress,
               instance.address,
               0,

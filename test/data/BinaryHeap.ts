@@ -64,10 +64,10 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](randomBytes32());
           await instance['add(bytes32)'](randomBytes32());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
-            const value = await instance.callStatic['at(uint256)'](key);
+            const value = await instance['at(uint256)'].staticCall(key);
             expect(value).to.equal(array[key]);
           }
         });
@@ -102,11 +102,11 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](randomBytes32());
           await instance['add(bytes32)'](randomBytes32());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.callStatic['indexOf(bytes32)'](value);
+            const index = await instance['indexOf(bytes32)'].staticCall(value);
             expect(index).to.equal(key);
           }
         });
@@ -152,21 +152,21 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](mid);
           await instance['add(bytes32)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(max);
+          expect(await instance['root()'].staticCall()).to.equal(max);
 
           await instance['remove(bytes32)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(mid);
+          expect(await instance['root()'].staticCall()).to.equal(mid);
 
           await instance['remove(bytes32)'](mid);
 
-          expect(await instance.callStatic['root()']()).to.equal(min);
+          expect(await instance['root()'].staticCall()).to.equal(min);
         });
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(
-              instance.callStatic['root()'](),
+              instance['root()'].staticCall(),
             ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
@@ -177,12 +177,12 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
             await instance['add(bytes32)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(bytes32)'](randomBytes32())).to
+          expect(await instance['add(bytes32)'].staticCall(randomBytes32())).to
             .be.true;
         });
 
@@ -191,7 +191,7 @@ describe('BinaryHeap', async () => {
 
           await instance['add(bytes32)'](value);
 
-          expect(await instance.callStatic['add(bytes32)'](value)).to.be.false;
+          expect(await instance['add(bytes32)'].staticCall(value)).to.be.false;
         });
       });
 
@@ -206,7 +206,7 @@ describe('BinaryHeap', async () => {
 
           for (const value of values) {
             await instance['remove(bytes32)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
@@ -215,12 +215,12 @@ describe('BinaryHeap', async () => {
 
           await instance['add(bytes32)'](value);
 
-          expect(await instance.callStatic['remove(bytes32)'](value)).to.be
+          expect(await instance['remove(bytes32)'].staticCall(value)).to.be
             .true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(bytes32)'](randomBytes32()))
+          expect(await instance['remove(bytes32)'].staticCall(randomBytes32()))
             .to.be.false;
         });
       });
@@ -233,7 +233,7 @@ describe('BinaryHeap', async () => {
           await instance['add(bytes32)'](mid);
           await instance['add(bytes32)'](max);
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);
@@ -257,10 +257,10 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](randomAddress());
           await instance['add(address)'](randomAddress());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
-            const value = await instance.callStatic['at(uint256)'](key);
+            const value = await instance['at(uint256)'].staticCall(key);
             expect(value).to.equal(array[key]);
           }
         });
@@ -295,11 +295,11 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](randomAddress());
           await instance['add(address)'](randomAddress());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.callStatic['indexOf(address)'](value);
+            const index = await instance['indexOf(address)'].staticCall(value);
             expect(index).to.equal(key);
           }
         });
@@ -345,21 +345,21 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](mid);
           await instance['add(address)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(max);
+          expect(await instance['root()'].staticCall()).to.equal(max);
 
           await instance['remove(address)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(mid);
+          expect(await instance['root()'].staticCall()).to.equal(mid);
 
           await instance['remove(address)'](mid);
 
-          expect(await instance.callStatic['root()']()).to.equal(min);
+          expect(await instance['root()'].staticCall()).to.equal(min);
         });
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(
-              instance.callStatic['root()'](),
+              instance['root()'].staticCall(),
             ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
@@ -370,12 +370,12 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
             await instance['add(address)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(address)'](randomAddress())).to
+          expect(await instance['add(address)'].staticCall(randomAddress())).to
             .be.true;
         });
 
@@ -384,7 +384,7 @@ describe('BinaryHeap', async () => {
 
           await instance['add(address)'](value);
 
-          expect(await instance.callStatic['add(address)'](value)).to.be.false;
+          expect(await instance['add(address)'].staticCall(value)).to.be.false;
         });
       });
 
@@ -399,7 +399,7 @@ describe('BinaryHeap', async () => {
 
           for (const value of values) {
             await instance['remove(address)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
@@ -408,12 +408,12 @@ describe('BinaryHeap', async () => {
 
           await instance['add(address)'](value);
 
-          expect(await instance.callStatic['remove(address)'](value)).to.be
+          expect(await instance['remove(address)'].staticCall(value)).to.be
             .true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(address)'](randomAddress()))
+          expect(await instance['remove(address)'].staticCall(randomAddress()))
             .to.be.false;
         });
       });
@@ -426,7 +426,7 @@ describe('BinaryHeap', async () => {
           await instance['add(address)'](mid);
           await instance['add(address)'](max);
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);
@@ -450,10 +450,10 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](randomUint256());
           await instance['add(uint256)'](randomUint256());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
-            const value = await instance.callStatic['at(uint256)'](key);
+            const value = await instance['at(uint256)'].staticCall(key);
             expect(value).to.equal(array[key]);
           }
         });
@@ -488,11 +488,11 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](randomUint256());
           await instance['add(uint256)'](randomUint256());
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.callStatic['indexOf(uint256)'](value);
+            const index = await instance['indexOf(uint256)'].staticCall(value);
             expect(index).to.equal(key);
           }
         });
@@ -538,21 +538,21 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](mid);
           await instance['add(uint256)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(max);
+          expect(await instance['root()'].staticCall()).to.equal(max);
 
           await instance['remove(uint256)'](max);
 
-          expect(await instance.callStatic['root()']()).to.equal(mid);
+          expect(await instance['root()'].staticCall()).to.equal(mid);
 
           await instance['remove(uint256)'](mid);
 
-          expect(await instance.callStatic['root()']()).to.equal(min);
+          expect(await instance['root()'].staticCall()).to.equal(min);
         });
 
         describe('reverts if', function () {
           it('index out of bounds', async () => {
             await expect(
-              instance.callStatic['root()'](),
+              instance['root()'].staticCall(),
             ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
@@ -563,12 +563,12 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
             await instance['add(uint256)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.callStatic['add(uint256)'](randomUint256())).to
+          expect(await instance['add(uint256)'].staticCall(randomUint256())).to
             .be.true;
         });
 
@@ -577,7 +577,7 @@ describe('BinaryHeap', async () => {
 
           await instance['add(uint256)'](value);
 
-          expect(await instance.callStatic['add(uint256)'](value)).to.be.false;
+          expect(await instance['add(uint256)'].staticCall(value)).to.be.false;
         });
       });
 
@@ -592,7 +592,7 @@ describe('BinaryHeap', async () => {
 
           for (const value of values) {
             await instance['remove(uint256)'](value);
-            checkNodes(await instance.callStatic['toArray()']());
+            checkNodes(await instance['toArray()'].staticCall());
           }
         });
 
@@ -601,12 +601,12 @@ describe('BinaryHeap', async () => {
 
           await instance['add(uint256)'](value);
 
-          expect(await instance.callStatic['remove(uint256)'](value)).to.be
+          expect(await instance['remove(uint256)'].staticCall(value)).to.be
             .true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.callStatic['remove(uint256)'](randomUint256()))
+          expect(await instance['remove(uint256)'].staticCall(randomUint256()))
             .to.be.false;
         });
       });
@@ -619,7 +619,7 @@ describe('BinaryHeap', async () => {
           await instance['add(uint256)'](mid);
           await instance['add(uint256)'](max);
 
-          const array = await instance.callStatic['toArray()']();
+          const array = await instance['toArray()'].staticCall();
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);

@@ -19,7 +19,7 @@ describe('CloneFactory', function () {
   describe('__internal', function () {
     describe('#_deployClone()', function () {
       it('deploys clone and returns deployment address', async function () {
-        const address = await instance.callStatic['__deployClone()']();
+        const address = await instance['__deployClone()'].staticCall();
         expect(address).to.be.properAddress;
 
         await instance['__deployClone()']();
@@ -38,7 +38,7 @@ describe('CloneFactory', function () {
       it('deploys clone and returns deployment address', async function () {
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.callStatic['__deployClone(bytes32)'](
+        const address = await instance['__deployClone(bytes32)'].staticCall(
           salt,
         );
         expect(address).to.be.properAddress;
@@ -75,7 +75,7 @@ describe('CloneFactory', function () {
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateCloneDeploymentAddress(salt),
+          await instance.__calculateCloneDeploymentAddress.staticCall(salt),
         ).to.equal(
           ethers.getCreate2Address(instance.address, salt, initCodeHash),
         );

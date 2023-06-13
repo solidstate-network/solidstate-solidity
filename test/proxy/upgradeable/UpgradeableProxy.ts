@@ -33,7 +33,7 @@ describe('UpgradeableProxy', function () {
   describe('__internal', function () {
     describe('#_getImplementation()', function () {
       it('returns implementation address', async function () {
-        expect(await instance.callStatic.__getImplementation()).to.be
+        expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
     });
@@ -42,13 +42,13 @@ describe('UpgradeableProxy', function () {
       it('updates implementation address', async function () {
         const address = instance.address;
 
-        expect(await instance.callStatic.__getImplementation()).not.to.equal(
+        expect(await instance.__getImplementation.staticCall()).not.to.equal(
           address,
         );
 
         await instance.__setImplementation(address);
 
-        expect(await instance.callStatic.__getImplementation()).to.equal(
+        expect(await instance.__getImplementation.staticCall()).to.equal(
           address,
         );
       });

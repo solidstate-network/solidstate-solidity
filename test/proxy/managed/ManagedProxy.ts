@@ -48,7 +48,7 @@ describe('ManagedProxy', function () {
   describe('__internal', function () {
     describe('#_getImplementation()', function () {
       it('returns implementation address', async function () {
-        expect(await instance.callStatic.__getImplementation()).to.be
+        expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
 
@@ -56,7 +56,7 @@ describe('ManagedProxy', function () {
         it('manager is non-contract address', async function () {
           await instance.setManager(ethers.ZeroAddress);
 
-          await expect(instance.callStatic.__getImplementation()).to.be
+          await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
@@ -64,7 +64,7 @@ describe('ManagedProxy', function () {
           await manager.mock['getImplementation()'].revertsWithReason('ERROR');
 
           await expect(
-            instance.callStatic.__getImplementation(),
+            instance.__getImplementation.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'ManagedProxy__FetchImplementationFailed',

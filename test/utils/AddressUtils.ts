@@ -91,7 +91,7 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCall(address,bytes)'](target, data),
+            ['functionCall(address,bytes)'].staticCall(target, data),
         ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
       });
 
@@ -153,7 +153,7 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCall(address,bytes,string)'](
+            ['functionCall(address,bytes,string)'].staticCall(
               target,
               data,
               revertReason,
@@ -228,7 +228,7 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCallWithValue(address,bytes,uint256)'](
+            ['functionCallWithValue(address,bytes,uint256)'].staticCall(
               target,
               data,
               0,
@@ -381,7 +381,7 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCallWithValue(address,bytes,uint256,string)'](
+            ['functionCallWithValue(address,bytes,uint256,string)'].staticCall(
               target,
               data,
               0,

@@ -27,7 +27,7 @@ describe('SolidStateERC20', function () {
     mint: async (recipient, amount) => instance.__mint(recipient, amount),
     burn: async (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>
-      instance.callStatic.allowance(holder, spender),
+      instance.allowance.staticCall(holder, spender),
     name,
     symbol,
     decimals,

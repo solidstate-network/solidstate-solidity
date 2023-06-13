@@ -20,24 +20,24 @@ describe('IncrementalMerkleTree', function () {
 
   describe('#size', () => {
     it('returns number of elements in tree', async () => {
-      expect(await instance.callStatic.size()).to.equal(0);
+      expect(await instance.size.staticCall()).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
         await instance.push(randomHash());
 
-        expect(await instance.callStatic.size()).to.equal(i);
+        expect(await instance.size.staticCall()).to.equal(i);
       }
     });
   });
 
   describe('#height', () => {
     it('returns one-indexed height of tree', async () => {
-      expect(await instance.callStatic.size()).to.equal(0);
+      expect(await instance.height.staticCall()).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
         await instance.push(randomHash());
 
-        expect(await instance.callStatic.height()).to.equal(
+        expect(await instance.height.staticCall()).to.equal(
           Math.ceil(Math.log2(i) + 1),
         );
       }
@@ -46,7 +46,7 @@ describe('IncrementalMerkleTree', function () {
 
   describe('#root', () => {
     it('returns zero bytes for tree of size zero', async () => {
-      expect(await instance.callStatic.root()).to.equal(ethers.ZeroHash);
+      expect(await instance.root.staticCall()).to.equal(ethers.ZeroHash);
     });
 
     it('returns contained element for tree of size one', async () => {
@@ -54,7 +54,7 @@ describe('IncrementalMerkleTree', function () {
 
       await instance.push(hash);
 
-      expect(await instance.callStatic.root()).to.equal(hash);
+      expect(await instance.root.staticCall()).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in balanced tree', async () => {
@@ -69,7 +69,7 @@ describe('IncrementalMerkleTree', function () {
       await instance.push(hash_a);
       await instance.push(hash_b);
 
-      expect(await instance.callStatic.root()).to.equal(hash);
+      expect(await instance.root.staticCall()).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in unbalanced tree', async () => {
@@ -91,7 +91,7 @@ describe('IncrementalMerkleTree', function () {
       await instance.push(hash_b);
       await instance.push(hash_c);
 
-      expect(await instance.callStatic.root()).to.equal(hash);
+      expect(await instance.root.staticCall()).to.equal(hash);
     });
 
     it('returns result matching reference implementation regardless of previous operations', async () => {
@@ -117,7 +117,7 @@ describe('IncrementalMerkleTree', function () {
 
         const tree = new MerkleTree(hashes, keccak256);
 
-        expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
+        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
       }
     });
   });
@@ -128,12 +128,12 @@ describe('IncrementalMerkleTree', function () {
 
       await instance.push(hash);
 
-      expect(await instance.callStatic.at(0)).to.equal(hash);
+      expect(await instance.at.staticCall(0)).to.equal(hash);
     });
 
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
-        await expect(instance.callStatic.at(0)).to.be.revertedWithPanic(
+        expect(await instance.at.staticCall(0)).to.be.revertedWithPanic(
           PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
         );
       });
@@ -153,7 +153,7 @@ describe('IncrementalMerkleTree', function () {
 
         const tree = new MerkleTree(hashes.slice(0, i + 1), keccak256);
 
-        expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
+        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
       }
     });
   });
@@ -177,7 +177,7 @@ describe('IncrementalMerkleTree', function () {
 
         // MerkleTree library returns truncated zero hash, so must use hexEqual matcher
 
-        expect(await instance.callStatic.root()).to.hexEqual(tree.getHexRoot());
+        expect(await instance.root.staticCall()).to.hexEqual(tree.getHexRoot());
       }
     });
 
@@ -208,14 +208,14 @@ describe('IncrementalMerkleTree', function () {
 
         const tree = new MerkleTree(hashes, keccak256);
 
-        expect(await instance.callStatic.root()).to.equal(tree.getHexRoot());
+        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
       }
     });
 
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
-        await expect(
-          instance.callStatic.set(0, ethers.ZeroHash),
+        expect(
+          await instance.set.staticCall(0, ethers.ZeroHash),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });

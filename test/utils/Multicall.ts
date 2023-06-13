@@ -18,11 +18,11 @@ describe('Multicall', function () {
 
   describe('#multicall(bytes[])', function () {
     it('returns empty array if no call data is passed', async function () {
-      expect(await instance.callStatic.multicall([])).to.deep.equal([]);
+      expect(await instance.multicall.staticCall([])).to.deep.equal([]);
     });
 
     it('returns array of response data', async function () {
-      const result = await instance.callStatic.multicall([
+      const result = await instance.multicall.staticCall([
         (await instance.populateTransaction.callTest()).data as BytesLike,
       ]);
 

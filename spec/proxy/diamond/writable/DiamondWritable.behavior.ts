@@ -100,7 +100,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             await expect(
-              contract.callStatic[fn](),
+              contract[fn].staticCall(),
             ).to.be.revertedWithCustomError(
               instance,
               'Proxy__ImplementationIsNotContract',
@@ -117,7 +117,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -186,7 +186,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -207,7 +207,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -338,7 +338,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -353,7 +353,7 @@ export function describeBehaviorOfDiamondWritable(
 
           for (let fn of functions) {
             await expect(
-              contract.callStatic[fn](),
+              contract[fn].staticCall(),
             ).to.be.revertedWithCustomError(
               instance,
               'Proxy__ImplementationIsNotContract',

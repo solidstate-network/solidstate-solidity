@@ -80,13 +80,13 @@ describe('Ownable', function () {
 
     describe('#_owner()', () => {
       it('returns contract owner', async () => {
-        expect(await instance.callStatic.__owner()).to.equal(owner.address);
+        expect(await instance.__owner.staticCall()).to.equal(owner.address);
       });
     });
 
     describe('#_transitiveOwner()', () => {
       it('returns owner if owner is EOA', async () => {
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
           owner.address,
         );
       });
@@ -96,7 +96,7 @@ describe('Ownable', function () {
 
         await instance.__setOwner(ownerInstance.address);
 
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
           ownerInstance.address,
         );
       });
@@ -112,7 +112,7 @@ describe('Ownable', function () {
 
         await instance.__setOwner(firstOwnerInstance.address);
 
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
           owner.address,
         );
       });
@@ -122,7 +122,7 @@ describe('Ownable', function () {
       it('sets new owner', async function () {
         await instance.__transferOwnership(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
@@ -136,7 +136,7 @@ describe('Ownable', function () {
       it('sets new owner', async function () {
         await instance.__setOwner(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(ethers.ZeroAddress);
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {

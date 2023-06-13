@@ -32,7 +32,7 @@ export function describeBehaviorOfDiamondBase(
           ethers.provider,
         );
 
-        await expect(contract.callStatic[facetFunction](...facetFunctionArgs))
+        await expect(contract[facetFunction].staticCall(...facetFunctionArgs))
           .not.to.be.reverted;
       });
 
@@ -47,7 +47,7 @@ export function describeBehaviorOfDiamondBase(
           );
 
           await expect(
-            contract.callStatic['function()'](),
+            contract['function()'].staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',

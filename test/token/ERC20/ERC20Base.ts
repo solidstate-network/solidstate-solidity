@@ -51,9 +51,9 @@ describe('ERC20Base', function () {
       it('increases total supply by given amount', async function () {
         let amount = BigNumber.from(2);
 
-        let initialSupply = await instance.callStatic['totalSupply()']();
+        let initialSupply = await instance['totalSupply()'].staticCall();
         await instance.__mint(receiver.address, amount);
-        let finalSupply = await instance.callStatic['totalSupply()']();
+        let finalSupply = await instance['totalSupply()'].staticCall();
 
         expect(finalSupply.sub(initialSupply)).to.equal(amount);
       });
@@ -92,9 +92,9 @@ describe('ERC20Base', function () {
         let amount = BigNumber.from(2);
         await instance.__mint(receiver.address, amount);
 
-        let initialSupply = await instance.callStatic['totalSupply()']();
+        let initialSupply = await instance['totalSupply()'].staticCall();
         await instance.__burn(receiver.address, amount);
-        let finalSupply = await instance.callStatic['totalSupply()']();
+        let finalSupply = await instance['totalSupply()'].staticCall();
 
         expect(initialSupply.sub(finalSupply)).to.equal(amount);
       });
@@ -148,9 +148,9 @@ describe('ERC20Base', function () {
         let amount = BigNumber.from(2);
         await instance.__mint(sender.address, amount);
 
-        let initialSupply = await instance.callStatic['totalSupply()']();
+        let initialSupply = await instance['totalSupply()'].staticCall();
         await instance.__transfer(sender.address, receiver.address, amount);
-        let finalSupply = await instance.callStatic['totalSupply()']();
+        let finalSupply = await instance['totalSupply()'].staticCall();
 
         expect(finalSupply).to.equal(initialSupply);
       });
@@ -195,7 +195,7 @@ describe('ERC20Base', function () {
           .connect(holder)
           .__approve(holder.address, spender.address, amount);
         await expect(
-          await instance.callStatic['allowance(address,address)'](
+          await instance['allowance(address,address)'].staticCall(
             holder.address,
             spender.address,
           ),
@@ -206,7 +206,7 @@ describe('ERC20Base', function () {
           .connect(holder)
           .__approve(holder.address, spender.address, amount);
         await expect(
-          await instance.callStatic['allowance(address,address)'](
+          await instance['allowance(address,address)'].staticCall(
             holder.address,
             spender.address,
           ),
@@ -253,7 +253,7 @@ describe('ERC20Base', function () {
           .__decreaseAllowance(holder.address, spender.address, 1);
 
         await expect(
-          await instance.callStatic['allowance(address,address)'](
+          await instance['allowance(address,address)'].staticCall(
             holder.address,
             spender.address,
           ),
@@ -265,7 +265,7 @@ describe('ERC20Base', function () {
           .__decreaseAllowance(holder.address, spender.address, 1);
 
         await expect(
-          await instance.callStatic['allowance(address,address)'](
+          await instance['allowance(address,address)'].staticCall(
             holder.address,
             spender.address,
           ),

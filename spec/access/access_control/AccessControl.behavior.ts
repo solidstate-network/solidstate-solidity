@@ -34,14 +34,14 @@ export function describeBehaviorOfAccessControl(
     describe('#hasRole(bytes32,address)', function () {
       it('returns whether given account has given role', async function () {
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
+          await instance['hasRole(bytes32,address)'].staticCall(
             DEFAULT_ADMIN_ROLE,
             admin.address,
           ),
         ).to.equal(true);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
+          await instance['hasRole(bytes32,address)'].staticCall(
             DEFAULT_ADMIN_ROLE,
             ethers.ZeroAddress,
           ),
@@ -52,13 +52,13 @@ export function describeBehaviorOfAccessControl(
     describe('#getRoleAdmin(bytes32)', function () {
       it('returns default admin role', async function () {
         expect(
-          await instance.callStatic['getRoleAdmin(bytes32)'](ROLE),
+          await instance['getRoleAdmin(bytes32)'].staticCall(ROLE),
         ).to.equal(DEFAULT_ADMIN_ROLE);
       });
 
       it('returns default admin role as admin of itself', async function () {
         expect(
-          await instance.callStatic['getRoleAdmin(bytes32)'](
+          await instance['getRoleAdmin(bytes32)'].staticCall(
             DEFAULT_ADMIN_ROLE,
           ),
         ).to.equal(DEFAULT_ADMIN_ROLE);
@@ -70,7 +70,7 @@ export function describeBehaviorOfAccessControl(
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
+          await instance['hasRole(bytes32,address)'].staticCall(
             ROLE,
             nonAdmin.address,
           ),
@@ -103,7 +103,7 @@ export function describeBehaviorOfAccessControl(
         await instance.connect(admin).revokeRole(ROLE, nonAdmin.address);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
+          await instance['hasRole(bytes32,address)'].staticCall(
             ROLE,
             nonAdmin.address,
           ),
@@ -137,7 +137,7 @@ export function describeBehaviorOfAccessControl(
 
         await instance.connect(nonAdmin).renounceRole(ROLE),
           expect(
-            await instance.callStatic['hasRole(bytes32,address)'](
+            await instance['hasRole(bytes32,address)'].staticCall(
               ROLE,
               nonAdmin.address,
             ),
