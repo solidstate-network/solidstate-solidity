@@ -133,7 +133,7 @@ describe('IncrementalMerkleTree', function () {
 
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
-        expect(await instance.at.staticCall(0)).to.be.revertedWithPanic(
+        await expect(instance.at.staticCall(0)).to.be.revertedWithPanic(
           PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
         );
       });
@@ -214,8 +214,8 @@ describe('IncrementalMerkleTree', function () {
 
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
-        expect(
-          await instance.set.staticCall(0, ethers.ZeroHash),
+        await expect(
+          instance.set.staticCall(0, ethers.ZeroHash),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });
