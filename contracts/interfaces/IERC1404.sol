@@ -7,7 +7,7 @@ import { IERC1404Internal } from './IERC1404Internal.sol';
 
 /**
  * @title ERC1404 interface
- * @dev see https://github.com/ethereum/EIPs/issues/1404
+ * @dev see https://eips.ethereum.org/EIPS/eip-1404
  */
 interface IERC1404 is IERC1404Internal, IERC20 {
     /**
