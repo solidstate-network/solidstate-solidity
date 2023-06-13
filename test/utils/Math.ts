@@ -63,9 +63,9 @@ describe('Math', function () {
         expect(
           await instance.average.staticCall(
             ethers.MaxUint256,
-            ethers.MaxUint256.sub(1),
+            ethers.MaxUint256 - 1n,
           ),
-        ).to.equal(ethers.MaxUint256.sub(1));
+        ).to.equal(ethers.MaxUint256 - 1n);
       });
     });
 
@@ -79,7 +79,7 @@ describe('Math', function () {
 
         expect(await instance.sqrt.staticCall(0)).to.eq(0);
 
-        expect(await instance.sqrt.staticCall(ethers.MaxUint256.sub(1))).to.eq(
+        expect(await instance.sqrt.staticCall(ethers.MaxUint256 - 1n)).to.eq(
           BigInt('340282366920938463463374607431768211455'),
         );
       });
