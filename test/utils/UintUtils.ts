@@ -23,7 +23,7 @@ describe('UintUtils', function () {
 
       describe('reverts if', () => {
         it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          expect(await instance.add.staticCall(0, -1)).to.be.revertedWithPanic(
+          await expect(instance.add.staticCall(0, -1)).to.be.revertedWithPanic(
             PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
           );
         });
@@ -38,7 +38,7 @@ describe('UintUtils', function () {
 
       describe('reverts if', () => {
         it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          expect(await instance.sub.staticCall(0, 1)).to.be.revertedWithPanic(
+          await expect(instance.sub.staticCall(0, 1)).to.be.revertedWithPanic(
             PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
           );
         });
