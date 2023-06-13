@@ -3,28 +3,27 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter, signData } from '@solidstate/library';
 import { IECDSAMultisigWallet } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, BigNumberish, BytesLike } from 'ethers';
+import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
-let currentNonce = BigNumber.from(0);
+let currentNonce = 0n;
 
 const nextNonce = function () {
-  currentNonce = currentNonce.add(1);
-  return currentNonce;
+  return ++currentNonce;
 };
 
 interface SignAuthorizationArgs {
   target: string;
   data: BytesLike;
-  value: BigNumberish;
+  value: BigInt;
   delegate: boolean;
-  nonce: BigNumberish;
+  nonce: BigInt;
   address: any;
 }
 
 interface Signature {
   data: Uint8Array;
-  nonce: BigNumber;
+  nonce: BigInt;
 }
 
 const signAuthorization = async function (
@@ -42,7 +41,7 @@ const signAuthorization = async function (
 export interface ECDSAMultisigWalletBehaviorArgs {
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;
-  quorum: BigNumber;
+  quorum: BigInt;
   getVerificationAddress: () => Promise<string>;
 }
 

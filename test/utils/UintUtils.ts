@@ -49,7 +49,7 @@ describe('UintUtils', function () {
       it('returns base-10 string representation of number', async function () {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
-          const number = ethers.BigNumber.from(string);
+          const number = BigInt(string);
           expect(
             await instance['toString(uint256)'].staticCall(number),
           ).to.equal(string);

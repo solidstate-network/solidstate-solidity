@@ -3,7 +3,6 @@ import {
   ERC1404BaseMock,
   ERC1404BaseMock__factory,
 } from '@solidstate/typechain-types';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 let restrictions = [
@@ -25,9 +24,9 @@ describe('ERC1404Base', function () {
   describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
     supply: 0,
-    mint: (recipient: string, amount: BigNumber) =>
+    mint: (recipient: string, amount: BigInt) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigNumber) =>
+    burn: (recipient: string, amount: BigInt) =>
       instance.__burn(recipient, amount),
   });
 

@@ -7,7 +7,6 @@ import {
   SolidStateERC20Mock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, BigNumberish } from 'ethers';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
@@ -33,7 +32,7 @@ describe('ERC4626Base', () => {
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
-      assetInstance.address,
+      await assetInstance.getAddress(),
       name,
       symbol,
       decimals,
@@ -43,11 +42,11 @@ describe('ERC4626Base', () => {
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
     supply: 0,
-    mint: (recipient: string, amount: BigNumber | BigNumberish) =>
+    mint: (recipient: string, amount: BigInt) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigNumber | BigNumberish) =>
+    burn: (recipient: string, amount: BigInt) =>
       instance.__burn(recipient, amount),
-    mintAsset: (recipient: string, amount: BigNumber | BigNumberish) =>
+    mintAsset: (recipient: string, amount: BigInt) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,

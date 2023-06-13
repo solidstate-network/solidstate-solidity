@@ -7,17 +7,14 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC4626BaseBehaviorArgs
   extends ERC20BaseBehaviorArgs,
     ERC20MetadataBehaviorArgs {
   getAsset: () => Promise<IERC20>;
-  mintAsset: (
-    address: string,
-    amount: BigNumber | BigNumberish,
-  ) => Promise<ContractTransaction>;
+  mintAsset: (address: string, amount: BigInt) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC4626Base(
@@ -59,12 +56,12 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await args.mint(instance.address, BigNumber.from('10'));
+        await args.mint(instance.address, 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
 
-        const assetAmount = BigNumber.from('3');
+        const assetAmount = 3n;
 
         // result is rounded down
 
@@ -80,17 +77,17 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of assets if totalSupply is non-zero', async () => {
-        await args.mint(instance.address, BigNumber.from('10'));
+        await args.mint(await instance.getAddress(), 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
 
-        const shareAmount = BigNumber.from('3');
+        const shareAmount = 3n;
 
         // result is rounded down
 
         expect(await instance.convertToAssets.staticCall(shareAmount)).to.eq(
-          shareAmount.mul(assets).div(supply),
+          (shareAmount * assets) / supply,
         );
       });
     });
@@ -151,12 +148,12 @@ export function describeBehaviorOfERC4626Base(
       it('todo: supply is 0');
 
       it('returns the mint input amount converted to assets', async () => {
-        await args.mint(instance.address, BigNumber.from('10'));
+        await args.mint(instance.address, 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
 
-        const shareAmount = BigNumber.from('3');
+        const shareAmount = 3n;
 
         const err = shareAmount.mul(assets).mod(supply).isZero() ? 0 : 1;
 
@@ -174,12 +171,12 @@ export function describeBehaviorOfERC4626Base(
       it('todo: supply is 0');
 
       it('returns the withdraw input amount converted to shares', async () => {
-        await args.mint(instance.address, BigNumber.from('10'));
+        await args.mint(instance.address, 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
 
-        const assetAmount = BigNumber.from('3');
+        const assetAmount = 3n;
 
         const err = assetAmount.mul(supply).mod(assets).isZero() ? 0 : 1;
 
@@ -211,7 +208,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#deposit(uint256,address)', () => {
       it('transfers assets from caller', async () => {
-        const assetAmount = 2;
+        const assetAmount = 2n;
 
         await args.mint(caller.address, assetAmount);
         await args.mintAsset(depositor.address, assetAmount);
@@ -226,7 +223,7 @@ export function describeBehaviorOfERC4626Base(
         ).to.changeTokenBalances(
           assetInstance,
           [depositor, instance],
-          [BigNumber.from(assetAmount).mul(-1), assetAmount],
+          [-assetAmount, assetAmount],
         );
       });
 
@@ -302,7 +299,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#mint(uint256,address)', () => {
       it('transfers assets from caller', async () => {
-        const shareAmount = BigNumber.from('10');
+        const shareAmount = 10n;
         const assetAmount = await instance
           .connect(depositor)
           .previewMint.staticCall(shareAmount);
@@ -338,7 +335,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('mints shares for receiver', async () => {
-        const shareAmount = BigNumber.from('10');
+        const shareAmount = 10n;
         const assetAmount = await instance
           .connect(depositor)
           .previewMint.staticCall(shareAmount);
@@ -354,7 +351,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('emits Deposit event', async () => {
-        const shareAmount = BigNumber.from('10');
+        const shareAmount = 10n;
         const assetAmount = await instance
           .connect(depositor)
           .previewMint.staticCall(shareAmount);
@@ -387,7 +384,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#withdraw(uint256,address,address)', () => {
       it('transfers assets to receiver', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
@@ -417,7 +414,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('burns shares held by depositor', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
@@ -454,7 +451,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('emits Withdraw event', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
@@ -492,7 +489,7 @@ export function describeBehaviorOfERC4626Base(
 
       describe('reverts if', () => {
         it('withdraw amount is too large', async () => {
-          const assetAmount = BigNumber.from('10');
+          const assetAmount = 10n;
           const shareAmount = await instance.convertToShares.staticCall(
             assetAmount,
           );
@@ -510,7 +507,7 @@ export function describeBehaviorOfERC4626Base(
         });
 
         it('share amount exceeds allowance', async () => {
-          const assetAmountIn = BigNumber.from('10');
+          const assetAmountIn = 10n;
 
           await args.mintAsset(depositor.address, assetAmountIn);
           await assetInstance
@@ -538,7 +535,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#redeem(uint256,address,address)', () => {
       it('transfers assets to receiver', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
@@ -588,7 +585,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('burns shares held by depositor', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
@@ -614,7 +611,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('emits Withdraw event', async () => {
-        const assetAmountIn = BigNumber.from('10');
+        const assetAmountIn = 10n;
 
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance

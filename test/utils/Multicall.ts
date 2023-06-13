@@ -29,8 +29,6 @@ describe('Multicall', function () {
       expect(result).to.deep.equal([
         '0x0000000000000000000000000000000000000000000000000000000000000001',
       ]);
-
-      expect(result.map(ethers.BigNumber.from)).to.deep.equal([1]);
     });
 
     describe('reverts if', function () {

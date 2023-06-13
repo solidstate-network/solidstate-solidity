@@ -1,12 +1,11 @@
 import { describeFilter } from '@solidstate/library';
 import { IERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumberish } from 'ethers';
 
 export interface ERC20MetadataBehaviorArgs {
   name: string;
   symbol: string;
-  decimals: BigNumberish;
+  decimals: BigInt;
 }
 
 export function describeBehaviorOfERC20Metadata(

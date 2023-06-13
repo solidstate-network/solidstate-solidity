@@ -2,19 +2,13 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction, BigNumberish } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20BaseBehaviorArgs {
-  supply: BigNumber | BigNumberish;
-  mint: (
-    address: string,
-    amount: BigNumber | BigNumberish,
-  ) => Promise<ContractTransaction>;
-  burn: (
-    address: string,
-    amount: BigNumber | BigNumberish,
-  ) => Promise<ContractTransaction>;
+  supply: BigInt;
+  mint: (address: string, amount: BigInt) => Promise<ContractTransaction>;
+  burn: (address: string, amount: BigInt) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(
@@ -44,12 +38,12 @@ export function describeBehaviorOfERC20Base(
       it('returns the total supply of tokens', async function () {
         expect(await instance['totalSupply()'].staticCall()).to.equal(supply);
 
-        const amount = 2;
+        const amount = 2n;
 
         await mint(holder.address, amount);
 
         expect(await instance['totalSupply()'].staticCall()).to.equal(
-          BigNumber.from(supply).add(amount),
+          supply + amount,
         );
 
         await burn(holder.address, amount);

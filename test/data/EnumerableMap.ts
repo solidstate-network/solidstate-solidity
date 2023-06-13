@@ -7,7 +7,6 @@ import {
   EnumerableMapUintToAddressMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('EnumerableMap', () => {

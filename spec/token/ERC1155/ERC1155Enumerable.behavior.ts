@@ -2,27 +2,27 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155EnumerableBehaviorArgs {
   transfer: (
     from: SignerWithAddress,
     to: SignerWithAddress,
-    id: BigNumber,
-    amount: BigNumber,
+    id: BigInt,
+    amount: BigInt,
   ) => Promise<ContractTransaction>;
   mint: (
     address: string,
-    id: BigNumber,
-    amount: BigNumber,
+    id: BigInt,
+    amount: BigInt,
   ) => Promise<ContractTransaction>;
   burn: (
     address: string,
-    id: BigNumber,
-    amount: BigNumber,
+    id: BigInt,
+    amount: BigInt,
   ) => Promise<ContractTransaction>;
-  tokenId?: BigNumber;
+  tokenId?: BigInt;
 }
 
 export function describeBehaviorOfERC1155Enumerable(

@@ -109,7 +109,7 @@ describe('ECDSA', function () {
               hash,
               v,
               r,
-              ethers.BigNumber.from(MAX_S_VALUE).add(1n),
+              BigInt(MAX_S_VALUE) + 1n,
             ),
           ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidS');
         });

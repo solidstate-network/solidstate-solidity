@@ -13,7 +13,7 @@ import {
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1155 } from '@solidstate/typechain-types';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 export interface SolidStateERC1155BehaviorArgs
   extends ERC1155BaseBehaviorArgs,

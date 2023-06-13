@@ -5,7 +5,7 @@ import {
   AddressUtilsMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BytesLike, BigNumber } from 'ethers';
+import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('AddressUtils', async () => {
@@ -40,7 +40,7 @@ describe('AddressUtils', async () => {
 
     describe('#sendValue(address,uint256)', () => {
       it('transfers given value to given address', async () => {
-        const value = BigNumber.from(2);
+        const value = 2n;
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -56,7 +56,7 @@ describe('AddressUtils', async () => {
 
       describe('reverts if', () => {
         it('target contract rejects transfer', async () => {
-          const value = BigNumber.from(2);
+          const value = 2n;
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
@@ -237,7 +237,7 @@ describe('AddressUtils', async () => {
       });
 
       it('transfers given value to target contract', async () => {
-        const value = BigNumber.from(2);
+        const value = 2n;
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -295,7 +295,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = BigNumber.from(2);
+          const value = 2n;
 
           await ethers.provider.send('hardhat_setBalance', [
             instance.address,
@@ -391,7 +391,7 @@ describe('AddressUtils', async () => {
       });
 
       it('transfers given value to target contract', async () => {
-        const value = BigNumber.from(2);
+        const value = 2n;
 
         await ethers.provider.send('hardhat_setBalance', [
           instance.address,
@@ -453,7 +453,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = BigNumber.from(2);
+          const value = 2n;
           const revertReason = 'REVERT_REASON';
 
           await ethers.provider.send('hardhat_setBalance', [

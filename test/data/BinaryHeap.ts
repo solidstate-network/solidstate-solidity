@@ -10,7 +10,7 @@ import {
   BinaryHeapUintMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, Bytes } from 'ethers';
+import { Bytes } from 'ethers';
 import { ethers } from 'hardhat';
 
 const numbers = [0, 1, 2].map((n) => n);
@@ -26,24 +26,20 @@ const randomBytes32 = () => ethers.randomBytes(32);
 const randomAddress = () =>
   ethers.getAddress(ethers.hexlify(ethers.randomBytes(20)));
 
-const randomUint256 = () => ethers.BigNumber.from(ethers.randomBytes(32));
+const randomUint256 = () => BigInt(ethers.randomBytes(32));
 
 // checks that the parent node is greater than or equal to the children nodes
-function checkNodes(nodes: string[] | BigNumber[]) {
+function checkNodes(nodes: string[] | BigInt[]) {
   nodes.forEach((node, index) => {
     const left = 2 * index + 1;
     const right = 2 * index + 2;
 
     if (nodes[left] != null) {
-      expect(ethers.BigNumber.from(node)).to.be.gte(
-        ethers.BigNumber.from(nodes[left]),
-      );
+      expect(BigInt(node)).to.be.gte(BigInt(nodes[left]));
     }
 
     if (nodes[right] != null) {
-      expect(ethers.BigNumber.from(node)).to.be.gte(
-        ethers.BigNumber.from(nodes[right]),
-      );
+      expect(BigInt(node)).to.be.gte(BigInt(nodes[right]));
     }
   });
 }

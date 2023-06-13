@@ -48,7 +48,7 @@ describe('ArrayUtils', async () => {
 
       it('returns the max address if array is empty', async () => {
         expect(await instance['min(address[])'].staticCall([])).to.equal(
-          bnToAddress(ethers.BigNumber.from(2).pow(160).sub(1)),
+          bnToAddress(2n ** 160n - 1n),
         );
       });
     });

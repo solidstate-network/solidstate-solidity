@@ -2,14 +2,14 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Extended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ExtendedBehaviorArgs {
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  allowance: (holder: string, spender: string) => Promise<BigNumber>;
-  supply: BigNumber;
+  mint: (address: string, amount: BigInt) => Promise<ContractTransaction>;
+  burn: (address: string, amount: BigInt) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<BigInt>;
+  supply: BigInt;
 }
 
 export function describeBehaviorOfERC20Extended(
@@ -46,7 +46,7 @@ export function describeBehaviorOfERC20Extended(
       });
 
       it('increases approval of spender with respect to holder by given amount', async function () {
-        let amount = BigNumber.from(2);
+        let amount = 2n;
 
         await instance
           .connect(holder)
@@ -68,7 +68,7 @@ export function describeBehaviorOfERC20Extended(
       });
 
       it('emits Approval event', async function () {
-        let amount = BigNumber.from(2);
+        let amount = 2n;
 
         await expect(
           instance
@@ -113,7 +113,7 @@ export function describeBehaviorOfERC20Extended(
       });
 
       it('decreases approval of spender with respect to holder by given amount', async function () {
-        let amount = BigNumber.from(2);
+        let amount = 2n;
         await instance
           .connect(holder)
           ['increaseAllowance(address,uint256)'](
@@ -141,7 +141,7 @@ export function describeBehaviorOfERC20Extended(
       });
 
       it('emits Approval event', async function () {
-        let amount = BigNumber.from(2);
+        let amount = 2n;
         await instance
           .connect(holder)
           ['increaseAllowance(address,uint256)'](spender.address, amount);

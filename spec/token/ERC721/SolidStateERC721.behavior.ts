@@ -14,7 +14,6 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { SolidStateERC721 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface SolidStateERC721BehaviorArgs
@@ -75,7 +74,7 @@ export function describeBehaviorOfSolidStateERC721(
     describe('#transferFrom(address,address,uint256)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
-          const tokenId = BigNumber.from(2);
+          const tokenId = 2n;
           await mint(holder.address, tokenId);
 
           await expect(
@@ -95,7 +94,7 @@ export function describeBehaviorOfSolidStateERC721(
     describe('#safeTransferFrom(address,address,uint256)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
-          const tokenId = BigNumber.from(2);
+          const tokenId = 2n;
           await mint(holder.address, tokenId);
 
           await expect(
@@ -118,7 +117,7 @@ export function describeBehaviorOfSolidStateERC721(
     describe('#safeTransferFrom(address,address,uint256,bytes)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
-          const tokenId = BigNumber.from(2);
+          const tokenId = 2n;
           await mint(holder.address, tokenId);
 
           await expect(
@@ -142,7 +141,7 @@ export function describeBehaviorOfSolidStateERC721(
     describe('#approve(address,uint256)', function () {
       describe('reverts if', function () {
         it('value is included in transaction', async function () {
-          const tokenId = BigNumber.from(2);
+          const tokenId = 2n;
           await mint(holder.address, tokenId);
 
           await expect(

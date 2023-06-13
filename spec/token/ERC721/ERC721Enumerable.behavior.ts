@@ -1,15 +1,12 @@
 import { describeFilter } from '@solidstate/library';
 import { ERC721Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 export interface ERC721EnumerableBehaviorArgs {
-  mint: (
-    address: string,
-    tokenId: BigNumber | BigNumberish,
-  ) => Promise<ContractTransaction>;
-  burn: (tokenId: BigNumber | BigNumberish) => Promise<ContractTransaction>;
-  supply: BigNumber | BigNumberish;
+  mint: (address: string, tokenId: BigInt) => Promise<ContractTransaction>;
+  burn: (tokenId: BigInt) => Promise<ContractTransaction>;
+  supply: BigInt;
 }
 
 export function describeBehaviorOfERC721Enumerable(
@@ -31,9 +28,7 @@ export function describeBehaviorOfERC721Enumerable(
         expect(await instance.totalSupply()).to.equal(supply);
 
         await mint(instance.address, 2);
-        expect(await instance.totalSupply()).to.equal(
-          BigNumber.from(supply).add(1),
-        );
+        expect(await instance.totalSupply()).to.equal(supply + 1n);
 
         await burn(2);
         expect(await instance.totalSupply()).to.equal(supply);
