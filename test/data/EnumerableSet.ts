@@ -94,7 +94,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(bytes32)'](zeroBytes32)).to.equal(
-            ethers.MaxUint256.toString(),
+            ethers.MaxUint256,
           );
         });
       });
@@ -274,7 +274,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(address)'](zeroAddress)).to.equal(
-            ethers.MaxUint256.toString(),
+            ethers.MaxUint256,
           );
         });
       });
@@ -454,7 +454,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(await instance['indexOf(uint256)'](zero)).to.equal(
-            ethers.MaxUint256.toString(),
+            ethers.MaxUint256,
           );
         });
       });
