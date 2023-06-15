@@ -71,30 +71,26 @@ export function describeBehaviorOfERC721Enumerable(
         const index = await instance.totalSupply.staticCall();
 
         await expect(
-          instance.tokenByIndex.staticCall(index.add(0)),
+          instance.tokenByIndex.staticCall(index),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
         );
 
         await expect(
-          instance.tokenByIndex.staticCall(index.add(1)),
+          instance.tokenByIndex.staticCall(index + 1n),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableMap__IndexOutOfBounds',
         );
 
         // TODO: mint to different addresses
-        await mint(instance.address, 1);
-        await mint(instance.address, 2);
+        await mint(instance.address, 1n);
+        await mint(instance.address, 2n);
 
-        expect(await instance.tokenByIndex.staticCall(index.add(0))).to.equal(
-          1,
-        );
+        expect(await instance.tokenByIndex.staticCall(index)).to.equal(1);
 
-        expect(await instance.tokenByIndex.staticCall(index.add(1))).to.equal(
-          2,
-        );
+        expect(await instance.tokenByIndex.staticCall(index + 1n)).to.equal(2);
       });
     });
   });

@@ -499,7 +499,7 @@ export function describeBehaviorOfERC4626Base(
           const max = await instance.maxWithdraw.staticCall(depositor.address);
 
           await expect(
-            instance.withdraw(max.add(1), recipient.address, depositor.address),
+            instance.withdraw(max + 1n, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC4626Base__MaximumAmountExceeded',
@@ -661,7 +661,7 @@ export function describeBehaviorOfERC4626Base(
 
           await expect(
             instance['redeem(uint256,address,address)'](
-              max.add(1),
+              max + 1n,
               recipient.address,
               depositor.address,
             ),

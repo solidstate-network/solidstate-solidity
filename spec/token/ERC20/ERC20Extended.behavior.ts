@@ -61,7 +61,7 @@ export function describeBehaviorOfERC20Extended(
           ['increaseAllowance(address,uint256)'](spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
-          amount.add(amount),
+          amount + amount,
         );
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests

@@ -579,7 +579,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
                 { target, data, value, delegate },
                 signatures,
                 {
-                  value: value.add(1),
+                  value: value + 1n,
                 },
               ),
             ).to.be.revertedWithCustomError(
