@@ -121,7 +121,7 @@ describe('AccessControl', function () {
       it('role does not exist', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        const newRole = ethers.utils.solidityKeccak256(
+        const newRole = ethers.solidityPackedKeccak256(
           ['string'],
           ['NEW_ROLE'],
         );
@@ -154,7 +154,7 @@ describe('AccessControl', function () {
 
       expect(await instance.getRoleMemberCount(ROLE)).to.equal(3);
 
-      const newRole = ethers.utils.solidityKeccak256(['string'], ['NEW_ROLE']);
+      const newRole = ethers.solidityPackedKeccak256(['string'], ['NEW_ROLE']);
       expect(await instance.getRoleMemberCount(newRole)).to.equal(0);
     });
   });
