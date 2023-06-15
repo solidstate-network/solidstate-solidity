@@ -24,7 +24,7 @@ describe('ERC20Base', function () {
   });
 
   describeBehaviorOfERC20Base(async () => instance, {
-    supply: 0,
+    supply: 0n,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
   });

@@ -26,7 +26,7 @@ describe('ERC721Base', function () {
   });
 
   describeBehaviorOfERC721Base(async () => instance, {
-    supply: 0,
+    supply: 0n,
     mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
     burn: (tokenId) => instance.burn(tokenId),
   });

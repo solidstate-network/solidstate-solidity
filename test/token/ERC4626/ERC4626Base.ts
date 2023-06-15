@@ -41,7 +41,7 @@ describe('ERC4626Base', () => {
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
-    supply: 0,
+    supply: 0n,
     mint: (recipient: string, amount: BigInt) =>
       instance.__mint(recipient, amount),
     burn: (recipient: string, amount: BigInt) =>

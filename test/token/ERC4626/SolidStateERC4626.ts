@@ -44,6 +44,6 @@ describe('SolidStateERC4626', function () {
     name,
     symbol,
     decimals,
-    supply: 0,
+    supply: 0n,
   });
 });

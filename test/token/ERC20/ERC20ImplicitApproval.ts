@@ -25,7 +25,7 @@ describe('ERC20ImplicitApproval', function () {
   });
 
   describeBehaviorOfERC20ImplicitApproval(async () => instance, {
-    supply: 0,
+    supply: 0n,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     getHolder: async () => holder,

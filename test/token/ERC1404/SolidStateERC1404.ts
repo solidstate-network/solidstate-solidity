@@ -30,6 +30,6 @@ describe('SolidStateERC1404', function () {
     name: '',
     symbol: '',
     decimals: 0,
-    supply: 0,
+    supply: 0n,
   });
 });
