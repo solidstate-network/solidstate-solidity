@@ -22,7 +22,7 @@ describe('Proxy', function () {
 
   beforeEach(async function () {
     instance = await new ProxyMock__factory(deployer).deploy(
-      implementation.address,
+      await implementation.getAddress(),
     );
   });
 
