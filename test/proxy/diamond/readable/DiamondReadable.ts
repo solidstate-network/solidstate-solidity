@@ -20,7 +20,7 @@ describe('DiamondReadable', function () {
       const fn = `fn${i}()`;
       functions.push(fn);
       selectors.push(
-        ethers.hexDataSlice(
+        ethers.dataSlice(
           ethers.solidityPackedKeccak256(['string'], [fn]),
           0,
           4,
