@@ -69,20 +69,21 @@ library UintUtils {
 
         bytes memory buffer = new bytes(length);
 
-        while (length > 0) {
+        while (length != 0) {
             unchecked {
                 length--;
             }
 
-            uint256 mod = value % radix;
-            // 48 can be added using bitwise-or because its binary is 00110000
-            uint256 char;
+            uint256 char = value % radix;
 
-            if (mod < 10) {
-                char = mod | 48;
+            if (char < 10) {
+                // for numeral characters, shift 48 places through ASCII character set
+                // 48 can be added using bitwise-or because its binary is 00110000
+                char |= 48;
             } else {
+                // for alphabetical characters, shift 87 places through ASCII character set
                 unchecked {
-                    char = mod + 87;
+                    char += 87;
                 }
             }
 
