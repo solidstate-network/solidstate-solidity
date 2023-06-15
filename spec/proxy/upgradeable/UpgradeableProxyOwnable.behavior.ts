@@ -55,7 +55,11 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
 
         const implementation = await deployMockContract(owner, abi);
 
-        const contract = new ethers.Contract(instance.address, abi, owner);
+        const contract = new ethers.Contract(
+          await instance.getAddress(),
+          abi,
+          owner,
+        );
 
         await expect(
           contract[implementationFunction].staticCall(),

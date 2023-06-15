@@ -44,7 +44,7 @@ export function describeBehaviorOfERC20Permit(
 
         const permit = await signERC2612Permit(
           ethers.provider,
-          instance.address,
+          await instance.getAddress(),
           holder.address,
           spender.address,
           amount.toString(),
@@ -79,7 +79,7 @@ export function describeBehaviorOfERC20Permit(
 
           const permit = await signERC2612Permit(
             ethers.provider,
-            instance.address,
+            await instance.getAddress(),
             holder.address,
             spender.address,
             amount.toString(),
@@ -116,7 +116,7 @@ export function describeBehaviorOfERC20Permit(
 
           const permit = await signERC2612Permit(
             ethers.provider,
-            instance.address,
+            await instance.getAddress(),
             holder.address,
             spender.address,
             amount.toString(),
@@ -148,7 +148,7 @@ export function describeBehaviorOfERC20Permit(
 
           const permit = await signERC2612Permit(
             ethers.provider,
-            instance.address,
+            await instance.getAddress(),
             holder.address,
             spender.address,
             amount.toString(),

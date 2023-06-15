@@ -40,7 +40,7 @@ describe('UpgradeableProxy', function () {
 
     describe('#_setImplementation(address)', function () {
       it('updates implementation address', async function () {
-        const address = instance.address;
+        const address = await instance.getAddress();
 
         expect(await instance.__getImplementation.staticCall()).not.to.equal(
           address,

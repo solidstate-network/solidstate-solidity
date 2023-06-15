@@ -27,7 +27,7 @@ export function describeBehaviorOfDiamondBase(
         expect((instance as any)[facetFunction]).to.be.undefined;
 
         let contract = new ethers.Contract(
-          instance.address,
+          await instance.getAddress(),
           [`function ${facetFunction}`],
           ethers.provider,
         );
@@ -41,7 +41,7 @@ export function describeBehaviorOfDiamondBase(
       describe('reverts if', function () {
         it('no selector matches data', async function () {
           let contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             ['function function()'],
             ethers.provider,
           );

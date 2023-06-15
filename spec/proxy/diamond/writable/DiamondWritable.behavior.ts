@@ -93,7 +93,7 @@ export function describeBehaviorOfDiamondWritable(
       describe('using FacetCutAction ADD', function () {
         it('adds facet', async function () {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
@@ -171,7 +171,7 @@ export function describeBehaviorOfDiamondWritable(
       describe('using FacetCutAction REPLACE', function () {
         it('replaces facet', async function () {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
@@ -258,7 +258,7 @@ export function describeBehaviorOfDiamondWritable(
             await instance.connect(owner).diamondCut(
               [
                 {
-                  target: instance.address,
+                  target: await instance.getAddress(),
                   action: 0,
                   selectors: [selector],
                 },
@@ -323,7 +323,7 @@ export function describeBehaviorOfDiamondWritable(
       describe('using FacetCutAction REMOVE', function () {
         it('removes facet', async function () {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
@@ -367,7 +367,7 @@ export function describeBehaviorOfDiamondWritable(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: instance.address,
+                    target: await instance.getAddress(),
                     action: 2,
                     selectors: [ethers.randomBytes(4)],
                   },
@@ -406,7 +406,7 @@ export function describeBehaviorOfDiamondWritable(
             await instance.connect(owner).diamondCut(
               [
                 {
-                  target: instance.address,
+                  target: await instance.getAddress(),
                   action: 0,
                   selectors: [selector],
                 },

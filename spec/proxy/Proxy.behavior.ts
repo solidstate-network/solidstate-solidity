@@ -25,7 +25,7 @@ export function describeBehaviorOfProxy(
     describe('fallback', function () {
       it('forwards data to implementation', async () => {
         let contract = new ethers.Contract(
-          instance.address,
+          await instance.getAddress(),
           [`function ${implementationFunction}`],
           (await ethers.getSigners())[0],
         );

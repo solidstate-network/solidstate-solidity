@@ -27,7 +27,7 @@ export function describeBehaviorOfERC721Enumerable(
       it('returns total token supply', async function () {
         expect(await instance.totalSupply()).to.equal(supply);
 
-        await mint(instance.address, 2);
+        await mint(await instance.getAddress(), 2);
         expect(await instance.totalSupply()).to.equal(supply + 1n);
 
         await burn(2);
@@ -40,28 +40,40 @@ export function describeBehaviorOfERC721Enumerable(
         // TODO: query balance to determine starting index
 
         await expect(
-          instance.tokenOfOwnerByIndex.staticCall(instance.address, 0),
+          instance.tokenOfOwnerByIndex.staticCall(
+            await instance.getAddress(),
+            0,
+          ),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
         );
 
         await expect(
-          instance.tokenOfOwnerByIndex.staticCall(instance.address, 1),
+          instance.tokenOfOwnerByIndex.staticCall(
+            await instance.getAddress(),
+            1,
+          ),
         ).to.be.revertedWithCustomError(
           instance,
           'EnumerableSet__IndexOutOfBounds',
         );
 
-        await mint(instance.address, 1);
-        await mint(instance.address, 2);
+        await mint(await instance.getAddress(), 1);
+        await mint(await instance.getAddress(), 2);
 
         expect(
-          await instance.tokenOfOwnerByIndex.staticCall(instance.address, 0),
+          await instance.tokenOfOwnerByIndex.staticCall(
+            await instance.getAddress(),
+            0,
+          ),
         ).to.equal(1);
 
         expect(
-          await instance.tokenOfOwnerByIndex.staticCall(instance.address, 1),
+          await instance.tokenOfOwnerByIndex.staticCall(
+            await instance.getAddress(),
+            1,
+          ),
         ).to.equal(2);
       });
     });
@@ -85,8 +97,8 @@ export function describeBehaviorOfERC721Enumerable(
         );
 
         // TODO: mint to different addresses
-        await mint(instance.address, 1n);
-        await mint(instance.address, 2n);
+        await mint(await instance.getAddress(), 1n);
+        await mint(await instance.getAddress(), 2n);
 
         expect(await instance.tokenByIndex.staticCall(index)).to.equal(1);
 

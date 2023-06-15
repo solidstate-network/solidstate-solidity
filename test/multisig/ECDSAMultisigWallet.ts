@@ -28,7 +28,7 @@ describe('ECDSAMultisigWallet', function () {
     getSigners: async () => signers,
     getNonSigner: async () => nonSigner,
     quorum,
-    getVerificationAddress: async () => instance.address,
+    getVerificationAddress: async () => await instance.getAddress(),
   });
 
   describe('__internal', function () {

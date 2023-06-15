@@ -39,7 +39,7 @@ export function describeBehaviorOfERC20Extended(
           await instance
             .connect(holder)
             ['increaseAllowance(address,uint256)'].staticCall(
-              instance.address,
+              await instance.getAddress(),
               0,
             ),
         ).to.be.true;
@@ -106,7 +106,7 @@ export function describeBehaviorOfERC20Extended(
           await instance
             .connect(holder)
             ['decreaseAllowance(address,uint256)'].staticCall(
-              instance.address,
+              await instance.getAddress(),
               0,
             ),
         ).to.be.true;

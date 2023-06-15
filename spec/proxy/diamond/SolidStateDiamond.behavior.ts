@@ -82,11 +82,12 @@ export function describeBehaviorOfSolidStateDiamond(
 
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
-        let [signer] = await ethers.getSigners();
-        let value = 1;
+        const [signer] = await ethers.getSigners();
+        const value = 1;
+        const to = await instance.getAddress();
 
         await expect(() =>
-          signer.sendTransaction({ to: instance.address, value }),
+          signer.sendTransaction({ to, value }),
         ).to.changeEtherBalance(instance, value);
       });
     });
@@ -128,7 +129,10 @@ export function describeBehaviorOfSolidStateDiamond(
 
           // call reverts, but with mock-specific message
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
           expect(await instance['facets()'].staticCall()).to.have.deep.members([
@@ -183,12 +187,18 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
@@ -248,12 +258,18 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
@@ -313,12 +329,18 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',

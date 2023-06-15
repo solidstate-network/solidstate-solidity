@@ -111,9 +111,11 @@ export function describeBehaviorOfERC721Base(
           ethers.ZeroAddress,
         );
 
-        await instance.connect(holder).approve(instance.address, tokenId);
+        await instance
+          .connect(holder)
+          .approve(await instance.getAddress(), tokenId);
         expect(await instance.getApproved.staticCall(tokenId)).to.equal(
-          instance.address,
+          await instance.getAddress(),
         );
 
         await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
@@ -220,7 +222,7 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(holder)
-            .transferFrom(holder.address, instance.address, tokenId),
+            .transferFrom(holder.address, await instance.getAddress(), tokenId),
         ).not.to.be.reverted;
       });
 
@@ -386,7 +388,7 @@ export function describeBehaviorOfERC721Base(
               .connect(holder)
               ['safeTransferFrom(address,address,uint256)'](
                 holder.address,
-                instance.address,
+                await instance.getAddress(),
                 tokenId,
               ),
           ).to.be.revertedWith(
@@ -537,7 +539,7 @@ export function describeBehaviorOfERC721Base(
               .connect(holder)
               ['safeTransferFrom(address,address,uint256,bytes)'](
                 holder.address,
-                instance.address,
+                await instance.getAddress(),
                 tokenId,
                 '0x',
               ),

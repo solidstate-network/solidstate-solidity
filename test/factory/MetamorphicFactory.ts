@@ -19,7 +19,7 @@ describe('MetamorphicFactory', function () {
   describe('__internal', function () {
     describe('#_deployMetamorphicContract(address,bytes32)', function () {
       it('deploys metamorphic contract and returns deployment address', async function () {
-        const target = instance.address;
+        const target = await instance.getAddress();
         const salt = ethers.randomBytes(32);
 
         const address = await instance.__deployMetamorphicContract.staticCall(
@@ -38,7 +38,7 @@ describe('MetamorphicFactory', function () {
 
       describe('reverts if', function () {
         it('salt has already been used', async function () {
-          const target = instance.address;
+          const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
 
           await instance.__deployMetamorphicContract(target, salt);
@@ -65,7 +65,11 @@ describe('MetamorphicFactory', function () {
             salt,
           ),
         ).to.equal(
-          ethers.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(
+            await instance.getAddress(),
+            salt,
+            initCodeHash,
+          ),
         );
       });
     });

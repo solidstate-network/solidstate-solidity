@@ -62,7 +62,7 @@ describe('ERC4626Base', () => {
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         const shareAmount = await instance.previewDeposit.staticCall(
           assetAmount,

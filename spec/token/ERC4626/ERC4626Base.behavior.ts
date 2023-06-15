@@ -56,7 +56,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await args.mint(instance.address, 10n);
+        await args.mint(await instance.getAddress(), 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
@@ -148,7 +148,7 @@ export function describeBehaviorOfERC4626Base(
       it('todo: supply is 0');
 
       it('returns the mint input amount converted to assets', async () => {
-        await args.mint(instance.address, 10n);
+        await args.mint(await instance.getAddress(), 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
@@ -171,7 +171,7 @@ export function describeBehaviorOfERC4626Base(
       it('todo: supply is 0');
 
       it('returns the withdraw input amount converted to shares', async () => {
-        await args.mint(instance.address, 10n);
+        await args.mint(await instance.getAddress(), 10n);
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
@@ -214,7 +214,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         await expect(() =>
           instance
@@ -234,7 +234,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         const shareAmount = await instance
           .connect(depositor)
@@ -265,7 +265,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         const shareAmount = await instance
           .connect(depositor)
@@ -307,13 +307,13 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         const oldCallerBalance = await assetInstance.balanceOf.staticCall(
           depositor.address,
         );
         const oldInstanceBalance = await assetInstance.balanceOf.staticCall(
-          instance.address,
+          await instance.getAddress(),
         );
 
         await instance.connect(depositor).mint(shareAmount, depositor.address);
@@ -322,7 +322,7 @@ export function describeBehaviorOfERC4626Base(
           depositor.address,
         );
         const newInstanceBalance = await assetInstance.balanceOf.staticCall(
-          instance.address,
+          await instance.getAddress(),
         );
 
         const deltaCallerBalance = oldCallerBalance.sub(newCallerBalance);
@@ -343,7 +343,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         await expect(() =>
           instance.connect(depositor).mint(shareAmount, depositor.address),
@@ -359,7 +359,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
         await expect(
           instance.connect(depositor).mint(shareAmount, depositor.address),
@@ -389,7 +389,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -419,7 +419,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -456,7 +456,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -512,7 +512,7 @@ export function describeBehaviorOfERC4626Base(
           await args.mintAsset(depositor.address, assetAmountIn);
           await assetInstance
             .connect(depositor)
-            .approve(instance.address, assetAmountIn);
+            .approve(await instance.getAddress(), assetAmountIn);
           await instance
             .connect(depositor)
             ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -540,7 +540,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -554,7 +554,7 @@ export function describeBehaviorOfERC4626Base(
           .previewRedeem.staticCall(shareAmount);
 
         const oldInstanceBalance = await assetInstance.balanceOf.staticCall(
-          instance.address,
+          await instance.getAddress(),
         );
         const oldReceiverBalance = await assetInstance.balanceOf.staticCall(
           recipient.address,
@@ -569,7 +569,7 @@ export function describeBehaviorOfERC4626Base(
           );
 
         const newInstanceBalance = await assetInstance.balanceOf.staticCall(
-          instance.address,
+          await instance.getAddress(),
         );
         const newReceiverBalance = await assetInstance.balanceOf.staticCall(
           recipient.address,
@@ -590,7 +590,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);
@@ -616,7 +616,7 @@ export function describeBehaviorOfERC4626Base(
         await args.mintAsset(depositor.address, assetAmountIn);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmountIn);
+          .approve(await instance.getAddress(), assetAmountIn);
         await instance
           .connect(depositor)
           ['deposit(uint256,address)'](assetAmountIn, depositor.address);

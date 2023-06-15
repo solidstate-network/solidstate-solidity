@@ -24,7 +24,7 @@ describe('Factory', function () {
         await instance['__deploy(bytes)'](initCode);
 
         expect(await ethers.provider.getCode(address)).to.equal(
-          await ethers.provider.getCode(instance.address),
+          await ethers.provider.getCode(await instance.getAddress()),
         );
       });
 
@@ -62,7 +62,7 @@ describe('Factory', function () {
         await instance['__deploy(bytes,bytes32)'](initCode, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
-          await ethers.provider.getCode(instance.address),
+          await ethers.provider.getCode(await instance.getAddress()),
         );
       });
 
@@ -107,7 +107,11 @@ describe('Factory', function () {
             salt,
           ),
         ).to.equal(
-          ethers.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(
+            await instance.getAddress(),
+            salt,
+            initCodeHash,
+          ),
         );
       });
     });

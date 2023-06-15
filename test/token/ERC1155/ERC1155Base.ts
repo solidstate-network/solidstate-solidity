@@ -20,7 +20,7 @@ describe('ERC1155Base', function () {
   beforeEach(async function () {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1155BaseMock__factory(deployer).deploy();
-    invalidReceiver = instance.address;
+    invalidReceiver = await instance.getAddress();
   });
 
   describeBehaviorOfERC1155Base(async () => instance, {
@@ -250,7 +250,7 @@ describe('ERC1155Base', function () {
 
         it('mint is made to invalid receiver', async function () {
           await expect(
-            instance.__safeMintBatch(instance.address, [], []),
+            instance.__safeMintBatch(await instance.getAddress(), [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverNotImplemented',
@@ -406,7 +406,7 @@ describe('ERC1155Base', function () {
         );
 
         await instance.__transfer(
-          instance.address,
+          await instance.getAddress(),
           holder.address,
           recipient.address,
           id,
@@ -460,7 +460,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
             instance.__transfer(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
               0,
@@ -476,7 +476,7 @@ describe('ERC1155Base', function () {
         it('transfer amount exceeds balance', async function () {
           await expect(
             instance.__transfer(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               0,
@@ -509,7 +509,7 @@ describe('ERC1155Base', function () {
         );
 
         await instance.__safeTransfer(
-          instance.address,
+          await instance.getAddress(),
           holder.address,
           recipient.address,
           id,
@@ -563,7 +563,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
             instance.__safeTransfer(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
               0,
@@ -579,7 +579,7 @@ describe('ERC1155Base', function () {
         it('transfer amount exceeds balance', async function () {
           await expect(
             instance.__safeTransfer(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               0,
@@ -595,7 +595,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to invalid receiver', async function () {
           await expect(
             instance.__safeTransfer(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               invalidReceiver,
               0,
@@ -628,7 +628,7 @@ describe('ERC1155Base', function () {
         );
 
         await instance.__transferBatch(
-          instance.address,
+          await instance.getAddress(),
           holder.address,
           recipient.address,
           [id],
@@ -682,7 +682,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
             instance.__transferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
               [],
@@ -698,7 +698,7 @@ describe('ERC1155Base', function () {
         it('input array lengths do not match', async function () {
           await expect(
             instance.__transferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               [0],
@@ -714,7 +714,7 @@ describe('ERC1155Base', function () {
         it('transfer amount exceeds balance', async function () {
           await expect(
             instance.__transferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               [0],
@@ -747,7 +747,7 @@ describe('ERC1155Base', function () {
         );
 
         await instance.__safeTransferBatch(
-          instance.address,
+          await instance.getAddress(),
           holder.address,
           recipient.address,
           [id],
@@ -801,7 +801,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to the zero address', async function () {
           await expect(
             instance.__safeTransferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
               [],
@@ -817,7 +817,7 @@ describe('ERC1155Base', function () {
         it('input array lengths do not match', async function () {
           await expect(
             instance.__safeTransferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               [0],
@@ -833,7 +833,7 @@ describe('ERC1155Base', function () {
         it('transfer amount exceeds balance', async function () {
           await expect(
             instance.__safeTransferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               recipient.address,
               [0],
@@ -849,7 +849,7 @@ describe('ERC1155Base', function () {
         it('transfer is made to invalid receiver', async function () {
           await expect(
             instance.__safeTransferBatch(
-              instance.address,
+              await instance.getAddress(),
               holder.address,
               invalidReceiver,
               [],

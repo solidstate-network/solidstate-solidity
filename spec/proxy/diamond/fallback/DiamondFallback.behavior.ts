@@ -62,7 +62,7 @@ export function describeBehaviorOfDiamondFallback(
         // call reverts, but with mock-specific message
         await expect(
           owner.sendTransaction({
-            to: instance.address,
+            to: await instance.getAddress(),
             data: ethers.randomBytes(4),
           }),
         ).to.be.revertedWith('Mock on the method is not initialized');

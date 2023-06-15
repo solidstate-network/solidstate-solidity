@@ -29,7 +29,7 @@ describe('SolidStateDiamond', function () {
     expect(facets).to.have.lengthOf(1);
 
     facetCuts[0] = {
-      target: instance.address,
+      target: await instance.getAddress(),
       action: 0,
       selectors: facets[0].selectors,
     };

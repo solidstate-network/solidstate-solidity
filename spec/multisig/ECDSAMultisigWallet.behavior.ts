@@ -79,11 +79,12 @@ export function describeBehaviorOfECDSAMultisigWallet(
 
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
-        let [signer] = signers;
-        let value = 1;
+        const [signer] = signers;
+        const value = 1;
+        const to = await instance.getAddress();
 
         await expect(() =>
-          signer.sendTransaction({ to: instance.address, value }),
+          signer.sendTransaction({ to, value }),
         ).to.changeEtherBalance(instance, value);
       });
     });
