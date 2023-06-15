@@ -38,16 +38,14 @@ library UintUtils {
         }
 
         uint256 length;
+        uint256 temp = value;
 
-        if (value == 0) {
-            length = 1;
-        } else {
-            for (uint256 temp = value; temp != 0; temp /= radix) {
-                unchecked {
-                    length++;
-                }
+        do {
+            unchecked {
+                length++;
             }
-        }
+            temp /= radix;
+        } while (temp != 0);
 
         output = toString(value, radix, length);
     }
@@ -106,16 +104,14 @@ library UintUtils {
         uint256 value
     ) internal pure returns (string memory output) {
         uint256 length;
+        uint256 temp = value;
 
-        if (value == 0) {
-            length = 1;
-        } else {
-            for (uint256 temp = value; temp != 0; temp >>= 1) {
-                unchecked {
-                    length++;
-                }
+        do {
+            unchecked {
+                length++;
             }
-        }
+            temp >>= 1;
+        } while (temp != 0);
 
         output = toBinString(value, length);
     }
@@ -160,16 +156,14 @@ library UintUtils {
         uint256 value
     ) internal pure returns (string memory output) {
         uint256 length;
+        uint256 temp = value;
 
-        if (value == 0) {
-            length = 1;
-        } else {
-            for (uint256 temp = value; temp != 0; temp >>= 3) {
-                unchecked {
-                    length++;
-                }
+        do {
+            unchecked {
+                length++;
             }
-        }
+            temp >>= 3;
+        } while (temp != 0);
 
         output = toOctString(value, length);
     }
@@ -239,16 +233,14 @@ library UintUtils {
         uint256 value
     ) internal pure returns (string memory output) {
         uint256 length;
+        uint256 temp = value;
 
-        if (value == 0) {
-            length = 2;
-        } else {
-            for (uint256 temp = value; temp != 0; temp >>= 8) {
-                unchecked {
-                    length += 2;
-                }
+        do {
+            unchecked {
+                length += 2;
             }
-        }
+            temp >>= 8;
+        } while (temp != 0);
 
         output = toHexString(value, length);
     }
