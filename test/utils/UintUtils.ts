@@ -62,23 +62,23 @@ describe('UintUtils', function () {
 
     describe('#toString(uint256,uint256)', function () {
       it('returns 0 if input is 0', async () => {
-        for (let base = 2; base <= 36; base++) {
+        for (let radix = 2; radix <= 36; radix++) {
           expect(
-            await instance.callStatic['toString(uint256,uint256)'](0n, base),
+            await instance.callStatic['toString(uint256,uint256)'](0n, radix),
           ).to.equal('0');
         }
       });
 
-      it('returns string representation of number in given base up to 36', async () => {
-        for (let base = 2; base <= 36; base++) {
+      it('returns string representation of number in given radix up to 36', async () => {
+        for (let radix = 2; radix <= 36; radix++) {
           for (let i = 0; i < 12; i++) {
             const value = BigInt(i);
-            const string = value.toString(base);
+            const string = value.toString(radix);
 
             expect(
               await instance.callStatic['toString(uint256,uint256)'](
                 value,
-                base,
+                radix,
               ),
             ).to.equal(string);
           }
@@ -86,14 +86,14 @@ describe('UintUtils', function () {
           expect(
             await instance.callStatic['toString(uint256,uint256)'](
               ethers.constants.MaxUint256,
-              base,
+              radix,
             ),
-          ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(base));
+          ).to.equal(ethers.constants.MaxUint256.toBigInt().toString(radix));
         }
       });
 
       describe('reverts if', () => {
-        it('base is 0', async () => {
+        it('radix is 0', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256)'](0n, 0n),
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
@@ -103,7 +103,7 @@ describe('UintUtils', function () {
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
 
-        it('base is 1', async () => {
+        it('radix is 1', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256)'](0n, 1n),
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
@@ -113,7 +113,7 @@ describe('UintUtils', function () {
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
 
-        it('base is greater than 36', async () => {
+        it('radix is greater than 36', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256)'](0n, 37n),
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
@@ -127,26 +127,26 @@ describe('UintUtils', function () {
 
     describe('#toString(uint256,uint256,uint256)', function () {
       it('returns empty string if input is 0 and length is 0', async () => {
-        for (let base = 2; base <= 36; base++) {
+        for (let radix = 2; radix <= 36; radix++) {
           expect(
             await instance.callStatic['toString(uint256,uint256,uint256)'](
               0n,
-              base,
+              radix,
               0n,
             ),
           ).to.equal('');
         }
       });
 
-      it('returns string representation of number in given base up to 36', async () => {
-        for (let base = 2; base <= 36; base++) {
+      it('returns string representation of number in given radix up to 36', async () => {
+        for (let radix = 2; radix <= 36; radix++) {
           for (let value of values) {
-            const string = value.toString(base);
+            const string = value.toString(radix);
             const length = string.length;
 
             const result = await instance.callStatic[
               'toString(uint256,uint256,uint256)'
-            ](value, base, length);
+            ](value, radix, length);
 
             expect(result).to.equal(string);
           }
@@ -154,20 +154,20 @@ describe('UintUtils', function () {
       });
 
       it('returns string with specified zero padding', async () => {
-        for (let base = 2; base <= 36; base++) {
+        for (let radix = 2; radix <= 36; radix++) {
           const value = 1;
           const length = 100;
 
           const result = await instance.callStatic[
             'toString(uint256,uint256,uint256)'
-          ](value, base, length);
+          ](value, radix, length);
 
           expect(result).to.have.length.of(length);
         }
       });
 
       describe('reverts if', () => {
-        it('base is 0', async () => {
+        it('radix is 0', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256,uint256)'](
               0n,
@@ -185,7 +185,7 @@ describe('UintUtils', function () {
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
 
-        it('base is 1', async () => {
+        it('radix is 1', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256,uint256)'](
               0n,
@@ -203,7 +203,7 @@ describe('UintUtils', function () {
           ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
         });
 
-        it('base is greater than 36', async () => {
+        it('radix is greater than 36', async () => {
           await expect(
             instance.callStatic['toString(uint256,uint256,uint256)'](
               0n,
@@ -223,11 +223,11 @@ describe('UintUtils', function () {
       });
 
       it('padding is insufficient', async () => {
-        for (let base = 2; base <= 10; base++) {
+        for (let radix = 2; radix <= 10; radix++) {
           await expect(
             instance.callStatic['toString(uint256,uint256,uint256)'](
               1n,
-              base,
+              radix,
               0n,
             ),
           ).to.be.revertedWithCustomError(
@@ -237,8 +237,8 @@ describe('UintUtils', function () {
 
           await expect(
             instance.callStatic['toString(uint256,uint256,uint256)'](
-              base,
-              base,
+              radix,
+              radix,
               1n,
             ),
           ).to.be.revertedWithCustomError(

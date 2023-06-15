@@ -22,11 +22,11 @@ library UintUtils {
 
     function toString(
         uint256 value,
-        uint256 base
+        uint256 radix
     ) internal pure returns (string memory) {
         // this check is repeated in the internal call to #toString(uint256,uint256,uint256)
-        // but is still needed here to avoid zero division (base = 0) or infinite loop (base = 1)
-        if (base < 2) {
+        // but is still needed here to avoid zero division (radix = 0) or infinite loop (radix = 1)
+        if (radix < 2) {
             revert UintUtils__InvalidBase();
         }
 
@@ -35,22 +35,22 @@ library UintUtils {
         if (value == 0) {
             length = 1;
         } else {
-            for (uint256 temp = value; temp != 0; temp /= base) {
+            for (uint256 temp = value; temp != 0; temp /= radix) {
                 unchecked {
                     length++;
                 }
             }
         }
 
-        return toString(value, base, length);
+        return toString(value, radix, length);
     }
 
     function toString(
         uint256 value,
-        uint256 base,
+        uint256 radix,
         uint256 length
     ) internal pure returns (string memory) {
-        if (base < 2 || base > 36) {
+        if (radix < 2 || radix > 36) {
             revert UintUtils__InvalidBase();
         }
 
@@ -61,7 +61,7 @@ library UintUtils {
                 length--;
             }
 
-            uint256 mod = value % base;
+            uint256 mod = value % radix;
             // 48 can be added using bitwise-or because its binary is 00110000
             uint256 char;
 
@@ -74,7 +74,7 @@ library UintUtils {
             }
 
             buffer[length] = bytes1(uint8(char));
-            value /= base;
+            value /= radix;
         }
 
         if (value != 0) revert UintUtils__InsufficientPadding();

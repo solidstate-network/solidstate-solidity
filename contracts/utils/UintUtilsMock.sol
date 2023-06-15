@@ -17,17 +17,17 @@ contract UintUtilsMock {
 
     function toString(
         uint256 number,
-        uint256 base
+        uint256 radix
     ) external pure returns (string memory) {
-        return number.toString(base);
+        return number.toString(radix);
     }
 
     function toString(
         uint256 number,
-        uint256 base,
+        uint256 radix,
         uint256 length
     ) external pure returns (string memory) {
-        return number.toString(base, length);
+        return number.toString(radix, length);
     }
 
     function toBinString(uint256 number) external pure returns (string memory) {
