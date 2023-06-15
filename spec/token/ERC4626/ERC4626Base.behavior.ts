@@ -248,10 +248,10 @@ export function describeBehaviorOfERC4626Base(
           depositor.address,
         );
 
-        const deltaBalance = newbalance - oldBalance;
+        const deltaBalance = newBalance - oldBalance;
 
         expect(deltaBalance).to.be.closeTo(shareAmount, 1);
-        expect(deltaBalance.gte(shareAmount));
+        expect(deltaBalance).to.be.gte(shareAmount);
       });
 
       it('emits Deposit event', async () => {
@@ -326,8 +326,8 @@ export function describeBehaviorOfERC4626Base(
 
         expect(deltaCallerBalance).to.be.closeTo(assetAmount, 1);
         expect(deltaInstanceBalance).to.be.closeTo(assetAmount, 1);
-        expect(deltaCallerBalance.lte(assetAmount));
-        expect(deltaInstanceBalance.lte(assetAmount));
+        expect(deltaCallerBalance).to.be.lte(assetAmount);
+        expect(deltaInstanceBalance).to.be.lte(assetAmount);
       });
 
       it('mints shares for receiver', async () => {
@@ -443,7 +443,7 @@ export function describeBehaviorOfERC4626Base(
         const deltaBalance = oldBalance - newBalance;
 
         expect(deltaBalance).to.be.closeTo(shareAmount, 1);
-        expect(deltaBalance.lte(shareAmount));
+        expect(deltaBalance).to.be.lte(shareAmount);
       });
 
       it('emits Withdraw event', async () => {
@@ -576,8 +576,8 @@ export function describeBehaviorOfERC4626Base(
 
         expect(deltaInstanceBalance).to.be.closeTo(assetAmountOut, 1);
         expect(deltaReceiverBalance).to.be.closeTo(assetAmountOut, 1);
-        expect(deltaInstanceBalance.gte(assetAmountOut));
-        expect(deltaReceiverBalance.gte(assetAmountOut));
+        expect(deltaInstanceBalance).to.be.gte(assetAmountOut);
+        expect(deltaReceiverBalance).to.be.gte(assetAmountOut);
       });
 
       it('burns shares held by depositor', async () => {
