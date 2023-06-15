@@ -30,7 +30,7 @@ library UintUtils {
     function toString(
         uint256 value,
         uint256 radix
-    ) internal pure returns (string memory) {
+    ) internal pure returns (string memory output) {
         // this check is repeated in the internal call to #toString(uint256,uint256,uint256)
         // but is still needed here to avoid zero division (radix = 0) or infinite loop (radix = 1)
         if (radix < 2) {
@@ -49,7 +49,7 @@ library UintUtils {
             }
         }
 
-        return toString(value, radix, length);
+        output = toString(value, radix, length);
     }
 
     /**
@@ -64,7 +64,7 @@ library UintUtils {
         uint256 value,
         uint256 radix,
         uint256 length
-    ) internal pure returns (string memory) {
+    ) internal pure returns (string memory output) {
         if (radix < 2 || radix > 36) {
             revert UintUtils__InvalidBase();
         }
@@ -94,7 +94,7 @@ library UintUtils {
 
         if (value != 0) revert UintUtils__InsufficientPadding();
 
-        return string(buffer);
+        output = string(buffer);
     }
 
     /**
@@ -102,7 +102,9 @@ library UintUtils {
      * @param value number to format as string
      * @return output formatted string
      */
-    function toBinString(uint256 value) internal pure returns (string memory) {
+    function toBinString(
+        uint256 value
+    ) internal pure returns (string memory output) {
         uint256 length;
 
         if (value == 0) {
@@ -115,7 +117,7 @@ library UintUtils {
             }
         }
 
-        return toBinString(value, length);
+        output = toBinString(value, length);
     }
 
     /**
@@ -127,7 +129,7 @@ library UintUtils {
     function toBinString(
         uint256 value,
         uint256 length
-    ) internal pure returns (string memory) {
+    ) internal pure returns (string memory output) {
         // add two to length for the leading "0b"
         length += 2;
 
@@ -146,7 +148,7 @@ library UintUtils {
 
         if (value != 0) revert UintUtils__InsufficientPadding();
 
-        return string(buffer);
+        output = string(buffer);
     }
 
     /**
@@ -154,7 +156,9 @@ library UintUtils {
      * @param value number to format as string
      * @return output formatted string
      */
-    function toOctString(uint256 value) internal pure returns (string memory) {
+    function toOctString(
+        uint256 value
+    ) internal pure returns (string memory output) {
         uint256 length;
 
         if (value == 0) {
@@ -167,7 +171,7 @@ library UintUtils {
             }
         }
 
-        return toOctString(value, length);
+        output = toOctString(value, length);
     }
 
     /**
@@ -179,7 +183,7 @@ library UintUtils {
     function toOctString(
         uint256 value,
         uint256 length
-    ) internal pure returns (string memory) {
+    ) internal pure returns (string memory output) {
         // add two to length for the leading "0o"
         length += 2;
 
@@ -198,7 +202,7 @@ library UintUtils {
 
         if (value != 0) revert UintUtils__InsufficientPadding();
 
-        return string(buffer);
+        output = string(buffer);
     }
 
     /**
@@ -206,8 +210,10 @@ library UintUtils {
      * @param value number to format as string
      * @return output formatted string
      */
-    function toDecString(uint256 value) internal pure returns (string memory) {
-        return toString(value, 10);
+    function toDecString(
+        uint256 value
+    ) internal pure returns (string memory output) {
+        output = toString(value, 10);
     }
 
     /**
@@ -219,8 +225,8 @@ library UintUtils {
     function toDecString(
         uint256 value,
         uint256 length
-    ) internal pure returns (string memory) {
-        return toString(value, 10, length);
+    ) internal pure returns (string memory output) {
+        output = toString(value, 10, length);
     }
 
     /**
@@ -229,7 +235,9 @@ library UintUtils {
      * @param value number to format as string
      * @return output formatted string
      */
-    function toHexString(uint256 value) internal pure returns (string memory) {
+    function toHexString(
+        uint256 value
+    ) internal pure returns (string memory output) {
         uint256 length;
 
         if (value == 0) {
@@ -242,7 +250,7 @@ library UintUtils {
             }
         }
 
-        return toHexString(value, length);
+        output = toHexString(value, length);
     }
 
     /**
@@ -254,7 +262,7 @@ library UintUtils {
     function toHexString(
         uint256 value,
         uint256 length
-    ) internal pure returns (string memory) {
+    ) internal pure returns (string memory output) {
         // add two to length for the leading "0x"
         length += 2;
 
@@ -273,6 +281,6 @@ library UintUtils {
 
         if (value != 0) revert UintUtils__InsufficientPadding();
 
-        return string(buffer);
+        output = string(buffer);
     }
 }
