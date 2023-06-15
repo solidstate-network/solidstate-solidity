@@ -116,10 +116,7 @@ export function describeBehaviorOfERC20Extended(
         let amount = 2n;
         await instance
           .connect(holder)
-          ['increaseAllowance(address,uint256)'](
-            spender.address,
-            amount.mul(2),
-          );
+          ['increaseAllowance(address,uint256)'](spender.address, amount * 2n);
 
         await instance
           .connect(holder)

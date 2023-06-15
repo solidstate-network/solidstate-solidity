@@ -52,7 +52,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(finalBalance.sub(initialBalance)).to.equal(amount);
+        expect(finalBalance - initialBalance).to.equal(amount);
       });
 
       it('emits TransferSingle event', async function () {
@@ -99,7 +99,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(finalBalance.sub(initialBalance)).to.equal(amount);
+        expect(finalBalance - initialBalance).to.equal(amount);
       });
 
       it('emits TransferSingle event', async function () {
@@ -155,7 +155,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(finalBalance.sub(initialBalance)).to.equal(amount);
+        expect(finalBalance - initialBalance).to.equal(amount);
       });
 
       it('emits TransferBatch event', async function () {
@@ -211,7 +211,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(finalBalance.sub(initialBalance)).to.equal(amount);
+        expect(finalBalance - initialBalance).to.equal(amount);
       });
 
       it('emits TransferBatch event', async function () {
@@ -278,7 +278,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialBalance.sub(finalBalance)).to.equal(amount);
+        expect(initialBalance - finalBalance).to.equal(amount);
       });
 
       it('emits TransferSingle event', async function () {
@@ -338,7 +338,7 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialBalance.sub(finalBalance)).to.equal(amount);
+        expect(initialBalance - finalBalance).to.equal(amount);
       });
 
       it('emits TransferBatch event', async function () {
@@ -424,8 +424,8 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
-        expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
+        expect(initialSenderBalance - finalSenderBalance).to.equal(amount);
+        expect(finalRecipientBalance - initialRecipientBalance).to.equal(
           amount,
         );
       });
@@ -527,8 +527,8 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
-        expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
+        expect(initialSenderBalance - finalSenderBalance).to.equal(amount);
+        expect(finalRecipientBalance - initialRecipientBalance).to.equal(
           amount,
         );
       });
@@ -646,8 +646,8 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
-        expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
+        expect(initialSenderBalance - finalSenderBalance).to.equal(amount);
+        expect(finalRecipientBalance - initialRecipientBalance).to.equal(
           amount,
         );
       });
@@ -765,8 +765,8 @@ describe('ERC1155Base', function () {
           id,
         );
 
-        expect(initialSenderBalance.sub(finalSenderBalance)).to.equal(amount);
-        expect(finalRecipientBalance.sub(initialRecipientBalance)).to.equal(
+        expect(initialSenderBalance - finalSenderBalance).to.equal(amount);
+        expect(finalRecipientBalance - initialRecipientBalance).to.equal(
           amount,
         );
       });

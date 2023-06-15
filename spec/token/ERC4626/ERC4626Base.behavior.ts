@@ -66,7 +66,7 @@ export function describeBehaviorOfERC4626Base(
         // result is rounded down
 
         expect(await instance.convertToShares.staticCall(assetAmount)).to.eq(
-          assetAmount.mul(supply).div(assets),
+          (assetAmount * supply) / assets,
         );
       });
     });
@@ -155,15 +155,13 @@ export function describeBehaviorOfERC4626Base(
 
         const shareAmount = 3n;
 
-        const err = shareAmount.mul(assets).mod(supply).isZero() ? 0 : 1;
+        const err = (shareAmount * assets) % supply === 0n ? 0n : 1n;
 
         // result is rounded up
 
         expect(
           await instance.connect(depositor).previewMint.staticCall(shareAmount),
-        ).to.eq(
-          (await instance.convertToAssets.staticCall(shareAmount)).add(err),
-        );
+        ).to.eq((await instance.convertToAssets.staticCall(shareAmount)) + err);
       });
     });
 
@@ -178,7 +176,7 @@ export function describeBehaviorOfERC4626Base(
 
         const assetAmount = 3n;
 
-        const err = assetAmount.mul(supply).mod(assets).isZero() ? 0 : 1;
+        const err = (assetAmount * supply) % assets === 0n ? 0n : 1n;
 
         // result is rounded up
 
@@ -186,9 +184,7 @@ export function describeBehaviorOfERC4626Base(
           await instance
             .connect(depositor)
             .previewWithdraw.staticCall(assetAmount),
-        ).to.eq(
-          (await instance.convertToShares.staticCall(assetAmount)).add(err),
-        );
+        ).to.eq((await instance.convertToShares.staticCall(assetAmount)) + err);
       });
     });
 
@@ -252,7 +248,7 @@ export function describeBehaviorOfERC4626Base(
           depositor.address,
         );
 
-        const deltaBalance = newBalance.sub(oldBalance);
+        const deltaBalance = newbalance - oldBalance;
 
         expect(deltaBalance).to.be.closeTo(shareAmount, 1);
         expect(deltaBalance.gte(shareAmount));
@@ -325,8 +321,8 @@ export function describeBehaviorOfERC4626Base(
           await instance.getAddress(),
         );
 
-        const deltaCallerBalance = oldCallerBalance.sub(newCallerBalance);
-        const deltaInstanceBalance = newInstanceBalance.sub(oldInstanceBalance);
+        const deltaCallerBalance = oldCallerBalance - newCallerBalance;
+        const deltaInstanceBalance = newInstanceBalance - oldInstanceBalance;
 
         expect(deltaCallerBalance).to.be.closeTo(assetAmount, 1);
         expect(deltaInstanceBalance).to.be.closeTo(assetAmount, 1);
@@ -409,7 +405,7 @@ export function describeBehaviorOfERC4626Base(
         ).to.changeTokenBalances(
           assetInstance,
           [recipient, instance],
-          [assetAmountOut, assetAmountOut.mul(-1)],
+          [assetAmountOut, -assetAmountOut],
         );
       });
 
@@ -444,7 +440,7 @@ export function describeBehaviorOfERC4626Base(
           depositor.address,
         );
 
-        const deltaBalance = oldBalance.sub(newBalance);
+        const deltaBalance = oldBalance - newBalance;
 
         expect(deltaBalance).to.be.closeTo(shareAmount, 1);
         expect(deltaBalance.lte(shareAmount));
@@ -575,8 +571,8 @@ export function describeBehaviorOfERC4626Base(
           recipient.address,
         );
 
-        const deltaInstanceBalance = oldInstanceBalance.sub(newInstanceBalance);
-        const deltaReceiverBalance = newReceiverBalance.sub(oldReceiverBalance);
+        const deltaInstanceBalance = oldInstanceBalance - newInstanceBalance;
+        const deltaReceiverBalance = newReceiverBalance - oldReceiverBalance;
 
         expect(deltaInstanceBalance).to.be.closeTo(assetAmountOut, 1);
         expect(deltaReceiverBalance).to.be.closeTo(assetAmountOut, 1);
@@ -607,7 +603,7 @@ export function describeBehaviorOfERC4626Base(
               recipient.address,
               depositor.address,
             ),
-        ).to.changeTokenBalance(instance, depositor, shareAmount.mul(-1));
+        ).to.changeTokenBalance(instance, depositor, -shareAmount);
       });
 
       it('emits Withdraw event', async () => {

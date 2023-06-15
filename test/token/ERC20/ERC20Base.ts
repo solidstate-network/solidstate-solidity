@@ -54,7 +54,7 @@ describe('ERC20Base', function () {
         await instance.__mint(receiver.address, amount);
         let finalSupply = await instance['totalSupply()'].staticCall();
 
-        expect(finalSupply.sub(initialSupply)).to.equal(amount);
+        expect(finalSupply - initialSupply).to.equal(amount);
       });
 
       it('emits Transfer event', async function () {
@@ -84,7 +84,7 @@ describe('ERC20Base', function () {
 
         await expect(() =>
           instance.__burn(receiver.address, amount),
-        ).to.changeTokenBalance(instance, receiver, amount.mul(-1));
+        ).to.changeTokenBalance(instance, receiver, -amount);
       });
 
       it('decreases total supply by given amount', async function () {
@@ -95,7 +95,7 @@ describe('ERC20Base', function () {
         await instance.__burn(receiver.address, amount);
         let finalSupply = await instance['totalSupply()'].staticCall();
 
-        expect(initialSupply.sub(finalSupply)).to.equal(amount);
+        expect(initialSupply - finalSupply).to.equal(amount);
       });
 
       it('emits Transfer event', async function () {
@@ -139,7 +139,7 @@ describe('ERC20Base', function () {
         ).to.changeTokenBalances(
           instance,
           [sender, receiver],
-          [amount.mul(-1), amount],
+          [-amount, amount],
         );
       });
 
