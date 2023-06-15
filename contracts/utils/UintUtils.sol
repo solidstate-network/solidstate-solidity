@@ -20,6 +20,13 @@ library UintUtils {
         return b < 0 ? add(a, -b) : a - uint256(b);
     }
 
+    /**
+     * @notice output the string representation of a number in a given radix
+     * @dev radix must be between 2 and 36 (inclusive)
+     * @param value number to format as string
+     * @param radix numerical base to use
+     * @return output formatted string
+     */
     function toString(
         uint256 value,
         uint256 radix
@@ -45,6 +52,14 @@ library UintUtils {
         return toString(value, radix, length);
     }
 
+    /**
+     * @notice output the string representation of a number in a given radix and padded to given length
+     * @dev radix must be between 2 and 36 (inclusive)
+     * @param value number to format as string
+     * @param radix numerical base to use
+     * @param length size to which output should be zero padded
+     * @return output formatted string
+     */
     function toString(
         uint256 value,
         uint256 radix,
@@ -82,6 +97,11 @@ library UintUtils {
         return string(buffer);
     }
 
+    /**
+     * @notice output the 0b-prefixed binary string representation of a number
+     * @param value number to format as string
+     * @return output formatted string
+     */
     function toBinString(uint256 value) internal pure returns (string memory) {
         uint256 length;
 
@@ -98,6 +118,12 @@ library UintUtils {
         return toBinString(value, length);
     }
 
+    /**
+     * @notice output the 0b-prefixed binary string representation of a number padded to given length
+     * @param value number to format as string
+     * @param length size to which output should be zero padded (not including prefix)
+     * @return output formatted string
+     */
     function toBinString(
         uint256 value,
         uint256 length
@@ -123,6 +149,11 @@ library UintUtils {
         return string(buffer);
     }
 
+    /**
+     * @notice output the 0o-prefixed octal string representation of a number
+     * @param value number to format as string
+     * @return output formatted string
+     */
     function toOctString(uint256 value) internal pure returns (string memory) {
         uint256 length;
 
@@ -139,6 +170,12 @@ library UintUtils {
         return toOctString(value, length);
     }
 
+    /**
+     * @notice output the 0o-prefixed octal string representation of a number padded to given length
+     * @param value number to format as string
+     * @param length size to which output should be zero padded (not including prefix)
+     * @return output formatted string
+     */
     function toOctString(
         uint256 value,
         uint256 length
@@ -164,10 +201,21 @@ library UintUtils {
         return string(buffer);
     }
 
+    /**
+     * @notice output the decimal string representation of a number
+     * @param value number to format as string
+     * @return output formatted string
+     */
     function toDecString(uint256 value) internal pure returns (string memory) {
         return toString(value, 10);
     }
 
+    /**
+     * @notice output the decimal string representation of a number padded to given length
+     * @param value number to format as string
+     * @param length size to which output should be zero padded
+     * @return output formatted string
+     */
     function toDecString(
         uint256 value,
         uint256 length
@@ -175,6 +223,12 @@ library UintUtils {
         return toString(value, 10, length);
     }
 
+    /**
+     * @notice output the 0x-prefixed hexadecimal string representation of a number
+     * @dev calculated string length will always be even to prevent splitting of bytes
+     * @param value number to format as string
+     * @return output formatted string
+     */
     function toHexString(uint256 value) internal pure returns (string memory) {
         uint256 length;
 
@@ -191,6 +245,12 @@ library UintUtils {
         return toHexString(value, length);
     }
 
+    /**
+     * @notice output the 0x-prefixed hexadecimal string representation of a number padded to given length
+     * @param value number to format as string
+     * @param length size to which output should be zero padded (not including prefix)
+     * @return output formatted string
+     */
     function toHexString(
         uint256 value,
         uint256 length
