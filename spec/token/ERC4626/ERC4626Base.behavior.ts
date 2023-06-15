@@ -46,7 +46,9 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {
-        expect(await instance.asset.staticCall()).to.eq(assetInstance.address);
+        expect(await instance.asset.staticCall()).to.eq(
+          await assetInstance.getAddress(),
+        );
       });
     });
 
