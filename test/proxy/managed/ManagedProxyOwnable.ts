@@ -30,7 +30,7 @@ describe('ManagedProxyOwnable', function () {
       implementationInstance.address,
     );
 
-    const selector = manager.interface.getSighash('getImplementation()');
+    const { selector } = manager.interface.getFunction('getImplementation()');
 
     instance = await new ManagedProxyOwnableMock__factory(deployer).deploy(
       manager.address,

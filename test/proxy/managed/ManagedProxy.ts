@@ -30,7 +30,7 @@ describe('ManagedProxy', function () {
       await implementationInstance.getAddress(),
     );
 
-    const selector = manager.interface.getSighash('getImplementation()');
+    const { selector } = manager.interface.getFunction('getImplementation()');
 
     instance = await new ManagedProxyMock__factory(deployer).deploy(
       manager.address,

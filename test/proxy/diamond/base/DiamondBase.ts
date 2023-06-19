@@ -19,7 +19,7 @@ describe('DiamondBase', function () {
       {
         target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getSighash('owner()')],
+        selectors: [facetInstance.interface.getFunction('owner()').selector],
       },
     ]);
   });
