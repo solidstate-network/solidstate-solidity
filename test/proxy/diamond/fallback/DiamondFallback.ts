@@ -24,7 +24,7 @@ describe('DiamondFallback', function () {
 
     instance = await new DiamondFallbackMock__factory(deployer).deploy([
       {
-        target: facetInstance.address,
+        target: await facetInstance.getAddress(),
         action: 0,
         selectors: [facetInstance.interface.getSighash('owner()')],
       },
