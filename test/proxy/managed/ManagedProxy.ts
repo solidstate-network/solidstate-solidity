@@ -27,7 +27,7 @@ describe('ManagedProxy', function () {
     ]);
 
     await manager.mock['getImplementation()'].returns(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
     );
 
     const selector = manager.interface.getSighash('getImplementation()');

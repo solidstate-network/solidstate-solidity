@@ -26,7 +26,7 @@ describe('UpgradeableProxyOwnable', function () {
     ).deploy(ethers.ZeroAddress);
 
     instance = await new UpgradeableProxyOwnableMock__factory(deployer).deploy(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
       owner.address,
     );
   });

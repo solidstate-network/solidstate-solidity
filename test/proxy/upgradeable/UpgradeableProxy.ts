@@ -19,7 +19,7 @@ describe('UpgradeableProxy', function () {
     ).deploy(ethers.ZeroAddress);
 
     instance = await new UpgradeableProxyMock__factory(deployer).deploy(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
     );
   });
 
