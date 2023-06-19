@@ -16,7 +16,7 @@ describe('Factory', function () {
   describe('__internal', function () {
     describe('#_deploy(bytes)', function () {
       it('deploys bytecode and returns deployment address', async function () {
-        const initCode = instance.deployTransaction.data;
+        const { data: initCode } = await instance.deploymentTransaction();
 
         const address = await instance['__deploy(bytes)'].staticCall(initCode);
         expect(address).to.be.properAddress;
@@ -44,7 +44,7 @@ describe('Factory', function () {
 
     describe('#_deploy(bytes,bytes32)', function () {
       it('deploys bytecode and returns deployment address', async function () {
-        const initCode = await instance.deployTransaction.data;
+        const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
@@ -80,7 +80,7 @@ describe('Factory', function () {
         });
 
         it('salt has already been used', async function () {
-          const initCode = instance.deployTransaction.data;
+          const { data: initCode } = await instance.deploymentTransaction();
           const salt = ethers.randomBytes(32);
 
           await instance['__deploy(bytes,bytes32)'](initCode, salt);
@@ -97,7 +97,7 @@ describe('Factory', function () {
 
     describe('#_calculateDeploymentAddress(bytes32,bytes32)', function () {
       it('returns address of not-yet-deployed contract', async function () {
-        const initCode = instance.deployTransaction.data;
+        const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
