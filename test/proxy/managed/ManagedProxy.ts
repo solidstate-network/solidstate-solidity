@@ -6,6 +6,7 @@ import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
 import {
   ManagedProxyMock,
   ManagedProxyMock__factory,
+  OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -15,13 +16,11 @@ describe('ManagedProxy', function () {
   let instance: ManagedProxyMock;
 
   beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory(
-      'OwnableMock',
-    );
-    const implementationInstance = await implementationFactory.deploy(
-      ethers.ZeroAddress,
-    );
-    await implementationInstance.deployed();
+    const [deployer] = await ethers.getSigners();
+
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(ethers.ZeroAddress);
 
     manager = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
@@ -33,7 +32,6 @@ describe('ManagedProxy', function () {
 
     const selector = manager.interface.getSighash('getImplementation()');
 
-    const [deployer] = await ethers.getSigners();
     instance = await new ManagedProxyMock__factory(deployer).deploy(
       manager.address,
       selector,
