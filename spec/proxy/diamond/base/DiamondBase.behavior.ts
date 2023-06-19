@@ -42,12 +42,12 @@ export function describeBehaviorOfDiamondBase(
         it('no selector matches data', async function () {
           let contract = new ethers.Contract(
             await instance.getAddress(),
-            ['function function()'],
+            ['function __function()'],
             ethers.provider,
           );
 
           await expect(
-            contract['function()'].staticCall(),
+            contract['__function()'].staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
