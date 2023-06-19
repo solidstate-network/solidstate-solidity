@@ -24,7 +24,7 @@ export function describeBehaviorOfDiamondBase(
 
     describe('fallback()', function () {
       it('forwards data with matching selector call to facet', async function () {
-        expect((instance as any)[facetFunction]).to.be.undefined;
+        expect(instance.interface.hasFunction(facetFunction)).to.be.false;
 
         let contract = new ethers.Contract(
           await instance.getAddress(),
