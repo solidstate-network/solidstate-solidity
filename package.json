@@ -10,6 +10,12 @@
     "prettier": "prettier --write --ignore-path .gitignore .",
     "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types' && yarn upgrade"
   },
+  "workspaces": [
+    "abi",
+    "contracts",
+    "lib",
+    "spec"
+  ],
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
     "@nomicfoundation/hardhat-ethers": "^3.0.2",
