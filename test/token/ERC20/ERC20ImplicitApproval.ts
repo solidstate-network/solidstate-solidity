@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC20ImplicitApproval } from '@solidstate/spec';
 import {
   ERC20ImplicitApprovalMock,

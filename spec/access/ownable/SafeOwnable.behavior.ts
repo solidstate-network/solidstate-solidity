@@ -2,7 +2,7 @@ import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
 } from './Ownable.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -1,5 +1,5 @@
 import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import {
   ERC721Base,

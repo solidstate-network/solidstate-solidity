@@ -3,7 +3,7 @@ import {
   describeBehaviorOfERC20Metadata,
   ERC20MetadataBehaviorArgs,
 } from '../ERC20';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';

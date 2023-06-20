@@ -1,5 +1,5 @@
 import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1271Ownable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bnToBytes32, bnToAddress } from '@solidstate/library';
 import {
   ArrayUtilsMock,

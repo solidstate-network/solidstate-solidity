@@ -1,6 +1,6 @@
 import { OwnableBehaviorArgs, describeBehaviorOfERC165Base } from '../../../';
 import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import {
   IDiamondWritable,
