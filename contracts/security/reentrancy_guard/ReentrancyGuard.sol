@@ -13,11 +13,16 @@ abstract contract ReentrancyGuard is IReentrancyGuard {
     uint256 internal constant REENTRANCY_STATUS_UNLOCKED = 1;
 
     modifier nonReentrant() virtual {
-        if (ReentrancyGuardStorage.layout().status == REENTRANCY_STATUS_LOCKED)
-            revert ReentrancyGuard__ReentrantCall();
+        if (_isReentrancyGuardLocked()) revert ReentrancyGuard__ReentrantCall();
         _lockReentrancyGuard();
         _;
         _unlockReentrancyGuard();
+    }
+
+    /// @notice Returns true if the reentrancy guard is locked, false otherwise
+    function _isReentrancyGuardLocked() internal view virtual returns (bool) {
+        return
+            ReentrancyGuardStorage.layout().status == REENTRANCY_STATUS_LOCKED;
     }
 
     /**
