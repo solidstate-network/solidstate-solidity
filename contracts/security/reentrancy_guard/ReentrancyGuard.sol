@@ -28,7 +28,7 @@ abstract contract ReentrancyGuard is IReentrancyGuard {
     }
 
     /**
-     * @notice unlock funtions that use the nonReentrant modifier
+     * @notice unlock functions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual {
         ReentrancyGuardStorage.layout().status = REENTRANCY_STATUS_UNLOCKED;
