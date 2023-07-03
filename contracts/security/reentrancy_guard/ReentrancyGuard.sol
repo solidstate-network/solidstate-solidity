@@ -19,7 +19,9 @@ abstract contract ReentrancyGuard is IReentrancyGuard {
         _unlockReentrancyGuard();
     }
 
-    /// @notice Returns true if the reentrancy guard is locked, false otherwise
+    /**
+     * @notice returns true if the reentrancy guard is locked, false otherwise
+     */
     function _isReentrancyGuardLocked() internal view virtual returns (bool) {
         return
             ReentrancyGuardStorage.layout().status == REENTRANCY_STATUS_LOCKED;
