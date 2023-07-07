@@ -81,12 +81,6 @@ Setup Husky to format code on commit:
 yarn prepare
 ```
 
-Link local packages and install remaining dependencies via Lerna:
-
-```bash
-yarn run lerna bootstrap
-```
-
 Compile contracts via Hardhat:
 
 ```bash
