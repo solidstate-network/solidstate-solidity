@@ -112,7 +112,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#maxWithdraw(address)', () => {
       it('returns asset value of share balance of given account', async () => {
-        await args.mint(depositor.address, 2);
+        await args.mint(depositor.address, 2n);
         const balance = await instance.balanceOf.staticCall(depositor.address);
 
         expect(await instance.maxWithdraw.staticCall(depositor.address)).to.eq(
@@ -123,7 +123,7 @@ export function describeBehaviorOfERC4626Base(
 
     describe('#maxRedeem(address)', () => {
       it('returns share balance of given account', async () => {
-        await args.mint(depositor.address, 2);
+        await args.mint(depositor.address, 2n);
         const balance = await instance.balanceOf.staticCall(depositor.address);
 
         expect(await instance.maxRedeem.staticCall(depositor.address)).to.eq(
@@ -224,7 +224,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('mints shares for receiver', async () => {
-        const assetAmount = 2;
+        const assetAmount = 2n;
 
         await args.mint(caller.address, assetAmount);
         await args.mintAsset(depositor.address, assetAmount);
@@ -255,7 +255,7 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('emits Deposit event', async () => {
-        const assetAmount = 2;
+        const assetAmount = 2n;
 
         await args.mint(caller.address, assetAmount);
         await args.mintAsset(depositor.address, assetAmount);
@@ -632,7 +632,7 @@ export function describeBehaviorOfERC4626Base(
 
       describe('reverts if', () => {
         it('redeem amount is too large', async () => {
-          const shareAmount = 2;
+          const shareAmount = 2n;
 
           await args.mint(depositor.address, shareAmount);
 
@@ -647,7 +647,7 @@ export function describeBehaviorOfERC4626Base(
         });
 
         it('share amount exceeds allowance', async () => {
-          const shareAmount = 2;
+          const shareAmount = 2n;
 
           await args.mint(depositor.address, shareAmount);
 

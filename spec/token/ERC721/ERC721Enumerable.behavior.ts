@@ -27,7 +27,7 @@ export function describeBehaviorOfERC721Enumerable(
       it('returns total token supply', async function () {
         expect(await instance.totalSupply()).to.equal(supply);
 
-        await mint(await instance.getAddress(), 2);
+        await mint(await instance.getAddress(), 2n);
         expect(await instance.totalSupply()).to.equal(supply + 1n);
 
         await burn(2);
@@ -59,8 +59,8 @@ export function describeBehaviorOfERC721Enumerable(
           'EnumerableSet__IndexOutOfBounds',
         );
 
-        await mint(await instance.getAddress(), 1);
-        await mint(await instance.getAddress(), 2);
+        await mint(await instance.getAddress(), 1n);
+        await mint(await instance.getAddress(), 2n);
 
         expect(
           await instance.tokenOfOwnerByIndex.staticCall(

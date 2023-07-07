@@ -64,7 +64,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
 
     describe('#transferFrom(address,address,uint256)', function () {
       it('does not require approval for implicitly approved sender', async function () {
-        const amount = 1;
+        const amount = 1n;
 
         await mint(holder.address, amount);
 
