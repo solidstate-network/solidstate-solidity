@@ -24,19 +24,19 @@ export function describeBehaviorOfERC20Metadata(
 
     describe('#name()', function () {
       it('returns token name', async function () {
-        expect(await instance['name()'].staticCall()).to.equal(name);
+        expect(await instance.name.staticCall()).to.equal(name);
       });
     });
 
     describe('#symbol()', function () {
       it('returns token symbol', async function () {
-        expect(await instance['symbol()'].staticCall()).to.equal(symbol);
+        expect(await instance.symbol.staticCall()).to.equal(symbol);
       });
     });
 
     describe('#decimals()', function () {
       it('returns token decimals', async function () {
-        expect(await instance['decimals()'].staticCall()).to.equal(decimals);
+        expect(await instance.decimals.staticCall()).to.equal(decimals);
       });
     });
   });

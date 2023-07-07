@@ -47,9 +47,7 @@ export function describeBehaviorOfERC721Base(
 
     describe('#balanceOf(address)', function () {
       it('returns the token balance of given address', async function () {
-        expect(
-          await instance['balanceOf(address)'].staticCall(holder.address),
-        ).to.equal(0);
+        expect(await instance.balanceOf.staticCall(holder.address)).to.equal(0);
 
         const tokenId = 2n;
 

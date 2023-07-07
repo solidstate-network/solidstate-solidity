@@ -32,22 +32,21 @@ describe('SafeOwnable', function () {
       it('does not revert if sender is nominee owner', async () => {
         await instance.__setNomineeOwner(nomineeOwner.address);
 
-        await expect(
-          instance.connect(nomineeOwner)['modifier_onlyNomineeOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(nomineeOwner).modifier_onlyNomineeOwner())
+          .not.to.be.reverted;
       });
 
       describe('reverts if', () => {
         it('sender is not nominee owner', async () => {
           await expect(
-            instance.connect(nonOwner)['modifier_onlyNomineeOwner()'](),
+            instance.connect(nonOwner).modifier_onlyNomineeOwner(),
           ).to.be.revertedWithCustomError(
             instance,
             'SafeOwnable__NotNomineeOwner',
           );
 
           await expect(
-            instance.connect(owner)['modifier_onlyNomineeOwner()'](),
+            instance.connect(owner).modifier_onlyNomineeOwner(),
           ).to.be.revertedWithCustomError(
             instance,
             'SafeOwnable__NotNomineeOwner',

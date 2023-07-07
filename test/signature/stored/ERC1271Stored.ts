@@ -29,7 +29,7 @@ describe('ERC1271Stored', function () {
     describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns magic value if signature is stored', async function () {
         expect(
-          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
+          await instance.__isValidSignature.staticCall(
             validParams[0],
             validParams[1],
           ),
@@ -38,7 +38,7 @@ describe('ERC1271Stored', function () {
 
       it('returns null bytes if signature is not stored', async function () {
         expect(
-          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
+          await instance.__isValidSignature.staticCall(
             ethers.randomBytes(32),
             ethers.randomBytes(0),
           ),

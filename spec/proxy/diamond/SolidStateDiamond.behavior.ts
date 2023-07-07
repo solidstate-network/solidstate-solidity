@@ -135,20 +135,18 @@ export function describeBehaviorOfSolidStateDiamond(
             }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance['facets()'].staticCall()).to.have.deep.members([
+          expect(await instance.facets.staticCall()).to.have.deep.members([
             ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
-            await instance['facetFunctionSelectors(address)'].staticCall(
-              facet.address,
-            ),
+            await instance.facetFunctionSelectors.staticCall(facet.address),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance['facetAddress(bytes4)'].staticCall(selector),
-          ).to.equal(facet.address);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            facet.address,
+          );
         }
       });
 
@@ -204,7 +202,7 @@ export function describeBehaviorOfSolidStateDiamond(
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance['facets()'].staticCall()).to.have.deep.members(
+          expect(await instance.facets.staticCall()).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -212,14 +210,12 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance['facetFunctionSelectors(address)'].staticCall(
-              facet.address,
-            ),
+            await instance.facetFunctionSelectors.staticCall(facet.address),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance['facetAddress(bytes4)'].staticCall(selector),
-          ).to.equal(ethers.ZeroAddress);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
@@ -275,7 +271,7 @@ export function describeBehaviorOfSolidStateDiamond(
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance['facets()'].staticCall()).to.have.deep.members(
+          expect(await instance.facets.staticCall()).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -283,14 +279,12 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance['facetFunctionSelectors(address)'].staticCall(
-              facet.address,
-            ),
+            await instance.facetFunctionSelectors.staticCall(facet.address),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance['facetAddress(bytes4)'].staticCall(selector),
-          ).to.equal(ethers.ZeroAddress);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
@@ -346,7 +340,7 @@ export function describeBehaviorOfSolidStateDiamond(
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance['facets()'].staticCall()).to.have.deep.members(
+          expect(await instance.facets.staticCall()).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -354,14 +348,12 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance['facetFunctionSelectors(address)'].staticCall(
-              facet.address,
-            ),
+            await instance.facetFunctionSelectors.staticCall(facet.address),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance['facetAddress(bytes4)'].staticCall(selector),
-          ).to.equal(ethers.ZeroAddress);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
     });

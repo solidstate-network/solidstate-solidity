@@ -26,7 +26,7 @@ describe('ManagedProxyOwnable', function () {
       deployer,
     ).deploy(deployer.address);
 
-    await manager.mock['getImplementation()'].returns(
+    await manager.mock.getImplementation.returns(
       implementationInstance.address,
     );
 
@@ -49,14 +49,14 @@ describe('ManagedProxyOwnable', function () {
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance['setOwner(address)'](ethers.ZeroAddress);
+          await instance.setOwner(ethers.ZeroAddress);
 
           await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
         it('manager fails to return implementation', async function () {
-          await manager.mock['getImplementation()'].revertsWithReason('ERROR');
+          await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
             instance.__getImplementation.staticCall(),
@@ -71,7 +71,7 @@ describe('ManagedProxyOwnable', function () {
     describe('#_getManager()', function () {
       it('returns address of ERC173 owner', async function () {
         expect(await instance.__getManager.staticCall()).to.equal(
-          await instance['getOwner()'].staticCall(),
+          await instance.getOwner.staticCall(),
         );
       });
     });

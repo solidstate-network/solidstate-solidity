@@ -47,7 +47,7 @@ export function describeBehaviorOfDiamondBase(
           );
 
           await expect(
-            contract['__function()'].staticCall(),
+            contract.__function.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',

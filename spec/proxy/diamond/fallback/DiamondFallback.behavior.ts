@@ -41,7 +41,7 @@ export function describeBehaviorOfDiamondFallback(
 
     describe('#getFallbackAddress()', function () {
       it('returns the fallback address', async function () {
-        expect(await instance['getFallbackAddress()'].staticCall()).to.equal(
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           args.fallbackAddress,
         );
       });
@@ -51,11 +51,9 @@ export function describeBehaviorOfDiamondFallback(
       it('updates the fallback address', async function () {
         const fallback = await deployMockContract(owner, []);
 
-        await instance
-          .connect(owner)
-          ['setFallbackAddress(address)'](fallback.address);
+        await instance.connect(owner).setFallbackAddress(fallback.address);
 
-        expect(await instance['getFallbackAddress()'].staticCall()).to.equal(
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           fallback.address,
         );
 
@@ -71,9 +69,7 @@ export function describeBehaviorOfDiamondFallback(
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance
-              .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.ZeroAddress),
+            instance.connect(nonOwner).setFallbackAddress(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

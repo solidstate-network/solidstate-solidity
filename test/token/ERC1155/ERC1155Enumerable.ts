@@ -17,7 +17,7 @@ describe('ERC1155Enumerable', function () {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)
-        ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+        .safeTransferFrom(
           from.address,
           to.address,
           tokenId,

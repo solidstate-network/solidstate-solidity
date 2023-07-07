@@ -34,10 +34,7 @@ describe('ERC1271Ownable', function () {
         const signature = await owner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
       });
 
@@ -46,10 +43,7 @@ describe('ERC1271Ownable', function () {
         const signature = await nonOwner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance['__isValidSignature(bytes32,bytes)'].staticCall(
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

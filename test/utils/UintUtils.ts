@@ -50,22 +50,18 @@ describe('UintUtils', function () {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
           const number = BigInt(string);
-          expect(
-            await instance['toString(uint256)'].staticCall(number),
-          ).to.equal(string);
+          expect(await instance.toString.staticCall(number)).to.equal(string);
         }
 
-        expect(
-          await instance['toString(uint256)'].staticCall(ethers.MaxUint256),
-        ).to.equal(ethers.MaxUint256.toString());
+        expect(await instance.toString.staticCall(ethers.MaxUint256)).to.equal(
+          ethers.MaxUint256.toString(),
+        );
       });
     });
 
     describe('#toHexString(uint256)', function () {
       it('returns 0 if input is 0', async () => {
-        expect(await instance['toHexString(uint256)'].staticCall(0)).to.equal(
-          '0x00',
-        );
+        expect(await instance.toHexString.staticCall(0)).to.equal('0x00');
       });
 
       it('returns correct hexadecimal string representation of a number', async () => {
@@ -79,7 +75,7 @@ describe('UintUtils', function () {
         ];
         for (let i = 0; i < inputValues.length; i++) {
           expect(
-            await instance['toHexString(uint256)'].staticCall(inputValues[i]),
+            await instance.toHexString.staticCall(inputValues[i]),
           ).to.equal(outputValues[i]);
         }
       });

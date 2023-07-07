@@ -50,9 +50,7 @@ export function describeBehaviorOfOwnable(
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance
-              .connect(nonOwner)
-              ['transferOwnership(address)'](nonOwner.address),
+            instance.connect(nonOwner).transferOwnership(nonOwner.address),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

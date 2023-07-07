@@ -26,14 +26,14 @@ describe('Ownable', function () {
   describe('__internal', () => {
     describe('onlyOwner() modifier', () => {
       it('does not revert if sender is owner', async () => {
-        await expect(instance.connect(owner)['modifier_onlyOwner()']()).not.to
-          .be.reverted;
+        await expect(instance.connect(owner).modifier_onlyOwner()).not.to.be
+          .reverted;
       });
 
       describe('reverts if', () => {
         it('sender is not owner', async () => {
           await expect(
-            instance.connect(nonOwner)['modifier_onlyOwner()'](),
+            instance.connect(nonOwner).modifier_onlyOwner(),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
@@ -41,9 +41,8 @@ describe('Ownable', function () {
 
     describe('onlyTransitiveOwner() modifier', () => {
       it('does not revert if sender is transitive owner', async () => {
-        await expect(
-          instance.connect(owner)['modifier_onlyTransitiveOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
+          .to.be.reverted;
 
         const intermediateOwner = await new OwnableMock__factory(owner).deploy(
           owner.address,
@@ -51,9 +50,8 @@ describe('Ownable', function () {
 
         await instance.__setOwner(await intermediateOwner.getAddress());
 
-        await expect(
-          instance.connect(owner)['modifier_onlyTransitiveOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
+          .to.be.reverted;
       });
 
       describe('reverts if', () => {
@@ -70,9 +68,7 @@ describe('Ownable', function () {
           const signer = await ethers.getSigner(intermediateOwnerAddress);
 
           await expect(
-            instance
-              .connect(signer)
-              ['modifier_onlyTransitiveOwner()'].staticCall(),
+            instance.connect(signer).modifier_onlyTransitiveOwner.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Ownable__NotTransitiveOwner',

@@ -14,9 +14,8 @@ describe('ERC721Enumerable', function () {
   });
 
   describeBehaviorOfERC721Enumerable(async () => instance, {
-    mint: (recipient, tokenId) =>
-      instance['mint(address,uint256)'](recipient, tokenId),
-    burn: (tokenId) => instance['burn(uint256)'](tokenId),
+    mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
+    burn: (tokenId) => instance.burn(tokenId),
     supply: 0n,
   });
 });

@@ -26,7 +26,7 @@ describe('ManagedProxy', function () {
       'function getImplementation () external view returns (address)',
     ]);
 
-    await manager.mock['getImplementation()'].returns(
+    await manager.mock.getImplementation.returns(
       await implementationInstance.getAddress(),
     );
 
@@ -59,7 +59,7 @@ describe('ManagedProxy', function () {
         });
 
         it('manager fails to return implementation', async function () {
-          await manager.mock['getImplementation()'].revertsWithReason('ERROR');
+          await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
             instance.__getImplementation.staticCall(),
