@@ -35,8 +35,4 @@ export default {
     overwrite: false,
     runOnCompile: true,
   },
-
-  typechain: {
-    alwaysGenerateOverloads: true,
-  },
 };
