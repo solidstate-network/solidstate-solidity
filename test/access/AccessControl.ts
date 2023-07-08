@@ -38,14 +38,15 @@ describe('AccessControl', function () {
     it('does not revert if sender has role', async function () {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-      await expect(instance.connect(nonAdmin).checkRole.staticCall(ROLE)).not.to
-        .be.reverted;
+      await expect(
+        instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
+      ).not.to.be.reverted;
     });
 
     describe('reverts if', function () {
       it('sender does not have role', async function () {
         await expect(
-          instance.connect(nonAdmin).checkRole.staticCall(ROLE),
+          instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
         ).to.revertedWith(
           `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
         );
@@ -57,14 +58,21 @@ describe('AccessControl', function () {
     it('does not revert if given account has role', async function () {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-      await expect(instance.checkRole.staticCall(ROLE, nonAdmin.address)).not.to
-        .be.reverted;
+      await expect(
+        instance['checkRole(bytes32,address)'].staticCall(
+          ROLE,
+          nonAdmin.address,
+        ),
+      ).not.to.be.reverted;
     });
 
     describe('reverts if', function () {
       it('given account does not have role', async function () {
         await expect(
-          instance.checkRole.staticCall(ROLE, nonAdmin.address),
+          instance['checkRole(bytes32,address)'].staticCall(
+            ROLE,
+            nonAdmin.address,
+          ),
         ).to.revertedWith(
           `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
         );

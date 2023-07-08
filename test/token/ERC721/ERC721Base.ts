@@ -159,7 +159,7 @@ describe('ERC721Base', function () {
         const tokenId = 2;
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
-        await instance.safeMint(holder.address, tokenId);
+        await instance['safeMint(address,uint256)'](holder.address, tokenId);
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
@@ -169,14 +169,16 @@ describe('ERC721Base', function () {
         const tokenId = 2;
 
         await expect(() =>
-          instance.safeMint(receiver.address, tokenId),
+          instance['safeMint(address,uint256)'](receiver.address, tokenId),
         ).to.changeTokenBalance(instance, receiver, 1);
       });
 
       it('emits Transfer event', async function () {
         const tokenId = 2;
 
-        await expect(instance.safeMint(receiver.address, tokenId))
+        await expect(
+          instance['safeMint(address,uint256)'](receiver.address, tokenId),
+        )
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
@@ -188,14 +190,15 @@ describe('ERC721Base', function () {
 
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
-        await expect(instance.safeMint(receiverContract.address, 2)).not.to.be
-          .reverted;
+        await expect(
+          instance['safeMint(address,uint256)'](receiverContract.address, 2),
+        ).not.to.be.reverted;
       });
 
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance.safeMint(ethers.ZeroAddress, 0),
+            instance['safeMint(address,uint256)'](ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -207,7 +210,10 @@ describe('ERC721Base', function () {
           await instance.mint(await instance.getAddress(), tokenId);
 
           await expect(
-            instance.safeMint(await instance.getAddress(), tokenId),
+            instance['safeMint(address,uint256)'](
+              await instance.getAddress(),
+              tokenId,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TokenAlreadyMinted',
@@ -218,7 +224,10 @@ describe('ERC721Base', function () {
           // TODO: test against contract other than self
 
           await expect(
-            instance.safeMint(await instance.getAddress(), 2),
+            instance['safeMint(address,uint256)'](
+              await instance.getAddress(),
+              2,
+            ),
           ).to.be.revertedWith(
             'ERC721: transfer to non ERC721Receiver implementer',
           );
@@ -234,7 +243,7 @@ describe('ERC721Base', function () {
           );
 
           await expect(
-            instance.safeMint(receiverContract.address, 2),
+            instance['safeMint(address,uint256)'](receiverContract.address, 2),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__ERC721ReceiverNotImplemented',
@@ -248,7 +257,11 @@ describe('ERC721Base', function () {
         const tokenId = 2;
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
-        await instance.safeMint(holder.address, tokenId, '0x');
+        await instance['safeMint(address,uint256,bytes)'](
+          holder.address,
+          tokenId,
+          '0x',
+        );
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
@@ -258,14 +271,24 @@ describe('ERC721Base', function () {
         const tokenId = 2;
 
         await expect(() =>
-          instance.safeMint(receiver.address, tokenId, '0x'),
+          instance['safeMint(address,uint256,bytes)'](
+            receiver.address,
+            tokenId,
+            '0x',
+          ),
         ).to.changeTokenBalance(instance, receiver, 1);
       });
 
       it('emits Transfer event', async function () {
         const tokenId = 2;
 
-        await expect(instance.safeMint(receiver.address, tokenId, '0x'))
+        await expect(
+          instance['safeMint(address,uint256,bytes)'](
+            receiver.address,
+            tokenId,
+            '0x',
+          ),
+        )
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
@@ -277,14 +300,23 @@ describe('ERC721Base', function () {
 
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
-        await expect(instance.safeMint(receiverContract.address, 2, '0x')).not
-          .to.be.reverted;
+        await expect(
+          instance['safeMint(address,uint256,bytes)'](
+            receiverContract.address,
+            2,
+            '0x',
+          ),
+        ).not.to.be.reverted;
       });
 
       describe('reverts if', function () {
         it('given account is zero address', async function () {
           await expect(
-            instance.safeMint(ethers.ZeroAddress, 0, '0x'),
+            instance['safeMint(address,uint256,bytes)'](
+              ethers.ZeroAddress,
+              0,
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -296,7 +328,11 @@ describe('ERC721Base', function () {
           await instance.mint(await instance.getAddress(), tokenId);
 
           await expect(
-            instance.safeMint(await instance.getAddress(), tokenId, '0x'),
+            instance['safeMint(address,uint256,bytes)'](
+              await instance.getAddress(),
+              tokenId,
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TokenAlreadyMinted',
@@ -307,7 +343,11 @@ describe('ERC721Base', function () {
           // TODO: test against contract other than self
 
           await expect(
-            instance.safeMint(await instance.getAddress(), 2, '0x'),
+            instance['safeMint(address,uint256,bytes)'](
+              await instance.getAddress(),
+              2,
+              '0x',
+            ),
           ).to.be.revertedWith(
             'ERC721: transfer to non ERC721Receiver implementer',
           );
@@ -323,7 +363,11 @@ describe('ERC721Base', function () {
           );
 
           await expect(
-            instance.safeMint(receiverContract.address, 2, '0x'),
+            instance['safeMint(address,uint256,bytes)'](
+              receiverContract.address,
+              2,
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__ERC721ReceiverNotImplemented',

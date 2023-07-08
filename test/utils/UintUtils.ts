@@ -50,12 +50,14 @@ describe('UintUtils', function () {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
           const number = BigInt(string);
-          expect(await instance.toString.staticCall(number)).to.equal(string);
+          expect(
+            await instance['toString(uint256)'].staticCall(number),
+          ).to.equal(string);
         }
 
-        expect(await instance.toString.staticCall(ethers.MaxUint256)).to.equal(
-          ethers.MaxUint256.toString(),
-        );
+        expect(
+          await instance['toString(uint256)'].staticCall(ethers.MaxUint256),
+        ).to.equal(ethers.MaxUint256.toString());
       });
     });
 

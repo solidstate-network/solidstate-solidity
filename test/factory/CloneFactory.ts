@@ -19,10 +19,10 @@ describe('CloneFactory', function () {
   describe('__internal', function () {
     describe('#_deployClone()', function () {
       it('deploys clone and returns deployment address', async function () {
-        const address = await instance.__deployClone.staticCall();
+        const address = await instance['__deployClone()'].staticCall();
         expect(address).to.be.properAddress;
 
-        await instance.__deployClone();
+        await instance['__deployClone()']();
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -38,10 +38,12 @@ describe('CloneFactory', function () {
       it('deploys clone and returns deployment address', async function () {
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.__deployClone.staticCall(salt);
+        const address = await instance['__deployClone(bytes32)'].staticCall(
+          salt,
+        );
         expect(address).to.be.properAddress;
 
-        await instance.__deployClone(salt);
+        await instance['__deployClone(bytes32)'](salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -54,10 +56,10 @@ describe('CloneFactory', function () {
         it('salt has already been used', async function () {
           const salt = ethers.randomBytes(32);
 
-          await instance.__deployClone(salt);
+          await instance['__deployClone(bytes32)'](salt);
 
           await expect(
-            instance.__deployClone(salt),
+            instance['__deployClone(bytes32)'](salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',

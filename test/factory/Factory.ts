@@ -18,10 +18,10 @@ describe('Factory', function () {
       it('deploys bytecode and returns deployment address', async function () {
         const { data: initCode } = await instance.deploymentTransaction();
 
-        const address = await instance.__deploy.staticCall(initCode);
+        const address = await instance['__deploy(bytes)'].staticCall(initCode);
         expect(address).to.be.properAddress;
 
-        await instance.__deploy(initCode);
+        await instance['__deploy(bytes)'](initCode);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -33,7 +33,7 @@ describe('Factory', function () {
           const initCode = '0xfe';
 
           await expect(
-            instance.__deploy(initCode),
+            instance['__deploy(bytes)'](initCode),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -48,7 +48,10 @@ describe('Factory', function () {
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
-        const address = await instance.__deploy.staticCall(initCode, salt);
+        const address = await instance['__deploy(bytes,bytes32)'].staticCall(
+          initCode,
+          salt,
+        );
         expect(address).to.equal(
           await instance.__calculateDeploymentAddress.staticCall(
             initCodeHash,
@@ -56,7 +59,7 @@ describe('Factory', function () {
           ),
         );
 
-        await instance.__deploy(initCode, salt);
+        await instance['__deploy(bytes,bytes32)'](initCode, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -69,7 +72,7 @@ describe('Factory', function () {
           const salt = ethers.randomBytes(32);
 
           await expect(
-            instance.__deploy(initCode, salt),
+            instance['__deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -80,10 +83,10 @@ describe('Factory', function () {
           const { data: initCode } = await instance.deploymentTransaction();
           const salt = ethers.randomBytes(32);
 
-          await instance.__deploy(initCode, salt);
+          await instance['__deploy(bytes,bytes32)'](initCode, salt);
 
           await expect(
-            instance.__deploy(initCode, salt),
+            instance['__deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',

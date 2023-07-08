@@ -26,7 +26,7 @@ describe('MinimalProxyFactory', function () {
         ].staticCall(target);
         expect(address).to.be.properAddress;
 
-        await instance.__deployMinimalProxy(target);
+        await instance['__deployMinimalProxy(address)'](target);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -53,7 +53,7 @@ describe('MinimalProxyFactory', function () {
         ].staticCall(target, salt);
         expect(address).to.be.properAddress;
 
-        await instance.__deployMinimalProxy(target, salt);
+        await instance['__deployMinimalProxy(address,bytes32)'](target, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -72,10 +72,10 @@ describe('MinimalProxyFactory', function () {
           const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
 
-          await instance.__deployMinimalProxy(target, salt);
+          await instance['__deployMinimalProxy(address,bytes32)'](target, salt);
 
           await expect(
-            instance.__deployMinimalProxy(target, salt),
+            instance['__deployMinimalProxy(address,bytes32)'](target, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
