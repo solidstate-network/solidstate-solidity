@@ -6,7 +6,7 @@ import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20PermitBehaviorArgs {
-  allowance: (holder: string, spender: string) => Promise<BigInt>;
+  allowance: (holder: string, spender: string) => Promise<bigint>;
 }
 
 export function describeBehaviorOfERC20Permit(

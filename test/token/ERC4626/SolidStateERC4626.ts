@@ -39,7 +39,7 @@ describe('SolidStateERC4626', function () {
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>
       instance.allowance.staticCall(holder, spender),
-    mintAsset: (recipient: string, amount: BigInt) =>
+    mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,

@@ -8,9 +8,9 @@ import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC721BaseBehaviorArgs {
-  supply: BigInt;
-  mint: (address: string, tokenId: BigInt) => Promise<ContractTransaction>;
-  burn: (tokenId: BigInt) => Promise<ContractTransaction>;
+  supply: bigint;
+  mint: (address: string, tokenId: bigint) => Promise<ContractTransaction>;
+  burn: (tokenId: bigint) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC721Base(

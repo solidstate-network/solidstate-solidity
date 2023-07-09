@@ -10,15 +10,15 @@ import { ethers } from 'hardhat';
 export interface ERC1155BaseBehaviorArgs {
   mint: (
     address: string,
-    id: BigInt,
-    amount: BigInt,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
   burn: (
     address: string,
-    id: BigInt,
-    amount: BigInt,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
-  tokenId?: BigInt;
+  tokenId?: bigint;
 }
 
 export function describeBehaviorOfERC1155Base(

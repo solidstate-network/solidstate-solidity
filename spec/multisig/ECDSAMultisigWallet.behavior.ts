@@ -15,15 +15,15 @@ const nextNonce = function () {
 interface SignAuthorizationArgs {
   target: string;
   data: BytesLike;
-  value: BigInt;
+  value: bigint;
   delegate: boolean;
-  nonce: BigInt;
+  nonce: bigint;
   address: any;
 }
 
 interface Signature {
   data: Uint8Array;
-  nonce: BigInt;
+  nonce: bigint;
 }
 
 const signAuthorization = async function (
@@ -41,7 +41,7 @@ const signAuthorization = async function (
 export interface ECDSAMultisigWalletBehaviorArgs {
   getSigners: () => Promise<SignerWithAddress[]>;
   getNonSigner: () => Promise<SignerWithAddress>;
-  quorum: BigInt;
+  quorum: bigint;
   getVerificationAddress: () => Promise<string>;
 }
 

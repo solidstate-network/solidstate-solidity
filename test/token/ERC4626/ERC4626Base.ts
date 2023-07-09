@@ -42,11 +42,11 @@ describe('ERC4626Base', () => {
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
     supply: 0n,
-    mint: (recipient: string, amount: BigInt) =>
+    mint: (recipient: string, amount: bigint) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigInt) =>
+    burn: (recipient: string, amount: bigint) =>
       instance.__burn(recipient, amount),
-    mintAsset: (recipient: string, amount: BigInt) =>
+    mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,

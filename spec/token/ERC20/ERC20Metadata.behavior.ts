@@ -5,7 +5,7 @@ import { expect } from 'chai';
 export interface ERC20MetadataBehaviorArgs {
   name: string;
   symbol: string;
-  decimals: BigInt;
+  decimals: bigint;
 }
 
 export function describeBehaviorOfERC20Metadata(

@@ -4,9 +4,9 @@ import { expect } from 'chai';
 import { ContractTransaction } from 'ethers';
 
 export interface ERC721EnumerableBehaviorArgs {
-  mint: (address: string, tokenId: BigInt) => Promise<ContractTransaction>;
-  burn: (tokenId: BigInt) => Promise<ContractTransaction>;
-  supply: BigInt;
+  mint: (address: string, tokenId: bigint) => Promise<ContractTransaction>;
+  burn: (tokenId: bigint) => Promise<ContractTransaction>;
+  supply: bigint;
 }
 
 export function describeBehaviorOfERC721Enumerable(

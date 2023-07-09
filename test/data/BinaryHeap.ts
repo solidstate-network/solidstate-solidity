@@ -29,7 +29,7 @@ const randomAddress = () =>
 const randomUint256 = () => BigInt(ethers.toQuantity(ethers.randomBytes(32)));
 
 // checks that the parent node is greater than or equal to the children nodes
-function checkNodes(nodes: BigInt[]) {
+function checkNodes(nodes: bigint[]) {
   nodes.forEach((node, index) => {
     const left = 2 * index + 1;
     const right = 2 * index + 2;

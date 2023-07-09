@@ -9,20 +9,20 @@ export interface ERC1155EnumerableBehaviorArgs {
   transfer: (
     from: SignerWithAddress,
     to: SignerWithAddress,
-    id: BigInt,
-    amount: BigInt,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
   mint: (
     address: string,
-    id: BigInt,
-    amount: BigInt,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
   burn: (
     address: string,
-    id: BigInt,
-    amount: BigInt,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
-  tokenId?: BigInt;
+  tokenId?: bigint;
 }
 
 export function describeBehaviorOfERC1155Enumerable(

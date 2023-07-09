@@ -24,9 +24,9 @@ describe('ERC1404Base', function () {
   describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
     supply: 0n,
-    mint: (recipient: string, amount: BigInt) =>
+    mint: (recipient: string, amount: bigint) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigInt) =>
+    burn: (recipient: string, amount: bigint) =>
       instance.__burn(recipient, amount),
   });
 

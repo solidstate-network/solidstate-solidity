@@ -6,10 +6,10 @@ import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ExtendedBehaviorArgs {
-  mint: (address: string, amount: BigInt) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigInt) => Promise<ContractTransaction>;
-  allowance: (holder: string, spender: string) => Promise<BigInt>;
-  supply: BigInt;
+  mint: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  burn: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<bigint>;
+  supply: bigint;
 }
 
 export function describeBehaviorOfERC20Extended(

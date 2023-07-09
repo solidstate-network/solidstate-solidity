@@ -6,9 +6,9 @@ import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20BaseBehaviorArgs {
-  supply: BigInt;
-  mint: (address: string, amount: BigInt) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigInt) => Promise<ContractTransaction>;
+  supply: bigint;
+  mint: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  burn: (address: string, amount: bigint) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC20Base(

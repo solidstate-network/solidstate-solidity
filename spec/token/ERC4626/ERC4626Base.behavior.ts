@@ -14,7 +14,7 @@ export interface ERC4626BaseBehaviorArgs
   extends ERC20BaseBehaviorArgs,
     ERC20MetadataBehaviorArgs {
   getAsset: () => Promise<IERC20>;
-  mintAsset: (address: string, amount: BigInt) => Promise<ContractTransaction>;
+  mintAsset: (address: string, amount: bigint) => Promise<ContractTransaction>;
 }
 
 export function describeBehaviorOfERC4626Base(
