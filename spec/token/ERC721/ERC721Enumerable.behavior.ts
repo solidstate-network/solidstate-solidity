@@ -30,7 +30,7 @@ export function describeBehaviorOfERC721Enumerable(
         await mint(await instance.getAddress(), 2n);
         expect(await instance.totalSupply()).to.equal(supply + 1n);
 
-        await burn(2);
+        await burn(2n);
         expect(await instance.totalSupply()).to.equal(supply);
       });
     });
