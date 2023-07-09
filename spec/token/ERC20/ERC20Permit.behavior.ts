@@ -4,6 +4,7 @@ import { ERC20Permit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
+import { time } from '@nomicfoundation/hardhat-network-helpers';
 
 export interface ERC20PermitBehaviorArgs {
   allowance: (holder: string, spender: string) => Promise<bigint>;
@@ -37,7 +38,7 @@ export function describeBehaviorOfERC20Permit(
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
       it('should increase allowance using permit', async () => {
-        const { timestamp } = await ethers.provider.getBlock('latest');
+        const timestamp = await time.latest();
 
         const amount = 2;
         const deadline = timestamp + 100;
@@ -72,7 +73,7 @@ export function describeBehaviorOfERC20Permit(
 
       describe('reverts if', () => {
         it('deadline has passed', async () => {
-          const { timestamp } = await ethers.provider.getBlock('latest');
+          const timestamp = await time.latest();
 
           const amount = 2;
           const deadline = timestamp + 100;
@@ -109,7 +110,7 @@ export function describeBehaviorOfERC20Permit(
         });
 
         it('signature is invalid', async () => {
-          const { timestamp } = await ethers.provider.getBlock('latest');
+          const timestamp = await time.latest();
 
           const amount = 2;
           const deadline = timestamp + 100;
@@ -141,7 +142,7 @@ export function describeBehaviorOfERC20Permit(
         });
 
         it('signature has already been used', async () => {
-          const { timestamp } = await ethers.provider.getBlock('latest');
+          const timestamp = await time.latest();
 
           const amount = 2;
           const deadline = timestamp + 100;
