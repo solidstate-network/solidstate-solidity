@@ -49,5 +49,8 @@
     "typechain": "^8.2.0",
     "typescript": "^5.1.6",
     "yarn-up": "^1.4.1"
+  },
+  "resolutions": {
+    "@ethereum-waffle/mock-contract/ethers": "^5.7.2"
   }
 }
