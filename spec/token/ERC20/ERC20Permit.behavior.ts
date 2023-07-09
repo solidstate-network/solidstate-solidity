@@ -52,7 +52,7 @@ export function describeBehaviorOfERC20Permit(
           deadline,
         );
 
-        await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
+        await time.setNextBlockTimestamp(deadline);
 
         await instance
           .connect(thirdParty)
@@ -87,9 +87,7 @@ export function describeBehaviorOfERC20Permit(
             deadline,
           );
 
-          await ethers.provider.send('evm_setNextBlockTimestamp', [
-            deadline + 1,
-          ]);
+          await time.setNextBlockTimestamp(deadline + 1);
 
           await expect(
             instance
@@ -124,7 +122,7 @@ export function describeBehaviorOfERC20Permit(
             deadline,
           );
 
-          await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
+          await time.setNextBlockTimestamp(deadline);
 
           await expect(
             instance
@@ -156,9 +154,7 @@ export function describeBehaviorOfERC20Permit(
             deadline,
           );
 
-          await ethers.provider.send('evm_setNextBlockTimestamp', [
-            deadline - 1,
-          ]);
+          await time.setNextBlockTimestamp(deadline - 1);
 
           await instance
             .connect(thirdParty)
@@ -172,7 +168,7 @@ export function describeBehaviorOfERC20Permit(
               permit.s,
             );
 
-          await ethers.provider.send('evm_setNextBlockTimestamp', [deadline]);
+          await time.setNextBlockTimestamp(deadline);
 
           await expect(
             instance

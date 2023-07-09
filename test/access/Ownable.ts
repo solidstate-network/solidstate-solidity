@@ -4,6 +4,7 @@ import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('Ownable', function () {
   let owner: SignerWithAddress;
@@ -61,9 +62,7 @@ describe('Ownable', function () {
           ).deploy(owner.address);
           const intermediateOwnerAddress = await intermediateOwner.getAddress();
 
-          await ethers.provider.send('hardhat_impersonateAccount', [
-            intermediateOwnerAddress,
-          ]);
+          await impersonateAccount(intermediateOwnerAddress);
 
           const signer = await ethers.getSigner(intermediateOwnerAddress);
 

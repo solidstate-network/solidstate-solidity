@@ -7,6 +7,7 @@ import {
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
+import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;
@@ -43,10 +44,7 @@ describe('AddressUtils', async () => {
       it('transfers given value to given address', async () => {
         const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          await instance.getAddress(),
-          ethers.toQuantity(value),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const target = deployer;
 
@@ -59,10 +57,7 @@ describe('AddressUtils', async () => {
         it('target contract rejects transfer', async () => {
           const value = 2n;
 
-          await ethers.provider.send('hardhat_setBalance', [
-            await instance.getAddress(),
-            ethers.toQuantity(value),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const mock = await deployMockContract(deployer, []);
 
@@ -243,10 +238,7 @@ describe('AddressUtils', async () => {
       it('transfers given value to target contract', async () => {
         const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          await instance.getAddress(),
-          ethers.toQuantity(value),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -301,10 +293,7 @@ describe('AddressUtils', async () => {
         it('target function is not payable and value is included', async () => {
           const value = 2n;
 
-          await ethers.provider.send('hardhat_setBalance', [
-            await instance.getAddress(),
-            ethers.toQuantity(value),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
@@ -397,10 +386,7 @@ describe('AddressUtils', async () => {
       it('transfers given value to target contract', async () => {
         const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          await instance.getAddress(),
-          ethers.toQuantity(value),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -460,10 +446,7 @@ describe('AddressUtils', async () => {
           const value = 2n;
           const revertReason = 'REVERT_REASON';
 
-          await ethers.provider.send('hardhat_setBalance', [
-            await instance.getAddress(),
-            ethers.toQuantity(value),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
