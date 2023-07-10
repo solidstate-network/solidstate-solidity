@@ -1,4 +1,3 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   OwnableMock__factory,

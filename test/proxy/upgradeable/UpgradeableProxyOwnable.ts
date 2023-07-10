@@ -1,4 +1,3 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxyOwnable } from '@solidstate/spec';
 import {
