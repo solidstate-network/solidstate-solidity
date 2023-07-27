@@ -1,7 +1,4 @@
-import {
-  MockContract,
-  deployMockContract,
-} from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
 import {
   ManagedProxyMock,
