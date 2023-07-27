@@ -9,7 +9,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxyOwnable', function () {
-  let manager: MockContract;
+  let manager: any;
   let instance: ManagedProxyOwnableMock;
 
   beforeEach(async function () {
@@ -24,10 +24,14 @@ describe('ManagedProxyOwnable', function () {
     ).deploy(deployer.address);
 
     await manager.mock.getImplementation.returns(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
     );
 
-    const { selector } = manager.interface.getFunction('getImplementation()');
+    const selector = ethers.dataSlice(
+      ethers.solidityPackedKeccak256(['string'], ['getImplementation()']),
+      0,
+      4,
+    );
 
     instance = await new ManagedProxyOwnableMock__factory(deployer).deploy(
       manager.address,
