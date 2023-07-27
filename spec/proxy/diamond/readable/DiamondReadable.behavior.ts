@@ -34,7 +34,9 @@ export function describeBehaviorOfDiamondReadable(
 
     describe('#facets()', function () {
       it('returns facet cuts', async function () {
-        expect(await instance.facets.staticCall()).to.have.deep.members(
+        expect(
+          Array.from(await instance.facets.staticCall()),
+        ).to.have.deep.members(
           facetCuts.map((fc) => [fc.target, fc.selectors]),
         );
       });
@@ -42,9 +44,9 @@ export function describeBehaviorOfDiamondReadable(
 
     describe('#facetAddresses()', function () {
       it('returns facets', async function () {
-        expect(await instance.facetAddresses.staticCall()).to.have.members(
-          facetCuts.map((fc) => fc.target),
-        );
+        expect(
+          Array.from(await instance.facetAddresses.staticCall()),
+        ).to.have.members(facetCuts.map((fc) => fc.target));
       });
     });
 
@@ -52,7 +54,9 @@ export function describeBehaviorOfDiamondReadable(
       it('returns selectors for given facet', async function () {
         for (let facet of facetCuts) {
           expect(
-            await instance.facetFunctionSelectors.staticCall(facet.target),
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.target),
+            ),
           ).to.have.members(facet.selectors);
         }
       });

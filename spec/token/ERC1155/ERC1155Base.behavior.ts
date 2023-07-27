@@ -86,7 +86,9 @@ export function describeBehaviorOfERC1155Base(
     describe('#balanceOfBatch(address[],uint256[])', function () {
       it('returns the balances of given tokens held by given addresses', async function () {
         expect(
-          await instance.balanceOfBatch.staticCall([holder.address], [0n]),
+          Array.from(
+            await instance.balanceOfBatch.staticCall([holder.address], [0n]),
+          ),
         ).to.have.deep.members([0n]);
         // TODO: test delta
       });
@@ -276,7 +278,9 @@ export function describeBehaviorOfERC1155Base(
         await mint(spender.address, id, amount);
 
         expect(
-          await instance.balanceOfBatch.staticCall([spender.address], [id]),
+          Array.from(
+            await instance.balanceOfBatch.staticCall([spender.address], [id]),
+          ),
         ).to.have.deep.members([amount]);
 
         await instance
@@ -290,10 +294,14 @@ export function describeBehaviorOfERC1155Base(
           );
 
         expect(
-          await instance.balanceOfBatch.staticCall([spender.address], [id]),
+          Array.from(
+            await instance.balanceOfBatch.staticCall([spender.address], [id]),
+          ),
         ).to.have.deep.members([0n]);
         expect(
-          await instance.balanceOfBatch.staticCall([holder.address], [id]),
+          Array.from(
+            await instance.balanceOfBatch.staticCall([holder.address], [id]),
+          ),
         ).to.have.deep.members([amount]);
       });
 
