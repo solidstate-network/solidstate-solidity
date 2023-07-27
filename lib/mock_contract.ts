@@ -5,5 +5,11 @@ export async function deployMockContract(ethersV6Signer: any, abi: any) {
 
   ethersV5Signer._isSigner = true;
 
-  return deployWaffleMockContract(ethersV5Signer, abi);
+  const waffleMock = await deployWaffleMockContract(ethersV5Signer, abi);
+
+  const mock = Object.assign(waffleMock, {
+    getAddress: async () => (await waffleMock).address,
+  });
+
+  return mock as any;
 }
