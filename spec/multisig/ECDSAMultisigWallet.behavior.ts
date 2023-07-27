@@ -1,4 +1,4 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter, signData } from '@solidstate/library';
 import { IECDSAMultisigWallet } from '@solidstate/typechain-types';

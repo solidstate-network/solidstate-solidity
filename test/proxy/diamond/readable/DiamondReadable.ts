@@ -1,4 +1,4 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
   DiamondReadableMock,

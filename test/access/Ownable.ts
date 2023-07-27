@@ -1,4 +1,4 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain-types';

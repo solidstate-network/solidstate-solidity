@@ -2,7 +2,7 @@ import {
   describeBehaviorOfUpgradeableProxy,
   UpgradeableProxyBehaviorArgs,
 } from './UpgradeableProxy.behavior';
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IUpgradeableProxyOwnable } from '@solidstate/typechain-types';

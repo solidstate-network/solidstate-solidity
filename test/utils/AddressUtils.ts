@@ -1,4 +1,4 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
   AddressUtilsMock,
@@ -88,7 +88,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             ['functionCall(address,bytes)'].staticCall(target, data),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
@@ -157,7 +157,7 @@ describe('AddressUtils', async () => {
               data,
               revertReason,
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
@@ -232,7 +232,7 @@ describe('AddressUtils', async () => {
               data,
               0,
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       it('transfers given value to target contract', async () => {
@@ -380,7 +380,7 @@ describe('AddressUtils', async () => {
               0,
               '',
             ),
-        ).to.equal(ethers.hexZeroPad(ethers.hexlify(1), 32));
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       it('transfers given value to target contract', async () => {
