@@ -65,29 +65,23 @@ export function describeBehaviorOfDiamondWritable(
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
       it('emits DiamondCut event', async function () {
-        const facets: any = [
+        const facets = [
           {
             target: facet.address,
-            action: 0,
+            action: 0n,
             selectors: [ethers.hexlify(ethers.randomBytes(4))],
           },
         ];
         const target = ethers.ZeroAddress;
         const data = '0x';
 
-        let tx = instance.connect(owner).diamondCut(facets, target, data);
-
-        const events = (await (await tx).wait()).events;
-        const argsResult: any = events![0].args!;
-
-        expect(argsResult.facetCuts[0].target).to.eq(facets[0].target);
-        expect(argsResult.facetCuts[0].action).to.eq(facets[0].action);
-        expect(argsResult.facetCuts[0].selectors).to.deep.eq(
-          facets[0].selectors,
-        );
-
-        expect(argsResult.target).to.eq(target);
-        expect(argsResult.data).to.eq(data);
+        await expect(instance.connect(owner).diamondCut(facets, target, data))
+          .to.emit(instance, 'DiamondCut')
+          .withArgs(
+            facets.map((f) => [f.target, f.action, f.selectors]),
+            target,
+            data,
+          );
       });
 
       describe('using FacetCutAction ADD', function () {
