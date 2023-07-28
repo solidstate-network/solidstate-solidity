@@ -7,10 +7,10 @@ import { ethers } from 'hardhat';
 
 const tokenURI = 'ERC1155Metadata.tokenURI';
 
-describe('SolidStateERC1155', function () {
+describe('SolidStateERC1155', () => {
   let instance: SolidStateERC1155Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC1155Mock__factory(deployer).deploy();
   });

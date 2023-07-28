@@ -14,7 +14,7 @@ export function describeBehaviorOfERC1271Stored(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Stored', function () {
+  describe('::ERC1271Stored', () => {
     // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
       deploy,

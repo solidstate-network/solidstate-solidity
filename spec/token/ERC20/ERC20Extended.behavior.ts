@@ -19,21 +19,21 @@ export function describeBehaviorOfERC20Extended(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20Extended', function () {
+  describe('::ERC20Extended', () => {
     let deployer: SignerWithAddress;
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let instance: IERC20Extended;
 
-    before(async function () {
+    before(async () => {
       [deployer, holder, spender] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#increaseAllowance(address,uint256)', function () {
+    describe('#increaseAllowance(address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
@@ -42,7 +42,7 @@ export function describeBehaviorOfERC20Extended(
         ).to.be.true;
       });
 
-      it('increases approval of spender with respect to holder by given amount', async function () {
+      it('increases approval of spender with respect to holder by given amount', async () => {
         let amount = 2n;
 
         await instance
@@ -64,7 +64,7 @@ export function describeBehaviorOfERC20Extended(
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
-      it('emits Approval event', async function () {
+      it('emits Approval event', async () => {
         let amount = 2n;
 
         await expect(
@@ -74,8 +74,8 @@ export function describeBehaviorOfERC20Extended(
           .withArgs(holder.address, spender.address, amount);
       });
 
-      describe('reverts if', function () {
-        it('approval amount overflows uint256', async function () {
+      describe('reverts if', () => {
+        it('approval amount overflows uint256', async () => {
           await instance
             .connect(holder)
             .increaseAllowance(spender.address, ethers.MaxUint256);
@@ -90,7 +90,7 @@ export function describeBehaviorOfERC20Extended(
       });
     });
 
-    describe('#decreaseAllowance(address,uint256)', function () {
+    describe('#decreaseAllowance(address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
@@ -99,7 +99,7 @@ export function describeBehaviorOfERC20Extended(
         ).to.be.true;
       });
 
-      it('decreases approval of spender with respect to holder by given amount', async function () {
+      it('decreases approval of spender with respect to holder by given amount', async () => {
         let amount = 2n;
         await instance
           .connect(holder)
@@ -124,7 +124,7 @@ export function describeBehaviorOfERC20Extended(
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
-      it('emits Approval event', async function () {
+      it('emits Approval event', async () => {
         let amount = 2n;
         await instance
           .connect(holder)
@@ -137,8 +137,8 @@ export function describeBehaviorOfERC20Extended(
           .withArgs(holder.address, spender.address, 0);
       });
 
-      describe('reverts if', function () {
-        it('approval amount underflows uint256', async function () {
+      describe('reverts if', () => {
+        it('approval amount underflows uint256', async () => {
           await expect(
             instance.connect(holder).decreaseAllowance(spender.address, 1),
           ).to.be.revertedWithCustomError(

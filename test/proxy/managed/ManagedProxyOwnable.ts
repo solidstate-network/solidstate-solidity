@@ -8,11 +8,11 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ManagedProxyOwnable', function () {
+describe('ManagedProxyOwnable', () => {
   let manager: any;
   let instance: ManagedProxyOwnableMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
     manager = await deployMockContract((await ethers.getSigners())[0], [
@@ -44,19 +44,19 @@ describe('ManagedProxyOwnable', function () {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', function () {
-    describe('#_getImplementation()', function () {
+  describe('__internal', () => {
+    describe('#_getImplementation()', () => {
       it('returns implementation address');
 
-      describe('reverts if', function () {
-        it('manager is non-contract address', async function () {
+      describe('reverts if', () => {
+        it('manager is non-contract address', async () => {
           await instance.setOwner(ethers.ZeroAddress);
 
           await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
-        it('manager fails to return implementation', async function () {
+        it('manager fails to return implementation', async () => {
           await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
@@ -69,8 +69,8 @@ describe('ManagedProxyOwnable', function () {
       });
     });
 
-    describe('#_getManager()', function () {
-      it('returns address of ERC173 owner', async function () {
+    describe('#_getManager()', () => {
+      it('returns address of ERC173 owner', async () => {
         expect(await instance.__getManager.staticCall()).to.equal(
           await instance.getOwner.staticCall(),
         );

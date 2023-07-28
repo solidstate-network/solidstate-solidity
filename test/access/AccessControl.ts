@@ -11,18 +11,18 @@ const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
-describe('AccessControl', function () {
+describe('AccessControl', () => {
   let admin: SignerWithAddress;
   let nonAdmin: SignerWithAddress;
   let nonAdmin2: SignerWithAddress;
   let nonAdmin3: SignerWithAddress;
   let instance: AccessControlMock;
 
-  before(async function () {
+  before(async () => {
     [admin, nonAdmin, nonAdmin2, nonAdmin3] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new AccessControlMock__factory(admin).deploy(
       admin.address,
     );
@@ -34,8 +34,8 @@ describe('AccessControl', function () {
     getNonAdmin: async () => nonAdmin,
   });
 
-  describe('#_checkRole(bytes32)', function () {
-    it('does not revert if sender has role', async function () {
+  describe('#_checkRole(bytes32)', () => {
+    it('does not revert if sender has role', async () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
@@ -43,8 +43,8 @@ describe('AccessControl', function () {
       ).not.to.be.reverted;
     });
 
-    describe('reverts if', function () {
-      it('sender does not have role', async function () {
+    describe('reverts if', () => {
+      it('sender does not have role', async () => {
         await expect(
           instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
         ).to.revertedWith(
@@ -54,8 +54,8 @@ describe('AccessControl', function () {
     });
   });
 
-  describe('#_checkRole(bytes32,address)', function () {
-    it('does not revert if given account has role', async function () {
+  describe('#_checkRole(bytes32,address)', () => {
+    it('does not revert if given account has role', async () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
@@ -66,8 +66,8 @@ describe('AccessControl', function () {
       ).not.to.be.reverted;
     });
 
-    describe('reverts if', function () {
-      it('given account does not have role', async function () {
+    describe('reverts if', () => {
+      it('given account does not have role', async () => {
         await expect(
           instance['checkRole(bytes32,address)'].staticCall(
             ROLE,
@@ -80,8 +80,8 @@ describe('AccessControl', function () {
     });
   });
 
-  describe('#_setRoleAdmin(bytes32,bytes32)', function () {
-    it('updates role admin', async function () {
+  describe('#_setRoleAdmin(bytes32,bytes32)', () => {
+    it('updates role admin', async () => {
       const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
@@ -94,7 +94,7 @@ describe('AccessControl', function () {
       );
     });
 
-    it('emits RoleAdminChanged event', async function () {
+    it('emits RoleAdminChanged event', async () => {
       const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
@@ -106,8 +106,8 @@ describe('AccessControl', function () {
     });
   });
 
-  describe('#_getRoleMember(bytes32,uint256)', function () {
-    it('returns the correct member', async function () {
+  describe('#_getRoleMember(bytes32,uint256)', () => {
+    it('returns the correct member', async () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
       await instance.connect(admin).grantRole(ROLE, nonAdmin2.address);
       await instance.connect(admin).grantRole(ROLE, nonAdmin3.address);
@@ -117,8 +117,8 @@ describe('AccessControl', function () {
       expect(await instance.getRoleMember(ROLE, 2)).to.equal(nonAdmin3.address);
     });
 
-    describe('reverts if', function () {
-      it('role does not exist', async function () {
+    describe('reverts if', () => {
+      it('role does not exist', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         const newRole = ethers.solidityPackedKeccak256(
@@ -133,7 +133,7 @@ describe('AccessControl', function () {
         );
       });
 
-      it('role exists but index is invalid', async function () {
+      it('role exists but index is invalid', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await expect(
@@ -146,8 +146,8 @@ describe('AccessControl', function () {
     });
   });
 
-  describe('#_getRoleMemberCount(bytes32)', function () {
-    it('returns the correct count', async function () {
+  describe('#_getRoleMemberCount(bytes32)', () => {
+    it('returns the correct count', async () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
       await instance.connect(admin).grantRole(ROLE, nonAdmin2.address);
       await instance.connect(admin).grantRole(ROLE, nonAdmin3.address);

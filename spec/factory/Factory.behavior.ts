@@ -10,7 +10,7 @@ export function describeBehaviorOfFactory(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Factory', function () {
+  describe('::Factory', () => {
     // no behavior
   });
 }

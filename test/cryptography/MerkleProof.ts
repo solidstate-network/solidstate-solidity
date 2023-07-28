@@ -7,17 +7,17 @@ import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
-describe('MerkleProof', function () {
+describe('MerkleProof', () => {
   let instance: MerkleProofMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new MerkleProofMock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('#verify(bytes32[],bytes32,bytes32)', function () {
-      it('returns true if proof is valid', async function () {
+  describe('__internal', () => {
+    describe('#verify(bytes32[],bytes32,bytes32)', () => {
+      it('returns true if proof is valid', async () => {
         const leaves = ['1', '2', '3'];
         const tree = new MerkleTree(leaves, keccak256, {
           hashLeaves: true,
@@ -33,7 +33,7 @@ describe('MerkleProof', function () {
         }
       });
 
-      it('returns false if proof is invalid', async function () {
+      it('returns false if proof is invalid', async () => {
         const leaves = ['1', '2', '3'];
         const tree = new MerkleTree(leaves, keccak256, {
           hashLeaves: true,

@@ -10,10 +10,10 @@ const symbol = 'ERC20Metadata.symbol';
 const decimals = 18;
 const supply = ethers.parseEther('1');
 
-describe('SolidStateERC20', function () {
+describe('SolidStateERC20', () => {
   let instance: SolidStateERC20Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC20Mock__factory(deployer).deploy(
       name,

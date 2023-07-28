@@ -16,11 +16,11 @@ export function describeBehaviorOfERC1271Ownable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Ownable', function () {
+  describe('::ERC1271Ownable', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       owner = await getOwner();
       nonOwner = await getNonOwner();
     });
@@ -29,12 +29,12 @@ export function describeBehaviorOfERC1271Ownable(
     describeBehaviorOfERC1271Base(
       deploy,
       {
-        getValidParams: async function () {
+        getValidParams: async () => {
           const hash = ethers.randomBytes(32);
           const signature = await owner.signMessage(ethers.getBytes(hash));
           return [hash, ethers.getBytes(signature)];
         },
-        getInvalidParams: async function () {
+        getInvalidParams: async () => {
           const hash = ethers.randomBytes(32);
           const signature = await nonOwner.signMessage(ethers.getBytes(hash));
           return [hash, ethers.getBytes(signature)];

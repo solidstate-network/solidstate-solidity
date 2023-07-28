@@ -7,10 +7,10 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UpgradeableProxy', function () {
+describe('UpgradeableProxy', () => {
   let instance: UpgradeableProxyMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
     const implementationInstance = await new OwnableMock__factory(
@@ -27,16 +27,16 @@ describe('UpgradeableProxy', function () {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', function () {
-    describe('#_getImplementation()', function () {
-      it('returns implementation address', async function () {
+  describe('__internal', () => {
+    describe('#_getImplementation()', () => {
+      it('returns implementation address', async () => {
         expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
     });
 
-    describe('#_setImplementation(address)', function () {
-      it('updates implementation address', async function () {
+    describe('#_setImplementation(address)', () => {
+      it('updates implementation address', async () => {
         const address = await instance.getAddress();
 
         expect(await instance.__getImplementation.staticCall()).not.to.equal(

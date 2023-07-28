@@ -7,17 +7,17 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC20ImplicitApproval', function () {
+describe('ERC20ImplicitApproval', () => {
   let holder: SignerWithAddress;
   let implicitlyApprovedSpender: SignerWithAddress;
   let instance: ERC20ImplicitApprovalMock;
 
-  before(async function () {
+  before(async () => {
     // TODO: avoid need for gap in array by passing separate (non-implicitly-approved) spender to ERC20Base behavior tests
     [holder, , implicitlyApprovedSpender] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC20ImplicitApprovalMock__factory(deployer).deploy([
       implicitlyApprovedSpender.address,
@@ -32,9 +32,9 @@ describe('ERC20ImplicitApproval', function () {
     getImplicitlyApprovedSpender: async () => implicitlyApprovedSpender,
   });
 
-  describe('__internal', function () {
-    describe('#_isImplicitlyApproved(address)', function () {
-      it('returns implicit approval status of address', async function () {
+  describe('__internal', () => {
+    describe('#_isImplicitlyApproved(address)', () => {
+      it('returns implicit approval status of address', async () => {
         expect(
           await instance.__isImplicitlyApproved.staticCall(ethers.ZeroAddress),
         ).to.be.false;

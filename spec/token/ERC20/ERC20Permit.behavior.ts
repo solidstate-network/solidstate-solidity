@@ -17,13 +17,13 @@ export function describeBehaviorOfERC20Permit(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20Permit', function () {
+  describe('::ERC20Permit', () => {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let thirdParty: SignerWithAddress;
     let instance: ERC20Permit;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       [holder, spender, thirdParty] = await ethers.getSigners();
       instance = await deploy();
     });
@@ -36,7 +36,7 @@ export function describeBehaviorOfERC20Permit(
       it('todo');
     });
 
-    describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', function () {
+    describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', () => {
       it('should increase allowance using permit', async () => {
         const timestamp = await time.latest();
 

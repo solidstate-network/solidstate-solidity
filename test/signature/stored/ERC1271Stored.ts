@@ -11,10 +11,10 @@ const validParams: [Uint8Array, Uint8Array] = [
   ethers.randomBytes(0),
 ];
 
-describe('ERC1271Stored', function () {
+describe('ERC1271Stored', () => {
   let instance: ERC1271StoredMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1271StoredMock__factory(deployer).deploy(
       validParams[0],
@@ -25,9 +25,9 @@ describe('ERC1271Stored', function () {
     getValidParams: async () => validParams,
   });
 
-  describe('__internal', function () {
-    describe('#_isValidSignature(bytes32,bytes)', function () {
-      it('returns magic value if signature is stored', async function () {
+  describe('__internal', () => {
+    describe('#_isValidSignature(bytes32,bytes)', () => {
+      it('returns magic value if signature is stored', async () => {
         expect(
           await instance.__isValidSignature.staticCall(
             validParams[0],
@@ -36,7 +36,7 @@ describe('ERC1271Stored', function () {
         ).to.equal('0x1626ba7e');
       });
 
-      it('returns null bytes if signature is not stored', async function () {
+      it('returns null bytes if signature is not stored', async () => {
         expect(
           await instance.__isValidSignature.staticCall(
             ethers.randomBytes(32),
@@ -46,8 +46,8 @@ describe('ERC1271Stored', function () {
       });
     });
 
-    describe('#_setValidSignature(bytes32,bool)', function () {
-      it('sets signature validity', async function () {
+    describe('#_setValidSignature(bytes32,bool)', () => {
+      it('sets signature validity', async () => {
         let hash = ethers.randomBytes(32);
         let signature = ethers.randomBytes(0);
 

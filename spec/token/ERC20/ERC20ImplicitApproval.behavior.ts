@@ -27,17 +27,17 @@ export function describeBehaviorOfERC20ImplicitApproval(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20ImplicitApproval', function () {
+  describe('::ERC20ImplicitApproval', () => {
     let holder: SignerWithAddress;
     let implicitlyApprovedSpender: SignerWithAddress;
     let instance: ERC20ImplicitApproval;
 
-    before(async function () {
+    before(async () => {
       holder = await getHolder();
       implicitlyApprovedSpender = await getImplicitlyApprovedSpender();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -51,8 +51,8 @@ export function describeBehaviorOfERC20ImplicitApproval(
       skips,
     );
 
-    describe('#allowance(address,address)', function () {
-      it('returns maximum uint256 for implicitly approved spender', async function () {
+    describe('#allowance(address,address)', () => {
+      it('returns maximum uint256 for implicitly approved spender', async () => {
         expect(
           await instance.allowance.staticCall(
             ethers.ZeroAddress,
@@ -62,8 +62,8 @@ export function describeBehaviorOfERC20ImplicitApproval(
       });
     });
 
-    describe('#transferFrom(address,address,uint256)', function () {
-      it('does not require approval for implicitly approved sender', async function () {
+    describe('#transferFrom(address,address,uint256)', () => {
+      it('does not require approval for implicitly approved sender', async () => {
         const amount = 1n;
 
         await mint(holder.address, amount);

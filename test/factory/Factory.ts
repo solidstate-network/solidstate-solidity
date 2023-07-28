@@ -3,19 +3,19 @@ import { FactoryMock, FactoryMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('Factory', function () {
+describe('Factory', () => {
   let instance: FactoryMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new FactoryMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfFactory(async () => instance, {});
 
-  describe('__internal', function () {
-    describe('#_deploy(bytes)', function () {
-      it('deploys bytecode and returns deployment address', async function () {
+  describe('__internal', () => {
+    describe('#_deploy(bytes)', () => {
+      it('deploys bytecode and returns deployment address', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
 
         const address = await instance['__deploy(bytes)'].staticCall(initCode);
@@ -28,8 +28,8 @@ describe('Factory', function () {
         );
       });
 
-      describe('reverts if', function () {
-        it('contract creation fails', async function () {
+      describe('reverts if', () => {
+        it('contract creation fails', async () => {
           const initCode = '0xfe';
 
           await expect(
@@ -42,8 +42,8 @@ describe('Factory', function () {
       });
     });
 
-    describe('#_deploy(bytes,bytes32)', function () {
-      it('deploys bytecode and returns deployment address', async function () {
+    describe('#_deploy(bytes,bytes32)', () => {
+      it('deploys bytecode and returns deployment address', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
@@ -66,8 +66,8 @@ describe('Factory', function () {
         );
       });
 
-      describe('reverts if', function () {
-        it('contract creation fails', async function () {
+      describe('reverts if', () => {
+        it('contract creation fails', async () => {
           const initCode = '0xfe';
           const salt = ethers.randomBytes(32);
 
@@ -79,7 +79,7 @@ describe('Factory', function () {
           );
         });
 
-        it('salt has already been used', async function () {
+        it('salt has already been used', async () => {
           const { data: initCode } = await instance.deploymentTransaction();
           const salt = ethers.randomBytes(32);
 
@@ -95,8 +95,8 @@ describe('Factory', function () {
       });
     });
 
-    describe('#_calculateDeploymentAddress(bytes32,bytes32)', function () {
-      it('returns address of not-yet-deployed contract', async function () {
+    describe('#_calculateDeploymentAddress(bytes32,bytes32)', () => {
+      it('returns address of not-yet-deployed contract', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);

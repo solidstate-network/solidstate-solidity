@@ -7,7 +7,7 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondFallback', function () {
+describe('DiamondFallback', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: DiamondFallbackMock;
@@ -16,7 +16,7 @@ describe('DiamondFallback', function () {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     const facetInstance = await new OwnableMock__factory(deployer).deploy(
       deployer.address,

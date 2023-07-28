@@ -16,15 +16,15 @@ export function describeBehaviorOfERC721Enumerable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC721Enumerable', function () {
+  describe('::ERC721Enumerable', () => {
     let instance: ERC721Enumerable;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#totalSupply()', function () {
-      it('returns total token supply', async function () {
+    describe('#totalSupply()', () => {
+      it('returns total token supply', async () => {
         expect(await instance.totalSupply()).to.equal(supply);
 
         await mint(await instance.getAddress(), 2n);
@@ -35,8 +35,8 @@ export function describeBehaviorOfERC721Enumerable(
       });
     });
 
-    describe('#tokenOfOwnerByIndex(address,uint256)', function () {
-      it('returns token id held by given account at given index', async function () {
+    describe('#tokenOfOwnerByIndex(address,uint256)', () => {
+      it('returns token id held by given account at given index', async () => {
         // TODO: query balance to determine starting index
 
         await expect(
@@ -78,8 +78,8 @@ export function describeBehaviorOfERC721Enumerable(
       });
     });
 
-    describe('#tokenByIndex(uint256)', function () {
-      it('returns token id held globally at given index', async function () {
+    describe('#tokenByIndex(uint256)', () => {
+      it('returns token id held globally at given index', async () => {
         const index = await instance.totalSupply.staticCall();
 
         await expect(

@@ -3,17 +3,17 @@ import { EIP712Mock, EIP712Mock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('EIP712', function () {
+describe('EIP712', () => {
   let instance: EIP712Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new EIP712Mock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('#calculateDomainSeparator(bytes32,bytes32)', function () {
-      it('calculates EIP-712 domain separator', async function () {
+  describe('__internal', () => {
+    describe('#calculateDomainSeparator(bytes32,bytes32)', () => {
+      it('calculates EIP-712 domain separator', async () => {
         const typeHash = ethers.solidityPackedKeccak256(
           ['string'],
           [

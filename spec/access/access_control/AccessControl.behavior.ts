@@ -20,19 +20,19 @@ export function describeBehaviorOfAccessControl(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::AccessControl', function () {
+  describe('::AccessControl', () => {
     let instance: AccessControl;
     let admin: SignerWithAddress;
     let nonAdmin: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
       admin = await getAdmin();
       nonAdmin = await getNonAdmin();
     });
 
-    describe('#hasRole(bytes32,address)', function () {
-      it('returns whether given account has given role', async function () {
+    describe('#hasRole(bytes32,address)', () => {
+      it('returns whether given account has given role', async () => {
         expect(
           await instance.hasRole.staticCall(DEFAULT_ADMIN_ROLE, admin.address),
         ).to.equal(true);
@@ -46,22 +46,22 @@ export function describeBehaviorOfAccessControl(
       });
     });
 
-    describe('#getRoleAdmin(bytes32)', function () {
-      it('returns default admin role', async function () {
+    describe('#getRoleAdmin(bytes32)', () => {
+      it('returns default admin role', async () => {
         expect(await instance.getRoleAdmin.staticCall(ROLE)).to.equal(
           DEFAULT_ADMIN_ROLE,
         );
       });
 
-      it('returns default admin role as admin of itself', async function () {
+      it('returns default admin role as admin of itself', async () => {
         expect(
           await instance.getRoleAdmin.staticCall(DEFAULT_ADMIN_ROLE),
         ).to.equal(DEFAULT_ADMIN_ROLE);
       });
     });
 
-    describe('#grantRole(bytes32,address)', function () {
-      it('adds role to account', async function () {
+    describe('#grantRole(bytes32,address)', () => {
+      it('adds role to account', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         expect(
@@ -69,14 +69,14 @@ export function describeBehaviorOfAccessControl(
         ).to.equal(true);
       });
 
-      it('emits RoleGranted event', async function () {
+      it('emits RoleGranted event', async () => {
         await expect(instance.connect(admin).grantRole(ROLE, nonAdmin.address))
           .to.emit(instance, 'RoleGranted')
           .withArgs(ROLE, nonAdmin.address, admin.address);
       });
 
-      describe('reverts if', function () {
-        it('sender is not admin', async function () {
+      describe('reverts if', () => {
+        it('sender is not admin', async () => {
           await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
           await expect(
@@ -88,8 +88,8 @@ export function describeBehaviorOfAccessControl(
       });
     });
 
-    describe('#revokeRole(bytes32,address)', function () {
-      it('removes role from account', async function () {
+    describe('#revokeRole(bytes32,address)', () => {
+      it('removes role from account', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await instance.connect(admin).revokeRole(ROLE, nonAdmin.address);
@@ -99,7 +99,7 @@ export function describeBehaviorOfAccessControl(
         ).to.equal(false);
       });
 
-      it('emits RoleRevoked event', async function () {
+      it('emits RoleRevoked event', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await expect(instance.connect(admin).revokeRole(ROLE, nonAdmin.address))
@@ -107,8 +107,8 @@ export function describeBehaviorOfAccessControl(
           .withArgs(ROLE, nonAdmin.address, admin.address);
       });
 
-      describe('reverts if', function () {
-        it('sender is not admin', async function () {
+      describe('reverts if', () => {
+        it('sender is not admin', async () => {
           await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
           await expect(
@@ -120,8 +120,8 @@ export function describeBehaviorOfAccessControl(
       });
     });
 
-    describe('#renounceRole(bytes32,address)', function () {
-      it('removes role from sender', async function () {
+    describe('#renounceRole(bytes32,address)', () => {
+      it('removes role from sender', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await instance.connect(nonAdmin).renounceRole(ROLE),
@@ -130,7 +130,7 @@ export function describeBehaviorOfAccessControl(
           ).to.equal(false);
       });
 
-      it('emits RoleRevoked event', async function () {
+      it('emits RoleRevoked event', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         await expect(instance.connect(nonAdmin).renounceRole(ROLE))

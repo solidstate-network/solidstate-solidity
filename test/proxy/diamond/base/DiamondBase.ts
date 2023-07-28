@@ -6,10 +6,10 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondBase', function () {
+describe('DiamondBase', () => {
   let instance: DiamondBaseMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     const facetInstance = await new OwnableMock__factory(deployer).deploy(
       deployer.address,

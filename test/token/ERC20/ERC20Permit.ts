@@ -7,17 +7,17 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC20Permit', function () {
+describe('ERC20Permit', () => {
   const name = 'ERC20Metadata.name';
 
   let deployer: SignerWithAddress;
   let instance: ERC20PermitMock;
 
-  before(async function () {
+  before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new ERC20PermitMock__factory(deployer).deploy(name);
   });
 

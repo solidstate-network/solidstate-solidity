@@ -68,7 +68,7 @@ describe('BinaryHeap', async () => {
           }
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
@@ -158,7 +158,7 @@ describe('BinaryHeap', async () => {
           expect(await instance.root.staticCall()).to.equal(min);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.root.staticCall()).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
@@ -258,7 +258,7 @@ describe('BinaryHeap', async () => {
           }
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
@@ -348,7 +348,7 @@ describe('BinaryHeap', async () => {
           expect(await instance.root.staticCall()).to.equal(min);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.root.staticCall()).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
@@ -448,7 +448,7 @@ describe('BinaryHeap', async () => {
           }
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
@@ -538,7 +538,7 @@ describe('BinaryHeap', async () => {
           expect(await instance.root.staticCall()).to.equal(min);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.root.staticCall()).to.be.revertedWithPanic(
               PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,

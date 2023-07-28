@@ -18,7 +18,7 @@ export function describeBehaviorOfERC20Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20Base', function () {
+  describe('::ERC20Base', () => {
     // note: holder gets supply (1e18) amount of tokens so use spender/receiver for easier testing
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
@@ -26,16 +26,16 @@ export function describeBehaviorOfERC20Base(
     let sender: SignerWithAddress;
     let instance: IERC20Base;
 
-    before(async function () {
+    before(async () => {
       [holder, spender, receiver, sender] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#totalSupply()', function () {
-      it('returns the total supply of tokens', async function () {
+    describe('#totalSupply()', () => {
+      it('returns the total supply of tokens', async () => {
         expect(await instance.totalSupply.staticCall()).to.equal(supply);
 
         const amount = 2n;
@@ -52,8 +52,8 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#balanceOf(address)', function () {
-      it('returns the token balance of given address', async function () {
+    describe('#balanceOf(address)', () => {
+      it('returns the token balance of given address', async () => {
         expect(
           await instance.balanceOf.staticCall(ethers.ZeroAddress),
         ).to.equal(0);
@@ -74,8 +74,8 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#allowance(address,address)', function () {
-      it('returns the allowance given holder has granted to given spender', async function () {
+    describe('#allowance(address,address)', () => {
+      it('returns the allowance given holder has granted to given spender', async () => {
         expect(
           await instance.allowance.staticCall(holder.address, spender.address),
         ).to.equal(0);
@@ -89,7 +89,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#approve(address,uint256)', function () {
+    describe('#approve(address,uint256)', () => {
       it('returns true', async () => {
         const amount = 2n;
 
@@ -100,7 +100,7 @@ export function describeBehaviorOfERC20Base(
         ).to.be.true;
       });
 
-      it('enables given spender to spend tokens on behalf of sender', async function () {
+      it('enables given spender to spend tokens on behalf of sender', async () => {
         let amount = 2n;
         await instance.connect(holder).approve(spender.address, amount);
 
@@ -111,7 +111,7 @@ export function describeBehaviorOfERC20Base(
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
-      it('emits Approval event', async function () {
+      it('emits Approval event', async () => {
         let amount = 2n;
 
         await expect(instance.connect(holder).approve(spender.address, amount))
@@ -120,7 +120,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#transfer(address,uint256)', function () {
+    describe('#transfer(address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
@@ -129,7 +129,7 @@ export function describeBehaviorOfERC20Base(
         ).to.be.true;
       });
 
-      it('transfers amount from holder to receiver', async function () {
+      it('transfers amount from holder to receiver', async () => {
         const amount = 2n;
         await mint(holder.address, amount);
 
@@ -142,8 +142,8 @@ export function describeBehaviorOfERC20Base(
         );
       });
 
-      describe('reverts if', function () {
-        it('has insufficient balance', async function () {
+      describe('reverts if', () => {
+        it('has insufficient balance', async () => {
           const amount = 2n;
 
           await expect(
@@ -156,7 +156,7 @@ export function describeBehaviorOfERC20Base(
       });
     });
 
-    describe('#transferFrom(address,address,uint256)', function () {
+    describe('#transferFrom(address,address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
@@ -165,7 +165,7 @@ export function describeBehaviorOfERC20Base(
         ).to.be.true;
       });
 
-      it('transfers amount on behalf of holder', async function () {
+      it('transfers amount on behalf of holder', async () => {
         const amount = 2n;
         await mint(holder.address, amount);
 
@@ -182,8 +182,8 @@ export function describeBehaviorOfERC20Base(
         );
       });
 
-      describe('reverts if', function () {
-        it('has insufficient balance', async function () {
+      describe('reverts if', () => {
+        it('has insufficient balance', async () => {
           const amount = 2n;
 
           await expect(
@@ -194,7 +194,7 @@ export function describeBehaviorOfERC20Base(
           );
         });
 
-        it('spender not approved', async function () {
+        it('spender not approved', async () => {
           const amount = 2n;
           await mint(sender.address, amount);
 

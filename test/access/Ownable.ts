@@ -6,16 +6,16 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
 
-describe('Ownable', function () {
+describe('Ownable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: OwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new OwnableMock__factory(owner).deploy(owner.address);
   });
 
@@ -118,13 +118,13 @@ describe('Ownable', function () {
     });
 
     describe('#_transferOwnership', () => {
-      it('sets new owner', async function () {
+      it('sets new owner', async () => {
         await instance.__transferOwnership(ethers.ZeroAddress);
 
         expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
-      it('emits OwnershipTransferred event', async function () {
+      it('emits OwnershipTransferred event', async () => {
         await expect(instance.__transferOwnership(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
           .withArgs(owner.address, ethers.ZeroAddress);
@@ -132,13 +132,13 @@ describe('Ownable', function () {
     });
 
     describe('#_setOwner', () => {
-      it('sets new owner', async function () {
+      it('sets new owner', async () => {
         await instance.__setOwner(ethers.ZeroAddress);
 
         expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
-      it('emits OwnershipTransferred event', async function () {
+      it('emits OwnershipTransferred event', async () => {
         await expect(instance.__setOwner(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
           .withArgs(owner.address, ethers.ZeroAddress);

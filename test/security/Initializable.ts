@@ -6,20 +6,20 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('Initializable', function () {
+describe('Initializable', () => {
   let deployer: SignerWithAddress;
   let instance: InitializableMock;
 
-  before(async function () {
+  before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new InitializableMock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('initializer() modifier', function () {
+  describe('__internal', () => {
+    describe('initializer() modifier', () => {
       it('sets initialized version to 1', async () => {
         await instance.modifier_initializer();
 
@@ -42,7 +42,7 @@ describe('Initializable', function () {
       });
     });
 
-    describe('reinitializer(uint8) modifier', function () {
+    describe('reinitializer(uint8) modifier', () => {
       it('sets monotonically increasing initialized version', async () => {
         await instance.modifier_reinitializer(1n);
         await instance.modifier_reinitializer(2n);

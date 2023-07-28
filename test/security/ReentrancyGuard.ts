@@ -6,19 +6,19 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ReentrancyGuard', function () {
+describe('ReentrancyGuard', () => {
   let instance: ReentrancyGuardMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ReentrancyGuardMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfReentrancyGuard(async () => instance, {});
 
-  describe('__internal', function () {
-    describe('nonReentrant() modifier', function () {
-      it('does not revert non-reentrant call', async function () {
+  describe('__internal', () => {
+    describe('nonReentrant() modifier', () => {
+      it('does not revert non-reentrant call', async () => {
         await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
 
         // test subsequent calls
@@ -31,15 +31,15 @@ describe('ReentrancyGuard', function () {
         );
       });
 
-      describe('reverts if', function () {
-        it('call is reentrant', async function () {
+      describe('reverts if', () => {
+        it('call is reentrant', async () => {
           await expect(instance.reentrancyTest()).to.be.revertedWithCustomError(
             instance,
             'ReentrancyGuard__ReentrantCall',
           );
         });
 
-        it('call is cross-function reentrant', async function () {
+        it('call is cross-function reentrant', async () => {
           await expect(
             instance.crossFunctionReentrancyTest(),
           ).to.be.revertedWithCustomError(

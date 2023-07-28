@@ -10,10 +10,10 @@ let restrictions = [
   { code: 3, message: 'three' },
 ];
 
-describe('SolidStateERC1404', function () {
+describe('SolidStateERC1404', () => {
   let instance: SolidStateERC1404Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC1404Mock__factory(deployer).deploy(
       restrictions.map((r) => r.code),

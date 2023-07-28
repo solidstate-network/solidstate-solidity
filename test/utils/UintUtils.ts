@@ -6,16 +6,16 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UintUtils', function () {
+describe('UintUtils', () => {
   let instance: UintUtilsMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new UintUtilsMock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('#add(uint256,int256)', function () {
+  describe('__internal', () => {
+    describe('#add(uint256,int256)', () => {
       it('adds unsigned and signed integers', async () => {
         expect(await instance.add.staticCall(1, 1)).to.equal(2);
         expect(await instance.add.staticCall(1, -1)).to.equal(0);
@@ -30,7 +30,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#sub(uint256,int256)', function () {
+    describe('#sub(uint256,int256)', () => {
       it('subtracts unsigned and signed integers', async () => {
         expect(await instance.sub.staticCall(1, 1)).to.equal(0);
         expect(await instance.sub.staticCall(1, -1)).to.equal(2);
@@ -45,8 +45,8 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toString(uint256)', function () {
-      it('returns base-10 string representation of number', async function () {
+    describe('#toString(uint256)', () => {
+      it('returns base-10 string representation of number', async () => {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
           const number = BigInt(string);
@@ -61,7 +61,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toHexString(uint256)', function () {
+    describe('#toHexString(uint256)', () => {
       it('returns 0 if input is 0', async () => {
         expect(await instance.toHexString.staticCall(0)).to.equal('0x00');
       });
@@ -83,7 +83,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toHexString(uint256,uint256)', function () {
+    describe('#toHexString(uint256,uint256)', () => {
       it('returns hexadecimal string representation for matching value and length pairs', async () => {
         const inputValues = ['1000', '1', '12345', '85746201361230', '999983'];
         const inputLengths = ['2', '1', '2', '6', '3'];

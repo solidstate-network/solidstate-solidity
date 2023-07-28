@@ -7,7 +7,7 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('SolidStateDiamond', function () {
+describe('SolidStateDiamond', () => {
   let owner: SignerWithAddress;
   let nomineeOwner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
@@ -16,11 +16,11 @@ describe('SolidStateDiamond', function () {
 
   let facetCuts: any[] = [];
 
-  before(async function () {
+  before(async () => {
     [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateDiamondMock__factory(deployer).deploy();
 

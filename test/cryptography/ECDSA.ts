@@ -6,17 +6,17 @@ import { ethers } from 'hardhat';
 const MAX_S_VALUE =
   '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0';
 
-describe('ECDSA', function () {
+describe('ECDSA', () => {
   let instance: ECDSAMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ECDSAMock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
+  describe('__internal', () => {
     describe('#recover(bytes32,bytes)', () => {
-      it('returns message signer', async function () {
+      it('returns message signer', async () => {
         const [signer] = await ethers.getSigners();
 
         const data = {
@@ -65,8 +65,8 @@ describe('ECDSA', function () {
       });
     });
 
-    describe('#recover(bytes32,uint8,bytes32,bytes32)', function () {
-      it('returns message signer', async function () {
+    describe('#recover(bytes32,uint8,bytes32,bytes32)', () => {
+      it('returns message signer', async () => {
         const [signer] = await ethers.getSigners();
 
         const data = {
@@ -152,8 +152,8 @@ describe('ECDSA', function () {
       });
     });
 
-    describe('#toEthSignedMessageHash(bytes32)', function () {
-      it('returns hash of signed message prefix and message', async function () {
+    describe('#toEthSignedMessageHash(bytes32)', () => {
+      it('returns hash of signed message prefix and message', async () => {
         const hash = ethers.keccak256(ethers.toUtf8Bytes('test'));
 
         expect(await instance.toEthSignedMessageHash.staticCall(hash)).to.equal(

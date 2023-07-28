@@ -6,10 +6,10 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC165Base', function () {
+describe('ERC165Base', () => {
   let instance: ERC165BaseMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC165BaseMock__factory(deployer).deploy();
   });

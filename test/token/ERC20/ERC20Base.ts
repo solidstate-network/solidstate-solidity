@@ -7,18 +7,18 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC20Base', function () {
+describe('ERC20Base', () => {
   let sender: SignerWithAddress;
   let receiver: SignerWithAddress;
   let holder: SignerWithAddress;
   let spender: SignerWithAddress;
   let instance: ERC20BaseMock;
 
-  before(async function () {
+  before(async () => {
     [sender, receiver, holder, spender] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC20BaseMock__factory(deployer).deploy();
   });
@@ -29,17 +29,17 @@ describe('ERC20Base', function () {
     burn: (recipient, amount) => instance.__burn(recipient, amount),
   });
 
-  describe('__internal', function () {
-    describe('#_totalSupply()', function () {
+  describe('__internal', () => {
+    describe('#_totalSupply()', () => {
       it('todo');
     });
 
-    describe('#_balanceOf(address)', function () {
+    describe('#_balanceOf(address)', () => {
       it('todo');
     });
 
-    describe('#_mint(address,uint256)', function () {
-      it('increases balance of given account by given amount', async function () {
+    describe('#_mint(address,uint256)', () => {
+      it('increases balance of given account by given amount', async () => {
         let amount = 2n;
 
         await expect(() =>
@@ -47,7 +47,7 @@ describe('ERC20Base', function () {
         ).to.changeTokenBalance(instance, receiver, amount);
       });
 
-      it('increases total supply by given amount', async function () {
+      it('increases total supply by given amount', async () => {
         let amount = 2n;
 
         let initialSupply = await instance.totalSupply.staticCall();
@@ -57,7 +57,7 @@ describe('ERC20Base', function () {
         expect(finalSupply - initialSupply).to.equal(amount);
       });
 
-      it('emits Transfer event', async function () {
+      it('emits Transfer event', async () => {
         let amount = 2n;
 
         await expect(instance.__mint(receiver.address, amount))
@@ -65,8 +65,8 @@ describe('ERC20Base', function () {
           .withArgs(ethers.ZeroAddress, receiver.address, amount);
       });
 
-      describe('reverts if', function () {
-        it('given account is zero address', async function () {
+      describe('reverts if', () => {
+        it('given account is zero address', async () => {
           await expect(
             instance.__mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
@@ -77,8 +77,8 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_burn(address,uint256)', function () {
-      it('decreases balance of given account by given amount', async function () {
+    describe('#_burn(address,uint256)', () => {
+      it('decreases balance of given account by given amount', async () => {
         let amount = 2n;
         await instance.__mint(receiver.address, amount);
 
@@ -87,7 +87,7 @@ describe('ERC20Base', function () {
         ).to.changeTokenBalance(instance, receiver, -amount);
       });
 
-      it('decreases total supply by given amount', async function () {
+      it('decreases total supply by given amount', async () => {
         let amount = 2n;
         await instance.__mint(receiver.address, amount);
 
@@ -98,7 +98,7 @@ describe('ERC20Base', function () {
         expect(initialSupply - finalSupply).to.equal(amount);
       });
 
-      it('emits Transfer event', async function () {
+      it('emits Transfer event', async () => {
         let amount = 2n;
         await instance.__mint(receiver.address, amount);
 
@@ -107,8 +107,8 @@ describe('ERC20Base', function () {
           .withArgs(receiver.address, ethers.ZeroAddress, amount);
       });
 
-      describe('reverts if', function () {
-        it('given account is zero address', async function () {
+      describe('reverts if', () => {
+        it('given account is zero address', async () => {
           await expect(
             instance.__burn(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
@@ -129,8 +129,8 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_transfer(address,address,uint256)', function () {
-      it('decreases balance of sender and increases balance of recipient by given amount', async function () {
+    describe('#_transfer(address,address,uint256)', () => {
+      it('decreases balance of sender and increases balance of recipient by given amount', async () => {
         let amount = 2n;
         await instance.__mint(sender.address, amount);
 
@@ -143,7 +143,7 @@ describe('ERC20Base', function () {
         );
       });
 
-      it('does not modify total supply', async function () {
+      it('does not modify total supply', async () => {
         let amount = 2n;
         await instance.__mint(sender.address, amount);
 
@@ -154,7 +154,7 @@ describe('ERC20Base', function () {
         expect(finalSupply).to.equal(initialSupply);
       });
 
-      it('emits Transfer event', async function () {
+      it('emits Transfer event', async () => {
         let amount = 2n;
         await instance.__mint(sender.address, amount);
 
@@ -165,8 +165,8 @@ describe('ERC20Base', function () {
           .withArgs(sender.address, receiver.address, amount);
       });
 
-      describe('reverts if', function () {
-        it('sender is the zero address', async function () {
+      describe('reverts if', () => {
+        it('sender is the zero address', async () => {
           await expect(
             instance.__transfer(ethers.ZeroAddress, receiver.address, 0),
           ).to.be.revertedWithCustomError(
@@ -175,7 +175,7 @@ describe('ERC20Base', function () {
           );
         });
 
-        it('receiver is the zero address', async function () {
+        it('receiver is the zero address', async () => {
           await expect(
             instance.__transfer(sender.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
@@ -186,8 +186,8 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_approve(address,address,uint256)', function () {
-      it('sets approval of spender with respect to holder to given amount', async function () {
+    describe('#_approve(address,address,uint256)', () => {
+      it('sets approval of spender with respect to holder to given amount', async () => {
         let amount = 2n;
 
         await instance
@@ -206,7 +206,7 @@ describe('ERC20Base', function () {
         ).to.equal(amount);
       });
 
-      it('emits Approval event', async function () {
+      it('emits Approval event', async () => {
         let amount = 2n;
 
         await expect(
@@ -216,8 +216,8 @@ describe('ERC20Base', function () {
           .withArgs(holder.address, spender.address, amount);
       });
 
-      describe('reverts if', function () {
-        it('holder is the zero address', async function () {
+      describe('reverts if', () => {
+        it('holder is the zero address', async () => {
           await expect(
             instance.__approve(ethers.ZeroAddress, spender.address, 0),
           ).to.be.revertedWithCustomError(
@@ -226,7 +226,7 @@ describe('ERC20Base', function () {
           );
         });
 
-        it('spender is the zero address', async function () {
+        it('spender is the zero address', async () => {
           await expect(
             instance.__approve(holder.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
@@ -237,8 +237,8 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_decreaseAllowance(address,address,uint256)', function () {
-      it('reduces approval of spender with respect to holder by given amount', async function () {
+    describe('#_decreaseAllowance(address,address,uint256)', () => {
+      it('reduces approval of spender with respect to holder by given amount', async () => {
         await instance.__approve(holder.address, spender.address, 2);
 
         await instance
@@ -259,7 +259,7 @@ describe('ERC20Base', function () {
         ).to.equal(0);
       });
 
-      it('emits Approval event', async function () {
+      it('emits Approval event', async () => {
         await instance.__approve(holder.address, spender.address, 2);
 
         await expect(
@@ -269,8 +269,8 @@ describe('ERC20Base', function () {
           .withArgs(holder.address, spender.address, 1);
       });
 
-      describe('reverts if', function () {
-        it('holder is the zero address', async function () {
+      describe('reverts if', () => {
+        it('holder is the zero address', async () => {
           await expect(
             instance.__decreaseAllowance(
               ethers.ZeroAddress,
@@ -283,7 +283,7 @@ describe('ERC20Base', function () {
           );
         });
 
-        it('spender is the zero address', async function () {
+        it('spender is the zero address', async () => {
           await expect(
             instance.__decreaseAllowance(holder.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
@@ -294,7 +294,7 @@ describe('ERC20Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer(address,address,uint256)', function () {
+    describe('#_beforeTokenTransfer(address,address,uint256)', () => {
       it('todo');
     });
   });

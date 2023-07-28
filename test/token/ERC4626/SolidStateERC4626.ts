@@ -11,11 +11,11 @@ const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
 const decimals = 18;
 
-describe('SolidStateERC4626', function () {
+describe('SolidStateERC4626', () => {
   let assetInstance: SolidStateERC20Mock;
   let instance: SolidStateERC4626Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
     assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
