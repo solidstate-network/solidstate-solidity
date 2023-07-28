@@ -92,7 +92,7 @@ export function describeBehaviorOfSolidStateDiamond(
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
       const selectors: string[] = [];
       const abi: string[] = [];
-      let facet: MockContract;
+      let facet: any;
 
       before(async function () {
         for (let i = 0; i < 24; i++) {
