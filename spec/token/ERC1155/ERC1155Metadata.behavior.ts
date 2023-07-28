@@ -13,14 +13,14 @@ export function describeBehaviorOfERC1155Metadata(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1155Metadata', function () {
+  describe('::ERC1155Metadata', () => {
     let instance: IERC1155Metadata;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#uri(uint256)', function () {
+    describe('#uri(uint256)', () => {
       it('returns empty string if neither base URI nor token URI is set');
 
       it('returns stored token URI if base URI is not set');

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondWritable } from '@solidstate/spec';
 import {
   DiamondWritableMock,
@@ -6,16 +6,16 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondWritable', function () {
+describe('DiamondWritable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: DiamondWritableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new DiamondWritableMock__factory(deployer).deploy();
   });

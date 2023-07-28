@@ -1,5 +1,5 @@
 import '@nomicfoundation/hardhat-chai-matchers';
-import '@nomiclabs/hardhat-ethers';
+import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
@@ -11,7 +11,7 @@ import 'solidity-coverage';
 
 export default {
   solidity: {
-    version: '0.8.17',
+    version: '0.8.21',
     settings: {
       optimizer: {
         enabled: true,
@@ -34,9 +34,5 @@ export default {
   spdxLicenseIdentifier: {
     overwrite: false,
     runOnCompile: true,
-  },
-
-  typechain: {
-    alwaysGenerateOverloads: true,
   },
 };

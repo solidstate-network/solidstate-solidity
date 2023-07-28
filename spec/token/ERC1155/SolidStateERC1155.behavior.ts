@@ -10,10 +10,10 @@ import {
   describeBehaviorOfERC1155Metadata,
   ERC1155MetadataBehaviorArgs,
 } from './ERC1155Metadata.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1155 } from '@solidstate/typechain-types';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 export interface SolidStateERC1155BehaviorArgs
   extends ERC1155BaseBehaviorArgs,
@@ -27,7 +27,7 @@ export function describeBehaviorOfSolidStateERC1155(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC1155', function () {
+  describe('::SolidStateERC1155', () => {
     describeBehaviorOfERC1155Base(deploy, { mint, burn, tokenId }, skips);
 
     describeBehaviorOfERC1155Enumerable(deploy, {

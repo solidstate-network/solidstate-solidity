@@ -14,25 +14,25 @@ export function describeBehaviorOfERC1271Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Base', function () {
+  describe('::ERC1271Base', () => {
     let instance: IERC1271Base;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#isValidSignature(bytes32,bytes)', function () {
-      it('returns 0x1626ba7e for valid signature', async function () {
+    describe('#isValidSignature(bytes32,bytes)', () => {
+      it('returns 0x1626ba7e for valid signature', async () => {
         expect(
-          await instance.callStatic['isValidSignature(bytes32,bytes)'](
+          await instance.isValidSignature.staticCall(
             ...(await getValidParams()),
           ),
         ).to.equal('0x1626ba7e');
       });
 
-      it('returns 0x00000000 for invalid signature', async function () {
+      it('returns 0x00000000 for invalid signature', async () => {
         expect(
-          await instance.callStatic['isValidSignature(bytes32,bytes)'](
+          await instance.isValidSignature.staticCall(
             ...(await getInvalidParams()),
           ),
         ).to.equal('0x00000000');

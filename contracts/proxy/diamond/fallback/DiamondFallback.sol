@@ -7,8 +7,6 @@ import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondFallback } from './IDiamondFallback.sol';
 
-// TODO: DiamondFallback interface
-
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy
  */

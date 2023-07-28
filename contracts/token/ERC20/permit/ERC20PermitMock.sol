@@ -18,4 +18,8 @@ contract ERC20PermitMock is ERC20Permit, ERC20Base {
     function name() external view returns (string memory) {
         return _name();
     }
+
+    function setName(string calldata tokenName) external {
+        _setName(tokenName);
+    }
 }

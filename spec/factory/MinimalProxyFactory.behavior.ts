@@ -14,7 +14,7 @@ export function describeBehaviorOfMinimalProxyFactory(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::MinimalProxyFactory', function () {
+  describe('::MinimalProxyFactory', () => {
     describeBehaviorOfFactory(deploy, {}, skips);
   });
 }

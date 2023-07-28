@@ -15,23 +15,23 @@ export function describeBehaviorOfProxy(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Proxy', function () {
+  describe('::Proxy', () => {
     let instance: IProxy;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('fallback', function () {
+    describe('fallback', () => {
       it('forwards data to implementation', async () => {
         let contract = new ethers.Contract(
-          instance.address,
+          await instance.getAddress(),
           [`function ${implementationFunction}`],
           (await ethers.getSigners())[0],
         );
 
         await expect(
-          contract.callStatic[implementationFunction](
+          contract[implementationFunction].staticCall(
             ...implementationFunctionArgs,
           ),
         ).not.to.be.reverted;

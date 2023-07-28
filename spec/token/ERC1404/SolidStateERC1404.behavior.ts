@@ -8,7 +8,7 @@ import {
 } from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC1404 } from '@solidstate/typechain-types';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 export interface SolidStateERC1404BehaviorArgs
   extends SolidStateERC20BehaviorArgs,
@@ -30,7 +30,7 @@ export function describeBehaviorOfSolidStateERC1404(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC1404', function () {
+  describe('::SolidStateERC1404', () => {
     describeBehaviorOfSolidStateERC20(
       deploy,
       {

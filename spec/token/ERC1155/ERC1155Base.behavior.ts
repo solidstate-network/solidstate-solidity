@@ -1,24 +1,24 @@
 import { describeBehaviorOfERC165Base } from '../../introspection';
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155BaseBehaviorArgs {
   mint: (
     address: string,
-    id: BigNumber,
-    amount: BigNumber,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
   burn: (
     address: string,
-    id: BigNumber,
-    amount: BigNumber,
+    id: bigint,
+    amount: bigint,
   ) => Promise<ContractTransaction>;
-  tokenId?: BigNumber;
+  tokenId?: bigint;
 }
 
 export function describeBehaviorOfERC1155Base(
@@ -28,16 +28,16 @@ export function describeBehaviorOfERC1155Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1155Base', function () {
+  describe('::ERC1155Base', () => {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let instance: IERC1155Base;
 
-    before(async function () {
+    before(async () => {
       [holder, spender] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -50,43 +50,31 @@ export function describeBehaviorOfERC1155Base(
       skips,
     );
 
-    describe('#balanceOf(address,uint256)', function () {
-      it('returns the balance of given token held by given address', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
+    describe('#balanceOf(address,uint256)', () => {
+      it('returns the balance of given token held by given address', async () => {
+        const id = tokenId ?? 0n;
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            holder.address,
-            id,
-          ),
+          await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(0);
 
-        const amount = ethers.constants.Two;
+        const amount = 2n;
         await mint(holder.address, id, amount);
 
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            holder.address,
-            id,
-          ),
+          await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(amount);
 
         await burn(holder.address, id, amount);
 
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            holder.address,
-            id,
-          ),
+          await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(0);
       });
 
-      describe('reverts if', function () {
-        it('balance of zero address is queried', async function () {
+      describe('reverts if', () => {
+        it('balance of zero address is queried', async () => {
           await expect(
-            instance.callStatic['balanceOf(address,uint256)'](
-              ethers.constants.AddressZero,
-              ethers.constants.Zero,
-            ),
+            instance.balanceOf.staticCall(ethers.ZeroAddress, 0n),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BalanceQueryZeroAddress',
@@ -95,36 +83,29 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#balanceOfBatch(address[],uint256[])', function () {
-      it('returns the balances of given tokens held by given addresses', async function () {
+    describe('#balanceOfBatch(address[],uint256[])', () => {
+      it('returns the balances of given tokens held by given addresses', async () => {
         expect(
-          await instance.callStatic['balanceOfBatch(address[],uint256[])'](
-            [holder.address],
-            [ethers.constants.Zero],
+          Array.from(
+            await instance.balanceOfBatch.staticCall([holder.address], [0n]),
           ),
-        ).to.have.deep.members([ethers.constants.Zero]);
+        ).to.have.deep.members([0n]);
         // TODO: test delta
       });
 
-      describe('reverts if', function () {
-        it('input array lengths do not match', async function () {
+      describe('reverts if', () => {
+        it('input array lengths do not match', async () => {
           await expect(
-            instance.callStatic['balanceOfBatch(address[],uint256[])'](
-              [holder.address],
-              [],
-            ),
+            instance.balanceOfBatch.staticCall([holder.address], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
           );
         });
 
-        it('balance of zero address is queried', async function () {
+        it('balance of zero address is queried', async () => {
           await expect(
-            instance.callStatic['balanceOfBatch(address[],uint256[])'](
-              [ethers.constants.AddressZero],
-              [ethers.constants.Zero],
-            ),
+            instance.balanceOfBatch.staticCall([ethers.ZeroAddress], [0n]),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BalanceQueryZeroAddress',
@@ -133,21 +114,19 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#isApprovedForAll(address,address)', function () {
-      it('returns whether given operator is approved to spend tokens of given account', async function () {
+    describe('#isApprovedForAll(address,address)', () => {
+      it('returns whether given operator is approved to spend tokens of given account', async () => {
         expect(
-          await instance.callStatic['isApprovedForAll(address,address)'](
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
         ).to.be.false;
 
-        await instance
-          .connect(holder)
-          ['setApprovalForAll(address,bool)'](spender.address, true);
+        await instance.connect(holder).setApprovalForAll(spender.address, true);
 
         expect(
-          await instance.callStatic['isApprovedForAll(address,address)'](
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
@@ -155,14 +134,12 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#setApprovalForAll(address,bool)', function () {
-      it('approves given operator to spend tokens on behalf of sender', async function () {
-        await instance
-          .connect(holder)
-          ['setApprovalForAll(address,bool)'](spender.address, true);
+    describe('#setApprovalForAll(address,bool)', () => {
+      it('approves given operator to spend tokens on behalf of sender', async () => {
+        await instance.connect(holder).setApprovalForAll(spender.address, true);
 
         expect(
-          await instance.callStatic['isApprovedForAll(address,address)'](
+          await instance.isApprovedForAll.staticCall(
             holder.address,
             spender.address,
           ),
@@ -171,12 +148,10 @@ export function describeBehaviorOfERC1155Base(
         // TODO: test case is no different from #isApprovedForAll test; tested further by #safeTransferFrom and #safeBatchTransferFrom tests
       });
 
-      describe('reverts if', function () {
-        it('given operator is sender', async function () {
+      describe('reverts if', () => {
+        it('given operator is sender', async () => {
           await expect(
-            instance
-              .connect(holder)
-              ['setApprovalForAll(address,bool)'](holder.address, true),
+            instance.connect(holder).setApprovalForAll(holder.address, true),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__SelfApproval',
@@ -185,58 +160,49 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', function () {
-      it('sends amount from A to B', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+    describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', () => {
+      it('sends amount from A to B', async () => {
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         await mint(spender.address, id, amount);
 
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            spender.address,
-            id,
-          ),
+          await instance.balanceOf.staticCall(spender.address, id),
         ).to.equal(amount);
 
         await instance
           .connect(spender)
-          ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+          .safeTransferFrom(
             spender.address,
             holder.address,
             id,
             amount,
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           );
 
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            spender.address,
-            id,
-          ),
-        ).to.equal(ethers.constants.Zero);
+          await instance.balanceOf.staticCall(spender.address, id),
+        ).to.equal(0n);
         expect(
-          await instance.callStatic['balanceOf(address,uint256)'](
-            holder.address,
-            id,
-          ),
+          await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(amount);
       });
 
-      describe('reverts if', function () {
-        it('sender has insufficient balance', async function () {
-          const id = tokenId ?? ethers.constants.Zero;
-          const amount = ethers.constants.Two;
+      describe('reverts if', () => {
+        it('sender has insufficient balance', async () => {
+          const id = tokenId ?? 0n;
+          const amount = 2n;
 
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+              .safeTransferFrom(
                 spender.address,
                 holder.address,
                 id,
                 amount,
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -244,16 +210,16 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('operator is not approved to act on behalf of sender', async function () {
+        it('operator is not approved to act on behalf of sender', async () => {
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+              .safeTransferFrom(
                 spender.address,
                 holder.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                0n,
+                0n,
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -261,7 +227,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('receiver is invalid ERC1155Receiver', async function () {
+        it('receiver is invalid ERC1155Receiver', async () => {
           const mock = await deployMockContract(holder, [
             /* no functions */
           ]);
@@ -269,17 +235,17 @@ export function describeBehaviorOfERC1155Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+              .safeTransferFrom(
                 spender.address,
                 mock.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                0n,
+                0n,
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
 
-        it('receiver rejects transfer', async function () {
+        it('receiver rejects transfer', async () => {
           const mock = await deployMockContract(holder, [
             'function onERC1155Received (address, address, uint, uint, bytes) external view returns (bytes4)',
           ]);
@@ -289,12 +255,12 @@ export function describeBehaviorOfERC1155Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+              .safeTransferFrom(
                 spender.address,
                 mock.address,
-                ethers.constants.Zero,
-                ethers.constants.Zero,
-                ethers.utils.randomBytes(0),
+                0n,
+                0n,
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -304,60 +270,55 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', function () {
-      it('sends amount from A to B, batch version', async function () {
-        const id = tokenId ?? ethers.constants.Zero;
-        const amount = ethers.constants.Two;
+    describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', () => {
+      it('sends amount from A to B, batch version', async () => {
+        const id = tokenId ?? 0n;
+        const amount = 2n;
 
         await mint(spender.address, id, amount);
 
         expect(
-          await instance.callStatic['balanceOfBatch(address[],uint256[])'](
-            [spender.address],
-            [id],
+          Array.from(
+            await instance.balanceOfBatch.staticCall([spender.address], [id]),
           ),
         ).to.have.deep.members([amount]);
 
         await instance
           .connect(spender)
-          ['safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'](
+          .safeBatchTransferFrom(
             spender.address,
             holder.address,
             [id],
             [amount],
-            ethers.utils.randomBytes(0),
+            ethers.randomBytes(0),
           );
 
         expect(
-          await instance.callStatic['balanceOfBatch(address[],uint256[])'](
-            [spender.address],
-            [id],
+          Array.from(
+            await instance.balanceOfBatch.staticCall([spender.address], [id]),
           ),
-        ).to.have.deep.members([ethers.constants.Zero]);
+        ).to.have.deep.members([0n]);
         expect(
-          await instance.callStatic['balanceOfBatch(address[],uint256[])'](
-            [holder.address],
-            [id],
+          Array.from(
+            await instance.balanceOfBatch.staticCall([holder.address], [id]),
           ),
         ).to.have.deep.members([amount]);
       });
 
-      describe('reverts if', function () {
-        it('sender has insufficient balance', async function () {
-          const id = tokenId ?? ethers.constants.Zero;
-          const amount = ethers.constants.Two;
+      describe('reverts if', () => {
+        it('sender has insufficient balance', async () => {
+          const id = tokenId ?? 0n;
+          const amount = 2n;
 
           await expect(
             instance
               .connect(spender)
-              [
-                'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
+              .safeBatchTransferFrom(
                 spender.address,
                 holder.address,
                 [id],
                 [amount],
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -365,18 +326,16 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('operator is not approved to act on behalf of sender', async function () {
+        it('operator is not approved to act on behalf of sender', async () => {
           await expect(
             instance
               .connect(holder)
-              [
-                'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
+              .safeBatchTransferFrom(
                 spender.address,
                 holder.address,
                 [],
                 [],
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -384,7 +343,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('receiver is invalid ERC1155Receiver', async function () {
+        it('receiver is invalid ERC1155Receiver', async () => {
           const mock = await deployMockContract(holder, [
             /* no functions */
           ]);
@@ -392,19 +351,17 @@ export function describeBehaviorOfERC1155Base(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
+              .safeBatchTransferFrom(
                 spender.address,
                 mock.address,
                 [],
                 [],
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
 
-        it('receiver rejects transfer', async function () {
+        it('receiver rejects transfer', async () => {
           const mock = await deployMockContract(holder, [
             'function onERC1155BatchReceived (address, address, uint[], uint[], bytes) external view returns (bytes4)',
           ]);
@@ -414,14 +371,12 @@ export function describeBehaviorOfERC1155Base(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'
-              ](
+              .safeBatchTransferFrom(
                 spender.address,
                 mock.address,
                 [],
                 [],
-                ethers.utils.randomBytes(0),
+                ethers.randomBytes(0),
               ),
           ).to.be.revertedWithCustomError(
             instance,
