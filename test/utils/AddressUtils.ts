@@ -1,5 +1,6 @@
-import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
+import { deployMockContract } from '@solidstate/library';
 import {
   AddressUtilsMock,
   AddressUtilsMock__factory,
@@ -7,7 +8,6 @@ import {
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
-import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;

@@ -19,8 +19,8 @@ import {
   describeBehaviorOfDiamondWritable,
   DiamondWritableBehaviorArgs,
 } from './writable/DiamondWritable.behavior';
-import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';

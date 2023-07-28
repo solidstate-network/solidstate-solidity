@@ -1,6 +1,6 @@
 import { OwnableBehaviorArgs } from '../../../access/ownable/Ownable.behavior';
-import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfDiamondBase,
