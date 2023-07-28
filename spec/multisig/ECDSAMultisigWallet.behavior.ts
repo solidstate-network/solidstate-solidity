@@ -239,7 +239,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             await expect(
               instance.verifyAndExecute(
                 { target, data, value, delegate },
-                signatures.slice(0, parseInt(quorum) - 1),
+                signatures.slice(0, parseInt(quorum.toString()) - 1),
               ),
             ).to.be.revertedWithCustomError(
               instance,
@@ -483,7 +483,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             await expect(
               instance.verifyAndExecute(
                 { target, data, value, delegate },
-                signatures.slice(0, parseInt(quorum) - 1),
+                signatures.slice(0, parseInt(quorum.toString()) - 1),
               ),
             ).to.be.revertedWithCustomError(
               instance,
