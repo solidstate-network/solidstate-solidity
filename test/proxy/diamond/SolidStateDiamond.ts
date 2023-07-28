@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfSolidStateDiamond } from '@solidstate/spec';
 import {
   SolidStateDiamond,
@@ -24,12 +24,12 @@ describe('SolidStateDiamond', function () {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateDiamondMock__factory(deployer).deploy();
 
-    const facets = await instance.callStatic['facets()']();
+    const facets = await instance.facets.staticCall();
 
     expect(facets).to.have.lengthOf(1);
 
     facetCuts[0] = {
-      target: instance.address,
+      target: await instance.getAddress(),
       action: 0,
       selectors: facets[0].selectors,
     };
@@ -44,7 +44,7 @@ describe('SolidStateDiamond', function () {
       facetFunction: '',
       facetFunctionArgs: [],
       facetCuts,
-      fallbackAddress: ethers.constants.AddressZero,
+      fallbackAddress: ethers.ZeroAddress,
     },
     ['fallback()'],
   );

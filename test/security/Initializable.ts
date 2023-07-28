@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
   InitializableMock,
   InitializableMock__factory,
@@ -23,7 +23,7 @@ describe('Initializable', function () {
       it('sets initialized version to 1', async () => {
         await instance.modifier_initializer();
 
-        expect(await instance.callStatic.__getInitializedVersion()).to.equal(
+        expect(await instance.__getInitializedVersion.staticCall()).to.equal(
           1n,
         );
       });
@@ -90,13 +90,13 @@ describe('Initializable', function () {
 
     describe('#_getInitializedVersion()', () => {
       it('returns initialized version', async () => {
-        expect(await instance.callStatic.__getInitializedVersion()).to.equal(
+        expect(await instance.__getInitializedVersion.staticCall()).to.equal(
           0n,
         );
 
         await instance.__setInitializedVersion(1n);
 
-        expect(await instance.callStatic.__getInitializedVersion()).to.equal(
+        expect(await instance.__getInitializedVersion.staticCall()).to.equal(
           1n,
         );
       });

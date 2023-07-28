@@ -5,7 +5,6 @@ import {
   SolidStateERC4626Mock,
   SolidStateERC4626Mock__factory,
 } from '@solidstate/typechain-types';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
@@ -23,11 +22,11 @@ describe('SolidStateERC4626', function () {
       name,
       symbol,
       decimals,
-      ethers.constants.Zero,
+      0,
     );
 
     instance = await new SolidStateERC4626Mock__factory(deployer).deploy(
-      assetInstance.address,
+      await assetInstance.getAddress(),
       name,
       symbol,
       decimals,
@@ -39,12 +38,12 @@ describe('SolidStateERC4626', function () {
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>
-      instance.callStatic.allowance(holder, spender),
-    mintAsset: (recipient: string, amount: BigNumber) =>
+      instance.allowance.staticCall(holder, spender),
+    mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,
     decimals,
-    supply: ethers.constants.Zero,
+    supply: 0n,
   });
 });

@@ -21,8 +21,8 @@ export function describeBehaviorOfERC1271Stored(
       {
         getValidParams,
         getInvalidParams: async () => [
-          ethers.utils.randomBytes(32),
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(32),
+          ethers.randomBytes(0),
         ],
       },
       skips,

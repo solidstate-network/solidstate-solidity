@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Permit } from '@solidstate/spec';
 import {
   ERC20PermitMock,
@@ -23,15 +23,15 @@ describe('ERC20Permit', function () {
 
   describeBehaviorOfERC20Permit(async () => instance, {
     allowance: (holder, spender) =>
-      instance.callStatic.allowance(holder, spender),
+      instance.allowance.staticCall(holder, spender),
   });
 
   describe('__internal', () => {
     describe('#_setName(string)', () => {
       it('invalidates cached domain separator', async () => {
-        const oldDomainSeparator = await instance.callStatic.DOMAIN_SEPARATOR();
+        const oldDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
         await instance.setName(`new ${name}`);
-        const newDomainSeparator = await instance.callStatic.DOMAIN_SEPARATOR();
+        const newDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
         expect(newDomainSeparator).not.to.eq(oldDomainSeparator);
       });
     });

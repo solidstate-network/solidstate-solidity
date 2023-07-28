@@ -24,15 +24,15 @@ export function describeBehaviorOfDiamondBase(
 
     describe('fallback()', function () {
       it('forwards data with matching selector call to facet', async function () {
-        expect((instance as any)[facetFunction]).to.be.undefined;
+        expect(instance.interface.hasFunction(facetFunction)).to.be.false;
 
         let contract = new ethers.Contract(
-          instance.address,
+          await instance.getAddress(),
           [`function ${facetFunction}`],
           ethers.provider,
         );
 
-        await expect(contract.callStatic[facetFunction](...facetFunctionArgs))
+        await expect(contract[facetFunction].staticCall(...facetFunctionArgs))
           .not.to.be.reverted;
       });
 
@@ -41,13 +41,13 @@ export function describeBehaviorOfDiamondBase(
       describe('reverts if', function () {
         it('no selector matches data', async function () {
           let contract = new ethers.Contract(
-            instance.address,
-            ['function function()'],
+            await instance.getAddress(),
+            ['function __function()'],
             ethers.provider,
           );
 
           await expect(
-            contract.callStatic['function()'](),
+            contract.__function.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',

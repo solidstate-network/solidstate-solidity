@@ -17,7 +17,7 @@ All contracts are designed to either be deployed through the standard `construct
 
 ### Spec
 
-Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts. This is to help prevent unintended changes to to the base contract behavior.
+Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts. This is to help prevent unintended changes to the base contract behavior.
 
 For example, consider a custom `ERC20Base` implementation:
 
@@ -79,12 +79,6 @@ Setup Husky to format code on commit:
 
 ```bash
 yarn prepare
-```
-
-Link local packages and install remaining dependencies via Lerna:
-
-```bash
-yarn run lerna bootstrap
 ```
 
 Compile contracts via Hardhat:

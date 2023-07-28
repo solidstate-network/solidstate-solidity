@@ -2,11 +2,10 @@ import {
   describeBehaviorOfERC20Base,
   ERC20BaseBehaviorArgs,
 } from './ERC20Base.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC20ImplicitApproval } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ImplicitApprovalBehaviorArgs
@@ -55,26 +54,23 @@ export function describeBehaviorOfERC20ImplicitApproval(
     describe('#allowance(address,address)', function () {
       it('returns maximum uint256 for implicitly approved spender', async function () {
         expect(
-          await instance.callStatic['allowance(address,address)'](
-            ethers.constants.AddressZero,
+          await instance.allowance.staticCall(
+            ethers.ZeroAddress,
             implicitlyApprovedSpender.address,
           ),
-        ).to.equal(ethers.constants.MaxUint256);
+        ).to.equal(ethers.MaxUint256);
       });
     });
 
     describe('#transferFrom(address,address,uint256)', function () {
       it('does not require approval for implicitly approved sender', async function () {
-        const amount = ethers.constants.One;
+        const amount = 1n;
 
         await mint(holder.address, amount);
 
         await instance
           .connect(holder)
-          .approve(
-            implicitlyApprovedSpender.address,
-            ethers.constants.AddressZero,
-          );
+          .approve(implicitlyApprovedSpender.address, ethers.ZeroAddress);
 
         await expect(
           instance

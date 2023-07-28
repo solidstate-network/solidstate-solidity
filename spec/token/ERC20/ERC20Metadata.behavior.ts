@@ -1,12 +1,11 @@
 import { describeFilter } from '@solidstate/library';
 import { IERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumberish } from 'ethers';
 
 export interface ERC20MetadataBehaviorArgs {
   name: string;
   symbol: string;
-  decimals: BigNumberish;
+  decimals: bigint;
 }
 
 export function describeBehaviorOfERC20Metadata(
@@ -25,19 +24,19 @@ export function describeBehaviorOfERC20Metadata(
 
     describe('#name()', function () {
       it('returns token name', async function () {
-        expect(await instance.callStatic['name()']()).to.equal(name);
+        expect(await instance.name.staticCall()).to.equal(name);
       });
     });
 
     describe('#symbol()', function () {
       it('returns token symbol', async function () {
-        expect(await instance.callStatic['symbol()']()).to.equal(symbol);
+        expect(await instance.symbol.staticCall()).to.equal(symbol);
       });
     });
 
     describe('#decimals()', function () {
       it('returns token decimals', async function () {
-        expect(await instance.callStatic['decimals()']()).to.equal(decimals);
+        expect(await instance.decimals.staticCall()).to.equal(decimals);
       });
     });
   });

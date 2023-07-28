@@ -1,5 +1,5 @@
 import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1271Ownable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
@@ -30,16 +30,14 @@ export function describeBehaviorOfERC1271Ownable(
       deploy,
       {
         getValidParams: async function () {
-          let hash = ethers.utils.randomBytes(32);
-          let signature = await owner.signMessage(ethers.utils.arrayify(hash));
-          return [hash, ethers.utils.arrayify(signature)];
+          const hash = ethers.randomBytes(32);
+          const signature = await owner.signMessage(ethers.getBytes(hash));
+          return [hash, ethers.getBytes(signature)];
         },
         getInvalidParams: async function () {
-          let hash = ethers.utils.randomBytes(32);
-          let signature = await nonOwner.signMessage(
-            ethers.utils.arrayify(hash),
-          );
-          return [hash, ethers.utils.arrayify(signature)];
+          const hash = ethers.randomBytes(32);
+          const signature = await nonOwner.signMessage(ethers.getBytes(hash));
+          return [hash, ethers.getBytes(signature)];
         },
       },
       skips,

@@ -1,9 +1,6 @@
 import { OwnableBehaviorArgs } from '../../../access/ownable/Ownable.behavior';
-import {
-  deployMockContract,
-  MockContract,
-} from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfDiamondBase,
@@ -41,7 +38,7 @@ export function describeBehaviorOfDiamondFallback(
 
     describe('#getFallbackAddress()', function () {
       it('returns the fallback address', async function () {
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           args.fallbackAddress,
         );
       });
@@ -51,19 +48,17 @@ export function describeBehaviorOfDiamondFallback(
       it('updates the fallback address', async function () {
         const fallback = await deployMockContract(owner, []);
 
-        await instance
-          .connect(owner)
-          ['setFallbackAddress(address)'](fallback.address);
+        await instance.connect(owner).setFallbackAddress(fallback.address);
 
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           fallback.address,
         );
 
         // call reverts, but with mock-specific message
         await expect(
           owner.sendTransaction({
-            to: instance.address,
-            data: ethers.utils.randomBytes(4),
+            to: await instance.getAddress(),
+            data: ethers.hexlify(ethers.randomBytes(4)),
           }),
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
@@ -71,9 +66,7 @@ export function describeBehaviorOfDiamondFallback(
       describe('reverts if', function () {
         it('sender is not owner', async function () {
           await expect(
-            instance
-              .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
+            instance.connect(nonOwner).setFallbackAddress(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

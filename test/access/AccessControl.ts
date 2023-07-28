@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfAccessControl } from '@solidstate/spec';
 import {
   AccessControlMock,
@@ -9,7 +9,7 @@ import { ethers } from 'hardhat';
 
 const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
+const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 describe('AccessControl', function () {
   let admin: SignerWithAddress;
@@ -39,14 +39,14 @@ describe('AccessControl', function () {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
-        instance.connect(nonAdmin).callStatic['checkRole(bytes32)'](ROLE),
+        instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
       ).not.to.be.reverted;
     });
 
     describe('reverts if', function () {
       it('sender does not have role', async function () {
         await expect(
-          instance.connect(nonAdmin).callStatic['checkRole(bytes32)'](ROLE),
+          instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
         ).to.revertedWith(
           `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
         );
@@ -59,7 +59,7 @@ describe('AccessControl', function () {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
-        instance.callStatic['checkRole(bytes32,address)'](
+        instance['checkRole(bytes32,address)'].staticCall(
           ROLE,
           nonAdmin.address,
         ),
@@ -69,7 +69,7 @@ describe('AccessControl', function () {
     describe('reverts if', function () {
       it('given account does not have role', async function () {
         await expect(
-          instance.callStatic['checkRole(bytes32,address)'](
+          instance['checkRole(bytes32,address)'].staticCall(
             ROLE,
             nonAdmin.address,
           ),
@@ -82,20 +82,20 @@ describe('AccessControl', function () {
 
   describe('#_setRoleAdmin(bytes32,bytes32)', function () {
     it('updates role admin', async function () {
-      const newAdminRole = ethers.utils.solidityKeccak256(
+      const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
       );
 
       await instance.setRoleAdmin(ROLE, newAdminRole);
 
-      expect(await instance.callStatic.getRoleAdmin(ROLE)).to.equal(
+      expect(await instance.getRoleAdmin.staticCall(ROLE)).to.equal(
         newAdminRole,
       );
     });
 
     it('emits RoleAdminChanged event', async function () {
-      const newAdminRole = ethers.utils.solidityKeccak256(
+      const newAdminRole = ethers.solidityPackedKeccak256(
         ['string'],
         ['NEW_ADMIN_ROLE'],
       );
@@ -121,7 +121,7 @@ describe('AccessControl', function () {
       it('role does not exist', async function () {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        const newRole = ethers.utils.solidityKeccak256(
+        const newRole = ethers.solidityPackedKeccak256(
           ['string'],
           ['NEW_ROLE'],
         );
@@ -154,7 +154,7 @@ describe('AccessControl', function () {
 
       expect(await instance.getRoleMemberCount(ROLE)).to.equal(3);
 
-      const newRole = ethers.utils.solidityKeccak256(['string'], ['NEW_ROLE']);
+      const newRole = ethers.solidityPackedKeccak256(['string'], ['NEW_ROLE']);
       expect(await instance.getRoleMemberCount(newRole)).to.equal(0);
     });
   });

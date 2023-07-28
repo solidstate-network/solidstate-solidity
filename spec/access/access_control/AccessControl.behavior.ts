@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { AccessControl } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -6,7 +6,7 @@ import { ethers } from 'hardhat';
 
 const DEFAULT_ADMIN_ROLE =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ROLE = ethers.utils.solidityKeccak256(['string'], ['ROLE']);
+const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 interface AccessControlBehaviorArgs {
   deploy: () => Promise<AccessControl>;
@@ -34,16 +34,13 @@ export function describeBehaviorOfAccessControl(
     describe('#hasRole(bytes32,address)', function () {
       it('returns whether given account has given role', async function () {
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
-            DEFAULT_ADMIN_ROLE,
-            admin.address,
-          ),
+          await instance.hasRole.staticCall(DEFAULT_ADMIN_ROLE, admin.address),
         ).to.equal(true);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
+          await instance.hasRole.staticCall(
             DEFAULT_ADMIN_ROLE,
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
           ),
         ).to.equal(false);
       });
@@ -51,16 +48,14 @@ export function describeBehaviorOfAccessControl(
 
     describe('#getRoleAdmin(bytes32)', function () {
       it('returns default admin role', async function () {
-        expect(
-          await instance.callStatic['getRoleAdmin(bytes32)'](ROLE),
-        ).to.equal(DEFAULT_ADMIN_ROLE);
+        expect(await instance.getRoleAdmin.staticCall(ROLE)).to.equal(
+          DEFAULT_ADMIN_ROLE,
+        );
       });
 
       it('returns default admin role as admin of itself', async function () {
         expect(
-          await instance.callStatic['getRoleAdmin(bytes32)'](
-            DEFAULT_ADMIN_ROLE,
-          ),
+          await instance.getRoleAdmin.staticCall(DEFAULT_ADMIN_ROLE),
         ).to.equal(DEFAULT_ADMIN_ROLE);
       });
     });
@@ -70,10 +65,7 @@ export function describeBehaviorOfAccessControl(
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
-            ROLE,
-            nonAdmin.address,
-          ),
+          await instance.hasRole.staticCall(ROLE, nonAdmin.address),
         ).to.equal(true);
       });
 
@@ -103,10 +95,7 @@ export function describeBehaviorOfAccessControl(
         await instance.connect(admin).revokeRole(ROLE, nonAdmin.address);
 
         expect(
-          await instance.callStatic['hasRole(bytes32,address)'](
-            ROLE,
-            nonAdmin.address,
-          ),
+          await instance.hasRole.staticCall(ROLE, nonAdmin.address),
         ).to.equal(false);
       });
 
@@ -137,10 +126,7 @@ export function describeBehaviorOfAccessControl(
 
         await instance.connect(nonAdmin).renounceRole(ROLE),
           expect(
-            await instance.callStatic['hasRole(bytes32,address)'](
-              ROLE,
-              nonAdmin.address,
-            ),
+            await instance.hasRole.staticCall(ROLE, nonAdmin.address),
           ).to.equal(false);
       });
 

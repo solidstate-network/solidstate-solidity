@@ -19,10 +19,10 @@ describe('MetamorphicFactory', function () {
   describe('__internal', function () {
     describe('#_deployMetamorphicContract(address,bytes32)', function () {
       it('deploys metamorphic contract and returns deployment address', async function () {
-        const target = instance.address;
-        const salt = ethers.utils.randomBytes(32);
+        const target = await instance.getAddress();
+        const salt = ethers.randomBytes(32);
 
-        const address = await instance.callStatic.__deployMetamorphicContract(
+        const address = await instance.__deployMetamorphicContract.staticCall(
           target,
           salt,
         );
@@ -38,8 +38,8 @@ describe('MetamorphicFactory', function () {
 
       describe('reverts if', function () {
         it('salt has already been used', async function () {
-          const target = instance.address;
-          const salt = ethers.utils.randomBytes(32);
+          const target = await instance.getAddress();
+          const salt = ethers.randomBytes(32);
 
           await instance.__deployMetamorphicContract(target, salt);
 
@@ -57,15 +57,19 @@ describe('MetamorphicFactory', function () {
       it('returns address of not-yet-deployed contract', async function () {
         const initCode =
           '0x5860208158601c335a639c2236038752fa158151803b80938091923cf3';
-        const initCodeHash = ethers.utils.keccak256(initCode);
-        const salt = ethers.utils.randomBytes(32);
+        const initCodeHash = ethers.keccak256(initCode);
+        const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.callStatic.__calculateMetamorphicDeploymentAddress(
+          await instance.__calculateMetamorphicDeploymentAddress.staticCall(
             salt,
           ),
         ).to.equal(
-          ethers.utils.getCreate2Address(instance.address, salt, initCodeHash),
+          ethers.getCreate2Address(
+            await instance.getAddress(),
+            salt,
+            initCodeHash,
+          ),
         );
       });
     });

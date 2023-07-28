@@ -1,7 +1,4 @@
-import {
-  MockContract,
-  deployMockContract,
-} from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfManagedProxyOwnable } from '@solidstate/spec';
 import {
   ManagedProxyOwnableMock,
@@ -12,7 +9,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxyOwnable', function () {
-  let manager: MockContract;
+  let manager: any;
   let instance: ManagedProxyOwnableMock;
 
   beforeEach(async function () {
@@ -26,11 +23,15 @@ describe('ManagedProxyOwnable', function () {
       deployer,
     ).deploy(deployer.address);
 
-    await manager.mock['getImplementation()'].returns(
-      implementationInstance.address,
+    await manager.mock.getImplementation.returns(
+      await implementationInstance.getAddress(),
     );
 
-    const selector = manager.interface.getSighash('getImplementation()');
+    const selector = ethers.dataSlice(
+      ethers.solidityPackedKeccak256(['string'], ['getImplementation()']),
+      0,
+      4,
+    );
 
     instance = await new ManagedProxyOwnableMock__factory(deployer).deploy(
       manager.address,
@@ -49,17 +50,17 @@ describe('ManagedProxyOwnable', function () {
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance['setOwner(address)'](ethers.constants.AddressZero);
+          await instance.setOwner(ethers.ZeroAddress);
 
-          await expect(instance.callStatic.__getImplementation()).to.be
+          await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
         it('manager fails to return implementation', async function () {
-          await manager.mock['getImplementation()'].revertsWithReason('ERROR');
+          await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
-            instance.callStatic.__getImplementation(),
+            instance.__getImplementation.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'ManagedProxy__FetchImplementationFailed',
@@ -70,8 +71,8 @@ describe('ManagedProxyOwnable', function () {
 
     describe('#_getManager()', function () {
       it('returns address of ERC173 owner', async function () {
-        expect(await instance.callStatic.__getManager()).to.equal(
-          await instance.callStatic['getOwner()'](),
+        expect(await instance.__getManager.staticCall()).to.equal(
+          await instance.getOwner.staticCall(),
         );
       });
     });

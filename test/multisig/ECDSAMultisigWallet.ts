@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
 import {
   ECDSAMultisigWalletMock,
@@ -7,7 +7,7 @@ import {
 import { ethers } from 'hardhat';
 
 describe('ECDSAMultisigWallet', function () {
-  const quorum = ethers.constants.One;
+  const quorum = 1n;
   let signers: SignerWithAddress[];
   let nonSigner: SignerWithAddress;
   let instance: ECDSAMultisigWalletMock;
@@ -28,7 +28,7 @@ describe('ECDSAMultisigWallet', function () {
     getSigners: async () => signers,
     getNonSigner: async () => nonSigner,
     quorum,
-    getVerificationAddress: async () => instance.address,
+    getVerificationAddress: async () => await instance.getAddress(),
   });
 
   describe('__internal', function () {
