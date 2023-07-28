@@ -1,10 +1,10 @@
-import { deployMockContract } from '@solidstate/library';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('Ownable', () => {
   let owner: SignerWithAddress;
