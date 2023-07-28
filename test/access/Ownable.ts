@@ -1,9 +1,10 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { OwnableMock, OwnableMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('Ownable', function () {
   let owner: SignerWithAddress;
@@ -26,14 +27,14 @@ describe('Ownable', function () {
   describe('__internal', () => {
     describe('onlyOwner() modifier', () => {
       it('does not revert if sender is owner', async () => {
-        await expect(instance.connect(owner)['modifier_onlyOwner()']()).not.to
-          .be.reverted;
+        await expect(instance.connect(owner).modifier_onlyOwner()).not.to.be
+          .reverted;
       });
 
       describe('reverts if', () => {
         it('sender is not owner', async () => {
           await expect(
-            instance.connect(nonOwner)['modifier_onlyOwner()'](),
+            instance.connect(nonOwner).modifier_onlyOwner(),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
@@ -41,19 +42,17 @@ describe('Ownable', function () {
 
     describe('onlyTransitiveOwner() modifier', () => {
       it('does not revert if sender is transitive owner', async () => {
-        await expect(
-          instance.connect(owner)['modifier_onlyTransitiveOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
+          .to.be.reverted;
 
         const intermediateOwner = await new OwnableMock__factory(owner).deploy(
           owner.address,
         );
 
-        await instance.__setOwner(intermediateOwner.address);
+        await instance.__setOwner(await intermediateOwner.getAddress());
 
-        await expect(
-          instance.connect(owner)['modifier_onlyTransitiveOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
+          .to.be.reverted;
       });
 
       describe('reverts if', () => {
@@ -61,15 +60,14 @@ describe('Ownable', function () {
           const intermediateOwner = await new OwnableMock__factory(
             owner,
           ).deploy(owner.address);
+          const intermediateOwnerAddress = await intermediateOwner.getAddress();
 
-          await ethers.provider.send('hardhat_impersonateAccount', [
-            intermediateOwner.address,
-          ]);
+          await impersonateAccount(intermediateOwnerAddress);
 
-          const signer = await ethers.getSigner(intermediateOwner.address);
+          const signer = await ethers.getSigner(intermediateOwnerAddress);
 
           await expect(
-            instance.connect(signer)['modifier_onlyTransitiveOwner()'](),
+            instance.connect(signer).modifier_onlyTransitiveOwner.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Ownable__NotTransitiveOwner',
@@ -80,24 +78,25 @@ describe('Ownable', function () {
 
     describe('#_owner()', () => {
       it('returns contract owner', async () => {
-        expect(await instance.callStatic.__owner()).to.equal(owner.address);
+        expect(await instance.__owner.staticCall()).to.equal(owner.address);
       });
     });
 
     describe('#_transitiveOwner()', () => {
       it('returns owner if owner is EOA', async () => {
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
           owner.address,
         );
       });
 
       it('returns owner if owner is not Ownable', async () => {
         const ownerInstance = await deployMockContract(owner, []);
+        const ownerInstanceAddress = await ownerInstance.getAddress();
 
-        await instance.__setOwner(ownerInstance.address);
+        await instance.__setOwner(ownerInstanceAddress);
 
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
-          ownerInstance.address,
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
+          ownerInstanceAddress,
         );
       });
 
@@ -107,12 +106,12 @@ describe('Ownable', function () {
         ).deploy(owner.address);
 
         const firstOwnerInstance = await new OwnableMock__factory(owner).deploy(
-          secondOwnerInstance.address,
+          await secondOwnerInstance.getAddress(),
         );
 
-        await instance.__setOwner(firstOwnerInstance.address);
+        await instance.__setOwner(await firstOwnerInstance.getAddress());
 
-        expect(await instance.callStatic.__transitiveOwner()).to.equal(
+        expect(await instance.__transitiveOwner.staticCall()).to.equal(
           owner.address,
         );
       });
@@ -120,33 +119,29 @@ describe('Ownable', function () {
 
     describe('#_transferOwnership', () => {
       it('sets new owner', async function () {
-        await instance.__transferOwnership(ethers.constants.AddressZero);
+        await instance.__transferOwnership(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
-        await expect(instance.__transferOwnership(ethers.constants.AddressZero))
+        await expect(instance.__transferOwnership(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
     });
 
     describe('#_setOwner', () => {
       it('sets new owner', async function () {
-        await instance.__setOwner(ethers.constants.AddressZero);
+        await instance.__setOwner(ethers.ZeroAddress);
 
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
       it('emits OwnershipTransferred event', async function () {
-        await expect(instance.__setOwner(ethers.constants.AddressZero))
+        await expect(instance.__setOwner(ethers.ZeroAddress))
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
     });
   });

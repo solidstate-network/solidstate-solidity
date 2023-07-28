@@ -1,39 +1,38 @@
-import {
-  MockContract,
-  deployMockContract,
-} from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
 import {
   ManagedProxyMock,
   ManagedProxyMock__factory,
+  OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxy', function () {
-  let manager: MockContract;
+  let manager: any;
   let instance: ManagedProxyMock;
 
   beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory(
-      'OwnableMock',
-    );
-    const implementationInstance = await implementationFactory.deploy(
-      ethers.constants.AddressZero,
-    );
-    await implementationInstance.deployed();
+    const [deployer] = await ethers.getSigners();
+
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(ethers.ZeroAddress);
 
     manager = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
     ]);
 
-    await manager.mock['getImplementation()'].returns(
-      implementationInstance.address,
+    await manager.mock.getImplementation.returns(
+      await implementationInstance.getAddress(),
     );
 
-    const selector = manager.interface.getSighash('getImplementation()');
+    const selector = ethers.dataSlice(
+      ethers.solidityPackedKeccak256(['string'], ['getImplementation()']),
+      0,
+      4,
+    );
 
-    const [deployer] = await ethers.getSigners();
     instance = await new ManagedProxyMock__factory(deployer).deploy(
       manager.address,
       selector,
@@ -48,23 +47,23 @@ describe('ManagedProxy', function () {
   describe('__internal', function () {
     describe('#_getImplementation()', function () {
       it('returns implementation address', async function () {
-        expect(await instance.callStatic.__getImplementation()).to.be
+        expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
 
       describe('reverts if', function () {
         it('manager is non-contract address', async function () {
-          await instance.setManager(ethers.constants.AddressZero);
+          await instance.setManager(ethers.ZeroAddress);
 
-          await expect(instance.callStatic.__getImplementation()).to.be
+          await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
         it('manager fails to return implementation', async function () {
-          await manager.mock['getImplementation()'].revertsWithReason('ERROR');
+          await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
-            instance.callStatic.__getImplementation(),
+            instance.__getImplementation.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'ManagedProxy__FetchImplementationFailed',

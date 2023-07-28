@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
   DiamondFallbackMock,
@@ -24,9 +24,9 @@ describe('DiamondFallback', function () {
 
     instance = await new DiamondFallbackMock__factory(deployer).deploy([
       {
-        target: facetInstance.address,
+        target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getSighash('owner()')],
+        selectors: [facetInstance.interface.getFunction('owner()').selector],
       },
     ]);
   });
@@ -36,6 +36,6 @@ describe('DiamondFallback', function () {
     getNonOwner: async () => nonOwner,
     facetFunction: 'owner()',
     facetFunctionArgs: [],
-    fallbackAddress: ethers.constants.AddressZero,
+    fallbackAddress: ethers.ZeroAddress,
   });
 });

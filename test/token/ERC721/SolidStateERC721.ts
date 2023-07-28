@@ -22,10 +22,9 @@ describe('SolidStateERC721', function () {
   });
 
   describeBehaviorOfSolidStateERC721(async () => instance, {
-    supply: ethers.constants.Zero,
-    mint: async (recipient, tokenId) =>
-      instance['mint(address,uint256)'](recipient, tokenId),
-    burn: async (tokenId) => instance['burn(uint256)'](tokenId),
+    supply: 0n,
+    mint: async (recipient, tokenId) => instance.mint(recipient, tokenId),
+    burn: async (tokenId) => instance.burn(tokenId),
     name,
     symbol,
     tokenURI,

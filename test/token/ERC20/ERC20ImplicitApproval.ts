@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC20ImplicitApproval } from '@solidstate/spec';
 import {
   ERC20ImplicitApprovalMock,
@@ -25,7 +25,7 @@ describe('ERC20ImplicitApproval', function () {
   });
 
   describeBehaviorOfERC20ImplicitApproval(async () => instance, {
-    supply: ethers.constants.Zero,
+    supply: 0n,
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     getHolder: async () => holder,
@@ -36,13 +36,11 @@ describe('ERC20ImplicitApproval', function () {
     describe('#_isImplicitlyApproved(address)', function () {
       it('returns implicit approval status of address', async function () {
         expect(
-          await instance.callStatic.__isImplicitlyApproved(
-            ethers.constants.AddressZero,
-          ),
+          await instance.__isImplicitlyApproved.staticCall(ethers.ZeroAddress),
         ).to.be.false;
 
         expect(
-          await instance.callStatic.__isImplicitlyApproved(
+          await instance.__isImplicitlyApproved.staticCall(
             implicitlyApprovedSpender.address,
           ),
         ).to.be.true;

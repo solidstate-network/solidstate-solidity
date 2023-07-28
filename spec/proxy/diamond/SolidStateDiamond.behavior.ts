@@ -19,11 +19,8 @@ import {
   describeBehaviorOfDiamondWritable,
   DiamondWritableBehaviorArgs,
 } from './writable/DiamondWritable.behavior';
-import {
-  deployMockContract,
-  MockContract,
-} from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -82,11 +79,12 @@ export function describeBehaviorOfSolidStateDiamond(
 
     describe('receive()', function () {
       it('accepts ether transfer', async function () {
-        let [signer] = await ethers.getSigners();
-        let value = ethers.constants.One;
+        const [signer] = await ethers.getSigners();
+        const value = 1;
+        const to = await instance.getAddress();
 
         await expect(() =>
-          signer.sendTransaction({ to: instance.address, value }),
+          signer.sendTransaction({ to, value }),
         ).to.changeEtherBalance(instance, value);
       });
     });
@@ -94,15 +92,15 @@ export function describeBehaviorOfSolidStateDiamond(
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
       const selectors: string[] = [];
       const abi: string[] = [];
-      let facet: MockContract;
+      let facet: any;
 
       before(async function () {
         for (let i = 0; i < 24; i++) {
           const fn = `fn${i}()`;
           abi.push(`function ${fn}`);
           selectors.push(
-            ethers.utils.hexDataSlice(
-              ethers.utils.solidityKeccak256(['string'], [fn]),
+            ethers.dataSlice(
+              ethers.solidityPackedKeccak256(['string'], [fn]),
               0,
               4,
             ),
@@ -120,7 +118,7 @@ export function describeBehaviorOfSolidStateDiamond(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors: [selector] }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -128,23 +126,28 @@ export function describeBehaviorOfSolidStateDiamond(
 
           // call reverts, but with mock-specific message
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members([
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members([
             ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(facet.address);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            facet.address,
+          );
         }
       });
 
@@ -153,7 +156,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -163,12 +166,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -183,18 +186,26 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -202,14 +213,14 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
@@ -218,7 +229,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -228,12 +239,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -248,18 +259,26 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -267,14 +286,14 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
@@ -283,7 +302,7 @@ export function describeBehaviorOfSolidStateDiamond(
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -293,12 +312,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -313,18 +332,26 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.sendTransaction({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
               ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
@@ -332,14 +359,14 @@ export function describeBehaviorOfSolidStateDiamond(
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
     });

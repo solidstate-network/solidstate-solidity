@@ -17,12 +17,12 @@ describe('ERC1155Enumerable', function () {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)
-        ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+        .safeTransferFrom(
           from.address,
           to.address,
           tokenId,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),

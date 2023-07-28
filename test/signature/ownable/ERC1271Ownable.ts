@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
 import {
   ERC1271OwnableMock,
@@ -30,26 +30,20 @@ describe('ERC1271Ownable', function () {
   describe('__internal', function () {
     describe('#_isValidSignature(bytes32,bytes)', function () {
       it('returns magic value for signature created by owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await owner.signMessage(ethers.utils.arrayify(hash));
+        const hash = ethers.randomBytes(32);
+        const signature = await owner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
       });
 
       it('returns null bytes for signature created by non-owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
+        const hash = ethers.randomBytes(32);
+        const signature = await nonOwner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

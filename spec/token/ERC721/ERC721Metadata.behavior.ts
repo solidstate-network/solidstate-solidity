@@ -24,13 +24,13 @@ export function describeBehaviorOfERC721Metadata(
 
     describe('#name()', function () {
       it('returns token name', async function () {
-        expect(await instance.callStatic['name()']()).to.equal(name);
+        expect(await instance.name.staticCall()).to.equal(name);
       });
     });
 
     describe('#symbol()', function () {
       it('returns token symbol', async function () {
-        expect(await instance.callStatic['symbol()']()).to.equal(symbol);
+        expect(await instance.symbol.staticCall()).to.equal(symbol);
       });
     });
 

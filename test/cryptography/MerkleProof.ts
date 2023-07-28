@@ -28,7 +28,7 @@ describe('MerkleProof', function () {
         for (const leaf of leaves) {
           const proof = tree.getHexProof(keccak256(leaf));
 
-          expect(await instance.callStatic.verify(proof, root, keccak256(leaf)))
+          expect(await instance.verify.staticCall(proof, root, keccak256(leaf)))
             .to.be.true;
         }
       });
@@ -43,7 +43,7 @@ describe('MerkleProof', function () {
 
         const proof = tree.getHexProof(keccak256(leaves[0]));
 
-        expect(await instance.callStatic.verify(proof, root, keccak256('4'))).to
+        expect(await instance.verify.staticCall(proof, root, keccak256('4'))).to
           .be.false;
       });
     });

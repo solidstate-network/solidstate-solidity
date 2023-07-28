@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfPausable } from '@solidstate/spec';
 import {
   PausableMock,
@@ -56,9 +56,9 @@ describe('Pausable', function () {
 
     describe('#_paused()', () => {
       it('returns whether contract is paused', async () => {
-        expect(await instance.callStatic.__paused()).to.be.false;
+        expect(await instance.__paused.staticCall()).to.be.false;
         await instance.__pause();
-        expect(await instance.callStatic.__paused()).to.be.true;
+        expect(await instance.__paused.staticCall()).to.be.true;
       });
     });
 

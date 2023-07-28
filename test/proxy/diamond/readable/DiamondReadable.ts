@@ -1,4 +1,4 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
   DiamondReadableMock,
@@ -20,8 +20,8 @@ describe('DiamondReadable', function () {
       const fn = `fn${i}()`;
       functions.push(fn);
       selectors.push(
-        ethers.utils.hexDataSlice(
-          ethers.utils.solidityKeccak256(['string'], [fn]),
+        ethers.dataSlice(
+          ethers.solidityPackedKeccak256(['string'], [fn]),
           0,
           4,
         ),

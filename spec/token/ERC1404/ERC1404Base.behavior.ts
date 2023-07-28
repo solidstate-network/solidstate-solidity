@@ -2,7 +2,7 @@ import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
 import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
@@ -38,10 +38,10 @@ export function describeBehaviorOfERC1404Base(
     describe('#detectTransferRestriction(address,address,uint256)', function () {
       it('returns zero if no restriction exists', async function () {
         expect(
-          await instance.callStatic.detectTransferRestriction(
-            ethers.constants.AddressZero,
-            ethers.constants.AddressZero,
-            ethers.constants.One,
+          await instance.detectTransferRestriction.staticCall(
+            ethers.ZeroAddress,
+            ethers.ZeroAddress,
+            1,
           ),
         ).to.equal(0);
       });
@@ -50,14 +50,14 @@ export function describeBehaviorOfERC1404Base(
     describe('#messageForTransferRestriction(uint8)', function () {
       it('returns empty string for unknown restriction code', async function () {
         expect(
-          await instance.callStatic.messageForTransferRestriction(255),
+          await instance.messageForTransferRestriction.staticCall(255),
         ).to.equal('');
       });
 
       for (let restriction of restrictions) {
         it(`returns "${restriction.message}" for code ${restriction.code}`, async function () {
           expect(
-            await instance.callStatic.messageForTransferRestriction(
+            await instance.messageForTransferRestriction.staticCall(
               restriction.code,
             ),
           ).to.equal(restriction.message);
