@@ -4,8 +4,7 @@ import { AccessControl } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-const DEFAULT_ADMIN_ROLE =
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
+const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 interface AccessControlBehaviorArgs {
