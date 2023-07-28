@@ -50,7 +50,7 @@ export function describeBehaviorOfDiamondBase(
             contract.callStatic['function()'](),
           ).to.be.revertedWithCustomError(
             instance,
-            'Proxy__ImplementationIsNotContract',
+            'AddressUtils__NotContract',
           );
         });
       });

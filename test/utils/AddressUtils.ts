@@ -3,6 +3,8 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   AddressUtilsMock,
   AddressUtilsMock__factory,
+  OwnableMock,
+  OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike, BigNumber } from 'ethers';
@@ -10,11 +12,15 @@ import { ethers } from 'hardhat';
 
 describe('AddressUtils', async () => {
   let instance: AddressUtilsMock;
+  let implementation: OwnableMock;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
     instance = await new AddressUtilsMock__factory(deployer).deploy();
+    implementation = await new OwnableMock__factory(deployer).deploy(
+      deployer.address,
+    );
   });
 
   describe('__internal', () => {
@@ -552,6 +558,82 @@ describe('AddressUtils', async () => {
                 revertReason,
               ),
           ).to.be.revertedWith(revertReason);
+        });
+      });
+    });
+
+    describe('#functionDelegateCall(address,bytes)', () => {
+      it.only('returns the bytes representation of the return value of the target function', async () => {
+        expect(await implementation.owner()).to.equal(deployer);
+
+        const target = implementation.address;
+
+        {
+          const { data } = (await implementation.populateTransaction.__setOwner(
+            ethers.constants.AddressZero,
+          )) as {
+            data: BytesLike;
+          };
+
+          await instance['functionDelegateCall(address,bytes)'](target, data);
+        }
+
+        const { data } = (await implementation.populateTransaction.owner()) as {
+          data: BytesLike;
+        };
+
+        expect(
+          await instance['functionDelegateCall(address,bytes)'](target, data),
+        ).to.equal(
+          ethers.utils.hexZeroPad(
+            ethers.utils.hexlify(ethers.constants.AddressZero),
+            32,
+          ),
+        );
+      });
+
+      describe('reverts if', () => {
+        it('target is not a contract', async () => {
+          await expect(
+            instance['functionDelegateCall(address,bytes)'](
+              ethers.constants.AddressZero,
+              '0x',
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
+        });
+
+        it.only('target contract reverts, with target contract error message', async () => {
+          const revertReason = 'REVERT_REASON';
+
+          const mock = await deployMockContract(deployer, [
+            'function fn() external payable returns (bool)',
+          ]);
+
+          await mock.mock.fn.revertsWithReason(revertReason);
+
+          const target = mock.address;
+          const { data } = (await mock.populateTransaction.fn()) as {
+            data: BytesLike;
+          };
+
+          console.log(data);
+
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionDelegateCall(address,bytes)'](target, data),
+          ).to.be.revertedWith(revertReason);
+        });
+
+        it('target contract reverts, with default error message', async () => {
+          await expect(
+            instance
+              .connect(deployer)
+              ['functionDelegateCall(address,bytes)'](instance.address, '0x'),
+          ).to.be.revertedWith('AddressUtils: failed low-level delegatecall');
         });
       });
     });

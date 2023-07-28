@@ -191,7 +191,7 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'Proxy__ImplementationIsNotContract',
+            'AddressUtils__NotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
@@ -256,7 +256,7 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'Proxy__ImplementationIsNotContract',
+            'AddressUtils__NotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
@@ -321,7 +321,7 @@ export function describeBehaviorOfSolidStateDiamond(
             owner.sendTransaction({ to: instance.address, data: selector }),
           ).to.be.revertedWithCustomError(
             instance,
-            'Proxy__ImplementationIsNotContract',
+            'AddressUtils__NotContract',
           );
 
           expect(await instance.callStatic['facets()']()).to.have.deep.members(
