@@ -36,9 +36,8 @@ describe('Multicall', function () {
         await expect(
           instance.multicall([
             (await instance.callTest.populateTransaction()).data as BytesLike,
-            (
-              await instance.callRevertTest.populateTransaction()
-            ).data as BytesLike,
+            (await instance.callRevertTest.populateTransaction())
+              .data as BytesLike,
           ]),
         ).to.be.revertedWith('revert');
       });
