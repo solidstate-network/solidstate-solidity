@@ -8,11 +8,11 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ManagedProxy', function () {
+describe('ManagedProxy', () => {
   let manager: any;
   let instance: ManagedProxyMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
     const implementationInstance = await new OwnableMock__factory(
@@ -44,22 +44,22 @@ describe('ManagedProxy', function () {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', function () {
-    describe('#_getImplementation()', function () {
-      it('returns implementation address', async function () {
+  describe('__internal', () => {
+    describe('#_getImplementation()', () => {
+      it('returns implementation address', async () => {
         expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
 
-      describe('reverts if', function () {
-        it('manager is non-contract address', async function () {
+      describe('reverts if', () => {
+        it('manager is non-contract address', async () => {
           await instance.setManager(ethers.ZeroAddress);
 
           await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
-        it('manager fails to return implementation', async function () {
+        it('manager fails to return implementation', async () => {
           await manager.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(

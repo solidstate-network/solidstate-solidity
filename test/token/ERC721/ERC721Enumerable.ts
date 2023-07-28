@@ -5,10 +5,10 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC721Enumerable', function () {
+describe('ERC721Enumerable', () => {
   let instance: ERC721EnumerableMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC721EnumerableMock__factory(deployer).deploy();
   });

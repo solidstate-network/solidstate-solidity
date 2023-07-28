@@ -32,10 +32,10 @@ contract CustomToken is ERC20Base {
 Rather than rewrite the `ERC20Base` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
 
 ```javascript
-describe('CustomToken', function () {
+describe('CustomToken', () => {
   let instance;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const factory = await ethers.getContractFactory('CustomToken');
     instance = await factory.deploy();
     await instance.deployed();
@@ -62,7 +62,7 @@ describeBehaviorOfERC20Base(
   ['#balanceOf'],
 );
 
-describe('#balanceOf', function () {
+describe('#balanceOf', () => {
   // custom tests
 });
 ```

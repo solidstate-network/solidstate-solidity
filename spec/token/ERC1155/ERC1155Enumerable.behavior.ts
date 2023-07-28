@@ -32,15 +32,15 @@ export function describeBehaviorOfERC1155Enumerable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1155Enumerable', function () {
+  describe('::ERC1155Enumerable', () => {
     let instance: IERC1155Enumerable;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#totalSupply(uint256)', function () {
-      it('returns supply of given token', async function () {
+    describe('#totalSupply(uint256)', () => {
+      it('returns supply of given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? 0n;
         const amount = 2n;
@@ -61,8 +61,8 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#totalHolders(uint256)', function () {
-      it('returns number of holders of given token', async function () {
+    describe('#totalHolders(uint256)', () => {
+      it('returns number of holders of given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? 0n;
         const amount = 2n;
@@ -83,8 +83,8 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#accountsByToken(uint256)', function () {
-      it('returns list of addresses holding given token', async function () {
+    describe('#accountsByToken(uint256)', () => {
+      it('returns list of addresses holding given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? 0n;
         const amount = 2n;
@@ -109,8 +109,8 @@ export function describeBehaviorOfERC1155Enumerable(
       });
     });
 
-    describe('#tokensByAccount(address)', function () {
-      it('returns list of tokens held by given address', async function () {
+    describe('#tokensByAccount(address)', () => {
+      it('returns list of tokens held by given address', async () => {
         const [holder0, holder1] = await ethers.getSigners();
         const id = tokenId ?? 0n;
         const amount = 2n;

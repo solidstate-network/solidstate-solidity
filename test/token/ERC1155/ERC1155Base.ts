@@ -7,17 +7,17 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC1155Base', function () {
+describe('ERC1155Base', () => {
   let holder: SignerWithAddress;
   let recipient: SignerWithAddress;
   let instance: ERC1155BaseMock;
   let invalidReceiver: string;
 
-  before(async function () {
+  before(async () => {
     [holder, recipient] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1155BaseMock__factory(deployer).deploy();
     invalidReceiver = await instance.getAddress();
@@ -30,13 +30,13 @@ describe('ERC1155Base', function () {
       instance.__burn(recipient, tokenId, amount),
   });
 
-  describe('__internal', function () {
-    describe('#_balanceOf(address,uint256)', function () {
+  describe('__internal', () => {
+    describe('#_balanceOf(address,uint256)', () => {
       it('todo');
     });
 
-    describe('#_mint(address,uint256,uint256,bytes)', function () {
-      it('increases balance of given token held by given account by given amount', async function () {
+    describe('#_mint(address,uint256,uint256,bytes)', () => {
+      it('increases balance of given token held by given account by given amount', async () => {
         let id = 0;
         let amount = 2;
 
@@ -55,7 +55,7 @@ describe('ERC1155Base', function () {
         expect(finalBalance - initialBalance).to.equal(amount);
       });
 
-      it('emits TransferSingle event', async function () {
+      it('emits TransferSingle event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -70,8 +70,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('mint is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('mint is made to the zero address', async () => {
           await expect(
             instance.__mint(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
@@ -82,8 +82,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeMint(address,uint256,uint256,bytes)', function () {
-      it('increases balance of given token held by given account by given amount', async function () {
+    describe('#_safeMint(address,uint256,uint256,bytes)', () => {
+      it('increases balance of given token held by given account by given amount', async () => {
         let id = 0;
         let amount = 2;
 
@@ -102,7 +102,7 @@ describe('ERC1155Base', function () {
         expect(finalBalance - initialBalance).to.equal(amount);
       });
 
-      it('emits TransferSingle event', async function () {
+      it('emits TransferSingle event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -117,8 +117,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('mint is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('mint is made to the zero address', async () => {
           await expect(
             instance.__safeMint(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
@@ -127,7 +127,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('mint is made to invalid receiver', async function () {
+        it('mint is made to invalid receiver', async () => {
           await expect(
             instance.__safeMint(invalidReceiver, 0, 0),
           ).to.be.revertedWithCustomError(
@@ -138,8 +138,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_mintBatch(address,uint256[],uint256[],bytes)', function () {
-      it('increases balances of given tokens held by given account by given amounts', async function () {
+    describe('#_mintBatch(address,uint256[],uint256[],bytes)', () => {
+      it('increases balances of given tokens held by given account by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -158,7 +158,7 @@ describe('ERC1155Base', function () {
         expect(finalBalance - initialBalance).to.equal(amount);
       });
 
-      it('emits TransferBatch event', async function () {
+      it('emits TransferBatch event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -173,8 +173,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('mint is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('mint is made to the zero address', async () => {
           await expect(
             instance.__mintBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
@@ -183,7 +183,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('input array lengths do not match', async function () {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.__mintBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
@@ -194,8 +194,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeMintBatch(address,uint256[],uint256[],bytes)', function () {
-      it('increases balances of given tokens held by given account by given amounts', async function () {
+    describe('#_safeMintBatch(address,uint256[],uint256[],bytes)', () => {
+      it('increases balances of given tokens held by given account by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -214,7 +214,7 @@ describe('ERC1155Base', function () {
         expect(finalBalance - initialBalance).to.equal(amount);
       });
 
-      it('emits TransferBatch event', async function () {
+      it('emits TransferBatch event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -229,8 +229,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('mint is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('mint is made to the zero address', async () => {
           await expect(
             instance.__safeMintBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
@@ -239,7 +239,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('input array lengths do not match', async function () {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.__safeMintBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
@@ -248,7 +248,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('mint is made to invalid receiver', async function () {
+        it('mint is made to invalid receiver', async () => {
           await expect(
             instance.__safeMintBatch(await instance.getAddress(), [], []),
           ).to.be.revertedWithCustomError(
@@ -259,8 +259,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_burn(address,uint256,uint256)', function () {
-      it('decreases balance of given token held by given account by given amount', async function () {
+    describe('#_burn(address,uint256,uint256)', () => {
+      it('decreases balance of given token held by given account by given amount', async () => {
         let id = 0;
         let amount = 2;
 
@@ -281,7 +281,7 @@ describe('ERC1155Base', function () {
         expect(initialBalance - finalBalance).to.equal(amount);
       });
 
-      it('emits TransferSingle event', async function () {
+      it('emits TransferSingle event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -298,8 +298,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('burn is made from the zero address', async function () {
+      describe('reverts if', () => {
+        it('burn is made from the zero address', async () => {
           await expect(
             instance.__burn(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
@@ -308,7 +308,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('burn amount exceeds balance', async function () {
+        it('burn amount exceeds balance', async () => {
           await expect(
             instance.__burn(holder.address, 0, 1),
           ).to.be.revertedWithCustomError(
@@ -319,8 +319,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_burnBatch(address,uint256[],uint256[])', function () {
-      it('decreases balances of given tokens held by given account by given amounts', async function () {
+    describe('#_burnBatch(address,uint256[],uint256[])', () => {
+      it('decreases balances of given tokens held by given account by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -341,7 +341,7 @@ describe('ERC1155Base', function () {
         expect(initialBalance - finalBalance).to.equal(amount);
       });
 
-      it('emits TransferBatch event', async function () {
+      it('emits TransferBatch event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -358,8 +358,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('burn is made from the zero address', async function () {
+      describe('reverts if', () => {
+        it('burn is made from the zero address', async () => {
           await expect(
             instance.__burnBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
@@ -368,7 +368,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('input array lengths do not match', async function () {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.__burnBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
@@ -377,7 +377,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('burn amount exceeds balance', async function () {
+        it('burn amount exceeds balance', async () => {
           await expect(
             instance.__burnBatch(holder.address, [0], [1]),
           ).to.be.revertedWithCustomError(
@@ -388,8 +388,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_transfer(address,address,address,uint256,uint256,bytes)', function () {
-      it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
+    describe('#_transfer(address,address,address,uint256,uint256,bytes)', () => {
+      it('decreases balances of sender and increases balances of recipient by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -430,7 +430,7 @@ describe('ERC1155Base', function () {
         );
       });
 
-      it('emits TransferSingle event', async function () {
+      it('emits TransferSingle event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -456,8 +456,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('transfer is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('transfer is made to the zero address', async () => {
           await expect(
             instance.__transfer(
               await instance.getAddress(),
@@ -473,7 +473,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer amount exceeds balance', async function () {
+        it('transfer amount exceeds balance', async () => {
           await expect(
             instance.__transfer(
               await instance.getAddress(),
@@ -491,8 +491,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeTransfer(address,address,address,uint256,uint256,bytes)', function () {
-      it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
+    describe('#_safeTransfer(address,address,address,uint256,uint256,bytes)', () => {
+      it('decreases balances of sender and increases balances of recipient by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -533,7 +533,7 @@ describe('ERC1155Base', function () {
         );
       });
 
-      it('emits TransferSingle event', async function () {
+      it('emits TransferSingle event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -559,8 +559,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('transfer is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('transfer is made to the zero address', async () => {
           await expect(
             instance.__safeTransfer(
               await instance.getAddress(),
@@ -576,7 +576,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer amount exceeds balance', async function () {
+        it('transfer amount exceeds balance', async () => {
           await expect(
             instance.__safeTransfer(
               await instance.getAddress(),
@@ -592,7 +592,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer is made to invalid receiver', async function () {
+        it('transfer is made to invalid receiver', async () => {
           await expect(
             instance.__safeTransfer(
               await instance.getAddress(),
@@ -610,8 +610,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_transferBatch(address,address,address,uint256[],uint256[],bytes)', function () {
-      it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
+    describe('#_transferBatch(address,address,address,uint256[],uint256[],bytes)', () => {
+      it('decreases balances of sender and increases balances of recipient by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -652,7 +652,7 @@ describe('ERC1155Base', function () {
         );
       });
 
-      it('emits TransferBatch event', async function () {
+      it('emits TransferBatch event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -678,8 +678,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('transfer is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('transfer is made to the zero address', async () => {
           await expect(
             instance.__transferBatch(
               await instance.getAddress(),
@@ -695,7 +695,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('input array lengths do not match', async function () {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.__transferBatch(
               await instance.getAddress(),
@@ -711,7 +711,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer amount exceeds balance', async function () {
+        it('transfer amount exceeds balance', async () => {
           await expect(
             instance.__transferBatch(
               await instance.getAddress(),
@@ -729,8 +729,8 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_safeTransferBatch(address,address,address,uint256[],uint256[],bytes)', function () {
-      it('decreases balances of sender and increases balances of recipient by given amounts', async function () {
+    describe('#_safeTransferBatch(address,address,address,uint256[],uint256[],bytes)', () => {
+      it('decreases balances of sender and increases balances of recipient by given amounts', async () => {
         let id = 0;
         let amount = 2;
 
@@ -771,7 +771,7 @@ describe('ERC1155Base', function () {
         );
       });
 
-      it('emits TransferBatch event', async function () {
+      it('emits TransferBatch event', async () => {
         let id = 0;
         let amount = 2;
 
@@ -797,8 +797,8 @@ describe('ERC1155Base', function () {
           );
       });
 
-      describe('reverts if', function () {
-        it('transfer is made to the zero address', async function () {
+      describe('reverts if', () => {
+        it('transfer is made to the zero address', async () => {
           await expect(
             instance.__safeTransferBatch(
               await instance.getAddress(),
@@ -814,7 +814,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('input array lengths do not match', async function () {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.__safeTransferBatch(
               await instance.getAddress(),
@@ -830,7 +830,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer amount exceeds balance', async function () {
+        it('transfer amount exceeds balance', async () => {
           await expect(
             instance.__safeTransferBatch(
               await instance.getAddress(),
@@ -846,7 +846,7 @@ describe('ERC1155Base', function () {
           );
         });
 
-        it('transfer is made to invalid receiver', async function () {
+        it('transfer is made to invalid receiver', async () => {
           await expect(
             instance.__safeTransferBatch(
               await instance.getAddress(),
@@ -864,7 +864,7 @@ describe('ERC1155Base', function () {
       });
     });
 
-    describe('#_beforeTokenTransfer(address,address,address,uint256[],uint256[],bytes)', function () {
+    describe('#_beforeTokenTransfer(address,address,address,uint256[],uint256[],bytes)', () => {
       it('todo');
     });
   });

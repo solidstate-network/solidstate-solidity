@@ -15,15 +15,15 @@ export function describeBehaviorOfDiamondBase(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondBase', function () {
+  describe('::DiamondBase', () => {
     let instance: IDiamondBase;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('fallback()', function () {
-      it('forwards data with matching selector call to facet', async function () {
+    describe('fallback()', () => {
+      it('forwards data with matching selector call to facet', async () => {
         expect(instance.interface.hasFunction(facetFunction)).to.be.false;
 
         let contract = new ethers.Contract(
@@ -38,8 +38,8 @@ export function describeBehaviorOfDiamondBase(
 
       it('forwards data without matching selector to fallback contract');
 
-      describe('reverts if', function () {
-        it('no selector matches data', async function () {
+      describe('reverts if', () => {
+        it('no selector matches data', async () => {
           let contract = new ethers.Contract(
             await instance.getAddress(),
             ['function __function()'],

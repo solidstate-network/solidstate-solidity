@@ -23,12 +23,12 @@ export function describeBehaviorOfDiamondFallback(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondFallback', function () {
+  describe('::DiamondFallback', () => {
     let instance: IDiamondFallback;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
       owner = await args.getOwner();
       nonOwner = await args.getNonOwner();
@@ -36,16 +36,16 @@ export function describeBehaviorOfDiamondFallback(
 
     describeBehaviorOfDiamondBase(async () => instance, args, skips);
 
-    describe('#getFallbackAddress()', function () {
-      it('returns the fallback address', async function () {
+    describe('#getFallbackAddress()', () => {
+      it('returns the fallback address', async () => {
         expect(await instance.getFallbackAddress.staticCall()).to.equal(
           args.fallbackAddress,
         );
       });
     });
 
-    describe('#setFallbackAddress(address)', function () {
-      it('updates the fallback address', async function () {
+    describe('#setFallbackAddress(address)', () => {
+      it('updates the fallback address', async () => {
         const fallback = await deployMockContract(owner, []);
 
         await instance.connect(owner).setFallbackAddress(fallback.address);
@@ -63,8 +63,8 @@ export function describeBehaviorOfDiamondFallback(
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
 
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
           await expect(
             instance.connect(nonOwner).setFallbackAddress(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');

@@ -37,7 +37,7 @@ describe('EnumerableSet', async () => {
           expect(await instance.at(2)).to.equal(twoBytes32);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithCustomError(
               instance,
@@ -211,7 +211,7 @@ describe('EnumerableSet', async () => {
           expect(await instance.at(2)).to.equal(oneAddress);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithCustomError(
               instance,
@@ -385,7 +385,7 @@ describe('EnumerableSet', async () => {
           expect(await instance.at(2)).to.equal(one);
         });
 
-        describe('reverts if', function () {
+        describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(instance.at(0)).to.be.revertedWithCustomError(
               instance,

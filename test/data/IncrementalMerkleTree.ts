@@ -10,10 +10,10 @@ import { MerkleTree } from 'merkletreejs';
 
 const randomHash = () => ethers.hexlify(ethers.randomBytes(32));
 
-describe('IncrementalMerkleTree', function () {
+describe('IncrementalMerkleTree', () => {
   let instance: IncrementalMerkleTreeMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new IncrementalMerkleTreeMock__factory(deployer).deploy();
   });

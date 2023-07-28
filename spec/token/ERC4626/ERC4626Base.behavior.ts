@@ -24,7 +24,7 @@ export function describeBehaviorOfERC4626Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC4626Base', function () {
+  describe('::ERC4626Base', () => {
     let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
     let recipient: SignerWithAddress;
@@ -35,7 +35,7 @@ export function describeBehaviorOfERC4626Base(
       [caller, depositor, recipient] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       assetInstance = await args.getAsset();
       instance = await deploy();
     });

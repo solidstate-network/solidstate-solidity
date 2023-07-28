@@ -28,16 +28,16 @@ export function describeBehaviorOfSolidStateERC721(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC721', function () {
+  describe('::SolidStateERC721', () => {
     let holder: SignerWithAddress;
 
     let instance: SolidStateERC721;
 
-    before(async function () {
+    before(async () => {
       [holder] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -71,9 +71,9 @@ export function describeBehaviorOfSolidStateERC721(
       skips,
     );
 
-    describe('#transferFrom(address,address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
+    describe('#transferFrom(address,address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
           const tokenId = 2n;
           await mint(holder.address, tokenId);
 
@@ -91,9 +91,9 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
+    describe('#safeTransferFrom(address,address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
           const tokenId = 2n;
           await mint(holder.address, tokenId);
 
@@ -114,9 +114,9 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256,bytes)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
+    describe('#safeTransferFrom(address,address,uint256,bytes)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
           const tokenId = 2n;
           await mint(holder.address, tokenId);
 
@@ -138,9 +138,9 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#approve(address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
+    describe('#approve(address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
           const tokenId = 2n;
           await mint(holder.address, tokenId);
 

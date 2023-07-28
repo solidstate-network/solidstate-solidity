@@ -10,10 +10,10 @@ let restrictions = [
   { code: 3, message: 'three' },
 ];
 
-describe('ERC1404Base', function () {
+describe('ERC1404Base', () => {
   let instance: ERC1404BaseMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1404BaseMock__factory(deployer).deploy(
       restrictions.map((e) => e.code),
@@ -30,12 +30,12 @@ describe('ERC1404Base', function () {
       instance.__burn(recipient, amount),
   });
 
-  describe('__internal', function () {
-    describe('#_detectTransferRestriction(address,address,uint256)', function () {
+  describe('__internal', () => {
+    describe('#_detectTransferRestriction(address,address,uint256)', () => {
       it('todo');
     });
 
-    describe('#_messageForTransferRestriction(uint8)', function () {
+    describe('#_messageForTransferRestriction(uint8)', () => {
       it('todo');
     });
   });

@@ -8,16 +8,16 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UpgradeableProxyOwnable', function () {
+describe('UpgradeableProxyOwnable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: UpgradeableProxyOwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
     const implementationInstance = await new OwnableMock__factory(

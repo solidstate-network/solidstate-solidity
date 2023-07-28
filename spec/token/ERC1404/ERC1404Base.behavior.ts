@@ -16,10 +16,10 @@ export function describeBehaviorOfERC1404Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1404Base', function () {
+  describe('::ERC1404Base', () => {
     let instance: IERC1404Base;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -35,8 +35,8 @@ export function describeBehaviorOfERC1404Base(
 
     // TODO: transfers blocked if restriction exists
 
-    describe('#detectTransferRestriction(address,address,uint256)', function () {
-      it('returns zero if no restriction exists', async function () {
+    describe('#detectTransferRestriction(address,address,uint256)', () => {
+      it('returns zero if no restriction exists', async () => {
         expect(
           await instance.detectTransferRestriction.staticCall(
             ethers.ZeroAddress,
@@ -47,15 +47,15 @@ export function describeBehaviorOfERC1404Base(
       });
     });
 
-    describe('#messageForTransferRestriction(uint8)', function () {
-      it('returns empty string for unknown restriction code', async function () {
+    describe('#messageForTransferRestriction(uint8)', () => {
+      it('returns empty string for unknown restriction code', async () => {
         expect(
           await instance.messageForTransferRestriction.staticCall(255),
         ).to.equal('');
       });
 
       for (let restriction of restrictions) {
-        it(`returns "${restriction.message}" for code ${restriction.code}`, async function () {
+        it(`returns "${restriction.message}" for code ${restriction.code}`, async () => {
           expect(
             await instance.messageForTransferRestriction.staticCall(
               restriction.code,

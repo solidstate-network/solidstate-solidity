@@ -6,19 +6,19 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('MetamorphicFactory', function () {
+describe('MetamorphicFactory', () => {
   let instance: MetamorphicFactoryMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new MetamorphicFactoryMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfMetamorphicFactory(async () => instance, {});
 
-  describe('__internal', function () {
-    describe('#_deployMetamorphicContract(address,bytes32)', function () {
-      it('deploys metamorphic contract and returns deployment address', async function () {
+  describe('__internal', () => {
+    describe('#_deployMetamorphicContract(address,bytes32)', () => {
+      it('deploys metamorphic contract and returns deployment address', async () => {
         const target = await instance.getAddress();
         const salt = ethers.randomBytes(32);
 
@@ -36,8 +36,8 @@ describe('MetamorphicFactory', function () {
         );
       });
 
-      describe('reverts if', function () {
-        it('salt has already been used', async function () {
+      describe('reverts if', () => {
+        it('salt has already been used', async () => {
           const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
 
@@ -53,8 +53,8 @@ describe('MetamorphicFactory', function () {
       });
     });
 
-    describe('#_calculateMetamorphicDeploymentAddress(bytes32)', function () {
-      it('returns address of not-yet-deployed contract', async function () {
+    describe('#_calculateMetamorphicDeploymentAddress(bytes32)', () => {
+      it('returns address of not-yet-deployed contract', async () => {
         const initCode =
           '0x5860208158601c335a639c2236038752fa158151803b80938091923cf3';
         const initCodeHash = ethers.keccak256(initCode);

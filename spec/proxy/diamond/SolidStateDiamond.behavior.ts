@@ -40,18 +40,18 @@ export function describeBehaviorOfSolidStateDiamond(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateDiamond', function () {
+  describe('::SolidStateDiamond', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
     let instance: ISolidStateDiamond;
 
-    before(async function () {
+    before(async () => {
       owner = await args.getOwner();
       nonOwner = await args.getNonOwner();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -77,8 +77,8 @@ export function describeBehaviorOfSolidStateDiamond(
 
     describeBehaviorOfSafeOwnable(deploy, args, skips);
 
-    describe('receive()', function () {
-      it('accepts ether transfer', async function () {
+    describe('receive()', () => {
+      it('accepts ether transfer', async () => {
         const [signer] = await ethers.getSigners();
         const value = 1;
         const to = await instance.getAddress();
@@ -89,12 +89,12 @@ export function describeBehaviorOfSolidStateDiamond(
       });
     });
 
-    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
+    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       const selectors: string[] = [];
       const abi: string[] = [];
       let facet: any;
 
-      before(async function () {
+      before(async () => {
         for (let i = 0; i < 24; i++) {
           const fn = `fn${i}()`;
           abi.push(`function ${fn}`);
@@ -110,7 +110,7 @@ export function describeBehaviorOfSolidStateDiamond(
         facet = await deployMockContract(owner, abi);
       });
 
-      it('adds selectors one-by-one', async function () {
+      it('adds selectors one-by-one', async () => {
         const expectedSelectors = [];
 
         for (let selector of selectors) {
@@ -151,7 +151,7 @@ export function describeBehaviorOfSolidStateDiamond(
         }
       });
 
-      it('removes selectors one-by-one in ascending order of addition', async function () {
+      it('removes selectors one-by-one in ascending order of addition', async () => {
         await instance
           .connect(owner)
           .diamondCut(
@@ -224,7 +224,7 @@ export function describeBehaviorOfSolidStateDiamond(
         }
       });
 
-      it('removes selectors one-by-one in descending order of addition', async function () {
+      it('removes selectors one-by-one in descending order of addition', async () => {
         await instance
           .connect(owner)
           .diamondCut(
@@ -297,7 +297,7 @@ export function describeBehaviorOfSolidStateDiamond(
         }
       });
 
-      it('removes selectors one-by-one in random order', async function () {
+      it('removes selectors one-by-one in random order', async () => {
         await instance
           .connect(owner)
           .diamondCut(

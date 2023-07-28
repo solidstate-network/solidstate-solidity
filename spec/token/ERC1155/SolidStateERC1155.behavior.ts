@@ -27,7 +27,7 @@ export function describeBehaviorOfSolidStateERC1155(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC1155', function () {
+  describe('::SolidStateERC1155', () => {
     describeBehaviorOfERC1155Base(deploy, { mint, burn, tokenId }, skips);
 
     describeBehaviorOfERC1155Enumerable(deploy, {

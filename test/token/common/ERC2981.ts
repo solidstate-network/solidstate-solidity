@@ -3,7 +3,7 @@ import { describeBehaviorOfERC2981 } from '@solidstate/spec';
 import { ERC2981Mock, ERC2981Mock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC2981', function () {
+describe('ERC2981', () => {
   let royalty = 10000; // 10000 / 10000 = 100%
   let royalties = [
     0, // 0 / 10000 = 0%
@@ -17,7 +17,7 @@ describe('ERC2981', function () {
 
   let instance: ERC2981Mock;
 
-  before(async function () {
+  before(async () => {
     [deployer, receiver] = await ethers.getSigners();
 
     instance = await new ERC2981Mock__factory(deployer).deploy(

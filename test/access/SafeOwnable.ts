@@ -7,17 +7,17 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('SafeOwnable', function () {
+describe('SafeOwnable', () => {
   let owner: SignerWithAddress;
   let nomineeOwner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: SafeOwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new SafeOwnableMock__factory(owner).deploy(owner.address);
   });
 

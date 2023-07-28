@@ -19,13 +19,13 @@ export function describeBehaviorOfSafeOwnable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SafeOwnable', function () {
+  describe('::SafeOwnable', () => {
     let instance: ISafeOwnable;
     let owner: SignerWithAddress;
     let nomineeOwner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
       owner = await getOwner();
       nomineeOwner = await getNomineeOwner();
@@ -41,8 +41,8 @@ export function describeBehaviorOfSafeOwnable(
       ['#transferOwnership(address)', ...(skips ?? [])],
     );
 
-    describe('#nomineeOwner()', function () {
-      it('returns address of nominee owner', async function () {
+    describe('#nomineeOwner()', () => {
+      it('returns address of nominee owner', async () => {
         expect(await instance.nomineeOwner.staticCall()).to.equal(
           ethers.ZeroAddress,
         );
@@ -53,14 +53,14 @@ export function describeBehaviorOfSafeOwnable(
       });
     });
 
-    describe('#transferOwnership(address)', function () {
-      it('does not set new owner', async function () {
+    describe('#transferOwnership(address)', () => {
+      it('does not set new owner', async () => {
         await instance.connect(owner).transferOwnership(nomineeOwner.address);
         expect(await instance.owner.staticCall()).to.equal(owner.address);
       });
 
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
           await expect(
             instance.connect(nonOwner).transferOwnership(nonOwner.address),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
@@ -68,8 +68,8 @@ export function describeBehaviorOfSafeOwnable(
       });
     });
 
-    describe('#acceptOwnership()', function () {
-      it('sets new owner', async function () {
+    describe('#acceptOwnership()', () => {
+      it('sets new owner', async () => {
         await instance.connect(owner).transferOwnership(nomineeOwner.address);
 
         await instance.connect(nomineeOwner).acceptOwnership();
@@ -78,7 +78,7 @@ export function describeBehaviorOfSafeOwnable(
         );
       });
 
-      it('emits OwnershipTransferred event', async function () {
+      it('emits OwnershipTransferred event', async () => {
         await instance.connect(owner).transferOwnership(nomineeOwner.address);
 
         await expect(instance.connect(nomineeOwner).acceptOwnership())
@@ -87,8 +87,8 @@ export function describeBehaviorOfSafeOwnable(
       });
     });
 
-    describe('reverts if', function () {
-      it('sender is not nominee owner', async function () {
+    describe('reverts if', () => {
+      it('sender is not nominee owner', async () => {
         await expect(
           instance.connect(nonOwner).acceptOwnership(),
         ).to.be.revertedWithCustomError(

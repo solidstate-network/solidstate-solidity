@@ -6,7 +6,7 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UintUtils', function () {
+describe('UintUtils', () => {
   let instance: UintUtilsMock;
   const values = [
     0n,
@@ -24,13 +24,13 @@ describe('UintUtils', function () {
     BigInt(ethers.MaxUint256),
   ];
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new UintUtilsMock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('#add(uint256,int256)', function () {
+  describe('__internal', () => {
+    describe('#add(uint256,int256)', () => {
       it('adds unsigned and signed integers', async () => {
         expect(await instance.add.staticCall(1, 1)).to.equal(2);
         expect(await instance.add.staticCall(1, -1)).to.equal(0);
@@ -45,7 +45,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#sub(uint256,int256)', function () {
+    describe('#sub(uint256,int256)', () => {
       it('subtracts unsigned and signed integers', async () => {
         expect(await instance.sub.staticCall(1, 1)).to.equal(0);
         expect(await instance.sub.staticCall(1, -1)).to.equal(2);
@@ -60,7 +60,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toString(uint256,uint256)', function () {
+    describe('#toString(uint256,uint256)', () => {
       it('returns 0 if input is 0', async () => {
         for (let radix = 2; radix <= 36; radix++) {
           expect(
@@ -125,7 +125,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toString(uint256,uint256,uint256)', function () {
+    describe('#toString(uint256,uint256,uint256)', () => {
       it('returns empty string if input is 0 and length is 0', async () => {
         for (let radix = 2; radix <= 36; radix++) {
           expect(
@@ -249,7 +249,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toBinString(uint256)', function () {
+    describe('#toBinString(uint256)', () => {
       it('returns 0b0 if input is 0', async () => {
         expect(await instance['toBinString(uint256)'].staticCall(0n)).to.equal(
           '0b0',
@@ -265,7 +265,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toBinString(uint256,uint256)', function () {
+    describe('#toBinString(uint256,uint256)', () => {
       it('returns empty 0b-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance['toBinString(uint256,uint256)'].staticCall(0n, 0n),
@@ -315,7 +315,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toOctString(uint256)', function () {
+    describe('#toOctString(uint256)', () => {
       it('returns 0o0 if input is 0', async () => {
         expect(await instance['toOctString(uint256)'].staticCall(0n)).to.equal(
           '0o0',
@@ -331,7 +331,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toOctString(uint256,uint256)', function () {
+    describe('#toOctString(uint256,uint256)', () => {
       it('returns empty 0o-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance['toOctString(uint256,uint256)'].staticCall(0n, 0n),
@@ -381,14 +381,14 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toDecString(uint256)', function () {
+    describe('#toDecString(uint256)', () => {
       it('returns 0 if input is 0', async () => {
         expect(await instance['toDecString(uint256)'].staticCall(0n)).to.equal(
           '0',
         );
       });
 
-      it('returns decimal string representation of number', async function () {
+      it('returns decimal string representation of number', async () => {
         for (let i = 0; i < 12; i++) {
           const string = i.toString();
           const number = BigInt(string);
@@ -403,7 +403,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toDecString(uint256,uint256)', function () {
+    describe('#toDecString(uint256,uint256)', () => {
       it('returns empty string if input is 0 and length is 0', async () => {
         expect(
           await instance['toDecString(uint256,uint256)'].staticCall(0n, 0n),
@@ -437,7 +437,7 @@ describe('UintUtils', function () {
         expect(result).to.have.length.of(length);
       });
 
-      describe('reverts if', function () {
+      describe('reverts if', () => {
         it('padding is insufficient', async () => {
           await expect(
             instance['toDecString(uint256,uint256)'].staticCall(1n, 0n),
@@ -456,7 +456,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toHexString(uint256)', function () {
+    describe('#toHexString(uint256)', () => {
       it('returns 0x00 if input is 0', async () => {
         expect(await instance['toHexString(uint256)'].staticCall(0n)).to.equal(
           '0x00',
@@ -472,7 +472,7 @@ describe('UintUtils', function () {
       });
     });
 
-    describe('#toHexString(uint256,uint256)', function () {
+    describe('#toHexString(uint256,uint256)', () => {
       it('returns empty 0x-prefixed string if input is 0 and length is 0', async () => {
         expect(
           await instance['toHexString(uint256,uint256)'].staticCall(0n, 0n),

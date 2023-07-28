@@ -6,13 +6,13 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondReadable', function () {
+describe('DiamondReadable', () => {
   let facet;
   const facetCuts: any[] = [];
 
   let instance: DiamondReadableMock;
 
-  before(async function () {
+  before(async () => {
     const functions = [];
     const selectors = [];
 
@@ -40,7 +40,7 @@ describe('DiamondReadable', function () {
     });
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new DiamondReadableMock__factory(deployer).deploy(
       facetCuts,

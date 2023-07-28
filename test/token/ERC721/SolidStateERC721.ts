@@ -9,10 +9,10 @@ const name = 'ERC721Metadata.name';
 const symbol = 'ERC721Metadata.symbol';
 const tokenURI = 'ERC721Metadata.tokenURI';
 
-describe('SolidStateERC721', function () {
+describe('SolidStateERC721', () => {
   let instance: SolidStateERC721Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC721Mock__factory(deployer).deploy(
       name,

@@ -28,16 +28,16 @@ export function describeBehaviorOfERC1155Base(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1155Base', function () {
+  describe('::ERC1155Base', () => {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let instance: IERC1155Base;
 
-    before(async function () {
+    before(async () => {
       [holder, spender] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -50,8 +50,8 @@ export function describeBehaviorOfERC1155Base(
       skips,
     );
 
-    describe('#balanceOf(address,uint256)', function () {
-      it('returns the balance of given token held by given address', async function () {
+    describe('#balanceOf(address,uint256)', () => {
+      it('returns the balance of given token held by given address', async () => {
         const id = tokenId ?? 0n;
         expect(
           await instance.balanceOf.staticCall(holder.address, id),
@@ -71,8 +71,8 @@ export function describeBehaviorOfERC1155Base(
         ).to.equal(0);
       });
 
-      describe('reverts if', function () {
-        it('balance of zero address is queried', async function () {
+      describe('reverts if', () => {
+        it('balance of zero address is queried', async () => {
           await expect(
             instance.balanceOf.staticCall(ethers.ZeroAddress, 0n),
           ).to.be.revertedWithCustomError(
@@ -83,8 +83,8 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#balanceOfBatch(address[],uint256[])', function () {
-      it('returns the balances of given tokens held by given addresses', async function () {
+    describe('#balanceOfBatch(address[],uint256[])', () => {
+      it('returns the balances of given tokens held by given addresses', async () => {
         expect(
           Array.from(
             await instance.balanceOfBatch.staticCall([holder.address], [0n]),
@@ -93,8 +93,8 @@ export function describeBehaviorOfERC1155Base(
         // TODO: test delta
       });
 
-      describe('reverts if', function () {
-        it('input array lengths do not match', async function () {
+      describe('reverts if', () => {
+        it('input array lengths do not match', async () => {
           await expect(
             instance.balanceOfBatch.staticCall([holder.address], []),
           ).to.be.revertedWithCustomError(
@@ -103,7 +103,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('balance of zero address is queried', async function () {
+        it('balance of zero address is queried', async () => {
           await expect(
             instance.balanceOfBatch.staticCall([ethers.ZeroAddress], [0n]),
           ).to.be.revertedWithCustomError(
@@ -114,8 +114,8 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#isApprovedForAll(address,address)', function () {
-      it('returns whether given operator is approved to spend tokens of given account', async function () {
+    describe('#isApprovedForAll(address,address)', () => {
+      it('returns whether given operator is approved to spend tokens of given account', async () => {
         expect(
           await instance.isApprovedForAll.staticCall(
             holder.address,
@@ -134,8 +134,8 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#setApprovalForAll(address,bool)', function () {
-      it('approves given operator to spend tokens on behalf of sender', async function () {
+    describe('#setApprovalForAll(address,bool)', () => {
+      it('approves given operator to spend tokens on behalf of sender', async () => {
         await instance.connect(holder).setApprovalForAll(spender.address, true);
 
         expect(
@@ -148,8 +148,8 @@ export function describeBehaviorOfERC1155Base(
         // TODO: test case is no different from #isApprovedForAll test; tested further by #safeTransferFrom and #safeBatchTransferFrom tests
       });
 
-      describe('reverts if', function () {
-        it('given operator is sender', async function () {
+      describe('reverts if', () => {
+        it('given operator is sender', async () => {
           await expect(
             instance.connect(holder).setApprovalForAll(holder.address, true),
           ).to.be.revertedWithCustomError(
@@ -160,8 +160,8 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', function () {
-      it('sends amount from A to B', async function () {
+    describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', () => {
+      it('sends amount from A to B', async () => {
         const id = tokenId ?? 0n;
         const amount = 2n;
 
@@ -189,8 +189,8 @@ export function describeBehaviorOfERC1155Base(
         ).to.equal(amount);
       });
 
-      describe('reverts if', function () {
-        it('sender has insufficient balance', async function () {
+      describe('reverts if', () => {
+        it('sender has insufficient balance', async () => {
           const id = tokenId ?? 0n;
           const amount = 2n;
 
@@ -210,7 +210,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('operator is not approved to act on behalf of sender', async function () {
+        it('operator is not approved to act on behalf of sender', async () => {
           await expect(
             instance
               .connect(holder)
@@ -227,7 +227,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('receiver is invalid ERC1155Receiver', async function () {
+        it('receiver is invalid ERC1155Receiver', async () => {
           const mock = await deployMockContract(holder, [
             /* no functions */
           ]);
@@ -245,7 +245,7 @@ export function describeBehaviorOfERC1155Base(
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
 
-        it('receiver rejects transfer', async function () {
+        it('receiver rejects transfer', async () => {
           const mock = await deployMockContract(holder, [
             'function onERC1155Received (address, address, uint, uint, bytes) external view returns (bytes4)',
           ]);
@@ -270,8 +270,8 @@ export function describeBehaviorOfERC1155Base(
       });
     });
 
-    describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', function () {
-      it('sends amount from A to B, batch version', async function () {
+    describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', () => {
+      it('sends amount from A to B, batch version', async () => {
         const id = tokenId ?? 0n;
         const amount = 2n;
 
@@ -305,8 +305,8 @@ export function describeBehaviorOfERC1155Base(
         ).to.have.deep.members([amount]);
       });
 
-      describe('reverts if', function () {
-        it('sender has insufficient balance', async function () {
+      describe('reverts if', () => {
+        it('sender has insufficient balance', async () => {
           const id = tokenId ?? 0n;
           const amount = 2n;
 
@@ -326,7 +326,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('operator is not approved to act on behalf of sender', async function () {
+        it('operator is not approved to act on behalf of sender', async () => {
           await expect(
             instance
               .connect(holder)
@@ -343,7 +343,7 @@ export function describeBehaviorOfERC1155Base(
           );
         });
 
-        it('receiver is invalid ERC1155Receiver', async function () {
+        it('receiver is invalid ERC1155Receiver', async () => {
           const mock = await deployMockContract(holder, [
             /* no functions */
           ]);
@@ -361,7 +361,7 @@ export function describeBehaviorOfERC1155Base(
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
 
-        it('receiver rejects transfer', async function () {
+        it('receiver rejects transfer', async () => {
           const mock = await deployMockContract(holder, [
             'function onERC1155BatchReceived (address, address, uint[], uint[], bytes) external view returns (bytes4)',
           ]);

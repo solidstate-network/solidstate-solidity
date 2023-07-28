@@ -31,7 +31,7 @@ export function describeBehaviorOfSolidStateERC20(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC20', function () {
+  describe('::SolidStateERC20', () => {
     describeBehaviorOfERC20Base(deploy, args, skips);
 
     describeBehaviorOfERC20Extended(deploy, args, skips);

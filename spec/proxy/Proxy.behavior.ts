@@ -15,14 +15,14 @@ export function describeBehaviorOfProxy(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Proxy', function () {
+  describe('::Proxy', () => {
     let instance: IProxy;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('fallback', function () {
+    describe('fallback', () => {
       it('forwards data to implementation', async () => {
         let contract = new ethers.Contract(
           await instance.getAddress(),
