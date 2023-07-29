@@ -1,6 +1,6 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { bnToBytes32, bnToAddress, bytes32ToNumber } from '@solidstate/library';
+import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   BinaryHeapAddressMock,
   BinaryHeapBytes32Mock,

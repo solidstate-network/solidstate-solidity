@@ -9,7 +9,3 @@ export function bigintToAddress(bn: any) {
 export function bigintToBytes32(bn: any) {
   return ethers.zeroPadValue(ethers.toBeHex(bn), 32);
 }
-
-export function bytes32ToNumber(bytes32: any) {
-  return BigInt(bytes32);
-}
