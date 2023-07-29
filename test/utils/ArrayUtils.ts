@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { bnToBytes32, bnToAddress } from '@solidstate/library';
+import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   ArrayUtilsMock,
   ArrayUtilsMock__factory,
@@ -21,16 +21,16 @@ describe('ArrayUtils', async () => {
       it('returns the minimum bytes32 value in given array', async () => {
         expect(
           await instance['min(bytes32[])'].staticCall([
-            bnToBytes32(1),
-            bnToBytes32(0),
-            bnToBytes32(2),
+            bigintToBytes32(1),
+            bigintToBytes32(0),
+            bigintToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(0));
+        ).to.equal(bigintToBytes32(0));
       });
 
       it('returns the max bytes32 value if array is empty', async () => {
         expect(await instance['min(bytes32[])'].staticCall([])).to.equal(
-          bnToBytes32(ethers.MaxUint256),
+          bigintToBytes32(ethers.MaxUint256),
         );
       });
     });
@@ -39,16 +39,16 @@ describe('ArrayUtils', async () => {
       it('returns the minimum address in given array', async () => {
         expect(
           await instance['min(address[])'].staticCall([
-            bnToAddress(1),
-            bnToAddress(0),
-            bnToAddress(2),
+            bigintToAddress(1),
+            bigintToAddress(0),
+            bigintToAddress(2),
           ]),
-        ).to.equal(bnToAddress(0));
+        ).to.equal(bigintToAddress(0));
       });
 
       it('returns the max address if array is empty', async () => {
         expect(await instance['min(address[])'].staticCall([])).to.equal(
-          bnToAddress(2n ** 160n - 1n),
+          bigintToAddress(2n ** 160n - 1n),
         );
       });
     });
@@ -71,11 +71,11 @@ describe('ArrayUtils', async () => {
       it('returns the maximum bytes32 value in given array', async () => {
         expect(
           await instance['max(bytes32[])'].staticCall([
-            bnToBytes32(1),
-            bnToBytes32(0),
-            bnToBytes32(2),
+            bigintToBytes32(1),
+            bigintToBytes32(0),
+            bigintToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(2));
+        ).to.equal(bigintToBytes32(2));
       });
 
       it('returns empty bytes if array is empty', async () => {
@@ -89,11 +89,11 @@ describe('ArrayUtils', async () => {
       it('returns the maximum address in given array', async () => {
         expect(
           await instance['max(address[])'].staticCall([
-            bnToAddress(1),
-            bnToAddress(0),
-            bnToAddress(2),
+            bigintToAddress(1),
+            bigintToAddress(0),
+            bigintToAddress(2),
           ]),
-        ).to.equal(bnToAddress(2));
+        ).to.equal(bigintToAddress(2));
       });
 
       it('returns zero address if array is empty', async () => {

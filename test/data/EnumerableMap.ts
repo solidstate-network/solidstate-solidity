@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { bnToAddress } from '@solidstate/library';
+import { bigintToAddress } from '@solidstate/library';
 import {
   EnumerableMapAddressToAddressMock,
   EnumerableMapAddressToAddressMock__factory,
@@ -22,12 +22,12 @@ describe('EnumerableMap', () => {
     });
 
     describe('__internal', () => {
-      const addressOne = bnToAddress(100);
-      const addressTwo = bnToAddress(200);
-      const addressThree = bnToAddress(300);
-      const addressFour = bnToAddress(400);
-      const addressFive = bnToAddress(500);
-      const addressSix = bnToAddress(600);
+      const addressOne = bigintToAddress(100);
+      const addressTwo = bigintToAddress(200);
+      const addressThree = bigintToAddress(300);
+      const addressFour = bigintToAddress(400);
+      const addressFive = bigintToAddress(500);
+      const addressSix = bigintToAddress(600);
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
@@ -224,9 +224,9 @@ describe('EnumerableMap', () => {
       const uintOne = 1;
       const uintTwo = 2;
       const uintThree = 3;
-      const addressOne = bnToAddress(100);
-      const addressTwo = bnToAddress(200);
-      const addressThree = bnToAddress(300);
+      const addressOne = bigintToAddress(100);
+      const addressTwo = bigintToAddress(200);
+      const addressThree = bigintToAddress(300);
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {

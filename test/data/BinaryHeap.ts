@@ -16,8 +16,8 @@ import { ethers } from 'hardhat';
 const numbers = [0, 1, 2].map((n) => n);
 
 const constants = {
-  bytes32: numbers.map((n) => bnToBytes32(n)),
-  address: numbers.map((n) => bnToAddress(n)),
+  bytes32: numbers.map((n) => bigintToBytes32(n)),
+  address: numbers.map((n) => bigintToAddress(n)),
   uint256: numbers,
 };
 
