@@ -162,7 +162,7 @@ describe('UintUtils', () => {
             'toString(uint256,uint256,uint256)'
           ].staticCall(value, radix, length);
 
-          expect(result).to.have.length.of(length);
+          expect(result).to.have.length(length);
         }
       });
 
@@ -293,7 +293,7 @@ describe('UintUtils', () => {
           'toBinString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length.of(length + 2);
+        expect(result).to.have.length(length + 2);
       });
 
       describe('reverts if', () => {
@@ -359,7 +359,7 @@ describe('UintUtils', () => {
           'toOctString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length.of(length + 2);
+        expect(result).to.have.length(length + 2);
       });
 
       describe('reverts if', () => {
@@ -434,7 +434,7 @@ describe('UintUtils', () => {
           'toDecString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length.of(length);
+        expect(result).to.have.length(length);
       });
 
       describe('reverts if', () => {
@@ -500,7 +500,7 @@ describe('UintUtils', () => {
           'toHexString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length.of(length + 2);
+        expect(result).to.have.length(length + 2);
       });
 
       describe('reverts if', () => {
