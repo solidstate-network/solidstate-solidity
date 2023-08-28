@@ -3,40 +3,46 @@ import { EIP712Mock, EIP712Mock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('EIP712', function () {
+describe('EIP712', () => {
   let instance: EIP712Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new EIP712Mock__factory(deployer).deploy();
   });
 
-  describe('__internal', function () {
-    describe('#calculateDomainSeparator(bytes32,bytes32)', function () {
-      it('calculates EIP-712 domain separator', async function () {
-        const typeHash = ethers.utils.solidityKeccak256(
+  describe('__internal', () => {
+    describe('#calculateDomainSeparator(bytes32,bytes32)', () => {
+      it('calculates EIP-712 domain separator', async () => {
+        const typeHash = ethers.solidityPackedKeccak256(
           ['string'],
           [
             'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)',
           ],
         );
 
-        const nameHash = ethers.utils.solidityKeccak256(['string'], ['name']);
-        const versionHash = ethers.utils.solidityKeccak256(['string'], ['1']);
+        const nameHash = ethers.solidityPackedKeccak256(['string'], ['name']);
+        const versionHash = ethers.solidityPackedKeccak256(['string'], ['1']);
 
         const chainId = await ethers.provider.send('eth_chainId');
 
-        // use keccak256 + defaultAbiCoder rather than solidityKeccak256 because the latter forces packed encoding
+        // use keccak256 + defaultAbiCoder rather than solidityPackedKeccak256 because the latter forces packed encoding
 
-        const domainSeparator = ethers.utils.keccak256(
-          ethers.utils.defaultAbiCoder.encode(
+        const domainSeparator = ethers.keccak256(
+          ethers.AbiCoder.defaultAbiCoder().encode(
             ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
-            [typeHash, nameHash, versionHash, chainId, instance.address],
+            [
+              typeHash,
+              nameHash,
+              versionHash,
+              chainId,
+              await instance.getAddress(),
+            ],
           ),
         );
 
         expect(
-          await instance.callStatic.calculateDomainSeparator(
+          await instance.calculateDomainSeparator.staticCall(
             nameHash,
             versionHash,
           ),

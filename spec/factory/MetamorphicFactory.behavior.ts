@@ -16,21 +16,21 @@ export function describeBehaviorOfMetamorphicFactory(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::MetamorphicFactory', function () {
+  describe('::MetamorphicFactory', () => {
     let instance: MetamorphicFactory;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
     describeBehaviorOfFactory(deploy, {}, skips);
 
-    describe('#getMetamorphicImplementation()', function () {
+    describe('#getMetamorphicImplementation()', () => {
       // behavior changes during internal call but cannot be tested independently
-      it('returns zero address', async function () {
+      it('returns zero address', async () => {
         expect(
-          await instance.callStatic['getMetamorphicImplementation()'](),
-        ).to.equal(ethers.constants.AddressZero);
+          await instance.getMetamorphicImplementation.staticCall(),
+        ).to.equal(ethers.ZeroAddress);
       });
     });
   });

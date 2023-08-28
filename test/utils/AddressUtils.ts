@@ -1,5 +1,6 @@
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
+import { deployMockContract } from '@solidstate/library';
 import {
   AddressUtilsMock,
   AddressUtilsMock__factory,
@@ -7,7 +8,7 @@ import {
   OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BytesLike, BigNumber } from 'ethers';
+import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('AddressUtils', async () => {
@@ -27,7 +28,7 @@ describe('AddressUtils', async () => {
     describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(
-          ethers.utils.getAddress(
+          ethers.getAddress(
             await instance['toString(address)'](deployer.address),
           ),
         ).to.eq(deployer.address);
@@ -36,7 +37,8 @@ describe('AddressUtils', async () => {
 
     describe('#isContract(address)', () => {
       it('returns true when an address is a contract', async () => {
-        expect(await instance.isContract(instance.address)).to.be.true;
+        expect(await instance.isContract(await instance.getAddress())).to.be
+          .true;
       });
 
       it('returns false when an address is not a contract', async () => {
@@ -46,12 +48,9 @@ describe('AddressUtils', async () => {
 
     describe('#sendValue(address,uint256)', () => {
       it('transfers given value to given address', async () => {
-        const value = ethers.constants.Two;
+        const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const target = deployer;
 
@@ -62,17 +61,18 @@ describe('AddressUtils', async () => {
 
       describe('reverts if', () => {
         it('target contract rejects transfer', async () => {
-          const value = ethers.constants.Two;
+          const value = 2n;
 
-          await ethers.provider.send('hardhat_setBalance', [
-            instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const mock = await deployMockContract(deployer, []);
 
+          // TODO: after ethers v6 upgrade, revert no longer occurs when sending value to mock
+
           await expect(
-            instance.connect(deployer).sendValue(mock.address, value),
+            instance
+              .connect(deployer)
+              .sendValue(await instance.getAddress(), value),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__SendValueFailed',
@@ -97,22 +97,14 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCall(address,bytes)'](target, data),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+            ['functionCall(address,bytes)'].staticCall(target, data),
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCall(address,bytes)'](
-              ethers.constants.AddressZero,
-              '0x',
-            ),
+            instance['functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -144,7 +136,10 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes)'](instance.address, '0x'),
+              ['functionCall(address,bytes)'](
+                await instance.getAddress(),
+                '0x',
+              ),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
       });
@@ -167,24 +162,19 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCall(address,bytes,string)'](
+            ['functionCall(address,bytes,string)'].staticCall(
               target,
               data,
               revertReason,
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCall(address,bytes,string)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
               '',
             ),
@@ -222,7 +212,7 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               ['functionCall(address,bytes,string)'](
-                instance.address,
+                await instance.getAddress(),
                 '0x',
                 revertReason,
               ),
@@ -247,26 +237,18 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCallWithValue(address,bytes,uint256)'](
+            ['functionCallWithValue(address,bytes,uint256)'].staticCall(
               target,
               data,
-              ethers.constants.Zero,
+              0,
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       it('transfers given value to target contract', async () => {
-        const value = ethers.constants.Two;
+        const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -293,9 +275,9 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCallWithValue(address,bytes,uint256)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
-              ethers.constants.Zero,
+              0,
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -308,9 +290,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256)'](
-                instance.address,
+                await instance.getAddress(),
                 '0x',
-                ethers.constants.One,
+                1,
               ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -319,24 +301,21 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = ethers.constants.Two;
+          const value = 2n;
 
-          await ethers.provider.send('hardhat_setBalance', [
-            instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
           ).deploy();
 
-          const target = targetContract.address;
+          const target = await targetContract.getAddress();
 
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
-          const { data } = (await targetContract.populateTransaction.sendValue(
-            ethers.constants.AddressZero,
-            ethers.constants.Zero,
+          const { data } = (await targetContract.sendValue.populateTransaction(
+            ethers.ZeroAddress,
+            0,
           )) as { data: BytesLike };
 
           await expect(
@@ -369,11 +348,7 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](
-                target,
-                data,
-                ethers.constants.Zero,
-              ),
+              ['functionCallWithValue(address,bytes,uint256)'](target, data, 0),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -382,9 +357,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256)'](
-                instance.address,
+                await instance.getAddress(),
                 '0x',
-                ethers.constants.Zero,
+                0,
               ),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
@@ -409,27 +384,19 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            .callStatic['functionCallWithValue(address,bytes,uint256,string)'](
+            ['functionCallWithValue(address,bytes,uint256,string)'].staticCall(
               target,
               data,
-              ethers.constants.Zero,
+              0,
               '',
             ),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.One),
-            32,
-          ),
-        );
+        ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       it('transfers given value to target contract', async () => {
-        const value = ethers.constants.Two;
+        const value = 2n;
 
-        await ethers.provider.send('hardhat_setBalance', [
-          instance.address,
-          ethers.utils.hexStripZeros(value.toHexString()),
-        ]);
+        await setBalance(await instance.getAddress(), value);
 
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -458,9 +425,9 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['functionCallWithValue(address,bytes,uint256,string)'](
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
-              ethers.constants.Zero,
+              0,
               '',
             ),
           ).to.be.revertedWithCustomError(
@@ -474,9 +441,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256,string)'](
-                instance.address,
+                await instance.getAddress(),
                 '0x',
-                ethers.constants.One,
+                1,
                 '',
               ),
           ).to.be.revertedWithCustomError(
@@ -486,25 +453,22 @@ describe('AddressUtils', async () => {
         });
 
         it('target function is not payable and value is included', async () => {
-          const value = ethers.constants.Two;
+          const value = 2n;
           const revertReason = 'REVERT_REASON';
 
-          await ethers.provider.send('hardhat_setBalance', [
-            instance.address,
-            ethers.utils.hexStripZeros(value.toHexString()),
-          ]);
+          await setBalance(await instance.getAddress(), value);
 
           const targetContract = await new AddressUtilsMock__factory(
             deployer,
           ).deploy();
 
-          const target = targetContract.address;
+          const target = await targetContract.getAddress();
 
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
-          const { data } = (await targetContract.populateTransaction.sendValue(
-            ethers.constants.AddressZero,
-            ethers.constants.Zero,
+          const { data } = (await targetContract.sendValue.populateTransaction(
+            ethers.ZeroAddress,
+            0,
           )) as { data: BytesLike };
 
           await expect(
@@ -539,7 +503,7 @@ describe('AddressUtils', async () => {
               ['functionCallWithValue(address,bytes,uint256,string)'](
                 target,
                 data,
-                ethers.constants.Zero,
+                0,
                 '',
               ),
           ).to.be.revertedWith(revertReason);
@@ -552,9 +516,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               ['functionCallWithValue(address,bytes,uint256,string)'](
-                instance.address,
+                await instance.getAddress(),
                 '0x',
-                ethers.constants.Zero,
+                0,
                 revertReason,
               ),
           ).to.be.revertedWith(revertReason);

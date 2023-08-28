@@ -1,15 +1,15 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Extended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ExtendedBehaviorArgs {
-  mint: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  burn: (address: string, amount: BigNumber) => Promise<ContractTransaction>;
-  allowance: (holder: string, spender: string) => Promise<BigNumber>;
-  supply: BigNumber;
+  mint: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  burn: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  allowance: (holder: string, spender: string) => Promise<bigint>;
+  supply: bigint;
 }
 
 export function describeBehaviorOfERC20Extended(
@@ -19,38 +19,35 @@ export function describeBehaviorOfERC20Extended(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20Extended', function () {
+  describe('::ERC20Extended', () => {
     let deployer: SignerWithAddress;
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let instance: IERC20Extended;
 
-    before(async function () {
+    before(async () => {
       [deployer, holder, spender] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#increaseAllowance(address,uint256)', function () {
+    describe('#increaseAllowance(address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
             .connect(holder)
-            .callStatic['increaseAllowance(address,uint256)'](
-              instance.address,
-              ethers.constants.Zero,
-            ),
+            .increaseAllowance.staticCall(await instance.getAddress(), 0),
         ).to.be.true;
       });
 
-      it('increases approval of spender with respect to holder by given amount', async function () {
-        let amount = ethers.constants.Two;
+      it('increases approval of spender with respect to holder by given amount', async () => {
+        let amount = 2n;
 
         await instance
           .connect(holder)
-          ['increaseAllowance(address,uint256)'](spender.address, amount);
+          .increaseAllowance(spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
           amount,
@@ -58,43 +55,33 @@ export function describeBehaviorOfERC20Extended(
 
         await instance
           .connect(holder)
-          ['increaseAllowance(address,uint256)'](spender.address, amount);
+          .increaseAllowance(spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
-          amount.add(amount),
+          amount + amount,
         );
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
-      it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
+      it('emits Approval event', async () => {
+        let amount = 2n;
 
         await expect(
-          instance
-            .connect(holder)
-            ['increaseAllowance(address,uint256)'](spender.address, amount),
+          instance.connect(holder).increaseAllowance(spender.address, amount),
         )
           .to.emit(instance, 'Approval')
           .withArgs(holder.address, spender.address, amount);
       });
 
-      describe('reverts if', function () {
-        it('approval amount overflows uint256', async function () {
+      describe('reverts if', () => {
+        it('approval amount overflows uint256', async () => {
           await instance
             .connect(holder)
-            ['increaseAllowance(address,uint256)'](
-              spender.address,
-              ethers.constants.MaxUint256,
-            );
+            .increaseAllowance(spender.address, ethers.MaxUint256);
 
           await expect(
-            instance
-              .connect(holder)
-              ['increaseAllowance(address,uint256)'](
-                spender.address,
-                ethers.constants.One,
-              ),
+            instance.connect(holder).increaseAllowance(spender.address, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Extended__ExcessiveAllowance',
@@ -103,30 +90,24 @@ export function describeBehaviorOfERC20Extended(
       });
     });
 
-    describe('#decreaseAllowance(address,uint256)', function () {
+    describe('#decreaseAllowance(address,uint256)', () => {
       it('returns true', async () => {
         expect(
           await instance
             .connect(holder)
-            .callStatic['decreaseAllowance(address,uint256)'](
-              instance.address,
-              ethers.constants.Zero,
-            ),
+            .decreaseAllowance.staticCall(await instance.getAddress(), 0),
         ).to.be.true;
       });
 
-      it('decreases approval of spender with respect to holder by given amount', async function () {
-        let amount = ethers.constants.Two;
+      it('decreases approval of spender with respect to holder by given amount', async () => {
+        let amount = 2n;
         await instance
           .connect(holder)
-          ['increaseAllowance(address,uint256)'](
-            spender.address,
-            amount.mul(ethers.constants.Two),
-          );
+          .increaseAllowance(spender.address, amount * 2n);
 
         await instance
           .connect(holder)
-          ['decreaseAllowance(address,uint256)'](spender.address, amount);
+          .decreaseAllowance(spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
           amount,
@@ -134,39 +115,32 @@ export function describeBehaviorOfERC20Extended(
 
         await instance
           .connect(holder)
-          ['decreaseAllowance(address,uint256)'](spender.address, amount);
+          .decreaseAllowance(spender.address, amount);
 
         await expect(await allowance(holder.address, spender.address)).to.equal(
-          ethers.constants.Zero,
+          0,
         );
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
 
-      it('emits Approval event', async function () {
-        let amount = ethers.constants.Two;
+      it('emits Approval event', async () => {
+        let amount = 2n;
         await instance
           .connect(holder)
-          ['increaseAllowance(address,uint256)'](spender.address, amount);
+          .increaseAllowance(spender.address, amount);
 
         await expect(
-          instance
-            .connect(holder)
-            ['decreaseAllowance(address,uint256)'](spender.address, amount),
+          instance.connect(holder).decreaseAllowance(spender.address, amount),
         )
           .to.emit(instance, 'Approval')
-          .withArgs(holder.address, spender.address, ethers.constants.Zero);
+          .withArgs(holder.address, spender.address, 0);
       });
 
-      describe('reverts if', function () {
-        it('approval amount underflows uint256', async function () {
+      describe('reverts if', () => {
+        it('approval amount underflows uint256', async () => {
           await expect(
-            instance
-              .connect(holder)
-              ['decreaseAllowance(address,uint256)'](
-                spender.address,
-                ethers.constants.One,
-              ),
+            instance.connect(holder).decreaseAllowance(spender.address, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC20Base__InsufficientAllowance',
