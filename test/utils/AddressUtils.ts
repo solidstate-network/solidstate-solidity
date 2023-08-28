@@ -28,7 +28,9 @@ describe('AddressUtils', async () => {
     describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(
-          ethers.getAddress(await instance.toString(deployer.address)),
+          ethers.getAddress(
+            await instance['toString(address)'].staticCall(deployer.address),
+          ),
         ).to.eq(deployer.address);
       });
     });
