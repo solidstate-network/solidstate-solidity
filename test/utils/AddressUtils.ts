@@ -28,9 +28,7 @@ describe('AddressUtils', async () => {
     describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(
-          ethers.getAddress(
-            await instance['toString(address)'](deployer.address),
-          ),
+          ethers.getAddress(await instance.toString(deployer.address)),
         ).to.eq(deployer.address);
       });
     });
@@ -530,39 +528,31 @@ describe('AddressUtils', async () => {
       it('returns the bytes representation of the return value of the target function', async () => {
         expect(await implementation.owner()).to.equal(deployer);
 
-        const target = implementation.address;
+        const target = await implementation.getAddress();
 
         {
-          const { data } = (await implementation.populateTransaction.__setOwner(
-            ethers.constants.AddressZero,
+          const { data } = (await implementation.__setOwner.populateTransaction(
+            ethers.ZeroAddress,
           )) as {
             data: BytesLike;
           };
 
-          await instance['functionDelegateCall(address,bytes)'](target, data);
+          await instance.functionDelegateCall(target, data);
         }
 
-        const { data } = (await implementation.populateTransaction.owner()) as {
+        const { data } = (await implementation.owner.populateTransaction()) as {
           data: BytesLike;
         };
 
-        expect(
-          await instance['functionDelegateCall(address,bytes)'](target, data),
-        ).to.equal(
-          ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(ethers.constants.AddressZero),
-            32,
-          ),
+        expect(await instance.functionDelegateCall(target, data)).to.equal(
+          ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32),
         );
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionDelegateCall(address,bytes)'](
-              ethers.constants.AddressZero,
-              '0x',
-            ),
+            instance.functionDelegateCall(ethers.ZeroAddress, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -586,9 +576,7 @@ describe('AddressUtils', async () => {
           console.log(data);
 
           await expect(
-            instance
-              .connect(deployer)
-              ['functionDelegateCall(address,bytes)'](target, data),
+            instance.connect(deployer).functionDelegateCall(target, data),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -596,7 +584,7 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionDelegateCall(address,bytes)'](instance.address, '0x'),
+              .functionDelegateCall(await instance.getAddress(), '0x'),
           ).to.be.revertedWith('AddressUtils: failed low-level delegatecall');
         });
       });
