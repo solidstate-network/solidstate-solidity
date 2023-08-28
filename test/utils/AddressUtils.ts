@@ -527,7 +527,7 @@ describe('AddressUtils', async () => {
     });
 
     describe('#functionDelegateCall(address,bytes)', () => {
-      it.only('returns the bytes representation of the return value of the target function', async () => {
+      it('returns the bytes representation of the return value of the target function', async () => {
         expect(await implementation.owner()).to.equal(deployer);
 
         const target = implementation.address;
@@ -569,7 +569,7 @@ describe('AddressUtils', async () => {
           );
         });
 
-        it.only('target contract reverts, with target contract error message', async () => {
+        it('target contract reverts, with target contract error message', async () => {
           const revertReason = 'REVERT_REASON';
 
           const mock = await deployMockContract(deployer, [
