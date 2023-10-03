@@ -86,4 +86,11 @@ library SafeCast {
             revert SafeCast__ValueDoesNotFit();
         return int256(value);
     }
+
+    function toUint48(uint256 value) internal pure returns (uint48) {
+        if (value > type(uint48).max) {
+            revert SafeCast__ValueDoesNotFit();
+        }
+        return uint48(value);
+    }
 }
