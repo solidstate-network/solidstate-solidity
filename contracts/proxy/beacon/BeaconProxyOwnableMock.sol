@@ -2,22 +2,22 @@
 
 pragma solidity ^0.8.8;
 
-import { ManagedProxy, ManagedProxyOwnable } from './ManagedProxyOwnable.sol';
+import { BeaconProxy, BeaconProxyOwnable } from './BeaconProxyOwnable.sol';
 
-contract ManagedProxyOwnableMock is ManagedProxyOwnable {
+contract BeaconProxyOwnableMock is BeaconProxyOwnable {
     constructor(
-        address manager,
-        bytes4 managerSelector
-    ) ManagedProxy(managerSelector) {
-        setOwner(manager);
+        address beacon,
+        bytes4 fetchImplementationSelector
+    ) BeaconProxy(fetchImplementationSelector) {
+        setOwner(beacon);
     }
 
     function __getImplementation() external view returns (address) {
         return _getImplementation();
     }
 
-    function __getManager() external view returns (address) {
-        return _getManager();
+    function __getBeacon() external view returns (address) {
+        return _getBeacon();
     }
 
     function getOwner() external view returns (address) {

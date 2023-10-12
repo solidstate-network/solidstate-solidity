@@ -1,16 +1,16 @@
 import { deployMockContract } from '@solidstate/library';
-import { describeBehaviorOfManagedProxy } from '@solidstate/spec';
+import { describeBehaviorOfBeaconProxy } from '@solidstate/spec';
 import {
-  ManagedProxyMock,
-  ManagedProxyMock__factory,
+  BeaconProxyMock,
+  BeaconProxyMock__factory,
   OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ManagedProxy', () => {
-  let manager: any;
-  let instance: ManagedProxyMock;
+describe('BeaconProxy', () => {
+  let beacon: any;
+  let instance: BeaconProxyMock;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
@@ -19,11 +19,11 @@ describe('ManagedProxy', () => {
       deployer,
     ).deploy(ethers.ZeroAddress);
 
-    manager = await deployMockContract((await ethers.getSigners())[0], [
+    beacon = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
     ]);
 
-    await manager.mock.getImplementation.returns(
+    await beacon.mock.getImplementation.returns(
       await implementationInstance.getAddress(),
     );
 
@@ -33,13 +33,13 @@ describe('ManagedProxy', () => {
       4,
     );
 
-    instance = await new ManagedProxyMock__factory(deployer).deploy(
-      manager.address,
+    instance = await new BeaconProxyMock__factory(deployer).deploy(
+      beacon.address,
       selector,
     );
   });
 
-  describeBehaviorOfManagedProxy(async () => instance, {
+  describeBehaviorOfBeaconProxy(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
@@ -52,21 +52,21 @@ describe('ManagedProxy', () => {
       });
 
       describe('reverts if', () => {
-        it('manager is non-contract address', async () => {
-          await instance.setManager(ethers.ZeroAddress);
+        it('beacon is non-contract address', async () => {
+          await instance.setBeacon(ethers.ZeroAddress);
 
           await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
 
-        it('manager fails to return implementation', async () => {
-          await manager.mock.getImplementation.revertsWithReason('ERROR');
+        it('beacon fails to return implementation', async () => {
+          await beacon.mock.getImplementation.revertsWithReason('ERROR');
 
           await expect(
             instance.__getImplementation.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
-            'ManagedProxy__FetchImplementationFailed',
+            'BeaconProxy__FetchImplementationFailed',
           );
         });
       });

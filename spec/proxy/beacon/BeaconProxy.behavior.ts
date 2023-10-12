@@ -1,20 +1,20 @@
 import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
-import { IManagedProxy } from '@solidstate/typechain-types';
+import { IBeaconProxy } from '@solidstate/typechain-types';
 
-export interface ManagedProxyBehaviorArgs extends ProxyBehaviorArgs {}
+export interface BeaconProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
-export function describeBehaviorOfManagedProxy(
-  deploy: () => Promise<IManagedProxy>,
+export function describeBehaviorOfBeaconProxy(
+  deploy: () => Promise<IBeaconProxy>,
   {
     implementationFunction,
     implementationFunctionArgs,
-  }: ManagedProxyBehaviorArgs,
+  }: BeaconProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ManagedProxy', () => {
+  describe('::BeaconProxy', () => {
     describeBehaviorOfProxy(
       deploy,
       {
