@@ -45,6 +45,10 @@ export function describeBehaviorOfDiamondWritable(
         );
       }
 
+      // include a function known to have a zero-bytes selector
+      functions.push('ROOT4146650865()');
+      selectors.push('0x00000000');
+
       abi = functions.map((fn) => `function ${fn}`);
 
       facet = await deployMockContract(owner, abi);
