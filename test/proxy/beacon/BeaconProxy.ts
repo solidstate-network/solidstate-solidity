@@ -27,15 +27,8 @@ describe('BeaconProxy', () => {
       await implementationInstance.getAddress(),
     );
 
-    const selector = ethers.dataSlice(
-      ethers.solidityPackedKeccak256(['string'], ['getImplementation()']),
-      0,
-      4,
-    );
-
     instance = await new BeaconProxyMock__factory(deployer).deploy(
       beacon.address,
-      selector,
     );
   });
 
