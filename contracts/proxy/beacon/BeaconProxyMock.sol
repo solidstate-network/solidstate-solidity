@@ -7,10 +7,7 @@ import { BeaconProxy } from './BeaconProxy.sol';
 contract BeaconProxyMock is BeaconProxy {
     address private _beacon;
 
-    constructor(
-        address beacon,
-        bytes4 fetchImplementationSelector
-    ) BeaconProxy(fetchImplementationSelector) {
+    constructor(address beacon, bytes4 fetchImplementationSelector) {
         setBeacon(beacon);
     }
 

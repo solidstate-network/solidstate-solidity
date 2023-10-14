@@ -5,10 +5,7 @@ pragma solidity ^0.8.8;
 import { BeaconProxy, BeaconProxyOwnable } from './BeaconProxyOwnable.sol';
 
 contract BeaconProxyOwnableMock is BeaconProxyOwnable {
-    constructor(
-        address beacon,
-        bytes4 fetchImplementationSelector
-    ) BeaconProxy(fetchImplementationSelector) {
+    constructor(address beacon, bytes4 fetchImplementationSelector) {
         setOwner(beacon);
     }
 
