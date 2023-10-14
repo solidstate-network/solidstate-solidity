@@ -51,17 +51,6 @@ describe('BeaconProxy', () => {
           await expect(instance.__getImplementation.staticCall()).to.be
             .reverted;
         });
-
-        it('beacon fails to return implementation', async () => {
-          await beacon.mock.getImplementation.revertsWithReason('ERROR');
-
-          await expect(
-            instance.__getImplementation.staticCall(),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'BeaconProxy__FetchImplementationFailed',
-          );
-        });
       });
     });
   });

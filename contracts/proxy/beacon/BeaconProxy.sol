@@ -15,13 +15,7 @@ abstract contract BeaconProxy is IBeaconProxy, Proxy {
      * @inheritdoc Proxy
      */
     function _getImplementation() internal view override returns (address) {
-        try IBeacon(_getBeacon()).getImplementation() returns (
-            address implementation
-        ) {
-            return implementation;
-        } catch {
-            revert BeaconProxy__FetchImplementationFailed();
-        }
+        return IBeacon(_getBeacon()).getImplementation();
     }
 
     /**
