@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { IAccessControl } from '../../access_control/IAccessControl.sol';
+import { IAccessControl } from './IAccessControl.sol';
 import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
 
 /**

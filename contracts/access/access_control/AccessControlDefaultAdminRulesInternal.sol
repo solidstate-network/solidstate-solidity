@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import { Math } from '../../../utils/Math.sol';
-import { SafeCast } from '../../../utils/SafeCast.sol';
-import { AccessControlInternal } from '../../access_control/AccessControlInternal.sol';
+import { Math } from '../../utils/Math.sol';
+import { SafeCast } from '../../utils/SafeCast.sol';
+import { AccessControlInternal } from './AccessControlInternal.sol';
 import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
 import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
 
@@ -20,9 +20,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @notice query default admin
      * @return defaultAdmin the default admin
      */
-    function _defaultAdmin() internal view returns (address) {
+    function _defaultAdmin() internal view virtual returns (address) {
         return
-            AccessControlDefaultAdminRulesStorage.layout()._currentDefaultAdmin;
+            AccessControlDefaultAdminRulesStorage.layout().currentDefaultAdmin;
     }
 
     /**
@@ -33,28 +33,28 @@ abstract contract AccessControlDefaultAdminRulesInternal is
     function _pendingDefaultAdmin()
         internal
         view
+        virtual
         returns (address newAdmin, uint48 acceptSchedule)
     {
-        return (
-            AccessControlDefaultAdminRulesStorage.layout()._pendingDefaultAdmin,
-            AccessControlDefaultAdminRulesStorage
-                .layout()
-                ._pendingDefaultAdminSchedule
-        );
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
+
+        return (l.pendingDefaultAdmin, l.pendingDefaultAdminSchedule);
     }
 
     /**
      * @notice query default admin delay
      * @return defaultAdminDelay default admin delay
      */
-    function _defaultAdminDelay() internal view returns (uint48) {
-        uint48 schedule = AccessControlDefaultAdminRulesStorage
-            .layout()
-            ._pendingDelaySchedule;
+    function _defaultAdminDelay() internal view virtual returns (uint48) {
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
+
         return
-            (_isScheduleSet(schedule) && _hasSchedulePassed(schedule))
-                ? AccessControlDefaultAdminRulesStorage.layout()._pendingDelay
-                : AccessControlDefaultAdminRulesStorage.layout()._currentDelay;
+            (_isScheduleSet(l.pendingDelaySchedule) &&
+                _hasSchedulePassed(l.pendingDelaySchedule))
+                ? l.pendingDelay
+                : l.currentDelay;
     }
 
     /**
@@ -65,18 +65,17 @@ abstract contract AccessControlDefaultAdminRulesInternal is
     function _pendingDefaultAdminDelay()
         internal
         view
+        virtual
         returns (uint48 newDelay, uint48 effectSchedule)
     {
         effectSchedule = AccessControlDefaultAdminRulesStorage
             .layout()
-            ._pendingDelaySchedule;
+            .pendingDelaySchedule;
         return
             (_isScheduleSet(effectSchedule) &&
                 !_hasSchedulePassed(effectSchedule))
                 ? (
-                    AccessControlDefaultAdminRulesStorage
-                        .layout()
-                        ._pendingDelay,
+                    AccessControlDefaultAdminRulesStorage.layout().pendingDelay,
                     effectSchedule
                 )
                 : (0, 0);
@@ -97,7 +96,7 @@ abstract contract AccessControlDefaultAdminRulesInternal is
             }
             AccessControlDefaultAdminRulesStorage
                 .layout()
-                ._currentDefaultAdmin = account;
+                .currentDefaultAdmin = account;
         }
         super._grantRole(role, account);
     }
@@ -117,7 +116,7 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         ) {
             delete AccessControlDefaultAdminRulesStorage
                 .layout()
-                ._currentDefaultAdmin;
+                .currentDefaultAdmin;
         }
         super._revokeRole(role, account);
     }
@@ -142,8 +141,7 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @param newAdmin new admin
      */
     function _beginDefaultAdminTransfer(address newAdmin) internal virtual {
-        uint48 newSchedule = SafeCast.toUint48(block.timestamp) +
-            _defaultAdminDelay();
+        uint48 newSchedule = uint48(block.timestamp) + _defaultAdminDelay();
         _setPendingDefaultAdmin(newAdmin, newSchedule);
         emit DefaultAdminTransferScheduled(newAdmin, newSchedule);
     }
@@ -177,10 +175,10 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         );
         delete AccessControlDefaultAdminRulesStorage
             .layout()
-            ._pendingDefaultAdmin;
+            .pendingDefaultAdmin;
         delete AccessControlDefaultAdminRulesStorage
             .layout()
-            ._pendingDefaultAdminSchedule;
+            .pendingDefaultAdminSchedule;
     }
 
     /**
@@ -188,7 +186,7 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @param newDelay new delay
      */
     function _changeDefaultAdminDelay(uint48 newDelay) internal virtual {
-        uint48 newSchedule = SafeCast.toUint48(block.timestamp) +
+        uint48 newSchedule = uint48(block.timestamp) +
             _delayChangeWait(newDelay);
         _setPendingDelay(newDelay, newSchedule);
         emit DefaultAdminDelayChangeScheduled(newDelay, newSchedule);
@@ -224,15 +222,15 @@ abstract contract AccessControlDefaultAdminRulesInternal is
     function _setPendingDefaultAdmin(
         address newAdmin,
         uint48 newSchedule
-    ) private {
+    ) internal virtual {
         (, uint48 oldSchedule) = _pendingDefaultAdmin();
 
         AccessControlDefaultAdminRulesStorage
             .layout()
-            ._pendingDefaultAdmin = newAdmin;
+            .pendingDefaultAdmin = newAdmin;
         AccessControlDefaultAdminRulesStorage
             .layout()
-            ._pendingDefaultAdminSchedule = newSchedule;
+            .pendingDefaultAdminSchedule = newSchedule;
 
         // An `oldSchedule` from `pendingDefaultAdmin()` is only set if it hasn't been accepted.
         if (_isScheduleSet(oldSchedule)) {
@@ -246,36 +244,37 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @param newDelay new delay
      * @param newSchedule new schedule
      */
-    function _setPendingDelay(uint48 newDelay, uint48 newSchedule) private {
-        uint48 oldSchedule = AccessControlDefaultAdminRulesStorage
-            .layout()
-            ._pendingDelaySchedule;
+    function _setPendingDelay(
+        uint48 newDelay,
+        uint48 newSchedule
+    ) internal virtual {
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
 
-        if (_isScheduleSet(oldSchedule)) {
-            if (_hasSchedulePassed(oldSchedule)) {
+        if (_isScheduleSet(l.pendingDelaySchedule)) {
+            if (_hasSchedulePassed(l.pendingDelaySchedule)) {
                 // Materialize a virtual delay
-                AccessControlDefaultAdminRulesStorage
-                    .layout()
-                    ._currentDelay = AccessControlDefaultAdminRulesStorage
-                    .layout()
-                    ._pendingDelay;
+                l.currentDelay = l.pendingDelay;
             } else {
                 // Emit for implicit cancellations when another delay was scheduled.
                 emit DefaultAdminDelayChangeCanceled();
             }
         }
 
-        AccessControlDefaultAdminRulesStorage.layout()._pendingDelay = newDelay;
-        AccessControlDefaultAdminRulesStorage
-            .layout()
-            ._pendingDelaySchedule = newSchedule;
+        l.pendingDelay = newDelay;
+        l.pendingDelaySchedule = newSchedule;
     }
 
     /**
      * @notice query default admin delay wait
      * @return wait wait
      */
-    function _defaultAdminDelayIncreaseWait() internal pure returns (uint48) {
+    function _defaultAdminDelayIncreaseWait()
+        internal
+        pure
+        virtual
+        returns (uint48)
+    {
         return 5 days;
     }
 
@@ -283,7 +282,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @notice query if schedule is set
      * @return isSet is set
      */
-    function _isScheduleSet(uint48 schedule) private pure returns (bool) {
+    function _isScheduleSet(
+        uint48 schedule
+    ) internal pure virtual returns (bool) {
         return schedule != 0;
     }
 
@@ -291,7 +292,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @notice query if schedule is passed
      * @return isPassed is passed
      */
-    function _hasSchedulePassed(uint48 schedule) private view returns (bool) {
+    function _hasSchedulePassed(
+        uint48 schedule
+    ) internal view virtual returns (bool) {
         return schedule < block.timestamp;
     }
 }

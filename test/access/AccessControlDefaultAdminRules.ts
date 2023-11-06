@@ -26,7 +26,7 @@ describe('AccessControlDefaultAdminRules', () => {
     ).deploy();
   });
 
-  describe('#grantRoleByAdmin', () => {
+  describe('#grantRole(bytes32,address)', () => {
     it('allows the default admin to grant roles', async () => {
       await instance
         .connect(defaultAdmin)
@@ -35,9 +35,21 @@ describe('AccessControlDefaultAdminRules', () => {
         await instance.hasRole(ethers.id('ROLE'), nonAdmin.address),
       ).to.equal(true);
     });
+
+    describe('reverts if', () => {
+      it('sender is not default admin', async () => {
+        await expect(
+          instance
+            .connect(nonAdmin)
+            .grantRole(ethers.id('ROLE'), nonAdmin.address),
+        ).to.be.revertedWith(
+          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+        );
+      });
+    });
   });
 
-  describe('#revokeRoleByAdmin', () => {
+  describe('#revokeRole(bytes32,address)', () => {
     it('allows the default admin to revoke roles', async () => {
       await instance
         .connect(defaultAdmin)
@@ -49,9 +61,21 @@ describe('AccessControlDefaultAdminRules', () => {
         await instance.hasRole(ethers.id('ROLE'), nonAdmin.address),
       ).to.equal(false);
     });
+
+    describe('reverts if', () => {
+      it('sender is not default admin', async () => {
+        await expect(
+          instance
+            .connect(nonAdmin)
+            .grantRole(ethers.id('ROLE'), nonAdmin.address),
+        ).to.be.revertedWith(
+          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
+        );
+      });
+    });
   });
 
-  describe('#beginDefaultAdminTransfer(address, uint256)', () => {
+  describe('#beginDefaultAdminTransfer(address,uint256)', () => {
     it('starts the transfer process', async () => {
       await instance.beginDefaultAdminTransfer(nonAdmin.address);
 

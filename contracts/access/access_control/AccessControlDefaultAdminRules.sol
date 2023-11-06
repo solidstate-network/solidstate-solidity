@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import { AccessControl } from '../../access_control/AccessControl.sol';
-import { AccessControlInternal } from '../../access_control/AccessControlInternal.sol';
+import { AccessControl } from './AccessControl.sol';
+import { AccessControlInternal } from './AccessControlInternal.sol';
 import { IAccessControlDefaultAdminRules } from './IAccessControlDefaultAdminRules.sol';
 import { AccessControlDefaultAdminRulesInternal } from './AccessControlDefaultAdminRulesInternal.sol';
 import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
@@ -20,7 +20,7 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function defaultAdmin() public view virtual returns (address) {
+    function defaultAdmin() external view virtual returns (address) {
         return _defaultAdmin();
     }
 
@@ -28,7 +28,7 @@ abstract contract AccessControlDefaultAdminRules is
      * @inheritdoc IAccessControlDefaultAdminRules
      */
     function pendingDefaultAdmin()
-        public
+        external
         view
         virtual
         returns (address newAdmin, uint48 acceptSchedule)
@@ -39,7 +39,7 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function defaultAdminDelay() public view virtual returns (uint48) {
+    function defaultAdminDelay() external view virtual returns (uint48) {
         return _defaultAdminDelay();
     }
 
@@ -47,7 +47,7 @@ abstract contract AccessControlDefaultAdminRules is
      * @inheritdoc IAccessControlDefaultAdminRules
      */
     function pendingDefaultAdminDelay()
-        public
+        external
         view
         virtual
         returns (uint48 newDelay, uint48 effectSchedule)
@@ -61,7 +61,7 @@ abstract contract AccessControlDefaultAdminRules is
     function beginDefaultAdminTransfer(
         address newAdmin
     )
-        public
+        external
         virtual
         onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
     {
@@ -72,7 +72,7 @@ abstract contract AccessControlDefaultAdminRules is
      * @inheritdoc IAccessControlDefaultAdminRules
      */
     function cancelDefaultAdminTransfer()
-        public
+        external
         virtual
         onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
     {
@@ -82,7 +82,7 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function acceptDefaultAdminTransfer() public virtual {
+    function acceptDefaultAdminTransfer() external virtual {
         _acceptDefaultAdminTransfer();
     }
 
@@ -92,7 +92,7 @@ abstract contract AccessControlDefaultAdminRules is
     function changeDefaultAdminDelay(
         uint48 newDelay
     )
-        public
+        external
         virtual
         onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
     {
@@ -103,7 +103,7 @@ abstract contract AccessControlDefaultAdminRules is
      * @inheritdoc IAccessControlDefaultAdminRules
      */
     function rollbackDefaultAdminDelay()
-        public
+        external
         virtual
         onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
     {
@@ -114,7 +114,7 @@ abstract contract AccessControlDefaultAdminRules is
      * @inheritdoc IAccessControlDefaultAdminRules
      */
     function defaultAdminDelayIncreaseWait()
-        public
+        external
         view
         virtual
         returns (uint48)

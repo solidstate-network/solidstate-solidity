@@ -4,12 +4,12 @@ pragma solidity ^0.8.0;
 
 library AccessControlDefaultAdminRulesStorage {
     struct Layout {
-        address _pendingDefaultAdmin;
-        uint48 _pendingDefaultAdminSchedule;
-        uint48 _currentDelay;
-        address _currentDefaultAdmin;
-        uint48 _pendingDelay;
-        uint48 _pendingDelaySchedule;
+        address pendingDefaultAdmin;
+        uint48 pendingDefaultAdminSchedule;
+        uint48 currentDelay;
+        address currentDefaultAdmin;
+        uint48 pendingDelay;
+        uint48 pendingDelaySchedule;
     }
 
     bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;

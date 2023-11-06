@@ -33,11 +33,6 @@
   },
   {
     "inputs": [],
-    "name": "SafeCast__ValueDoesNotFit",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "UintUtils__InsufficientHexLength",
     "type": "error"
   },

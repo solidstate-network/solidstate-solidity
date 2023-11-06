@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { IAccessControlInternal } from '../../access_control/IAccessControlInternal.sol';
+import { IAccessControlInternal } from './IAccessControlInternal.sol';
 
 /**
  * @title Partial IAccessControlDefaultAdminRules interface needed by internal functions
