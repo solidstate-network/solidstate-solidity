@@ -68,16 +68,13 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         virtual
         returns (uint48 newDelay, uint48 effectSchedule)
     {
-        effectSchedule = AccessControlDefaultAdminRulesStorage
-            .layout()
-            .pendingDelaySchedule;
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        effectSchedule = l.pendingDelaySchedule;
         return
             (_isScheduleSet(effectSchedule) &&
                 !_hasSchedulePassed(effectSchedule))
-                ? (
-                    AccessControlDefaultAdminRulesStorage.layout().pendingDelay,
-                    effectSchedule
-                )
+                ? (l.pendingDelay, effectSchedule)
                 : (0, 0);
     }
 
@@ -157,6 +154,8 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @notice accept a default admin transfer
      */
     function _acceptDefaultAdminTransfer() internal virtual {
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
         (address newAdmin, uint48 schedule) = _pendingDefaultAdmin();
         if (msg.sender != newAdmin) {
             revert AccessControlInvalidDefaultAdmin(msg.sender);
@@ -173,12 +172,8 @@ abstract contract AccessControlDefaultAdminRulesInternal is
             AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE,
             newAdmin
         );
-        delete AccessControlDefaultAdminRulesStorage
-            .layout()
-            .pendingDefaultAdmin;
-        delete AccessControlDefaultAdminRulesStorage
-            .layout()
-            .pendingDefaultAdminSchedule;
+        delete l.pendingDefaultAdmin;
+        delete l.pendingDefaultAdminSchedule;
     }
 
     /**
@@ -223,14 +218,12 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         address newAdmin,
         uint48 newSchedule
     ) internal virtual {
+        AccessControlDefaultAdminRulesStorage.Layout
+            storage l = AccessControlDefaultAdminRulesStorage.layout();
         (, uint48 oldSchedule) = _pendingDefaultAdmin();
 
-        AccessControlDefaultAdminRulesStorage
-            .layout()
-            .pendingDefaultAdmin = newAdmin;
-        AccessControlDefaultAdminRulesStorage
-            .layout()
-            .pendingDefaultAdminSchedule = newSchedule;
+        l.pendingDefaultAdmin = newAdmin;
+        l.pendingDefaultAdminSchedule = newSchedule;
 
         // An `oldSchedule` from `pendingDefaultAdmin()` is only set if it hasn't been accepted.
         if (_isScheduleSet(oldSchedule)) {
