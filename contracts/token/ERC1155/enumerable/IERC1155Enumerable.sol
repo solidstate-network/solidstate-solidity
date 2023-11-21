@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import { IERC1155BaseInternal } from '../base/IERC1155BaseInternal.sol';
 

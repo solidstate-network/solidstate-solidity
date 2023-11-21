@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import { ERC1271Base } from '../base/ERC1271Base.sol';
 import { IERC1271Ownable } from './IERC1271Ownable.sol';

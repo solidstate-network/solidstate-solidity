@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC1155BaseInternal } from '../base/ERC1155BaseInternal.sol';

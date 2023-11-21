@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import { IERC1155MetadataInternal } from './IERC1155MetadataInternal.sol';
 import { ERC1155MetadataStorage } from './ERC1155MetadataStorage.sol';

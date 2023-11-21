@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import { IPausable } from './IPausable.sol';
 import { PausableInternal } from './PausableInternal.sol';
