@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.9;
 
 import { SolidStateERC1404 } from './SolidStateERC1404.sol';
 
