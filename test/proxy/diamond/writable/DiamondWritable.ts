@@ -23,5 +23,6 @@ describe('DiamondWritable', () => {
   describeBehaviorOfDiamondWritable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
+    immutableSelectors: [],
   });
 });
