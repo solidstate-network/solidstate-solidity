@@ -1,30 +1,25 @@
-import { expect } from 'chai';
-import { TASK_FLATTEN_GET_FLATTENED_SOURCE } from 'hardhat/builtin-tasks/task-names';
-import { parseFullyQualifiedName } from 'hardhat/utils/contract-names';
+import {
+  TASK_FLATTEN_GET_FLATTENED_SOURCE,
+  TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
+} from 'hardhat/builtin-tasks/task-names';
 
 describe('Sources', () => {
   it('do not contain cyclic dependencies', async () => {
-    const allNames = await hre.artifacts.getAllFullyQualifiedNames();
-
-    const files = Array.from(
-      allNames.reduce((acc, el) => {
-        const { sourceName } = parseFullyQualifiedName(el);
-        acc.add(sourceName);
-        return acc;
-      }, new Set()),
-    );
+    const sourcePaths = await hre.run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
 
     const failures = [];
 
-    for (const file of files) {
+    for (const sourcePath of sourcePaths) {
       try {
-        await hre.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, { files: [file] });
+        await hre.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, {
+          files: [sourcePath],
+        });
       } catch (error) {
         // errors other than HH603 are possible
         // (such as `FileNotFoundError: File hardhat/console.sol`)
         // but these are out of scope of this test and are ignored
         if (error.toString().includes('HardhatError: HH603')) {
-          failures.push(file);
+          failures.push(sourcePath);
         }
       }
     }
