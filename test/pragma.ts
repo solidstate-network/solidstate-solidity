@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import {
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
