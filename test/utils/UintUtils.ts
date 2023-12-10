@@ -482,7 +482,7 @@ describe('UintUtils', () => {
       it('returns 0x-prefixed hexadecimal string representation of a number', async () => {
         for (let value of values) {
           const string = ethers.toBeHex(value);
-          const length = string.length - 2;
+          const length = (string.length - 2) / 2;
 
           const result = await instance[
             'toHexString(uint256,uint256)'
@@ -500,7 +500,7 @@ describe('UintUtils', () => {
           'toHexString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length(length + 2);
+        expect(result).to.have.length(length * 2 + 2);
       });
 
       describe('reverts if', () => {

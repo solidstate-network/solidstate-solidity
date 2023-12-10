@@ -238,7 +238,7 @@ library UintUtils {
 
         do {
             unchecked {
-                length += 2;
+                length++;
             }
             temp >>= 8;
         } while (temp != 0);
@@ -248,16 +248,19 @@ library UintUtils {
 
     /**
      * @notice output the 0x-prefixed hexadecimal string representation of a number padded to given length
+     * @dev calculated string length will always be even to prevent splitting of bytes
      * @param value number to format as string
-     * @param length size to which output should be zero padded (not including prefix)
+     * @param length size (in bytes) to which output should be zero padded (not including prefix)
      * @return output formatted string
      */
     function toHexString(
         uint256 value,
         uint256 length
     ) internal pure returns (string memory output) {
-        // add two to length for the leading "0x"
-        length += 2;
+        // convert byte length to character length and add two to length for the leading "0x"
+        unchecked {
+            length = (length << 1) + 2;
+        }
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';

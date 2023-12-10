@@ -12,7 +12,7 @@ library AddressUtils {
     error AddressUtils__SendValueFailed();
 
     function toString(address account) internal pure returns (string memory) {
-        return uint256(uint160(account)).toHexString(40);
+        return uint256(uint160(account)).toHexString(20);
     }
 
     function isContract(address account) internal view returns (bool) {

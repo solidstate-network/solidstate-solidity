@@ -57,7 +57,7 @@ abstract contract AccessControlInternal is IAccessControlInternal {
                         'AccessControl: account ',
                         account.toString(),
                         ' is missing role ',
-                        uint256(role).toHexString(64)
+                        uint256(role).toHexString(32)
                     )
                 )
             );
