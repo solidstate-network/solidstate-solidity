@@ -492,7 +492,7 @@ describe('UintUtils', () => {
         }
       });
 
-      it('returns string with specified zero padding', async () => {
+      it('returns string with specified zero padding (in bytes)', async () => {
         const value = 1;
         const length = 100;
 
