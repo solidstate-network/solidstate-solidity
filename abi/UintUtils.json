@@ -1,7 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "UintUtils__InsufficientHexLength",
+    "name": "UintUtils__InsufficientPadding",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UintUtils__InvalidBase",
     "type": "error"
   }
 ]

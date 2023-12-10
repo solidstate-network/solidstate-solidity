@@ -28,7 +28,7 @@ abstract contract ERC1155Metadata is IERC1155Metadata, ERC1155MetadataInternal {
         } else if (bytes(tokenIdURI).length > 0) {
             return string(abi.encodePacked(baseURI, tokenIdURI));
         } else {
-            return string(abi.encodePacked(baseURI, tokenId.toString()));
+            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
         }
     }
 }

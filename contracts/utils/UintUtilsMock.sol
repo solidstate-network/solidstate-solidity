@@ -15,8 +15,52 @@ contract UintUtilsMock {
         return a.sub(b);
     }
 
-    function toString(uint256 number) external pure returns (string memory) {
-        return number.toString();
+    function toString(
+        uint256 number,
+        uint256 radix
+    ) external pure returns (string memory) {
+        return number.toString(radix);
+    }
+
+    function toString(
+        uint256 number,
+        uint256 radix,
+        uint256 length
+    ) external pure returns (string memory) {
+        return number.toString(radix, length);
+    }
+
+    function toBinString(uint256 number) external pure returns (string memory) {
+        return number.toBinString();
+    }
+
+    function toBinString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
+        return number.toBinString(length);
+    }
+
+    function toOctString(uint256 number) external pure returns (string memory) {
+        return number.toOctString();
+    }
+
+    function toOctString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
+        return number.toOctString(length);
+    }
+
+    function toDecString(uint256 number) external pure returns (string memory) {
+        return number.toDecString();
+    }
+
+    function toDecString(
+        uint256 number,
+        uint256 length
+    ) external pure returns (string memory) {
+        return number.toDecString(length);
     }
 
     function toHexString(uint256 value) external pure returns (string memory) {
