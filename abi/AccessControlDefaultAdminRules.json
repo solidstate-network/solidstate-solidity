@@ -33,7 +33,7 @@
   },
   {
     "inputs": [],
-    "name": "UintUtils__InsufficientHexLength",
+    "name": "UintUtils__InsufficientPadding",
     "type": "error"
   },
   {
