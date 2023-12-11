@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import {
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
@@ -15,21 +16,17 @@ describe('Pragma statements', () => {
     });
     const files = graph.getResolvedFiles();
 
-    const failures = [];
+    const versions = new Set();
 
     for (const file of files) {
-      const versions = file.content.versionPragmas;
-      if (versions.length != 1 || versions[0] != '^0.8.18') {
-        failures.push(file.sourceName);
+      for (const version of file.content.versionPragmas) {
+        versions.add(version);
       }
     }
 
-    if (failures.length > 0) {
-      throw new Error(
-        `inconsistent pragma statement found in files: ${failures.map(
-          (el) => `\n${el}`,
-        )}`,
-      );
-    }
+    expect(versions.size).to.equal(
+      1,
+      `Multiple version pragmas in use: ${Array.from(versions).join(', ')}`,
+    );
   });
 });
