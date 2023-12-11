@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { bnToBytes32, bnToAddress } from '@solidstate/library';
+import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   DoublyLinkedListBytes32Mock,
   DoublyLinkedListBytes32Mock__factory,
@@ -24,10 +24,10 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(0);
-      const oneBytes32 = bnToBytes32(1);
-      const twoBytes32 = bnToBytes32(2);
-      const threeBytes32 = bnToBytes32(3);
+      const zeroBytes32 = bigintToBytes32(0);
+      const oneBytes32 = bigintToBytes32(1);
+      const twoBytes32 = bigintToBytes32(2);
+      const threeBytes32 = bigintToBytes32(3);
 
       describe('#contains(bytes32)', () => {
         it('returns true if the value has been added', async () => {
@@ -370,7 +370,7 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = bnToBytes32(4);
+          const newValue = bigintToBytes32(4);
 
           await instance.push(oneBytes32);
           await instance.push(twoBytes32);
@@ -440,10 +440,10 @@ describe('DoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(0);
-      const oneAddress = bnToAddress(1);
-      const twoAddress = bnToAddress(2);
-      const threeAddress = bnToAddress(3);
+      const zeroAddress = bigintToAddress(0);
+      const oneAddress = bigintToAddress(1);
+      const twoAddress = bigintToAddress(2);
+      const threeAddress = bigintToAddress(3);
 
       describe('#contains(address)', () => {
         it('returns true if the value has been added', async () => {
@@ -786,7 +786,7 @@ describe('DoublyLinkedList', async () => {
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = bnToAddress(4);
+          const newValue = bigintToAddress(4);
 
           await instance.push(oneAddress);
           await instance.push(twoAddress);

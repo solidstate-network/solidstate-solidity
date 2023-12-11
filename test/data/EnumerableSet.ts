@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { bnToBytes32, bnToAddress } from '@solidstate/library';
+import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   EnumerableSetBytes32Mock,
   EnumerableSetBytes32Mock__factory,
@@ -22,9 +22,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes32 = bnToBytes32(0);
-      const oneBytes32 = bnToBytes32(1);
-      const twoBytes32 = bnToBytes32(2);
+      const zeroBytes32 = bigintToBytes32(0);
+      const oneBytes32 = bigintToBytes32(1);
+      const twoBytes32 = bigintToBytes32(2);
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
@@ -196,9 +196,9 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zeroAddress = bnToAddress(0);
-      const oneAddress = bnToAddress(1);
-      const twoAddress = bnToAddress(2);
+      const zeroAddress = bigintToAddress(0);
+      const oneAddress = bigintToAddress(1);
+      const twoAddress = bigintToAddress(2);
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
