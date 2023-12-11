@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.18;
 
 import { IERC165 } from '../../../interfaces/IERC165.sol';
 import { IERC165Base } from './IERC165Base.sol';
