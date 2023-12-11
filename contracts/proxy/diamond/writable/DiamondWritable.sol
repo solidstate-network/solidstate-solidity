@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.18;
 
+import { IERC2535DiamondCut } from '../../../interfaces/IERC2535DiamondCut.sol';
 import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { IDiamondWritable } from './IDiamondWritable.sol';
 import { DiamondWritableInternal } from './DiamondWritableInternal.sol';
@@ -15,7 +16,7 @@ abstract contract DiamondWritable is
     OwnableInternal
 {
     /**
-     * @inheritdoc IDiamondWritable
+     * @inheritdoc IERC2535DiamondCut
      */
     function diamondCut(
         FacetCut[] calldata facetCuts,
