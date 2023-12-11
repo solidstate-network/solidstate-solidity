@@ -1,5 +1,5 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { bnToBytes16 } from '@solidstate/library';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { bigintToBytes16 } from '@solidstate/library';
 import {
   PackedDoublyLinkedListBytes16Mock,
   PackedDoublyLinkedListBytes16Mock__factory,
@@ -7,7 +7,6 @@ import {
   PackedDoublyLinkedListUint128Mock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('PackedDoublyLinkedList', async () => {
@@ -23,64 +22,60 @@ describe('PackedDoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroBytes16 = bnToBytes16(ethers.constants.Zero);
-      const oneBytes16 = bnToBytes16(ethers.constants.One);
-      const twoBytes16 = bnToBytes16(ethers.constants.Two);
-      const threeBytes16 = bnToBytes16(BigNumber.from('3'));
+      const zeroBytes16 = bigintToBytes16(0);
+      const oneBytes16 = bigintToBytes16(1);
+      const twoBytes16 = bigintToBytes16(2);
+      const threeBytes16 = bigintToBytes16(3);
 
       describe('#contains(bytes16)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['contains(bytes16)'](oneBytes16)).to.be.true;
-          expect(await instance['contains(bytes16)'](twoBytes16)).to.be.true;
+          expect(await instance.contains.staticCall(oneBytes16)).to.be.true;
+          expect(await instance.contains.staticCall(twoBytes16)).to.be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance['contains(bytes16)'](oneBytes16)).to.be.false;
-          await instance['push(bytes16)'](oneBytes16);
-          expect(await instance['contains(bytes16)'](twoBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(oneBytes16)).to.be.false;
+          await instance.push(oneBytes16);
+          expect(await instance.contains.staticCall(twoBytes16)).to.be.false;
         });
 
         it('returns false for zero value', async () => {
-          expect(await instance['contains(bytes16)'](zeroBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(zeroBytes16)).to.be.false;
         });
       });
 
       describe('#prev(bytes16)', () => {
         it('returns the previous value in the list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['prev(bytes16)'](twoBytes16)).to.eq(oneBytes16);
+          expect(await instance.prev.staticCall(twoBytes16)).to.eq(oneBytes16);
         });
 
         it('returns zero if the value is at the beginning of the list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(await instance['prev(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.prev.staticCall(oneBytes16)).to.eq(zeroBytes16);
         });
 
         it('returns last value in list if input is zero', async () => {
-          expect(await instance['next(bytes16)'](zeroBytes16)).to.eq(
+          expect(await instance.next.staticCall(zeroBytes16)).to.eq(
             zeroBytes16,
           );
 
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['prev(bytes16)'](zeroBytes16)).to.eq(
-            twoBytes16,
-          );
+          expect(await instance.prev.staticCall(zeroBytes16)).to.eq(twoBytes16);
         });
 
         describe('reverts if', () => {
           it('value is not contained in list', async () => {
             await expect(
-              instance['prev(bytes16)'](oneBytes16),
+              instance.prev.staticCall(oneBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -91,37 +86,33 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#next(bytes16)', () => {
         it('returns the next value in the list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(twoBytes16);
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(twoBytes16);
         });
 
         it('returns zero if the value is at the end of the list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(zeroBytes16);
         });
 
         it('returns first value in list if input is zero', async () => {
-          expect(await instance['next(bytes16)'](zeroBytes16)).to.eq(
+          expect(await instance.next.staticCall(zeroBytes16)).to.eq(
             zeroBytes16,
           );
 
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['next(bytes16)'](zeroBytes16)).to.eq(
-            oneBytes16,
-          );
+          expect(await instance.next.staticCall(zeroBytes16)).to.eq(oneBytes16);
         });
 
         describe('reverts if', () => {
           it('value is not contained in list', async () => {
             await expect(
-              instance['next(bytes16)'](oneBytes16),
+              instance.next.staticCall(oneBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -133,49 +124,32 @@ describe('PackedDoublyLinkedList', async () => {
       describe('#insertBefore(bytes16,bytes16)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertBefore(bytes16,bytes16)'](
-              zeroBytes16,
-              oneBytes16,
-            ),
+            await instance.insertBefore.staticCall(zeroBytes16, oneBytes16),
           ).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
           expect(
-            await instance.callStatic['insertBefore(bytes16,bytes16)'](
-              zeroBytes16,
-              oneBytes16,
-            ),
+            await instance.insertBefore.staticCall(zeroBytes16, oneBytes16),
           ).to.be.false;
         });
 
         it('adds new value to list in position before existing value', async () => {
-          await instance['insertBefore(bytes16,bytes16)'](
-            zeroBytes16,
-            oneBytes16,
-          );
+          await instance.insertBefore(zeroBytes16, oneBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(zeroBytes16);
 
-          await instance['insertBefore(bytes16,bytes16)'](
-            oneBytes16,
-            twoBytes16,
-          );
+          await instance.insertBefore(oneBytes16, twoBytes16);
 
-          expect(await instance['next(bytes16)'](twoBytes16)).to.eq(oneBytes16);
+          expect(await instance.next.staticCall(twoBytes16)).to.eq(oneBytes16);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['insertBefore(bytes16,bytes16)'](
-                zeroBytes16,
-                zeroBytes16,
-              ),
+              instance.insertBefore(zeroBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -184,7 +158,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('value is not contained in list', async () => {
             await expect(
-              instance['insertBefore(bytes16,bytes16)'](oneBytes16, twoBytes16),
+              instance.insertBefore(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -195,50 +169,31 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#insertAfter(bytes16,bytes16)', () => {
         it('returns true if value is added to list', async () => {
-          expect(
-            await instance.callStatic['insertAfter(bytes16,bytes16)'](
-              zeroBytes16,
-              oneBytes16,
-            ),
-          ).to.be.true;
+          expect(await instance.insertAfter.staticCall(zeroBytes16, oneBytes16))
+            .to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(
-            await instance.callStatic['insertAfter(bytes16,bytes16)'](
-              zeroBytes16,
-              oneBytes16,
-            ),
-          ).to.be.false;
+          expect(await instance.insertAfter.staticCall(zeroBytes16, oneBytes16))
+            .to.be.false;
         });
 
         it('adds new value to list in position before existing value', async () => {
-          await instance['insertAfter(bytes16,bytes16)'](
-            zeroBytes16,
-            oneBytes16,
-          );
+          await instance.insertAfter(zeroBytes16, oneBytes16);
 
-          expect(await instance['prev(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.prev.staticCall(oneBytes16)).to.eq(zeroBytes16);
 
-          await instance['insertAfter(bytes16,bytes16)'](
-            oneBytes16,
-            twoBytes16,
-          );
+          await instance.insertAfter(oneBytes16, twoBytes16);
 
-          expect(await instance['prev(bytes16)'](twoBytes16)).to.eq(oneBytes16);
+          expect(await instance.prev.staticCall(twoBytes16)).to.eq(oneBytes16);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['insertAfter(bytes16,bytes16)'](
-                zeroBytes16,
-                zeroBytes16,
-              ),
+              instance.insertAfter(zeroBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -247,7 +202,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('value is not contained in list', async () => {
             await expect(
-              instance['insertAfter(bytes16,bytes16)'](oneBytes16, twoBytes16),
+              instance.insertAfter(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -258,33 +213,29 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#push(bytes16)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['push(bytes16)'](oneBytes16)).to.be
-            .true;
+          expect(await instance.push.staticCall(oneBytes16)).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(await instance.callStatic['push(bytes16)'](oneBytes16)).to.be
-            .false;
+          expect(await instance.push.staticCall(oneBytes16)).to.be.false;
         });
 
         it('adds new value to end of list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(zeroBytes16);
 
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(twoBytes16);
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(twoBytes16);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['push(bytes16)'](zeroBytes16),
+              instance.push(zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -295,93 +246,81 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#pop()', () => {
         it('returns last value in list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance.callStatic['pop()']()).to.eq(twoBytes16);
+          expect(await instance.pop.staticCall()).to.eq(twoBytes16);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['pop()']()).to.eq(zeroBytes16);
+          expect(await instance.pop.staticCall()).to.eq(zeroBytes16);
         });
 
         it('removes last value from list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          await instance['pop()']();
+          await instance.pop();
 
-          expect(await instance['contains(bytes16)'](twoBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(twoBytes16)).to.be.false;
 
-          expect(await instance['prev(bytes16)'](zeroBytes16)).to.eq(
-            oneBytes16,
-          );
+          expect(await instance.prev.staticCall(zeroBytes16)).to.eq(oneBytes16);
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(zeroBytes16);
         });
       });
 
       describe('#shift()', () => {
         it('returns first value in list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(await instance.callStatic['shift()']()).to.eq(oneBytes16);
+          expect(await instance.shift.staticCall()).to.eq(oneBytes16);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['shift()']()).to.eq(zeroBytes16);
+          expect(await instance.shift.staticCall()).to.eq(zeroBytes16);
         });
 
         it('removes first value from list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          await instance['shift()']();
+          await instance.shift();
 
-          expect(await instance['contains(bytes16)'](oneBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(oneBytes16)).to.be.false;
 
-          expect(await instance['next(bytes16)'](zeroBytes16)).to.eq(
-            twoBytes16,
-          );
+          expect(await instance.next.staticCall(zeroBytes16)).to.eq(twoBytes16);
 
-          expect(await instance['prev(bytes16)'](twoBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.prev.staticCall(twoBytes16)).to.eq(zeroBytes16);
         });
       });
 
       describe('#unshift(bytes16)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['unshift(bytes16)'](oneBytes16)).to
-            .be.true;
+          expect(await instance.unshift.staticCall(oneBytes16)).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['unshift(bytes16)'](oneBytes16);
+          await instance.unshift(oneBytes16);
 
-          expect(await instance.callStatic['unshift(bytes16)'](oneBytes16)).to
-            .be.false;
+          expect(await instance.unshift.staticCall(oneBytes16)).to.be.false;
         });
 
         it('adds new value to beginning of list', async () => {
-          await instance['unshift(bytes16)'](oneBytes16);
+          await instance.unshift(oneBytes16);
 
-          expect(await instance['prev(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
+          expect(await instance.prev.staticCall(oneBytes16)).to.eq(zeroBytes16);
 
-          await instance['unshift(bytes16)'](twoBytes16);
+          await instance.unshift(twoBytes16);
 
-          expect(await instance['prev(bytes16)'](oneBytes16)).to.eq(twoBytes16);
+          expect(await instance.prev.staticCall(oneBytes16)).to.eq(twoBytes16);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['unshift(bytes16)'](zeroBytes16),
+              instance.unshift(zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -392,31 +331,29 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#remove(bytes16)', () => {
         it('returns true if value is removed from list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(await instance.callStatic['remove(bytes16)'](oneBytes16)).to.be
-            .true;
+          expect(await instance.remove.staticCall(oneBytes16)).to.be.true;
         });
 
         it('returns false if value is not removed from list', async () => {
-          expect(await instance.callStatic['remove(bytes16)'](oneBytes16)).to.be
-            .false;
+          expect(await instance.remove.staticCall(oneBytes16)).to.be.false;
         });
 
         it('removes value from list', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
-          await instance['push(bytes16)'](threeBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
+          await instance.push(threeBytes16);
 
-          await instance['remove(bytes16)'](twoBytes16);
+          await instance.remove(twoBytes16);
 
-          expect(await instance['contains(bytes16)'](twoBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(twoBytes16)).to.be.false;
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(
             threeBytes16,
           );
 
-          expect(await instance['prev(bytes16)'](threeBytes16)).to.eq(
+          expect(await instance.prev.staticCall(threeBytes16)).to.eq(
             oneBytes16,
           );
         });
@@ -424,72 +361,60 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#replace(bytes16,bytes16)', () => {
         it('returns true if value is replaced', async () => {
-          await instance['push(bytes16)'](oneBytes16);
+          await instance.push(oneBytes16);
 
-          expect(
-            await instance.callStatic['replace(bytes16,bytes16)'](
-              oneBytes16,
-              twoBytes16,
-            ),
-          ).to.be.true;
+          expect(await instance.replace.staticCall(oneBytes16, twoBytes16)).to
+            .be.true;
         });
 
         it('returns false if value is not replaced', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          expect(
-            await instance.callStatic['replace(bytes16,bytes16)'](
-              oneBytes16,
-              twoBytes16,
-            ),
-          ).to.be.false;
+          expect(await instance.replace.staticCall(oneBytes16, twoBytes16)).to
+            .be.false;
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = bnToBytes16(BigNumber.from('4'));
+          const newValue = bigintToBytes16(4);
 
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
-          await instance['push(bytes16)'](threeBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
+          await instance.push(threeBytes16);
 
-          expect(await instance['contains(bytes16)'](newValue)).to.be.false;
+          expect(await instance.contains.staticCall(newValue)).to.be.false;
 
-          await instance['replace(bytes16,bytes16)'](twoBytes16, newValue);
+          await instance.replace(twoBytes16, newValue);
 
-          expect(await instance['contains(bytes16)'](twoBytes16)).to.be.false;
-          expect(await instance['contains(bytes16)'](newValue)).to.be.true;
+          expect(await instance.contains.staticCall(twoBytes16)).to.be.false;
+          expect(await instance.contains.staticCall(newValue)).to.be.true;
 
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(newValue);
-          expect(await instance['prev(bytes16)'](newValue)).to.eq(oneBytes16);
-          expect(await instance['next(bytes16)'](newValue)).to.eq(threeBytes16);
-          expect(await instance['prev(bytes16)'](threeBytes16)).to.eq(newValue);
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(newValue);
+          expect(await instance.prev.staticCall(newValue)).to.eq(oneBytes16);
+          expect(await instance.next.staticCall(newValue)).to.eq(threeBytes16);
+          expect(await instance.prev.staticCall(threeBytes16)).to.eq(newValue);
         });
 
         it('does nothing if new value matches existing value', async () => {
-          await instance['push(bytes16)'](oneBytes16);
-          await instance['push(bytes16)'](twoBytes16);
+          await instance.push(oneBytes16);
+          await instance.push(twoBytes16);
 
-          await instance['replace(bytes16,bytes16)'](oneBytes16, oneBytes16);
+          await instance.replace(oneBytes16, oneBytes16);
 
-          expect(await instance['contains(bytes16)'](oneBytes16)).to.be.true;
+          expect(await instance.contains.staticCall(oneBytes16)).to.be.true;
 
-          expect(await instance['next(bytes16)'](zeroBytes16)).to.eq(
-            oneBytes16,
-          );
-          expect(await instance['prev(bytes16)'](oneBytes16)).to.eq(
-            zeroBytes16,
-          );
-          expect(await instance['next(bytes16)'](oneBytes16)).to.eq(twoBytes16);
-          expect(await instance['prev(bytes16)'](twoBytes16)).to.eq(oneBytes16);
+          expect(await instance.next.staticCall(zeroBytes16)).to.eq(oneBytes16);
+          expect(await instance.prev.staticCall(oneBytes16)).to.eq(zeroBytes16);
+          expect(await instance.next.staticCall(oneBytes16)).to.eq(twoBytes16);
+          expect(await instance.prev.staticCall(twoBytes16)).to.eq(oneBytes16);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
-            await instance['push(bytes16)'](oneBytes16);
+            await instance.push(oneBytes16);
 
             await expect(
-              instance['replace(bytes16,bytes16)'](oneBytes16, zeroBytes16),
+              instance.replace(oneBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -498,10 +423,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('old value is not contained in list', async () => {
             await expect(
-              instance.callStatic['replace(bytes16,bytes16)'](
-                oneBytes16,
-                twoBytes16,
-              ),
+              instance.replace.staticCall(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -524,64 +446,60 @@ describe('PackedDoublyLinkedList', async () => {
     });
 
     describe('__internal', () => {
-      const zeroUint128 = ethers.constants.Zero;
-      const oneUint128 = ethers.constants.One;
-      const twoUint128 = ethers.constants.Two;
-      const threeUint128 = BigNumber.from('3');
+      const zeroUint128 = 0;
+      const oneUint128 = 1;
+      const twoUint128 = 2;
+      const threeUint128 = 3;
 
       describe('#contains(uint128)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['contains(uint128)'](oneUint128)).to.be.true;
-          expect(await instance['contains(uint128)'](twoUint128)).to.be.true;
+          expect(await instance.contains.staticCall(oneUint128)).to.be.true;
+          expect(await instance.contains.staticCall(twoUint128)).to.be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance['contains(uint128)'](oneUint128)).to.be.false;
-          await instance['push(uint128)'](oneUint128);
-          expect(await instance['contains(uint128)'](twoUint128)).to.be.false;
+          expect(await instance.contains.staticCall(oneUint128)).to.be.false;
+          await instance.push(oneUint128);
+          expect(await instance.contains.staticCall(twoUint128)).to.be.false;
         });
 
         it('returns false for zero value', async () => {
-          expect(await instance['contains(uint128)'](zeroUint128)).to.be.false;
+          expect(await instance.contains.staticCall(zeroUint128)).to.be.false;
         });
       });
 
       describe('#prev(uint128)', () => {
         it('returns the previous value in the list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['prev(uint128)'](twoUint128)).to.eq(oneUint128);
+          expect(await instance.prev.staticCall(twoUint128)).to.eq(oneUint128);
         });
 
         it('returns zero if the value is at the beginning of the list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(await instance['prev(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.prev.staticCall(oneUint128)).to.eq(zeroUint128);
         });
 
         it('returns last value in list if input is zero', async () => {
-          expect(await instance['next(uint128)'](zeroUint128)).to.eq(
+          expect(await instance.next.staticCall(zeroUint128)).to.eq(
             zeroUint128,
           );
 
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['prev(uint128)'](zeroUint128)).to.eq(
-            twoUint128,
-          );
+          expect(await instance.prev.staticCall(zeroUint128)).to.eq(twoUint128);
         });
 
         describe('reverts if', () => {
           it('value is not contained in list', async () => {
             await expect(
-              instance['prev(uint128)'](oneUint128),
+              instance.prev.staticCall(oneUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -592,37 +510,33 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#next(uint128)', () => {
         it('returns the next value in the list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(twoUint128);
+          expect(await instance.next.staticCall(oneUint128)).to.eq(twoUint128);
         });
 
         it('returns zero if the value is at the end of the list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.next.staticCall(oneUint128)).to.eq(zeroUint128);
         });
 
         it('returns first value in list if input is zero', async () => {
-          expect(await instance['next(uint128)'](zeroUint128)).to.eq(
+          expect(await instance.next.staticCall(zeroUint128)).to.eq(
             zeroUint128,
           );
 
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['next(uint128)'](zeroUint128)).to.eq(
-            oneUint128,
-          );
+          expect(await instance.next.staticCall(zeroUint128)).to.eq(oneUint128);
         });
 
         describe('reverts if', () => {
           it('value is not contained in list', async () => {
             await expect(
-              instance['next(uint128)'](oneUint128),
+              instance.next.staticCall(oneUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -634,49 +548,32 @@ describe('PackedDoublyLinkedList', async () => {
       describe('#insertBefore(uint128,uint128)', () => {
         it('returns true if value is added to list', async () => {
           expect(
-            await instance.callStatic['insertBefore(uint128,uint128)'](
-              zeroUint128,
-              oneUint128,
-            ),
+            await instance.insertBefore.staticCall(zeroUint128, oneUint128),
           ).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
           expect(
-            await instance.callStatic['insertBefore(uint128,uint128)'](
-              zeroUint128,
-              oneUint128,
-            ),
+            await instance.insertBefore.staticCall(zeroUint128, oneUint128),
           ).to.be.false;
         });
 
         it('adds new value to list in position before existing value', async () => {
-          await instance['insertBefore(uint128,uint128)'](
-            zeroUint128,
-            oneUint128,
-          );
+          await instance.insertBefore(zeroUint128, oneUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.next.staticCall(oneUint128)).to.eq(zeroUint128);
 
-          await instance['insertBefore(uint128,uint128)'](
-            oneUint128,
-            twoUint128,
-          );
+          await instance.insertBefore(oneUint128, twoUint128);
 
-          expect(await instance['next(uint128)'](twoUint128)).to.eq(oneUint128);
+          expect(await instance.next.staticCall(twoUint128)).to.eq(oneUint128);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['insertBefore(uint128,uint128)'](
-                zeroUint128,
-                zeroUint128,
-              ),
+              instance.insertBefore(zeroUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -685,7 +582,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('value is not contained in list', async () => {
             await expect(
-              instance['insertBefore(uint128,uint128)'](oneUint128, twoUint128),
+              instance.insertBefore(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -696,50 +593,31 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#insertAfter(uint128,uint128)', () => {
         it('returns true if value is added to list', async () => {
-          expect(
-            await instance.callStatic['insertAfter(uint128,uint128)'](
-              zeroUint128,
-              oneUint128,
-            ),
-          ).to.be.true;
+          expect(await instance.insertAfter.staticCall(zeroUint128, oneUint128))
+            .to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(
-            await instance.callStatic['insertAfter(uint128,uint128)'](
-              zeroUint128,
-              oneUint128,
-            ),
-          ).to.be.false;
+          expect(await instance.insertAfter.staticCall(zeroUint128, oneUint128))
+            .to.be.false;
         });
 
         it('adds new value to list in position before existing value', async () => {
-          await instance['insertAfter(uint128,uint128)'](
-            zeroUint128,
-            oneUint128,
-          );
+          await instance.insertAfter(zeroUint128, oneUint128);
 
-          expect(await instance['prev(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.prev.staticCall(oneUint128)).to.eq(zeroUint128);
 
-          await instance['insertAfter(uint128,uint128)'](
-            oneUint128,
-            twoUint128,
-          );
+          await instance.insertAfter(oneUint128, twoUint128);
 
-          expect(await instance['prev(uint128)'](twoUint128)).to.eq(oneUint128);
+          expect(await instance.prev.staticCall(twoUint128)).to.eq(oneUint128);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['insertAfter(uint128,uint128)'](
-                zeroUint128,
-                zeroUint128,
-              ),
+              instance.insertAfter(zeroUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -748,7 +626,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('value is not contained in list', async () => {
             await expect(
-              instance['insertAfter(uint128,uint128)'](oneUint128, twoUint128),
+              instance.insertAfter(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',
@@ -759,33 +637,29 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#push(uint128)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['push(uint128)'](oneUint128)).to.be
-            .true;
+          expect(await instance.push.staticCall(oneUint128)).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(await instance.callStatic['push(uint128)'](oneUint128)).to.be
-            .false;
+          expect(await instance.push.staticCall(oneUint128)).to.be.false;
         });
 
         it('adds new value to end of list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.next.staticCall(oneUint128)).to.eq(zeroUint128);
 
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(twoUint128);
+          expect(await instance.next.staticCall(oneUint128)).to.eq(twoUint128);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['push(uint128)'](zeroUint128),
+              instance.push(zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -796,93 +670,81 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#pop()', () => {
         it('returns last value in list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance.callStatic['pop()']()).to.eq(twoUint128);
+          expect(await instance.pop.staticCall()).to.eq(twoUint128);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['pop()']()).to.eq(zeroUint128);
+          expect(await instance.pop.staticCall()).to.eq(zeroUint128);
         });
 
         it('removes last value from list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          await instance['pop()']();
+          await instance.pop();
 
-          expect(await instance['contains(uint128)'](twoUint128)).to.be.false;
+          expect(await instance.contains.staticCall(twoUint128)).to.be.false;
 
-          expect(await instance['prev(uint128)'](zeroUint128)).to.eq(
-            oneUint128,
-          );
+          expect(await instance.prev.staticCall(zeroUint128)).to.eq(oneUint128);
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.next.staticCall(oneUint128)).to.eq(zeroUint128);
         });
       });
 
       describe('#shift()', () => {
         it('returns first value in list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(await instance.callStatic['shift()']()).to.eq(oneUint128);
+          expect(await instance.shift.staticCall()).to.eq(oneUint128);
         });
 
         it('returns zero if list is empty', async () => {
-          expect(await instance.callStatic['shift()']()).to.eq(zeroUint128);
+          expect(await instance.shift.staticCall()).to.eq(zeroUint128);
         });
 
         it('removes first value from list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          await instance['shift()']();
+          await instance.shift();
 
-          expect(await instance['contains(uint128)'](oneUint128)).to.be.false;
+          expect(await instance.contains.staticCall(oneUint128)).to.be.false;
 
-          expect(await instance['next(uint128)'](zeroUint128)).to.eq(
-            twoUint128,
-          );
+          expect(await instance.next.staticCall(zeroUint128)).to.eq(twoUint128);
 
-          expect(await instance['prev(uint128)'](twoUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.prev.staticCall(twoUint128)).to.eq(zeroUint128);
         });
       });
 
       describe('#unshift(uint128)', () => {
         it('returns true if value is added to list', async () => {
-          expect(await instance.callStatic['unshift(uint128)'](oneUint128)).to
-            .be.true;
+          expect(await instance.unshift.staticCall(oneUint128)).to.be.true;
         });
 
         it('returns false if value is not added to list', async () => {
-          await instance['unshift(uint128)'](oneUint128);
+          await instance.unshift(oneUint128);
 
-          expect(await instance.callStatic['unshift(uint128)'](oneUint128)).to
-            .be.false;
+          expect(await instance.unshift.staticCall(oneUint128)).to.be.false;
         });
 
         it('adds new value to beginning of list', async () => {
-          await instance['unshift(uint128)'](oneUint128);
+          await instance.unshift(oneUint128);
 
-          expect(await instance['prev(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
+          expect(await instance.prev.staticCall(oneUint128)).to.eq(zeroUint128);
 
-          await instance['unshift(uint128)'](twoUint128);
+          await instance.unshift(twoUint128);
 
-          expect(await instance['prev(uint128)'](oneUint128)).to.eq(twoUint128);
+          expect(await instance.prev.staticCall(oneUint128)).to.eq(twoUint128);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
             await expect(
-              instance['unshift(uint128)'](zeroUint128),
+              instance.unshift(zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -893,31 +755,29 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#remove(uint128)', () => {
         it('returns true if value is removed from list', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(await instance.callStatic['remove(uint128)'](oneUint128)).to.be
-            .true;
+          expect(await instance.remove.staticCall(oneUint128)).to.be.true;
         });
 
         it('returns false if value is not removed from list', async () => {
-          expect(await instance.callStatic['remove(uint128)'](oneUint128)).to.be
-            .false;
+          expect(await instance.remove.staticCall(oneUint128)).to.be.false;
         });
 
         it('removes value from list', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
-          await instance['push(uint128)'](threeUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
+          await instance.push(threeUint128);
 
-          await instance['remove(uint128)'](twoUint128);
+          await instance.remove(twoUint128);
 
-          expect(await instance['contains(uint128)'](twoUint128)).to.be.false;
+          expect(await instance.contains.staticCall(twoUint128)).to.be.false;
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(
+          expect(await instance.next.staticCall(oneUint128)).to.eq(
             threeUint128,
           );
 
-          expect(await instance['prev(uint128)'](threeUint128)).to.eq(
+          expect(await instance.prev.staticCall(threeUint128)).to.eq(
             oneUint128,
           );
         });
@@ -925,72 +785,60 @@ describe('PackedDoublyLinkedList', async () => {
 
       describe('#replace(uint128,uint128)', () => {
         it('returns true if value is replaced', async () => {
-          await instance['push(uint128)'](oneUint128);
+          await instance.push(oneUint128);
 
-          expect(
-            await instance.callStatic['replace(uint128,uint128)'](
-              oneUint128,
-              twoUint128,
-            ),
-          ).to.be.true;
+          expect(await instance.replace.staticCall(oneUint128, twoUint128)).to
+            .be.true;
         });
 
         it('returns false if value is not replaced', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          expect(
-            await instance.callStatic['replace(uint128,uint128)'](
-              oneUint128,
-              twoUint128,
-            ),
-          ).to.be.false;
+          expect(await instance.replace.staticCall(oneUint128, twoUint128)).to
+            .be.false;
         });
 
         it('replaces existing value with new value', async () => {
-          const newValue = BigNumber.from('4');
+          const newValue = 4;
 
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
-          await instance['push(uint128)'](threeUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
+          await instance.push(threeUint128);
 
-          expect(await instance['contains(uint128)'](newValue)).to.be.false;
+          expect(await instance.contains.staticCall(newValue)).to.be.false;
 
-          await instance['replace(uint128,uint128)'](twoUint128, newValue);
+          await instance.replace(twoUint128, newValue);
 
-          expect(await instance['contains(uint128)'](twoUint128)).to.be.false;
-          expect(await instance['contains(uint128)'](newValue)).to.be.true;
+          expect(await instance.contains.staticCall(twoUint128)).to.be.false;
+          expect(await instance.contains.staticCall(newValue)).to.be.true;
 
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(newValue);
-          expect(await instance['prev(uint128)'](newValue)).to.eq(oneUint128);
-          expect(await instance['next(uint128)'](newValue)).to.eq(threeUint128);
-          expect(await instance['prev(uint128)'](threeUint128)).to.eq(newValue);
+          expect(await instance.next.staticCall(oneUint128)).to.eq(newValue);
+          expect(await instance.prev.staticCall(newValue)).to.eq(oneUint128);
+          expect(await instance.next.staticCall(newValue)).to.eq(threeUint128);
+          expect(await instance.prev.staticCall(threeUint128)).to.eq(newValue);
         });
 
         it('does nothing if new value matches existing value', async () => {
-          await instance['push(uint128)'](oneUint128);
-          await instance['push(uint128)'](twoUint128);
+          await instance.push(oneUint128);
+          await instance.push(twoUint128);
 
-          await instance['replace(uint128,uint128)'](oneUint128, oneUint128);
+          await instance.replace(oneUint128, oneUint128);
 
-          expect(await instance['contains(uint128)'](oneUint128)).to.be.true;
+          expect(await instance.contains.staticCall(oneUint128)).to.be.true;
 
-          expect(await instance['next(uint128)'](zeroUint128)).to.eq(
-            oneUint128,
-          );
-          expect(await instance['prev(uint128)'](oneUint128)).to.eq(
-            zeroUint128,
-          );
-          expect(await instance['next(uint128)'](oneUint128)).to.eq(twoUint128);
-          expect(await instance['prev(uint128)'](twoUint128)).to.eq(oneUint128);
+          expect(await instance.next.staticCall(zeroUint128)).to.eq(oneUint128);
+          expect(await instance.prev.staticCall(oneUint128)).to.eq(zeroUint128);
+          expect(await instance.next.staticCall(oneUint128)).to.eq(twoUint128);
+          expect(await instance.prev.staticCall(twoUint128)).to.eq(oneUint128);
         });
 
         describe('reverts if', () => {
           it('new value is zero', async () => {
-            await instance['push(uint128)'](oneUint128);
+            await instance.push(oneUint128);
 
             await expect(
-              instance['replace(uint128,uint128)'](oneUint128, zeroUint128),
+              instance.replace(oneUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__InvalidInput',
@@ -999,10 +847,7 @@ describe('PackedDoublyLinkedList', async () => {
 
           it('old value is not contained in list', async () => {
             await expect(
-              instance.callStatic['replace(uint128,uint128)'](
-                oneUint128,
-                twoUint128,
-              ),
+              instance.replace.staticCall(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
               'DoublyLinkedList__NonExistentEntry',

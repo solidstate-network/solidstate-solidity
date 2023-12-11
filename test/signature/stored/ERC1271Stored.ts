@@ -7,14 +7,14 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 const validParams: [Uint8Array, Uint8Array] = [
-  ethers.utils.randomBytes(32),
-  ethers.utils.randomBytes(0),
+  ethers.randomBytes(32),
+  ethers.randomBytes(0),
 ];
 
-describe('ERC1271Stored', function () {
+describe('ERC1271Stored', () => {
   let instance: ERC1271StoredMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1271StoredMock__factory(deployer).deploy(
       validParams[0],
@@ -25,46 +25,46 @@ describe('ERC1271Stored', function () {
     getValidParams: async () => validParams,
   });
 
-  describe('__internal', function () {
-    describe('#_isValidSignature(bytes32,bytes)', function () {
-      it('returns magic value if signature is stored', async function () {
+  describe('__internal', () => {
+    describe('#_isValidSignature(bytes32,bytes)', () => {
+      it('returns magic value if signature is stored', async () => {
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
+          await instance.__isValidSignature.staticCall(
             validParams[0],
             validParams[1],
           ),
         ).to.equal('0x1626ba7e');
       });
 
-      it('returns null bytes if signature is not stored', async function () {
+      it('returns null bytes if signature is not stored', async () => {
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            ethers.utils.randomBytes(32),
-            ethers.utils.randomBytes(0),
+          await instance.__isValidSignature.staticCall(
+            ethers.randomBytes(32),
+            ethers.randomBytes(0),
           ),
         ).to.equal('0x00000000');
       });
     });
 
-    describe('#_setValidSignature(bytes32,bool)', function () {
-      it('sets signature validity', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = ethers.utils.randomBytes(0);
+    describe('#_setValidSignature(bytes32,bool)', () => {
+      it('sets signature validity', async () => {
+        let hash = ethers.randomBytes(32);
+        let signature = ethers.randomBytes(0);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
 
         await instance.__setValidSignature(hash, true);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
 
         await instance.__setValidSignature(hash, false);
 
         expect(
-          await instance.callStatic.__isValidSignature(hash, signature),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

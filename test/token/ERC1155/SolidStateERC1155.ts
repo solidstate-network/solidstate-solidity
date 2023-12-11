@@ -7,10 +7,10 @@ import { ethers } from 'hardhat';
 
 const tokenURI = 'ERC1155Metadata.tokenURI';
 
-describe('SolidStateERC1155', function () {
+describe('SolidStateERC1155', () => {
   let instance: SolidStateERC1155Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC1155Mock__factory(deployer).deploy();
   });
@@ -19,12 +19,12 @@ describe('SolidStateERC1155', function () {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)
-        ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+        .safeTransferFrom(
           from.address,
           to.address,
           tokenId,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),

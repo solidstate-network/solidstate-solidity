@@ -14,7 +14,7 @@ export function describeBehaviorOfCloneFactory(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::CloneFactory', function () {
+  describe('::CloneFactory', () => {
     describeBehaviorOfFactory(deploy, {}, skips);
   });
 }

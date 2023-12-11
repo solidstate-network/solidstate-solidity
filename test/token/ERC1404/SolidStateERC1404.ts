@@ -6,14 +6,14 @@ import {
 import { ethers } from 'hardhat';
 
 let restrictions = [
-  { code: ethers.BigNumber.from(1), message: 'one' },
-  { code: ethers.BigNumber.from(3), message: 'three' },
+  { code: 1, message: 'one' },
+  { code: 3, message: 'three' },
 ];
 
-describe('SolidStateERC1404', function () {
+describe('SolidStateERC1404', () => {
   let instance: SolidStateERC1404Mock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new SolidStateERC1404Mock__factory(deployer).deploy(
       restrictions.map((r) => r.code),
@@ -25,11 +25,11 @@ describe('SolidStateERC1404', function () {
     mint: (recipient, amount) => instance.__mint(recipient, amount),
     burn: (recipient, amount) => instance.__burn(recipient, amount),
     allowance: (holder, spender) =>
-      instance.callStatic.allowance(holder, spender),
+      instance.allowance.staticCall(holder, spender),
     restrictions,
     name: '',
     symbol: '',
     decimals: 0,
-    supply: ethers.constants.Zero,
+    supply: 0n,
   });
 });

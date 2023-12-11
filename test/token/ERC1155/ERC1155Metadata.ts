@@ -5,11 +5,11 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC1155Metadata', function () {
+describe('ERC1155Metadata', () => {
   const tokenURI = 'ERC1155Metadata.tokenURI';
   let instance: ERC1155MetadataMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1155MetadataMock__factory(deployer).deploy(
       tokenURI,

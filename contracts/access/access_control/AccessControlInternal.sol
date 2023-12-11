@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
@@ -112,5 +112,27 @@ abstract contract AccessControlInternal is IAccessControlInternal {
      */
     function _renounceRole(bytes32 role) internal virtual {
         _revokeRole(role, msg.sender);
+    }
+
+    /**
+     * @notice query role for member at given index
+     * @param role role to query
+     * @param index index to query
+     */
+    function _getRoleMember(
+        bytes32 role,
+        uint256 index
+    ) internal view virtual returns (address) {
+        return AccessControlStorage.layout().roles[role].members.at(index);
+    }
+
+    /**
+     * @notice query role for member count
+     * @param role role to query
+     */
+    function _getRoleMemberCount(
+        bytes32 role
+    ) internal view virtual returns (uint256) {
+        return AccessControlStorage.layout().roles[role].members.length();
     }
 }

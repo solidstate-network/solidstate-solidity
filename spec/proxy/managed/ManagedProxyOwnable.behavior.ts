@@ -18,7 +18,7 @@ export function describeBehaviorOfManagedProxyOwnable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ManagedProxyOwnable', function () {
+  describe('::ManagedProxyOwnable', () => {
     describeBehaviorOfManagedProxy(
       deploy,
       {

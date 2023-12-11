@@ -14,15 +14,15 @@ export function describeBehaviorOfERC1271Stored(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Stored', function () {
+  describe('::ERC1271Stored', () => {
     // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
       deploy,
       {
         getValidParams,
         getInvalidParams: async () => [
-          ethers.utils.randomBytes(32),
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(32),
+          ethers.randomBytes(0),
         ],
       },
       skips,

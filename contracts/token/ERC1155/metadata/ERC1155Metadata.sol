@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.18;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { IERC1155Metadata } from './IERC1155Metadata.sol';
@@ -28,7 +28,7 @@ abstract contract ERC1155Metadata is IERC1155Metadata, ERC1155MetadataInternal {
         } else if (bytes(tokenIdURI).length > 0) {
             return string(abi.encodePacked(baseURI, tokenIdURI));
         } else {
-            return string(abi.encodePacked(baseURI, tokenId.toString()));
+            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
         }
     }
 }

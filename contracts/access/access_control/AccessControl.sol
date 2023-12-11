@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 import { IAccessControl } from './IAccessControl.sol';
 import { AccessControlInternal } from './AccessControlInternal.sol';
@@ -52,5 +52,22 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
      */
     function renounceRole(bytes32 role) external {
         _renounceRole(role);
+    }
+
+    /**
+     * @inheritdoc IAccessControl
+     */
+    function getRoleMember(
+        bytes32 role,
+        uint256 index
+    ) external view returns (address) {
+        return _getRoleMember(role, index);
+    }
+
+    /**
+     * @inheritdoc IAccessControl
+     */
+    function getRoleMemberCount(bytes32 role) external view returns (uint256) {
+        return _getRoleMemberCount(role);
     }
 }
