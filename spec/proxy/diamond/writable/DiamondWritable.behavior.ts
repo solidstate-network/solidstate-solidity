@@ -9,11 +9,13 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {}
+export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {
+  immutableSelectors: string[];
+}
 
 export function describeBehaviorOfDiamondWritable(
   deploy: () => Promise<IDiamondWritable>,
-  { getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
+  args: DiamondWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -30,8 +32,8 @@ export function describeBehaviorOfDiamondWritable(
     let instance: IDiamondWritable;
 
     before(async () => {
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
 
       for (let i = 0; i < 24; i++) {
         const fn = `fn${i}()`;
@@ -134,6 +136,25 @@ export function describeBehaviorOfDiamondWritable(
             ).to.be.revertedWithCustomError(
               instance,
               'DiamondWritable__TargetHasNoCode',
+            );
+          });
+
+          it('target facet is diamond itself', async () => {
+            await expect(
+              instance.connect(owner).diamondCut(
+                [
+                  {
+                    target: await instance.getAddress(),
+                    action: 0,
+                    selectors: [ethers.randomBytes(4)],
+                  },
+                ],
+                ethers.ZeroAddress,
+                '0x',
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorIsImmutable',
             );
           });
 
@@ -247,36 +268,24 @@ export function describeBehaviorOfDiamondWritable(
           });
 
           it('selector is immutable', async () => {
-            const selector = ethers.randomBytes(4);
-
-            await instance.connect(owner).diamondCut(
-              [
-                {
-                  target: await instance.getAddress(),
-                  action: 0,
-                  selectors: [selector],
-                },
-              ],
-              ethers.ZeroAddress,
-              '0x',
-            );
-
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: facet.address,
-                    action: 1,
-                    selectors: [selector],
-                  },
-                ],
-                ethers.ZeroAddress,
-                '0x',
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'DiamondWritable__SelectorIsImmutable',
-            );
+            for (const immutableSelector of args.immutableSelectors) {
+              await expect(
+                instance.connect(owner).diamondCut(
+                  [
+                    {
+                      target: facet.address,
+                      action: 1,
+                      selectors: [immutableSelector],
+                    },
+                  ],
+                  ethers.ZeroAddress,
+                  '0x',
+                ),
+              ).to.be.revertedWithCustomError(
+                instance,
+                'DiamondWritable__SelectorIsImmutable',
+              );
+            }
           });
 
           it('replacement facet is same as existing facet', async () => {
@@ -395,36 +404,24 @@ export function describeBehaviorOfDiamondWritable(
           });
 
           it('selector is immutable', async () => {
-            const selector = ethers.randomBytes(4);
-
-            await instance.connect(owner).diamondCut(
-              [
-                {
-                  target: await instance.getAddress(),
-                  action: 0,
-                  selectors: [selector],
-                },
-              ],
-              ethers.ZeroAddress,
-              '0x',
-            );
-
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: ethers.ZeroAddress,
-                    action: 2,
-                    selectors: [selector],
-                  },
-                ],
-                ethers.ZeroAddress,
-                '0x',
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'DiamondWritable__SelectorIsImmutable',
-            );
+            for (const immutableSelector of args.immutableSelectors) {
+              await expect(
+                instance.connect(owner).diamondCut(
+                  [
+                    {
+                      target: ethers.ZeroAddress,
+                      action: 2,
+                      selectors: [immutableSelector],
+                    },
+                  ],
+                  ethers.ZeroAddress,
+                  '0x',
+                ),
+              ).to.be.revertedWithCustomError(
+                instance,
+                'DiamondWritable__SelectorIsImmutable',
+              );
+            }
           });
         });
       });

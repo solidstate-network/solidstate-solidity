@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
@@ -85,10 +85,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
-            if (
-                facetCut.target != address(this) &&
-                !facetCut.target.isContract()
-            ) revert DiamondWritable__TargetHasNoCode();
+            if (facetCut.target.isContract()) {
+                if (facetCut.target == address(this)) {
+                    revert DiamondWritable__SelectorIsImmutable();
+                }
+            } else if (facetCut.target != address(this)) {
+                revert DiamondWritable__TargetHasNoCode();
+            }
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];

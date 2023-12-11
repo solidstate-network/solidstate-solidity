@@ -15,6 +15,7 @@ describe('SolidStateDiamond', () => {
   let instance: SolidStateDiamond;
 
   let facetCuts: any[] = [];
+  let immutableSelectors: string[] = [];
 
   before(async () => {
     [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
@@ -33,6 +34,12 @@ describe('SolidStateDiamond', () => {
       action: 0,
       selectors: facets[0].selectors,
     };
+
+    for (const selector of facetCuts[0].selectors) {
+      immutableSelectors.push(selector);
+    }
+
+    expect(immutableSelectors.length).to.be.gt(0);
   });
 
   describeBehaviorOfSolidStateDiamond(
@@ -45,6 +52,7 @@ describe('SolidStateDiamond', () => {
       facetFunctionArgs: [],
       facetCuts,
       fallbackAddress: ethers.ZeroAddress,
+      immutableSelectors,
     },
     ['fallback()'],
   );

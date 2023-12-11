@@ -65,6 +65,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "UintUtils__InsufficientPadding",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UintUtils__InvalidBase",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
