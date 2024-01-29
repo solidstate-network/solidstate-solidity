@@ -2,15 +2,9 @@
 
 pragma solidity ^0.8.18;
 
-interface IDiamondWritableInternal {
-    enum FacetCutAction {
-        ADD,
-        REPLACE,
-        REMOVE
-    }
+import { IERC2535DiamondCutInternal } from '../../../interfaces/IERC2535DiamondCutInternal.sol';
 
-    event DiamondCut(FacetCut[] facetCuts, address target, bytes data);
-
+interface IDiamondWritableInternal is IERC2535DiamondCutInternal {
     error DiamondWritable__InvalidInitializationParameters();
     error DiamondWritable__RemoveTargetNotZeroAddress();
     error DiamondWritable__ReplaceTargetIsIdentical();
@@ -19,10 +13,4 @@ interface IDiamondWritableInternal {
     error DiamondWritable__SelectorNotFound();
     error DiamondWritable__SelectorNotSpecified();
     error DiamondWritable__TargetHasNoCode();
-
-    struct FacetCut {
-        address target;
-        FacetCutAction action;
-        bytes4[] selectors;
-    }
 }
