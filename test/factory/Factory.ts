@@ -11,14 +11,14 @@ describe('Factory', () => {
   });
 
   describe('__internal', () => {
-    describe('#_deploy(bytes)', () => {
+    describe('#deploy(bytes)', () => {
       it('deploys bytecode and returns deployment address', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
 
-        const address = await instance['__deploy(bytes)'].staticCall(initCode);
+        const address = await instance['deploy(bytes)'].staticCall(initCode);
         expect(address).to.be.properAddress;
 
-        await instance['__deploy(bytes)'](initCode);
+        await instance['deploy(bytes)'](initCode);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -30,7 +30,7 @@ describe('Factory', () => {
           const initCode = '0xfe';
 
           await expect(
-            instance['__deploy(bytes)'](initCode),
+            instance['deploy(bytes)'](initCode),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -39,24 +39,24 @@ describe('Factory', () => {
       });
     });
 
-    describe('#_deploy(bytes,bytes32)', () => {
+    describe('#deploy(bytes,bytes32)', () => {
       it('deploys bytecode and returns deployment address', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
-        const address = await instance['__deploy(bytes,bytes32)'].staticCall(
+        const address = await instance['deploy(bytes,bytes32)'].staticCall(
           initCode,
           salt,
         );
         expect(address).to.equal(
-          await instance.__calculateDeploymentAddress.staticCall(
+          await instance.calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),
         );
 
-        await instance['__deploy(bytes,bytes32)'](initCode, salt);
+        await instance['deploy(bytes,bytes32)'](initCode, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -69,7 +69,7 @@ describe('Factory', () => {
           const salt = ethers.randomBytes(32);
 
           await expect(
-            instance['__deploy(bytes,bytes32)'](initCode, salt),
+            instance['deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -80,10 +80,10 @@ describe('Factory', () => {
           const { data: initCode } = await instance.deploymentTransaction();
           const salt = ethers.randomBytes(32);
 
-          await instance['__deploy(bytes,bytes32)'](initCode, salt);
+          await instance['deploy(bytes,bytes32)'](initCode, salt);
 
           await expect(
-            instance['__deploy(bytes,bytes32)'](initCode, salt),
+            instance['deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -92,14 +92,14 @@ describe('Factory', () => {
       });
     });
 
-    describe('#_calculateDeploymentAddress(bytes32,bytes32)', () => {
+    describe('#calculateDeploymentAddress(bytes32,bytes32)', () => {
       it('returns address of not-yet-deployed contract', async () => {
         const { data: initCode } = await instance.deploymentTransaction();
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.__calculateDeploymentAddress.staticCall(
+          await instance.calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),

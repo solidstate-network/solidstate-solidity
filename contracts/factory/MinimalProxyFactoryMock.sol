@@ -5,20 +5,20 @@ pragma solidity ^0.8.18;
 import { MinimalProxyFactory } from './MinimalProxyFactory.sol';
 
 contract MinimalProxyFactoryMock {
-    function __deployMinimalProxy(
+    function deployMinimalProxy(
         address target
     ) external returns (address minimalProxy) {
         return MinimalProxyFactory.deployMinimalProxy(target);
     }
 
-    function __deployMinimalProxy(
+    function deployMinimalProxy(
         address target,
         bytes32 salt
     ) external returns (address minimalProxy) {
         return MinimalProxyFactory.deployMinimalProxy(target, salt);
     }
 
-    function __calculateMinimalProxyDeploymentAddress(
+    function calculateMinimalProxyDeploymentAddress(
         address target,
         bytes32 salt
     ) external view returns (address) {
@@ -29,7 +29,7 @@ contract MinimalProxyFactoryMock {
             );
     }
 
-    function __generateMinimalProxyInitCode(
+    function generateMinimalProxyInitCode(
         address target
     ) external pure returns (bytes memory) {
         return MinimalProxyFactory.generateMinimalProxyInitCode(target);
