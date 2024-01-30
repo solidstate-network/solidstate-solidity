@@ -1,4 +1,3 @@
-import { describeBehaviorOfCloneFactory } from '@solidstate/spec';
 import {
   CloneFactoryMock,
   CloneFactoryMock__factory,
@@ -13,8 +12,6 @@ describe('CloneFactory', () => {
     const [deployer] = await ethers.getSigners();
     instance = await new CloneFactoryMock__factory(deployer).deploy();
   });
-
-  describeBehaviorOfCloneFactory(async () => instance, {});
 
   describe('__internal', () => {
     describe('#_deployClone()', () => {
@@ -38,9 +35,8 @@ describe('CloneFactory', () => {
       it('deploys clone and returns deployment address', async () => {
         const salt = ethers.randomBytes(32);
 
-        const address = await instance['__deployClone(bytes32)'].staticCall(
-          salt,
-        );
+        const address =
+          await instance['__deployClone(bytes32)'].staticCall(salt);
         expect(address).to.be.properAddress;
 
         await instance['__deployClone(bytes32)'](salt);

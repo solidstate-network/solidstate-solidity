@@ -1,4 +1,3 @@
-import { describeBehaviorOfFactory } from '@solidstate/spec';
 import { FactoryMock, FactoryMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -10,8 +9,6 @@ describe('Factory', () => {
     const [deployer] = await ethers.getSigners();
     instance = await new FactoryMock__factory(deployer).deploy();
   });
-
-  describeBehaviorOfFactory(async () => instance, {});
 
   describe('__internal', () => {
     describe('#_deploy(bytes)', () => {

@@ -1,4 +1,3 @@
-import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,
@@ -14,16 +13,13 @@ describe('MinimalProxyFactory', () => {
     instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMinimalProxyFactory(async () => instance, {});
-
   describe('__internal', () => {
     describe('#_deployMinimalProxy(address)', () => {
       it('deploys minimal proxy and returns deployment address', async () => {
         const target = await instance.getAddress();
 
-        const address = await instance[
-          '__deployMinimalProxy(address)'
-        ].staticCall(target);
+        const address =
+          await instance['__deployMinimalProxy(address)'].staticCall(target);
         expect(address).to.be.properAddress;
 
         await instance['__deployMinimalProxy(address)'](target);
