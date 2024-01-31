@@ -29,6 +29,8 @@ abstract contract UpgradeableProxy is IUpgradeableProxy, Proxy {
      * @param implementation implementation address
      */
     function _setImplementation(address implementation) internal {
-        UpgradeableProxyStorage.layout().implementation = implementation;
+        UpgradeableProxyStorage
+            .layout(UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT)
+            .implementation = implementation;
     }
 }

@@ -25,7 +25,10 @@ abstract contract MetamorphicFactory is Factory {
         view
         returns (address implementation)
     {
-        return MetamorphicFactoryStorage.layout().metamorphicImplementation;
+        return
+            MetamorphicFactoryStorage
+                .layout(MetamorphicFactoryStorage.DEFAULT_STORAGE_SLOT)
+                .metamorphicImplementation;
     }
 
     /**
@@ -58,7 +61,7 @@ abstract contract MetamorphicFactory is Factory {
         address metamorphicImplementation
     ) private {
         MetamorphicFactoryStorage
-            .layout()
+            .layout(MetamorphicFactoryStorage.DEFAULT_STORAGE_SLOT)
             .metamorphicImplementation = metamorphicImplementation;
     }
 }
