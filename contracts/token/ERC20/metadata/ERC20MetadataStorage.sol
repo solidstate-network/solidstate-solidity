@@ -9,11 +9,14 @@ library ERC20MetadataStorage {
         uint8 decimals;
     }
 
-    bytes32 internal constant STORAGE_SLOT =
+    bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256('solidstate.contracts.storage.ERC20Metadata');
 
     function layout() internal pure returns (Layout storage l) {
-        bytes32 slot = STORAGE_SLOT;
+        l = layout(DEFAULT_STORAGE_SLOT);
+    }
+
+    function layout(bytes32 slot) internal pure returns (Layout storage l) {
         assembly {
             l.slot := slot
         }
