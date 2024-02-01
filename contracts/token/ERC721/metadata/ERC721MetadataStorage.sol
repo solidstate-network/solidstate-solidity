@@ -4,7 +4,15 @@ pragma solidity ^0.8.20;
 
 library ERC721MetadataStorage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
-        keccak256('solidstate.contracts.storage.ERC721Metadata');
+        keccak256(
+            abi.encode(
+                uint256(
+                    keccak256(
+                        bytes('solidstate.contracts.storage.ERC721Metadata')
+                    )
+                ) - 1
+            )
+        ) & ~bytes32(uint256(0xff));
 
     struct Layout {
         string name;

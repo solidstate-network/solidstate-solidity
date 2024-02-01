@@ -8,7 +8,15 @@ library InitializableStorage {
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
-        keccak256('solidstate.contracts.storage.Initializable');
+        keccak256(
+            abi.encode(
+                uint256(
+                    keccak256(
+                        bytes('solidstate.contracts.storage.Initializable')
+                    )
+                ) - 1
+            )
+        ) & ~bytes32(uint256(0xff));
 
     function layout() internal pure returns (Layout storage l) {
         l = layout(DEFAULT_STORAGE_SLOT);
