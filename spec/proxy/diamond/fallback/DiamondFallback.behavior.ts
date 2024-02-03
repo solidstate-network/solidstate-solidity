@@ -36,6 +36,10 @@ export function describeBehaviorOfDiamondFallback(
 
     describeBehaviorOfDiamondBase(async () => instance, args, skips);
 
+    describe('fallback()', () => {
+      it('forwards data without matching selector to fallback contract');
+    });
+
     describe('#getFallbackAddress()', () => {
       it('returns the fallback address', async () => {
         expect(await instance.getFallbackAddress.staticCall()).to.equal(
