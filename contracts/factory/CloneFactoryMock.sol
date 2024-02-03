@@ -4,20 +4,20 @@ pragma solidity ^0.8.18;
 
 import { CloneFactory } from './CloneFactory.sol';
 
-contract CloneFactoryMock is CloneFactory {
-    function __deployClone() external returns (address cloneContract) {
-        return _deployClone();
+contract CloneFactoryMock {
+    function deployClone() external returns (address cloneContract) {
+        return CloneFactory.deployClone();
     }
 
-    function __deployClone(
+    function deployClone(
         bytes32 salt
     ) external returns (address cloneContract) {
-        return _deployClone(salt);
+        return CloneFactory.deployClone(salt);
     }
 
-    function __calculateCloneDeploymentAddress(
+    function calculateCloneDeploymentAddress(
         bytes32 salt
     ) external view returns (address) {
-        return _calculateCloneDeploymentAddress(salt);
+        return CloneFactory.calculateCloneDeploymentAddress(salt);
     }
 }
