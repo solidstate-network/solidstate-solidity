@@ -36,8 +36,6 @@ export function describeBehaviorOfDiamondBase(
           .not.to.be.reverted;
       });
 
-      it('forwards data without matching selector to fallback contract');
-
       describe('reverts if', () => {
         it('no selector matches data', async () => {
           let contract = new ethers.Contract(

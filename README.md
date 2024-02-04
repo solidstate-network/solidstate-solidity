@@ -42,10 +42,10 @@ describe('CustomToken', () => {
   });
 
   describeBehaviorOfERC20Base(
+    async () => instance,
     {
-      deploy: () => instance,
-    },
-    [],
+      args: ...,
+    }
   );
 
   // custom tests...
@@ -56,8 +56,9 @@ If parts of the base implementation are changed intentionally, tests can be sele
 
 ```javascript
 describeBehaviorOfERC20Base(
+  async () => instance,
   {
-    deploy: () => instance,
+    args: ...
   },
   ['#balanceOf'],
 );
