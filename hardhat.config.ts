@@ -29,6 +29,7 @@ export default {
 
   gasReporter: {
     enabled: true,
+    reportPureAndViewMethods: true,
   },
 
   spdxLicenseIdentifier: {
