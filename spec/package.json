@@ -26,8 +26,10 @@
   },
   "dependencies": {
     "@ethereum-waffle/mock-contract": "^4.0.4",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
     "@solidstate/library": "file:../lib"
+  },
+  "peerDependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0"
   },
   "files": [
     "dist/"
