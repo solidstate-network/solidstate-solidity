@@ -5,7 +5,7 @@ pragma solidity ^0.8.18;
 library Math {
     /**
      * @notice calculate the absolute value of a number
-     * @param a number whose absoluve value to calculate
+     * @param a number whose absolute value to calculate
      * @return absolute value
      */
     function abs(int256 a) internal pure returns (uint256) {
