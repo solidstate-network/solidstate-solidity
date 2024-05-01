@@ -107,10 +107,12 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (address(bytes20(oldFacet)) != address(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
-                // add facet for selector
+                // for current selector, write facet address and global index to storage
                 l.facets[selector] =
                     bytes20(facetCut.target) |
                     bytes32(selectorCount);
+
+                // calculate bit position of current selector within 256-bit slot
                 uint256 selectorInSlotPosition = (selectorCount & 7) << 5;
 
                 // clear selector position in slot and add selector
@@ -119,7 +121,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)) |
                     (bytes32(selector) >> selectorInSlotPosition);
 
-                // if slot is full then write it to storage
+                // if slot is full, write it to storage and continue with an empty slot
                 if (selectorInSlotPosition == 224) {
                     l.selectorSlots[selectorCount >> 3] = selectorSlot;
                     selectorSlot = 0;
@@ -142,6 +144,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
             if (facetCut.target != address(0))
                 revert DiamondWritable__RemoveTargetNotZeroAddress();
 
+            // calculate the total number of 32-byte sequences
             uint256 selectorSlotCount = selectorCount >> 3;
             uint256 selectorInSlotIndex = selectorCount & 7;
 
@@ -167,7 +170,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 uint256 oldSelectorsSlotCount;
                 uint256 oldSelectorInSlotPosition;
 
-                // adding a block here prevents stack too deep error
+                // adding a block here prevents stack-too-deep error
                 {
                     // replace selector with last selector in l.facets
                     lastSelector = bytes4(
@@ -210,6 +213,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         (bytes32(lastSelector) >> oldSelectorInSlotPosition);
                 }
 
+                // if selector slot is empty, delete it from storage and continue with an empty slot
                 if (selectorInSlotIndex == 0) {
                     delete l.selectorSlots[selectorSlotCount];
                     selectorSlot = 0;
