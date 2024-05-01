@@ -24,13 +24,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -38,7 +38,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
                 address facet = address(bytes20(l.facets[selector]));
 
                 bool continueLoop;
@@ -102,13 +102,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -116,7 +116,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
 
                 if (facet == address(bytes20(l.facets[selector]))) {
                     selectors[numSelectors] = selector;
@@ -146,13 +146,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 numFacets;
         uint256 selectorIndex;
 
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -160,7 +160,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
                 address facet = address(bytes20(l.facets[selector]));
 
                 bool continueLoop;
