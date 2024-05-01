@@ -28,16 +28,21 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
         unchecked {
+            // record selector count at start of operation for later comparison
             uint256 originalSelectorCount = l.selectorCount;
+            // maintain an up-to-date selector count in the stack
             uint256 selectorCount = originalSelectorCount;
+            // declare a 32-byte sequence of 8 function selectors
             bytes32 selectorSlot;
 
-            // Check if last selector slot is not full
+            // if selector count is not a multiple of 8, load the last slot because it is not full
+            // else leave the default zero-bytes value as is, and use it as a new slot
             if (selectorCount & 7 > 0) {
-                // get last selectorSlot
                 selectorSlot = l.selectorSlots[selectorCount >> 3];
             }
 
+            // process each facet cut struct according to its action
+            // selector count and selector slot are passed in and read back out to avoid duplicate storage reads
             for (uint256 i; i < facetCuts.length; i++) {
                 FacetCut memory facetCut = facetCuts[i];
                 FacetCutAction action = facetCut.action;
@@ -64,11 +69,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 }
             }
 
+            // if selector count has changed, update it in storage
             if (selectorCount != originalSelectorCount) {
                 l.selectorCount = uint16(selectorCount);
             }
 
-            // If last selector slot is not full
+            // if final selector count is not a multiple of 8, write the slot to storage
+            // else it was already written to storage by the add/remove loops
             if (selectorCount & 7 > 0) {
                 l.selectorSlots[selectorCount >> 3] = selectorSlot;
             }
