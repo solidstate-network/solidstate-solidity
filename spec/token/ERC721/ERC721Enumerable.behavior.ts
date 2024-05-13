@@ -1,11 +1,14 @@
 import { describeFilter } from '@solidstate/library';
 import { ERC721Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 
 export interface ERC721EnumerableBehaviorArgs {
-  mint: (address: string, tokenId: bigint) => Promise<ContractTransaction>;
-  burn: (tokenId: bigint) => Promise<ContractTransaction>;
+  mint: (
+    address: string,
+    tokenId: bigint,
+  ) => Promise<ContractTransactionResponse>;
+  burn: (tokenId: bigint) => Promise<ContractTransactionResponse>;
   supply: bigint;
 }
 

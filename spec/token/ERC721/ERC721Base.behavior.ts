@@ -4,13 +4,16 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { ERC721Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC721BaseBehaviorArgs {
   supply: bigint;
-  mint: (address: string, tokenId: bigint) => Promise<ContractTransaction>;
-  burn: (tokenId: bigint) => Promise<ContractTransaction>;
+  mint: (
+    address: string,
+    tokenId: bigint,
+  ) => Promise<ContractTransactionResponse>;
+  burn: (tokenId: bigint) => Promise<ContractTransactionResponse>;
 }
 
 export function describeBehaviorOfERC721Base(
@@ -286,11 +289,9 @@ export function describeBehaviorOfERC721Base(
         await expect(() =>
           instance
             .connect(spender)
-            ['safeTransferFrom(address,address,uint256)'](
-              holder.address,
-              receiver.address,
-              tokenId,
-            ),
+            [
+              'safeTransferFrom(address,address,uint256)'
+            ](holder.address, receiver.address, tokenId),
         ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
       });
 
@@ -306,11 +307,9 @@ export function describeBehaviorOfERC721Base(
 
         await instance
           .connect(spender)
-          ['safeTransferFrom(address,address,uint256)'](
-            holder.address,
-            receiver.address,
-            tokenId,
-          );
+          [
+            'safeTransferFrom(address,address,uint256)'
+          ](holder.address, receiver.address, tokenId);
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
@@ -326,11 +325,9 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(spender)
-            ['safeTransferFrom(address,address,uint256)'](
-              holder.address,
-              receiver.address,
-              tokenId,
-            ),
+            [
+              'safeTransferFrom(address,address,uint256)'
+            ](holder.address, receiver.address, tokenId),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(holder.address, receiver.address, tokenId);
@@ -344,11 +341,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                ethers.ZeroAddress,
-                tokenId,
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotOwnerOrApproved',
@@ -364,11 +359,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                ethers.ZeroAddress,
-                tokenId,
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -384,11 +377,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                await instance.getAddress(),
-                tokenId,
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, await instance.getAddress(), tokenId),
           ).to.be.revertedWith(
             'ERC721: transfer to non ERC721Receiver implementer',
           );
@@ -409,11 +400,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                receiverContract.address,
-                tokenId,
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, receiverContract.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__ERC721ReceiverNotImplemented',
@@ -432,12 +421,9 @@ export function describeBehaviorOfERC721Base(
         await expect(() =>
           instance
             .connect(spender)
-            ['safeTransferFrom(address,address,uint256,bytes)'](
-              holder.address,
-              receiver.address,
-              tokenId,
-              '0x',
-            ),
+            [
+              'safeTransferFrom(address,address,uint256,bytes)'
+            ](holder.address, receiver.address, tokenId, '0x'),
         ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
       });
 
@@ -453,12 +439,9 @@ export function describeBehaviorOfERC721Base(
 
         await instance
           .connect(spender)
-          ['safeTransferFrom(address,address,uint256,bytes)'](
-            holder.address,
-            receiver.address,
-            tokenId,
-            '0x',
-          );
+          [
+            'safeTransferFrom(address,address,uint256,bytes)'
+          ](holder.address, receiver.address, tokenId, '0x');
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
@@ -474,12 +457,9 @@ export function describeBehaviorOfERC721Base(
         await expect(
           instance
             .connect(spender)
-            ['safeTransferFrom(address,address,uint256,bytes)'](
-              holder.address,
-              receiver.address,
-              tokenId,
-              '0x',
-            ),
+            [
+              'safeTransferFrom(address,address,uint256,bytes)'
+            ](holder.address, receiver.address, tokenId, '0x'),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(holder.address, receiver.address, tokenId);
@@ -493,12 +473,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                ethers.ZeroAddress,
-                tokenId,
-                '0x',
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotOwnerOrApproved',
@@ -514,12 +491,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(spender)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                ethers.ZeroAddress,
-                tokenId,
-                '0x',
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -535,12 +509,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                await instance.getAddress(),
-                tokenId,
-                '0x',
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, await instance.getAddress(), tokenId, '0x'),
           ).to.be.revertedWith(
             'ERC721: transfer to non ERC721Receiver implementer',
           );
@@ -561,12 +532,9 @@ export function describeBehaviorOfERC721Base(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                receiverContract.address,
-                tokenId,
-                '0x',
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, receiverContract.address, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__ERC721ReceiverNotImplemented',
