@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 library StorageUtils {
     function read(uint256 slot) internal view returns (bytes32 data) {
