@@ -32,11 +32,11 @@ function checkNodes(nodes: any[]) {
     const left = 2 * index + 1;
     const right = 2 * index + 2;
 
-    if (nodes[left] != null) {
+    if (left < nodes.length && nodes[left] != null) {
       expect(BigInt(node)).to.be.gte(BigInt(nodes[left]));
     }
 
-    if (nodes[right] != null) {
+    if (right < nodes.length && nodes[right] != null) {
       expect(BigInt(node)).to.be.gte(BigInt(nodes[right]));
     }
   });
