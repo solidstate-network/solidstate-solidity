@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { OwnableInternal } from '../../access/ownable/Ownable.sol';
 import { Ownable } from '../../access/ownable/Ownable.sol';
@@ -19,6 +19,4 @@ contract DiamondBeacon is
     DiamondReadable,
     DiamondWritable,
     Ownable
-{
-
-}
+{}

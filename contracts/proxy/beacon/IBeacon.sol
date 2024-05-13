@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { IOwnable } from '../../access/ownable/IOwnable.sol';
 import { BeaconStorage } from './BeaconStorage.sol';
