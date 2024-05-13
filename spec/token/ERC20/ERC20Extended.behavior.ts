@@ -2,19 +2,25 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Extended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ExtendedBehaviorArgs {
-  mint: (address: string, amount: bigint) => Promise<ContractTransaction>;
-  burn: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  mint: (
+    address: string,
+    amount: bigint,
+  ) => Promise<ContractTransactionResponse>;
+  burn: (
+    address: string,
+    amount: bigint,
+  ) => Promise<ContractTransactionResponse>;
   allowance: (holder: string, spender: string) => Promise<bigint>;
   supply: bigint;
 }
 
 export function describeBehaviorOfERC20Extended(
   deploy: () => Promise<IERC20Extended>,
-  { mint, burn, allowance, supply }: ERC20ExtendedBehaviorArgs,
+  args: ERC20ExtendedBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -49,17 +55,17 @@ export function describeBehaviorOfERC20Extended(
           .connect(holder)
           .increaseAllowance(spender.address, amount);
 
-        await expect(await allowance(holder.address, spender.address)).to.equal(
-          amount,
-        );
+        await expect(
+          await args.allowance(holder.address, spender.address),
+        ).to.equal(amount);
 
         await instance
           .connect(holder)
           .increaseAllowance(spender.address, amount);
 
-        await expect(await allowance(holder.address, spender.address)).to.equal(
-          amount + amount,
-        );
+        await expect(
+          await args.allowance(holder.address, spender.address),
+        ).to.equal(amount + amount);
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });
@@ -109,17 +115,17 @@ export function describeBehaviorOfERC20Extended(
           .connect(holder)
           .decreaseAllowance(spender.address, amount);
 
-        await expect(await allowance(holder.address, spender.address)).to.equal(
-          amount,
-        );
+        await expect(
+          await args.allowance(holder.address, spender.address),
+        ).to.equal(amount);
 
         await instance
           .connect(holder)
           .decreaseAllowance(spender.address, amount);
 
-        await expect(await allowance(holder.address, spender.address)).to.equal(
-          0,
-        );
+        await expect(
+          await args.allowance(holder.address, spender.address),
+        ).to.equal(0);
 
         // TODO: test case is no different from #allowance test; tested further by #transferFrom tests
       });

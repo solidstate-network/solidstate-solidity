@@ -8,6 +8,4 @@ import { IERC2535DiamondLoupeInternal } from '../../../interfaces/IERC2535Diamon
  * @title Diamond proxy introspection interface needed for internal functions
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IDiamondReadableInternal is IERC2535DiamondLoupeInternal {
-
-}
+interface IDiamondReadableInternal is IERC2535DiamondLoupeInternal {}
