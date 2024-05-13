@@ -23,6 +23,7 @@ describe('AddressUtils', async () => {
       it('returns a string from an address', async () => {
         expect(
           ethers.getAddress(
+            // TODO: unable to fix this TS error because toString exists in the TS as well as in Solidity
             await instance['toString(address)'](deployer.address),
           ),
         ).to.eq(deployer.address);
