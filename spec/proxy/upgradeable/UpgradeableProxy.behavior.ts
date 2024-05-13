@@ -12,6 +12,6 @@ export function describeBehaviorOfUpgradeableProxy(
   const describe = describeFilter(skips);
 
   describe('::UpgradeableProxy', () => {
-    describeBehaviorOfProxy(deploy, args, []);
+    describeBehaviorOfProxy(deploy, args, skips);
   });
 }
