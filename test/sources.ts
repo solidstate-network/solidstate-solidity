@@ -1,3 +1,4 @@
+import hre from 'hardhat';
 import {
   TASK_FLATTEN_GET_FLATTENED_SOURCE,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
