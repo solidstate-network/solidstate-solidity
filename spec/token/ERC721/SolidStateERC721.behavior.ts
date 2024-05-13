@@ -100,12 +100,9 @@ export function describeBehaviorOfSolidStateERC721(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                { value: 1 },
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, holder.address, tokenId, { value: 1 }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableTransferNotSupported',
@@ -123,13 +120,9 @@ export function describeBehaviorOfSolidStateERC721(
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                '0x',
-                { value: 1 },
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, holder.address, tokenId, '0x', { value: 1 }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableTransferNotSupported',
