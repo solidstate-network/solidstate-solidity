@@ -14,7 +14,7 @@ export interface ERC721EnumerableBehaviorArgs {
 
 export function describeBehaviorOfERC721Enumerable(
   deploy: () => Promise<ERC721Enumerable>,
-  { mint, burn, supply }: ERC721EnumerableBehaviorArgs,
+  args: ERC721EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -28,13 +28,13 @@ export function describeBehaviorOfERC721Enumerable(
 
     describe('#totalSupply()', () => {
       it('returns total token supply', async () => {
-        expect(await instance.totalSupply()).to.equal(supply);
+        expect(await instance.totalSupply()).to.equal(args.supply);
 
-        await mint(await instance.getAddress(), 2n);
-        expect(await instance.totalSupply()).to.equal(supply + 1n);
+        await args.mint(await instance.getAddress(), 2n);
+        expect(await instance.totalSupply()).to.equal(args.supply + 1n);
 
-        await burn(2n);
-        expect(await instance.totalSupply()).to.equal(supply);
+        await args.burn(2n);
+        expect(await instance.totalSupply()).to.equal(args.supply);
       });
     });
 
@@ -62,8 +62,8 @@ export function describeBehaviorOfERC721Enumerable(
           'EnumerableSet__IndexOutOfBounds',
         );
 
-        await mint(await instance.getAddress(), 1n);
-        await mint(await instance.getAddress(), 2n);
+        await args.mint(await instance.getAddress(), 1n);
+        await args.mint(await instance.getAddress(), 2n);
 
         expect(
           await instance.tokenOfOwnerByIndex.staticCall(
@@ -100,8 +100,8 @@ export function describeBehaviorOfERC721Enumerable(
         );
 
         // TODO: mint to different addresses
-        await mint(await instance.getAddress(), 1n);
-        await mint(await instance.getAddress(), 2n);
+        await args.mint(await instance.getAddress(), 1n);
+        await args.mint(await instance.getAddress(), 2n);
 
         expect(await instance.tokenByIndex.staticCall(index)).to.equal(1);
 

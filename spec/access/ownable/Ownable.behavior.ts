@@ -11,7 +11,7 @@ export interface OwnableBehaviorArgs {
 
 export function describeBehaviorOfOwnable(
   deploy: () => Promise<IOwnable>,
-  { getOwner, getNonOwner }: OwnableBehaviorArgs,
+  args: OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -23,8 +23,8 @@ export function describeBehaviorOfOwnable(
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
     describe('#owner()', () => {

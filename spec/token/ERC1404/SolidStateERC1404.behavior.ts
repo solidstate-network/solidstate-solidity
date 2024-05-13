@@ -16,44 +16,17 @@ export interface SolidStateERC1404BehaviorArgs
 
 export function describeBehaviorOfSolidStateERC1404(
   deploy: () => Promise<ISolidStateERC1404>,
-  {
-    mint,
-    burn,
-    allowance,
-    restrictions,
-    name,
-    symbol,
-    decimals,
-    supply,
-  }: SolidStateERC1404BehaviorArgs,
+  args: SolidStateERC1404BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::SolidStateERC1404', () => {
-    describeBehaviorOfSolidStateERC20(
-      deploy,
-      {
-        mint,
-        burn,
-        allowance,
-        name,
-        symbol,
-        decimals,
-        supply,
-      },
-      skips,
-    );
+    describeBehaviorOfSolidStateERC20(deploy, args, skips);
 
-    describeBehaviorOfERC1404Base(
-      deploy,
-      {
-        restrictions,
-        mint,
-        burn,
-        supply,
-      },
-      ['::ERC20Base', ...(skips ?? [])],
-    );
+    describeBehaviorOfERC1404Base(deploy, args, [
+      '::ERC20Base',
+      ...(skips ?? []),
+    ]);
   });
 }

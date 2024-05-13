@@ -10,7 +10,7 @@ export interface ProxyBehaviorArgs {
 
 export function describeBehaviorOfProxy(
   deploy: () => Promise<IProxy>,
-  { implementationFunction, implementationFunctionArgs }: ProxyBehaviorArgs,
+  args: ProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -26,13 +26,13 @@ export function describeBehaviorOfProxy(
       it('forwards data to implementation', async () => {
         let contract = new ethers.Contract(
           await instance.getAddress(),
-          [`function ${implementationFunction}`],
+          [`function ${args.implementationFunction}`],
           (await ethers.getSigners())[0],
         );
 
         await expect(
-          contract[implementationFunction].staticCall(
-            ...implementationFunctionArgs,
+          contract[args.implementationFunction].staticCall(
+            ...args.implementationFunctionArgs,
           ),
         ).not.to.be.reverted;
       });

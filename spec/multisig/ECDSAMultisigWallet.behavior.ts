@@ -47,12 +47,7 @@ export interface ECDSAMultisigWalletBehaviorArgs {
 
 export function describeBehaviorOfECDSAMultisigWallet(
   deploy: () => Promise<IECDSAMultisigWallet>,
-  {
-    getSigners,
-    getNonSigner,
-    quorum,
-    getVerificationAddress,
-  }: ECDSAMultisigWalletBehaviorArgs,
+  args: ECDSAMultisigWalletBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -65,16 +60,16 @@ export function describeBehaviorOfECDSAMultisigWallet(
     let verificationAddress: string;
 
     before(async () => {
-      signers = await getSigners();
-      nonSigner = await getNonSigner();
+      signers = await args.getSigners();
+      nonSigner = await args.getNonSigner();
 
-      expect(quorum).to.be.at.least(1);
-      expect(signers.length).to.be.at.least(quorum);
+      expect(args.quorum).to.be.at.least(1);
+      expect(signers.length).to.be.at.least(args.quorum);
     });
 
     beforeEach(async () => {
       instance = await deploy();
-      verificationAddress = await getVerificationAddress();
+      verificationAddress = await args.getVerificationAddress();
     });
 
     describe('receive()', () => {
@@ -239,7 +234,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             await expect(
               instance.verifyAndExecute(
                 { target, data, value, delegate },
-                signatures.slice(0, parseInt(quorum.toString()) - 1),
+                signatures.slice(0, parseInt(args.quorum.toString()) - 1),
               ),
             ).to.be.revertedWithCustomError(
               instance,
@@ -483,7 +478,7 @@ export function describeBehaviorOfECDSAMultisigWallet(
             await expect(
               instance.verifyAndExecute(
                 { target, data, value, delegate },
-                signatures.slice(0, parseInt(quorum.toString()) - 1),
+                signatures.slice(0, parseInt(args.quorum.toString()) - 1),
               ),
             ).to.be.revertedWithCustomError(
               instance,
