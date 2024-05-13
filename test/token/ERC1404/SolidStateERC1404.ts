@@ -29,7 +29,7 @@ describe('SolidStateERC1404', () => {
     restrictions,
     name: '',
     symbol: '',
-    decimals: 0,
+    decimals: 0n,
     supply: 0n,
   });
 });

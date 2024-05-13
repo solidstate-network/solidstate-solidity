@@ -11,7 +11,7 @@ import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
-const decimals = 18;
+const decimals = 18n;
 
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
