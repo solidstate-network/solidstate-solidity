@@ -2,18 +2,24 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20BaseBehaviorArgs {
   supply: bigint;
-  mint: (address: string, amount: bigint) => Promise<ContractTransaction>;
-  burn: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  mint: (
+    address: string,
+    amount: bigint,
+  ) => Promise<ContractTransactionResponse>;
+  burn: (
+    address: string,
+    amount: bigint,
+  ) => Promise<ContractTransactionResponse>;
 }
 
 export function describeBehaviorOfERC20Base(
   deploy: () => Promise<IERC20Base>,
-  { supply, mint, burn }: ERC20BaseBehaviorArgs,
+  args: ERC20BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -36,19 +42,19 @@ export function describeBehaviorOfERC20Base(
 
     describe('#totalSupply()', () => {
       it('returns the total supply of tokens', async () => {
-        expect(await instance.totalSupply.staticCall()).to.equal(supply);
+        expect(await instance.totalSupply.staticCall()).to.equal(args.supply);
 
         const amount = 2n;
 
-        await mint(holder.address, amount);
+        await args.mint(holder.address, amount);
 
         expect(await instance.totalSupply.staticCall()).to.equal(
-          supply + amount,
+          args.supply + amount,
         );
 
-        await burn(holder.address, amount);
+        await args.burn(holder.address, amount);
 
-        expect(await instance.totalSupply.staticCall()).to.equal(supply);
+        expect(await instance.totalSupply.staticCall()).to.equal(args.supply);
       });
     });
 
@@ -60,17 +66,13 @@ export function describeBehaviorOfERC20Base(
 
         const amount = 2n;
 
-        await expect(() => mint(holder.address, amount)).to.changeTokenBalance(
-          instance,
-          holder,
-          amount,
-        );
+        await expect(() =>
+          args.mint(holder.address, amount),
+        ).to.changeTokenBalance(instance, holder, amount);
 
-        await expect(() => burn(holder.address, amount)).to.changeTokenBalance(
-          instance,
-          holder,
-          -amount,
-        );
+        await expect(() =>
+          args.burn(holder.address, amount),
+        ).to.changeTokenBalance(instance, holder, -amount);
       });
     });
 
@@ -131,7 +133,7 @@ export function describeBehaviorOfERC20Base(
 
       it('transfers amount from holder to receiver', async () => {
         const amount = 2n;
-        await mint(holder.address, amount);
+        await args.mint(holder.address, amount);
 
         await expect(() =>
           instance.connect(holder).transfer(receiver.address, amount),
@@ -167,7 +169,7 @@ export function describeBehaviorOfERC20Base(
 
       it('transfers amount on behalf of holder', async () => {
         const amount = 2n;
-        await mint(holder.address, amount);
+        await args.mint(holder.address, amount);
 
         await instance.connect(holder).approve(spender.address, amount);
 
@@ -196,7 +198,7 @@ export function describeBehaviorOfERC20Base(
 
         it('spender not approved', async () => {
           const amount = 2n;
-          await mint(sender.address, amount);
+          await args.mint(sender.address, amount);
 
           await expect(
             instance

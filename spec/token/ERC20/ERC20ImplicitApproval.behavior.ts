@@ -16,13 +16,7 @@ export interface ERC20ImplicitApprovalBehaviorArgs
 
 export function describeBehaviorOfERC20ImplicitApproval(
   deploy: () => Promise<ERC20ImplicitApproval>,
-  {
-    supply,
-    getHolder,
-    getImplicitlyApprovedSpender,
-    burn,
-    mint,
-  }: ERC20ImplicitApprovalBehaviorArgs,
+  args: ERC20ImplicitApprovalBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -33,23 +27,15 @@ export function describeBehaviorOfERC20ImplicitApproval(
     let instance: ERC20ImplicitApproval;
 
     before(async () => {
-      holder = await getHolder();
-      implicitlyApprovedSpender = await getImplicitlyApprovedSpender();
+      holder = await args.getHolder();
+      implicitlyApprovedSpender = await args.getImplicitlyApprovedSpender();
     });
 
     beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(
-      deploy,
-      {
-        mint,
-        burn,
-        supply,
-      },
-      skips,
-    );
+    describeBehaviorOfERC20Base(deploy, args, skips);
 
     describe('#allowance(address,address)', () => {
       it('returns maximum uint256 for implicitly approved spender', async () => {
@@ -66,7 +52,7 @@ export function describeBehaviorOfERC20ImplicitApproval(
       it('does not require approval for implicitly approved sender', async () => {
         const amount = 1n;
 
-        await mint(holder.address, amount);
+        await args.mint(holder.address, amount);
 
         await instance
           .connect(holder)

@@ -8,6 +8,4 @@ import { IERC1404BaseInternal } from './IERC1404BaseInternal.sol';
 /**
  * @title ERC1404 base interface
  */
-interface IERC1404Base is IERC1404BaseInternal, IERC1404 {
-
-}
+interface IERC1404Base is IERC1404BaseInternal, IERC1404 {}
