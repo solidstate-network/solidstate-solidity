@@ -60,10 +60,6 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
-          const mock = await deployMockContract(deployer, []);
-
-          // TODO: after ethers v6 upgrade, revert no longer occurs when sending value to mock
-
           await expect(
             instance
               .connect(deployer)
