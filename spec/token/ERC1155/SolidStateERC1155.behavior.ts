@@ -30,8 +30,8 @@ export function describeBehaviorOfSolidStateERC1155(
   describe('::SolidStateERC1155', () => {
     describeBehaviorOfERC1155Base(deploy, args, skips);
 
-    describeBehaviorOfERC1155Enumerable(deploy, args);
+    describeBehaviorOfERC1155Enumerable(deploy, args, skips);
 
-    describeBehaviorOfERC1155Metadata(deploy, args);
+    describeBehaviorOfERC1155Metadata(deploy, args, skips);
   });
 }
