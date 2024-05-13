@@ -1,5 +1,4 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   BinaryHeapAddressMock,
@@ -10,7 +9,6 @@ import {
   BinaryHeapUintMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { Bytes } from 'ethers';
 import { ethers } from 'hardhat';
 
 const numbers = [0, 1, 2].map((n) => n);
@@ -21,7 +19,7 @@ const constants = {
   uint256: numbers,
 };
 
-const randomBytes32 = () => ethers.randomBytes(32);
+const randomBytes32 = () => ethers.hexlify(ethers.randomBytes(32));
 
 const randomAddress = () =>
   ethers.getAddress(ethers.zeroPadValue(ethers.randomBytes(20), 20));
@@ -29,7 +27,7 @@ const randomAddress = () =>
 const randomUint256 = () => BigInt(ethers.toQuantity(ethers.randomBytes(32)));
 
 // checks that the parent node is greater than or equal to the children nodes
-function checkNodes(nodes: bigint[]) {
+function checkNodes(nodes: any[]) {
   nodes.forEach((node, index) => {
     const left = 2 * index + 1;
     const right = 2 * index + 2;
@@ -192,11 +190,12 @@ describe('BinaryHeap', async () => {
 
       describe('#remove(bytes32)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          const values: Bytes[] = [];
+          const values: string[] = [];
 
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
             await instance.add(value);
+            values.push(value);
           }
 
           for (const value of values) {
@@ -387,6 +386,7 @@ describe('BinaryHeap', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
             await instance.add(value);
+            values.push(value);
           }
 
           for (const value of values) {
@@ -572,11 +572,12 @@ describe('BinaryHeap', async () => {
 
       describe('#remove(uint256)', () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is removed', async () => {
-          const values: number[] = [];
+          const values: bigint[] = [];
 
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
             await instance.add(value);
+            values.push(value);
           }
 
           for (const value of values) {
