@@ -26,7 +26,7 @@ describe('DiamondFallback', () => {
       {
         target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getFunction('owner()').selector],
+        selectors: [facetInstance.interface.getFunction('owner').selector],
       },
     ]);
   });
