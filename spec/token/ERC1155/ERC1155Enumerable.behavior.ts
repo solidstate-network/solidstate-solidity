@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155EnumerableBehaviorArgs {
@@ -11,17 +11,17 @@ export interface ERC1155EnumerableBehaviorArgs {
     to: SignerWithAddress,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   mint: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   burn: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   tokenId?: bigint;
 }
 

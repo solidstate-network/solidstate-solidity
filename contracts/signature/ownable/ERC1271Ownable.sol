@@ -13,6 +13,4 @@ abstract contract ERC1271Ownable is
     IERC1271Ownable,
     ERC1271Base,
     ERC1271OwnableInternal
-{
-
-}
+{}

@@ -4,7 +4,7 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155BaseBehaviorArgs {
@@ -12,12 +12,12 @@ export interface ERC1155BaseBehaviorArgs {
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   burn: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   tokenId?: bigint;
 }
 
