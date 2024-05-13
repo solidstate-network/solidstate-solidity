@@ -18,7 +18,7 @@ export interface ERC721BaseBehaviorArgs {
 
 export function describeBehaviorOfERC721Base(
   deploy: () => Promise<ERC721Base>,
-  { mint, burn }: ERC721BaseBehaviorArgs,
+  args: ERC721BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -54,13 +54,11 @@ export function describeBehaviorOfERC721Base(
 
         const tokenId = 2n;
 
-        await expect(() => mint(holder.address, tokenId)).to.changeTokenBalance(
-          instance,
-          holder,
-          1,
-        );
+        await expect(() =>
+          args.mint(holder.address, tokenId),
+        ).to.changeTokenBalance(instance, holder, 1);
 
-        await expect(() => burn(tokenId)).to.changeTokenBalance(
+        await expect(() => args.burn(tokenId)).to.changeTokenBalance(
           instance,
           holder,
           -1,
@@ -82,7 +80,7 @@ export function describeBehaviorOfERC721Base(
     describe('#ownerOf(uint256)', () => {
       it('returns the owner of given token', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
@@ -106,7 +104,7 @@ export function describeBehaviorOfERC721Base(
     describe('#getApproved(uint256)', () => {
       it('returns approved spender of given token', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           ethers.ZeroAddress,
@@ -169,7 +167,7 @@ export function describeBehaviorOfERC721Base(
     describe('#transferFrom(address,address,uint256)', () => {
       it('transfers token on behalf of holder', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -182,7 +180,7 @@ export function describeBehaviorOfERC721Base(
 
       it('updates owner of token', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -201,7 +199,7 @@ export function describeBehaviorOfERC721Base(
 
       it('emits Transfer event', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -216,7 +214,7 @@ export function describeBehaviorOfERC721Base(
 
       it('does not revert if recipient is not ERC721Receiver implementer', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         // TODO: test against contract other than self
 
@@ -229,7 +227,7 @@ export function describeBehaviorOfERC721Base(
 
       it('does not revert if recipient is ERC721Receiver implementer but does not accept transfer', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         const receiverContract = await deployMockContract(sender, [
           'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
@@ -249,7 +247,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', () => {
         it('caller is neither owner of token nor authorized to spend it', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -263,7 +261,7 @@ export function describeBehaviorOfERC721Base(
 
         it('receiver is the zero address', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -282,7 +280,7 @@ export function describeBehaviorOfERC721Base(
     describe('#safeTransferFrom(address,address,uint256)', () => {
       it('transfers token on behalf of holder', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -297,7 +295,7 @@ export function describeBehaviorOfERC721Base(
 
       it('updates owner of token', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -318,7 +316,7 @@ export function describeBehaviorOfERC721Base(
 
       it('emits Transfer event', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -336,7 +334,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', () => {
         it('caller is neither owner of token nor authorized to spend it', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -352,7 +350,7 @@ export function describeBehaviorOfERC721Base(
 
         it('receiver is the zero address', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -370,7 +368,7 @@ export function describeBehaviorOfERC721Base(
 
         it('recipient is not ERC721Receiver implementer', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           // TODO: test against contract other than self
 
@@ -387,7 +385,7 @@ export function describeBehaviorOfERC721Base(
 
         it('recipient is ERC721Receiver implementer but does not accept transfer', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           const receiverContract = await deployMockContract(sender, [
             'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
@@ -414,7 +412,7 @@ export function describeBehaviorOfERC721Base(
     describe('#safeTransferFrom(address,address,uint256,bytes)', () => {
       it('transfers token on behalf of holder', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -429,7 +427,7 @@ export function describeBehaviorOfERC721Base(
 
       it('updates owner of token', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -450,7 +448,7 @@ export function describeBehaviorOfERC721Base(
 
       it('emits Transfer event', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -468,7 +466,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', () => {
         it('caller is neither owner of token nor authorized to spend it', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -484,7 +482,7 @@ export function describeBehaviorOfERC721Base(
 
         it('receiver is the zero address', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await instance.connect(holder).approve(spender.address, tokenId);
 
@@ -502,7 +500,7 @@ export function describeBehaviorOfERC721Base(
 
         it('recipient is not ERC721Receiver implementer', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           // TODO: test against contract other than self
 
@@ -519,7 +517,7 @@ export function describeBehaviorOfERC721Base(
 
         it('recipient is ERC721Receiver implementer but does not accept transfer', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           const receiverContract = await deployMockContract(sender, [
             'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
@@ -546,7 +544,7 @@ export function describeBehaviorOfERC721Base(
     describe('#approve(address,uint256)', () => {
       it('grants approval to spend given token on behalf of holder', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         expect(await instance.getApproved.staticCall(tokenId)).to.equal(
           ethers.ZeroAddress,
@@ -575,7 +573,7 @@ export function describeBehaviorOfERC721Base(
 
       it('emits Approval event', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await expect(instance.connect(holder).approve(spender.address, tokenId))
           .to.emit(instance, 'Approval')
@@ -584,7 +582,7 @@ export function describeBehaviorOfERC721Base(
 
       it('does not revert if sender is approved to spend all tokens held by owner', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance
           .connect(holder)
@@ -598,7 +596,7 @@ export function describeBehaviorOfERC721Base(
       describe('reverts if', () => {
         it('spender is current owner of given token', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance.connect(holder).approve(holder.address, tokenId),
@@ -607,7 +605,7 @@ export function describeBehaviorOfERC721Base(
 
         it('sender is not owner of given token', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance.connect(receiver).approve(receiver.address, tokenId),
@@ -622,7 +620,7 @@ export function describeBehaviorOfERC721Base(
     describe('#setApprovalForAll(address,bool)', () => {
       it('grants and revokes approval to spend tokens on behalf of holder', async () => {
         const tokenId = 2n;
-        await mint(holder.address, tokenId);
+        await args.mint(holder.address, tokenId);
 
         await instance.connect(holder).setApprovalForAll(spender.address, true);
 

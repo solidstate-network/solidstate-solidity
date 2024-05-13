@@ -14,7 +14,7 @@ export interface SafeOwnableBehaviorArgs extends OwnableBehaviorArgs {
 
 export function describeBehaviorOfSafeOwnable(
   deploy: () => Promise<ISafeOwnable>,
-  { getOwner, getNomineeOwner, getNonOwner }: SafeOwnableBehaviorArgs,
+  args: SafeOwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -27,19 +27,15 @@ export function describeBehaviorOfSafeOwnable(
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nomineeOwner = await getNomineeOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nomineeOwner = await args.getNomineeOwner();
+      nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfOwnable(
-      deploy,
-      {
-        getOwner,
-        getNonOwner,
-      },
-      ['#transferOwnership(address)', ...(skips ?? [])],
-    );
+    describeBehaviorOfOwnable(deploy, args, [
+      '#transferOwnership(address)',
+      ...(skips ?? []),
+    ]);
 
     describe('#nomineeOwner()', () => {
       it('returns address of nominee owner', async () => {

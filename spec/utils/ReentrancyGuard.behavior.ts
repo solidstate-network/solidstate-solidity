@@ -4,6 +4,6 @@ export interface ReentrancyGuardBehaviorArgs {}
 
 export function describeBehaviorOfReentrancyGuard(
   deploy: () => Promise<BaseContract>,
-  {}: ReentrancyGuardBehaviorArgs,
+  args: ReentrancyGuardBehaviorArgs,
   skips?: string[],
 ) {}

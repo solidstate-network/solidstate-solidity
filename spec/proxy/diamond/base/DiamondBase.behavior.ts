@@ -10,7 +10,7 @@ export interface DiamondBaseBehaviorArgs {
 
 export function describeBehaviorOfDiamondBase(
   deploy: () => Promise<IDiamondBase>,
-  { facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
+  args: DiamondBaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,16 +24,17 @@ export function describeBehaviorOfDiamondBase(
 
     describe('fallback()', () => {
       it('forwards data with matching selector call to facet', async () => {
-        expect(instance.interface.hasFunction(facetFunction)).to.be.false;
+        expect(instance.interface.hasFunction(args.facetFunction)).to.be.false;
 
         let contract = new ethers.Contract(
           await instance.getAddress(),
-          [`function ${facetFunction}`],
+          [`function ${args.facetFunction}`],
           ethers.provider,
         );
 
-        await expect(contract[facetFunction].staticCall(...facetFunctionArgs))
-          .not.to.be.reverted;
+        await expect(
+          contract[args.facetFunction].staticCall(...args.facetFunctionArgs),
+        ).not.to.be.reverted;
       });
 
       describe('reverts if', () => {

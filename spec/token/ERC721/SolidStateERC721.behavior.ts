@@ -23,7 +23,7 @@ export interface SolidStateERC721BehaviorArgs
 
 export function describeBehaviorOfSolidStateERC721(
   deploy: () => Promise<SolidStateERC721>,
-  { supply, mint, burn, name, symbol, tokenURI }: SolidStateERC721BehaviorArgs,
+  args: SolidStateERC721BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -41,41 +41,17 @@ export function describeBehaviorOfSolidStateERC721(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC721Base(
-      deploy,
-      {
-        supply,
-        mint,
-        burn,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Base(deploy, args, skips);
 
-    describeBehaviorOfERC721Enumerable(
-      deploy,
-      {
-        supply,
-        mint,
-        burn,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Enumerable(deploy, args, skips);
 
-    describeBehaviorOfERC721Metadata(
-      deploy,
-      {
-        name,
-        symbol,
-        tokenURI,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Metadata(deploy, args, skips);
 
     describe('#transferFrom(address,address,uint256)', () => {
       describe('reverts if', () => {
         it('value is included in transaction', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -95,7 +71,7 @@ export function describeBehaviorOfSolidStateERC721(
       describe('reverts if', () => {
         it('value is included in transaction', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -115,7 +91,7 @@ export function describeBehaviorOfSolidStateERC721(
       describe('reverts if', () => {
         it('value is included in transaction', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
@@ -135,7 +111,7 @@ export function describeBehaviorOfSolidStateERC721(
       describe('reverts if', () => {
         it('value is included in transaction', async () => {
           const tokenId = 2n;
-          await mint(holder.address, tokenId);
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance.connect(holder).approve(ethers.ZeroAddress, tokenId, {

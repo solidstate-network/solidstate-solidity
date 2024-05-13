@@ -10,7 +10,7 @@ export interface ERC20MetadataBehaviorArgs {
 
 export function describeBehaviorOfERC20Metadata(
   deploy: () => Promise<IERC20Metadata>,
-  { name, symbol, decimals }: ERC20MetadataBehaviorArgs,
+  args: ERC20MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,19 +24,19 @@ export function describeBehaviorOfERC20Metadata(
 
     describe('#name()', () => {
       it('returns token name', async () => {
-        expect(await instance.name.staticCall()).to.equal(name);
+        expect(await instance.name.staticCall()).to.equal(args.name);
       });
     });
 
     describe('#symbol()', () => {
       it('returns token symbol', async () => {
-        expect(await instance.symbol.staticCall()).to.equal(symbol);
+        expect(await instance.symbol.staticCall()).to.equal(args.symbol);
       });
     });
 
     describe('#decimals()', () => {
       it('returns token decimals', async () => {
-        expect(await instance.decimals.staticCall()).to.equal(decimals);
+        expect(await instance.decimals.staticCall()).to.equal(args.decimals);
       });
     });
   });
