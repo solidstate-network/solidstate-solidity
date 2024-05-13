@@ -2,7 +2,6 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfERC721Base } from '@solidstate/spec';
 import {
-  ERC721Base,
   ERC721BaseMock,
   ERC721BaseMock__factory,
 } from '@solidstate/typechain-types';
