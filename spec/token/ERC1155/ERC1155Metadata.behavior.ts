@@ -8,7 +8,7 @@ export interface ERC1155MetadataBehaviorArgs {
 
 export function describeBehaviorOfERC1155Metadata(
   deploy: () => Promise<IERC1155Metadata>,
-  replacedargs: ERC1155MetadataBehaviorArgs,
+  args: ERC1155MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
