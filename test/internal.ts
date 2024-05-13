@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import hre from 'hardhat';
 
 describe('Internal Contracts', () => {
   it('have 0-length bytecode', async () => {

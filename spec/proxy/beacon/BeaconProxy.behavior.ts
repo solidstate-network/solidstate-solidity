@@ -6,22 +6,12 @@ export interface BeaconProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfBeaconProxy(
   deploy: () => Promise<IBeaconProxy>,
-  {
-    implementationFunction,
-    implementationFunctionArgs,
-  }: BeaconProxyBehaviorArgs,
+  args: BeaconProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
   describe('::BeaconProxy', () => {
-    describeBehaviorOfProxy(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      [],
-    );
+    describeBehaviorOfProxy(deploy, args, skips);
   });
 }

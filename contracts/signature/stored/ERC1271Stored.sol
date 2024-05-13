@@ -13,6 +13,4 @@ abstract contract ERC1271Stored is
     IERC1271Stored,
     ERC1271Base,
     ERC1271StoredInternal
-{
-
-}
+{}

@@ -8,7 +8,7 @@ export interface ERC165BaseBehaviorArgs {
 
 export function describeBehaviorOfERC165Base(
   deploy: () => Promise<ERC165Base>,
-  { interfaceIds }: ERC165BaseBehaviorArgs,
+  args: ERC165BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -36,7 +36,7 @@ export function describeBehaviorOfERC165Base(
           .false;
       });
 
-      for (let interfaceId of interfaceIds) {
+      for (let interfaceId of args.interfaceIds) {
         it(`returns true for interface ${interfaceId}`, async () => {
           expect(await instance.supportsInterface.staticCall(interfaceId)).to.be
             .true;

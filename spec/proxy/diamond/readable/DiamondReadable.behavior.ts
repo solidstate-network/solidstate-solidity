@@ -10,7 +10,7 @@ export interface DiamondReadableBehaviorArgs {
 
 export function describeBehaviorOfDiamondReadable(
   deploy: () => Promise<IDiamondReadable>,
-  { facetCuts }: DiamondReadableBehaviorArgs,
+  args: DiamondReadableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -19,7 +19,7 @@ export function describeBehaviorOfDiamondReadable(
     let instance: IDiamondReadable;
 
     beforeEach(async () => {
-      expect(facetCuts).to.have.lengthOf.at.least(1);
+      expect(args.facetCuts).to.have.lengthOf.at.least(1);
       instance = await deploy();
     });
 
@@ -37,7 +37,7 @@ export function describeBehaviorOfDiamondReadable(
         expect(
           Array.from(await instance.facets.staticCall()),
         ).to.have.deep.members(
-          facetCuts.map((fc) => [fc.target, fc.selectors]),
+          args.facetCuts.map((fc) => [fc.target, fc.selectors]),
         );
       });
     });
@@ -46,13 +46,13 @@ export function describeBehaviorOfDiamondReadable(
       it('returns facets', async () => {
         expect(
           Array.from(await instance.facetAddresses.staticCall()),
-        ).to.have.members(facetCuts.map((fc) => fc.target));
+        ).to.have.members(args.facetCuts.map((fc) => fc.target));
       });
     });
 
     describe('#facetFunctionSelectors(address)', () => {
       it('returns selectors for given facet', async () => {
-        for (let facet of facetCuts) {
+        for (let facet of args.facetCuts) {
           expect(
             Array.from(
               await instance.facetFunctionSelectors.staticCall(facet.target),
@@ -70,7 +70,7 @@ export function describeBehaviorOfDiamondReadable(
 
     describe('#facetAddress(bytes4)', () => {
       it('returns facet for given selector', async () => {
-        for (let facet of facetCuts) {
+        for (let facet of args.facetCuts) {
           for (let selector of facet.selectors) {
             expect(await instance.facetAddress.staticCall(selector)).to.equal(
               facet.target,

@@ -10,7 +10,7 @@ export interface ERC721MetadataBehaviorArgs {
 
 export function describeBehaviorOfERC721Metadata(
   deploy: () => Promise<IERC721Metadata>,
-  { name, symbol, tokenURI }: ERC721MetadataBehaviorArgs,
+  args: ERC721MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -24,13 +24,13 @@ export function describeBehaviorOfERC721Metadata(
 
     describe('#name()', () => {
       it('returns token name', async () => {
-        expect(await instance.name.staticCall()).to.equal(name);
+        expect(await instance.name.staticCall()).to.equal(args.name);
       });
     });
 
     describe('#symbol()', () => {
       it('returns token symbol', async () => {
-        expect(await instance.symbol.staticCall()).to.equal(symbol);
+        expect(await instance.symbol.staticCall()).to.equal(args.symbol);
       });
     });
 
