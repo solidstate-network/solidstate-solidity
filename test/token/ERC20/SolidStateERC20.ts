@@ -7,7 +7,7 @@ import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
-const decimals = 18;
+const decimals = 18n;
 const supply = ethers.parseEther('1');
 
 describe('SolidStateERC20', () => {

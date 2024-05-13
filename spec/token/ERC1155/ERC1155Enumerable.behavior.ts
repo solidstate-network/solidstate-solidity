@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155EnumerableBehaviorArgs {
@@ -11,23 +11,23 @@ export interface ERC1155EnumerableBehaviorArgs {
     to: SignerWithAddress,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   mint: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   burn: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   tokenId?: bigint;
 }
 
 export function describeBehaviorOfERC1155Enumerable(
   deploy: () => Promise<IERC1155Enumerable>,
-  { transfer, mint, burn, tokenId }: ERC1155EnumerableBehaviorArgs,
+  args: ERC1155EnumerableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -42,20 +42,20 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalSupply(uint256)', () => {
       it('returns supply of given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
         expect(await instance.totalSupply.staticCall(id)).to.equal(0);
 
-        await mint(holder0.address, id, amount);
+        await args.mint(holder0.address, id, amount);
 
         expect(await instance.totalSupply.staticCall(id)).to.equal(amount);
 
-        await transfer(holder0, holder1, id, amount);
+        await args.transfer(holder0, holder1, id, amount);
 
         expect(await instance.totalSupply.staticCall(id)).to.equal(amount);
 
-        await burn(holder1.address, id, amount);
+        await args.burn(holder1.address, id, amount);
 
         expect(await instance.totalSupply.staticCall(id)).to.equal(0);
       });
@@ -64,20 +64,20 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#totalHolders(uint256)', () => {
       it('returns number of holders of given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
         expect(await instance.totalHolders.staticCall(id)).to.equal(0);
 
-        await mint(holder0.address, id, amount);
+        await args.mint(holder0.address, id, amount);
 
         expect(await instance.totalHolders.staticCall(id)).to.equal(1);
 
-        await transfer(holder0, holder1, id, amount);
+        await args.transfer(holder0, holder1, id, amount);
 
         expect(await instance.totalHolders.staticCall(id)).to.equal(1);
 
-        await burn(holder1.address, id, amount);
+        await args.burn(holder1.address, id, amount);
 
         expect(await instance.totalHolders.staticCall(id)).to.equal(0);
       });
@@ -86,24 +86,24 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#accountsByToken(uint256)', () => {
       it('returns list of addresses holding given token', async () => {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
         expect(await instance.accountsByToken.staticCall(id)).to.eql([]);
 
-        await mint(holder0.address, id, amount);
+        await args.mint(holder0.address, id, amount);
 
         expect(await instance.accountsByToken.staticCall(id)).to.eql([
           holder0.address,
         ]);
 
-        await transfer(holder0, holder1, id, amount);
+        await args.transfer(holder0, holder1, id, amount);
 
         expect(await instance.accountsByToken.staticCall(id)).to.eql([
           holder1.address,
         ]);
 
-        await burn(holder1.address, id, amount);
+        await args.burn(holder1.address, id, amount);
 
         expect(await instance.accountsByToken.staticCall(id)).to.eql([]);
       });
@@ -112,7 +112,7 @@ export function describeBehaviorOfERC1155Enumerable(
     describe('#tokensByAccount(address)', () => {
       it('returns list of tokens held by given address', async () => {
         const [holder0, holder1] = await ethers.getSigners();
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
         expect(
@@ -122,7 +122,7 @@ export function describeBehaviorOfERC1155Enumerable(
           await instance.tokensByAccount.staticCall(holder1.address),
         ).to.eql([]);
 
-        await mint(holder0.address, id, amount);
+        await args.mint(holder0.address, id, amount);
 
         expect(
           await instance.tokensByAccount.staticCall(holder0.address),
@@ -131,7 +131,7 @@ export function describeBehaviorOfERC1155Enumerable(
           await instance.tokensByAccount.staticCall(holder1.address),
         ).to.eql([]);
 
-        await transfer(holder0, holder1, id, amount);
+        await args.transfer(holder0, holder1, id, amount);
 
         expect(
           await instance.tokensByAccount.staticCall(holder0.address),
@@ -140,7 +140,7 @@ export function describeBehaviorOfERC1155Enumerable(
           await instance.tokensByAccount.staticCall(holder1.address),
         ).to.eql([id]);
 
-        await burn(holder1.address, id, amount);
+        await args.burn(holder1.address, id, amount);
 
         expect(
           await instance.tokensByAccount.staticCall(holder0.address),

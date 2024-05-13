@@ -1,3 +1,4 @@
+import hre from 'hardhat';
 import {
   TASK_FLATTEN_GET_FLATTENED_SOURCE,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
@@ -34,7 +35,7 @@ describe('Sources', () => {
         // errors other than HH603 are possible
         // (such as `FileNotFoundError: File hardhat/console.sol`)
         // but these are out of scope of this test and are ignored
-        if (error.toString().includes('HardhatError: HH603')) {
+        if (String(error).includes('HardhatError: HH603')) {
           failures.push(sourcePath);
         }
       }
