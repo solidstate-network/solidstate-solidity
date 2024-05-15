@@ -148,12 +148,17 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (address(bytes20(oldFacet)) == address(this))
                     revert DiamondWritable__SelectorIsImmutable();
 
-                if (selectorSlot == 0) {
+                // selectorSlot for 0x00000000 selector == 0
+                // We also need the below to trigger for 0x00000000 selector when selectorInSlotIndex !=0
+                if (
+                    selectorSlot != 0 ||
+                    (selectorInSlotIndex != 0 && selector == 0)
+                ) {
+                    selectorInSlotIndex--;
+                } else {
                     selectorSlotCount--;
                     selectorSlot = l.selectorSlots[selectorSlotCount];
                     selectorInSlotIndex = 7;
-                } else {
-                    selectorInSlotIndex--;
                 }
 
                 bytes4 lastSelector;
