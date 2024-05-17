@@ -81,6 +81,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 l.selectorSlugs[selectorCount >> 3] = slug;
             }
 
+            // event must be emitted before initializer is called, in case initializer triggers further diamond cuts
             emit DiamondCut(facetCuts, target, data);
             _initialize(target, data);
         }
