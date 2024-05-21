@@ -212,7 +212,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         (bytes32(lastSelector) >> selectorIndexInSlug);
                 }
 
-                // if slug is empty, delete it from storage and continue with an empty slug
+                // if slug is now empty, delete it from storage and continue with an empty slug
                 if (lastSelectorIndexInSlug == 0) {
                     delete l.selectorSlugs[lastSlugIndexInArray];
                     lastSlug = 0;
