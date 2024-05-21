@@ -5,7 +5,6 @@ pragma solidity ^0.8.18;
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondWritableInternal } from './IDiamondWritableInternal.sol';
-import 'hardhat/console.sol';
 
 abstract contract DiamondWritableInternal is IDiamondWritableInternal {
     using AddressUtils for address;
