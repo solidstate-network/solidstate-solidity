@@ -125,7 +125,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 // if slug is now full, write it to storage and continue with an empty slug
                 if (selectorBitIndexInSlug == 224) {
                     l.selectorSlugs[selectorCount >> 3] = slug;
-                    slug = 0;
+                    slug = bytes32(0);
                 }
 
                 selectorCount++;
@@ -160,7 +160,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (address(bytes20(oldFacet)) == address(this))
                     revert DiamondWritable__SelectorIsImmutable();
 
-                if (lastSlug == 0) {
+                if (lastSlug == bytes32(0)) {
                     lastSlugIndexInArray--;
                     lastSlug = l.selectorSlugs[lastSlugIndexInArray];
                     lastSelectorIndexInSlug = 7;
@@ -215,7 +215,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 // if slug is now empty, delete it from storage and continue with an empty slug
                 if (lastSelectorIndexInSlug == 0) {
                     delete l.selectorSlugs[lastSlugIndexInArray];
-                    lastSlug = 0;
+                    lastSlug = bytes32(0);
                 }
             }
 
