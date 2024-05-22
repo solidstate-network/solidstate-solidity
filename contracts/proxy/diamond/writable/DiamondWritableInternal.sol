@@ -151,7 +151,10 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
+
+                // lookup the selector's facet route and lookup index, then delete it from storage
                 bytes32 oldFacet = l.facets[selector];
+                delete l.facets[selector];
 
                 if (address(bytes20(oldFacet)) == address(0))
                     revert DiamondWritable__SelectorNotFound();
@@ -180,7 +183,6 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         bytes20(l.facets[lastSelector]);
                 }
 
-                delete l.facets[selector];
                 uint256 slugIndexInArray = uint16(uint256(oldFacet)) >> 3;
                 uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
                     7) << 5;
