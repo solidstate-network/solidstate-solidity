@@ -216,9 +216,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (lastSelectorIndexInSlug == 0) {
                     lastSlug = bytes32(0);
                 }
-            }
 
-            selectorCount = (lastSlugIndex << 3) | lastSelectorIndexInSlug;
+                selectorCount--;
+            }
 
             return (selectorCount, lastSlug);
         }
