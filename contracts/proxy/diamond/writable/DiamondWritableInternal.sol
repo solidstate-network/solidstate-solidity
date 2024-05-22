@@ -211,9 +211,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     );
                 }
 
-                // if slug is now empty, delete it from storage and continue with an empty slug
+                // if slug is now empty, continue with an empty slug
+                // no need to delete it from storage because selectors indexes gte selectorCount are ignored
                 if (lastSelectorIndexInSlug == 0) {
-                    delete l.selectorSlugs[lastSlugIndex];
                     lastSlug = bytes32(0);
                 }
             }
