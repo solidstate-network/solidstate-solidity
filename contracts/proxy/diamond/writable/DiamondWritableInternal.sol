@@ -122,10 +122,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     selectorBitIndexInSlug
                 );
 
-                // if slug is now full, write it to storage and continue with an empty slug
                 if (selectorBitIndexInSlug == 224) {
+                    // slug is now full, so write it to storage
                     l.selectorSlugs[selectorCount >> 3] = slug;
-                    slug = bytes32(0);
                 }
 
                 selectorCount++;
@@ -202,12 +201,6 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         lastSelector,
                         selectorBitIndexInSlug
                     );
-                }
-
-                // if slug is now empty, continue with an empty slug
-                // no need to delete it from storage because selectors indexes gte selectorCount are ignored
-                if (selectorCount & 7 == 0) {
-                    lastSlug = bytes32(0);
                 }
             }
 
