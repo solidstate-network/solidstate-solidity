@@ -103,9 +103,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.selectorInfo[selector];
 
-                if (address(bytes20(oldFacet)) != address(0))
+                if (l.selectorInfo[selector] != bytes32(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
                 // for current selector, write facet address and global index to storage
@@ -155,13 +154,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 bytes4 selector = facetCut.selectors[i];
 
                 // lookup the selector's facet route and lookup index, then delete it from storage
-                bytes32 oldFacet = l.selectorInfo[selector];
+                bytes32 selectorInfo = l.selectorInfo[selector];
                 delete l.selectorInfo[selector];
 
-                if (address(bytes20(oldFacet)) == address(0))
+                if (address(bytes20(selectorInfo)) == address(0))
                     revert DiamondWritable__SelectorNotFound();
 
-                if (address(bytes20(oldFacet)) == address(this))
+                if (address(bytes20(selectorInfo)) == address(this))
                     revert DiamondWritable__SelectorIsImmutable();
 
                 // decrement index of last selector and, if necessary, slug
@@ -183,13 +182,14 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (lastSelector != selector) {
                     // update last slug position info
                     l.selectorInfo[lastSelector] =
-                        (oldFacet & CLEAR_ADDRESS_MASK) |
+                        (selectorInfo & CLEAR_ADDRESS_MASK) |
                         bytes20(l.selectorInfo[lastSelector]);
                 }
 
-                uint256 slugIndex = uint16(uint256(oldFacet)) >> 3;
-                uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
-                    7) << 5;
+                uint256 slugIndex = uint16(uint256(selectorInfo)) >> 3;
+                uint256 selectorBitIndexInSlug = (uint16(
+                    uint256(selectorInfo)
+                ) & 7) << 5;
 
                 // overwrite the selector being deleted with the last selector in the array
 
@@ -234,8 +234,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.selectorInfo[selector];
-                address oldFacetAddress = address(bytes20(oldFacet));
+                bytes32 selectorInfo = l.selectorInfo[selector];
+                address oldFacetAddress = address(bytes20(selectorInfo));
 
                 if (oldFacetAddress == address(0))
                     revert DiamondWritable__SelectorNotFound();
@@ -246,7 +246,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // replace old facet address
                 l.selectorInfo[selector] =
-                    (oldFacet & CLEAR_ADDRESS_MASK) |
+                    (selectorInfo & CLEAR_ADDRESS_MASK) |
                     bytes20(facetCut.target);
             }
         }
