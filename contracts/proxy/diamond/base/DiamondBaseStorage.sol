@@ -8,7 +8,7 @@ pragma solidity ^0.8.18;
 library DiamondBaseStorage {
     struct Layout {
         // function selector => (facet address, selector slug position)
-        mapping(bytes4 => bytes32) facets;
+        mapping(bytes4 => bytes32) selectorInfo;
         // total number of selectors registered
         uint16 selectorCount;
         // array of 32-byte slugs with 8 selectors each

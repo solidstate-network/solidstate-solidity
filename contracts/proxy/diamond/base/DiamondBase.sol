@@ -29,6 +29,6 @@ abstract contract DiamondBase is IDiamondBase, Proxy {
             l.slot := slot
         }
 
-        implementation = address(bytes20(l.facets[msg.sig]));
+        implementation = address(bytes20(l.selectorInfo[msg.sig]));
     }
 }

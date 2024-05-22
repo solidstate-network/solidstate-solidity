@@ -103,13 +103,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.facets[selector];
+                bytes32 oldFacet = l.selectorInfo[selector];
 
                 if (address(bytes20(oldFacet)) != address(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
                 // for current selector, write facet address and global index to storage
-                l.facets[selector] =
+                l.selectorInfo[selector] =
                     bytes32(selectorCount) |
                     bytes20(facetCut.target);
 
@@ -155,8 +155,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 bytes4 selector = facetCut.selectors[i];
 
                 // lookup the selector's facet route and lookup index, then delete it from storage
-                bytes32 oldFacet = l.facets[selector];
-                delete l.facets[selector];
+                bytes32 oldFacet = l.selectorInfo[selector];
+                delete l.selectorInfo[selector];
 
                 if (address(bytes20(oldFacet)) == address(0))
                     revert DiamondWritable__SelectorNotFound();
@@ -180,9 +180,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 if (lastSelector != selector) {
                     // update last slug position info
-                    l.facets[lastSelector] =
+                    l.selectorInfo[lastSelector] =
                         (oldFacet & CLEAR_ADDRESS_MASK) |
-                        bytes20(l.facets[lastSelector]);
+                        bytes20(l.selectorInfo[lastSelector]);
                 }
 
                 uint256 slugIndex = uint16(uint256(oldFacet)) >> 3;
@@ -232,7 +232,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.facets[selector];
+                bytes32 oldFacet = l.selectorInfo[selector];
                 address oldFacetAddress = address(bytes20(oldFacet));
 
                 if (oldFacetAddress == address(0))
@@ -243,7 +243,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     revert DiamondWritable__ReplaceTargetIsIdentical();
 
                 // replace old facet address
-                l.facets[selector] =
+                l.selectorInfo[selector] =
                     (oldFacet & CLEAR_ADDRESS_MASK) |
                     bytes20(facetCut.target);
             }

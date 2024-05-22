@@ -39,7 +39,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                 }
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
-                address facet = address(bytes20(l.facets[selector]));
+                address facet = address(bytes20(l.selectorInfo[selector]));
 
                 bool continueLoop;
 
@@ -118,7 +118,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
 
-                if (facet == address(bytes20(l.facets[selector]))) {
+                if (facet == address(bytes20(l.selectorInfo[selector]))) {
                     selectors[numSelectors] = selector;
                     numSelectors++;
                 }
@@ -161,7 +161,7 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                 }
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
-                address facet = address(bytes20(l.facets[selector]));
+                address facet = address(bytes20(l.selectorInfo[selector]));
 
                 bool continueLoop;
 
@@ -195,6 +195,8 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
     function _facetAddress(
         bytes4 selector
     ) internal view returns (address facet) {
-        facet = address(bytes20(DiamondBaseStorage.layout().facets[selector]));
+        facet = address(
+            bytes20(DiamondBaseStorage.layout().selectorInfo[selector])
+        );
     }
 }
