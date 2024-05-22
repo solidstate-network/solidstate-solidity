@@ -185,23 +185,27 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
                     7) << 5;
 
-                if (slugIndexInArray != lastSlugIndexInArray) {
+                // overwrite the selector being deleted with the last selector in the array
+
+                if (slugIndexInArray == lastSlugIndexInArray) {
+                    // selector is being removed from the last slug, which has already been loaded
+                    lastSlug =
+                        (lastSlug &
+                            ~(CLEAR_SELECTOR_MASK >> selectorBitIndexInSlug)) |
+                        (bytes32(lastSelector) >> selectorBitIndexInSlug);
+
+                    // slug need not be written to storage because it continues to be tracked
+                } else {
+                    // selector is being removed from a slug that hasn't been loaded yet
                     bytes32 slug = l.selectorSlugs[slugIndexInArray];
 
-                    // clears the selector we are deleting and puts the last selector in its place.
                     slug =
                         (slug &
                             ~(CLEAR_SELECTOR_MASK >> selectorBitIndexInSlug)) |
                         (bytes32(lastSelector) >> selectorBitIndexInSlug);
 
-                    // update storage with the modified slug
+                    // slug must be updated in storage because it isn't otherwise being tracked
                     l.selectorSlugs[slugIndexInArray] = slug;
-                } else {
-                    // clears the selector we are deleting and puts the last selector in its place.
-                    lastSlug =
-                        (lastSlug &
-                            ~(CLEAR_SELECTOR_MASK >> selectorBitIndexInSlug)) |
-                        (bytes32(lastSelector) >> selectorBitIndexInSlug);
                 }
 
                 // if slug is now empty, delete it from storage and continue with an empty slug
