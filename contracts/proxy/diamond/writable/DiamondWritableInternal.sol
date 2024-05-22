@@ -148,10 +148,11 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             // calculate the index of the last slug, which may be empty
             uint256 lastSlugIndex = selectorCount >> 3;
-            // calculate the index of the last selector, which may be empty if the last slug is empty
-            uint256 lastSelectorIndexInSlug = selectorCount & 7;
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
+                // selectorCount is used to derive the index of the last selector, so decrement it before each loop
+                selectorCount--;
+
                 bytes4 selector = facetCut.selectors[i];
 
                 // lookup the selector's facet route and lookup index, then delete it from storage
@@ -166,18 +167,15 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // decrement index of last selector and, if necessary, slug
 
-                if (lastSelectorIndexInSlug == 0) {
+                if (selectorCount & 7 == 7) {
                     lastSlugIndex--;
                     lastSlug = l.selectorSlugs[lastSlugIndex];
-                    lastSelectorIndexInSlug = 7;
-                } else {
-                    lastSelectorIndexInSlug--;
                 }
 
                 // extract the last selector from the last slug
                 // it will be used to overwrite the selector being removed
                 bytes4 lastSelector = bytes4(
-                    lastSlug << (lastSelectorIndexInSlug << 5)
+                    lastSlug << ((selectorCount & 7) << 5)
                 );
 
                 if (lastSelector != selector) {
@@ -213,11 +211,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // if slug is now empty, continue with an empty slug
                 // no need to delete it from storage because selectors indexes gte selectorCount are ignored
-                if (lastSelectorIndexInSlug == 0) {
+                if (selectorCount & 7 == 0) {
                     lastSlug = bytes32(0);
                 }
-
-                selectorCount--;
             }
 
             return (selectorCount, lastSlug);
