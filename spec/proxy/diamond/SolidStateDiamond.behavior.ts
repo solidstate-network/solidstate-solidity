@@ -370,7 +370,7 @@ export function describeBehaviorOfSolidStateDiamond(
         }
       });
 
-      describe('Removing 0x00000000 does not disrupt selector tracking', () => {
+      describe('removing 0x00000000 does not disrupt selector tracking', () => {
         it('Should not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
           const payableSelector = '0x00000000';
 
