@@ -37,7 +37,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             // if selector count is not a multiple of 8, load the last slug because it is not full
             // else leave the default zero-bytes value as is, and use it as a new slug
-            if (selectorCount & 7 > 0) {
+            if (selectorCount & 7 != 0) {
                 slug = l.selectorSlugs[selectorCount >> 3];
             }
 
@@ -76,7 +76,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             // if final selector count is not a multiple of 8, write the slug to storage
             // else it was already written to storage by the add/remove loops
-            if (selectorCount & 7 > 0) {
+            if (selectorCount & 7 != 0) {
                 l.selectorSlugs[selectorCount >> 3] = slug;
             }
 
