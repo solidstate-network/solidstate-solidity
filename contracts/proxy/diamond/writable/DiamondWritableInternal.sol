@@ -166,12 +166,12 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // decrement index of last selector and, if necessary, slug
 
-                if (lastSelectorIndexInSlug != 0) {
-                    lastSelectorIndexInSlug--;
-                } else {
+                if (lastSelectorIndexInSlug == 0) {
                     lastSlugIndex--;
                     lastSlug = l.selectorSlugs[lastSlugIndex];
                     lastSelectorIndexInSlug = 7;
+                } else {
+                    lastSelectorIndexInSlug--;
                 }
 
                 // extract the last selector from the last slug
