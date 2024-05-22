@@ -182,16 +182,17 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 delete l.facets[selector];
                 uint256 slugIndexInArray = uint16(uint256(oldFacet)) >> 3;
-                uint256 selectorIndexInSlug = (uint16(uint256(oldFacet)) & 7) <<
-                    5;
+                uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
+                    7) << 5;
 
                 if (slugIndexInArray != lastSlugIndexInArray) {
                     bytes32 slug = l.selectorSlugs[slugIndexInArray];
 
                     // clears the selector we are deleting and puts the last selector in its place.
                     slug =
-                        (slug & ~(CLEAR_SELECTOR_MASK >> selectorIndexInSlug)) |
-                        (bytes32(lastSelector) >> selectorIndexInSlug);
+                        (slug &
+                            ~(CLEAR_SELECTOR_MASK >> selectorBitIndexInSlug)) |
+                        (bytes32(lastSelector) >> selectorBitIndexInSlug);
 
                     // update storage with the modified slug
                     l.selectorSlugs[slugIndexInArray] = slug;
@@ -199,8 +200,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     // clears the selector we are deleting and puts the last selector in its place.
                     lastSlug =
                         (lastSlug &
-                            ~(CLEAR_SELECTOR_MASK >> selectorIndexInSlug)) |
-                        (bytes32(lastSelector) >> selectorIndexInSlug);
+                            ~(CLEAR_SELECTOR_MASK >> selectorBitIndexInSlug)) |
+                        (bytes32(lastSelector) >> selectorBitIndexInSlug);
                 }
 
                 // if slug is now empty, delete it from storage and continue with an empty slug
