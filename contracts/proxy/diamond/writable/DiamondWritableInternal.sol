@@ -173,23 +173,17 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     lastSlug << (lastSelectorIndexInSlug << 5)
                 );
 
-                uint256 slugIndexInArray;
-                uint256 selectorIndexInSlug;
-
-                // adding a block here prevents stack-too-deep error
-                {
-                    if (lastSelector != selector) {
-                        // update last slug position info
-                        l.facets[lastSelector] =
-                            (oldFacet & CLEAR_ADDRESS_MASK) |
-                            bytes20(l.facets[lastSelector]);
-                    }
-
-                    delete l.facets[selector];
-                    uint256 selectorIndexInArray = uint16(uint256(oldFacet));
-                    slugIndexInArray = selectorIndexInArray >> 3;
-                    selectorIndexInSlug = (selectorIndexInArray & 7) << 5;
+                if (lastSelector != selector) {
+                    // update last slug position info
+                    l.facets[lastSelector] =
+                        (oldFacet & CLEAR_ADDRESS_MASK) |
+                        bytes20(l.facets[lastSelector]);
                 }
+
+                delete l.facets[selector];
+                uint256 slugIndexInArray = uint16(uint256(oldFacet)) >> 3;
+                uint256 selectorIndexInSlug = (uint16(uint256(oldFacet)) & 7) <<
+                    5;
 
                 if (slugIndexInArray != lastSlugIndexInArray) {
                     bytes32 slug = l.selectorSlugs[slugIndexInArray];
