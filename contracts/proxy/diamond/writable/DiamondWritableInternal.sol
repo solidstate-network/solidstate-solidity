@@ -167,19 +167,17 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     lastSelectorIndexInSlug--;
                 }
 
-                bytes4 lastSelector;
+                // extract the last selector from the last slug
+                // it will be used to overwrite the selector being removed
+                bytes4 lastSelector = bytes4(
+                    lastSlug << (lastSelectorIndexInSlug << 5)
+                );
 
                 uint256 slugIndexInArray;
                 uint256 selectorIndexInSlug;
 
                 // adding a block here prevents stack-too-deep error
                 {
-                    // extract the last selector from the last slug
-                    // it will be used to overwrite the selector being removed
-                    lastSelector = bytes4(
-                        lastSlug << (lastSelectorIndexInSlug << 5)
-                    );
-
                     if (lastSelector != selector) {
                         // update last slug position info
                         l.facets[lastSelector] =
