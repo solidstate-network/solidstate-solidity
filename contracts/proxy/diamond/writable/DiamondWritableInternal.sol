@@ -161,9 +161,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (address(bytes20(selectorInfo)) == address(this))
                     revert DiamondWritable__SelectorIsImmutable();
 
-                // decrement index of last selector and, if necessary, slug
-
                 if (selectorCount & 7 == 7) {
+                    // the last selector is located at the end of the last slug, which has not been loaded yet
                     lastSlug = l.selectorSlugs[selectorCount >> 3];
                 }
 
