@@ -110,8 +110,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // for current selector, write facet address and global index to storage
                 l.facets[selector] =
-                    bytes20(facetCut.target) |
-                    bytes32(selectorCount);
+                    bytes32(selectorCount) |
+                    bytes20(facetCut.target);
 
                 // calculate bit position of current selector within 256-bit slug
                 uint256 selectorBitIndexInSlug = (selectorCount & 7) << 5;
