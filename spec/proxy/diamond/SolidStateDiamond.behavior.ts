@@ -371,7 +371,7 @@ export function describeBehaviorOfSolidStateDiamond(
       });
 
       describe('removing 0x00000000 does not disrupt selector tracking', () => {
-        it('Should not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+        it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
           const payableSelector = '0x00000000';
 
           const existingSelectors = await instance.facets();
@@ -425,7 +425,7 @@ export function describeBehaviorOfSolidStateDiamond(
           numberOfSelectorsToAdd < 10;
           numberOfSelectorsToAdd++
         ) {
-          it('Should not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+          it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
             const payableSelector = '0x00000000';
 
             const selectors = [];
