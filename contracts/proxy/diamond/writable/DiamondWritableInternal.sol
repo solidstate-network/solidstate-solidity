@@ -103,9 +103,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 selectorInfo = l.selectorInfo[selector];
 
-                if (address(bytes20(selectorInfo)) != address(0))
+                if (l.selectorInfo[selector] != bytes32(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
                 // for current selector, write facet address and global index to storage
