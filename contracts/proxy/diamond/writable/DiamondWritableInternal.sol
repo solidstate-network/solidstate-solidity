@@ -147,7 +147,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 revert DiamondWritable__RemoveTargetNotZeroAddress();
 
             // calculate the index of the last slug, which may be empty
-            uint256 lastSlugIndexInArray = selectorCount >> 3;
+            uint256 lastSlugIndex = selectorCount >> 3;
             // calculate the index of the last selector, which may be empty if the last slug is empty
             uint256 lastSelectorIndexInSlug = selectorCount & 7;
 
@@ -165,8 +165,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     revert DiamondWritable__SelectorIsImmutable();
 
                 if (lastSlug == bytes32(0)) {
-                    lastSlugIndexInArray--;
-                    lastSlug = l.selectorSlugs[lastSlugIndexInArray];
+                    lastSlugIndex--;
+                    lastSlug = l.selectorSlugs[lastSlugIndex];
                     lastSelectorIndexInSlug = 7;
                 } else {
                     lastSelectorIndexInSlug--;
@@ -185,13 +185,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         bytes20(l.facets[lastSelector]);
                 }
 
-                uint256 slugIndexInArray = uint16(uint256(oldFacet)) >> 3;
+                uint256 slugIndex = uint16(uint256(oldFacet)) >> 3;
                 uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
                     7) << 5;
 
                 // overwrite the selector being deleted with the last selector in the array
 
-                if (slugIndexInArray == lastSlugIndexInArray) {
+                if (slugIndex == lastSlugIndex) {
                     // selector is being removed from the last slug, which has already been loaded
                     // slug needs not be written to storage because it continues to be tracked
                     lastSlug = _overwriteSelector(
@@ -202,8 +202,8 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 } else {
                     // selector is being removed from a slug that hasn't been loaded yet
                     // slug must be updated in storage because it isn't otherwise being tracked
-                    l.selectorSlugs[slugIndexInArray] = _overwriteSelector(
-                        l.selectorSlugs[slugIndexInArray],
+                    l.selectorSlugs[slugIndex] = _overwriteSelector(
+                        l.selectorSlugs[slugIndex],
                         lastSelector,
                         selectorBitIndexInSlug
                     );
@@ -211,14 +211,12 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // if slug is now empty, delete it from storage and continue with an empty slug
                 if (lastSelectorIndexInSlug == 0) {
-                    delete l.selectorSlugs[lastSlugIndexInArray];
+                    delete l.selectorSlugs[lastSlugIndex];
                     lastSlug = bytes32(0);
                 }
             }
 
-            selectorCount =
-                (lastSlugIndexInArray << 3) |
-                lastSelectorIndexInSlug;
+            selectorCount = (lastSlugIndex << 3) | lastSelectorIndexInSlug;
 
             return (selectorCount, lastSlug);
         }
