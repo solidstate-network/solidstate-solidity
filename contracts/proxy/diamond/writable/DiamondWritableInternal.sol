@@ -28,16 +28,21 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
         unchecked {
+            // record selector count at start of operation for later comparison
             uint256 originalSelectorCount = l.selectorCount;
+            // maintain an up-to-date selector count in the stack
             uint256 selectorCount = originalSelectorCount;
-            bytes32 selectorSlot;
+            // declare a 32-byte sequence of up to 8 function selectors
+            bytes32 slug;
 
-            // Check if last selector slot is not full
-            if (selectorCount & 7 > 0) {
-                // get last selectorSlot
-                selectorSlot = l.selectorSlots[selectorCount >> 3];
+            // if selector count is not a multiple of 8, load the last slug because it is not full
+            // else leave the default zero-bytes value as is, and use it as a new slug
+            if (selectorCount & 7 != 0) {
+                slug = l.selectorSlugs[selectorCount >> 3];
             }
 
+            // process each facet cut struct according to its action
+            // selector count and slug are passed in and read back out to avoid duplicate storage reads
             for (uint256 i; i < facetCuts.length; i++) {
                 FacetCut memory facetCut = facetCuts[i];
                 FacetCutAction action = facetCut.action;
@@ -46,33 +51,36 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     revert DiamondWritable__SelectorNotSpecified();
 
                 if (action == FacetCutAction.ADD) {
-                    (selectorCount, selectorSlot) = _addFacetSelectors(
+                    (selectorCount, slug) = _addFacetSelectors(
                         l,
                         selectorCount,
-                        selectorSlot,
+                        slug,
                         facetCut
                     );
                 } else if (action == FacetCutAction.REPLACE) {
                     _replaceFacetSelectors(l, facetCut);
                 } else if (action == FacetCutAction.REMOVE) {
-                    (selectorCount, selectorSlot) = _removeFacetSelectors(
+                    (selectorCount, slug) = _removeFacetSelectors(
                         l,
                         selectorCount,
-                        selectorSlot,
+                        slug,
                         facetCut
                     );
                 }
             }
 
+            // if selector count has changed, update it in storage
             if (selectorCount != originalSelectorCount) {
                 l.selectorCount = uint16(selectorCount);
             }
 
-            // If last selector slot is not full
-            if (selectorCount & 7 > 0) {
-                l.selectorSlots[selectorCount >> 3] = selectorSlot;
+            // if final selector count is not a multiple of 8, write the slug to storage
+            // else it was already written to storage by the add/remove loops
+            if (selectorCount & 7 != 0) {
+                l.selectorSlugs[selectorCount >> 3] = slug;
             }
 
+            // event must be emitted before initializer is called, in case initializer triggers further diamond cuts
             emit DiamondCut(facetCuts, target, data);
             _initialize(target, data);
         }
@@ -81,7 +89,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
     function _addFacetSelectors(
         DiamondBaseStorage.Layout storage l,
         uint256 selectorCount,
-        bytes32 selectorSlot,
+        bytes32 slug,
         FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
@@ -95,52 +103,60 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.facets[selector];
+                bytes32 oldFacet = l.selectorInfo[selector];
 
                 if (address(bytes20(oldFacet)) != address(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
-                // add facet for selector
-                l.facets[selector] =
-                    bytes20(facetCut.target) |
-                    bytes32(selectorCount);
-                uint256 selectorInSlotPosition = (selectorCount & 7) << 5;
+                // for current selector, write facet address and global index to storage
+                l.selectorInfo[selector] =
+                    bytes32(selectorCount) |
+                    bytes20(facetCut.target);
 
-                // clear selector position in slot and add selector
-                selectorSlot =
-                    (selectorSlot &
-                        ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)) |
-                    (bytes32(selector) >> selectorInSlotPosition);
+                // calculate bit position of current selector within 256-bit slug
+                uint256 selectorBitIndexInSlug = (selectorCount & 7) << 5;
 
-                // if slot is full then write it to storage
-                if (selectorInSlotPosition == 224) {
-                    l.selectorSlots[selectorCount >> 3] = selectorSlot;
-                    selectorSlot = 0;
+                // clear a space in the slug and insert the current selector
+                slug = _overwriteSelector(
+                    slug,
+                    selector,
+                    selectorBitIndexInSlug
+                );
+
+                // if slug is now full, write it to storage and continue with an empty slug
+                if (selectorBitIndexInSlug == 224) {
+                    l.selectorSlugs[selectorCount >> 3] = slug;
+                    slug = bytes32(0);
                 }
 
                 selectorCount++;
             }
 
-            return (selectorCount, selectorSlot);
+            return (selectorCount, slug);
         }
     }
 
     function _removeFacetSelectors(
         DiamondBaseStorage.Layout storage l,
         uint256 selectorCount,
-        bytes32 selectorSlot,
+        bytes32 lastSlug,
         FacetCut memory facetCut
     ) internal returns (uint256, bytes32) {
         unchecked {
             if (facetCut.target != address(0))
                 revert DiamondWritable__RemoveTargetNotZeroAddress();
 
-            uint256 selectorSlotCount = selectorCount >> 3;
-            uint256 selectorInSlotIndex = selectorCount & 7;
+            // calculate the index of the last slug, which may be empty
+            uint256 lastSlugIndex = selectorCount >> 3;
+            // calculate the index of the last selector, which may be empty if the last slug is empty
+            uint256 lastSelectorIndexInSlug = selectorCount & 7;
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.facets[selector];
+
+                // lookup the selector's facet route and lookup index, then delete it from storage
+                bytes32 oldFacet = l.selectorInfo[selector];
+                delete l.selectorInfo[selector];
 
                 if (address(bytes20(oldFacet)) == address(0))
                     revert DiamondWritable__SelectorNotFound();
@@ -148,75 +164,66 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (address(bytes20(oldFacet)) == address(this))
                     revert DiamondWritable__SelectorIsImmutable();
 
-                // selectorSlot for 0x00000000 selector == 0
-                // We also need the below to trigger for 0x00000000 selector when selectorInSlotIndex !=0
+                // decrement index of last selector and, if necessary, slug
+
                 if (
-                    selectorSlot != 0 ||
-                    (selectorInSlotIndex != 0 && selector == 0)
+                    lastSlug != bytes32(0) ||
+                    (lastSelectorIndexInSlug != 0 && selector == bytes4(0))
                 ) {
-                    selectorInSlotIndex--;
+                    lastSelectorIndexInSlug--;
                 } else {
-                    selectorSlotCount--;
-                    selectorSlot = l.selectorSlots[selectorSlotCount];
-                    selectorInSlotIndex = 7;
+                    lastSlugIndex--;
+                    lastSlug = l.selectorSlugs[lastSlugIndex];
+                    lastSelectorIndexInSlug = 7;
                 }
 
-                bytes4 lastSelector;
-                uint256 oldSelectorsSlotCount;
-                uint256 oldSelectorInSlotPosition;
+                // extract the last selector from the last slug
+                // it will be used to overwrite the selector being removed
+                bytes4 lastSelector = bytes4(
+                    lastSlug << (lastSelectorIndexInSlug << 5)
+                );
 
-                // adding a block here prevents stack too deep error
-                {
-                    // replace selector with last selector in l.facets
-                    lastSelector = bytes4(
-                        selectorSlot << (selectorInSlotIndex << 5)
+                if (lastSelector != selector) {
+                    // update last slug position info
+                    l.selectorInfo[lastSelector] =
+                        (oldFacet & CLEAR_ADDRESS_MASK) |
+                        bytes20(l.selectorInfo[lastSelector]);
+                }
+
+                uint256 slugIndex = uint16(uint256(oldFacet)) >> 3;
+                uint256 selectorBitIndexInSlug = (uint16(uint256(oldFacet)) &
+                    7) << 5;
+
+                // overwrite the selector being deleted with the last selector in the array
+
+                if (slugIndex == lastSlugIndex) {
+                    // selector is being removed from the last slug, which has already been loaded
+                    // slug needs not be written to storage because it continues to be tracked
+                    lastSlug = _overwriteSelector(
+                        lastSlug,
+                        lastSelector,
+                        selectorBitIndexInSlug
                     );
-
-                    if (lastSelector != selector) {
-                        // update last selector slot position info
-                        l.facets[lastSelector] =
-                            (oldFacet & CLEAR_ADDRESS_MASK) |
-                            bytes20(l.facets[lastSelector]);
-                    }
-
-                    delete l.facets[selector];
-                    uint256 oldSelectorCount = uint16(uint256(oldFacet));
-                    oldSelectorsSlotCount = oldSelectorCount >> 3;
-                    oldSelectorInSlotPosition = (oldSelectorCount & 7) << 5;
-                }
-
-                if (oldSelectorsSlotCount != selectorSlotCount) {
-                    bytes32 oldSelectorSlot = l.selectorSlots[
-                        oldSelectorsSlotCount
-                    ];
-
-                    // clears the selector we are deleting and puts the last selector in its place.
-                    oldSelectorSlot =
-                        (oldSelectorSlot &
-                            ~(CLEAR_SELECTOR_MASK >>
-                                oldSelectorInSlotPosition)) |
-                        (bytes32(lastSelector) >> oldSelectorInSlotPosition);
-
-                    // update storage with the modified slot
-                    l.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;
                 } else {
-                    // clears the selector we are deleting and puts the last selector in its place.
-                    selectorSlot =
-                        (selectorSlot &
-                            ~(CLEAR_SELECTOR_MASK >>
-                                oldSelectorInSlotPosition)) |
-                        (bytes32(lastSelector) >> oldSelectorInSlotPosition);
+                    // selector is being removed from a slug that hasn't been loaded yet
+                    // slug must be updated in storage because it isn't otherwise being tracked
+                    l.selectorSlugs[slugIndex] = _overwriteSelector(
+                        l.selectorSlugs[slugIndex],
+                        lastSelector,
+                        selectorBitIndexInSlug
+                    );
                 }
 
-                if (selectorInSlotIndex == 0) {
-                    delete l.selectorSlots[selectorSlotCount];
-                    selectorSlot = 0;
+                // if slug is now empty, delete it from storage and continue with an empty slug
+                if (lastSelectorIndexInSlug == 0) {
+                    delete l.selectorSlugs[lastSlugIndex];
+                    lastSlug = bytes32(0);
                 }
             }
 
-            selectorCount = (selectorSlotCount << 3) | selectorInSlotIndex;
+            selectorCount = (lastSlugIndex << 3) | lastSelectorIndexInSlug;
 
-            return (selectorCount, selectorSlot);
+            return (selectorCount, lastSlug);
         }
     }
 
@@ -230,7 +237,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 oldFacet = l.facets[selector];
+                bytes32 oldFacet = l.selectorInfo[selector];
                 address oldFacetAddress = address(bytes20(oldFacet));
 
                 if (oldFacetAddress == address(0))
@@ -241,7 +248,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                     revert DiamondWritable__ReplaceTargetIsIdentical();
 
                 // replace old facet address
-                l.facets[selector] =
+                l.selectorInfo[selector] =
                     (oldFacet & CLEAR_ADDRESS_MASK) |
                     bytes20(facetCut.target);
             }
@@ -267,5 +274,15 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 }
             }
         }
+    }
+
+    function _overwriteSelector(
+        bytes32 slug,
+        bytes4 selector,
+        uint256 bitIndex
+    ) private pure returns (bytes32) {
+        return
+            (slug & ~(CLEAR_SELECTOR_MASK >> bitIndex)) |
+            (bytes32(selector) >> bitIndex);
     }
 }

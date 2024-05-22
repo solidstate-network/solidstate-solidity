@@ -24,13 +24,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -38,8 +38,8 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
-                address facet = address(bytes20(l.facets[selector]));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
+                address facet = address(bytes20(l.selectorInfo[selector]));
 
                 bool continueLoop;
 
@@ -102,13 +102,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -116,9 +116,9 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
 
-                if (facet == address(bytes20(l.facets[selector]))) {
+                if (facet == address(bytes20(l.selectorInfo[selector]))) {
                     selectors[numSelectors] = selector;
                     numSelectors++;
                 }
@@ -146,13 +146,13 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
         uint256 numFacets;
         uint256 selectorIndex;
 
-        for (uint256 slotIndex; selectorIndex < l.selectorCount; slotIndex++) {
-            bytes32 slot = l.selectorSlots[slotIndex];
+        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
+            bytes32 slug = l.selectorSlugs[slugIndex];
 
             for (
-                uint256 selectorSlotIndex;
-                selectorSlotIndex < 8;
-                selectorSlotIndex++
+                uint256 slugSelectorIndex;
+                slugSelectorIndex < 8;
+                slugSelectorIndex++
             ) {
                 selectorIndex++;
 
@@ -160,8 +160,8 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
                     break;
                 }
 
-                bytes4 selector = bytes4(slot << (selectorSlotIndex << 5));
-                address facet = address(bytes20(l.facets[selector]));
+                bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
+                address facet = address(bytes20(l.selectorInfo[selector]));
 
                 bool continueLoop;
 
@@ -195,6 +195,8 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
     function _facetAddress(
         bytes4 selector
     ) internal view returns (address facet) {
-        facet = address(bytes20(DiamondBaseStorage.layout().facets[selector]));
+        facet = address(
+            bytes20(DiamondBaseStorage.layout().selectorInfo[selector])
+        );
     }
 }
