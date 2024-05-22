@@ -146,9 +146,6 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
             if (facetCut.target != address(0))
                 revert DiamondWritable__RemoveTargetNotZeroAddress();
 
-            // calculate the index of the last slug, which may be empty
-            uint256 lastSlugIndex = selectorCount >> 3;
-
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 // selectorCount is used to derive the index of the last selector, so decrement it before each loop
                 selectorCount--;
@@ -168,8 +165,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 // decrement index of last selector and, if necessary, slug
 
                 if (selectorCount & 7 == 7) {
-                    lastSlugIndex--;
-                    lastSlug = l.selectorSlugs[lastSlugIndex];
+                    lastSlug = l.selectorSlugs[selectorCount >> 3];
                 }
 
                 // extract the last selector from the last slug
@@ -191,7 +187,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
                 // overwrite the selector being deleted with the last selector in the array
 
-                if (slugIndex == lastSlugIndex) {
+                if (slugIndex == selectorCount >> 3) {
                     // selector is being removed from the last slug, which has already been loaded
                     // slug needs not be written to storage because it continues to be tracked
                     lastSlug = _overwriteSelector(
