@@ -96,6 +96,8 @@ abstract contract DiamondReadableInternal is IDiamondReadableInternal {
     ) internal view returns (bytes4[] memory selectors) {
         DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
 
+        // initialize array with maximum possible required length
+        // it will be truncated to correct length via assembly later
         selectors = new bytes4[](l.selectorCount);
 
         uint256 numSelectors;
