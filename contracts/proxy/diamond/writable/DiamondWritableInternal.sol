@@ -252,6 +252,12 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         }
     }
 
+    /**
+     * @notice run an optional post-diamond-cut initialization transation via delegatecall
+     * @dev the target and data parameters must both be zero, or both be non-zero
+     * @param target contract address to which call shall be delegated
+     * @param data encoded delegatecall transaction data
+     */
     function _initialize(address target, bytes memory data) private {
         if ((target == address(0)) != (data.length == 0))
             revert DiamondWritable__InvalidInitializationParameters();
