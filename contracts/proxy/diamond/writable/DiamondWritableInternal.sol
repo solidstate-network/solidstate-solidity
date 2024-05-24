@@ -186,7 +186,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                         bytes20(l.selectorInfo[lastSelector]);
                 }
 
+                // derive the index of the slug where the selector is stored
                 uint256 slugIndex = uint16(uint256(selectorInfo)) >> 3;
+                // derive the position of the selector within its slug
                 uint256 selectorBitIndexInSlug = (uint16(
                     uint256(selectorInfo)
                 ) & 7) << 5;
