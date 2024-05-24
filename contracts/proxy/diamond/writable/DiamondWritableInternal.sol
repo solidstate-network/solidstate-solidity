@@ -116,7 +116,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 uint256 selectorBitIndexInSlug = (selectorCount & 7) << 5;
 
                 // clear a space in the slug and insert the current selector
-                slug = _overwriteSelector(
+                slug = _insertSelectorIntoSlug(
                     slug,
                     selector,
                     selectorBitIndexInSlug
@@ -196,7 +196,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (slugIndex == lastSlugIndex) {
                     // selector is being removed from the last slug, which has already been loaded
                     // slug needs not be written to storage because it continues to be tracked
-                    lastSlug = _overwriteSelector(
+                    lastSlug = _insertSelectorIntoSlug(
                         lastSlug,
                         lastSelector,
                         selectorBitIndexInSlug
@@ -204,7 +204,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 } else {
                     // selector is being removed from a slug that hasn't been loaded yet
                     // slug must be updated in storage because it isn't otherwise being tracked
-                    l.selectorSlugs[slugIndex] = _overwriteSelector(
+                    l.selectorSlugs[slugIndex] = _insertSelectorIntoSlug(
                         l.selectorSlugs[slugIndex],
                         lastSelector,
                         selectorBitIndexInSlug
@@ -273,7 +273,13 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         }
     }
 
-    function _overwriteSelector(
+    /**
+     * @notice insert 4-byte function selector into 32-byte selector slug at given bit position
+     * @param slug 32-byte sequence of up to 8 function selectors
+     * @param selector function selector to insert
+     * @param bitIndex bit position of selector within slug (must be multiple of 32)
+     */
+    function _insertSelectorIntoSlug(
         bytes32 slug,
         bytes4 selector,
         uint256 bitIndex
