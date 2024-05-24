@@ -172,7 +172,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 );
 
                 if (lastSelector != selector) {
-                    // update last slug position info
+                    // update last selector's index to match removed selector's index, where last selector is being moved
                     l.selectorInfo[lastSelector] =
                         (selectorInfo & CLEAR_ADDRESS_MASK) |
                         bytes20(l.selectorInfo[lastSelector]);
