@@ -42,7 +42,7 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
             }
 
             // process each facet cut struct according to its action
-            // selector count and slug are passed in and read back out to avoid duplicate storage reads
+            // selector count and slug are passed in and read back out to avoid redundant storage access
             for (uint256 i; i < facetCuts.length; i++) {
                 FacetCut memory facetCut = facetCuts[i];
                 FacetCutAction action = facetCut.action;
@@ -188,16 +188,16 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 // overwrite the selector being deleted with the last selector in the array
 
                 if (slugIndex == selectorCount >> 3) {
-                    // selector is being removed from the last slug, which has already been loaded
-                    // slug needs not be written to storage because it continues to be tracked
+                    // selector being removed is from the last slug, which has already been loaded to the stack
+                    // slug needs not be written to storage yet because it is being tracked on the stack and will be written later
                     lastSlug = _insertSelectorIntoSlug(
                         lastSlug,
                         lastSelector,
                         selectorBitIndexInSlug
                     );
                 } else {
-                    // selector is being removed from a slug that hasn't been loaded yet
-                    // slug must be updated in storage because it isn't otherwise being tracked
+                    // selector being removed is from a slug that hasn't been loaded to the stack
+                    // slug must be updated in storage now because it isn't being tracked on the stack
                     l.selectorSlugs[slugIndex] = _insertSelectorIntoSlug(
                         l.selectorSlugs[slugIndex],
                         lastSelector,
