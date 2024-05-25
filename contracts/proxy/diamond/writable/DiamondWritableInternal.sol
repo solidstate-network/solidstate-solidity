@@ -86,11 +86,23 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         }
     }
 
+    /**
+     * @notice add to the diamond a set of selectors associated with a particular facet
+     * @dev selectors are added one-by-one to lastSlug, which is written to storage and updated to represent the subsequent slug when full
+     * @dev lastSlug may be initialized with "dirty" higher-index bits, but these are ignored because they are out of range
+     * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
+     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param facetCut structured data representing facet address and selectors to add
+     * @param selectorCount total number of selectors registered on the diamond proxy
+     * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
+     * @return selectorCount after selectors have been added
+     * @return lastSlug after selectors have been added
+     */
     function _addFacetSelectors(
         DiamondBaseStorage.Layout storage l,
         FacetCut memory facetCut,
         uint256 selectorCount,
-        bytes32 slug
+        bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
         unchecked {
             if (facetCut.target.isContract()) {
@@ -116,24 +128,36 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 uint256 selectorBitIndexInSlug = (selectorCount & 7) << 5;
 
                 // clear a space in the slug and insert the current selector
-                slug = _insertSelectorIntoSlug(
-                    slug,
+                lastSlug = _insertSelectorIntoSlug(
+                    lastSlug,
                     selector,
                     selectorBitIndexInSlug
                 );
 
                 if (selectorBitIndexInSlug == 224) {
                     // slug is now full, so write it to storage
-                    l.selectorSlugs[selectorCount >> 3] = slug;
+                    l.selectorSlugs[selectorCount >> 3] = lastSlug;
                 }
 
                 selectorCount++;
             }
 
-            return (selectorCount, slug);
+            return (selectorCount, lastSlug);
         }
     }
 
+    /**
+     * @notice remove from the diamond a set of selectors associated with a particular facet
+     * @dev selectors are removed one-by-one from lastSlug, which is updated to represent the preceeding slug when empty
+     * @dev lastSlug is not updated in storage when modified or removed, leaving "dirty" higher-index bits, but these are ignored because they are out of range
+     * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
+     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param facetCut structured data representing facet address and selectors to remove
+     * @param selectorCount total number of selectors registered on the diamond proxy
+     * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
+     * @return selectorCount after selectors have been removed
+     * @return lastSlug after selectors have been removed
+     */
     function _removeFacetSelectors(
         DiamondBaseStorage.Layout storage l,
         FacetCut memory facetCut,
@@ -210,6 +234,11 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
         }
     }
 
+    /**
+     * @notice replace in the diamond a set of selectors associated with a particular facet
+     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param facetCut structured data representing facet address and selectors to replace
+     */
     function _replaceFacetSelectors(
         DiamondBaseStorage.Layout storage l,
         FacetCut memory facetCut
