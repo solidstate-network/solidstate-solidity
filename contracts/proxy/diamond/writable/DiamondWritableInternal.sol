@@ -53,18 +53,18 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
                 if (action == FacetCutAction.ADD) {
                     (selectorCount, slug) = _addFacetSelectors(
                         l,
+                        facetCut,
                         selectorCount,
-                        slug,
-                        facetCut
+                        slug
                     );
                 } else if (action == FacetCutAction.REPLACE) {
                     _replaceFacetSelectors(l, facetCut);
                 } else if (action == FacetCutAction.REMOVE) {
                     (selectorCount, slug) = _removeFacetSelectors(
                         l,
+                        facetCut,
                         selectorCount,
-                        slug,
-                        facetCut
+                        slug
                     );
                 }
             }
@@ -88,9 +88,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
     function _addFacetSelectors(
         DiamondBaseStorage.Layout storage l,
+        FacetCut memory facetCut,
         uint256 selectorCount,
-        bytes32 slug,
-        FacetCut memory facetCut
+        bytes32 slug
     ) internal returns (uint256, bytes32) {
         unchecked {
             if (facetCut.target.isContract()) {
@@ -136,9 +136,9 @@ abstract contract DiamondWritableInternal is IDiamondWritableInternal {
 
     function _removeFacetSelectors(
         DiamondBaseStorage.Layout storage l,
+        FacetCut memory facetCut,
         uint256 selectorCount,
-        bytes32 lastSlug,
-        FacetCut memory facetCut
+        bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
         unchecked {
             if (facetCut.target != address(0))
