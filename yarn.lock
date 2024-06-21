@@ -1376,12 +1376,12 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.18.0.tgz#8e77a02a09ecce957255a2f48c9a7178ec191908"
   integrity sha512-yfORGUIPgLck41qyN7nbwJRAx17/jAIXCTanHOJZhB6PJ1iAk/84b/xlsVKFSyNyLXIj0dhppoE0+CRws7wlzA==
 
-"@solidstate/hardhat-4byte-uploader@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@solidstate/hardhat-4byte-uploader/-/hardhat-4byte-uploader-1.2.0.tgz#5b04542b0a348cebae6716de2fadbeab4a04ab8a"
-  integrity sha512-3g5XydS5kj6NRNNOpImsKItp8UegRMN8aRSC114jps/VRScqHESBe55+IezA/Y9ijItticHkkxX3OMpr9bXs8w==
+"@solidstate/hardhat-4byte-uploader@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@solidstate/hardhat-4byte-uploader/-/hardhat-4byte-uploader-1.2.1.tgz#958fe4f0b7a9855f846f3e3e06b2d5d1c3a8cf65"
+  integrity sha512-RGzfqrrw/0PhZQKOyvEoBwO5bPfiaBgxnatAH5ejX+akobmCC+ctXd8fgG3dSlpGUUFSMIMTjW3G/Wos5TMXYQ==
   dependencies:
-    axios "^0.24.0"
+    axios "^1.7.2"
 
 "@solidstate/library@file:lib":
   version "0.0.59"
@@ -1889,14 +1889,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
-  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
-  dependencies:
-    follow-redirects "^1.14.4"
-
-axios@^1.6.0, axios@^1.6.7:
+axios@^1.6.0, axios@^1.6.7, axios@^1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.2.tgz#b625db8a7051fbea61c35a3cbb3a1daa7b9c7621"
   integrity sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
@@ -3391,7 +3384,7 @@ flat@^5.0.2:
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
 
-follow-redirects@^1.12.1, follow-redirects@^1.14.4, follow-redirects@^1.15.6:
+follow-redirects@^1.12.1, follow-redirects@^1.15.6:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
