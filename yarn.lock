@@ -1376,10 +1376,10 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.18.0.tgz#8e77a02a09ecce957255a2f48c9a7178ec191908"
   integrity sha512-yfORGUIPgLck41qyN7nbwJRAx17/jAIXCTanHOJZhB6PJ1iAk/84b/xlsVKFSyNyLXIj0dhppoE0+CRws7wlzA==
 
-"@solidstate/hardhat-4byte-uploader@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@solidstate/hardhat-4byte-uploader/-/hardhat-4byte-uploader-1.2.1.tgz#958fe4f0b7a9855f846f3e3e06b2d5d1c3a8cf65"
-  integrity sha512-RGzfqrrw/0PhZQKOyvEoBwO5bPfiaBgxnatAH5ejX+akobmCC+ctXd8fgG3dSlpGUUFSMIMTjW3G/Wos5TMXYQ==
+"@solidstate/hardhat-4byte-uploader@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@solidstate/hardhat-4byte-uploader/-/hardhat-4byte-uploader-1.2.2.tgz#25e87a628949cb91a793ce396439f54c98cd4468"
+  integrity sha512-OZdq6CRh3wgnjkdSMlUT2aS1L4UgOfhZ/brn/xRFn8CXQ5lP2RdqfmOMVVGo7pBqNHOJfFhgNxi2gqUYklrRVw==
   dependencies:
     axios "^1.7.2"
 
@@ -3877,10 +3877,10 @@ hardhat-linearization@^0.1.1:
   dependencies:
     solidity-ast "^0.4.35"
 
-hardhat-spdx-license-identifier@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/hardhat-spdx-license-identifier/-/hardhat-spdx-license-identifier-2.3.0.tgz#690efe3a67adaa7ab40f686b81250fab48cfdd08"
-  integrity sha512-z8Rl98lsw8NZZpz/7SK0tB5wn1woDhyDcu1cWyc4IL9ZtmtSpqr4hMZdYbKTyLYL+6nb1xwnLM1Q1SHtZm0a5w==
+hardhat-spdx-license-identifier@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/hardhat-spdx-license-identifier/-/hardhat-spdx-license-identifier-2.3.1.tgz#0739f3ad8d4a0d564acbc00e7a71185eafb9f25d"
+  integrity sha512-rKElrCfsnSNr+2IquNirWxtPixpUdPNBCFcGAh4Gn2F9BTfRO/rjpEDIQFt/SUl/wWJcQpqyMfx4sPuWcT2lEg==
 
 hardhat@^2.22.5:
   version "2.22.5"
