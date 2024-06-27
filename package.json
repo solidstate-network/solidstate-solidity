@@ -8,7 +8,7 @@
     "build": "hardhat compile && lerna run tsc",
     "prepare": "husky",
     "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports .",
-    "upgrade-dependencies": "yarn-up -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types,chai' && yarn upgrade"
+    "upgrade-dependencies": "yarn-up -u -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types,chai'"
   },
   "workspaces": [
     "abi",
