@@ -5,6 +5,22 @@ import {
 } from 'hardhat/builtin-tasks/task-names';
 
 describe('Sources', () => {
+  it('contain only one contract per file', async () => {
+    const fullNames = await hre.artifacts.getAllFullyQualifiedNames();
+
+    const paths = new Set();
+
+    for (const fullName of fullNames) {
+      const [path] = fullName.split(':');
+
+      if (paths.has(path)) {
+        throw new Error(`multiple contracts found in file: ${path}`);
+      }
+
+      paths.add(path);
+    }
+  });
+
   it('do not contain cyclic dependencies', async () => {
     const sourcePaths = await hre.run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
 
