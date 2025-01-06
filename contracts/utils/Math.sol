@@ -47,8 +47,9 @@ library Math {
 
     /**
      * @notice estimate square root of number
-     * @dev uses Babylonian method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method)
+     * @dev uses Heron's method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method)
      * @param n input number
+     * @return root square root of input (rounded down to nearest uint256)
      */
     function sqrt(uint256 n) internal pure returns (uint256) {
         if (n > 0) {
