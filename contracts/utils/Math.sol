@@ -48,15 +48,18 @@ library Math {
     /**
      * @notice estimate square root of number
      * @dev uses Babylonian method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method)
-     * @param x input number
-     * @return y square root
+     * @param n input number
      */
-    function sqrt(uint256 x) internal pure returns (uint256 y) {
-        uint256 z = (x + 1) >> 1;
-        y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) >> 1;
+    function sqrt(uint256 n) internal pure returns (uint256) {
+        if (n > 0) {
+            uint256 x = n / 2 + 1;
+            uint256 y = (x + n / x) / 2;
+            while (x > y) {
+                x = y;
+                y = (x + n / x) / 2;
+            }
+            return x;
         }
+        return 0;
     }
 }
