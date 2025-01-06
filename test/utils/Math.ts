@@ -82,6 +82,10 @@ describe('Math', () => {
         expect(await instance.sqrt.staticCall(ethers.MaxUint256 - 1n)).to.eq(
           BigInt('340282366920938463463374607431768211455'),
         );
+
+        expect(await instance.sqrt.staticCall(ethers.MaxUint256)).to.eq(
+          BigInt('340282366920938463463374607431768211455'),
+        );
       });
     });
   });
