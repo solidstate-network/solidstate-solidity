@@ -51,16 +51,13 @@ library Math {
      * @param n input number
      * @return root square root of input (rounded down to nearest uint256)
      */
-    function sqrt(uint256 n) internal pure returns (uint256) {
-        if (n > 0) {
-            uint256 x = n / 2 + 1;
-            uint256 y = (x + n / x) / 2;
-            while (x > y) {
-                x = y;
-                y = (x + n / x) / 2;
-            }
-            return x;
+    function sqrt(uint256 n) internal pure returns (uint256 root) {
+        uint256 estimate = (n / 2) | 1;
+        root = n;
+
+        while (estimate < root) {
+            root = estimate;
+            estimate = (estimate + n / estimate) / 2;
         }
-        return 0;
     }
 }
