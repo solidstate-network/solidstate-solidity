@@ -71,20 +71,22 @@ describe('Math', () => {
 
     describe('#sqrt(uint256)', () => {
       it('returns the sqrt of a positive integer from 0 to maxUint256', async () => {
-        expect(await instance.sqrt.staticCall(16)).to.eq(4);
+        expect(await instance.sqrt.staticCall(0n)).to.eq(0n);
 
-        for (let i = 10; i < 16; i++) {
-          expect(await instance.sqrt.staticCall(i.toString())).to.eq(3);
+        expect(await instance.sqrt.staticCall(1n)).to.eq(1n);
+
+        for (let i = 2; i < 16; i++) {
+          expect(await instance.sqrt.staticCall(BigInt(i))).to.eq(
+            Math.floor(Math.sqrt(i)),
+          );
         }
 
-        expect(await instance.sqrt.staticCall(0)).to.eq(0);
-
         expect(await instance.sqrt.staticCall(ethers.MaxUint256 - 1n)).to.eq(
-          BigInt('340282366920938463463374607431768211455'),
+          340282366920938463463374607431768211455n,
         );
 
         expect(await instance.sqrt.staticCall(ethers.MaxUint256)).to.eq(
-          BigInt('340282366920938463463374607431768211455'),
+          340282366920938463463374607431768211455n,
         );
       });
     });
