@@ -53,12 +53,20 @@ library Math {
      */
     function sqrt(uint256 n) internal pure returns (uint256 root) {
         unchecked {
-            uint256 estimate = (n >> 1) | 1;
+            // begin with an upper bound, to be updated each time a better estimate is found
+            // for inputs of 0 and 1, this will be returned as-is
             root = n;
+            // calculate an overestimate
+            // bitwise-or prevents zero division in the case of input of 1
+            uint256 estimate = (n >> 1) | 1;
+
+            // as long as estimate continues to decrease, it is converging on the square root
 
             while (estimate < root) {
+                // track the new best estimate as the prospective output value
                 root = estimate;
-                estimate = (estimate + n / estimate) >> 1;
+                // attempt to find a better estimate
+                estimate = (root + n / root) >> 1;
             }
         }
     }
