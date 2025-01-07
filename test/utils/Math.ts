@@ -78,6 +78,10 @@ describe('Math', () => {
         expect(await instance.sqrt.staticCall(1n)).to.eq(1n);
       });
 
+      it('returns the square root of 2', async () => {
+        expect(await instance.sqrt.staticCall(2n)).to.eq(1n);
+      });
+
       it('returns the square root of positive integers', async () => {
         for (let i = 2; i < 16; i++) {
           expect(await instance.sqrt.staticCall(BigInt(i))).to.eq(
