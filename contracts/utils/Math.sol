@@ -52,12 +52,14 @@ library Math {
      * @return root square root of input (rounded down to nearest uint256)
      */
     function sqrt(uint256 n) internal pure returns (uint256 root) {
-        uint256 estimate = (n / 2) | 1;
-        root = n;
+        unchecked {
+            uint256 estimate = (n >> 1) | 1;
+            root = n;
 
-        while (estimate < root) {
-            root = estimate;
-            estimate = (estimate + n / estimate) / 2;
+            while (estimate < root) {
+                root = estimate;
+                estimate = (estimate + n / estimate) >> 1;
+            }
         }
     }
 }
