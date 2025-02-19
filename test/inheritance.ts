@@ -3,11 +3,11 @@ import hre from 'hardhat';
 
 const surya = require('surya');
 
+const INTERNAL_INTERFACE = /\bI[A-Z]\w*Internal$/;
+const EXTERNAL_INTERFACE = /\bI[A-Z]\w*(?<!Internal)$/;
+const INTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*Internal$/;
 const EXTERNAL_CONTRACT =
   /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Internal|Storage|Mock)$/;
-const INTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*Internal$/;
-const EXTERNAL_INTERFACE = /\bI[A-Z]\w*(?<!Internal)$/;
-const INTERNAL_INTERFACE = /\bI[A-Z]\w*Internal$/;
 
 describe('Inheritance Graph', () => {
   let allFullyQualifiedNames: string[];
@@ -38,6 +38,16 @@ describe('Inheritance Graph', () => {
           expect(INTERNAL_CONTRACT.test(ancestor)).to.be.false;
           expect(EXTERNAL_CONTRACT.test(ancestor)).to.be.false;
         }
+      }
+    });
+
+    it('have 0-length bytecode', async () => {
+      for (const name of names) {
+        const { bytecode } = await hre.artifacts.readArtifact(name);
+        expect(bytecode).to.equal(
+          '0x',
+          `Internal interface has non-zero bytecode: ${name}`,
+        );
       }
     });
   });
@@ -71,6 +81,16 @@ describe('Inheritance Graph', () => {
         );
       }
     });
+
+    it('have 0-length bytecode', async () => {
+      for (const name of names) {
+        const { bytecode } = await hre.artifacts.readArtifact(name);
+        expect(bytecode).to.equal(
+          '0x',
+          `External interface has non-zero bytecode: ${name}`,
+        );
+      }
+    });
   });
 
   describe('Internal Contracts', () => {
@@ -98,6 +118,16 @@ describe('Inheritance Graph', () => {
         expect(ancestors[name]).to.include(
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
+        );
+      }
+    });
+
+    it('have 0-length bytecode', async () => {
+      for (const name of names) {
+        const { bytecode } = await hre.artifacts.readArtifact(name);
+        expect(bytecode).to.equal(
+          '0x',
+          `Internal contract has non-zero bytecode: ${name}`,
         );
       }
     });
