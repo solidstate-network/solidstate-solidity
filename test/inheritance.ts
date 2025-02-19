@@ -167,26 +167,29 @@ describe('Inheritance Graph', () => {
       );
     });
 
-    it('inherit from corresponding internal contracts', async () => {
+    it('inherit from corresponding internal contracts and external interfaces', async () => {
       for (const name of names) {
         const [, entity] = name.split(':');
         const internalContractName = `${entity}Internal`;
+        const externalInterfaceName = `I${entity}`;
 
         expect(ancestors[name]).to.include(
           internalContractName,
           `Missing ancestor for ${entity}`,
         );
-      }
-    });
-
-    it('inherit from corresponding external interfaces', async () => {
-      for (const name of names) {
-        const [, entity] = name.split(':');
-        const externalInterfaceName = `I${entity}`;
 
         expect(ancestors[name]).to.include(
           externalInterfaceName,
           `Missing ancestor for ${entity}`,
+        );
+
+        expect(ancestors[name].indexOf(internalContractName)).to.eq(
+          ancestors[name].length - 2,
+          `First inherited ancestor for ${entity} should be ${internalContractName}`,
+        );
+        expect(ancestors[name].indexOf(externalInterfaceName)).to.eq(
+          ancestors[name].length - 1,
+          `Second inherited ancestor for ${entity} should be ${externalInterfaceName}`,
         );
       }
     });
