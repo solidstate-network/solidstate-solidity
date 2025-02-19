@@ -195,6 +195,7 @@ describe('Inheritance Graph', () => {
   describe('Uncategorized Entities', async () => {
     it('do not exist', async () => {
       for (const name of allFullyQualifiedNames) {
+        // TODO: account for libraries
         expect(
           INTERNAL_INTERFACE.test(name) ||
             EXTERNAL_INTERFACE.test(name) ||
