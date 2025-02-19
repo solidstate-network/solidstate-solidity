@@ -6,22 +6,12 @@ export interface ManagedProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfManagedProxy(
   deploy: () => Promise<IManagedProxy>,
-  {
-    implementationFunction,
-    implementationFunctionArgs,
-  }: ManagedProxyBehaviorArgs,
+  args: ManagedProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ManagedProxy', function () {
-    describeBehaviorOfProxy(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      [],
-    );
+  describe('::ManagedProxy', () => {
+    describeBehaviorOfProxy(deploy, args, skips);
   });
 }

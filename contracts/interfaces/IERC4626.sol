@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { IERC20Metadata } from '../token/ERC20/metadata/IERC20Metadata.sol';
 import { IERC20 } from './IERC20.sol';
@@ -8,7 +8,7 @@ import { IERC4626Internal } from './IERC4626Internal.sol';
 
 /**
  * @title ERC4626 interface
- * @dev see https://github.com/ethereum/EIPs/issues/4626
+ * @dev see https://eips.ethereum.org/EIPS/eip-4626
  */
 interface IERC4626 is IERC4626Internal, IERC20, IERC20Metadata {
     /**

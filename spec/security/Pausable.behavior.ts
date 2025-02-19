@@ -11,15 +11,15 @@ export function describeBehaviorOfPausable(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Pausable', function () {
+  describe('::Pausable', () => {
     let instance: Pausable;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#paused()', function () {
-      it('returns paused == false', async function () {
+    describe('#paused()', () => {
+      it('returns paused == false', async () => {
         expect(await instance.paused()).to.equal(false);
       });
     });

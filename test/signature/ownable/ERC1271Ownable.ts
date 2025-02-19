@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
 import {
   ERC1271OwnableMock,
@@ -7,16 +7,16 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC1271Ownable', function () {
+describe('ERC1271Ownable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: ERC1271OwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new ERC1271OwnableMock__factory(owner).deploy(
       owner.address,
     );
@@ -27,29 +27,23 @@ describe('ERC1271Ownable', function () {
     getNonOwner: async () => nonOwner,
   });
 
-  describe('__internal', function () {
-    describe('#_isValidSignature(bytes32,bytes)', function () {
-      it('returns magic value for signature created by owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await owner.signMessage(ethers.utils.arrayify(hash));
+  describe('__internal', () => {
+    describe('#_isValidSignature(bytes32,bytes)', () => {
+      it('returns magic value for signature created by owner', async () => {
+        const hash = ethers.randomBytes(32);
+        const signature = await owner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
       });
 
-      it('returns null bytes for signature created by non-owner', async function () {
-        let hash = ethers.utils.randomBytes(32);
-        let signature = await nonOwner.signMessage(ethers.utils.arrayify(hash));
+      it('returns null bytes for signature created by non-owner', async () => {
+        const hash = ethers.randomBytes(32);
+        const signature = await nonOwner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.callStatic['__isValidSignature(bytes32,bytes)'](
-            hash,
-            signature,
-          ),
+          await instance.__isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

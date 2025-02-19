@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.54",
+  "version": "0.0.61",
   "author": "Nick Barry",
   "license": "MIT",
   "description": "Portable specifications for SolidState contracts",
@@ -25,8 +25,14 @@
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
   "dependencies": {
-    "@ethereum-waffle/mock-contract": "^3.4.4",
-    "@solidstate/library": "^0.0.54"
+    "@ethereum-waffle/mock-contract": "^4.0.4",
+    "@solidstate/library": "file:../lib"
+  },
+  "peerDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "ethers": "^6.0.0",
+    "hardhat": "^2.0.0"
   },
   "files": [
     "dist/"

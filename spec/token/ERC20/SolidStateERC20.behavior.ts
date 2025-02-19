@@ -16,7 +16,7 @@ import {
 } from './ERC20Permit.behavior';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateERC20 } from '@solidstate/typechain-types';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 export interface SolidStateERC20BehaviorArgs
   extends ERC20BaseBehaviorArgs,
@@ -31,7 +31,7 @@ export function describeBehaviorOfSolidStateERC20(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC20', function () {
+  describe('::SolidStateERC20', () => {
     describeBehaviorOfERC20Base(deploy, args, skips);
 
     describeBehaviorOfERC20Extended(deploy, args, skips);

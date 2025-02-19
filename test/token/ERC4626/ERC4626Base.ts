@@ -1,18 +1,17 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
+  SolidStateERC20Mock,
+  SolidStateERC20Mock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
-const decimals = 18;
+const decimals = 18n;
 
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
@@ -29,11 +28,11 @@ describe('ERC4626Base', () => {
       '',
       '',
       0,
-      ethers.constants.Zero,
+      0,
     );
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
-      assetInstance.address,
+      await assetInstance.getAddress(),
       name,
       symbol,
       decimals,
@@ -42,12 +41,12 @@ describe('ERC4626Base', () => {
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
-    supply: ethers.constants.Zero,
-    mint: (recipient: string, amount: BigNumber) =>
+    supply: 0n,
+    mint: (recipient: string, amount: bigint) =>
       instance.__mint(recipient, amount),
-    burn: (recipient: string, amount: BigNumber) =>
+    burn: (recipient: string, amount: bigint) =>
       instance.__burn(recipient, amount),
-    mintAsset: (recipient: string, amount: BigNumber) =>
+    mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.__mint(recipient, amount),
     name,
     symbol,
@@ -57,17 +56,16 @@ describe('ERC4626Base', () => {
   describe('__internal', () => {
     describe('#_deposit(uint256,address)', () => {
       it('calls the _afterDeposit hook', async () => {
-        const assetAmount = BigNumber.from('10');
+        const assetAmount = 10;
 
         await instance.__mint(deployer.address, assetAmount);
         await assetInstance.__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
-          .approve(instance.address, assetAmount);
+          .approve(await instance.getAddress(), assetAmount);
 
-        const shareAmount = await instance.callStatic.previewDeposit(
-          assetAmount,
-        );
+        const shareAmount =
+          await instance.previewDeposit.staticCall(assetAmount);
 
         expect(
           await instance

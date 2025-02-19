@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
@@ -52,7 +52,7 @@ abstract contract ERC721MetadataInternal is
         } else if (bytes(tokenIdURI).length > 0) {
             return string(abi.encodePacked(baseURI, tokenIdURI));
         } else {
-            return string(abi.encodePacked(baseURI, tokenId.toString()));
+            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
         }
     }
 

@@ -10,44 +10,43 @@ export interface DiamondBaseBehaviorArgs {
 
 export function describeBehaviorOfDiamondBase(
   deploy: () => Promise<IDiamondBase>,
-  { facetFunction, facetFunctionArgs }: DiamondBaseBehaviorArgs,
+  args: DiamondBaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondBase', function () {
+  describe('::DiamondBase', () => {
     let instance: IDiamondBase;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('fallback()', function () {
-      it('forwards data with matching selector call to facet', async function () {
-        expect((instance as any)[facetFunction]).to.be.undefined;
+    describe('fallback()', () => {
+      it('forwards data with matching selector call to facet', async () => {
+        expect(instance.interface.hasFunction(args.facetFunction)).to.be.false;
 
         let contract = new ethers.Contract(
-          instance.address,
-          [`function ${facetFunction}`],
+          await instance.getAddress(),
+          [`function ${args.facetFunction}`],
           ethers.provider,
         );
 
-        await expect(contract.callStatic[facetFunction](...facetFunctionArgs))
-          .not.to.be.reverted;
+        await expect(
+          contract[args.facetFunction].staticCall(...args.facetFunctionArgs),
+        ).not.to.be.reverted;
       });
 
-      it('forwards data without matching selector to fallback contract');
-
-      describe('reverts if', function () {
-        it('no selector matches data', async function () {
+      describe('reverts if', () => {
+        it('no selector matches data', async () => {
           let contract = new ethers.Contract(
-            instance.address,
-            ['function function()'],
+            await instance.getAddress(),
+            ['function __function()'],
             ethers.provider,
           );
 
           await expect(
-            contract.callStatic['function()'](),
+            contract.__function.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
             'Proxy__ImplementationIsNotContract',

@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondFallback } from './IDiamondFallback.sol';
-
-// TODO: DiamondFallback interface
 
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy

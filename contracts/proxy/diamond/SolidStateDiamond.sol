@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { IOwnable, Ownable, OwnableInternal } from '../../access/ownable/Ownable.sol';
 import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
 import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
+import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { ERC165Base, ERC165BaseStorage } from '../../introspection/ERC165/base/ERC165Base.sol';
 import { DiamondBase } from './base/DiamondBase.sol';
 import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
-import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
-import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
+import { DiamondReadable } from './readable/DiamondReadable.sol';
+import { DiamondWritable } from './writable/DiamondWritable.sol';
 import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
 
 /**
@@ -42,20 +44,22 @@ abstract contract SolidStateDiamond is
 
         // register DiamondWritable
 
-        selectors[selectorIndex++] = IDiamondWritable.diamondCut.selector;
+        selectors[selectorIndex++] = IERC2535DiamondCut.diamondCut.selector;
 
-        _setSupportsInterface(type(IDiamondWritable).interfaceId, true);
+        _setSupportsInterface(type(IERC2535DiamondCut).interfaceId, true);
 
         // register DiamondReadable
 
-        selectors[selectorIndex++] = IDiamondReadable.facets.selector;
-        selectors[selectorIndex++] = IDiamondReadable
+        selectors[selectorIndex++] = IERC2535DiamondLoupe.facets.selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe
             .facetFunctionSelectors
             .selector;
-        selectors[selectorIndex++] = IDiamondReadable.facetAddresses.selector;
-        selectors[selectorIndex++] = IDiamondReadable.facetAddress.selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe
+            .facetAddresses
+            .selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe.facetAddress.selector;
 
-        _setSupportsInterface(type(IDiamondReadable).interfaceId, true);
+        _setSupportsInterface(type(IERC2535DiamondLoupe).interfaceId, true);
 
         // register ERC165
 

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfPartiallyPausable } from '@solidstate/spec';
 import {
   PartiallyPausableMock,
@@ -7,24 +7,24 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('PartiallyPausable', function () {
+describe('PartiallyPausable', () => {
   let deployer: SignerWithAddress;
   let instance: PartiallyPausableMock;
 
-  before(async function () {
+  before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new PartiallyPausableMock__factory(deployer).deploy();
   });
 
   describeBehaviorOfPartiallyPausable(async () => instance, {});
 
-  describe('__internal', function () {
+  describe('__internal', () => {
     describe('whenNotPartiallyPaused(bytes32) modifier', () => {
       it('does not revert if contract is not paused', async () => {
-        const key = ethers.utils.randomBytes(32);
+        const key = ethers.randomBytes(32);
 
         await expect(instance.modifier_whenNotPartiallyPaused(key)).not.to.be
           .reverted;
@@ -32,7 +32,7 @@ describe('PartiallyPausable', function () {
 
       describe('reverts if', () => {
         it('contract is paused', async () => {
-          const key = ethers.utils.randomBytes(32);
+          const key = ethers.randomBytes(32);
 
           await instance.__partiallyPause(key);
 
@@ -48,7 +48,7 @@ describe('PartiallyPausable', function () {
 
     describe('whenPartiallyPaused(bytes32) modifier', () => {
       it('does not revert if contract is paused', async () => {
-        const key = ethers.utils.randomBytes(32);
+        const key = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
 
@@ -58,7 +58,7 @@ describe('PartiallyPausable', function () {
 
       describe('reverts if', () => {
         it('contract is not paused', async () => {
-          const key = ethers.utils.randomBytes(32);
+          const key = ethers.randomBytes(32);
 
           await expect(
             instance.modifier_whenPartiallyPaused(key),
@@ -74,17 +74,17 @@ describe('PartiallyPausable', function () {
       it('todo');
     });
 
-    describe('#_partiallyPause()', function () {
-      it('sets paused status to true', async function () {
-        const key = ethers.utils.randomBytes(32);
+    describe('#_partiallyPause()', () => {
+      it('sets paused status to true', async () => {
+        const key = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
 
         expect(await instance.__partiallyPaused(key)).to.be.true;
       });
 
-      it('emits PartiallyPaused event', async function () {
-        const key = ethers.utils.randomBytes(32);
+      it('emits PartiallyPaused event', async () => {
+        const key = ethers.randomBytes(32);
 
         await expect(instance.connect(deployer).__partiallyPause(key))
           .to.emit(instance, 'PartiallyPaused')
@@ -92,8 +92,8 @@ describe('PartiallyPausable', function () {
       });
 
       it('does not affect other keys', async () => {
-        const key = ethers.utils.randomBytes(32);
-        const otherKey = ethers.utils.randomBytes(32);
+        const key = ethers.randomBytes(32);
+        const otherKey = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
 
@@ -101,8 +101,8 @@ describe('PartiallyPausable', function () {
       });
 
       describe('reverts if', () => {
-        it('contract is partially paused already', async function () {
-          const key = ethers.utils.randomBytes(32);
+        it('contract is partially paused already', async () => {
+          const key = ethers.randomBytes(32);
 
           await instance.__partiallyPause(key);
 
@@ -116,9 +116,9 @@ describe('PartiallyPausable', function () {
       });
     });
 
-    describe('#_partiallyUnpause()', function () {
-      it('sets paused status to false', async function () {
-        const key = ethers.utils.randomBytes(32);
+    describe('#_partiallyUnpause()', () => {
+      it('sets paused status to false', async () => {
+        const key = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
         await instance.__partiallyUnpause(key);
@@ -126,8 +126,8 @@ describe('PartiallyPausable', function () {
         expect(await instance.__partiallyPaused(key)).to.be.false;
       });
 
-      it('emits PartiallyUnpaused event', async function () {
-        const key = ethers.utils.randomBytes(32);
+      it('emits PartiallyUnpaused event', async () => {
+        const key = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
 
@@ -137,8 +137,8 @@ describe('PartiallyPausable', function () {
       });
 
       it('does not affect other keys', async () => {
-        const key = ethers.utils.randomBytes(32);
-        const otherKey = ethers.utils.randomBytes(32);
+        const key = ethers.randomBytes(32);
+        const otherKey = ethers.randomBytes(32);
 
         await instance.__partiallyPause(key);
         await instance.__partiallyPause(otherKey);
@@ -148,8 +148,8 @@ describe('PartiallyPausable', function () {
       });
 
       describe('reverts if', () => {
-        it('contract is not partially paused', async function () {
-          const key = ethers.utils.randomBytes(32);
+        it('contract is not partially paused', async () => {
+          const key = ethers.randomBytes(32);
 
           await expect(
             instance.__partiallyUnpause(key),

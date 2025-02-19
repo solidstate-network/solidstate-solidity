@@ -10,11 +10,10 @@ import {
   describeBehaviorOfERC721Metadata,
   ERC721MetadataBehaviorArgs,
 } from './ERC721Metadata.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { SolidStateERC721 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface SolidStateERC721BehaviorArgs
@@ -24,65 +23,41 @@ export interface SolidStateERC721BehaviorArgs
 
 export function describeBehaviorOfSolidStateERC721(
   deploy: () => Promise<SolidStateERC721>,
-  { supply, mint, burn, name, symbol, tokenURI }: SolidStateERC721BehaviorArgs,
+  args: SolidStateERC721BehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateERC721', function () {
+  describe('::SolidStateERC721', () => {
     let holder: SignerWithAddress;
 
     let instance: SolidStateERC721;
 
-    before(async function () {
+    before(async () => {
       [holder] = await ethers.getSigners();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfERC721Base(
-      deploy,
-      {
-        supply,
-        mint,
-        burn,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Base(deploy, args, skips);
 
-    describeBehaviorOfERC721Enumerable(
-      deploy,
-      {
-        supply,
-        mint,
-        burn,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Enumerable(deploy, args, skips);
 
-    describeBehaviorOfERC721Metadata(
-      deploy,
-      {
-        name,
-        symbol,
-        tokenURI,
-      },
-      skips,
-    );
+    describeBehaviorOfERC721Metadata(deploy, args, skips);
 
-    describe('#transferFrom(address,address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
-          const tokenId = ethers.constants.Two;
-          await mint(holder.address, tokenId);
+    describe('#transferFrom(address,address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
+          const tokenId = 2n;
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
               .connect(holder)
               .transferFrom(holder.address, holder.address, tokenId, {
-                value: ethers.constants.One,
+                value: 1,
               }),
           ).to.be.revertedWithCustomError(
             instance,
@@ -92,21 +67,18 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
-          const tokenId = ethers.constants.Two;
-          await mint(holder.address, tokenId);
+    describe('#safeTransferFrom(address,address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
+          const tokenId = 2n;
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                { value: ethers.constants.One },
-              ),
+              [
+                'safeTransferFrom(address,address,uint256)'
+              ](holder.address, holder.address, tokenId, { value: 1 }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableTransferNotSupported',
@@ -115,22 +87,18 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#safeTransferFrom(address,address,uint256,bytes)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
-          const tokenId = ethers.constants.Two;
-          await mint(holder.address, tokenId);
+    describe('#safeTransferFrom(address,address,uint256,bytes)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
+          const tokenId = 2n;
+          await args.mint(holder.address, tokenId);
 
           await expect(
             instance
               .connect(holder)
-              ['safeTransferFrom(address,address,uint256,bytes)'](
-                holder.address,
-                holder.address,
-                tokenId,
-                '0x',
-                { value: ethers.constants.One },
-              ),
+              [
+                'safeTransferFrom(address,address,uint256,bytes)'
+              ](holder.address, holder.address, tokenId, '0x', { value: 1 }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableTransferNotSupported',
@@ -139,18 +107,16 @@ export function describeBehaviorOfSolidStateERC721(
       });
     });
 
-    describe('#approve(address,uint256)', function () {
-      describe('reverts if', function () {
-        it('value is included in transaction', async function () {
-          const tokenId = ethers.constants.Two;
-          await mint(holder.address, tokenId);
+    describe('#approve(address,uint256)', () => {
+      describe('reverts if', () => {
+        it('value is included in transaction', async () => {
+          const tokenId = 2n;
+          await args.mint(holder.address, tokenId);
 
           await expect(
-            instance
-              .connect(holder)
-              .approve(ethers.constants.AddressZero, tokenId, {
-                value: ethers.constants.One,
-              }),
+            instance.connect(holder).approve(ethers.ZeroAddress, tokenId, {
+              value: 1,
+            }),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidStateERC721__PayableApproveNotSupported',

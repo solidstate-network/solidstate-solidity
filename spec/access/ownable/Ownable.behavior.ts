@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -11,54 +11,46 @@ export interface OwnableBehaviorArgs {
 
 export function describeBehaviorOfOwnable(
   deploy: () => Promise<IOwnable>,
-  { getOwner, getNonOwner }: OwnableBehaviorArgs,
+  args: OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Ownable', function () {
+  describe('::Ownable', () => {
     let instance: IOwnable;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
-    describe('#owner()', function () {
-      it('returns address of owner', async function () {
-        expect(await instance.callStatic.owner()).to.equal(owner.address);
+    describe('#owner()', () => {
+      it('returns address of owner', async () => {
+        expect(await instance.owner.staticCall()).to.equal(owner.address);
       });
     });
 
-    describe('#transferOwnership(address)', function () {
-      it('sets new owner', async function () {
-        await instance
-          .connect(owner)
-          .transferOwnership(ethers.constants.AddressZero);
-        expect(await instance.callStatic.owner()).to.equal(
-          ethers.constants.AddressZero,
-        );
+    describe('#transferOwnership(address)', () => {
+      it('sets new owner', async () => {
+        await instance.connect(owner).transferOwnership(ethers.ZeroAddress);
+        expect(await instance.owner.staticCall()).to.equal(ethers.ZeroAddress);
       });
 
-      it('emits OwnershipTransferred event', async function () {
+      it('emits OwnershipTransferred event', async () => {
         await expect(
-          instance
-            .connect(owner)
-            .transferOwnership(ethers.constants.AddressZero),
+          instance.connect(owner).transferOwnership(ethers.ZeroAddress),
         )
           .to.emit(instance, 'OwnershipTransferred')
-          .withArgs(owner.address, ethers.constants.AddressZero);
+          .withArgs(owner.address, ethers.ZeroAddress);
       });
 
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
           await expect(
-            instance
-              .connect(nonOwner)
-              ['transferOwnership(address)'](nonOwner.address),
+            instance.connect(nonOwner).transferOwnership(nonOwner.address),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

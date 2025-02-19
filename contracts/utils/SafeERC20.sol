@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { IERC20 } from '../interfaces/IERC20.sol';
 import { AddressUtils } from './AddressUtils.sol';
@@ -35,17 +35,11 @@ library SafeERC20 {
         );
     }
 
-    /**
-     * @dev safeApprove (like approve) should only be called when setting an initial allowance or when resetting it to zero; otherwise prefer safeIncreaseAllowance and safeDecreaseAllowance
-     */
     function safeApprove(
         IERC20 token,
         address spender,
         uint256 value
     ) internal {
-        if ((value != 0) && (token.allowance(address(this), spender) != 0))
-            revert SafeERC20__ApproveFromNonZeroToNonZero();
-
         _callOptionalReturn(
             token,
             abi.encodeWithSelector(token.approve.selector, spender, value)
