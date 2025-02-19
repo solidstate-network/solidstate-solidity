@@ -167,4 +167,19 @@ describe('Inheritance Graph', () => {
       }
     });
   });
+
+  describe('Uncategorized Entities', async () => {
+    it('do not exist', async () => {
+      for (const name of allFullyQualifiedNames) {
+        expect(
+          INTERNAL_INTERFACE.test(name) ||
+            EXTERNAL_INTERFACE.test(name) ||
+            INTERNAL_CONTRACT.test(name) ||
+            EXTERNAL_CONTRACT.test(name) ||
+            name.endsWith('Storage') ||
+            name.endsWith('Mock'),
+        ).to.equal(true, `Uncategorized entity: ${name}`);
+      }
+    });
+  });
 });
