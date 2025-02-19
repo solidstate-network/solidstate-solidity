@@ -137,9 +137,33 @@ describe('Inheritance Graph', () => {
     let names: string[];
 
     before(async () => {
-      // TODO: skip libraries
       names = allFullyQualifiedNames.filter((name) =>
         EXTERNAL_CONTRACT.test(name),
+      );
+
+      // TODO: skip libraries dynamically
+      names = names.filter(
+        (name) =>
+          ![
+            'ECDSA',
+            'EIP712',
+            'MerkleProof',
+            'BinaryHeap',
+            'DoublyLinkedList',
+            'EnumerableMap',
+            'EnumerableSet',
+            'IncrementalMerkleTree',
+            'CloneFactory',
+            'Factory',
+            'MinimalProxyFactory',
+            'AddressUtils',
+            'ArrayUtils',
+            'Math',
+            'SafeCast',
+            'SafeERC20',
+            'StorageUtils',
+            'UintUtils',
+          ].includes(name.split(':')[1]),
       );
     });
 
