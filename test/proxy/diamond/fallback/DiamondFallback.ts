@@ -3,7 +3,7 @@ import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
   DiamondFallbackMock,
   DiamondFallbackMock__factory,
-  OwnableMock__factory,
+  SafeOwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -18,7 +18,7 @@ describe('DiamondFallback', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new OwnableMock__factory(deployer).deploy(
+    const facetInstance = await new SafeOwnableMock__factory(deployer).deploy(
       deployer.address,
     );
 
@@ -26,7 +26,9 @@ describe('DiamondFallback', () => {
       {
         target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getFunction('owner').selector],
+        selectors: [
+          facetInstance.interface.getFunction('nomineeOwner').selector,
+        ],
       },
     ]);
   });
@@ -34,7 +36,7 @@ describe('DiamondFallback', () => {
   describeBehaviorOfDiamondFallback(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
-    facetFunction: 'owner()',
+    facetFunction: 'nomineeOwner()',
     facetFunctionArgs: [],
     fallbackAddress: ethers.ZeroAddress,
   });
