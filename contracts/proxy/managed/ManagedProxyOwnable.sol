@@ -2,8 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { OwnableInternal } from '../../access/ownable/OwnableInternal.sol';
+import { Ownable } from '../../access/ownable/Ownable.sol';
 import { IManagedProxyOwnable } from './IManagedProxyOwnable.sol';
+import { ManagedProxyOwnableInternal } from './ManagedProxyOwnableInternal.sol';
 import { ManagedProxy } from './ManagedProxy.sol';
 
 /**
@@ -11,13 +12,7 @@ import { ManagedProxy } from './ManagedProxy.sol';
  */
 abstract contract ManagedProxyOwnable is
     IManagedProxyOwnable,
+    ManagedProxyOwnableInternal,
     ManagedProxy,
-    OwnableInternal
-{
-    /**
-     * @inheritdoc ManagedProxy
-     */
-    function _getManager() internal view override returns (address) {
-        return _owner();
-    }
-}
+    Ownable
+{}

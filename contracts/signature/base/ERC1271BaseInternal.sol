@@ -3,12 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IERC1271 } from '../../interfaces/IERC1271.sol';
+import { IERC1271BaseInternal } from './IERC1271BaseInternal.sol';
 
 /**
  * @title ERC1271Base internal functions
  * @dev _isValidSignature function must be overridden with application-specific logic
  */
-abstract contract ERC1271BaseInternal {
+abstract contract ERC1271BaseInternal is IERC1271BaseInternal {
     bytes4 internal constant MAGIC_VALUE = IERC1271.isValidSignature.selector;
 
     /**
