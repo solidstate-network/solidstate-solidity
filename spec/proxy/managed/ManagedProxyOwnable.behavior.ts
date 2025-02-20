@@ -1,12 +1,14 @@
+import { OwnableBehaviorArgs, describeBehaviorOfOwnable } from '../../access';
 import {
-  describeBehaviorOfManagedProxy,
   ManagedProxyBehaviorArgs,
+  describeBehaviorOfManagedProxy,
 } from './ManagedProxy.behavior';
 import { describeFilter } from '@solidstate/library';
 import { IManagedProxyOwnable } from '@solidstate/typechain-types';
 
 export interface ManagedProxyOwnableBehaviorArgs
-  extends ManagedProxyBehaviorArgs {}
+  extends ManagedProxyBehaviorArgs,
+    OwnableBehaviorArgs {}
 
 export function describeBehaviorOfManagedProxyOwnable(
   deploy: () => Promise<IManagedProxyOwnable>,
@@ -17,5 +19,7 @@ export function describeBehaviorOfManagedProxyOwnable(
 
   describe('::ManagedProxyOwnable', () => {
     describeBehaviorOfManagedProxy(deploy, args, skips);
+
+    describeBehaviorOfOwnable(deploy, args, skips);
   });
 }

@@ -1,11 +1,14 @@
-import { OwnableBehaviorArgs } from '../../../access/ownable/Ownable.behavior';
+import {
+  OwnableBehaviorArgs,
+  describeBehaviorOfOwnable,
+} from '../../../access';
+import {
+  DiamondBaseBehaviorArgs,
+  describeBehaviorOfDiamondBase,
+} from '../base';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import {
-  describeBehaviorOfDiamondBase,
-  DiamondBaseBehaviorArgs,
-} from '@solidstate/spec';
 import { IDiamondFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -35,6 +38,8 @@ export function describeBehaviorOfDiamondFallback(
     });
 
     describeBehaviorOfDiamondBase(async () => instance, args, skips);
+
+    describeBehaviorOfOwnable(async () => instance, args, skips);
 
     describe('fallback()', () => {
       it('forwards data without matching selector to fallback contract');
