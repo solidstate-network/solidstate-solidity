@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import fs from 'fs';
 import hre from 'hardhat';
 
 const surya = require('surya');
@@ -12,13 +13,22 @@ const EXTERNAL_CONTRACT =
 describe('Inheritance Graph', () => {
   let allFullyQualifiedNames: string[];
   const ancestors: { [key: string]: string[] } = {};
+  const directAncestors: { [key: string]: string[] } = {};
 
   before(async () => {
     allFullyQualifiedNames = await hre.artifacts.getAllFullyQualifiedNames();
 
     for (const name of allFullyQualifiedNames) {
       const [path, entity] = name.split(':');
+      // track full inheritance trees via surya
       ancestors[name] = (await surya.dependencies([path], entity)).slice(1);
+      // read direct inheritance trees from source
+      const file = fs.readFileSync(path).toString();
+      directAncestors[name] =
+        file
+          .match(/(contract|interface)\s+(\w+)\s+is((\s+\w+,?)+)\s+{/)?.[3]
+          .trim()
+          .split(/[\s,]+/) ?? [];
     }
   });
 
@@ -66,6 +76,22 @@ describe('Inheritance Graph', () => {
         for (const ancestor of ancestors[name]) {
           expect(INTERNAL_CONTRACT.test(ancestor)).to.be.false;
           expect(EXTERNAL_CONTRACT.test(ancestor)).to.be.false;
+        }
+      }
+    });
+
+    it('do not directly inherit from unrelated internal interfaces', async () => {
+      for (const name of names) {
+        for (const ancestor of directAncestors[name]) {
+          const [, entity] = name.split(':');
+          const internalInterfaceName = `${entity}Internal`;
+
+          if (ancestor === internalInterfaceName) continue;
+
+          expect(INTERNAL_INTERFACE.test(ancestor)).to.eq(
+            false,
+            `Invalid direct ancestor for ${entity}: ${ancestor}`,
+          );
         }
       }
     });
@@ -118,6 +144,22 @@ describe('Inheritance Graph', () => {
       for (const name of names) {
         for (const ancestor of ancestors[name]) {
           expect(EXTERNAL_CONTRACT.test(ancestor)).to.be.false;
+        }
+      }
+    });
+
+    it('do not directly inherit from unrelated internal interfaces', async () => {
+      for (const name of names) {
+        for (const ancestor of directAncestors[name]) {
+          const [, entity] = name.split(':');
+          const internalInterfaceName = `I${entity}`;
+
+          if (ancestor === internalInterfaceName) continue;
+
+          expect(INTERNAL_INTERFACE.test(ancestor)).to.eq(
+            false,
+            `Invalid direct ancestor for ${entity}: ${ancestor}`,
+          );
         }
       }
     });
@@ -189,6 +231,51 @@ describe('Inheritance Graph', () => {
             'UintUtils',
           ].includes(name.split(':')[1]),
       );
+    });
+
+    it('do not directly inherit from internal interfaces', async () => {
+      for (const name of names) {
+        for (const ancestor of directAncestors[name]) {
+          const [, entity] = name.split(':');
+
+          expect(INTERNAL_INTERFACE.test(ancestor)).to.eq(
+            false,
+            `Invalid direct ancestor for ${entity}: ${ancestor}`,
+          );
+        }
+      }
+    });
+
+    it('do not directly inherit from unrelated external interfaces', async () => {
+      for (const name of names) {
+        for (const ancestor of directAncestors[name]) {
+          const [, entity] = name.split(':');
+          const externalInterfaceName = `I${entity}`;
+
+          if (ancestor === externalInterfaceName) continue;
+
+          expect(EXTERNAL_INTERFACE.test(ancestor)).to.eq(
+            false,
+            `Invalid direct ancestor for ${entity}: ${ancestor}`,
+          );
+        }
+      }
+    });
+
+    it('do not directly inherit from unrelated internal contracts', async () => {
+      for (const name of names) {
+        for (const ancestor of directAncestors[name]) {
+          const [, entity] = name.split(':');
+          const internalContractName = `${entity}Internal`;
+
+          if (ancestor === internalContractName) continue;
+
+          expect(INTERNAL_CONTRACT.test(ancestor)).to.eq(
+            false,
+            `Invalid direct ancestor for ${entity}: ${ancestor}`,
+          );
+        }
+      }
     });
 
     it('inherit from corresponding internal contracts and external interfaces', async () => {
