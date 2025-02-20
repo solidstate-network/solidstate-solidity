@@ -14,7 +14,7 @@ interface AccessControlBehaviorArgs {
 }
 
 export function describeBehaviorOfAccessControl(
-  { deploy, getAdmin, getNonAdmin }: AccessControlBehaviorArgs,
+  args: AccessControlBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -25,9 +25,9 @@ export function describeBehaviorOfAccessControl(
     let nonAdmin: SignerWithAddress;
 
     beforeEach(async () => {
-      instance = await deploy();
-      admin = await getAdmin();
-      nonAdmin = await getNonAdmin();
+      instance = await args.deploy();
+      admin = await args.getAdmin();
+      nonAdmin = await args.getNonAdmin();
     });
 
     describe('#hasRole(bytes32,address)', () => {

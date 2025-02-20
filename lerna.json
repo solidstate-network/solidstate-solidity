@@ -1,5 +1,5 @@
 {
-  "version": "0.0.58",
+  "version": "0.0.61",
   "packages": ["abi", "contracts", "lib", "spec"],
   "command": {
     "publish": {

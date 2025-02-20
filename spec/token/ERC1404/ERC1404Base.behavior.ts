@@ -11,7 +11,7 @@ export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
 
 export function describeBehaviorOfERC1404Base(
   deploy: () => Promise<IERC1404Base>,
-  { restrictions, mint, burn, supply }: ERC1404BaseBehaviorArgs,
+  args: ERC1404BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -23,15 +23,7 @@ export function describeBehaviorOfERC1404Base(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(
-      deploy,
-      {
-        supply,
-        mint,
-        burn,
-      },
-      skips,
-    );
+    describeBehaviorOfERC20Base(deploy, args, skips);
 
     // TODO: transfers blocked if restriction exists
 
@@ -54,7 +46,7 @@ export function describeBehaviorOfERC1404Base(
         ).to.equal('');
       });
 
-      for (let restriction of restrictions) {
+      for (let restriction of args.restrictions) {
         it(`returns "${restriction.message}" for code ${restriction.code}`, async () => {
           expect(
             await instance.messageForTransferRestriction.staticCall(

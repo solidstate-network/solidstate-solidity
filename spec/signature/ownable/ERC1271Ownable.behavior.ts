@@ -11,7 +11,7 @@ export interface ERC1271OwnableBehaviorArgs {
 
 export function describeBehaviorOfERC1271Ownable(
   deploy: () => Promise<IERC1271Ownable>,
-  { getOwner, getNonOwner }: ERC1271OwnableBehaviorArgs,
+  args: ERC1271OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -21,8 +21,8 @@ export function describeBehaviorOfERC1271Ownable(
     let nonOwner: SignerWithAddress;
 
     beforeEach(async () => {
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
     // TODO: nonstandard usage

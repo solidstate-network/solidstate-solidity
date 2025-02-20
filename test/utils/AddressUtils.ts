@@ -29,7 +29,10 @@ describe('AddressUtils', async () => {
       it('returns a string from an address', async () => {
         expect(
           ethers.getAddress(
-            await instance['toString(address)'].staticCall(deployer.address),
+            // must cast to any type because of a collision in the `toString` function name
+            await (instance as any)['toString(address)'].staticCall(
+              deployer.address,
+            ),
           ),
         ).to.eq(deployer.address);
       });
@@ -64,10 +67,6 @@ describe('AddressUtils', async () => {
           const value = 2n;
 
           await setBalance(await instance.getAddress(), value);
-
-          const mock = await deployMockContract(deployer, []);
-
-          // TODO: after ethers v6 upgrade, revert no longer occurs when sending value to mock
 
           await expect(
             instance
@@ -136,10 +135,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes)'](
-                await instance.getAddress(),
-                '0x',
-              ),
+              [
+                'functionCall(address,bytes)'
+              ](await instance.getAddress(), '0x'),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
       });
@@ -162,11 +160,9 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            ['functionCall(address,bytes,string)'].staticCall(
-              target,
-              data,
-              revertReason,
-            ),
+            [
+              'functionCall(address,bytes,string)'
+            ].staticCall(target, data, revertReason),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
@@ -211,11 +207,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes,string)'](
-                await instance.getAddress(),
-                '0x',
-                revertReason,
-              ),
+              [
+                'functionCall(address,bytes,string)'
+              ](await instance.getAddress(), '0x', revertReason),
           ).to.be.revertedWith(revertReason);
         });
       });
@@ -237,11 +231,9 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            ['functionCallWithValue(address,bytes,uint256)'].staticCall(
-              target,
-              data,
-              0,
-            ),
+            [
+              'functionCallWithValue(address,bytes,uint256)'
+            ].staticCall(target, data, 0),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
@@ -263,11 +255,9 @@ describe('AddressUtils', async () => {
         await expect(() =>
           instance
             .connect(deployer)
-            ['functionCallWithValue(address,bytes,uint256)'](
-              target,
-              data,
-              value,
-            ),
+            [
+              'functionCallWithValue(address,bytes,uint256)'
+            ](target, data, value),
         ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
 
@@ -289,11 +279,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](
-                await instance.getAddress(),
-                '0x',
-                1,
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256)'
+              ](await instance.getAddress(), '0x', 1),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__InsufficientBalance',
@@ -321,11 +309,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](
-                target,
-                data,
-                value,
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256)'
+              ](target, data, value),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
           );
@@ -356,11 +342,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](
-                await instance.getAddress(),
-                '0x',
-                0,
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256)'
+              ](await instance.getAddress(), '0x', 0),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
           );
@@ -384,12 +368,9 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            ['functionCallWithValue(address,bytes,uint256,string)'].staticCall(
-              target,
-              data,
-              0,
-              '',
-            ),
+            [
+              'functionCallWithValue(address,bytes,uint256,string)'
+            ].staticCall(target, data, 0, ''),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
@@ -412,12 +393,9 @@ describe('AddressUtils', async () => {
         await expect(() =>
           instance
             .connect(deployer)
-            ['functionCallWithValue(address,bytes,uint256,string)'](
-              target,
-              data,
-              value,
-              '',
-            ),
+            [
+              'functionCallWithValue(address,bytes,uint256,string)'
+            ](target, data, value, ''),
         ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
 
@@ -440,12 +418,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256,string)'](
-                await instance.getAddress(),
-                '0x',
-                1,
-                '',
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256,string)'
+              ](await instance.getAddress(), '0x', 1, ''),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__InsufficientBalance',
@@ -474,12 +449,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256,string)'](
-                target,
-                data,
-                value,
-                revertReason,
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256,string)'
+              ](target, data, value, revertReason),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -500,12 +472,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256,string)'](
-                target,
-                data,
-                0,
-                '',
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256,string)'
+              ](target, data, 0, ''),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -515,12 +484,9 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256,string)'](
-                await instance.getAddress(),
-                '0x',
-                0,
-                revertReason,
-              ),
+              [
+                'functionCallWithValue(address,bytes,uint256,string)'
+              ](await instance.getAddress(), '0x', 0, revertReason),
           ).to.be.revertedWith(revertReason);
         });
       });

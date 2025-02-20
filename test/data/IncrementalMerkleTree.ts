@@ -184,7 +184,7 @@ describe('IncrementalMerkleTree', () => {
     describe('reverts if', () => {
       it('tree is size zero', async () => {
         await expect(instance.pop()).to.be.revertedWithPanic(
-          PANIC_CODES.ARITHMETIC_UNDER_OR_OVERFLOW,
+          PANIC_CODES.ARITHMETIC_OVERFLOW,
         );
       });
     });
