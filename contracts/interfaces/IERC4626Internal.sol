@@ -8,7 +8,6 @@ import { IERC20Internal } from './IERC20Internal.sol';
 /**
  * @title Partial ERC4626 interface needed by internal functions
  */
-
 interface IERC4626Internal is IERC20Internal, IERC20MetadataInternal {
     event Deposit(
         address indexed caller,

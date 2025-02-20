@@ -13,6 +13,5 @@ interface ISolidStateERC20 is
     IERC20Base,
     IERC20Extended,
     IERC20Metadata,
-    IERC20Permit,
-    ISolidStateERC20Internal
+    IERC20Permit
 {}
