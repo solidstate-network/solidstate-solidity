@@ -31,15 +31,4 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
     ) external view virtual returns (string memory) {
         return _tokenURI(tokenId);
     }
-
-    /**
-     * @inheritdoc ERC721MetadataInternal
-     */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
 }

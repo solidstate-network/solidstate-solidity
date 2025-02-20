@@ -5,11 +5,13 @@ pragma solidity ^0.8.20;
 import { OwnableInternal } from '../../access/ownable/OwnableInternal.sol';
 import { ECDSA } from '../../cryptography/ECDSA.sol';
 import { ERC1271BaseInternal } from '../base/ERC1271BaseInternal.sol';
+import { IERC1271OwnableInternal } from './IERC1271OwnableInternal.sol';
 
 /**
  * @title ERC1271Ownable internal functions
  */
 abstract contract ERC1271OwnableInternal is
+    IERC1271OwnableInternal,
     ERC1271BaseInternal,
     OwnableInternal
 {

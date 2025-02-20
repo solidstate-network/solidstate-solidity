@@ -9,6 +9,7 @@ import { IERC20Permit } from './permit/IERC20Permit.sol';
 import { ISolidStateERC20Internal } from './ISolidStateERC20Internal.sol';
 
 interface ISolidStateERC20 is
+    ISolidStateERC20Internal,
     IERC20Base,
     IERC20Extended,
     IERC20Metadata,

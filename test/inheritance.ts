@@ -82,6 +82,18 @@ describe('Inheritance Graph', () => {
       }
     });
 
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalInterfaceName = `${entity}Internal`;
+
+        expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
+          ancestors[name].length - 1,
+          `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
+        );
+      }
+    });
+
     it('have 0-length bytecode', async () => {
       for (const name of names) {
         const { bytecode } = await hre.artifacts.readArtifact(name);
@@ -118,6 +130,18 @@ describe('Inheritance Graph', () => {
         expect(ancestors[name]).to.include(
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
+        );
+      }
+    });
+
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalInterfaceName = `I${entity}`;
+
+        expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
+          ancestors[name].length - 1,
+          `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
         );
       }
     });
@@ -182,6 +206,14 @@ describe('Inheritance Graph', () => {
           externalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
+      }
+    });
+
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalContractName = `${entity}Internal`;
+        const externalInterfaceName = `I${entity}`;
 
         expect(ancestors[name].indexOf(internalContractName)).to.eq(
           ancestors[name].length - 2,

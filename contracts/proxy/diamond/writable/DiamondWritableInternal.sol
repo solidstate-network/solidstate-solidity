@@ -2,11 +2,15 @@
 
 pragma solidity ^0.8.20;
 
+import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondWritableInternal } from './IDiamondWritableInternal.sol';
 
-abstract contract DiamondWritableInternal is IDiamondWritableInternal {
+abstract contract DiamondWritableInternal is
+    IDiamondWritableInternal,
+    OwnableInternal
+{
     using AddressUtils for address;
 
     bytes32 private constant CLEAR_ADDRESS_MASK =

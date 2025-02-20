@@ -7,9 +7,9 @@ import { IERC20BaseInternal } from '../base/IERC20BaseInternal.sol';
 import { IERC20MetadataInternal } from '../metadata/IERC20MetadataInternal.sol';
 
 interface IERC20PermitInternal is
-    IERC2612Internal,
     IERC20BaseInternal,
-    IERC20MetadataInternal
+    IERC20MetadataInternal,
+    IERC2612Internal
 {
     error ERC20Permit__ExpiredDeadline();
     error ERC20Permit__InvalidSignature();

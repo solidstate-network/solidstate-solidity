@@ -11,6 +11,6 @@ import { ERC1271OwnableInternal } from './ERC1271OwnableInternal.sol';
  */
 abstract contract ERC1271Ownable is
     IERC1271Ownable,
-    ERC1271Base,
-    ERC1271OwnableInternal
+    ERC1271OwnableInternal,
+    ERC1271Base
 {}
