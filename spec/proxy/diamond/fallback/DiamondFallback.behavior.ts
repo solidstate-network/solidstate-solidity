@@ -1,7 +1,4 @@
-import {
-  OwnableBehaviorArgs,
-  describeBehaviorOfOwnable,
-} from '../../../access';
+import { OwnableBehaviorArgs } from '../../../access';
 import {
   DiamondBaseBehaviorArgs,
   describeBehaviorOfDiamondBase,
@@ -38,8 +35,6 @@ export function describeBehaviorOfDiamondFallback(
     });
 
     describeBehaviorOfDiamondBase(async () => instance, args, skips);
-
-    describeBehaviorOfOwnable(async () => instance, args, skips);
 
     describe('fallback()', () => {
       it('forwards data without matching selector to fallback contract');

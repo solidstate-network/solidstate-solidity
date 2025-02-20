@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { Ownable } from '../../../access/ownable/Ownable.sol';
 import { ProxyInternal } from '../../ProxyInternal.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondBaseInternal } from '../base/DiamondBaseInternal.sol';
@@ -10,16 +9,13 @@ import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondFallback } from './IDiamondFallback.sol';
 import { DiamondFallbackInternal } from './DiamondFallbackInternal.sol';
 
-// TODO: previously inherited OwnableInternal - should inherit Ownable?
-
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy
  */
 abstract contract DiamondFallback is
     IDiamondFallback,
     DiamondFallbackInternal,
-    DiamondBase,
-    Ownable
+    DiamondBase
 {
     /**
      * @inheritdoc IDiamondFallback
