@@ -81,7 +81,7 @@ describe('Inheritance Graph', () => {
         );
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
-          ancestors[name].length - 2,
+          ancestors[name].length - 1,
           `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
         );
       }
@@ -126,7 +126,7 @@ describe('Inheritance Graph', () => {
         );
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
-          ancestors[name].length - 2,
+          ancestors[name].length - 1,
           `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
         );
       }
