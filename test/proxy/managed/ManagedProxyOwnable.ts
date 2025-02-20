@@ -9,13 +9,11 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ManagedProxyOwnable', () => {
-  let deployer: any;
-  let nonOwner: any;
   let manager: any;
   let instance: ManagedProxyOwnableMock;
 
   beforeEach(async () => {
-    [deployer, nonOwner] = await ethers.getSigners();
+    const [deployer] = await ethers.getSigners();
 
     manager = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
@@ -44,8 +42,6 @@ describe('ManagedProxyOwnable', () => {
   describeBehaviorOfManagedProxyOwnable(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
-    getOwner: async () => manager,
-    getNonOwner: async () => nonOwner,
   });
 
   describe('__internal', () => {
