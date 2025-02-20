@@ -79,6 +79,11 @@ describe('Inheritance Graph', () => {
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
+
+        expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
+          ancestors[name].length - 2,
+          `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
+        );
       }
     });
 
@@ -118,6 +123,11 @@ describe('Inheritance Graph', () => {
         expect(ancestors[name]).to.include(
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
+        );
+
+        expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
+          ancestors[name].length - 2,
+          `First inherited ancestor for ${entity} should be ${internalInterfaceName}`,
         );
       }
     });
