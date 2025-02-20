@@ -79,6 +79,13 @@ describe('Inheritance Graph', () => {
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
+      }
+    });
+
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalInterfaceName = `${entity}Internal`;
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
           ancestors[name].length - 1,
@@ -124,6 +131,13 @@ describe('Inheritance Graph', () => {
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
+      }
+    });
+
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalInterfaceName = `I${entity}`;
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
           ancestors[name].length - 1,
@@ -192,6 +206,14 @@ describe('Inheritance Graph', () => {
           externalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
+      }
+    });
+
+    it('inherit in correct order', async () => {
+      for (const name of names) {
+        const [, entity] = name.split(':');
+        const internalContractName = `${entity}Internal`;
+        const externalInterfaceName = `I${entity}`;
 
         expect(ancestors[name].indexOf(internalContractName)).to.eq(
           ancestors[name].length - 2,
