@@ -97,12 +97,12 @@ describe('Inheritance Graph', () => {
       }
     });
 
-    it('inherit from corresponding internal interfaces', async () => {
+    it('directly inherit from corresponding internal interfaces', async () => {
       for (const name of names) {
         const [, entity] = name.split(':');
         const internalInterfaceName = `${entity}Internal`;
 
-        expect(ancestors[name]).to.include(
+        expect(directAncestors[name]).to.include(
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
@@ -165,12 +165,12 @@ describe('Inheritance Graph', () => {
       }
     });
 
-    it('inherit from corresponding internal interfaces', async () => {
+    it('directly inherit from corresponding internal interfaces', async () => {
       for (const name of names) {
         const [, entity] = name.split(':');
         const internalInterfaceName = `I${entity}`;
 
-        expect(ancestors[name]).to.include(
+        expect(directAncestors[name]).to.include(
           internalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
@@ -279,18 +279,18 @@ describe('Inheritance Graph', () => {
       }
     });
 
-    it('inherit from corresponding internal contracts and external interfaces', async () => {
+    it('directly inherit from corresponding internal contracts and external interfaces', async () => {
       for (const name of names) {
         const [, entity] = name.split(':');
         const internalContractName = `${entity}Internal`;
         const externalInterfaceName = `I${entity}`;
 
-        expect(ancestors[name]).to.include(
+        expect(directAncestors[name]).to.include(
           internalContractName,
           `Missing ancestor for ${entity}`,
         );
 
-        expect(ancestors[name]).to.include(
+        expect(directAncestors[name]).to.include(
           externalInterfaceName,
           `Missing ancestor for ${entity}`,
         );
