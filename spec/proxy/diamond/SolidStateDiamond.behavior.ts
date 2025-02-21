@@ -59,6 +59,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
     describeBehaviorOfDiamondFallback(deploy, args, [
       '::DiamondBase',
+      '::Ownable',
       ...(skips ?? []),
     ]);
 

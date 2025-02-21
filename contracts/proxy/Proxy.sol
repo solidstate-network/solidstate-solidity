@@ -2,15 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { AddressUtils } from '../utils/AddressUtils.sol';
 import { IProxy } from './IProxy.sol';
+import { ProxyInternal } from './ProxyInternal.sol';
 
 /**
  * @title Base proxy contract
  */
-abstract contract Proxy is IProxy {
-    using AddressUtils for address;
-
+abstract contract Proxy is IProxy, ProxyInternal {
     fallback() external payable virtual {
         bytes memory returnData = _handleDelegateCall();
 
@@ -19,18 +17,4 @@ abstract contract Proxy is IProxy {
             return(add(32, returnData), returnData_size)
         }
     }
-
-    /**
-     * @notice delegate all calls to implementation contract
-     */
-    function _handleDelegateCall() internal virtual returns (bytes memory) {
-        address implementation = _getImplementation();
-        return implementation.functionDelegateCall(msg.data);
-    }
-
-    /**
-     * @notice get logic implementation address
-     * @return implementation address
-     */
-    function _getImplementation() internal virtual returns (address);
 }
