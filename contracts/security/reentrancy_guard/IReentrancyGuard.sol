@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-interface IReentrancyGuard {
-    error ReentrancyGuard__ReentrantCall();
-}
+import { IReentrancyGuardInternal } from './IReentrancyGuardInternal.sol';
+
+interface IReentrancyGuard is IReentrancyGuardInternal {}

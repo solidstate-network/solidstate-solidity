@@ -46,6 +46,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-solidity": "^1.4.2",
     "solidity-coverage": "^0.8.14",
+    "surya": "^0.4.12",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.7.2",

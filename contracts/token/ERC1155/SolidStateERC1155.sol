@@ -8,12 +8,14 @@ import { ERC1155Enumerable } from './enumerable/ERC1155Enumerable.sol';
 import { ERC1155EnumerableInternal } from './enumerable/ERC1155EnumerableInternal.sol';
 import { ERC1155Metadata } from './metadata/ERC1155Metadata.sol';
 import { ISolidStateERC1155 } from './ISolidStateERC1155.sol';
+import { SolidStateERC1155Internal } from './SolidStateERC1155Internal.sol';
 
 /**
  * @title SolidState ERC1155 implementation
  */
 abstract contract SolidStateERC1155 is
     ISolidStateERC1155,
+    SolidStateERC1155Internal,
     ERC1155Base,
     ERC1155Enumerable,
     ERC1155Metadata,
@@ -32,7 +34,11 @@ abstract contract SolidStateERC1155 is
     )
         internal
         virtual
-        override(ERC1155BaseInternal, ERC1155EnumerableInternal)
+        override(
+            SolidStateERC1155Internal,
+            ERC1155BaseInternal,
+            ERC1155EnumerableInternal
+        )
     {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }

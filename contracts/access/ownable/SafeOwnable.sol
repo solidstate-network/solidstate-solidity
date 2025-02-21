@@ -10,7 +10,7 @@ import { SafeOwnableInternal } from './SafeOwnableInternal.sol';
 /**
  * @title Ownership access control based on ERC173 with ownership transfer safety check
  */
-abstract contract SafeOwnable is ISafeOwnable, Ownable, SafeOwnableInternal {
+abstract contract SafeOwnable is ISafeOwnable, SafeOwnableInternal, Ownable {
     /**
      * @inheritdoc ISafeOwnable
      */

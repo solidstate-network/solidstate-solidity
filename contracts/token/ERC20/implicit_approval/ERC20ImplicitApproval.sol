@@ -12,8 +12,8 @@ import { ERC20ImplicitApprovalInternal } from './ERC20ImplicitApprovalInternal.s
  */
 abstract contract ERC20ImplicitApproval is
     IERC20ImplicitApproval,
-    ERC20Base,
-    ERC20ImplicitApprovalInternal
+    ERC20ImplicitApprovalInternal,
+    ERC20Base
 {
     function _allowance(
         address holder,
