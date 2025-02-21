@@ -7,7 +7,6 @@ import { IERC721Internal } from './IERC721Internal.sol';
 /**
  * @title ERC721 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-721
- * @dev ERC165 is not included in this interface
  */
 interface IERC721 is IERC721Internal {
     /**
