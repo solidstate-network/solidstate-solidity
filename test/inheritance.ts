@@ -79,6 +79,21 @@ describe('Inheritance Graph', () => {
           );
         }
       }
+
+      for (const internalContractName of internalContractNames) {
+        const name = `I${internalContractName}`;
+
+        const internalInterfaceNames = directAncestors[internalContractName]
+          .filter((name) => INTERNAL_CONTRACT.test(name))
+          .map((name) => `I${name}`);
+
+        for (const internalInterfaceName of internalInterfaceNames) {
+          expect(directAncestors[name]).to.include(
+            internalInterfaceName,
+            `Missing ancestor for ${name}`,
+          );
+        }
+      }
     });
 
     it('have 0-length bytecode', async () => {
