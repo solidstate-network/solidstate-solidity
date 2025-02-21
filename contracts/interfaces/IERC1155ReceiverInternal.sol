@@ -2,4 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-interface IERC1155ReceiverInternal {}
+import { IERC165Internal } from './IERC165Internal.sol';
+
+interface IERC1155ReceiverInternal is IERC165Internal {}
