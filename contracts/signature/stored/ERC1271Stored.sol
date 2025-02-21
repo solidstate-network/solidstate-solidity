@@ -11,6 +11,6 @@ import { ERC1271StoredInternal } from './ERC1271StoredInternal.sol';
  */
 abstract contract ERC1271Stored is
     IERC1271Stored,
-    ERC1271Base,
-    ERC1271StoredInternal
+    ERC1271StoredInternal,
+    ERC1271Base
 {}

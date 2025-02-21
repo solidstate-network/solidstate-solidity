@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.20;
 
+import { ProxyInternal } from '../ProxyInternal.sol';
 import { Proxy } from '../Proxy.sol';
 import { IBeacon } from './IBeacon.sol';
 import { IBeaconProxy } from './IBeaconProxy.sol';
@@ -12,7 +13,7 @@ import { IBeaconProxy } from './IBeaconProxy.sol';
  */
 abstract contract BeaconProxy is IBeaconProxy, Proxy {
     /**
-     * @inheritdoc Proxy
+     * @inheritdoc ProxyInternal
      */
     function _getImplementation()
         internal

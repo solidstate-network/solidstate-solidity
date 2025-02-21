@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-interface IERC721Enumerable {
+import { IERC721EnumerableInternal } from './ERC721EnumerableInternal.sol';
+
+interface IERC721Enumerable is IERC721EnumerableInternal {
     /**
      * @notice get total token supply
      * @return total supply

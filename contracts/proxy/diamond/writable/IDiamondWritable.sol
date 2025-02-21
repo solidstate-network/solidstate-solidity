@@ -9,4 +9,4 @@ import { IDiamondWritableInternal } from './IDiamondWritableInternal.sol';
  * @title Diamond proxy upgrade interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IDiamondWritable is IERC2535DiamondCut, IDiamondWritableInternal {}
+interface IDiamondWritable is IDiamondWritableInternal, IERC2535DiamondCut {}
