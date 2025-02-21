@@ -10,9 +10,9 @@ import { IERC20MetadataInternal } from '../../ERC20/metadata/IERC20MetadataInter
  * @title ERC4626 base interface
  */
 interface IERC4626BaseInternal is
-    IERC4626Internal,
     IERC20BaseInternal,
-    IERC20MetadataInternal
+    IERC20MetadataInternal,
+    IERC4626Internal
 {
     error ERC4626Base__MaximumAmountExceeded();
     error ERC4626Base__AllowanceExceeded();
