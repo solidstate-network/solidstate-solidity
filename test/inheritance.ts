@@ -52,6 +52,35 @@ describe('Inheritance Graph', () => {
       }
     });
 
+    it('directly inherit from internal interfaces corresponding to direct inheritances of downstream children', async () => {
+      // begin by looking up children
+
+      const externalInterfaceNames = allEntityNames.filter((name) =>
+        EXTERNAL_INTERFACE.test(name),
+      );
+
+      const internalContractNames = allEntityNames.filter((name) =>
+        INTERNAL_CONTRACT.test(name),
+      );
+
+      // run assertions against internal interface ancestors
+
+      for (const externalInterfaceName of externalInterfaceNames) {
+        const name = `${externalInterfaceName}Internal`;
+
+        const internalInterfaceNames = directAncestors[externalInterfaceName]
+          .filter((name) => EXTERNAL_INTERFACE.test(name))
+          .map((name) => `${name}Internal`);
+
+        for (const internalInterfaceName of internalInterfaceNames) {
+          expect(directAncestors[name]).to.include(
+            internalInterfaceName,
+            `Missing ancestor for ${name}`,
+          );
+        }
+      }
+    });
+
     it('have 0-length bytecode', async () => {
       for (const name of names) {
         const { bytecode } = await hre.artifacts.readArtifact(name);
