@@ -8,8 +8,8 @@ import { IDiamondWritable } from '../diamond/writable/IDiamondWritable.sol';
 import { IDiamondBeaconInternal } from './IDiamondBeaconInternal.sol';
 
 interface IDiamondBeacon is
+    IDiamondBeaconInternal,
     IDiamondReadable,
     IDiamondWritable,
-    IOwnable,
-    IDiamondBeaconInternal
+    IOwnable
 {}

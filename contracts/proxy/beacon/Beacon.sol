@@ -6,7 +6,7 @@ import { Ownable } from '../../access/ownable/Ownable.sol';
 import { IBeacon } from './IBeacon.sol';
 import { BeaconInternal } from './BeaconInternal.sol';
 
-contract Beacon is IBeacon, Ownable, BeaconInternal {
+contract Beacon is IBeacon, BeaconInternal, Ownable {
     /**
      * @inheritdoc IBeacon
      */

@@ -2,6 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-import { IBeaconInternal } from './IBeaconInternal.sol';
+import { IOwnableInternal } from '../../access/ownable/IOwnableInternal.sol';
+import { IDiamondReadableInternal } from '../diamond/readable/IDiamondReadableInternal.sol';
+import { IDiamondWritableInternal } from '../diamond/writable/IDiamondWritableInternal.sol';
 
-interface IDiamondBeaconInternal is IBeaconInternal {}
+interface IDiamondBeaconInternal is
+    IOwnableInternal,
+    IDiamondReadableInternal,
+    IDiamondWritableInternal
+{}
