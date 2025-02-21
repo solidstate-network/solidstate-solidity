@@ -2,11 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: inherit IERC165Internal
-import { IERC165Internal } from './IERC165Internal.sol';
-
 /**
  * @title Partial ERC721 interface needed by internal functions
+ * @dev ERC165 is not included in this interface
  */
 interface IERC721Internal {
     event Transfer(
