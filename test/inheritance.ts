@@ -149,6 +149,31 @@ describe('Inheritance Graph', () => {
       }
     });
 
+    it('directly inherit from external interfaces corresponding to direct inheritances of downstream children', async () => {
+      // begin by looking up children
+
+      const externalContractNames = allEntityNames.filter((name) =>
+        EXTERNAL_CONTRACT.test(name),
+      );
+
+      // run assertions against internal interface ancestors
+
+      for (const externalContractName of externalContractNames) {
+        const name = `I${externalContractName}`;
+
+        const internalInterfaceNames = directAncestors[externalContractName]
+          .filter((name) => EXTERNAL_CONTRACT.test(name))
+          .map((name) => `I${name}`);
+
+        for (const internalInterfaceName of internalInterfaceNames) {
+          expect(directAncestors[name]).to.include(
+            internalInterfaceName,
+            `Missing ancestor for ${name}`,
+          );
+        }
+      }
+    });
+
     it('inherit in correct order', async () => {
       for (const name of names) {
         const internalInterfaceName = `${name}Internal`;
@@ -209,6 +234,31 @@ describe('Inheritance Graph', () => {
           internalInterfaceName,
           `Missing ancestor for ${name}`,
         );
+      }
+    });
+
+    it('directly inherit from internal contracts corresponding to direct inheritances of downstream children', async () => {
+      // begin by looking up children
+
+      const externalContractNames = allEntityNames.filter((name) =>
+        EXTERNAL_CONTRACT.test(name),
+      );
+
+      // run assertions against internal interface ancestors
+
+      for (const externalContractName of externalContractNames) {
+        const name = `${externalContractName}Internal`;
+
+        const internalInterfaceNames = directAncestors[externalContractName]
+          .filter((name) => EXTERNAL_CONTRACT.test(name))
+          .map((name) => `${name}Internal`);
+
+        for (const internalInterfaceName of internalInterfaceNames) {
+          expect(directAncestors[name]).to.include(
+            internalInterfaceName,
+            `Missing ancestor for ${name}`,
+          );
+        }
       }
     });
 
