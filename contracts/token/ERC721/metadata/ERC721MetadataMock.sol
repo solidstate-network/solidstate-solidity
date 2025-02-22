@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { ERC721Metadata, ERC721MetadataStorage } from './ERC721Metadata.sol';
-import { ERC165 } from '../../../introspection/ERC165.sol';
+import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
+import { ERC721Metadata } from './ERC721Metadata.sol';
+import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 
-contract ERC721MetadataMock is ERC721Metadata, ERC165 {
+contract ERC721MetadataMock is ERC721Metadata, ERC165Base {
     constructor(
         string memory name,
         string memory symbol,

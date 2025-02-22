@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 library OwnableStorage {
     struct Layout {
@@ -15,9 +15,5 @@ library OwnableStorage {
         assembly {
             l.slot := slot
         }
-    }
-
-    function setOwner(Layout storage l, address owner) internal {
-        l.owner = owner;
     }
 }

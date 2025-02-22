@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { AddressUtils } from './AddressUtils.sol';
 
@@ -20,10 +20,10 @@ contract AddressUtilsMock {
         account.sendValue(amount);
     }
 
-    function functionCall(address target, bytes memory data)
-        external
-        returns (bytes memory)
-    {
+    function functionCall(
+        address target,
+        bytes memory data
+    ) external returns (bytes memory) {
         return target.functionCall(data);
     }
 

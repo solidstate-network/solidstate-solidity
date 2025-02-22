@@ -1,37 +1,39 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC20Permit } from '@solidstate/spec';
 import {
   ERC20PermitMock,
   ERC20PermitMock__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC20Permit', function () {
+describe('ERC20Permit', () => {
   const name = 'ERC20Metadata.name';
-  const symbol = 'ERC20Metadata.symbol';
-  const decimals = 18;
 
   let deployer: SignerWithAddress;
   let instance: ERC20PermitMock;
 
-  before(async function () {
+  before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
-    instance = await new ERC20PermitMock__factory(deployer).deploy(
-      name,
-      symbol,
-      decimals,
-    );
+  beforeEach(async () => {
+    instance = await new ERC20PermitMock__factory(deployer).deploy(name);
   });
 
   describeBehaviorOfERC20Permit(async () => instance, {
-    supply: ethers.constants.Zero,
-    mint: (recipient, amount) => instance.__mint(recipient, amount),
-    burn: (recipient, amount) => instance.__burn(recipient, amount),
-    name,
-    symbol,
-    decimals,
+    allowance: (holder, spender) =>
+      instance.allowance.staticCall(holder, spender),
+  });
+
+  describe('__internal', () => {
+    describe('#_setName(string)', () => {
+      it('invalidates cached domain separator', async () => {
+        const oldDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
+        await instance.setName(`new ${name}`);
+        const newDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
+        expect(newDomainSeparator).not.to.eq(oldDomainSeparator);
+      });
+    });
   });
 });

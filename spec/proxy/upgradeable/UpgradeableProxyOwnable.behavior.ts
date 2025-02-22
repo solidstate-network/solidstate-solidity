@@ -1,12 +1,13 @@
+import { describeBehaviorOfOwnable } from '../../access';
 import {
   describeBehaviorOfUpgradeableProxy,
   UpgradeableProxyBehaviorArgs,
 } from './UpgradeableProxy.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { IUpgradeableProxyOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 interface UpgradeableProxyOwnableArgs extends UpgradeableProxyBehaviorArgs {
@@ -16,12 +17,7 @@ interface UpgradeableProxyOwnableArgs extends UpgradeableProxyBehaviorArgs {
 
 export function describeBehaviorOfUpgradeableProxyOwnable(
   deploy: () => Promise<IUpgradeableProxyOwnable>,
-  {
-    getOwner,
-    getNonOwner,
-    implementationFunction,
-    implementationFunctionArgs,
-  }: UpgradeableProxyOwnableArgs,
+  args: UpgradeableProxyOwnableArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -33,18 +29,13 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfUpgradeableProxy(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      [],
-    );
+    describeBehaviorOfUpgradeableProxy(deploy, args, skips);
+
+    describeBehaviorOfOwnable(deploy, args, skips);
 
     describe('#setImplementation(address)', () => {
       it('updates implementation address', async () => {
@@ -55,27 +46,29 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
 
         const implementation = await deployMockContract(owner, abi);
 
-        const contract = new ethers.Contract(instance.address, abi, owner);
+        const contract = new ethers.Contract(
+          await instance.getAddress(),
+          abi,
+          owner,
+        );
 
         await expect(
-          contract.callStatic[implementationFunction](),
+          contract[implementationFunction].staticCall(),
         ).not.to.be.revertedWith('Mock on the method is not initialized');
 
         await instance.connect(owner).setImplementation(implementation.address);
 
         // call reverts, but with mock-specific message
         await expect(
-          contract.callStatic[implementationFunction](),
+          contract[implementationFunction].staticCall(),
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
 
       describe('reverts if', () => {
         it('sender is not owner', async () => {
           await expect(
-            instance
-              .connect(nonOwner)
-              .setImplementation(ethers.constants.AddressZero),
-          ).to.be.revertedWith('Ownable: sender must be owner');
+            instance.connect(nonOwner).setImplementation(ethers.ZeroAddress),
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });
     });

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { IERC20 } from '../token/ERC20/IERC20.sol';
+import { IERC20 } from '../interfaces/IERC20.sol';
 import { AddressUtils } from './AddressUtils.sol';
 
 /**
@@ -12,11 +12,11 @@ import { AddressUtils } from './AddressUtils.sol';
 library SafeERC20 {
     using AddressUtils for address;
 
-    function safeTransfer(
-        IERC20 token,
-        address to,
-        uint256 value
-    ) internal {
+    error SafeERC20__ApproveFromNonZeroToNonZero();
+    error SafeERC20__DecreaseAllowanceBelowZero();
+    error SafeERC20__OperationFailed();
+
+    function safeTransfer(IERC20 token, address to, uint256 value) internal {
         _callOptionalReturn(
             token,
             abi.encodeWithSelector(token.transfer.selector, to, value)
@@ -35,19 +35,11 @@ library SafeERC20 {
         );
     }
 
-    /**
-     * @dev safeApprove (like approve) should only be called when setting an initial allowance or when resetting it to zero; otherwise prefer safeIncreaseAllowance and safeDecreaseAllowance
-     */
     function safeApprove(
         IERC20 token,
         address spender,
         uint256 value
     ) internal {
-        require(
-            (value == 0) || (token.allowance(address(this), spender) == 0),
-            'SafeERC20: approve from non-zero to non-zero allowance'
-        );
-
         _callOptionalReturn(
             token,
             abi.encodeWithSelector(token.approve.selector, spender, value)
@@ -77,10 +69,8 @@ library SafeERC20 {
     ) internal {
         unchecked {
             uint256 oldAllowance = token.allowance(address(this), spender);
-            require(
-                oldAllowance >= value,
-                'SafeERC20: decreased allowance below zero'
-            );
+            if (oldAllowance < value)
+                revert SafeERC20__DecreaseAllowanceBelowZero();
             uint256 newAllowance = oldAllowance - value;
             _callOptionalReturn(
                 token,
@@ -105,10 +95,8 @@ library SafeERC20 {
         );
 
         if (returndata.length > 0) {
-            require(
-                abi.decode(returndata, (bool)),
-                'SafeERC20: ERC20 operation did not succeed'
-            );
+            if (!abi.decode(returndata, (bool)))
+                revert SafeERC20__OperationFailed();
         }
     }
 }

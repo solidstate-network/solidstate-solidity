@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC20ImplicitApproval } from './ERC20ImplicitApproval.sol';
 import { ERC20ImplicitApprovalStorage } from './ERC20ImplicitApprovalStorage.sol';
@@ -15,11 +15,9 @@ contract ERC20ImplicitApprovalMock is ERC20ImplicitApproval {
         }
     }
 
-    function __isImplicitlyApproved(address account)
-        external
-        view
-        returns (bool)
-    {
+    function __isImplicitlyApproved(
+        address account
+    ) external view returns (bool) {
         return _isImplicitlyApproved(account);
     }
 

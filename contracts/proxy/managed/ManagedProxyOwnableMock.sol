@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { OwnableInternal, OwnableStorage } from '../../access/ownable/OwnableInternal.sol';
 import { ManagedProxy, ManagedProxyOwnable } from './ManagedProxyOwnable.sol';
 
-contract ManagedProxyOwnableMock is ManagedProxyOwnable, OwnableInternal {
-    using OwnableStorage for OwnableStorage.Layout;
-
-    constructor(address manager, bytes4 managerSelector)
-        ManagedProxy(managerSelector)
-    {
+contract ManagedProxyOwnableMock is ManagedProxyOwnable {
+    constructor(
+        address manager,
+        bytes4 managerSelector
+    ) ManagedProxy(managerSelector) {
         setOwner(manager);
     }
 
@@ -23,11 +21,11 @@ contract ManagedProxyOwnableMock is ManagedProxyOwnable, OwnableInternal {
     }
 
     function getOwner() external view returns (address) {
-        return OwnableStorage.layout().owner;
+        return _owner();
     }
 
     function setOwner(address owner) public {
-        OwnableStorage.layout().setOwner(owner);
+        _setOwner(owner);
     }
 
     /**

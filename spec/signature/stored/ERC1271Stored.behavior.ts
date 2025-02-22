@@ -9,20 +9,20 @@ export interface ERC1271StoredBehaviorArgs {
 
 export function describeBehaviorOfERC1271Stored(
   deploy: () => Promise<IERC1271Stored>,
-  { getValidParams }: ERC1271StoredBehaviorArgs,
+  args: ERC1271StoredBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Stored', function () {
+  describe('::ERC1271Stored', () => {
     // TODO: nonstandard usage
     describeBehaviorOfERC1271Base(
       deploy,
       {
-        getValidParams,
+        ...args,
         getInvalidParams: async () => [
-          ethers.utils.randomBytes(32),
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(32),
+          ethers.randomBytes(0),
         ],
       },
       skips,

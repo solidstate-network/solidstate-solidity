@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { CloneFactory } from './CloneFactory.sol';
 
-contract CloneFactoryMock is CloneFactory {
-    function __deployClone() external returns (address cloneContract) {
-        return _deployClone();
+contract CloneFactoryMock {
+    function deployClone() external returns (address cloneContract) {
+        return CloneFactory.deployClone();
     }
 
-    function __deployClone(bytes32 salt)
-        external
-        returns (address cloneContract)
-    {
-        return _deployClone(salt);
+    function deployClone(
+        bytes32 salt
+    ) external returns (address cloneContract) {
+        return CloneFactory.deployClone(salt);
     }
 
-    function __calculateCloneDeploymentAddress(bytes32 salt)
-        external
-        view
-        returns (address)
-    {
-        return _calculateCloneDeploymentAddress(salt);
+    function calculateCloneDeploymentAddress(
+        bytes32 salt
+    ) external view returns (address) {
+        return CloneFactory.calculateCloneDeploymentAddress(salt);
     }
 }

@@ -1,21 +1,11 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   ArrayUtilsMock,
   ArrayUtilsMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-
-const bnToAddress = (bn: BigNumber) => {
-  return ethers.utils.getAddress(
-    ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 20),
-  );
-};
-
-const bnToBytes32 = (bn: BigNumber) => {
-  return ethers.utils.hexZeroPad(ethers.utils.hexlify(bn), 32);
-};
 
 describe('ArrayUtils', async () => {
   let instance: ArrayUtilsMock;
@@ -30,17 +20,17 @@ describe('ArrayUtils', async () => {
     describe('#min(bytes32[])', () => {
       it('returns the minimum bytes32 value in given array', async () => {
         expect(
-          await instance.callStatic['min(bytes32[])']([
-            bnToBytes32(ethers.constants.One),
-            bnToBytes32(ethers.constants.Zero),
-            bnToBytes32(ethers.constants.Two),
+          await instance['min(bytes32[])'].staticCall([
+            bigintToBytes32(1),
+            bigintToBytes32(0),
+            bigintToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(ethers.constants.Zero));
+        ).to.equal(bigintToBytes32(0));
       });
 
       it('returns the max bytes32 value if array is empty', async () => {
-        expect(await instance.callStatic['min(bytes32[])']([])).to.equal(
-          bnToBytes32(ethers.constants.MaxUint256),
+        expect(await instance['min(bytes32[])'].staticCall([])).to.equal(
+          bigintToBytes32(ethers.MaxUint256),
         );
       });
     });
@@ -48,35 +38,31 @@ describe('ArrayUtils', async () => {
     describe('#min(address[])', () => {
       it('returns the minimum address in given array', async () => {
         expect(
-          await instance.callStatic['min(address[])']([
-            bnToAddress(ethers.constants.One),
-            bnToAddress(ethers.constants.Zero),
-            bnToAddress(ethers.constants.Two),
+          await instance['min(address[])'].staticCall([
+            bigintToAddress(1),
+            bigintToAddress(0),
+            bigintToAddress(2),
           ]),
-        ).to.equal(bnToAddress(ethers.constants.Zero));
+        ).to.equal(bigintToAddress(0));
       });
 
       it('returns the max address if array is empty', async () => {
-        expect(await instance.callStatic['min(address[])']([])).to.equal(
-          bnToAddress(ethers.constants.Two.pow(160).sub(ethers.constants.One)),
+        expect(await instance['min(address[])'].staticCall([])).to.equal(
+          bigintToAddress(2n ** 160n - 1n),
         );
       });
     });
 
     describe('#min(uint256[])', () => {
       it('returns the minimum uint256 in given array', async () => {
-        expect(
-          await instance.callStatic['min(uint256[])']([
-            ethers.constants.One,
-            ethers.constants.Zero,
-            ethers.constants.Two,
-          ]),
-        ).to.equal(ethers.constants.Zero);
+        expect(await instance['min(uint256[])'].staticCall([1, 0, 2])).to.equal(
+          0,
+        );
       });
 
       it('returns the max uint256 if array is empty', async () => {
-        expect(await instance.callStatic['min(uint256[])']([])).to.equal(
-          ethers.constants.MaxUint256,
+        expect(await instance['min(uint256[])'].staticCall([])).to.equal(
+          ethers.MaxUint256,
         );
       });
     });
@@ -84,17 +70,17 @@ describe('ArrayUtils', async () => {
     describe('#max(bytes32[])', () => {
       it('returns the maximum bytes32 value in given array', async () => {
         expect(
-          await instance.callStatic['max(bytes32[])']([
-            bnToBytes32(ethers.constants.One),
-            bnToBytes32(ethers.constants.Zero),
-            bnToBytes32(ethers.constants.Two),
+          await instance['max(bytes32[])'].staticCall([
+            bigintToBytes32(1),
+            bigintToBytes32(0),
+            bigintToBytes32(2),
           ]),
-        ).to.equal(bnToBytes32(ethers.constants.Two));
+        ).to.equal(bigintToBytes32(2));
       });
 
       it('returns empty bytes if array is empty', async () => {
-        expect(await instance.callStatic['max(bytes32[])']([])).to.equal(
-          ethers.constants.HashZero,
+        expect(await instance['max(bytes32[])'].staticCall([])).to.equal(
+          ethers.ZeroHash,
         );
       });
     });
@@ -102,36 +88,30 @@ describe('ArrayUtils', async () => {
     describe('#max(address[])', () => {
       it('returns the maximum address in given array', async () => {
         expect(
-          await instance.callStatic['max(address[])']([
-            bnToAddress(ethers.constants.One),
-            bnToAddress(ethers.constants.Zero),
-            bnToAddress(ethers.constants.Two),
+          await instance['max(address[])'].staticCall([
+            bigintToAddress(1),
+            bigintToAddress(0),
+            bigintToAddress(2),
           ]),
-        ).to.equal(bnToAddress(ethers.constants.Two));
+        ).to.equal(bigintToAddress(2));
       });
 
       it('returns zero address if array is empty', async () => {
-        expect(await instance.callStatic['max(address[])']([])).to.equal(
-          ethers.constants.AddressZero,
+        expect(await instance['max(address[])'].staticCall([])).to.equal(
+          ethers.ZeroAddress,
         );
       });
     });
 
     describe('#max(uint256[])', () => {
       it('returns the maximum uint256 in given array', async () => {
-        expect(
-          await instance.callStatic['max(uint256[])']([
-            ethers.constants.One,
-            ethers.constants.Zero,
-            ethers.constants.Two,
-          ]),
-        ).to.equal(ethers.constants.Two);
+        expect(await instance['max(uint256[])'].staticCall([1, 0, 2])).to.equal(
+          2,
+        );
       });
 
       it('returns zero if array is empty', async () => {
-        expect(await instance.callStatic['max(uint256[])']([])).to.equal(
-          ethers.constants.Zero,
-        );
+        expect(await instance['max(uint256[])'].staticCall([])).to.equal(0);
       });
     });
   });

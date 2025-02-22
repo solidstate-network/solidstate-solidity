@@ -1,19 +1,16 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
 import { IManagedProxyOwnable } from './IManagedProxyOwnable.sol';
+import { ManagedProxyOwnableInternal } from './ManagedProxyOwnableInternal.sol';
 import { ManagedProxy } from './ManagedProxy.sol';
 
 /**
  * @title Proxy with implementation controlled by ERC171 owner
  */
-abstract contract ManagedProxyOwnable is IManagedProxyOwnable, ManagedProxy {
-    /**
-     * @inheritdoc ManagedProxy
-     */
-    function _getManager() internal view override returns (address) {
-        return OwnableStorage.layout().owner;
-    }
-}
+abstract contract ManagedProxyOwnable is
+    IManagedProxyOwnable,
+    ManagedProxyOwnableInternal,
+    ManagedProxy
+{}

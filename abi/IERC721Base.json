@@ -1,5 +1,55 @@
 [
   {
+    "inputs": [],
+    "name": "ERC721Base__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__ERC721ReceiverNotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__InvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__NonExistentToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__NotTokenOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__TokenAlreadyMinted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721Base__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -240,25 +290,6 @@
     "name": "setApprovalForAll",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceId",
-        "type": "bytes4"
-      }
-    ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

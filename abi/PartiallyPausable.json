@@ -1,0 +1,69 @@
+[
+  {
+    "inputs": [],
+    "name": "PartiallyPausable__NotPartiallyPaused",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PartiallyPausable__PartiallyPaused",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PartiallyPaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PartiallyUnpaused",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "partiallyPaused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

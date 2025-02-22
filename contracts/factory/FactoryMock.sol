@@ -1,29 +1,27 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { Factory } from './Factory.sol';
 
-contract FactoryMock is Factory {
-    function __deploy(bytes memory initCode)
-        external
-        returns (address deployment)
-    {
-        return _deploy(initCode);
+contract FactoryMock {
+    function deploy(
+        bytes memory initCode
+    ) external returns (address deployment) {
+        return Factory.deploy(initCode);
     }
 
-    function __deploy(bytes memory initCode, bytes32 salt)
-        external
-        returns (address deployment)
-    {
-        return _deploy(initCode, salt);
+    function deploy(
+        bytes memory initCode,
+        bytes32 salt
+    ) external returns (address deployment) {
+        return Factory.deploy(initCode, salt);
     }
 
-    function __calculateDeploymentAddress(bytes32 initCodeHash, bytes32 salt)
-        external
-        view
-        returns (address)
-    {
-        return _calculateDeploymentAddress(initCodeHash, salt);
+    function calculateDeploymentAddress(
+        bytes32 initCodeHash,
+        bytes32 salt
+    ) external view returns (address) {
+        return Factory.calculateDeploymentAddress(initCodeHash, salt);
     }
 }

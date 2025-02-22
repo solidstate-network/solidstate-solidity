@@ -1,27 +1,37 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
 
-import { ERC20Base } from '../base/ERC20Base.sol';
-import { ERC20Metadata } from '../metadata/ERC20Metadata.sol';
+pragma solidity ^0.8.20;
+
+import { IERC2612 } from '../../../interfaces/IERC2612.sol';
 import { ERC20PermitInternal } from './ERC20PermitInternal.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
-import { IERC2612 } from './IERC2612.sol';
 import { IERC20Permit } from './IERC20Permit.sol';
 
 /**
  * @title ERC20 extension with support for ERC2612 permits
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
-abstract contract ERC20Permit is
-    IERC20Permit,
-    ERC20PermitInternal,
-    ERC20Metadata,
-    ERC20Base
-{
+abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     /**
      * @inheritdoc IERC2612
-     * @dev If https://eips.ethereum.org/EIPS/eip-1344[ChainID] ever changes, the
-     * EIP712 Domain Separator is automatically recalculated.
+     */
+    function DOMAIN_SEPARATOR()
+        external
+        view
+        returns (bytes32 domainSeparator)
+    {
+        return _DOMAIN_SEPARATOR();
+    }
+
+    /**
+     * @inheritdoc IERC2612
+     */
+    function nonces(address owner) public view returns (uint256) {
+        return _nonces(owner);
+    }
+
+    /**
+     * @inheritdoc IERC2612
      */
     function permit(
         address owner,
@@ -33,12 +43,5 @@ abstract contract ERC20Permit is
         bytes32 s
     ) public virtual {
         _permit(owner, spender, amount, deadline, v, r, s);
-    }
-
-    /**
-     * @dev inhertidoc IERC2612
-     */
-    function nonces(address owner) public view returns (uint256) {
-        return _nonces(owner);
     }
 }

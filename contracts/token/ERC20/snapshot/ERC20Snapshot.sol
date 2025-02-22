@@ -1,25 +1,28 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { Math } from '../../../utils/Math.sol';
+import { IERC20Snapshot } from './IERC20Snapshot.sol';
 import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInternal.sol';
 
 /**
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
-abstract contract ERC20Snapshot is ERC20SnapshotInternal {
+abstract contract ERC20Snapshot is IERC20Snapshot, ERC20SnapshotInternal {
+    error ERC20Snapshot__SnapshotIdDoesNotExists();
+    error ERC20Snapshot__SnapshotIdIsZero();
+
     /**
      * @notice query the token balance of given account at given snapshot id
      * @param account address to query
      * @param snapshotId snapshot id to query
      * @return token balance
      */
-    function balanceOfAt(address account, uint256 snapshotId)
-        public
-        view
-        returns (uint256)
-    {
+    function balanceOfAt(
+        address account,
+        uint256 snapshotId
+    ) public view returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
             ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]
@@ -44,13 +47,11 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
         uint256 snapshotId,
         ERC20SnapshotStorage.Snapshots storage snapshots
     ) private view returns (bool, uint256) {
-        require(snapshotId > 0, 'ERC20Snapshot: snapshot id must not be zero');
+        if (snapshotId == 0) revert ERC20Snapshot__SnapshotIdIsZero();
         ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout();
 
-        require(
-            snapshotId <= l.snapshotId,
-            'ERC20Snapshot: snapshot id does not exist'
-        );
+        if (snapshotId > l.snapshotId)
+            revert ERC20Snapshot__SnapshotIdDoesNotExists();
 
         uint256 index = _findUpperBound(snapshots.ids, snapshotId);
 
@@ -69,11 +70,10 @@ abstract contract ERC20Snapshot is ERC20SnapshotInternal {
      * @param query element to search for
      * @return index of query or array length if query is not found or exceeded
      */
-    function _findUpperBound(uint256[] storage array, uint256 query)
-        private
-        view
-        returns (uint256)
-    {
+    function _findUpperBound(
+        uint256[] storage array,
+        uint256 query
+    ) private view returns (uint256) {
         unchecked {
             if (array.length == 0) {
                 return 0;

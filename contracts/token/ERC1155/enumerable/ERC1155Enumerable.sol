@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC1155BaseInternal } from '../base/ERC1155BaseInternal.sol';
 import { IERC1155Enumerable } from './IERC1155Enumerable.sol';
 import { ERC1155EnumerableInternal, ERC1155EnumerableStorage } from './ERC1155EnumerableInternal.sol';
@@ -34,24 +34,18 @@ abstract contract ERC1155Enumerable is
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function accountsByToken(uint256 id)
-        public
-        view
-        virtual
-        returns (address[] memory)
-    {
+    function accountsByToken(
+        uint256 id
+    ) public view virtual returns (address[] memory) {
         return _accountsByToken(id);
     }
 
     /**
      * @inheritdoc IERC1155Enumerable
      */
-    function tokensByAccount(address account)
-        public
-        view
-        virtual
-        returns (uint256[] memory)
-    {
+    function tokensByAccount(
+        address account
+    ) public view virtual returns (uint256[] memory) {
         return _tokensByAccount(account);
     }
 }

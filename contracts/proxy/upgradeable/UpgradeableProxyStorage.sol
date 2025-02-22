@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 library UpgradeableProxyStorage {
     struct Layout {
@@ -15,11 +15,5 @@ library UpgradeableProxyStorage {
         assembly {
             l.slot := slot
         }
-    }
-
-    function setImplementation(Layout storage l, address implementation)
-        internal
-    {
-        l.implementation = implementation;
     }
 }

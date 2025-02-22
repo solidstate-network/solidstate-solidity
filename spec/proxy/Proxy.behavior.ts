@@ -10,30 +10,29 @@ export interface ProxyBehaviorArgs {
 
 export function describeBehaviorOfProxy(
   deploy: () => Promise<IProxy>,
-  { implementationFunction, implementationFunctionArgs }: ProxyBehaviorArgs,
+  args: ProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::Proxy', function () {
+  describe('::Proxy', () => {
     let instance: IProxy;
 
-    beforeEach(async function () {
-      const [deployer] = await ethers.getSigners();
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('fallback()', function () {
-      it('forwards data to implementation', async function () {
-        const contract = new ethers.Contract(
-          instance.address,
-          [`function ${implementationFunction}`],
-          ethers.provider,
+    describe('fallback()', () => {
+      it('forwards data to implementation', async () => {
+        let contract = new ethers.Contract(
+          await instance.getAddress(),
+          [`function ${args.implementationFunction}`],
+          (await ethers.getSigners())[0],
         );
 
         await expect(
-          contract.callStatic[implementationFunction](
-            ...implementationFunctionArgs,
+          contract[args.implementationFunction].staticCall(
+            ...args.implementationFunctionArgs,
           ),
         ).not.to.be.reverted;
       });

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC20Base } from './ERC20Base.sol';
 
@@ -27,5 +27,13 @@ contract ERC20BaseMock is ERC20Base {
         uint256 amount
     ) external {
         _approve(holder, spender, amount);
+    }
+
+    function __decreaseAllowance(
+        address holder,
+        address spender,
+        uint256 amount
+    ) external {
+        _decreaseAllowance(holder, spender, amount);
     }
 }

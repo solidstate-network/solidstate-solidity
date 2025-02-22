@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { IERC721Internal } from '../IERC721Internal.sol';
+import { IERC721MetadataInternal } from './IERC721MetadataInternal.sol';
 
 /**
  * @title ERC721Metadata interface
  */
-interface IERC721Metadata is IERC721Internal {
+interface IERC721Metadata is IERC721MetadataInternal {
     /**
      * @notice get token name
      * @return token name

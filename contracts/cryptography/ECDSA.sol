@@ -1,24 +1,28 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 /**
  * @title Elliptic Curve Digital Signature Algorithm (ECDSA) operations
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library ECDSA {
+    error ECDSA__InvalidS();
+    error ECDSA__InvalidSignature();
+    error ECDSA__InvalidSignatureLength();
+    error ECDSA__InvalidV();
+
     /**
      * @notice recover signer of hashed message from signature
      * @param hash hashed data payload
      * @param signature signed data payload
      * @return recovered message signer
      */
-    function recover(bytes32 hash, bytes memory signature)
-        internal
-        pure
-        returns (address)
-    {
-        require(signature.length == 65, 'ECDSA: invalid signature length');
+    function recover(
+        bytes32 hash,
+        bytes memory signature
+    ) internal pure returns (address) {
+        if (signature.length != 65) revert ECDSA__InvalidSignatureLength();
 
         bytes32 r;
         bytes32 s;
@@ -56,16 +60,15 @@ library ECDSA {
         // with 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141 - s1 and flip v from 27 to 28 or
         // vice versa. If your library also generates signatures with 0/1 for v instead 27/28, add 27 to v to accept
         // these malleable signatures as well.
-        require(
-            uint256(s) <=
-                0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0,
-            "ECDSA: invalid signature 's' value"
-        );
-        require(v == 27 || v == 28, "ECDSA: invalid signature 'v' value");
+        if (
+            uint256(s) >
+            0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0
+        ) revert ECDSA__InvalidS();
+        if (v != 27 && v != 28) revert ECDSA__InvalidV();
 
         // If the signature is valid (and not malleable), return the signer address
         address signer = ecrecover(hash, v, r, s);
-        require(signer != address(0), 'ECDSA: invalid signature');
+        if (signer == address(0)) revert ECDSA__InvalidSignature();
 
         return signer;
     }
@@ -75,11 +78,9 @@ library ECDSA {
      * @param hash hashed data payload
      * @return signed message hash
      */
-    function toEthSignedMessageHash(bytes32 hash)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function toEthSignedMessageHash(
+        bytes32 hash
+    ) internal pure returns (bytes32) {
         return
             keccak256(
                 abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)

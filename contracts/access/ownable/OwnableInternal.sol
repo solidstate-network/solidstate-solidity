@@ -1,18 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
+import { IERC173 } from '../../interfaces/IERC173.sol';
+import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { IOwnableInternal } from './IOwnableInternal.sol';
 import { OwnableStorage } from './OwnableStorage.sol';
 
 abstract contract OwnableInternal is IOwnableInternal {
-    using OwnableStorage for OwnableStorage.Layout;
+    using AddressUtils for address;
 
     modifier onlyOwner() {
-        require(
-            msg.sender == OwnableStorage.layout().owner,
-            'Ownable: sender must be owner'
-        );
+        if (msg.sender != _owner()) revert Ownable__NotOwner();
+        _;
+    }
+
+    modifier onlyTransitiveOwner() {
+        if (msg.sender != _transitiveOwner())
+            revert Ownable__NotTransitiveOwner();
         _;
     }
 
@@ -20,8 +25,25 @@ abstract contract OwnableInternal is IOwnableInternal {
         return OwnableStorage.layout().owner;
     }
 
+    function _transitiveOwner() internal view virtual returns (address owner) {
+        owner = _owner();
+
+        while (owner.isContract()) {
+            try IERC173(owner).owner() returns (address transitiveOwner) {
+                owner = transitiveOwner;
+            } catch {
+                break;
+            }
+        }
+    }
+
     function _transferOwnership(address account) internal virtual {
-        OwnableStorage.layout().setOwner(account);
-        emit OwnershipTransferred(msg.sender, account);
+        _setOwner(account);
+    }
+
+    function _setOwner(address account) internal virtual {
+        OwnableStorage.Layout storage l = OwnableStorage.layout();
+        emit OwnershipTransferred(l.owner, account);
+        l.owner = account;
     }
 }

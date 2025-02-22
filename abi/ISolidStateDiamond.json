@@ -1,5 +1,70 @@
 [
   {
+    "inputs": [],
+    "name": "DiamondWritable__InvalidInitializationParameters",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__RemoveTargetNotZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__ReplaceTargetIsIdentical",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorAlreadyAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorIsImmutable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__SelectorNotSpecified",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondWritable__TargetHasNoCode",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotTransitiveOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SafeOwnable__NotNomineeOwner",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -10,7 +75,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritable.FacetCutAction",
+            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -21,7 +86,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IDiamondWritable.FacetCut[]",
+        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -81,7 +146,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritable.FacetCutAction",
+            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -91,7 +156,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IDiamondWritable.FacetCut[]",
+        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -179,7 +244,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IDiamondReadable.Facet[]",
+        "internalType": "struct IERC2535DiamondLoupeInternal.Facet[]",
         "name": "diamondFacets",
         "type": "tuple[]"
       }
@@ -193,7 +258,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "fallbackAddress",
         "type": "address"
       }
     ],

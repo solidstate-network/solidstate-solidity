@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC20Base } from '../base/ERC20Base.sol';
 import { ERC20BaseInternal } from '../base/ERC20BaseInternal.sol';
@@ -12,10 +12,13 @@ import { ERC20ImplicitApprovalInternal } from './ERC20ImplicitApprovalInternal.s
  */
 abstract contract ERC20ImplicitApproval is
     IERC20ImplicitApproval,
-    ERC20Base,
-    ERC20ImplicitApprovalInternal
+    ERC20ImplicitApprovalInternal,
+    ERC20Base
 {
-    function _allowance(address holder, address spender)
+    function _allowance(
+        address holder,
+        address spender
+    )
         internal
         view
         virtual

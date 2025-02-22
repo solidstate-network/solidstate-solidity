@@ -1,34 +1,31 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxyOwnable } from '@solidstate/spec';
 import {
+  OwnableMock__factory,
   UpgradeableProxyOwnableMock,
   UpgradeableProxyOwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-describe('UpgradeableProxyOwnable', function () {
+describe('UpgradeableProxyOwnable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: UpgradeableProxyOwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory(
-      'OwnableMock',
-    );
-    const implementationInstance = await implementationFactory.deploy(
-      ethers.constants.AddressZero,
-    );
-    await implementationInstance.deployed();
-
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
+
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(ethers.ZeroAddress);
+
     instance = await new UpgradeableProxyOwnableMock__factory(deployer).deploy(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
       owner.address,
     );
   });

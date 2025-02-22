@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { Factory } from './Factory.sol';
 
@@ -8,7 +8,7 @@ import { Factory } from './Factory.sol';
  * @title Factory for the deployment of EIP1167 minimal proxies
  * @dev derived from https://github.com/optionality/clone-factory (MIT license)
  */
-abstract contract MinimalProxyFactory is Factory {
+library MinimalProxyFactory {
     bytes private constant MINIMAL_PROXY_INIT_CODE_PREFIX =
         hex'3d602d80600a3d3981f3_363d3d373d3d3d363d73';
     bytes private constant MINIMAL_PROXY_INIT_CODE_SUFFIX =
@@ -19,11 +19,10 @@ abstract contract MinimalProxyFactory is Factory {
      * @param target implementation contract to proxy
      * @return minimalProxy address of deployed proxy
      */
-    function _deployMinimalProxy(address target)
-        internal
-        returns (address minimalProxy)
-    {
-        return _deploy(_generateMinimalProxyInitCode(target));
+    function deployMinimalProxy(
+        address target
+    ) internal returns (address minimalProxy) {
+        return Factory.deploy(generateMinimalProxyInitCode(target));
     }
 
     /**
@@ -33,11 +32,11 @@ abstract contract MinimalProxyFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return minimalProxy address of deployed proxy
      */
-    function _deployMinimalProxy(address target, bytes32 salt)
-        internal
-        returns (address minimalProxy)
-    {
-        return _deploy(_generateMinimalProxyInitCode(target), salt);
+    function deployMinimalProxy(
+        address target,
+        bytes32 salt
+    ) internal returns (address minimalProxy) {
+        return Factory.deploy(generateMinimalProxyInitCode(target), salt);
     }
 
     /**
@@ -46,13 +45,13 @@ abstract contract MinimalProxyFactory is Factory {
      * @param salt input for deterministic address calculation
      * @return deployment address
      */
-    function _calculateMinimalProxyDeploymentAddress(
+    function calculateMinimalProxyDeploymentAddress(
         address target,
         bytes32 salt
     ) internal view returns (address) {
         return
-            _calculateDeploymentAddress(
-                keccak256(_generateMinimalProxyInitCode(target)),
+            Factory.calculateDeploymentAddress(
+                keccak256(generateMinimalProxyInitCode(target)),
                 salt
             );
     }
@@ -62,11 +61,9 @@ abstract contract MinimalProxyFactory is Factory {
      * @param target implementation contract to proxy
      * @return bytes memory initialization code
      */
-    function _generateMinimalProxyInitCode(address target)
-        internal
-        pure
-        returns (bytes memory)
-    {
+    function generateMinimalProxyInitCode(
+        address target
+    ) internal pure returns (bytes memory) {
         return
             abi.encodePacked(
                 MINIMAL_PROXY_INIT_CODE_PREFIX,

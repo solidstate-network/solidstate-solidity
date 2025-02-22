@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { IERC1155Internal } from '../IERC1155Internal.sol';
+import { IERC1155EnumerableInternal } from './IERC1155EnumerableInternal.sol';
 
 /**
  * @title ERC1155 enumerable and aggregate function interface
  */
-interface IERC1155Enumerable is IERC1155Internal {
+interface IERC1155Enumerable is IERC1155EnumerableInternal {
     /**
      * @notice query total minted supply of given token
      * @param id token id to query
@@ -27,18 +27,16 @@ interface IERC1155Enumerable is IERC1155Internal {
      * @param id token id to query
      * @return list of holder addresses
      */
-    function accountsByToken(uint256 id)
-        external
-        view
-        returns (address[] memory);
+    function accountsByToken(
+        uint256 id
+    ) external view returns (address[] memory);
 
     /**
      * @notice query tokens held by given address
      * @param account address to query
      * @return list of token ids
      */
-    function tokensByAccount(address account)
-        external
-        view
-        returns (uint256[] memory);
+    function tokensByAccount(
+        address account
+    ) external view returns (uint256[] memory);
 }

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { Ownable, OwnableStorage } from './Ownable.sol';
+import { Ownable } from './Ownable.sol';
 import { ISafeOwnable } from './ISafeOwnable.sol';
 import { OwnableInternal } from './OwnableInternal.sol';
 import { SafeOwnableInternal } from './SafeOwnableInternal.sol';
@@ -10,7 +10,7 @@ import { SafeOwnableInternal } from './SafeOwnableInternal.sol';
 /**
  * @title Ownership access control based on ERC173 with ownership transfer safety check
  */
-abstract contract SafeOwnable is ISafeOwnable, Ownable, SafeOwnableInternal {
+abstract contract SafeOwnable is ISafeOwnable, SafeOwnableInternal, Ownable {
     /**
      * @inheritdoc ISafeOwnable
      */
@@ -25,11 +25,9 @@ abstract contract SafeOwnable is ISafeOwnable, Ownable, SafeOwnableInternal {
         _acceptOwnership();
     }
 
-    function _transferOwnership(address account)
-        internal
-        virtual
-        override(OwnableInternal, SafeOwnableInternal)
-    {
+    function _transferOwnership(
+        address account
+    ) internal virtual override(OwnableInternal, SafeOwnableInternal) {
         super._transferOwnership(account);
     }
 }

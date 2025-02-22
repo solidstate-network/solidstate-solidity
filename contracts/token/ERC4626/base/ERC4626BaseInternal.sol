@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
+import { IERC20 } from '../../../interfaces/IERC20.sol';
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
-import { IERC20 } from '../../ERC20/IERC20.sol';
 import { ERC20BaseInternal } from '../../ERC20/base/ERC20BaseInternal.sol';
-import { IERC4626Internal } from '../IERC4626Internal.sol';
+import { ERC20MetadataInternal } from '../../ERC20/metadata/ERC20MetadataInternal.sol';
+import { IERC4626BaseInternal } from './IERC4626BaseInternal.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base ERC4626 internal functions
  */
-abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
+abstract contract ERC4626BaseInternal is
+    IERC4626BaseInternal,
+    ERC20BaseInternal,
+    ERC20MetadataInternal
+{
     using SafeERC20 for IERC20;
 
     /**
@@ -33,12 +38,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param assetAmount quantity of assets to convert
      * @return shareAmount quantity of shares calculated
      */
-    function _convertToShares(uint256 assetAmount)
-        internal
-        view
-        virtual
-        returns (uint256 shareAmount)
-    {
+    function _convertToShares(
+        uint256 assetAmount
+    ) internal view virtual returns (uint256 shareAmount) {
         uint256 supply = _totalSupply();
 
         if (supply == 0) {
@@ -58,12 +60,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param shareAmount quantity of shares to convert
      * @return assetAmount quantity of assets calculated
      */
-    function _convertToAssets(uint256 shareAmount)
-        internal
-        view
-        virtual
-        returns (uint256 assetAmount)
-    {
+    function _convertToAssets(
+        uint256 shareAmount
+    ) internal view virtual returns (uint256 assetAmount) {
         uint256 supply = _totalSupply();
 
         if (supply == 0) {
@@ -78,12 +77,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @dev unused address param represents recipient of shares resulting from deposit
      * @return maxAssets maximum asset deposit amount
      */
-    function _maxDeposit(address)
-        internal
-        view
-        virtual
-        returns (uint256 maxAssets)
-    {
+    function _maxDeposit(
+        address
+    ) internal view virtual returns (uint256 maxAssets) {
         maxAssets = type(uint256).max;
     }
 
@@ -92,12 +88,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @dev unused address param represents recipient of shares resulting from deposit
      * @return maxShares maximum share mint amount
      */
-    function _maxMint(address)
-        internal
-        view
-        virtual
-        returns (uint256 maxShares)
-    {
+    function _maxMint(
+        address
+    ) internal view virtual returns (uint256 maxShares) {
         maxShares = type(uint256).max;
     }
 
@@ -106,12 +99,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param owner holder of shares to be redeemed
      * @return maxAssets maximum asset mint amount
      */
-    function _maxWithdraw(address owner)
-        internal
-        view
-        virtual
-        returns (uint256 maxAssets)
-    {
+    function _maxWithdraw(
+        address owner
+    ) internal view virtual returns (uint256 maxAssets) {
         maxAssets = _convertToAssets(_balanceOf(owner));
     }
 
@@ -120,12 +110,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param owner holder of shares to be redeemed
      * @return maxShares maximum share redeem amount
      */
-    function _maxRedeem(address owner)
-        internal
-        view
-        virtual
-        returns (uint256 maxShares)
-    {
+    function _maxRedeem(
+        address owner
+    ) internal view virtual returns (uint256 maxShares) {
         maxShares = _balanceOf(owner);
     }
 
@@ -134,12 +121,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param assetAmount quantity of assets to deposit
      * @return shareAmount quantity of shares to mint
      */
-    function _previewDeposit(uint256 assetAmount)
-        internal
-        view
-        virtual
-        returns (uint256 shareAmount)
-    {
+    function _previewDeposit(
+        uint256 assetAmount
+    ) internal view virtual returns (uint256 shareAmount) {
         shareAmount = _convertToShares(assetAmount);
     }
 
@@ -148,12 +132,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param shareAmount quantity of shares to mint
      * @return assetAmount quantity of assets to deposit
      */
-    function _previewMint(uint256 shareAmount)
-        internal
-        view
-        virtual
-        returns (uint256 assetAmount)
-    {
+    function _previewMint(
+        uint256 shareAmount
+    ) internal view virtual returns (uint256 assetAmount) {
         uint256 supply = _totalSupply();
 
         if (supply == 0) {
@@ -168,12 +149,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param assetAmount quantity of assets to withdraw
      * @return shareAmount quantity of shares to redeem
      */
-    function _previewWithdraw(uint256 assetAmount)
-        internal
-        view
-        virtual
-        returns (uint256 shareAmount)
-    {
+    function _previewWithdraw(
+        uint256 assetAmount
+    ) internal view virtual returns (uint256 shareAmount) {
         uint256 supply = _totalSupply();
 
         if (supply == 0) {
@@ -196,12 +174,9 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param shareAmount quantity of shares to redeem
      * @return assetAmount quantity of assets to withdraw
      */
-    function _previewRedeem(uint256 shareAmount)
-        internal
-        view
-        virtual
-        returns (uint256 assetAmount)
-    {
+    function _previewRedeem(
+        uint256 shareAmount
+    ) internal view virtual returns (uint256 assetAmount) {
         assetAmount = _convertToAssets(shareAmount);
     }
 
@@ -211,15 +186,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param receiver recipient of shares resulting from deposit
      * @return shareAmount quantity of shares to mint
      */
-    function _deposit(uint256 assetAmount, address receiver)
-        internal
-        virtual
-        returns (uint256 shareAmount)
-    {
-        require(
-            assetAmount <= _maxDeposit(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+    function _deposit(
+        uint256 assetAmount,
+        address receiver
+    ) internal virtual returns (uint256 shareAmount) {
+        if (assetAmount > _maxDeposit(receiver))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -232,15 +204,12 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
      * @param receiver recipient of shares resulting from deposit
      * @return assetAmount quantity of assets to deposit
      */
-    function _mint(uint256 shareAmount, address receiver)
-        internal
-        virtual
-        returns (uint256 assetAmount)
-    {
-        require(
-            shareAmount <= _maxMint(receiver),
-            'ERC4626: maximum amount exceeded'
-        );
+    function _mint(
+        uint256 shareAmount,
+        address receiver
+    ) internal virtual returns (uint256 assetAmount) {
+        if (shareAmount > _maxMint(receiver))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -259,10 +228,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address receiver,
         address owner
     ) internal virtual returns (uint256 shareAmount) {
-        require(
-            assetAmount <= _maxWithdraw(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (assetAmount > _maxWithdraw(owner))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -281,10 +248,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         address receiver,
         address owner
     ) internal virtual returns (uint256 assetAmount) {
-        require(
-            shareAmount <= _maxRedeem(owner),
-            'ERC4626: maximum amount exceeded'
-        );
+        if (shareAmount > _maxRedeem(owner))
+            revert ERC4626Base__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -377,10 +342,8 @@ abstract contract ERC4626BaseInternal is IERC4626Internal, ERC20BaseInternal {
         if (caller != owner) {
             uint256 allowance = _allowance(owner, caller);
 
-            require(
-                allowance >= shareAmount,
-                'ERC4626: share amount exceeds allowance'
-            );
+            if (shareAmount > allowance)
+                revert ERC4626Base__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);

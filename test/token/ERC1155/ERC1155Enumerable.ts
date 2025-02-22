@@ -5,10 +5,10 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC1155Enumerable', function () {
+describe('ERC1155Enumerable', () => {
   let instance: ERC1155EnumerableMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC1155EnumerableMock__factory(deployer).deploy();
   });
@@ -17,12 +17,12 @@ describe('ERC1155Enumerable', function () {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)
-        ['safeTransferFrom(address,address,uint256,uint256,bytes)'](
+        .safeTransferFrom(
           from.address,
           to.address,
           tokenId,
           amount,
-          ethers.utils.randomBytes(0),
+          ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
       instance.__mint(recipient, tokenId, amount),

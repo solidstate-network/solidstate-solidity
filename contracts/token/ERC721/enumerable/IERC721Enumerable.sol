@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-interface IERC721Enumerable {
+import { IERC721EnumerableInternal } from './ERC721EnumerableInternal.sol';
+
+interface IERC721Enumerable is IERC721EnumerableInternal {
     /**
      * @notice get total token supply
      * @return total supply
@@ -15,18 +17,17 @@ interface IERC721Enumerable {
      * @param index position in owner's token list to query
      * @return tokenId id of retrieved token
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index)
-        external
-        view
-        returns (uint256 tokenId);
+    function tokenOfOwnerByIndex(
+        address owner,
+        uint256 index
+    ) external view returns (uint256 tokenId);
 
     /**
      * @notice get token at given internal storage index
      * @param index position in global token list to query
      * @return tokenId id of retrieved token
      */
-    function tokenByIndex(uint256 index)
-        external
-        view
-        returns (uint256 tokenId);
+    function tokenByIndex(
+        uint256 index
+    ) external view returns (uint256 tokenId);
 }

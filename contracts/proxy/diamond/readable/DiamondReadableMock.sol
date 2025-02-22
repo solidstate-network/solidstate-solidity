@@ -1,26 +1,24 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { ERC165, IERC165, ERC165Storage } from '../../../introspection/ERC165.sol';
-import { DiamondBase, DiamondBaseStorage } from '../base/DiamondBase.sol';
-import { IDiamondWritable } from '../writable/IDiamondWritable.sol';
-import { DiamondReadable, IDiamondReadable } from './DiamondReadable.sol';
+import { IERC165 } from '../../../interfaces/IERC165.sol';
+import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
+import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
+import { DiamondBase } from '../base/DiamondBase.sol';
+import { DiamondWritableInternal } from '../writable/DiamondWritableInternal.sol';
+import { DiamondReadable } from './DiamondReadable.sol';
 
-contract DiamondReadableMock is DiamondBase, DiamondReadable, ERC165 {
-    using DiamondBaseStorage for DiamondBaseStorage.Layout;
-    using ERC165Storage for ERC165Storage.Layout;
-
-    constructor(IDiamondWritable.FacetCut[] memory cuts) {
-        DiamondBaseStorage.layout().diamondCut(cuts, address(0), '');
-        ERC165Storage.layout().setSupportedInterface(
-            type(IERC165).interfaceId,
-            true
-        );
-        ERC165Storage.layout().setSupportedInterface(
-            type(IDiamondReadable).interfaceId,
-            true
-        );
+contract DiamondReadableMock is
+    DiamondBase,
+    DiamondReadable,
+    DiamondWritableInternal,
+    ERC165Base
+{
+    constructor(FacetCut[] memory cuts) {
+        _diamondCut(cuts, address(0), '');
+        _setSupportsInterface(type(IERC165).interfaceId, true);
+        _setSupportsInterface(type(IERC2535DiamondLoupe).interfaceId, true);
     }
 
     /**

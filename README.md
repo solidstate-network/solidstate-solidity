@@ -1,7 +1,5 @@
 # SolidState Solidity
 
-> A version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
-
 SolidState is an upgradeable-first Solidity smart contract development library.
 
 It consists of the following packages:
@@ -19,7 +17,7 @@ All contracts are designed to either be deployed through the standard `construct
 
 ### Spec
 
-Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts. This is to help prevent unintended changes to to the base contract behavior.
+Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts. This is to help prevent unintended changes to the base contract behavior.
 
 For example, consider a custom `ERC20Base` implementation:
 
@@ -29,26 +27,25 @@ import '@solidstate/contracts/token/ERC20/base/ERC20Base.sol';
 contract CustomToken is ERC20Base {
   // custom code...
 }
-
 ```
 
 Rather than rewrite the `ERC20Base` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
 
 ```javascript
-describe('CustomToken', function () {
+describe('CustomToken', () => {
   let instance;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const factory = await ethers.getContractFactory('CustomToken');
     instance = await factory.deploy();
     await instance.deployed();
   });
 
   describeBehaviorOfERC20Base(
+    async () => instance,
     {
-      deploy: () => instance,
-    },
-    [],
+      args: ...,
+    }
   );
 
   // custom tests...
@@ -59,13 +56,14 @@ If parts of the base implementation are changed intentionally, tests can be sele
 
 ```javascript
 describeBehaviorOfERC20Base(
+  async () => instance,
   {
-    deploy: () => instance,
+    args: ...
   },
   ['#balanceOf'],
 );
 
-describe('#balanceOf', function () {
+describe('#balanceOf', () => {
   // custom tests
 });
 ```
@@ -82,12 +80,6 @@ Setup Husky to format code on commit:
 
 ```bash
 yarn prepare
-```
-
-Link local packages and install remaining dependencies via Lerna:
-
-```bash
-yarn run lerna bootstrap
 ```
 
 Compile contracts via Hardhat:
@@ -123,9 +115,3 @@ Publish packages via Lerna:
 ```bash
 yarn lerna-publish
 ```
-
-## Sponsors
-
-[<img src="./premia-logo.svg" alt="premia.finance" width="200">](https://premia.finance)
-
-[<img src="./frexa-logo.svg" alt="frexa.io" width="200">](https://frexa.io)

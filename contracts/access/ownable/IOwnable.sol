@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { IERC173 } from '../IERC173.sol';
+import { IERC173 } from '../../interfaces/IERC173.sol';
+import { IOwnableInternal } from './IOwnableInternal.sol';
 
-interface IOwnable is IERC173 {}
+interface IOwnable is IOwnableInternal, IERC173 {}

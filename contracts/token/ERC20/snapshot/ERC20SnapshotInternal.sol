@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC20BaseInternal } from '../base/ERC20Base.sol';
+import { IERC20SnapshotInternal } from './IERC20SnapshotInternal.sol';
 import { ERC20SnapshotStorage } from './ERC20SnapshotStorage.sol';
 
 /**
  * @title ERC20Snapshot internal functions
  */
-abstract contract ERC20SnapshotInternal is ERC20BaseInternal {
+abstract contract ERC20SnapshotInternal is
+    IERC20SnapshotInternal,
+    ERC20BaseInternal
+{
     event Snapshot(uint256 id);
 
     function _snapshot() internal virtual returns (uint256) {
@@ -47,11 +51,9 @@ abstract contract ERC20SnapshotInternal is ERC20BaseInternal {
         }
     }
 
-    function _lastSnapshotId(uint256[] storage ids)
-        private
-        view
-        returns (uint256)
-    {
+    function _lastSnapshotId(
+        uint256[] storage ids
+    ) private view returns (uint256) {
         return ids.length == 0 ? 0 : ids[ids.length - 1];
     }
 

@@ -2,14 +2,15 @@ import {
   describeBehaviorOfSafeOwnable,
   SafeOwnableBehaviorArgs,
 } from '../../access';
-import {
-  describeBehaviorOfERC165,
-  ERC165BehaviorArgs,
-} from '../../introspection';
+import { describeBehaviorOfERC165Base } from '../../introspection';
 import {
   describeBehaviorOfDiamondBase,
   DiamondBaseBehaviorArgs,
 } from './base/DiamondBase.behavior';
+import {
+  describeBehaviorOfDiamondFallback,
+  DiamondFallbackBehaviorArgs,
+} from './fallback/DiamondFallback.behavior';
 import {
   describeBehaviorOfDiamondReadable,
   DiamondReadableBehaviorArgs,
@@ -18,79 +19,56 @@ import {
   describeBehaviorOfDiamondWritable,
   DiamondWritableBehaviorArgs,
 } from './writable/DiamondWritable.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { ISolidStateDiamond } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
 export interface SolidStateDiamondBehaviorArgs
   extends DiamondBaseBehaviorArgs,
+    DiamondFallbackBehaviorArgs,
     DiamondReadableBehaviorArgs,
     DiamondWritableBehaviorArgs,
-    SafeOwnableBehaviorArgs {
-  fallbackAddress: string;
-}
+    SafeOwnableBehaviorArgs {}
 
 export function describeBehaviorOfSolidStateDiamond(
   deploy: () => Promise<ISolidStateDiamond>,
-  {
-    getOwner,
-    getNomineeOwner,
-    getNonOwner,
-    implementationFunction,
-    implementationFunctionArgs,
-    facetCuts,
-    fallbackAddress,
-  }: SolidStateDiamondBehaviorArgs,
+  args: SolidStateDiamondBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidStateDiamond', function () {
+  describe('::SolidStateDiamond', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
     let instance: ISolidStateDiamond;
 
-    before(async function () {
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+    before(async () => {
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondBase(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondBase(deploy, args, skips);
 
-    describeBehaviorOfDiamondReadable(
-      deploy,
-      {
-        facetCuts,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondFallback(deploy, args, [
+      '::DiamondBase',
+      '::Ownable',
+      ...(skips ?? []),
+    ]);
 
-    describeBehaviorOfDiamondWritable(
-      deploy,
-      {
-        getOwner,
-        getNonOwner,
-      },
-      skips,
-    );
+    describeBehaviorOfDiamondReadable(deploy, args, skips);
+
+    describeBehaviorOfDiamondWritable(deploy, args, skips);
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165(
+    describeBehaviorOfERC165Base(
       deploy as any,
       {
         interfaceIds: ['0x7f5828d0'],
@@ -98,79 +76,32 @@ export function describeBehaviorOfSolidStateDiamond(
       skips,
     );
 
-    describeBehaviorOfSafeOwnable(
-      deploy,
-      {
-        getOwner,
-        getNomineeOwner,
-        getNonOwner,
-      },
-      skips,
-    );
+    describeBehaviorOfSafeOwnable(deploy, args, skips);
 
-    describe('receive()', function () {
-      it('accepts ether transfer', async function () {
-        let [signer] = await ethers.getSigners();
-        let value = ethers.constants.One;
+    describe('receive()', () => {
+      it('accepts ether transfer', async () => {
+        const [signer] = await ethers.getSigners();
+        const value = 1;
+        const to = await instance.getAddress();
 
         await expect(() =>
-          signer.sendTransaction({ to: instance.address, value }),
+          signer.sendTransaction({ to, value }),
         ).to.changeEtherBalance(instance, value);
       });
     });
 
-    describe('#getFallbackAddress()', function () {
-      it('returns the fallback address', async function () {
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
-          fallbackAddress,
-        );
-      });
-    });
-
-    describe('#setFallbackAddress(address)', function () {
-      it('updates the fallback address', async function () {
-        const fallback = await deployMockContract(owner, []);
-
-        await instance
-          .connect(owner)
-          ['setFallbackAddress(address)'](fallback.address);
-
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
-          fallback.address,
-        );
-
-        // call reverts, but with mock-specific message
-        await expect(
-          owner.call({
-            to: instance.address,
-            data: ethers.utils.randomBytes(4),
-          }),
-        ).to.be.revertedWith('Mock on the method is not initialized');
-      });
-
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
-          await expect(
-            instance
-              .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
-          ).to.be.revertedWith('Ownable: sender must be owner');
-        });
-      });
-    });
-
-    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
+    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       const selectors: string[] = [];
       const abi: string[] = [];
-      let facet: MockContract;
+      let facet: any;
 
-      before(async function () {
+      before(async () => {
         for (let i = 0; i < 24; i++) {
           const fn = `fn${i}()`;
           abi.push(`function ${fn}`);
           selectors.push(
-            ethers.utils.hexDataSlice(
-              ethers.utils.solidityKeccak256(['string'], [fn]),
+            ethers.dataSlice(
+              ethers.solidityPackedKeccak256(['string'], [fn]),
               0,
               4,
             ),
@@ -180,7 +111,7 @@ export function describeBehaviorOfSolidStateDiamond(
         facet = await deployMockContract(owner, abi);
       });
 
-      it('adds selectors one-by-one', async function () {
+      it('adds selectors one-by-one', async () => {
         const expectedSelectors = [];
 
         for (let selector of selectors) {
@@ -188,7 +119,7 @@ export function describeBehaviorOfSolidStateDiamond(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors: [selector] }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -196,32 +127,37 @@ export function describeBehaviorOfSolidStateDiamond(
 
           // call reverts, but with mock-specific message
           await expect(
-            owner.call({ to: instance.address, data: selector }),
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
           ).to.be.revertedWith('Mock on the method is not initialized');
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members([
-            ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members([
+            ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
             [facet.address, expectedSelectors],
           ]);
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(facet.address);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            facet.address,
+          );
         }
       });
 
-      it('removes selectors one-by-one in ascending order of addition', async function () {
+      it('removes selectors one-by-one in ascending order of addition', async () => {
         await instance
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -231,12 +167,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -251,41 +187,50 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
-      it('removes selectors one-by-one in descending order of addition', async function () {
+      it('removes selectors one-by-one in descending order of addition', async () => {
         await instance
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -295,12 +240,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -315,41 +260,50 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
-          expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
         }
       });
 
-      it('removes selectors one-by-one in random order', async function () {
+      it('removes selectors one-by-one in random order', async () => {
         await instance
           .connect(owner)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -359,12 +313,12 @@ export function describeBehaviorOfSolidStateDiamond(
           await instance.connect(owner).diamondCut(
             [
               {
-                target: ethers.constants.AddressZero,
+                target: ethers.ZeroAddress,
                 action: 2,
                 selectors: [selector],
               },
             ],
-            ethers.constants.AddressZero,
+            ethers.ZeroAddress,
             '0x',
           );
 
@@ -379,32 +333,138 @@ export function describeBehaviorOfSolidStateDiamond(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.call({ to: instance.address, data: last }),
+              owner.sendTransaction({
+                to: await instance.getAddress(),
+                data: last,
+              }),
             ).to.be.revertedWith('Mock on the method is not initialized');
           }
 
           await expect(
-            owner.call({ to: instance.address, data: selector }),
-          ).to.be.revertedWith(
-            'DiamondBase: no facet found for function signature',
+            owner.sendTransaction({
+              to: await instance.getAddress(),
+              data: selector,
+            }),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Proxy__ImplementationIsNotContract',
           );
 
-          expect(await instance.callStatic['facets()']()).to.have.deep.members(
+          expect(
+            Array.from(await instance.facets.staticCall()),
+          ).to.have.deep.members(
             [
-              ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+              ...args.facetCuts.map((fc) => [fc.target, fc.selectors]),
               [facet.address, expectedSelectors],
             ].filter((f) => f[1].length),
           );
 
           expect(
-            await instance.callStatic['facetFunctionSelectors(address)'](
-              facet.address,
+            Array.from(
+              await instance.facetFunctionSelectors.staticCall(facet.address),
             ),
           ).to.have.deep.members(expectedSelectors);
 
+          expect(await instance.facetAddress.staticCall(selector)).to.equal(
+            ethers.ZeroAddress,
+          );
+        }
+      });
+
+      describe('removing 0x00000000 does not disrupt selector tracking', () => {
+        it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+          const payableSelector = '0x00000000';
+
+          const existingSelectors = await instance.facets();
+
+          const selectorCount = existingSelectors.reduce((acc, x) => {
+            return acc + x.selectors.length;
+          }, 0);
+
+          const numberOfSelectorsToAdd = selectorCount % 8;
+
+          const selectors = [];
+          for (let i = 0; i < numberOfSelectorsToAdd; i++) {
+            selectors.push(ethers.hexlify(ethers.randomBytes(4)));
+          }
+
+          selectors.push(payableSelector);
+
+          await instance.diamondCut(
+            [
+              {
+                action: 0,
+                selectors: selectors,
+                target: facet.address,
+              },
+            ],
+            ethers.ZeroAddress,
+            '0x',
+          );
+
+          await instance.diamondCut(
+            [
+              {
+                action: 2,
+                selectors: [payableSelector],
+                target: ethers.ZeroAddress,
+              },
+            ],
+            ethers.ZeroAddress,
+            '0x',
+          );
+
           expect(
-            await instance.callStatic['facetAddress(bytes4)'](selector),
-          ).to.equal(ethers.constants.AddressZero);
+            await instance.facetFunctionSelectors(facet.address),
+            'missing selector',
+          ).to.deep.eq(selectors.filter((x) => x != payableSelector));
+        });
+
+        // This loop of tests fuzzes the fix, it adds the payable(0x00000000) selector to every selectorSlotIndex, removes it and checks all other selectors a unaffected
+        for (
+          let numberOfSelectorsToAdd = 0;
+          numberOfSelectorsToAdd < 10;
+          numberOfSelectorsToAdd++
+        ) {
+          it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+            const payableSelector = '0x00000000';
+
+            const selectors = [];
+            for (let i = 0; i < numberOfSelectorsToAdd; i++) {
+              selectors.push(ethers.hexlify(ethers.randomBytes(4)));
+            }
+
+            selectors.push(payableSelector);
+
+            await instance.diamondCut(
+              [
+                {
+                  action: 0,
+                  selectors: selectors,
+                  target: facet.address,
+                },
+              ],
+              ethers.ZeroAddress,
+              '0x',
+            );
+
+            await instance.diamondCut(
+              [
+                {
+                  action: 2,
+                  selectors: [payableSelector],
+                  target: ethers.ZeroAddress,
+                },
+              ],
+              ethers.ZeroAddress,
+              '0x',
+            );
+
+            expect(
+              await instance.facetFunctionSelectors(facet.address),
+              'missing selector',
+            ).to.deep.eq(selectors.filter((x) => x != payableSelector));
+          });
         }
       });
     });

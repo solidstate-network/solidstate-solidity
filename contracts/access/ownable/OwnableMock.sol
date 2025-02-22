@@ -1,13 +1,35 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { Ownable, OwnableStorage } from './Ownable.sol';
+import { Ownable } from './Ownable.sol';
 
 contract OwnableMock is Ownable {
-    using OwnableStorage for OwnableStorage.Layout;
-
     constructor(address owner) {
-        OwnableStorage.layout().setOwner(owner);
+        _setOwner(owner);
+    }
+
+    function modifier_onlyOwner() external onlyOwner {
+        // do nothing
+    }
+
+    function modifier_onlyTransitiveOwner() external onlyTransitiveOwner {
+        // do nothing
+    }
+
+    function __transferOwnership(address owner) external {
+        _transferOwnership(owner);
+    }
+
+    function __setOwner(address owner) external {
+        _setOwner(owner);
+    }
+
+    function __owner() external view returns (address) {
+        return _owner();
+    }
+
+    function __transitiveOwner() external view returns (address) {
+        return _transitiveOwner();
     }
 }

@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { OwnableStorage } from '../../access/ownable/OwnableStorage.sol';
-import { ECDSA } from '../../cryptography/ECDSA.sol';
 import { ERC1271Base } from '../base/ERC1271Base.sol';
 import { IERC1271Ownable } from './IERC1271Ownable.sol';
 import { ERC1271OwnableInternal } from './ERC1271OwnableInternal.sol';
@@ -13,8 +11,6 @@ import { ERC1271OwnableInternal } from './ERC1271OwnableInternal.sol';
  */
 abstract contract ERC1271Ownable is
     IERC1271Ownable,
-    ERC1271Base,
-    ERC1271OwnableInternal
-{
-
-}
+    ERC1271OwnableInternal,
+    ERC1271Base
+{}

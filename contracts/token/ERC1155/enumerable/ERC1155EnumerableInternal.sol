@@ -1,15 +1,19 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { EnumerableSet } from '../../../utils/EnumerableSet.sol';
+import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC1155BaseInternal, ERC1155BaseStorage } from '../base/ERC1155BaseInternal.sol';
+import { IERC1155EnumerableInternal } from './IERC1155EnumerableInternal.sol';
 import { ERC1155EnumerableStorage } from './ERC1155EnumerableStorage.sol';
 
 /**
  * @title ERC1155Enumerable internal functions
  */
-abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
+abstract contract ERC1155EnumerableInternal is
+    IERC1155EnumerableInternal,
+    ERC1155BaseInternal
+{
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -36,12 +40,9 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
      * @param id token id to query
      * @return list of holder addresses
      */
-    function _accountsByToken(uint256 id)
-        internal
-        view
-        virtual
-        returns (address[] memory)
-    {
+    function _accountsByToken(
+        uint256 id
+    ) internal view virtual returns (address[] memory) {
         EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
             .layout()
             .accountsByToken[id];
@@ -62,12 +63,9 @@ abstract contract ERC1155EnumerableInternal is ERC1155BaseInternal {
      * @param account address to query
      * @return list of token ids
      */
-    function _tokensByAccount(address account)
-        internal
-        view
-        virtual
-        returns (uint256[] memory)
-    {
+    function _tokensByAccount(
+        address account
+    ) internal view virtual returns (uint256[] memory) {
         EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
             .layout()
             .tokensByAccount[account];

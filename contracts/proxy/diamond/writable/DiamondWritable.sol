@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
-import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { IERC2535DiamondCut } from '../../../interfaces/IERC2535DiamondCut.sol';
 import { IDiamondWritable } from './IDiamondWritable.sol';
+import { DiamondWritableInternal } from './DiamondWritableInternal.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy update contract
  */
-abstract contract DiamondWritable is IDiamondWritable, OwnableInternal {
-    using DiamondBaseStorage for DiamondBaseStorage.Layout;
-
+abstract contract DiamondWritable is IDiamondWritable, DiamondWritableInternal {
     /**
-     * @inheritdoc IDiamondWritable
+     * @inheritdoc IERC2535DiamondCut
      */
     function diamondCut(
         FacetCut[] calldata facetCuts,
         address target,
         bytes calldata data
     ) external onlyOwner {
-        DiamondBaseStorage.layout().diamondCut(facetCuts, target, data);
+        _diamondCut(facetCuts, target, data);
     }
 }

@@ -1,27 +1,24 @@
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
+  OwnableMock__factory,
   UpgradeableProxyMock,
   UpgradeableProxyMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { deployMockContract } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 
-describe('UpgradeableProxy', function () {
+describe('UpgradeableProxy', () => {
   let instance: UpgradeableProxyMock;
 
-  beforeEach(async function () {
-    const implementationFactory = await ethers.getContractFactory(
-      'OwnableMock',
-    );
-    const implementationInstance = await implementationFactory.deploy(
-      ethers.constants.AddressZero,
-    );
-    await implementationInstance.deployed();
-
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
+
+    const implementationInstance = await new OwnableMock__factory(
+      deployer,
+    ).deploy(ethers.ZeroAddress);
+
     instance = await new UpgradeableProxyMock__factory(deployer).deploy(
-      implementationInstance.address,
+      await implementationInstance.getAddress(),
     );
   });
 
@@ -30,25 +27,25 @@ describe('UpgradeableProxy', function () {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', function () {
-    describe('#_getImplementation()', function () {
-      it('returns implementation address', async function () {
-        expect(await instance.callStatic.__getImplementation()).to.be
+  describe('__internal', () => {
+    describe('#_getImplementation()', () => {
+      it('returns implementation address', async () => {
+        expect(await instance.__getImplementation.staticCall()).to.be
           .properAddress;
       });
     });
 
-    describe('#_setImplementation(address)', function () {
-      it('updates implementation address', async function () {
-        const address = instance.address;
+    describe('#_setImplementation(address)', () => {
+      it('updates implementation address', async () => {
+        const address = await instance.getAddress();
 
-        expect(await instance.callStatic.__getImplementation()).not.to.equal(
+        expect(await instance.__getImplementation.staticCall()).not.to.equal(
           address,
         );
 
         await instance.__setImplementation(address);
 
-        expect(await instance.callStatic.__getImplementation()).to.equal(
+        expect(await instance.__getImplementation.staticCall()).to.equal(
           address,
         );
       });

@@ -1,15 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC1404Base } from './ERC1404Base.sol';
-import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
 
 contract ERC1404BaseMock is ERC1404Base {
-    using ERC1404BaseStorage for ERC1404BaseStorage.Layout;
-
     constructor(uint8[] memory errorCodes, string[] memory errorMessages) {
-        ERC1404BaseStorage.layout().setRestrictions(errorCodes, errorMessages);
+        _setRestrictions(errorCodes, errorMessages);
     }
 
     function _detectTransferRestriction(

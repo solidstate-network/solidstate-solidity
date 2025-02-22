@@ -1,18 +1,17 @@
-import '@nomiclabs/hardhat-waffle';
+import '@nomicfoundation/hardhat-chai-matchers';
+import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
-import fs from 'fs';
 import 'hardhat-abi-exporter';
 import 'hardhat-contract-sizer';
 import 'hardhat-gas-reporter';
+import 'hardhat-linearization';
 import 'hardhat-spdx-license-identifier';
-import { task } from 'hardhat/config';
-import path from 'path';
 import 'solidity-coverage';
 
 export default {
   solidity: {
-    version: '0.8.14',
+    version: '0.8.25',
     settings: {
       optimizer: {
         enabled: true,
@@ -30,14 +29,11 @@ export default {
 
   gasReporter: {
     enabled: true,
+    reportPureAndViewMethods: true,
   },
 
   spdxLicenseIdentifier: {
     overwrite: false,
     runOnCompile: true,
-  },
-
-  typechain: {
-    alwaysGenerateOverloads: true,
   },
 };

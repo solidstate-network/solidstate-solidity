@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ERC1271Base } from '../base/ERC1271Base.sol';
 import { IERC1271Stored } from './IERC1271Stored.sol';
@@ -11,8 +11,6 @@ import { ERC1271StoredInternal } from './ERC1271StoredInternal.sol';
  */
 abstract contract ERC1271Stored is
     IERC1271Stored,
-    ERC1271Base,
-    ERC1271StoredInternal
-{
-
-}
+    ERC1271StoredInternal,
+    ERC1271Base
+{}

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
+import { ERC20MetadataStorage } from '../ERC20/metadata/ERC20MetadataStorage.sol';
 import { SolidStateERC4626 } from './SolidStateERC4626.sol';
 import { ERC4626BaseStorage } from './base/ERC4626BaseStorage.sol';
 
 contract SolidStateERC4626Mock is SolidStateERC4626 {
-    using ERC4626BaseStorage for ERC4626BaseStorage.Layout;
-
     event AfterDepositCheck(
         address receiver,
         uint256 assetAmount,
@@ -19,11 +18,18 @@ contract SolidStateERC4626Mock is SolidStateERC4626 {
         uint256 shareAmount
     );
 
-    constructor(address asset) {
-        ERC4626BaseStorage.Layout storage ERC4626Layout = ERC4626BaseStorage
-            .layout();
+    constructor(
+        address asset,
+        string memory name,
+        string memory symbol,
+        uint8 decimals
+    ) {
+        ERC4626BaseStorage.layout().asset = asset;
 
-        ERC4626Layout.asset = asset;
+        ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage.layout();
+        l.name = name;
+        l.symbol = symbol;
+        l.decimals = decimals;
     }
 
     function _totalAssets() internal view override returns (uint256) {

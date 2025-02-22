@@ -1,36 +1,37 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { MinimalProxyFactory } from './MinimalProxyFactory.sol';
 
-contract MinimalProxyFactoryMock is MinimalProxyFactory {
-    function __deployMinimalProxy(address target)
-        external
-        returns (address minimalProxy)
-    {
-        return _deployMinimalProxy(target);
+contract MinimalProxyFactoryMock {
+    function deployMinimalProxy(
+        address target
+    ) external returns (address minimalProxy) {
+        return MinimalProxyFactory.deployMinimalProxy(target);
     }
 
-    function __deployMinimalProxy(address target, bytes32 salt)
-        external
-        returns (address minimalProxy)
-    {
-        return _deployMinimalProxy(target, salt);
+    function deployMinimalProxy(
+        address target,
+        bytes32 salt
+    ) external returns (address minimalProxy) {
+        return MinimalProxyFactory.deployMinimalProxy(target, salt);
     }
 
-    function __calculateMinimalProxyDeploymentAddress(
+    function calculateMinimalProxyDeploymentAddress(
         address target,
         bytes32 salt
     ) external view returns (address) {
-        return _calculateMinimalProxyDeploymentAddress(target, salt);
+        return
+            MinimalProxyFactory.calculateMinimalProxyDeploymentAddress(
+                target,
+                salt
+            );
     }
 
-    function __generateMinimalProxyInitCode(address target)
-        external
-        pure
-        returns (bytes memory)
-    {
-        return _generateMinimalProxyInitCode(target);
+    function generateMinimalProxyInitCode(
+        address target
+    ) external pure returns (bytes memory) {
+        return MinimalProxyFactory.generateMinimalProxyInitCode(target);
     }
 }

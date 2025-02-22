@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import { ManagedProxy } from './ManagedProxy.sol';
 
 contract ManagedProxyMock is ManagedProxy {
     address private _manager;
 
-    constructor(address manager, bytes4 managerSelector)
-        ManagedProxy(managerSelector)
-    {
+    constructor(
+        address manager,
+        bytes4 managerSelector
+    ) ManagedProxy(managerSelector) {
         setManager(manager);
     }
 
