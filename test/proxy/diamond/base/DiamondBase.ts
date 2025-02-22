@@ -38,8 +38,8 @@ describe('DiamondBase', () => {
   });
 
   describeBehaviorOfDiamondBase(async () => instance, {
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
+    implementationFunction: 'owner()',
+    implementationFunctionArgs: [],
   });
 
   describe('fallback()', () => {

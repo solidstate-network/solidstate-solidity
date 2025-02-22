@@ -1,12 +1,10 @@
 import { describeFilter } from '@solidstate/library';
+import { ProxyBehaviorArgs } from '@solidstate/spec';
 import { IDiamondBase } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondBaseBehaviorArgs {
-  facetFunction: string;
-  facetFunctionArgs: string[];
-}
+export interface DiamondBaseBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBase(
   deploy: () => Promise<IDiamondBase>,
@@ -24,16 +22,19 @@ export function describeBehaviorOfDiamondBase(
 
     describe('fallback()', () => {
       it('forwards data with matching selector call to facet', async () => {
-        expect(instance.interface.hasFunction(args.facetFunction)).to.be.false;
+        expect(instance.interface.hasFunction(args.implementationFunction)).to
+          .be.false;
 
         let contract = new ethers.Contract(
           await instance.getAddress(),
-          [`function ${args.facetFunction}`],
+          [`function ${args.implementationFunction}`],
           ethers.provider,
         );
 
         await expect(
-          contract[args.facetFunction].staticCall(...args.facetFunctionArgs),
+          contract[args.implementationFunction].staticCall(
+            ...args.implementationFunctionArgs,
+          ),
         ).not.to.be.reverted;
       });
 
