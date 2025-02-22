@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import { OwnableInternal } from '../../access/ownable/Ownable.sol';
-import { Ownable } from '../../access/ownable/Ownable.sol';
-import { DiamondReadable } from '../diamond/readable/DiamondReadable.sol';
-import { DiamondWritable } from '../diamond/writable/DiamondWritable.sol';
+import { OwnableInternal } from '../../../access/ownable/Ownable.sol';
+import { Ownable } from '../../../access/ownable/Ownable.sol';
+import { DiamondReadable } from '../../diamond/readable/DiamondReadable.sol';
+import { DiamondWritable } from '../../diamond/writable/DiamondWritable.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { DiamondBeaconInternal } from './DiamondBeaconInternal.sol';
 

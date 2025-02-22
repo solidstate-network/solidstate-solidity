@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { BeaconProxyInternal } from './BeaconProxyInternal.sol';
+import { BeaconProxyInternal } from '../BeaconProxyInternal.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { IDiamondBeaconProxyInternal } from './IDiamondBeaconProxyInternal.sol';
 
