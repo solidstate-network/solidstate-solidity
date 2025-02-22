@@ -78,7 +78,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.prev.staticCall(oneBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -115,7 +115,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.next.staticCall(oneBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -152,7 +152,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertBefore(zeroBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -161,7 +161,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertBefore(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -196,7 +196,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertAfter(zeroBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -205,7 +205,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertAfter(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -238,7 +238,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.push(zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
         });
@@ -323,7 +323,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.unshift(zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
         });
@@ -417,7 +417,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.replace(oneBytes16, zeroBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -426,7 +426,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.replace.staticCall(oneBytes16, twoBytes16),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -502,7 +502,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.prev.staticCall(oneUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -539,7 +539,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.next.staticCall(oneUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -576,7 +576,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertBefore(zeroUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -585,7 +585,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertBefore(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -620,7 +620,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertAfter(zeroUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -629,7 +629,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.insertAfter(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });
@@ -662,7 +662,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.push(zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
         });
@@ -747,7 +747,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.unshift(zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
         });
@@ -841,7 +841,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.replace(oneUint128, zeroUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__InvalidInput',
+              'PackedDoublyLinkedList__InvalidInput',
             );
           });
 
@@ -850,7 +850,7 @@ describe('PackedDoublyLinkedList', async () => {
               instance.replace.staticCall(oneUint128, twoUint128),
             ).to.be.revertedWithCustomError(
               instance,
-              'DoublyLinkedList__NonExistentEntry',
+              'PackedDoublyLinkedList__NonExistentEntry',
             );
           });
         });

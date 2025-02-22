@@ -21,8 +21,15 @@ library PackedDoublyLinkedList {
     bytes32 private constant MASK_NEXT = bytes32(uint256(type(uint128).max));
     bytes32 private constant MASK_PREV = ~MASK_NEXT;
 
-    error DoublyLinkedList__InvalidInput();
-    error DoublyLinkedList__NonExistentEntry();
+    /**
+     * @notice indicate that an attempt was made to insert 0 into a list
+     */
+    error PackedDoublyLinkedList__InvalidInput();
+
+    /**
+     * @notice indicate that a non-existent value was used as a reference for insertion or lookup
+     */
+    error PackedDoublyLinkedList__NonExistentEntry();
 
     function contains(
         Bytes16List storage self,
@@ -201,7 +208,7 @@ library PackedDoublyLinkedList {
             prevValue == 0 &&
             nextValue == 0 &&
             !_contains(self, value)
-        ) revert DoublyLinkedList__NonExistentEntry();
+        ) revert PackedDoublyLinkedList__NonExistentEntry();
     }
 
     function _prev(
@@ -250,7 +257,11 @@ library PackedDoublyLinkedList {
         bytes16 nextValue,
         bytes16 newValue
     ) private returns (bool status) {
-        if (newValue == 0) revert DoublyLinkedList__InvalidInput();
+        if (newValue == 0) revert PackedDoublyLinkedList__InvalidInput();
+
+        /**
+         * @notice indicate that a non-existent value was used as a reference for insertion or lookup
+         */
 
         if (!_contains(self, newValue)) {
             self._links[newValue] = _formatLinks(prevValue, nextValue);
@@ -325,7 +336,7 @@ library PackedDoublyLinkedList {
         bytes16 newValue
     ) private returns (bool status) {
         if (!_contains(self, oldValue))
-            revert DoublyLinkedList__NonExistentEntry();
+            revert PackedDoublyLinkedList__NonExistentEntry();
 
         status = _insertBetween(
             self,

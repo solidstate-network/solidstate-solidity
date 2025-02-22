@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "DoublyLinkedList__InvalidInput",
+    "name": "PackedDoublyLinkedList__InvalidInput",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DoublyLinkedList__NonExistentEntry",
+    "name": "PackedDoublyLinkedList__NonExistentEntry",
     "type": "error"
   }
 ]
