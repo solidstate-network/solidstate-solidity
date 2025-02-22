@@ -8,7 +8,7 @@ import { BeaconStorage } from './BeaconStorage.sol';
 
 abstract contract BeaconInternal is IBeaconInternal, OwnableInternal {
     /**
-     * @notice query the address of the implementation that should be used by BeaconProxy instancesf
+     * @notice query the address of the implementation that should be used by BeaconProxy instances
      * @return implementation address of the implementation contract
      */
     function _getImplementation()
@@ -21,7 +21,7 @@ abstract contract BeaconInternal is IBeaconInternal, OwnableInternal {
     }
 
     /**
-     * @notice set the address of the implementation that should be used by BeaconProxy instancesf
+     * @notice set the address of the implementation that should be used by BeaconProxy instances
      * @param implementation address of the implementation contract
      */
     function _setImplementation(

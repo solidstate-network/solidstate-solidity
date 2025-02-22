@@ -8,13 +8,13 @@ import { BeaconStorage } from './BeaconStorage.sol';
 
 interface IBeacon is IBeaconInternal, IOwnable {
     /**
-     * @notice query the address of the implementation that should be used by BeaconProxy instancesf
+     * @notice query the address of the implementation that should be used by BeaconProxy instances
      * @return implementation address of the implementation contract
      */
     function getImplementation() external view returns (address implementation);
 
     /**
-     * @notice set the address of the implementation that should be used by BeaconProxy instancesf
+     * @notice set the address of the implementation that should be used by BeaconProxy instances
      * @param implementation address of the implementation contract
      */
     function setImplementation(address implementation) external;
