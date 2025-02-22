@@ -11,7 +11,7 @@ import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
-const decimals = 18;
+const decimals = 18n;
 
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
@@ -64,9 +64,8 @@ describe('ERC4626Base', () => {
           .connect(depositor)
           .approve(await instance.getAddress(), assetAmount);
 
-        const shareAmount = await instance.previewDeposit.staticCall(
-          assetAmount,
-        );
+        const shareAmount =
+          await instance.previewDeposit.staticCall(assetAmount);
 
         expect(
           await instance

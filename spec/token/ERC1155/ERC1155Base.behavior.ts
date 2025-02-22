@@ -4,7 +4,7 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { IERC1155Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1155BaseBehaviorArgs {
@@ -12,18 +12,18 @@ export interface ERC1155BaseBehaviorArgs {
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   burn: (
     address: string,
     id: bigint,
     amount: bigint,
-  ) => Promise<ContractTransaction>;
+  ) => Promise<ContractTransactionResponse>;
   tokenId?: bigint;
 }
 
 export function describeBehaviorOfERC1155Base(
   deploy: () => Promise<IERC1155Base>,
-  { mint, burn, tokenId }: ERC1155BaseBehaviorArgs,
+  args: ERC1155BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -52,19 +52,19 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#balanceOf(address,uint256)', () => {
       it('returns the balance of given token held by given address', async () => {
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         expect(
           await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(0);
 
         const amount = 2n;
-        await mint(holder.address, id, amount);
+        await args.mint(holder.address, id, amount);
 
         expect(
           await instance.balanceOf.staticCall(holder.address, id),
         ).to.equal(amount);
 
-        await burn(holder.address, id, amount);
+        await args.burn(holder.address, id, amount);
 
         expect(
           await instance.balanceOf.staticCall(holder.address, id),
@@ -162,10 +162,10 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeTransferFrom(address,address,uint256,uint256,bytes)', () => {
       it('sends amount from A to B', async () => {
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
-        await mint(spender.address, id, amount);
+        await args.mint(spender.address, id, amount);
 
         expect(
           await instance.balanceOf.staticCall(spender.address, id),
@@ -191,7 +191,7 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', () => {
         it('sender has insufficient balance', async () => {
-          const id = tokenId ?? 0n;
+          const id = args.tokenId ?? 0n;
           const amount = 2n;
 
           await expect(
@@ -272,10 +272,10 @@ export function describeBehaviorOfERC1155Base(
 
     describe('#safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', () => {
       it('sends amount from A to B, batch version', async () => {
-        const id = tokenId ?? 0n;
+        const id = args.tokenId ?? 0n;
         const amount = 2n;
 
-        await mint(spender.address, id, amount);
+        await args.mint(spender.address, id, amount);
 
         expect(
           Array.from(
@@ -307,7 +307,7 @@ export function describeBehaviorOfERC1155Base(
 
       describe('reverts if', () => {
         it('sender has insufficient balance', async () => {
-          const id = tokenId ?? 0n;
+          const id = args.tokenId ?? 0n;
           const amount = 2n;
 
           await expect(

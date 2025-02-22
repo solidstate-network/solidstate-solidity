@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
-import { IERC165 } from './IERC165.sol';
 import { IERC721Internal } from './IERC721Internal.sol';
 
 /**
  * @title ERC721 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
-interface IERC721 is IERC721Internal, IERC165 {
+interface IERC721 is IERC721Internal {
     /**
      * @notice query the balance of given address
      * @return balance quantity of tokens held

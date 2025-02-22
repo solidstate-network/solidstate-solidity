@@ -1,3 +1,4 @@
+import { describeBehaviorOfOwnable } from '../../access';
 import {
   describeBehaviorOfUpgradeableProxy,
   UpgradeableProxyBehaviorArgs,
@@ -16,12 +17,7 @@ interface UpgradeableProxyOwnableArgs extends UpgradeableProxyBehaviorArgs {
 
 export function describeBehaviorOfUpgradeableProxyOwnable(
   deploy: () => Promise<IUpgradeableProxyOwnable>,
-  {
-    getOwner,
-    getNonOwner,
-    implementationFunction,
-    implementationFunctionArgs,
-  }: UpgradeableProxyOwnableArgs,
+  args: UpgradeableProxyOwnableArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -33,18 +29,13 @@ export function describeBehaviorOfUpgradeableProxyOwnable(
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfUpgradeableProxy(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      [],
-    );
+    describeBehaviorOfUpgradeableProxy(deploy, args, skips);
+
+    describeBehaviorOfOwnable(deploy, args, skips);
 
     describe('#setImplementation(address)', () => {
       it('updates implementation address', async () => {

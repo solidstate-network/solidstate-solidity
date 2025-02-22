@@ -9,7 +9,7 @@ export interface ERC1271StoredBehaviorArgs {
 
 export function describeBehaviorOfERC1271Stored(
   deploy: () => Promise<IERC1271Stored>,
-  { getValidParams }: ERC1271StoredBehaviorArgs,
+  args: ERC1271StoredBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -19,7 +19,7 @@ export function describeBehaviorOfERC1271Stored(
     describeBehaviorOfERC1271Base(
       deploy,
       {
-        getValidParams,
+        ...args,
         getInvalidParams: async () => [
           ethers.randomBytes(32),
           ethers.randomBytes(0),

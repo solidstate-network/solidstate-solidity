@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
-import { OwnableInternal } from '../../access/ownable/OwnableInternal.sol';
+import { Ownable } from '../../access/ownable/Ownable.sol';
 import { IUpgradeableProxyOwnable } from './IUpgradeableProxyOwnable.sol';
+import { UpgradeableProxyOwnableInternal } from './UpgradeableProxyOwnableInternal.sol';
 import { UpgradeableProxy } from './UpgradeableProxy.sol';
 
 /**
@@ -11,8 +12,9 @@ import { UpgradeableProxy } from './UpgradeableProxy.sol';
  */
 abstract contract UpgradeableProxyOwnable is
     IUpgradeableProxyOwnable,
+    UpgradeableProxyOwnableInternal,
     UpgradeableProxy,
-    OwnableInternal
+    Ownable
 {
     /**
      * @notice set logic implementation address

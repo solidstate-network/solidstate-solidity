@@ -8,7 +8,7 @@ import { ethers } from 'hardhat';
 describe('ERC20Metadata', () => {
   const name = 'ERC20Metadata.name';
   const symbol = 'ERC20Metadata.symbol';
-  const decimals = 18;
+  const decimals = 18n;
   let instance: ERC20MetadataMock;
 
   beforeEach(async () => {

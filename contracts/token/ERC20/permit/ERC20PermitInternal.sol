@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
@@ -14,9 +14,9 @@ import { IERC20PermitInternal } from './IERC20PermitInternal.sol';
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
 abstract contract ERC20PermitInternal is
+    IERC20PermitInternal,
     ERC20BaseInternal,
-    ERC20MetadataInternal,
-    IERC20PermitInternal
+    ERC20MetadataInternal
 {
     using ECDSA for bytes32;
 

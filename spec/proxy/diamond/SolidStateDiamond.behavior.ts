@@ -59,6 +59,7 @@ export function describeBehaviorOfSolidStateDiamond(
 
     describeBehaviorOfDiamondFallback(deploy, args, [
       '::DiamondBase',
+      '::Ownable',
       ...(skips ?? []),
     ]);
 
@@ -367,6 +368,103 @@ export function describeBehaviorOfSolidStateDiamond(
           expect(await instance.facetAddress.staticCall(selector)).to.equal(
             ethers.ZeroAddress,
           );
+        }
+      });
+
+      describe('removing 0x00000000 does not disrupt selector tracking', () => {
+        it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+          const payableSelector = '0x00000000';
+
+          const existingSelectors = await instance.facets();
+
+          const selectorCount = existingSelectors.reduce((acc, x) => {
+            return acc + x.selectors.length;
+          }, 0);
+
+          const numberOfSelectorsToAdd = selectorCount % 8;
+
+          const selectors = [];
+          for (let i = 0; i < numberOfSelectorsToAdd; i++) {
+            selectors.push(ethers.hexlify(ethers.randomBytes(4)));
+          }
+
+          selectors.push(payableSelector);
+
+          await instance.diamondCut(
+            [
+              {
+                action: 0,
+                selectors: selectors,
+                target: facet.address,
+              },
+            ],
+            ethers.ZeroAddress,
+            '0x',
+          );
+
+          await instance.diamondCut(
+            [
+              {
+                action: 2,
+                selectors: [payableSelector],
+                target: ethers.ZeroAddress,
+              },
+            ],
+            ethers.ZeroAddress,
+            '0x',
+          );
+
+          expect(
+            await instance.facetFunctionSelectors(facet.address),
+            'missing selector',
+          ).to.deep.eq(selectors.filter((x) => x != payableSelector));
+        });
+
+        // This loop of tests fuzzes the fix, it adds the payable(0x00000000) selector to every selectorSlotIndex, removes it and checks all other selectors a unaffected
+        for (
+          let numberOfSelectorsToAdd = 0;
+          numberOfSelectorsToAdd < 10;
+          numberOfSelectorsToAdd++
+        ) {
+          it('does not revert with missing selector if removal of payable selector @ selectorCount % 8', async () => {
+            const payableSelector = '0x00000000';
+
+            const selectors = [];
+            for (let i = 0; i < numberOfSelectorsToAdd; i++) {
+              selectors.push(ethers.hexlify(ethers.randomBytes(4)));
+            }
+
+            selectors.push(payableSelector);
+
+            await instance.diamondCut(
+              [
+                {
+                  action: 0,
+                  selectors: selectors,
+                  target: facet.address,
+                },
+              ],
+              ethers.ZeroAddress,
+              '0x',
+            );
+
+            await instance.diamondCut(
+              [
+                {
+                  action: 2,
+                  selectors: [payableSelector],
+                  target: ethers.ZeroAddress,
+                },
+              ],
+              ethers.ZeroAddress,
+              '0x',
+            );
+
+            expect(
+              await instance.facetFunctionSelectors(facet.address),
+              'missing selector',
+            ).to.deep.eq(selectors.filter((x) => x != payableSelector));
+          });
         }
       });
     });

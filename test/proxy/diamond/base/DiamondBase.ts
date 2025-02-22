@@ -27,7 +27,7 @@ describe('DiamondBase', () => {
       {
         target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getFunction('owner()').selector],
+        selectors: [facetInstance.interface.getFunction('owner').selector],
       },
       {
         target: await receiver.getAddress(),
@@ -38,8 +38,8 @@ describe('DiamondBase', () => {
   });
 
   describeBehaviorOfDiamondBase(async () => instance, {
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
+    implementationFunction: 'owner()',
+    implementationFunctionArgs: [],
   });
 
   describe('fallback()', () => {
