@@ -260,10 +260,6 @@ library PackedDoublyLinkedList {
     ) private returns (bool status) {
         if (newValue == 0) revert PackedDoublyLinkedList__InvalidInput();
 
-        /**
-         * @notice indicate that a non-existent value was used as a reference for insertion or lookup
-         */
-
         if (!_contains(self, newValue)) {
             self._links[newValue] = _formatLinks(prevValue, nextValue);
 
