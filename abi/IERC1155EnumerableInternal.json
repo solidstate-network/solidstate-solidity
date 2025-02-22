@@ -1,0 +1,156 @@
+[
+  {
+    "inputs": [],
+    "name": "ERC1155Base__ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__BurnExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__BurnFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__ERC1155ReceiverNotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__ERC1155ReceiverRejected",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__TransferExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155Base__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
+    "name": "ApprovalForAll",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "ids",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "values",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TransferBatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferSingle",
+    "type": "event"
+  }
+]

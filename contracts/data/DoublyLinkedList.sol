@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 /**
  * @title Doubly linked list implementation with enumeration functions
+ * @dev implementation does not support insertion of zero values into the list
  */
 library DoublyLinkedList {
     struct DoublyLinkedListInternal {

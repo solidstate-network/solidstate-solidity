@@ -5,13 +5,13 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC721Metadata', function () {
+describe('ERC721Metadata', () => {
   const name = 'ERC721Metadata.name';
   const symbol = 'ERC721Metadata.symbol';
   const tokenURI = 'ERC721Metadata.tokenURI';
   let instance: ERC721MetadataMock;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new ERC721MetadataMock__factory(deployer).deploy(
       name,

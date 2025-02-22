@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 library Math {
     /**
      * @notice calculate the absolute value of a number
-     * @param a number whose absoluve value to calculate
+     * @param a number whose absolute value to calculate
      * @return absolute value
      */
     function abs(int256 a) internal pure returns (uint256) {
@@ -47,16 +47,27 @@ library Math {
 
     /**
      * @notice estimate square root of number
-     * @dev uses Babylonian method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method)
-     * @param x input number
-     * @return y square root
+     * @dev uses Heron's method (https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method)
+     * @param n input number
+     * @return root square root of input (rounded down to nearest uint256)
      */
-    function sqrt(uint256 x) internal pure returns (uint256 y) {
-        uint256 z = (x + 1) >> 1;
-        y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) >> 1;
+    function sqrt(uint256 n) internal pure returns (uint256 root) {
+        unchecked {
+            // begin with an upper bound, to be updated each time a better estimate is found
+            // for inputs of 0 and 1, this will be returned as-is
+            root = n;
+            // calculate an overestimate
+            // bitwise-or prevents zero division in the case of input of 1
+            uint256 estimate = (n >> 1) | 1;
+
+            // as long as estimate continues to decrease, it is converging on the square root
+
+            while (estimate < root) {
+                // track the new best estimate as the prospective output value
+                root = estimate;
+                // attempt to find a better estimate
+                estimate = (root + n / root) >> 1;
+            }
         }
     }
 }

@@ -8,19 +8,19 @@ export interface ERC1155MetadataBehaviorArgs {
 
 export function describeBehaviorOfERC1155Metadata(
   deploy: () => Promise<IERC1155Metadata>,
-  { tokenURI }: ERC1155MetadataBehaviorArgs,
+  args: ERC1155MetadataBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1155Metadata', function () {
+  describe('::ERC1155Metadata', () => {
     let instance: IERC1155Metadata;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#uri(uint256)', function () {
+    describe('#uri(uint256)', () => {
       it('returns empty string if neither base URI nor token URI is set');
 
       it('returns stored token URI if base URI is not set');

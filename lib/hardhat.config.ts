@@ -1,1 +1,1 @@
-import '@nomiclabs/hardhat-ethers';
+import '@nomicfoundation/hardhat-ethers';

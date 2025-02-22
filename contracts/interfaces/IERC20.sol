@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { IERC20Internal } from './IERC20Internal.sol';
 
 /**
  * @title ERC20 interface
- * @dev see https://github.com/ethereum/EIPs/issues/20
+ * @dev see https://eips.ethereum.org/EIPS/eip-20
  */
 interface IERC20 is IERC20Internal {
     /**
