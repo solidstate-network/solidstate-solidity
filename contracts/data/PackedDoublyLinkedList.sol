@@ -343,7 +343,7 @@ library PackedDoublyLinkedList {
         bytes16 prevValue,
         bytes16 nextValue
     ) private pure returns (bytes32 links) {
-        links = bytes32(bytes.concat(prevValue, nextValue));
+        links = (bytes32(nextValue) >> 128) | prevValue;
     }
 
     function _parseLinks(
