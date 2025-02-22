@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { IMulticall } from './IMulticall.sol';
+import { MulticallInternal } from './MulticallInternal.sol';
 
 /**
  * @title Utility contract for supporting processing of multiple function calls in a single transaction
  */
-abstract contract Multicall is IMulticall {
+abstract contract Multicall is IMulticall, MulticallInternal {
     /**
      * @inheritdoc IMulticall
      */

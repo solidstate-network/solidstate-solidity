@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
-import './IERC3156FlashBorrower.sol';
+import { IERC3156FlashBorrower } from './IERC3156FlashBorrower.sol';
+import { IERC3156FlashLenderInternal } from './IERC3156FlashLenderInternal.sol';
 
-interface IERC3156FlashLender {
+interface IERC3156FlashLender is IERC3156FlashLenderInternal {
     /**
      * @notice The amount of currency available to be lent.
      * @param token The loan currency.

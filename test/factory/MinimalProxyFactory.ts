@@ -1,4 +1,3 @@
-import { describeBehaviorOfMinimalProxyFactory } from '@solidstate/spec';
 import {
   MinimalProxyFactoryMock,
   MinimalProxyFactoryMock__factory,
@@ -14,18 +13,16 @@ describe('MinimalProxyFactory', () => {
     instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMinimalProxyFactory(async () => instance, {});
-
   describe('__internal', () => {
-    describe('#_deployMinimalProxy(address)', () => {
+    describe('#deployMinimalProxy(address)', () => {
       it('deploys minimal proxy and returns deployment address', async () => {
         const target = await instance.getAddress();
 
         const address =
-          await instance['__deployMinimalProxy(address)'].staticCall(target);
+          await instance['deployMinimalProxy(address)'].staticCall(target);
         expect(address).to.be.properAddress;
 
-        await instance['__deployMinimalProxy(address)'](target);
+        await instance['deployMinimalProxy(address)'](target);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -42,17 +39,17 @@ describe('MinimalProxyFactory', () => {
       });
     });
 
-    describe('#_deployMinimalProxy(address,bytes32)', () => {
+    describe('#deployMinimalProxy(address,bytes32)', () => {
       it('deploys minimal proxy and returns deployment address', async () => {
         const target = await instance.getAddress();
         const salt = ethers.randomBytes(32);
 
         const address = await instance[
-          '__deployMinimalProxy(address,bytes32)'
+          'deployMinimalProxy(address,bytes32)'
         ].staticCall(target, salt);
         expect(address).to.be.properAddress;
 
-        await instance['__deployMinimalProxy(address,bytes32)'](target, salt);
+        await instance['deployMinimalProxy(address,bytes32)'](target, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -71,10 +68,10 @@ describe('MinimalProxyFactory', () => {
           const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
 
-          await instance['__deployMinimalProxy(address,bytes32)'](target, salt);
+          await instance['deployMinimalProxy(address,bytes32)'](target, salt);
 
           await expect(
-            instance['__deployMinimalProxy(address,bytes32)'](target, salt),
+            instance['deployMinimalProxy(address,bytes32)'](target, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -83,16 +80,16 @@ describe('MinimalProxyFactory', () => {
       });
     });
 
-    describe('#_calculateMinimalProxyDeploymentAddress(address,bytes32)', () => {
+    describe('#calculateMinimalProxyDeploymentAddress(address,bytes32)', () => {
       it('returns address of not-yet-deployed contract', async () => {
         const target = await instance.getAddress();
         const initCode =
-          await instance.__generateMinimalProxyInitCode.staticCall(target);
+          await instance.generateMinimalProxyInitCode.staticCall(target);
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.__calculateMinimalProxyDeploymentAddress.staticCall(
+          await instance.calculateMinimalProxyDeploymentAddress.staticCall(
             target,
             salt,
           ),
@@ -100,11 +97,11 @@ describe('MinimalProxyFactory', () => {
       });
     });
 
-    describe('#_generateMinimalProxyInitCode(address)', () => {
+    describe('#generateMinimalProxyInitCode(address)', () => {
       it('returns packed encoding of initialization code prefix, target address, and initialization code suffix', async () => {
         const target = await instance.getAddress();
         const initCode =
-          await instance.__generateMinimalProxyInitCode.staticCall(target);
+          await instance.generateMinimalProxyInitCode.staticCall(target);
 
         expect(initCode).to.equal(
           '0x' +

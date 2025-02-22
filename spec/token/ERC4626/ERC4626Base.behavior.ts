@@ -7,14 +7,17 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
+import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC4626BaseBehaviorArgs
   extends ERC20BaseBehaviorArgs,
     ERC20MetadataBehaviorArgs {
   getAsset: () => Promise<IERC20>;
-  mintAsset: (address: string, amount: bigint) => Promise<ContractTransaction>;
+  mintAsset: (
+    address: string,
+    amount: bigint,
+  ) => Promise<ContractTransactionResponse>;
 }
 
 export function describeBehaviorOfERC4626Base(
