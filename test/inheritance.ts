@@ -299,6 +299,7 @@ describe('Inheritance Graph', () => {
             'MerkleProof',
             'BinaryHeap',
             'DoublyLinkedList',
+            'PackedDoublyLinkedList',
             'EnumerableMap',
             'EnumerableSet',
             'IncrementalMerkleTree',
