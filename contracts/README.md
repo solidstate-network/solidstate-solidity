@@ -2,6 +2,8 @@
 
 SolidState contract library. Part of the SolidState Solidity monorepo.
 
+> **Note**: An old version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
+
 ## Installation
 
 Install the package as a development dependency:

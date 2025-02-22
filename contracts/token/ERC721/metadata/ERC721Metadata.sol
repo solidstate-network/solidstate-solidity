@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { ERC721MetadataInternal } from './ERC721MetadataInternal.sol';
 import { IERC721Metadata } from './IERC721Metadata.sol';
@@ -30,16 +30,5 @@ abstract contract ERC721Metadata is IERC721Metadata, ERC721MetadataInternal {
         uint256 tokenId
     ) external view virtual returns (string memory) {
         return _tokenURI(tokenId);
-    }
-
-    /**
-     * @inheritdoc ERC721MetadataInternal
-     */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId);
     }
 }

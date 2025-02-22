@@ -1,27 +1,33 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { IOwnable, Ownable, OwnableInternal } from '../../access/ownable/Ownable.sol';
-import { ISafeOwnable, SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
+import { ISafeOwnable, SafeOwnable, SafeOwnableInternal } from '../../access/ownable/SafeOwnable.sol';
 import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
+import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { ERC165Base, ERC165BaseStorage } from '../../introspection/ERC165/base/ERC165Base.sol';
+import { ProxyInternal } from '../ProxyInternal.sol';
 import { DiamondBase } from './base/DiamondBase.sol';
-import { DiamondFallback, IDiamondFallback } from './fallback/DiamondFallback.sol';
-import { DiamondReadable, IDiamondReadable } from './readable/DiamondReadable.sol';
-import { DiamondWritable, IDiamondWritable } from './writable/DiamondWritable.sol';
+import { DiamondBaseInternal } from './base/DiamondBaseInternal.sol';
+import { DiamondFallback, IDiamondFallback, DiamondFallbackInternal } from './fallback/DiamondFallback.sol';
+import { DiamondReadable } from './readable/DiamondReadable.sol';
+import { DiamondWritable } from './writable/DiamondWritable.sol';
 import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
+import { SolidStateDiamondInternal } from './SolidStateDiamondInternal.sol';
 
 /**
  * @title SolidState "Diamond" proxy reference implementation
  */
 abstract contract SolidStateDiamond is
     ISolidStateDiamond,
+    SolidStateDiamondInternal,
     DiamondBase,
-    DiamondFallback,
     DiamondReadable,
     DiamondWritable,
+    DiamondFallback,
     SafeOwnable,
     ERC165Base
 {
@@ -42,20 +48,22 @@ abstract contract SolidStateDiamond is
 
         // register DiamondWritable
 
-        selectors[selectorIndex++] = IDiamondWritable.diamondCut.selector;
+        selectors[selectorIndex++] = IERC2535DiamondCut.diamondCut.selector;
 
-        _setSupportsInterface(type(IDiamondWritable).interfaceId, true);
+        _setSupportsInterface(type(IERC2535DiamondCut).interfaceId, true);
 
         // register DiamondReadable
 
-        selectors[selectorIndex++] = IDiamondReadable.facets.selector;
-        selectors[selectorIndex++] = IDiamondReadable
+        selectors[selectorIndex++] = IERC2535DiamondLoupe.facets.selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe
             .facetFunctionSelectors
             .selector;
-        selectors[selectorIndex++] = IDiamondReadable.facetAddresses.selector;
-        selectors[selectorIndex++] = IDiamondReadable.facetAddress.selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe
+            .facetAddresses
+            .selector;
+        selectors[selectorIndex++] = IERC2535DiamondLoupe.facetAddress.selector;
 
-        _setSupportsInterface(type(IDiamondReadable).interfaceId, true);
+        _setSupportsInterface(type(IERC2535DiamondLoupe).interfaceId, true);
 
         // register ERC165
 
@@ -93,17 +101,26 @@ abstract contract SolidStateDiamond is
 
     function _transferOwnership(
         address account
-    ) internal virtual override(OwnableInternal, SafeOwnable) {
+    )
+        internal
+        virtual
+        override(SafeOwnable, OwnableInternal, SolidStateDiamondInternal)
+    {
         super._transferOwnership(account);
     }
 
     /**
-     * @inheritdoc DiamondFallback
+     * @inheritdoc DiamondFallbackInternal
      */
     function _getImplementation()
         internal
         view
-        override(DiamondBase, DiamondFallback)
+        override(
+            DiamondFallback,
+            ProxyInternal,
+            DiamondBaseInternal,
+            SolidStateDiamondInternal
+        )
         returns (address implementation)
     {
         implementation = super._getImplementation();

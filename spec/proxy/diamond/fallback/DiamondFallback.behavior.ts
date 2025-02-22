@@ -1,14 +1,11 @@
-import { OwnableBehaviorArgs } from '../../../access/ownable/Ownable.behavior';
+import { OwnableBehaviorArgs } from '../../../access';
 import {
-  deployMockContract,
-  MockContract,
-} from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { describeFilter } from '@solidstate/library';
-import {
-  describeBehaviorOfDiamondBase,
   DiamondBaseBehaviorArgs,
-} from '@solidstate/spec';
+  describeBehaviorOfDiamondBase,
+} from '../base';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
+import { describeFilter } from '@solidstate/library';
 import { IDiamondFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -26,12 +23,12 @@ export function describeBehaviorOfDiamondFallback(
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondFallback', function () {
+  describe('::DiamondFallback', () => {
     let instance: IDiamondFallback;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
       owner = await args.getOwner();
       nonOwner = await args.getNonOwner();
@@ -39,41 +36,41 @@ export function describeBehaviorOfDiamondFallback(
 
     describeBehaviorOfDiamondBase(async () => instance, args, skips);
 
-    describe('#getFallbackAddress()', function () {
-      it('returns the fallback address', async function () {
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+    describe('fallback()', () => {
+      it('forwards data without matching selector to fallback contract');
+    });
+
+    describe('#getFallbackAddress()', () => {
+      it('returns the fallback address', async () => {
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           args.fallbackAddress,
         );
       });
     });
 
-    describe('#setFallbackAddress(address)', function () {
-      it('updates the fallback address', async function () {
+    describe('#setFallbackAddress(address)', () => {
+      it('updates the fallback address', async () => {
         const fallback = await deployMockContract(owner, []);
 
-        await instance
-          .connect(owner)
-          ['setFallbackAddress(address)'](fallback.address);
+        await instance.connect(owner).setFallbackAddress(fallback.address);
 
-        expect(await instance.callStatic['getFallbackAddress()']()).to.equal(
+        expect(await instance.getFallbackAddress.staticCall()).to.equal(
           fallback.address,
         );
 
         // call reverts, but with mock-specific message
         await expect(
           owner.sendTransaction({
-            to: instance.address,
-            data: ethers.utils.randomBytes(4),
+            to: await instance.getAddress(),
+            data: ethers.hexlify(ethers.randomBytes(4)),
           }),
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
 
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
           await expect(
-            instance
-              .connect(nonOwner)
-              ['setFallbackAddress(address)'](ethers.constants.AddressZero),
+            instance.connect(nonOwner).setFallbackAddress(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
       });

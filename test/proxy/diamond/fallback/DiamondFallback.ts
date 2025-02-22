@@ -1,13 +1,13 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
   DiamondFallbackMock,
   DiamondFallbackMock__factory,
-  OwnableMock__factory,
+  SafeOwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondFallback', function () {
+describe('DiamondFallback', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: DiamondFallbackMock;
@@ -16,17 +16,19 @@ describe('DiamondFallback', function () {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new OwnableMock__factory(deployer).deploy(
+    const facetInstance = await new SafeOwnableMock__factory(deployer).deploy(
       deployer.address,
     );
 
     instance = await new DiamondFallbackMock__factory(deployer).deploy([
       {
-        target: facetInstance.address,
+        target: await facetInstance.getAddress(),
         action: 0,
-        selectors: [facetInstance.interface.getSighash('owner()')],
+        selectors: [
+          facetInstance.interface.getFunction('nomineeOwner').selector,
+        ],
       },
     ]);
   });
@@ -34,8 +36,8 @@ describe('DiamondFallback', function () {
   describeBehaviorOfDiamondFallback(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
-    fallbackAddress: ethers.constants.AddressZero,
+    implementationFunction: 'nomineeOwner()',
+    implementationFunctionArgs: [],
+    fallbackAddress: ethers.ZeroAddress,
   });
 });

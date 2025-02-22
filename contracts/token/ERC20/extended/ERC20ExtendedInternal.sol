@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { ERC20BaseInternal, ERC20BaseStorage } from '../base/ERC20Base.sol';
 import { IERC20ExtendedInternal } from './IERC20ExtendedInternal.sol';
@@ -10,8 +10,8 @@ import { IERC20ExtendedInternal } from './IERC20ExtendedInternal.sol';
  * @dev mitigations for transaction-ordering vulnerability (see https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729)
  */
 abstract contract ERC20ExtendedInternal is
-    ERC20BaseInternal,
-    IERC20ExtendedInternal
+    IERC20ExtendedInternal,
+    ERC20BaseInternal
 {
     /**
      * @notice increase spend amount granted to spender

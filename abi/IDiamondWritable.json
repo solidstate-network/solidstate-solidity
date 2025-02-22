@@ -40,6 +40,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "Ownable__NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotTransitiveOwner",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -50,7 +60,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritableInternal.FacetCutAction",
+            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -61,7 +71,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IDiamondWritableInternal.FacetCut[]",
+        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -82,6 +92,25 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -91,7 +120,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IDiamondWritableInternal.FacetCutAction",
+            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -101,7 +130,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IDiamondWritableInternal.FacetCut[]",
+        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },

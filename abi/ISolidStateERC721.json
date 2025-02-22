@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC721Base__BalanceQueryZeroAddress",
     "type": "error"
   },

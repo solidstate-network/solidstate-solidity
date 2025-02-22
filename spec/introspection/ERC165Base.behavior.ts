@@ -8,42 +8,38 @@ export interface ERC165BaseBehaviorArgs {
 
 export function describeBehaviorOfERC165Base(
   deploy: () => Promise<ERC165Base>,
-  { interfaceIds }: ERC165BaseBehaviorArgs,
+  args: ERC165BaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC165Base', function () {
+  describe('::ERC165Base', () => {
     let instance: ERC165Base;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describe('#supportsInterface(bytes4)', function () {
-      it('returns true for ERC165 interface', async function () {
-        expect(
-          await instance.callStatic['supportsInterface(bytes4)']('0x01ffc9a7'),
-        ).to.be.true;
+    describe('#supportsInterface(bytes4)', () => {
+      it('returns true for ERC165 interface', async () => {
+        expect(await instance.supportsInterface.staticCall('0x01ffc9a7')).to.be
+          .true;
       });
 
-      it('returns false for unknown interface', async function () {
-        expect(
-          await instance.callStatic['supportsInterface(bytes4)']('0x00000000'),
-        ).to.be.false;
+      it('returns false for unknown interface', async () => {
+        expect(await instance.supportsInterface.staticCall('0x00000000')).to.be
+          .false;
       });
 
-      it('returns false for invalid interface', async function () {
-        expect(
-          await instance.callStatic['supportsInterface(bytes4)']('0xffffffff'),
-        ).to.be.false;
+      it('returns false for invalid interface', async () => {
+        expect(await instance.supportsInterface.staticCall('0xffffffff')).to.be
+          .false;
       });
 
-      for (let interfaceId of interfaceIds) {
-        it(`returns true for interface ${interfaceId}`, async function () {
-          expect(
-            await instance.callStatic['supportsInterface(bytes4)'](interfaceId),
-          ).to.be.true;
+      for (let interfaceId of args.interfaceIds) {
+        it(`returns true for interface ${interfaceId}`, async () => {
+          expect(await instance.supportsInterface.staticCall(interfaceId)).to.be
+            .true;
         });
       }
     });

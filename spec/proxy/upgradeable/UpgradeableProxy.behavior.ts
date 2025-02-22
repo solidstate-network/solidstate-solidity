@@ -6,22 +6,12 @@ export interface UpgradeableProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfUpgradeableProxy(
   deploy: () => Promise<IUpgradeableProxy>,
-  {
-    implementationFunction,
-    implementationFunctionArgs,
-  }: UpgradeableProxyBehaviorArgs,
+  args: UpgradeableProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::UpgradeableProxy', function () {
-    describeBehaviorOfProxy(
-      deploy,
-      {
-        implementationFunction,
-        implementationFunctionArgs,
-      },
-      [],
-    );
+  describe('::UpgradeableProxy', () => {
+    describeBehaviorOfProxy(deploy, args, skips);
   });
 }

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { ethers } from 'hardhat';
 
 export interface SignDataArgs {
@@ -9,16 +9,16 @@ export interface SignDataArgs {
 }
 
 export function hashData({ types, values, nonce, address }: SignDataArgs) {
-  const hash = ethers.utils.solidityKeccak256(
+  const hash = ethers.solidityPackedKeccak256(
     [...types, 'uint256', 'address'],
     [...values, nonce, address],
   );
 
-  return ethers.utils.arrayify(hash);
+  return ethers.getBytes(hash);
 }
 
 export async function signData(signer: SignerWithAddress, data: SignDataArgs) {
   const signature = await signer.signMessage(hashData(data));
 
-  return ethers.utils.arrayify(signature);
+  return ethers.getBytes(signature);
 }

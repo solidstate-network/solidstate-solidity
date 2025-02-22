@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfSafeOwnable } from '@solidstate/spec';
 import {
   SafeOwnableMock,
@@ -7,17 +7,17 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('SafeOwnable', function () {
+describe('SafeOwnable', () => {
   let owner: SignerWithAddress;
   let nomineeOwner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: SafeOwnableMock;
 
-  before(async function () {
+  before(async () => {
     [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     instance = await new SafeOwnableMock__factory(owner).deploy(owner.address);
   });
 
@@ -32,22 +32,21 @@ describe('SafeOwnable', function () {
       it('does not revert if sender is nominee owner', async () => {
         await instance.__setNomineeOwner(nomineeOwner.address);
 
-        await expect(
-          instance.connect(nomineeOwner)['modifier_onlyNomineeOwner()'](),
-        ).not.to.be.reverted;
+        await expect(instance.connect(nomineeOwner).modifier_onlyNomineeOwner())
+          .not.to.be.reverted;
       });
 
       describe('reverts if', () => {
         it('sender is not nominee owner', async () => {
           await expect(
-            instance.connect(nonOwner)['modifier_onlyNomineeOwner()'](),
+            instance.connect(nonOwner).modifier_onlyNomineeOwner(),
           ).to.be.revertedWithCustomError(
             instance,
             'SafeOwnable__NotNomineeOwner',
           );
 
           await expect(
-            instance.connect(owner)['modifier_onlyNomineeOwner()'](),
+            instance.connect(owner).modifier_onlyNomineeOwner(),
           ).to.be.revertedWithCustomError(
             instance,
             'SafeOwnable__NotNomineeOwner',
@@ -66,7 +65,7 @@ describe('SafeOwnable', function () {
       it('sets message sender as owner', async () => {
         await instance.connect(nomineeOwner).__acceptOwnership();
 
-        expect(await instance.callStatic.__owner()).to.equal(
+        expect(await instance.__owner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });
@@ -76,8 +75,8 @@ describe('SafeOwnable', function () {
 
         await instance.connect(nomineeOwner).__acceptOwnership();
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
-          ethers.constants.AddressZero,
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
+          ethers.ZeroAddress,
         );
       });
     });
@@ -86,7 +85,7 @@ describe('SafeOwnable', function () {
       it('sets nominee owner to given address', async () => {
         await instance.__transferOwnership(nomineeOwner.address);
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });
@@ -94,7 +93,7 @@ describe('SafeOwnable', function () {
       it('does not update owner address', async () => {
         await instance.__transferOwnership(nomineeOwner.address);
 
-        expect(await instance.callStatic.__owner()).to.equal(owner.address);
+        expect(await instance.__owner.staticCall()).to.equal(owner.address);
       });
     });
 
@@ -102,7 +101,7 @@ describe('SafeOwnable', function () {
       it('sets nominee owner to given address', async () => {
         await instance.__setNomineeOwner(nomineeOwner.address);
 
-        expect(await instance.callStatic.__nomineeOwner()).to.equal(
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
           nomineeOwner.address,
         );
       });

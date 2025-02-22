@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
+import { IERC721EnumerableInternal } from './IERC721EnumerableInternal.sol';
 
-abstract contract ERC721EnumerableInternal {
+abstract contract ERC721EnumerableInternal is IERC721EnumerableInternal {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 

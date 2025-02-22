@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.20;
 
 import { AddressUtils } from '../utils/AddressUtils.sol';
 import { IProxy } from './IProxy.sol';
+import { ProxyInternal } from './ProxyInternal.sol';
 
 /**
  * @title Base proxy contract
  */
-abstract contract Proxy is IProxy {
+abstract contract Proxy is IProxy, ProxyInternal {
     using AddressUtils for address;
 
     /**
@@ -43,10 +44,4 @@ abstract contract Proxy is IProxy {
             }
         }
     }
-
-    /**
-     * @notice get logic implementation address
-     * @return implementation address
-     */
-    function _getImplementation() internal virtual returns (address);
 }

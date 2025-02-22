@@ -2,11 +2,10 @@ import {
   describeBehaviorOfERC20Base,
   ERC20BaseBehaviorArgs,
 } from './ERC20Base.behavior';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { ERC20ImplicitApproval } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BigNumber, ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20ImplicitApprovalBehaviorArgs
@@ -17,64 +16,47 @@ export interface ERC20ImplicitApprovalBehaviorArgs
 
 export function describeBehaviorOfERC20ImplicitApproval(
   deploy: () => Promise<ERC20ImplicitApproval>,
-  {
-    supply,
-    getHolder,
-    getImplicitlyApprovedSpender,
-    burn,
-    mint,
-  }: ERC20ImplicitApprovalBehaviorArgs,
+  args: ERC20ImplicitApprovalBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC20ImplicitApproval', function () {
+  describe('::ERC20ImplicitApproval', () => {
     let holder: SignerWithAddress;
     let implicitlyApprovedSpender: SignerWithAddress;
     let instance: ERC20ImplicitApproval;
 
-    before(async function () {
-      holder = await getHolder();
-      implicitlyApprovedSpender = await getImplicitlyApprovedSpender();
+    before(async () => {
+      holder = await args.getHolder();
+      implicitlyApprovedSpender = await args.getImplicitlyApprovedSpender();
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(
-      deploy,
-      {
-        mint,
-        burn,
-        supply,
-      },
-      skips,
-    );
+    describeBehaviorOfERC20Base(deploy, args, skips);
 
-    describe('#allowance(address,address)', function () {
-      it('returns maximum uint256 for implicitly approved spender', async function () {
+    describe('#allowance(address,address)', () => {
+      it('returns maximum uint256 for implicitly approved spender', async () => {
         expect(
-          await instance.callStatic['allowance(address,address)'](
-            ethers.constants.AddressZero,
+          await instance.allowance.staticCall(
+            ethers.ZeroAddress,
             implicitlyApprovedSpender.address,
           ),
-        ).to.equal(ethers.constants.MaxUint256);
+        ).to.equal(ethers.MaxUint256);
       });
     });
 
-    describe('#transferFrom(address,address,uint256)', function () {
-      it('does not require approval for implicitly approved sender', async function () {
-        const amount = ethers.constants.One;
+    describe('#transferFrom(address,address,uint256)', () => {
+      it('does not require approval for implicitly approved sender', async () => {
+        const amount = 1n;
 
-        await mint(holder.address, amount);
+        await args.mint(holder.address, amount);
 
         await instance
           .connect(holder)
-          .approve(
-            implicitlyApprovedSpender.address,
-            ethers.constants.AddressZero,
-          );
+          .approve(implicitlyApprovedSpender.address, ethers.ZeroAddress);
 
         await expect(
           instance

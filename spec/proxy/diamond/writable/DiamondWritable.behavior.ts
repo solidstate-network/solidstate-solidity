@@ -1,6 +1,6 @@
 import { OwnableBehaviorArgs, describeBehaviorOfERC165Base } from '../../../';
-import { deployMockContract } from '@ethereum-waffle/mock-contract';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   IDiamondWritable,
@@ -9,16 +9,18 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {}
+export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {
+  immutableSelectors: string[];
+}
 
 export function describeBehaviorOfDiamondWritable(
   deploy: () => Promise<IDiamondWritable>,
-  { getOwner, getNonOwner }: DiamondWritableBehaviorArgs,
+  args: DiamondWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondWritable', function () {
+  describe('::DiamondWritable', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
@@ -29,28 +31,32 @@ export function describeBehaviorOfDiamondWritable(
 
     let instance: IDiamondWritable;
 
-    before(async function () {
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+    before(async () => {
+      owner = await args.getOwner();
+      nonOwner = await args.getNonOwner();
 
       for (let i = 0; i < 24; i++) {
         const fn = `fn${i}()`;
         functions.push(fn);
         selectors.push(
-          ethers.utils.hexDataSlice(
-            ethers.utils.solidityKeccak256(['string'], [fn]),
+          ethers.dataSlice(
+            ethers.solidityPackedKeccak256(['string'], [fn]),
             0,
             4,
           ),
         );
       }
 
+      // include a function known to have a zero-bytes selector
+      functions.push('ROOT4146650865()');
+      selectors.push('0x00000000');
+
       abi = functions.map((fn) => `function ${fn}`);
 
       facet = await deployMockContract(owner, abi);
     });
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       instance = await deploy();
     });
 
@@ -63,44 +69,38 @@ export function describeBehaviorOfDiamondWritable(
       skips,
     );
 
-    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', function () {
-      it('emits DiamondCut event', async function () {
-        const facets: any = [
+    describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
+      it('emits DiamondCut event', async () => {
+        const facets = [
           {
             target: facet.address,
-            action: 0,
-            selectors: [ethers.utils.hexlify(ethers.utils.randomBytes(4))],
+            action: 0n,
+            selectors: [ethers.hexlify(ethers.randomBytes(4))],
           },
         ];
-        const target = ethers.constants.AddressZero;
+        const target = ethers.ZeroAddress;
         const data = '0x';
 
-        let tx = instance.connect(owner).diamondCut(facets, target, data);
-
-        const events = (await (await tx).wait()).events;
-        const argsResult: any = events![0].args!;
-
-        expect(argsResult.facetCuts[0].target).to.eq(facets[0].target);
-        expect(argsResult.facetCuts[0].action).to.eq(facets[0].action);
-        expect(argsResult.facetCuts[0].selectors).to.deep.eq(
-          facets[0].selectors,
-        );
-
-        expect(argsResult.target).to.eq(target);
-        expect(argsResult.data).to.eq(data);
+        await expect(instance.connect(owner).diamondCut(facets, target, data))
+          .to.emit(instance, 'DiamondCut')
+          .withArgs(
+            facets.map((f) => [f.target, f.action, f.selectors]),
+            target,
+            data,
+          );
       });
 
-      describe('using FacetCutAction ADD', function () {
-        it('adds facet', async function () {
+      describe('using FacetCutAction ADD', () => {
+        it('adds facet', async () => {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
 
           for (let fn of functions) {
             await expect(
-              contract.callStatic[fn](),
+              contract[fn].staticCall(),
             ).to.be.revertedWithCustomError(
               instance,
               'Proxy__ImplementationIsNotContract',
@@ -111,30 +111,30 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
         });
 
-        describe('reverts if', function () {
-          it('target facet is not a contract', async function () {
+        describe('reverts if', () => {
+          it('target facet is not a contract', async () => {
             await expect(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 0,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -143,23 +143,42 @@ export function describeBehaviorOfDiamondWritable(
             );
           });
 
-          it('selector has already been added', async function () {
+          it('target facet is diamond itself', async () => {
+            await expect(
+              instance.connect(owner).diamondCut(
+                [
+                  {
+                    target: await instance.getAddress(),
+                    action: 0,
+                    selectors: [ethers.randomBytes(4)],
+                  },
+                ],
+                ethers.ZeroAddress,
+                '0x',
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondWritable__SelectorIsImmutable',
+            );
+          });
+
+          it('selector has already been added', async () => {
             const facetCuts = [
               {
                 target: facet.address,
                 action: 0,
-                selectors: [ethers.utils.randomBytes(4)],
+                selectors: [ethers.randomBytes(4)],
               },
             ];
 
             await instance
               .connect(owner)
-              .diamondCut(facetCuts, ethers.constants.AddressZero, '0x');
+              .diamondCut(facetCuts, ethers.ZeroAddress, '0x');
 
             await expect(
               instance
                 .connect(owner)
-                .diamondCut(facetCuts, ethers.constants.AddressZero, '0x'),
+                .diamondCut(facetCuts, ethers.ZeroAddress, '0x'),
             ).to.be.revertedWithCustomError(
               instance,
               'DiamondWritable__SelectorAlreadyAdded',
@@ -168,10 +187,10 @@ export function describeBehaviorOfDiamondWritable(
         });
       });
 
-      describe('using FacetCutAction REPLACE', function () {
-        it('replaces facet', async function () {
+      describe('using FacetCutAction REPLACE', () => {
+        it('replaces facet', async () => {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
@@ -180,13 +199,13 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -201,30 +220,30 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facetReplacement.address, action: 1, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
         });
 
-        describe('reverts if', function () {
-          it('target facet is not a contract', async function () {
+        describe('reverts if', () => {
+          it('target facet is not a contract', async () => {
             await expect(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 1,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -233,17 +252,17 @@ export function describeBehaviorOfDiamondWritable(
             );
           });
 
-          it('selector has not been added', async function () {
+          it('selector has not been added', async () => {
             await expect(
               instance.connect(owner).diamondCut(
                 [
                   {
                     target: facet.address,
                     action: 1,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -252,41 +271,29 @@ export function describeBehaviorOfDiamondWritable(
             );
           });
 
-          it('selector is immutable', async function () {
-            const selector = ethers.utils.randomBytes(4);
-
-            await instance.connect(owner).diamondCut(
-              [
-                {
-                  target: instance.address,
-                  action: 0,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
-
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: facet.address,
-                    action: 1,
-                    selectors: [selector],
-                  },
-                ],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'DiamondWritable__SelectorIsImmutable',
-            );
+          it('selector is immutable', async () => {
+            for (const immutableSelector of args.immutableSelectors) {
+              await expect(
+                instance.connect(owner).diamondCut(
+                  [
+                    {
+                      target: facet.address,
+                      action: 1,
+                      selectors: [immutableSelector],
+                    },
+                  ],
+                  ethers.ZeroAddress,
+                  '0x',
+                ),
+              ).to.be.revertedWithCustomError(
+                instance,
+                'DiamondWritable__SelectorIsImmutable',
+              );
+            }
           });
 
-          it('replacement facet is same as existing facet', async function () {
-            const selector = ethers.utils.randomBytes(4);
+          it('replacement facet is same as existing facet', async () => {
+            const selector = ethers.randomBytes(4);
 
             await instance.connect(owner).diamondCut(
               [
@@ -296,7 +303,7 @@ export function describeBehaviorOfDiamondWritable(
                   selectors: [selector],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
@@ -309,7 +316,7 @@ export function describeBehaviorOfDiamondWritable(
                     selectors: [selector],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -320,10 +327,10 @@ export function describeBehaviorOfDiamondWritable(
         });
       });
 
-      describe('using FacetCutAction REMOVE', function () {
-        it('removes facet', async function () {
+      describe('using FacetCutAction REMOVE', () => {
+        it('removes facet', async () => {
           const contract = new ethers.Contract(
-            instance.address,
+            await instance.getAddress(),
             abi,
             ethers.provider,
           );
@@ -332,13 +339,13 @@ export function describeBehaviorOfDiamondWritable(
             .connect(owner)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             );
 
           for (let fn of functions) {
             // call reverts, but with mock-specific message
-            await expect(contract.callStatic[fn]()).to.be.revertedWith(
+            await expect(contract[fn].staticCall()).to.be.revertedWith(
               'Mock on the method is not initialized',
             );
           }
@@ -346,14 +353,14 @@ export function describeBehaviorOfDiamondWritable(
           await instance
             .connect(owner)
             .diamondCut(
-              [{ target: ethers.constants.AddressZero, action: 2, selectors }],
-              ethers.constants.AddressZero,
+              [{ target: ethers.ZeroAddress, action: 2, selectors }],
+              ethers.ZeroAddress,
               '0x',
             );
 
           for (let fn of functions) {
             await expect(
-              contract.callStatic[fn](),
+              contract[fn].staticCall(),
             ).to.be.revertedWithCustomError(
               instance,
               'Proxy__ImplementationIsNotContract',
@@ -361,18 +368,18 @@ export function describeBehaviorOfDiamondWritable(
           }
         });
 
-        describe('reverts if', function () {
-          it('target address is not zero address', async function () {
+        describe('reverts if', () => {
+          it('target address is not zero address', async () => {
             await expect(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: instance.address,
+                    target: await instance.getAddress(),
                     action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -381,17 +388,17 @@ export function describeBehaviorOfDiamondWritable(
             );
           });
 
-          it('selector has not been added', async function () {
+          it('selector has not been added', async () => {
             await expect(
               instance.connect(owner).diamondCut(
                 [
                   {
-                    target: ethers.constants.AddressZero,
+                    target: ethers.ZeroAddress,
                     action: 2,
-                    selectors: [ethers.utils.randomBytes(4)],
+                    selectors: [ethers.randomBytes(4)],
                   },
                 ],
-                ethers.constants.AddressZero,
+                ethers.ZeroAddress,
                 '0x',
               ),
             ).to.be.revertedWithCustomError(
@@ -400,77 +407,63 @@ export function describeBehaviorOfDiamondWritable(
             );
           });
 
-          it('selector is immutable', async function () {
-            const selector = ethers.utils.randomBytes(4);
-
-            await instance.connect(owner).diamondCut(
-              [
-                {
-                  target: instance.address,
-                  action: 0,
-                  selectors: [selector],
-                },
-              ],
-              ethers.constants.AddressZero,
-              '0x',
-            );
-
-            await expect(
-              instance.connect(owner).diamondCut(
-                [
-                  {
-                    target: ethers.constants.AddressZero,
-                    action: 2,
-                    selectors: [selector],
-                  },
-                ],
-                ethers.constants.AddressZero,
-                '0x',
-              ),
-            ).to.be.revertedWithCustomError(
-              instance,
-              'DiamondWritable__SelectorIsImmutable',
-            );
+          it('selector is immutable', async () => {
+            for (const immutableSelector of args.immutableSelectors) {
+              await expect(
+                instance.connect(owner).diamondCut(
+                  [
+                    {
+                      target: ethers.ZeroAddress,
+                      action: 2,
+                      selectors: [immutableSelector],
+                    },
+                  ],
+                  ethers.ZeroAddress,
+                  '0x',
+                ),
+              ).to.be.revertedWithCustomError(
+                instance,
+                'DiamondWritable__SelectorIsImmutable',
+              );
+            }
           });
         });
       });
 
-      describe('reverts if', function () {
-        it('sender is not owner', async function () {
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
           await expect(
-            instance
-              .connect(nonOwner)
-              .diamondCut([], ethers.constants.AddressZero, '0x'),
+            instance.connect(nonOwner).diamondCut([], ethers.ZeroAddress, '0x'),
           ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
         });
 
-        it('passed FacetCutAction is invalid', async function () {
+        it('passed FacetCutAction is invalid', async () => {
           await expect(
             instance.connect(owner).diamondCut(
               [
                 {
-                  target: ethers.constants.AddressZero,
+                  target: ethers.ZeroAddress,
                   action: 3,
                   selectors: [],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             ),
           ).to.be.revertedWithoutReason();
         });
 
-        it('passed selector array is empty', async function () {
+        it('passed selector array is empty', async () => {
           await expect(
             instance.connect(owner).diamondCut(
               [
                 {
-                  target: ethers.constants.AddressZero,
+                  target: ethers.ZeroAddress,
                   action: 0,
                   selectors: [],
                 },
               ],
-              ethers.constants.AddressZero,
+              ethers.ZeroAddress,
               '0x',
             ),
           ).to.be.revertedWithCustomError(
@@ -479,7 +472,7 @@ export function describeBehaviorOfDiamondWritable(
           );
         });
 
-        it('initialization target is provided but data is not', async function () {
+        it('initialization target is provided but data is not', async () => {
           await expect(
             instance.connect(owner).diamondCut([], facet.address, '0x'),
           ).to.be.revertedWithCustomError(
@@ -488,18 +481,16 @@ export function describeBehaviorOfDiamondWritable(
           );
         });
 
-        it('initialization data is provided but target is not', async function () {
+        it('initialization data is provided but target is not', async () => {
           await expect(
-            instance
-              .connect(owner)
-              .diamondCut([], ethers.constants.AddressZero, '0x01'),
+            instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
             'DiamondWritable__InvalidInitializationParameters',
           );
         });
 
-        it('initialization target has no code', async function () {
+        it('initialization target has no code', async () => {
           await expect(
             instance.connect(owner).diamondCut([], owner.address, '0x01'),
           ).to.be.revertedWithCustomError(
@@ -508,7 +499,7 @@ export function describeBehaviorOfDiamondWritable(
           );
         });
 
-        it('initialization function reverts', async function () {
+        it('initialization function reverts', async () => {
           await expect(
             instance.connect(owner).diamondCut([], facet.address, '0x01'),
           ).to.be.revertedWith('Mock on the method is not initialized');
