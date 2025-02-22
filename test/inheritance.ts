@@ -23,6 +23,7 @@ describe('Inheritance Graph', () => {
     for (const name of allFullyQualifiedNames) {
       const [path, entity] = name.split(':');
       // TODO: sources are read directly from disk and may not match compiled artifacts
+      // TODO: regex fails if any inheritances are commented out
       // track full inheritance trees via surya
       ancestors[entity] = (await surya.dependencies([path], entity)).slice(1);
       // read direct inheritance trees from source
