@@ -10,21 +10,22 @@ import { ethers } from 'hardhat';
 
 describe('BeaconProxy', () => {
   let beacon: any;
+  let implementation: any;
   let instance: BeaconProxyMock;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    const implementationInstance = await new OwnableMock__factory(
-      deployer,
-    ).deploy(ethers.ZeroAddress);
+    implementation = await new OwnableMock__factory(deployer).deploy(
+      ethers.ZeroAddress,
+    );
 
     beacon = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',
     ]);
 
     await beacon.mock.getImplementation.returns(
-      await implementationInstance.getAddress(),
+      await implementation.getAddress(),
     );
 
     instance = await new BeaconProxyMock__factory(deployer).deploy(
@@ -40,8 +41,9 @@ describe('BeaconProxy', () => {
   describe('__internal', () => {
     describe('#_getImplementation()', () => {
       it('returns implementation address', async () => {
-        expect(await instance.__getImplementation.staticCall()).to.be
-          .properAddress;
+        expect(await instance.__getImplementation.staticCall()).to.eq(
+          await implementation.getAddress(),
+        );
       });
 
       describe('reverts if', () => {
