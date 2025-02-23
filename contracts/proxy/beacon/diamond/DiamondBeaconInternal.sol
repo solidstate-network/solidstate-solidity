@@ -5,7 +5,6 @@ pragma solidity ^0.8.20;
 import { OwnableInternal } from '../../../access/ownable/OwnableInternal.sol';
 import { DiamondReadableInternal } from '../../diamond/readable/DiamondReadableInternal.sol';
 import { DiamondWritableInternal } from '../../diamond/writable/DiamondWritableInternal.sol';
-
 import { IDiamondBeaconInternal } from './IDiamondBeaconInternal.sol';
 
 abstract contract DiamondBeaconInternal is
@@ -24,7 +23,8 @@ abstract contract DiamondBeaconInternal is
         address target,
         bytes memory data
     ) internal virtual override {
-        require(target == address(0) && data.length == 0);
+        if (target != address(0) || data.length != 0)
+            revert DiamondBeacon__InvalidInput();
         super._diamondCut(facetCuts, target, data);
     }
 }

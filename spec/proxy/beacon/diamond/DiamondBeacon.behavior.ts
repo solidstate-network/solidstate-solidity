@@ -49,13 +49,19 @@ export function describeBehaviorOfDiamondBeacon(
             instance
               .connect(owner)
               .diamondCut([], await instance.getAddress(), '0x'),
-          ).to.be.reverted;
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBeacon__InvalidInput',
+          );
         });
 
         it('data does not have zero length', async () => {
           await expect(
             instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
-          ).to.be.reverted;
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondBeacon__InvalidInput',
+          );
         });
       });
     });

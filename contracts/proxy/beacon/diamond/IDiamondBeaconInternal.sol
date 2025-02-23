@@ -10,4 +10,6 @@ interface IDiamondBeaconInternal is
     IOwnableInternal,
     IDiamondReadableInternal,
     IDiamondWritableInternal
-{}
+{
+    error DiamondBeacon__InvalidInput();
+}
