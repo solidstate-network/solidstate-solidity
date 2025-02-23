@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "DiamondBeacon__InvalidInput",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "DiamondWritable__InvalidInitializationParameters",
     "type": "error"
   },
