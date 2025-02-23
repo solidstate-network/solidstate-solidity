@@ -6,6 +6,7 @@ import { OwnableInternal } from '../../../access/ownable/Ownable.sol';
 import { Ownable } from '../../../access/ownable/Ownable.sol';
 import { DiamondReadable } from '../../diamond/readable/DiamondReadable.sol';
 import { DiamondWritable } from '../../diamond/writable/DiamondWritable.sol';
+import { DiamondWritableInternal } from '../../diamond/writable/DiamondWritableInternal.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { DiamondBeaconInternal } from './DiamondBeaconInternal.sol';
 
@@ -19,4 +20,19 @@ contract DiamondBeacon is
     DiamondReadable,
     DiamondWritable,
     Ownable
-{}
+{
+    /**
+     * @inheritdoc DiamondBeaconInternal
+     */
+    function _diamondCut(
+        FacetCut[] memory facetCuts,
+        address target,
+        bytes memory data
+    )
+        internal
+        virtual
+        override(DiamondWritableInternal, DiamondBeaconInternal)
+    {
+        super._diamondCut(facetCuts, target, data);
+    }
+}

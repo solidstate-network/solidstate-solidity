@@ -13,4 +13,18 @@ abstract contract DiamondBeaconInternal is
     OwnableInternal,
     DiamondReadableInternal,
     DiamondWritableInternal
-{}
+{
+    /**
+     * @inheritdoc DiamondWritableInternal
+     * @param target unused (input must be zero address)
+     * @param data unused (input must be zero bytes)
+     */
+    function _diamondCut(
+        FacetCut[] memory facetCuts,
+        address target,
+        bytes memory data
+    ) internal virtual override {
+        require(target == address(0) && data.length == 0);
+        super._diamondCut(facetCuts, target, data);
+    }
+}
