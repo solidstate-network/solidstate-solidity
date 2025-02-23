@@ -5,8 +5,6 @@ pragma solidity ^0.8.20;
 import { Beacon } from './Beacon.sol';
 
 contract BeaconMock is Beacon {
-    address private _beacon;
-
     constructor(address owner) {
         _setOwner(owner);
     }
