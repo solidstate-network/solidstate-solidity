@@ -17,6 +17,12 @@ abstract contract DiamondBeaconProxyInternal is
         override
         returns (address implementation)
     {
-        implementation = IDiamondBeacon(_getBeacon()).facetAddress(msg.sig);
+        implementation = _getImplementation(msg.sig);
+    }
+
+    function _getImplementation(
+        bytes4 sig
+    ) internal view virtual returns (address implementation) {
+        implementation = IDiamondBeacon(_getBeacon()).facetAddress(sig);
     }
 }
