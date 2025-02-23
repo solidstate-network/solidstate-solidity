@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "BeaconProxy__FetchImplementationFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "Proxy__ImplementationIsNotContract",
     "type": "error"
   },
