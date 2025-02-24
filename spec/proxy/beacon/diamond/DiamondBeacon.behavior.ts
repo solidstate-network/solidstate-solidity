@@ -37,7 +37,10 @@ export function describeBehaviorOfDiamondBeacon(
 
     describeBehaviorOfOwnable(deploy, args, skips);
 
-    describeBehaviorOfDiamondReadable(deploy, args, skips);
+    describeBehaviorOfDiamondReadable(deploy, args, [
+      '::ERC165Base',
+      ...(skips ?? []),
+    ]);
 
     // TODO: can't use DiamondWritable spec because it's incorrectly designed to rely on DiamondBase
     // describeBehaviorOfDiamondWritable(deploy, args, skips);

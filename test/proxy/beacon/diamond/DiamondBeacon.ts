@@ -52,14 +52,10 @@ describe('DiamondBeacon', () => {
     );
   });
 
-  describeBehaviorOfDiamondBeacon(
-    async () => instance,
-    {
-      getOwner: async () => owner,
-      getNonOwner: async () => nonOwner,
-      facetCuts,
-      immutableSelectors: [],
-    },
-    ['::ERC165Base'],
-  );
+  describeBehaviorOfDiamondBeacon(async () => instance, {
+    getOwner: async () => owner,
+    getNonOwner: async () => nonOwner,
+    facetCuts,
+    immutableSelectors: [],
+  });
 });
