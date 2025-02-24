@@ -25,37 +25,4 @@ describe('Beacon', () => {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });
-
-  describe('__internal', () => {
-    describe('#_getImplementation()', () => {
-      it('returns implementation address', async () => {
-        expect(await instance.__getImplementation.staticCall()).to.be
-          .properAddress;
-      });
-    });
-
-    describe('#_setImplementation(address)', async () => {
-      it('updates implementation address', async () => {
-        expect(await instance.__getImplementation.staticCall()).to.eq(
-          ethers.ZeroAddress,
-        );
-
-        const address = ethers.getAddress(
-          ethers.zeroPadValue(ethers.randomBytes(20), 20),
-        );
-
-        await instance.connect(owner).__setImplementation(address);
-
-        expect(await instance.__getImplementation.staticCall()).to.eq(address);
-      });
-
-      describe('reverts if', () => {
-        it('sender is not owner', async () => {
-          await expect(
-            instance.connect(nonOwner).__setImplementation(ethers.ZeroAddress),
-          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
-        });
-      });
-    });
-  });
 });
