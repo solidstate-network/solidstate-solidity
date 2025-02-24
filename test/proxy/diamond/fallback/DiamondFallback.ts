@@ -36,8 +36,8 @@ describe('DiamondFallback', () => {
   describeBehaviorOfDiamondFallback(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
-    facetFunction: 'nomineeOwner()',
-    facetFunctionArgs: [],
+    implementationFunction: 'nomineeOwner()',
+    implementationFunctionArgs: [],
     fallbackAddress: ethers.ZeroAddress,
   });
 });

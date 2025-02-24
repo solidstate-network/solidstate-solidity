@@ -1,0 +1,16 @@
+[
+  {
+    "inputs": [],
+    "name": "AddressUtils__NotContract",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  }
+]

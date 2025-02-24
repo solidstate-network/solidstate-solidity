@@ -23,6 +23,7 @@ describe('Inheritance Graph', () => {
     for (const name of allFullyQualifiedNames) {
       const [path, entity] = name.split(':');
       // TODO: sources are read directly from disk and may not match compiled artifacts
+      // TODO: regex fails if any inheritances are commented out
       // track full inheritance trees via surya
       ancestors[entity] = (await surya.dependencies([path], entity)).slice(1);
       // read direct inheritance trees from source
@@ -299,6 +300,7 @@ describe('Inheritance Graph', () => {
             'MerkleProof',
             'BinaryHeap',
             'DoublyLinkedList',
+            'PackedDoublyLinkedList',
             'EnumerableMap',
             'EnumerableSet',
             'IncrementalMerkleTree',
@@ -379,13 +381,13 @@ describe('Inheritance Graph', () => {
         const internalContractName = `${name}Internal`;
         const externalInterfaceName = `I${name}`;
 
-        expect(ancestors[name].indexOf(internalContractName)).to.eq(
-          ancestors[name].length - 2,
-          `First inherited ancestor for ${name} should be ${internalContractName}`,
-        );
         expect(ancestors[name].indexOf(externalInterfaceName)).to.eq(
           ancestors[name].length - 1,
-          `Second inherited ancestor for ${name} should be ${externalInterfaceName}`,
+          `First inherited ancestor for ${name} should be ${externalInterfaceName}`,
+        );
+        expect(ancestors[name].indexOf(internalContractName)).to.eq(
+          ancestors[name].length - 2,
+          `Second inherited ancestor for ${name} should be ${internalContractName}`,
         );
       }
     });
