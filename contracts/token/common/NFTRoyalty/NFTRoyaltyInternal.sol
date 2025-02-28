@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { ERC2981Storage } from './ERC2981Storage.sol';
-import { IERC2981Internal } from '../../../interfaces/IERC2981Internal.sol';
+import { INFTRoyaltyInternal } from './INFTRoyaltyInternal.sol';
+import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
 
 /**
- * @title ERC2981 internal functions
+ * @title NFTRoyalty internal functions
  */
-abstract contract ERC2981Internal is IERC2981Internal {
+abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
     /**
      * @notice calculate how much royalty is owed and to whom
      * @dev royalty must be paid in addition to, rather than deducted from, salePrice
@@ -37,7 +37,7 @@ abstract contract ERC2981Internal is IERC2981Internal {
     function _getRoyaltyBPS(
         uint256 tokenId
     ) internal view virtual returns (uint16 royaltyBPS) {
-        ERC2981Storage.Layout storage l = ERC2981Storage.layout();
+        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout();
         royaltyBPS = l.royaltiesBPS[tokenId];
 
         if (royaltyBPS == 0) {
@@ -54,7 +54,7 @@ abstract contract ERC2981Internal is IERC2981Internal {
     function _getRoyaltyReceiver(
         uint256 tokenId
     ) internal view virtual returns (address royaltyReceiver) {
-        ERC2981Storage.Layout storage l = ERC2981Storage.layout();
+        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout();
         royaltyReceiver = l.royaltyReceivers[tokenId];
 
         if (royaltyReceiver == address(0)) {
