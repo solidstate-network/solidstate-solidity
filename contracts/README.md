@@ -14,7 +14,9 @@ npm install --save-dev @solidstate/contracts
 yarn add --dev @solidstate/contracts
 ```
 
-## Layout
+## Code Structure
+
+### Layers Pattern
 
 Each of the Solidstate contracts is split into multiple "layers" across multiple files: external contracts, internal contracts, external interfaces, internal interfaces, and storage libraries.
 
