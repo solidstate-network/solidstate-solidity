@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import hre from 'hardhat';
 import {
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
@@ -19,6 +20,12 @@ describe('Pragma statements', () => {
     const versions = new Set();
 
     for (const file of files) {
+      if (file.content.versionPragmas.length === 0) {
+        throw new Error(
+          `Missing pragma statement for file: ${file.sourceName}`,
+        );
+      }
+
       for (const version of file.content.versionPragmas) {
         versions.add(version);
       }

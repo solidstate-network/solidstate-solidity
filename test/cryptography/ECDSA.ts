@@ -30,7 +30,7 @@ describe('ECDSA', () => {
         const sig = await signData(signer, data);
 
         expect(
-          await instance.recover.staticCall(
+          await instance['recover(bytes32,bytes)'].staticCall(
             ethers.solidityPackedKeccak256(
               ['string', 'bytes32'],
               ['\x19Ethereum Signed Message:\n32', hash],
@@ -43,7 +43,7 @@ describe('ECDSA', () => {
       describe('reverts if', () => {
         it('signaure length is invalid', async () => {
           await expect(
-            instance.recover.staticCall(
+            instance['recover(bytes32,bytes)'].staticCall(
               ethers.randomBytes(32),
               ethers.randomBytes(64),
             ),
@@ -53,7 +53,7 @@ describe('ECDSA', () => {
           );
 
           await expect(
-            instance.recover.staticCall(
+            instance['recover(bytes32,bytes)'].staticCall(
               ethers.randomBytes(32),
               ethers.randomBytes(66),
             ),
@@ -84,7 +84,7 @@ describe('ECDSA', () => {
         const v = ethers.dataSlice(sig, 64, 65);
 
         expect(
-          await instance.recover.staticCall(
+          await instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
             ethers.solidityPackedKeccak256(
               ['string', 'bytes32'],
               ['\x19Ethereum Signed Message:\n32', hash],
@@ -105,7 +105,7 @@ describe('ECDSA', () => {
           // s must be less than or equal to MAX_S_VALUE
 
           await expect(
-            instance.recover.staticCall(
+            instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
               hash,
               v,
               r,
@@ -123,13 +123,23 @@ describe('ECDSA', () => {
 
           for (let v = 0; v <= 26; v++) {
             await expect(
-              instance.recover.staticCall(hash, v, r, s),
+              instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+                hash,
+                v,
+                r,
+                s,
+              ),
             ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidV');
           }
 
           for (let v = 29; v <= 255; v++) {
             await expect(
-              instance.recover.staticCall(hash, v, r, s),
+              instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+                hash,
+                v,
+                r,
+                s,
+              ),
             ).to.be.revertedWithCustomError(instance, 'ECDSA__InvalidV');
           }
         });
@@ -141,7 +151,7 @@ describe('ECDSA', () => {
           // hash and r generated randomly, known not to yield valid signer
 
           await expect(
-            instance.recover.staticCall(
+            instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
               '0xfb78d190a6ff9c55a28ae24c65cb006029ae15140557db9017a6474592d3fd59',
               v,
               '0xe1a6fa655db25741b29a03d2f8ec44fb5590d0a1ce91c789886b59e54c08f509',

@@ -1,4 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 import { describeFilter } from '@solidstate/library';
 import { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -11,7 +12,7 @@ export interface OwnableBehaviorArgs {
 
 export function describeBehaviorOfOwnable(
   deploy: () => Promise<IOwnable>,
-  { getOwner, getNonOwner }: OwnableBehaviorArgs,
+  args: OwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -23,8 +24,12 @@ export function describeBehaviorOfOwnable(
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await getOwner();
-      nonOwner = await getNonOwner();
+      // TODO: must impersonate and set balance in case of owners who are contracts, but this might break third-party tests
+      owner = await ethers.getImpersonatedSigner(
+        await (await args.getOwner()).getAddress(),
+      );
+      await setBalance(await owner.getAddress(), ethers.parseEther('1'));
+      nonOwner = await args.getNonOwner();
     });
 
     describe('#owner()', () => {

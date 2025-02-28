@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 /**
  * @title Elliptic Curve Digital Signature Algorithm (ECDSA) operations
@@ -16,12 +16,12 @@ library ECDSA {
      * @notice recover signer of hashed message from signature
      * @param hash hashed data payload
      * @param signature signed data payload
-     * @return recovered message signer
+     * @return signer recovered message signer
      */
     function recover(
         bytes32 hash,
         bytes memory signature
-    ) internal pure returns (address) {
+    ) internal pure returns (address signer) {
         if (signature.length != 65) revert ECDSA__InvalidSignatureLength();
 
         bytes32 r;
@@ -34,7 +34,7 @@ library ECDSA {
             v := byte(0, mload(add(signature, 0x60)))
         }
 
-        return recover(hash, v, r, s);
+        signer = recover(hash, v, r, s);
     }
 
     /**
@@ -43,14 +43,14 @@ library ECDSA {
      * @param v signature "v" value
      * @param r signature "r" value
      * @param s signature "s" value
-     * @return recovered message signer
+     * @return signer recovered message signer
      */
     function recover(
         bytes32 hash,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) internal pure returns (address) {
+    ) internal pure returns (address signer) {
         // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
         // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
         // the valid range for s in (281): 0 < s < secp256k1n ÷ 2 + 1, and for v in (282): v ∈ {27, 28}. Most
@@ -67,23 +67,20 @@ library ECDSA {
         if (v != 27 && v != 28) revert ECDSA__InvalidV();
 
         // If the signature is valid (and not malleable), return the signer address
-        address signer = ecrecover(hash, v, r, s);
+        signer = ecrecover(hash, v, r, s);
         if (signer == address(0)) revert ECDSA__InvalidSignature();
-
-        return signer;
     }
 
     /**
      * @notice generate an "Ethereum Signed Message" in the format returned by the eth_sign JSON-RPC method
      * @param hash hashed data payload
-     * @return signed message hash
+     * @return signedMessage signed message hash
      */
     function toEthSignedMessageHash(
         bytes32 hash
-    ) internal pure returns (bytes32) {
-        return
-            keccak256(
-                abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)
-            );
+    ) internal pure returns (bytes32 signedMessage) {
+        signedMessage = keccak256(
+            abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)
+        );
     }
 }

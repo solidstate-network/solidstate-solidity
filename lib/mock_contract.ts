@@ -8,7 +8,7 @@ export async function deployMockContract(ethersV6Signer: any, abi: any) {
   const waffleMock = await deployWaffleMockContract(ethersV5Signer, abi);
 
   const mock = Object.assign(waffleMock, {
-    getAddress: async () => (await waffleMock).address,
+    getAddress: async () => waffleMock.address,
   });
 
   return mock as any;

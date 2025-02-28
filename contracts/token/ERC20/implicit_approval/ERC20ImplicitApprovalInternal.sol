@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { ERC20BaseInternal } from '../base/ERC20BaseInternal.sol';
+import { IERC20ImplicitApprovalInternal } from './IERC20ImplicitApprovalInternal.sol';
 import { ERC20ImplicitApprovalStorage } from './ERC20ImplicitApprovalStorage.sol';
 
 /**
  * @title ERC20ImplicitApproval internal functions
  */
-abstract contract ERC20ImplicitApprovalInternal is ERC20BaseInternal {
+abstract contract ERC20ImplicitApprovalInternal is
+    IERC20ImplicitApprovalInternal,
+    ERC20BaseInternal
+{
     /**
      * @inheritdoc ERC20BaseInternal
      * @dev internally stored allowance is ignored for implicitly approved spenders
