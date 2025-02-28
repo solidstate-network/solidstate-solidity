@@ -14,8 +14,8 @@ import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdm
  */
 abstract contract AccessControlDefaultAdminRules is
     IAccessControlDefaultAdminRules,
-    AccessControl,
-    AccessControlDefaultAdminRulesInternal
+    AccessControlDefaultAdminRulesInternal,
+    AccessControl
 {
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
