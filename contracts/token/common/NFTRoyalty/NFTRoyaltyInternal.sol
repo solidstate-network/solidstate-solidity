@@ -9,6 +9,8 @@ import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
  * @title NFTRoyalty internal functions
  */
 abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
+    uint16 private constant MAX_ROYALTY = 10000;
+
     /**
      * @notice calculate how much royalty is owed and to whom
      * @dev royalty must be paid in addition to, rather than deducted from, salePrice
@@ -68,6 +70,7 @@ abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
      * @param royaltyBPS royalty rate expressed in basis points
      */
     function _setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) internal {
+        if (royaltyBPS > MAX_ROYALTY) revert NFTRoyalty__RoyaltyTooHigh();
         NFTRoyaltyStorage.layout().royaltiesBPS[tokenId] = royaltyBPS;
     }
 
@@ -76,6 +79,8 @@ abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
      * @param defaultRoyaltyBPS royalty rate expressed in basis points
      */
     function _setDefaultRoyaltyBPS(uint16 defaultRoyaltyBPS) internal {
+        if (defaultRoyaltyBPS > MAX_ROYALTY)
+            revert NFTRoyalty__RoyaltyTooHigh();
         NFTRoyaltyStorage.layout().defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
 }

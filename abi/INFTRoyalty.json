@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "NFTRoyalty__RoyaltyTooHigh",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
