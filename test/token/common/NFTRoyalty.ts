@@ -1,9 +1,12 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfERC2981 } from '@solidstate/spec';
-import { ERC2981Mock, ERC2981Mock__factory } from '@solidstate/typechain-types';
+import { describeBehaviorOfNFTRoyalty } from '@solidstate/spec';
+import {
+  NFTRoyaltyMock,
+  NFTRoyaltyMock__factory,
+} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('ERC2981', () => {
+describe('NFTRoyalty', () => {
   let royalty = 10000; // 10000 / 10000 = 100%
   let royalties = [
     0, // 0 / 10000 = 0%
@@ -15,17 +18,17 @@ describe('ERC2981', () => {
   let deployer: SignerWithAddress;
   let receiver: SignerWithAddress;
 
-  let instance: ERC2981Mock;
+  let instance: NFTRoyaltyMock;
 
   before(async () => {
     [deployer, receiver] = await ethers.getSigners();
 
-    instance = await new ERC2981Mock__factory(deployer).deploy(
+    instance = await new NFTRoyaltyMock__factory(deployer).deploy(
       royalty,
       royalties,
       await receiver.getAddress(),
     );
   });
 
-  describeBehaviorOfERC2981(async () => instance);
+  describeBehaviorOfNFTRoyalty(async () => instance);
 });
