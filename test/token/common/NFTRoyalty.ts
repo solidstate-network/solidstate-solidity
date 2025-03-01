@@ -84,5 +84,35 @@ describe('NFTRoyalty', () => {
         });
       });
     });
+
+    describe('#_setRoyaltyReceiver(uint256,uint16)', () => {
+      it('sets royalty for single token', async () => {
+        const tokenId = 99n;
+        const receiverAddress = await instance.getAddress();
+
+        await instance.setRoyaltyReceiver(tokenId, receiverAddress);
+
+        const [royaltyReceiver] = await instance.royaltyInfo(tokenId, 10000n);
+
+        expect(royaltyReceiver).to.eq(receiverAddress);
+
+        const [otherRoyaltyReceiver] = await instance.royaltyInfo(0n, 10000n);
+
+        expect(otherRoyaltyReceiver).not.to.eq(receiverAddress);
+      });
+    });
+
+    describe('#_setDefaultRoyaltyReceiver(uint256)', () => {
+      it('sets fallback royalty', async () => {
+        const tokenId = 99n;
+        const defaultReceiverAddress = await instance.getAddress();
+
+        await instance.setDefaultRoyaltyReceiver(defaultReceiverAddress);
+
+        const [royaltyReceiver] = await instance.royaltyInfo(tokenId, 10000n);
+
+        expect(royaltyReceiver).to.eq(defaultReceiverAddress);
+      });
+    });
   });
 });

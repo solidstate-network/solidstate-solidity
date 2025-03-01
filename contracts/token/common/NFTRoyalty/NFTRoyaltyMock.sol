@@ -33,4 +33,12 @@ contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
     function setDefaultRoyaltyBPS(uint16 defaultRoyaltyBPS) external {
         _setDefaultRoyaltyBPS(defaultRoyaltyBPS);
     }
+
+    function setRoyaltyReceiver(uint256 tokenId, address receiver) external {
+        _setRoyaltyReceiver(tokenId, receiver);
+    }
+
+    function setDefaultRoyaltyReceiver(address defaultReceiver) external {
+        _setDefaultRoyaltyReceiver(defaultReceiver);
+    }
 }

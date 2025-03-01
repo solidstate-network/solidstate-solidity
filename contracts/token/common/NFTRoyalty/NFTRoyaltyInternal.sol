@@ -83,4 +83,21 @@ abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
             revert NFTRoyalty__RoyaltyTooHigh();
         NFTRoyaltyStorage.layout().defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
+
+    /**
+     * @notice set the royalty receiver for given token id
+     * @param tokenId token whose royalty receiver to set
+     * @param receiver royalty receiver
+     */
+    function _setRoyaltyReceiver(uint256 tokenId, address receiver) internal {
+        NFTRoyaltyStorage.layout().royaltyReceivers[tokenId] = receiver;
+    }
+
+    /**
+     * @notice set the global default royalty receiver
+     * @param defaultReceiver royalty receiver
+     */
+    function _setDefaultRoyaltyReceiver(address defaultReceiver) internal {
+        NFTRoyaltyStorage.layout().defaultRoyaltyReceiver = defaultReceiver;
+    }
 }
