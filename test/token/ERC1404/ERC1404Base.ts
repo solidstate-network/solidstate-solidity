@@ -60,6 +60,17 @@ describe('ERC1404Base', () => {
           await instance.messageForTransferRestriction.staticCall(code),
         ).to.eq(message);
       });
+
+      describe('reverts if', () => {
+        it('array lengts do not match', async () => {
+          await expect(
+            instance.setRestrictions([0n], []),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1404Base__ArrayLengthMismatch',
+          );
+        });
+      });
     });
   });
 });
