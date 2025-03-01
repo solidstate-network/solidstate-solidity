@@ -11,6 +11,13 @@ const restrictions = [
   { code: 3n, message: 'three' },
 ];
 
+const invalidTransfer = {
+  sender: ethers.ZeroAddress,
+  receiver: ethers.ZeroAddress,
+  amount: 1n,
+  code: 3n,
+};
+
 describe('ERC1404Base', () => {
   let instance: ERC1404BaseMock;
 
@@ -21,10 +28,19 @@ describe('ERC1404Base', () => {
       restrictions.map((e) => e.code),
       restrictions.map((e) => e.message),
     );
+    invalidTransfer.sender = await deployer.getAddress();
+    invalidTransfer.receiver = await deployer.getAddress();
+    await instance.setInvalidTransfer(
+      invalidTransfer.sender,
+      invalidTransfer.receiver,
+      invalidTransfer.amount,
+      invalidTransfer.code,
+    );
   });
 
   describeBehaviorOfERC1404Base(async () => instance, {
     restrictions,
+    invalidTransfer,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
       instance.__mint(recipient, amount),
@@ -44,14 +60,6 @@ describe('ERC1404Base', () => {
           await instance.messageForTransferRestriction.staticCall(code),
         ).to.eq(message);
       });
-    });
-
-    describe('#_detectTransferRestriction(address,address,uint256)', () => {
-      it('todo');
-    });
-
-    describe('#_messageForTransferRestriction(uint8)', () => {
-      it('todo');
     });
   });
 });
