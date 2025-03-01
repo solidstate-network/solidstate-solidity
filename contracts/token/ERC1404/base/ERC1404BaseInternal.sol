@@ -14,6 +14,11 @@ abstract contract ERC1404BaseInternal is
     IERC1404BaseInternal,
     ERC20BaseInternal
 {
+    /**
+     * @notice define restriction codes and their associated messages
+     * @param restrictionCodes list of restriction codes whose messages to set
+     * @param restrictionMessages list of restriction messages
+     */
     function _setRestrictions(
         uint8[] memory restrictionCodes,
         string[] memory restrictionMessages
@@ -32,16 +37,28 @@ abstract contract ERC1404BaseInternal is
         }
     }
 
+    /**
+     * @notice query the restriction code for a proposed transfer
+     * @param from owner of tokens to be transferred
+     * @param to beneficiary of transfer
+     * @param amount quantity of tokens transferred
+     * @return restrictionCode restriction code for transfer (0 if no restriction exists)
+     */
     function _detectTransferRestriction(
         address from,
         address to,
         uint256 amount
-    ) internal view virtual returns (uint8);
+    ) internal view virtual returns (uint8 restrictionCode);
 
+    /**
+     * @notice query the restriction message for a given restriction code
+     * @param restrictionCode restriction code whose message to query
+     * @return message restriction message
+     */
     function _messageForTransferRestriction(
         uint8 restrictionCode
-    ) internal view virtual returns (string memory) {
-        return ERC1404BaseStorage.layout().restrictions[restrictionCode];
+    ) internal view virtual returns (string memory message) {
+        message = ERC1404BaseStorage.layout().restrictions[restrictionCode];
     }
 
     /**
@@ -57,7 +74,7 @@ abstract contract ERC1404BaseInternal is
 
         uint8 restrictionCode = _detectTransferRestriction(from, to, amount);
 
-        if (restrictionCode > 0) {
+        if (restrictionCode != 0) {
             revert(_messageForTransferRestriction(restrictionCode));
         }
     }

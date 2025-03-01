@@ -6,18 +6,34 @@ import {
 import { ethers } from 'hardhat';
 
 let restrictions = [
-  { code: 1, message: 'one' },
-  { code: 3, message: 'three' },
+  { code: 1n, message: 'one' },
+  { code: 3n, message: 'three' },
 ];
+
+const invalidTransfer = {
+  sender: ethers.ZeroAddress,
+  receiver: ethers.ZeroAddress,
+  amount: 1n,
+  code: 3n,
+};
 
 describe('SolidStateERC1404', () => {
   let instance: SolidStateERC1404Mock;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new SolidStateERC1404Mock__factory(deployer).deploy(
+    instance = await new SolidStateERC1404Mock__factory(deployer).deploy();
+    await instance.setRestrictions(
       restrictions.map((r) => r.code),
       restrictions.map((r) => r.message),
+    );
+    invalidTransfer.sender = await deployer.getAddress();
+    invalidTransfer.receiver = await deployer.getAddress();
+    await instance.setInvalidTransfer(
+      invalidTransfer.sender,
+      invalidTransfer.receiver,
+      invalidTransfer.amount,
+      invalidTransfer.code,
     );
   });
 
@@ -27,6 +43,7 @@ describe('SolidStateERC1404', () => {
     allowance: (holder, spender) =>
       instance.allowance.staticCall(holder, spender),
     restrictions,
+    invalidTransfer,
     name: '',
     symbol: '',
     decimals: 0n,
