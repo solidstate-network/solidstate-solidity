@@ -32,7 +32,7 @@ abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
      * @notice query the royalty rate (denominated in basis points) for given token id
      * @dev implementation supports per-token-id values as well as a global default
      * @param tokenId token whose royalty rate to query
-     * @return royaltyBPS royalty rate
+     * @return royaltyBPS royalty rate expressed in basis points
      */
     function _getRoyaltyBPS(
         uint256 tokenId
@@ -60,5 +60,22 @@ abstract contract NFTRoyaltyInternal is INFTRoyaltyInternal {
         if (royaltyReceiver == address(0)) {
             royaltyReceiver = l.defaultRoyaltyReceiver;
         }
+    }
+
+    /**
+     * @notice set the royalty for given token id
+     * @param tokenId token whose royalty to set
+     * @param royaltyBPS royalty rate expressed in basis points
+     */
+    function _setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) internal {
+        NFTRoyaltyStorage.layout().royaltiesBPS[tokenId] = royaltyBPS;
+    }
+
+    /**
+     * @notice set the global default royalty
+     * @param defaultRoyaltyBPS royalty rate expressed in basis points
+     */
+    function _setDefaultRoyaltyBPS(uint16 defaultRoyaltyBPS) internal {
+        NFTRoyaltyStorage.layout().defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
 }
