@@ -26,6 +26,18 @@ contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
         _setSupportsInterface(type(IERC2981).interfaceId, true);
     }
 
+    function getRoyaltyBPS(
+        uint256 tokenId
+    ) external view returns (uint16 royaltyBPS) {
+        royaltyBPS = _getRoyaltyBPS(tokenId);
+    }
+
+    function getRoyaltyReceiver(
+        uint256 tokenId
+    ) external view returns (address royaltyReceiver) {
+        royaltyReceiver = _getRoyaltyReceiver(tokenId);
+    }
+
     function setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) external {
         _setRoyaltyBPS(tokenId, royaltyBPS);
     }

@@ -33,20 +33,55 @@ describe('NFTRoyalty', () => {
   describeBehaviorOfNFTRoyalty(async () => instance, {});
 
   describe('__internal', () => {
+    describe('#_getRoyaltyBPS(uint256)', () => {
+      it('returns royalty for single token', async () => {
+        const tokenId = 99n;
+        const defaultRoyalty = 6000n;
+        const royalty = 9001n;
+
+        await instance.setDefaultRoyaltyBPS(defaultRoyalty);
+
+        expect(await instance.getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          defaultRoyalty,
+        );
+
+        await instance.setRoyaltyBPS(tokenId, royalty);
+        expect(await instance.getRoyaltyBPS.staticCall(tokenId)).to.eq(royalty);
+      });
+    });
+
+    describe('#_getRoyaltyReceiver(uint256)', () => {
+      it('returns royalty for single token', async () => {
+        const tokenId = 99n;
+        const defaultRoyaltyReceiver = await instance.getAddress();
+        const royaltyReceiver = await deployer.getAddress();
+
+        await instance.setDefaultRoyaltyReceiver(defaultRoyaltyReceiver);
+
+        expect(await instance.getRoyaltyReceiver.staticCall(tokenId)).to.eq(
+          defaultRoyaltyReceiver,
+        );
+
+        await instance.setRoyaltyReceiver(tokenId, royaltyReceiver);
+        expect(await instance.getRoyaltyReceiver.staticCall(tokenId)).to.eq(
+          royaltyReceiver,
+        );
+      });
+    });
+
     describe('#_setRoyaltyBPS(uint256,uint16)', () => {
       it('sets royalty for single token', async () => {
         const tokenId = 99n;
+        const otherTokenId = 100n;
         const royalty = 9001n;
 
         await instance.setRoyaltyBPS(tokenId, royalty);
 
-        const [, royaltyAmount] = await instance.royaltyInfo(tokenId, 10000n);
+        expect(await instance.getRoyaltyBPS.staticCall(tokenId)).to.eq(royalty);
 
-        expect(royaltyAmount).to.eq(royalty);
-
-        const [, otherRoyaltyAmount] = await instance.royaltyInfo(0n, 10000n);
-
-        expect(otherRoyaltyAmount).not.to.eq(royalty);
+        expect(await instance.getRoyaltyBPS.staticCall(otherTokenId)).not.to.eq(
+          royalty,
+        );
       });
 
       describe('reverts if', () => {
@@ -68,9 +103,9 @@ describe('NFTRoyalty', () => {
 
         await instance.setDefaultRoyaltyBPS(defaultRoyalty);
 
-        const [, royaltyAmount] = await instance.royaltyInfo(tokenId, 10000n);
-
-        expect(royaltyAmount).to.eq(defaultRoyalty);
+        expect(await instance.getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          defaultRoyalty,
+        );
       });
 
       describe('reverts if', () => {
@@ -88,17 +123,18 @@ describe('NFTRoyalty', () => {
     describe('#_setRoyaltyReceiver(uint256,uint16)', () => {
       it('sets royalty for single token', async () => {
         const tokenId = 99n;
+        const otherTokenId = 100n;
         const receiverAddress = await instance.getAddress();
 
         await instance.setRoyaltyReceiver(tokenId, receiverAddress);
 
-        const [royaltyReceiver] = await instance.royaltyInfo(tokenId, 10000n);
+        expect(await instance.getRoyaltyReceiver.staticCall(tokenId)).to.eq(
+          receiverAddress,
+        );
 
-        expect(royaltyReceiver).to.eq(receiverAddress);
-
-        const [otherRoyaltyReceiver] = await instance.royaltyInfo(0n, 10000n);
-
-        expect(otherRoyaltyReceiver).not.to.eq(receiverAddress);
+        expect(
+          await instance.getRoyaltyReceiver.staticCall(otherTokenId),
+        ).not.to.eq(receiverAddress);
       });
     });
 
@@ -109,9 +145,9 @@ describe('NFTRoyalty', () => {
 
         await instance.setDefaultRoyaltyReceiver(defaultReceiverAddress);
 
-        const [royaltyReceiver] = await instance.royaltyInfo(tokenId, 10000n);
-
-        expect(royaltyReceiver).to.eq(defaultReceiverAddress);
+        expect(await instance.getRoyaltyReceiver.staticCall(tokenId)).to.eq(
+          defaultReceiverAddress,
+        );
       });
     });
   });
