@@ -74,7 +74,7 @@ abstract contract ERC1404BaseInternal is
 
         uint8 restrictionCode = _detectTransferRestriction(from, to, amount);
 
-        if (restrictionCode > 0) {
+        if (restrictionCode != 0) {
             revert(_messageForTransferRestriction(restrictionCode));
         }
     }
