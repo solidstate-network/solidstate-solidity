@@ -3,8 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IERC165 } from '../../../interfaces/IERC165.sol';
+import { IERC2981 } from '../../../interfaces/IERC2981.sol';
 import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
-import { NFTRoyalty, INFTRoyalty } from './NFTRoyalty.sol';
+import { NFTRoyalty } from './NFTRoyalty.sol';
 import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
 
 contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
@@ -14,18 +15,22 @@ contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
         address defaultRoyaltyReceiver
     ) {
         NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout();
-        l.defaultRoyaltyBPS = defaultRoyaltyBPS;
+        _setDefaultRoyaltyBPS(defaultRoyaltyBPS);
         l.defaultRoyaltyReceiver = defaultRoyaltyReceiver;
 
         for (uint8 i = 0; i < royaltiesBPS.length; i++) {
-            l.royaltiesBPS[i] = royaltiesBPS[i];
+            _setRoyaltyBPS(i, royaltiesBPS[i]);
         }
 
         _setSupportsInterface(type(IERC165).interfaceId, true);
-        _setSupportsInterface(type(INFTRoyalty).interfaceId, true);
+        _setSupportsInterface(type(IERC2981).interfaceId, true);
     }
 
-    function setRoyalty(uint16 defaultRoyaltyBPS) external {
-        NFTRoyaltyStorage.layout().defaultRoyaltyBPS = defaultRoyaltyBPS;
+    function setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) external {
+        _setRoyaltyBPS(tokenId, royaltyBPS);
+    }
+
+    function setDefaultRoyaltyBPS(uint16 defaultRoyaltyBPS) external {
+        _setDefaultRoyaltyBPS(defaultRoyaltyBPS);
     }
 }
