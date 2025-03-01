@@ -20,7 +20,7 @@ describe('NFTRoyalty', () => {
   let receiver: SignerWithAddress;
   let instance: NFTRoyaltyMock;
 
-  before(async () => {
+  beforeEach(async () => {
     [deployer, receiver] = await ethers.getSigners();
 
     instance = await new NFTRoyaltyMock__factory(deployer).deploy(
@@ -30,7 +30,7 @@ describe('NFTRoyalty', () => {
     );
   });
 
-  describeBehaviorOfNFTRoyalty(async () => instance);
+  describeBehaviorOfNFTRoyalty(async () => instance, {});
 
   describe('__internal', () => {
     describe('#_setRoyaltyBPS(uint256,uint16)', () => {

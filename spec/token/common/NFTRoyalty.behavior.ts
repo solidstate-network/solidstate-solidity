@@ -5,8 +5,11 @@ import { NFTRoyaltyMock } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+export interface NFTRoyaltyBehaviorArgs {}
+
 export function describeBehaviorOfNFTRoyalty(
   deploy: () => Promise<NFTRoyaltyMock>,
+  args: NFTRoyaltyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
@@ -19,7 +22,7 @@ export function describeBehaviorOfNFTRoyalty(
     let receiver: SignerWithAddress;
     let instance: NFTRoyaltyMock;
 
-    before(async () => {
+    beforeEach(async () => {
       receiver = (await ethers.getSigners())[1];
       instance = await deploy();
     });
