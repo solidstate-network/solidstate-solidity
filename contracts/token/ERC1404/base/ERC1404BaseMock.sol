@@ -5,8 +5,11 @@ pragma solidity ^0.8.20;
 import { ERC1404Base } from './ERC1404Base.sol';
 
 contract ERC1404BaseMock is ERC1404Base {
-    constructor(uint8[] memory errorCodes, string[] memory errorMessages) {
-        _setRestrictions(errorCodes, errorMessages);
+    function setRestrictions(
+        uint8[] memory restrictionCodes,
+        string[] memory restrictionMessages
+    ) external {
+        _setRestrictions(restrictionCodes, restrictionMessages);
     }
 
     function _detectTransferRestriction(

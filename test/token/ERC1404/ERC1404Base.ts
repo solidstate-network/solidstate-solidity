@@ -3,6 +3,7 @@ import {
   ERC1404BaseMock,
   ERC1404BaseMock__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 const restrictions = [
@@ -15,7 +16,8 @@ describe('ERC1404Base', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1404BaseMock__factory(deployer).deploy(
+    instance = await new ERC1404BaseMock__factory(deployer).deploy();
+    await instance.setRestrictions(
       restrictions.map((e) => e.code),
       restrictions.map((e) => e.message),
     );
@@ -31,6 +33,19 @@ describe('ERC1404Base', () => {
   });
 
   describe('__internal', () => {
+    describe('#_setRestrictions', () => {
+      it('sets messages for restriction codes', async () => {
+        const code = 4n;
+        const message = 'err';
+
+        await instance.setRestrictions([code], [message]);
+
+        expect(
+          await instance.messageForTransferRestriction.staticCall(code),
+        ).to.eq(message);
+      });
+    });
+
     describe('#_detectTransferRestriction(address,address,uint256)', () => {
       it('todo');
     });
