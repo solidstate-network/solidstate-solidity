@@ -2,11 +2,10 @@ import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
 import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
-  restrictions: any;
+  restrictions: { code: bigint; message: string }[];
 }
 
 export function describeBehaviorOfERC1404Base(

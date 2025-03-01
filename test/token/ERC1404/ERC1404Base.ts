@@ -5,9 +5,9 @@ import {
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-let restrictions = [
-  { code: 1, message: 'one' },
-  { code: 3, message: 'three' },
+const restrictions = [
+  { code: 1n, message: 'one' },
+  { code: 3n, message: 'three' },
 ];
 
 describe('ERC1404Base', () => {
