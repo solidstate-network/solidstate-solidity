@@ -1,7 +1,3 @@
-import {
-  MinimalProxyFactoryMock,
-  MinimalProxyFactoryMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

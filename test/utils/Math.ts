@@ -1,4 +1,3 @@
-import { MathMock, MathMock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

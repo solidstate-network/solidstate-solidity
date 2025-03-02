@@ -1,9 +1,5 @@
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
-import {
-  DiamondReadableMock,
-  DiamondReadableMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('DiamondReadable', () => {

@@ -1,6 +1,5 @@
 import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { describeFilter } from '@solidstate/library';
-import { IBeaconProxy } from '@solidstate/typechain-types';
 
 export interface BeaconProxyBehaviorArgs extends ProxyBehaviorArgs {}
 

@@ -1,10 +1,6 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 import { deployMockContract } from '@solidstate/library';
-import {
-  AddressUtilsMock,
-  AddressUtilsMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';

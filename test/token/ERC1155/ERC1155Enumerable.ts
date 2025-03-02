@@ -1,8 +1,4 @@
 import { describeBehaviorOfERC1155Enumerable } from '@solidstate/spec';
-import {
-  ERC1155EnumerableMock,
-  ERC1155EnumerableMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC1155Enumerable', () => {

@@ -1,5 +1,4 @@
 import { hashData, signData } from '@solidstate/library';
-import { EIP712Mock, EIP712Mock__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

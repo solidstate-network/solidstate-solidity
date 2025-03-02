@@ -1,8 +1,4 @@
 import { describeBehaviorOfERC165Base } from '@solidstate/spec';
-import {
-  ERC165BaseMock,
-  ERC165BaseMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

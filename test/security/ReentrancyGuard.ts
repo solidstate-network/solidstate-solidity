@@ -1,8 +1,4 @@
 import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
-import {
-  ReentrancyGuardMock,
-  ReentrancyGuardMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

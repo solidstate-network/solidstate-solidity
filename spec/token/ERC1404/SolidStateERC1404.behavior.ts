@@ -7,7 +7,6 @@ import {
   ERC1404BaseBehaviorArgs,
 } from './ERC1404Base.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ISolidStateERC1404 } from '@solidstate/typechain-types';
 
 export interface SolidStateERC1404BehaviorArgs
   extends SolidStateERC20BehaviorArgs,

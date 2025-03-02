@@ -15,7 +15,6 @@ import {
   ERC20PermitBehaviorArgs,
 } from './ERC20Permit.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ISolidStateERC20 } from '@solidstate/typechain-types';
 import { ContractTransaction } from 'ethers';
 
 export interface SolidStateERC20BehaviorArgs

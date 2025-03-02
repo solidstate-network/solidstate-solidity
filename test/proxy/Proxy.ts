@@ -1,11 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfProxy } from '@solidstate/spec';
-import {
-  Ownable,
-  OwnableMock__factory,
-  ProxyMock,
-  ProxyMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('Proxy', () => {

@@ -1,9 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
-import {
-  ERC1271OwnableMock,
-  ERC1271OwnableMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

@@ -1,5 +1,4 @@
 import { describeFilter } from '@solidstate/library';
-import { IERC20Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface ERC20MetadataBehaviorArgs {

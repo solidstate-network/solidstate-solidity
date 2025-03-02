@@ -10,7 +10,6 @@ import {
 } from '../../diamond';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 

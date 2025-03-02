@@ -1,7 +1,3 @@
-import {
-  MulticallMock,
-  MulticallMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';

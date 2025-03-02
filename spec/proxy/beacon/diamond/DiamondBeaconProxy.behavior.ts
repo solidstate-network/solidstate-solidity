@@ -3,7 +3,6 @@ import {
   BeaconProxyBehaviorArgs,
 } from '../BeaconProxy.behavior';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondBeaconProxy } from '@solidstate/typechain-types';
 
 export interface DiamondBeaconProxyBehaviorArgs
   extends BeaconProxyBehaviorArgs {}

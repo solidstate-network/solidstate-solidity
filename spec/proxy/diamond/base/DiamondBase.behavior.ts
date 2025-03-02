@@ -1,6 +1,5 @@
 import { describeFilter } from '@solidstate/library';
 import { ProxyBehaviorArgs } from '@solidstate/spec';
-import { IDiamondBase } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

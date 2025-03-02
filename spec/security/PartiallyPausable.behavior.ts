@@ -1,5 +1,4 @@
 import { describeFilter } from '@solidstate/library';
-import { PartiallyPausable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

@@ -1,9 +1,4 @@
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
-import {
-  OwnableMock__factory,
-  UpgradeableProxyMock,
-  UpgradeableProxyMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

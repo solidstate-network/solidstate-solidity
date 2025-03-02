@@ -7,7 +7,6 @@ import {
   ERC4626BaseBehaviorArgs,
 } from './ERC4626Base.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ISolidStateERC4626 } from '@solidstate/typechain-types';
 
 export interface SolidStateERC4626BehaviorArgs
   extends SolidStateERC20BehaviorArgs,

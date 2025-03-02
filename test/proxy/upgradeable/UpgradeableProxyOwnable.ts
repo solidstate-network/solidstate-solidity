@@ -1,10 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxyOwnable } from '@solidstate/spec';
-import {
-  OwnableMock__factory,
-  UpgradeableProxyOwnableMock,
-  UpgradeableProxyOwnableMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

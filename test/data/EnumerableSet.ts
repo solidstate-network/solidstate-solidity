@@ -1,13 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
-import {
-  EnumerableSetBytes32Mock,
-  EnumerableSetBytes32Mock__factory,
-  EnumerableSetAddressMock,
-  EnumerableSetAddressMock__factory,
-  EnumerableSetUintMock,
-  EnumerableSetUintMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

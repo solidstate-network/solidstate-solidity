@@ -1,13 +1,5 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
-import {
-  BinaryHeapAddressMock,
-  BinaryHeapBytes32Mock,
-  BinaryHeapUintMock,
-  BinaryHeapAddressMock__factory,
-  BinaryHeapBytes32Mock__factory,
-  BinaryHeapUintMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

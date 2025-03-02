@@ -1,10 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
-import {
-  DiamondFallbackMock,
-  DiamondFallbackMock__factory,
-  SafeOwnableMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('DiamondFallback', () => {
