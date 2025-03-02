@@ -20,6 +20,7 @@
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
+    "@nomicfoundation/hardhat-viem": "^2.0.6",
     "@solidstate/hardhat-4byte-uploader": "^1.2.2",
     "@solidstate/library": "link:lib",
     "@solidstate/spec": "link:spec",
@@ -50,6 +51,7 @@
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.7.3",
+    "viem": "^2.23.5",
     "yarn-up": "^1.4.1"
   },
   "resolutions": {

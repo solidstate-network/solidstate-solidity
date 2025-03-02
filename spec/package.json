@@ -29,10 +29,10 @@
     "@solidstate/library": "file:../lib"
   },
   "peerDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
-    "ethers": "^6.0.0",
-    "hardhat": "^2.0.0"
+    "@nomicfoundation/hardhat-viem": "^2.0.6",
+    "hardhat": "^2.0.0",
+    "viem": "^2.23.5"
   },
   "files": [
     "dist/"
