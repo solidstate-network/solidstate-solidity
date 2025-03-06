@@ -4,11 +4,19 @@ import hre from 'hardhat';
 
 const surya = require('surya');
 
-const INTERNAL_INTERFACE = /\bI[A-Z]\w*Internal$/;
-const EXTERNAL_INTERFACE = /\bI[A-Z]\w*(?<!Internal)$/;
-const INTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*Internal$/;
-const EXTERNAL_CONTRACT =
-  /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Internal|Storage|Mock)$/;
+const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Storage|Mock)$/;
+const INTERNAL_CONTRACT = /\b_(([I][a-z])|([A-HJ-Z]))\w*$/;
+const EXTERNAL_INTERFACE = /\bI[A-Z]\w*$/;
+const INTERNAL_INTERFACE = /\b_I[A-Z]\w*$/;
+
+const getExternalContractName = (entityName: string) =>
+  entityName.replace('_', '').replace(/I(?=[A-Z])/, '');
+const getInternalContractName = (entityName: string) =>
+  `_${getExternalContractName(entityName)}`;
+const getExternalInterfaceName = (entityName: string) =>
+  `I${getExternalContractName(entityName)}`;
+const getInternalInterfaceName = (entityName: string) =>
+  `_I${getExternalContractName(entityName)}`;
 
 describe('Inheritance Graph', () => {
   let allEntityNames: string[];
@@ -67,11 +75,11 @@ describe('Inheritance Graph', () => {
       // run assertions against internal interface ancestors
 
       for (const externalInterfaceName of externalInterfaceNames) {
-        const name = `${externalInterfaceName}Internal`;
+        const name = getInternalInterfaceName(externalInterfaceName);
 
         const internalInterfaceNames = directAncestors[externalInterfaceName]
           .filter((name) => EXTERNAL_INTERFACE.test(name))
-          .map((name) => `${name}Internal`);
+          .map(getInternalInterfaceName);
 
         for (const internalInterfaceName of internalInterfaceNames) {
           expect(directAncestors[name]).to.include(
@@ -82,11 +90,11 @@ describe('Inheritance Graph', () => {
       }
 
       for (const internalContractName of internalContractNames) {
-        const name = `I${internalContractName}`;
+        const name = getInternalInterfaceName(internalContractName);
 
         const internalInterfaceNames = directAncestors[internalContractName]
           .filter((name) => INTERNAL_CONTRACT.test(name))
-          .map((name) => `I${name}`);
+          .map(getInternalInterfaceName);
 
         for (const internalInterfaceName of internalInterfaceNames) {
           expect(directAncestors[name]).to.include(
@@ -127,9 +135,7 @@ describe('Inheritance Graph', () => {
     it('do not directly inherit from unrelated internal interfaces', async () => {
       for (const name of names) {
         for (const ancestor of directAncestors[name]) {
-          const internalInterfaceName = `${name}Internal`;
-
-          if (ancestor === internalInterfaceName) continue;
+          if (ancestor === getInternalInterfaceName(name)) continue;
 
           expect(INTERNAL_INTERFACE.test(ancestor)).to.eq(
             false,
@@ -141,7 +147,7 @@ describe('Inheritance Graph', () => {
 
     it('directly inherit from corresponding internal interfaces', async () => {
       for (const name of names) {
-        const internalInterfaceName = `${name}Internal`;
+        const internalInterfaceName = getInternalInterfaceName(name);
 
         expect(directAncestors[name]).to.include(
           internalInterfaceName,
@@ -160,15 +166,15 @@ describe('Inheritance Graph', () => {
       // run assertions against internal interface ancestors
 
       for (const externalContractName of externalContractNames) {
-        const name = `I${externalContractName}`;
+        const name = getExternalInterfaceName(externalContractName);
 
-        const internalInterfaceNames = directAncestors[externalContractName]
+        const externalInterfaces = directAncestors[externalContractName]
           .filter((name) => EXTERNAL_CONTRACT.test(name))
-          .map((name) => `I${name}`);
+          .map(getExternalInterfaceName);
 
-        for (const internalInterfaceName of internalInterfaceNames) {
+        for (const externalInterface of externalInterfaces) {
           expect(directAncestors[name]).to.include(
-            internalInterfaceName,
+            externalInterface,
             `Missing ancestor for ${name}`,
           );
         }
@@ -177,7 +183,7 @@ describe('Inheritance Graph', () => {
 
     it('inherit in correct order', async () => {
       for (const name of names) {
-        const internalInterfaceName = `${name}Internal`;
+        const internalInterfaceName = getInternalInterfaceName(name);
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
           ancestors[name].length - 1,
@@ -215,9 +221,7 @@ describe('Inheritance Graph', () => {
     it('do not directly inherit from unrelated internal interfaces', async () => {
       for (const name of names) {
         for (const ancestor of directAncestors[name]) {
-          const internalInterfaceName = `I${name}`;
-
-          if (ancestor === internalInterfaceName) continue;
+          if (ancestor === getInternalInterfaceName(name)) continue;
 
           expect(INTERNAL_INTERFACE.test(ancestor)).to.eq(
             false,
@@ -229,7 +233,7 @@ describe('Inheritance Graph', () => {
 
     it('directly inherit from corresponding internal interfaces', async () => {
       for (const name of names) {
-        const internalInterfaceName = `I${name}`;
+        const internalInterfaceName = getInternalInterfaceName(name);
 
         expect(directAncestors[name]).to.include(
           internalInterfaceName,
@@ -248,15 +252,15 @@ describe('Inheritance Graph', () => {
       // run assertions against internal interface ancestors
 
       for (const externalContractName of externalContractNames) {
-        const name = `${externalContractName}Internal`;
+        const name = getInternalContractName(externalContractName);
 
-        const internalInterfaceNames = directAncestors[externalContractName]
+        const internalContractNames = directAncestors[externalContractName]
           .filter((name) => EXTERNAL_CONTRACT.test(name))
-          .map((name) => `${name}Internal`);
+          .map(getInternalContractName);
 
-        for (const internalInterfaceName of internalInterfaceNames) {
+        for (const internalContractName of internalContractNames) {
           expect(directAncestors[name]).to.include(
-            internalInterfaceName,
+            internalContractName,
             `Missing ancestor for ${name}`,
           );
         }
@@ -265,7 +269,7 @@ describe('Inheritance Graph', () => {
 
     it('inherit in correct order', async () => {
       for (const name of names) {
-        const internalInterfaceName = `I${name}`;
+        const internalInterfaceName = getInternalInterfaceName(name);
 
         expect(ancestors[name].indexOf(internalInterfaceName)).to.eq(
           ancestors[name].length - 1,
@@ -332,9 +336,7 @@ describe('Inheritance Graph', () => {
     it('do not directly inherit from unrelated external interfaces', async () => {
       for (const name of names) {
         for (const ancestor of directAncestors[name]) {
-          const externalInterfaceName = `I${name}`;
-
-          if (ancestor === externalInterfaceName) continue;
+          if (ancestor === getExternalInterfaceName(name)) continue;
 
           expect(EXTERNAL_INTERFACE.test(ancestor)).to.eq(
             false,
@@ -347,7 +349,7 @@ describe('Inheritance Graph', () => {
     it('do not directly inherit from unrelated internal contracts', async () => {
       for (const name of names) {
         for (const ancestor of directAncestors[name]) {
-          const internalContractName = `${name}Internal`;
+          const internalContractName = getInternalContractName(name);
 
           if (ancestor === internalContractName) continue;
 
@@ -361,8 +363,8 @@ describe('Inheritance Graph', () => {
 
     it('directly inherit from corresponding internal contracts and external interfaces', async () => {
       for (const name of names) {
-        const internalContractName = `${name}Internal`;
-        const externalInterfaceName = `I${name}`;
+        const internalContractName = getInternalContractName(name);
+        const externalInterfaceName = getExternalInterfaceName(name);
 
         expect(directAncestors[name]).to.include(
           internalContractName,
@@ -378,8 +380,8 @@ describe('Inheritance Graph', () => {
 
     it('inherit in correct order', async () => {
       for (const name of names) {
-        const internalContractName = `${name}Internal`;
-        const externalInterfaceName = `I${name}`;
+        const internalContractName = getInternalContractName(name);
+        const externalInterfaceName = getExternalInterfaceName(name);
 
         expect(ancestors[name].indexOf(externalInterfaceName)).to.eq(
           ancestors[name].length - 1,
