@@ -24,11 +24,11 @@ contract DiamondBeacon is
     /**
      * @inheritdoc _DiamondBeacon
      */
-    function _diamondCutExternal(
+    function _diamondCut(
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
     ) internal virtual override(_DiamondWritable, _DiamondBeacon) {
-        super._diamondCutExternal(facetCuts, target, data);
+        super._diamondCut(facetCuts, target, data);
     }
 }
