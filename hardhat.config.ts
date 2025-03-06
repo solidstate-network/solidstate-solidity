@@ -29,7 +29,7 @@ export default {
   },
 
   exposed: {
-    include: ['**/_*.sol'],
+    include: ['**/_*.sol', '**/*Storage.sol'],
     // the default $ prefix appears to conflict with typechain
     prefix: 'EXPOSED',
   },
