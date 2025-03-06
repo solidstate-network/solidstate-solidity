@@ -23,7 +23,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     /**
      * @notice accept transfer of contract ownership
      */
-    function _acceptOwnership() internal virtual {
+    function _acceptOwnership() internal virtual onlyNomineeOwner {
         _setOwner(msg.sender);
         delete SafeOwnableStorage.layout().nomineeOwner;
     }
@@ -31,7 +31,9 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     /**
      * @notice grant permission to given address to claim contract ownership
      */
-    function _transferOwnership(address account) internal virtual override {
+    function _transferOwnership(
+        address account
+    ) internal virtual override onlyOwner {
         _setNomineeOwner(account);
     }
 

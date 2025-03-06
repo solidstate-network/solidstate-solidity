@@ -37,7 +37,7 @@ abstract contract _Ownable is _IOwnable {
         }
     }
 
-    function _transferOwnership(address account) internal virtual {
+    function _transferOwnership(address account) internal virtual onlyOwner {
         _setOwner(account);
     }
 

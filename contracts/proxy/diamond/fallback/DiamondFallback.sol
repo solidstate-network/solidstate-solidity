@@ -31,8 +31,8 @@ abstract contract DiamondFallback is
     /**
      * @inheritdoc IDiamondFallback
      */
-    function setFallbackAddress(address fallbackAddress) external onlyOwner {
-        _setFallbackAddress(fallbackAddress);
+    function setFallbackAddress(address fallbackAddress) external {
+        _setFallbackAddressExternal(fallbackAddress);
     }
 
     /**
