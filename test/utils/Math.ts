@@ -70,17 +70,42 @@ describe('Math', () => {
     });
 
     describe('#sqrt(uint256)', () => {
-      it('returns the sqrt of a positive integer from 0 to maxUint256', async () => {
-        expect(await instance.sqrt.staticCall(16)).to.eq(4);
+      it('returns the square root of 0', async () => {
+        expect(await instance.sqrt.staticCall(0n)).to.eq(0n);
+      });
 
-        for (let i = 10; i < 16; i++) {
-          expect(await instance.sqrt.staticCall(i.toString())).to.eq(3);
+      it('returns the square root of 1', async () => {
+        expect(await instance.sqrt.staticCall(1n)).to.eq(1n);
+      });
+
+      it('returns the square root of 2', async () => {
+        expect(await instance.sqrt.staticCall(2n)).to.eq(1n);
+      });
+
+      it('returns the square root of positive integers', async () => {
+        for (let i = 2; i < 16; i++) {
+          expect(await instance.sqrt.staticCall(BigInt(i))).to.eq(
+            Math.floor(Math.sqrt(i)),
+          );
         }
+      });
 
-        expect(await instance.sqrt.staticCall(0)).to.eq(0);
+      it('returns the square root of powers of 2', async () => {
+        for (let i = 0; i < 256; i++) {
+          const input = 2n ** BigInt(i);
+          const output = await instance.sqrt.staticCall(input);
+          expect(output ** 2n).to.be.lte(input);
+          expect((output + 1n) ** 2n).to.be.gt(input);
+        }
+      });
 
+      it('returns the square root of max values', async () => {
         expect(await instance.sqrt.staticCall(ethers.MaxUint256 - 1n)).to.eq(
-          BigInt('340282366920938463463374607431768211455'),
+          340282366920938463463374607431768211455n,
+        );
+
+        expect(await instance.sqrt.staticCall(ethers.MaxUint256)).to.eq(
+          340282366920938463463374607431768211455n,
         );
       });
     });
