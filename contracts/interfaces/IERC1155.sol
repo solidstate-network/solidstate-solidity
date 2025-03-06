@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IERC165 } from './IERC165.sol';
-import { IERC1155Internal } from './IERC1155Internal.sol';
+import { _IERC1155 } from './_IERC1155.sol';
 
 /**
  * @title ERC1155 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-1155
  */
-interface IERC1155 is IERC1155Internal, IERC165 {
+interface IERC1155 is _IERC1155, IERC165 {
     /**
      * @notice query the balance of given token held by given address
      * @param account address to query

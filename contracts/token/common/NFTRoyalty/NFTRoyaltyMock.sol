@@ -14,7 +14,9 @@ contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
         uint16[] memory royaltiesBPS,
         address defaultRoyaltyReceiver
     ) {
-        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout();
+        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout(
+            NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT
+        );
         _setDefaultRoyaltyBPS(defaultRoyaltyBPS);
         l.defaultRoyaltyReceiver = defaultRoyaltyReceiver;
 

@@ -5,14 +5,15 @@ pragma solidity ^0.8.20;
 import { IERC1155 } from '../../../interfaces/IERC1155.sol';
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { IERC1155Base } from './IERC1155Base.sol';
-import { ERC1155BaseInternal, ERC1155BaseStorage } from './ERC1155BaseInternal.sol';
+import { _ERC1155Base } from './_ERC1155Base.sol';
+import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
 
 /**
  * @title Base ERC1155 contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  * @dev inheritor must either implement ERC165 supportsInterface or inherit ERC165Base
  */
-abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
+abstract contract ERC1155Base is IERC1155Base, _ERC1155Base {
     /**
      * @inheritdoc IERC1155
      */
@@ -34,7 +35,9 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
             revert ERC1155Base__ArrayLengthMismatch();
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage.layout().balances;
+            storage balances = ERC1155BaseStorage
+                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+                .balances;
 
         uint256[] memory batchBalances = new uint256[](accounts.length);
 
@@ -56,7 +59,10 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
         address account,
         address operator
     ) public view virtual returns (bool) {
-        return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
+        return
+            ERC1155BaseStorage
+                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+                .operatorApprovals[account][operator];
     }
 
     /**
@@ -64,9 +70,9 @@ abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
      */
     function setApprovalForAll(address operator, bool status) public virtual {
         if (msg.sender == operator) revert ERC1155Base__SelfApproval();
-        ERC1155BaseStorage.layout().operatorApprovals[msg.sender][
-            operator
-        ] = status;
+        ERC1155BaseStorage
+            .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            .operatorApprovals[msg.sender][operator] = status;
         emit ApprovalForAll(msg.sender, operator, status);
     }
 

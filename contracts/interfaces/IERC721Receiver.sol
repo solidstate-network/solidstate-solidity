@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC721ReceiverInternal } from './IERC721ReceiverInternal.sol';
+import { _IERC721Receiver } from './_IERC721Receiver.sol';
 
-interface IERC721Receiver is IERC721ReceiverInternal {
+interface IERC721Receiver is _IERC721Receiver {
     function onERC721Received(
         address operator,
         address from,

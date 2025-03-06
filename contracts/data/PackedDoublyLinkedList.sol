@@ -7,16 +7,16 @@ pragma solidity ^0.8.20;
  * @dev implementation does not support insertion of zero values into the list
  */
 library PackedDoublyLinkedList {
-    struct PackedDoublyLinkedListInternal {
+    struct _PackedDoublyLinkedList {
         mapping(bytes16 => bytes32) _links;
     }
 
     struct Bytes16List {
-        PackedDoublyLinkedListInternal _inner;
+        _PackedDoublyLinkedList _inner;
     }
 
     struct Uint128List {
-        PackedDoublyLinkedListInternal _inner;
+        _PackedDoublyLinkedList _inner;
     }
 
     bytes32 private constant MASK_NEXT = bytes32(uint256(type(uint128).max));
@@ -189,7 +189,7 @@ library PackedDoublyLinkedList {
     }
 
     function _contains(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 value
     ) private view returns (bool) {
         return
@@ -199,7 +199,7 @@ library PackedDoublyLinkedList {
     }
 
     function _adjacent(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 value
     ) private view returns (bytes16 prevValue, bytes16 nextValue) {
         (prevValue, nextValue) = _parseLinks(self._links[value]);
@@ -213,21 +213,21 @@ library PackedDoublyLinkedList {
     }
 
     function _prev(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 nextValue
     ) private view returns (bytes16 prevValue) {
         (prevValue, ) = _adjacent(self, nextValue);
     }
 
     function _next(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 prevValue
     ) private view returns (bytes16 nextValue) {
         (, nextValue) = _adjacent(self, prevValue);
     }
 
     function _insertBefore(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 nextValue,
         bytes16 newValue
     ) private returns (bool status) {
@@ -240,7 +240,7 @@ library PackedDoublyLinkedList {
     }
 
     function _insertAfter(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 prevValue,
         bytes16 newValue
     ) private returns (bool status) {
@@ -253,7 +253,7 @@ library PackedDoublyLinkedList {
     }
 
     function _insertBetween(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 prevValue,
         bytes16 nextValue,
         bytes16 newValue
@@ -278,35 +278,35 @@ library PackedDoublyLinkedList {
     }
 
     function _push(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 value
     ) private returns (bool status) {
         status = _insertBetween(self, _prev(self, 0), 0, value);
     }
 
     function _pop(
-        PackedDoublyLinkedListInternal storage self
+        _PackedDoublyLinkedList storage self
     ) private returns (bytes16 value) {
         value = _prev(self, 0);
         _remove(self, value);
     }
 
     function _shift(
-        PackedDoublyLinkedListInternal storage self
+        _PackedDoublyLinkedList storage self
     ) private returns (bytes16 value) {
         value = _next(self, 0);
         _remove(self, value);
     }
 
     function _unshift(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 value
     ) private returns (bool status) {
         status = _insertBetween(self, 0, _next(self, 0), value);
     }
 
     function _remove(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 value
     ) private returns (bool status) {
         if (_contains(self, value)) {
@@ -328,7 +328,7 @@ library PackedDoublyLinkedList {
     }
 
     function _replace(
-        PackedDoublyLinkedListInternal storage self,
+        _PackedDoublyLinkedList storage self,
         bytes16 oldValue,
         bytes16 newValue
     ) private returns (bool status) {

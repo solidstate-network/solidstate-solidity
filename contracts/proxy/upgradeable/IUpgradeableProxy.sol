@@ -3,6 +3,6 @@
 pragma solidity ^0.8.20;
 
 import { IProxy } from '../IProxy.sol';
-import { IUpgradeableProxyInternal } from './IUpgradeableProxyInternal.sol';
+import { _IUpgradeableProxy } from './_IUpgradeableProxy.sol';
 
-interface IUpgradeableProxy is IUpgradeableProxyInternal, IProxy {}
+interface IUpgradeableProxy is _IUpgradeableProxy, IProxy {}

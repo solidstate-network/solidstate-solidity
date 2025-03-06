@@ -4,12 +4,12 @@ pragma solidity ^0.8.20;
 
 import { INFTRoyalty } from './INFTRoyalty.sol';
 import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
-import { NFTRoyaltyInternal } from './NFTRoyaltyInternal.sol';
+import { _NFTRoyalty } from './_NFTRoyalty.sol';
 
 /**
  * @title NFTRoyalty implementation
  */
-abstract contract NFTRoyalty is INFTRoyalty, NFTRoyaltyInternal {
+abstract contract NFTRoyalty is INFTRoyalty, _NFTRoyalty {
     /**
      * @notice inheritdoc INFTRoyalty
      */

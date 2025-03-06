@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IERC20 } from './IERC20.sol';
-import { IERC1404Internal } from './IERC1404Internal.sol';
+import { _IERC1404 } from './_IERC1404.sol';
 
 /**
  * @title ERC1404 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-1404
  */
-interface IERC1404 is IERC1404Internal, IERC20 {
+interface IERC1404 is _IERC1404, IERC20 {
     /**
      * @notice return restriction code resulting from given transaction parameters
      * @return restriction code (0 if no restriction exists)

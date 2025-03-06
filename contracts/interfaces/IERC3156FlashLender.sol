@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IERC3156FlashBorrower } from './IERC3156FlashBorrower.sol';
-import { IERC3156FlashLenderInternal } from './IERC3156FlashLenderInternal.sol';
+import { _IERC3156FlashLender } from './_IERC3156FlashLender.sol';
 
-interface IERC3156FlashLender is IERC3156FlashLenderInternal {
+interface IERC3156FlashLender is _IERC3156FlashLender {
     /**
      * @notice The amount of currency available to be lent.
      * @param token The loan currency.

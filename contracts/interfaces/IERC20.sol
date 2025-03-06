@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20Internal } from './IERC20Internal.sol';
+import { _IERC20 } from './_IERC20.sol';
 
 /**
  * @title ERC20 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-20
  */
-interface IERC20 is IERC20Internal {
+interface IERC20 is _IERC20 {
     /**
      * @notice query the total minted token supply
      * @return token supply

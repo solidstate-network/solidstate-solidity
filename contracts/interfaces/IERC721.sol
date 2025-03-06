@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC721Internal } from './IERC721Internal.sol';
+import { _IERC721 } from './_IERC721.sol';
 
 /**
  * @title ERC721 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
-interface IERC721 is IERC721Internal {
+interface IERC721 is _IERC721 {
     /**
      * @notice query the balance of given address
      * @return balance quantity of tokens held

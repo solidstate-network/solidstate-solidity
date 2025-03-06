@@ -3,38 +3,39 @@
 pragma solidity ^0.8.20;
 
 import { ERC165Base } from '../../introspection/ERC165/base/ERC165Base.sol';
-import { ERC721Base, ERC721BaseInternal } from './base/ERC721Base.sol';
+import { ERC721Base } from './base/ERC721Base.sol';
+import { _ERC721Base } from './base/ERC721Base.sol';
 import { ERC721Enumerable } from './enumerable/ERC721Enumerable.sol';
 import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
-import { ERC721MetadataInternal } from './metadata/ERC721MetadataInternal.sol';
+import { _ERC721Metadata } from './metadata/_ERC721Metadata.sol';
 import { ISolidStateERC721 } from './ISolidStateERC721.sol';
-import { SolidStateERC721Internal } from './SolidStateERC721Internal.sol';
+import { _SolidStateERC721 } from './_SolidStateERC721.sol';
 
 /**
  * @title SolidState ERC721 implementation, including recommended extensions
  */
 abstract contract SolidStateERC721 is
     ISolidStateERC721,
-    SolidStateERC721Internal,
+    _SolidStateERC721,
     ERC721Base,
     ERC721Enumerable,
     ERC721Metadata,
     ERC165Base
 {
     /**
-     * @inheritdoc ERC721BaseInternal
+     * @inheritdoc _ERC721Base
      * @notice ERC721 hook: revert if value is included in external approve function call
      */
     function _handleApproveMessageValue(
         address operator,
         uint256 tokenId,
         uint256 value
-    ) internal virtual override(ERC721BaseInternal, SolidStateERC721Internal) {
+    ) internal virtual override(_ERC721Base, _SolidStateERC721) {
         super._handleApproveMessageValue(operator, tokenId, value);
     }
 
     /**
-     * @inheritdoc ERC721BaseInternal
+     * @inheritdoc _ERC721Base
      * @notice ERC721 hook: revert if value is included in external transfer function call
      */
     function _handleTransferMessageValue(
@@ -42,12 +43,12 @@ abstract contract SolidStateERC721 is
         address to,
         uint256 tokenId,
         uint256 value
-    ) internal virtual override(ERC721BaseInternal, SolidStateERC721Internal) {
+    ) internal virtual override(_ERC721Base, _SolidStateERC721) {
         super._handleTransferMessageValue(from, to, tokenId, value);
     }
 
     /**
-     * @inheritdoc ERC721BaseInternal
+     * @inheritdoc _ERC721Base
      */
     function _beforeTokenTransfer(
         address from,
@@ -56,11 +57,7 @@ abstract contract SolidStateERC721 is
     )
         internal
         virtual
-        override(
-            ERC721BaseInternal,
-            ERC721MetadataInternal,
-            SolidStateERC721Internal
-        )
+        override(_ERC721Base, _ERC721Metadata, _SolidStateERC721)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
