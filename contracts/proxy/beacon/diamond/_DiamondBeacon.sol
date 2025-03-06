@@ -18,13 +18,13 @@ abstract contract _DiamondBeacon is
      * @param target unused (input must be zero address)
      * @param data unused (input must be zero bytes)
      */
-    function _diamondCut(
+    function _diamondCutExternal(
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
     ) internal virtual override {
         if (target != address(0) || data.length != 0)
             revert DiamondBeacon__InvalidInput();
-        super._diamondCut(facetCuts, target, data);
+        super._diamondCutExternal(facetCuts, target, data);
     }
 }

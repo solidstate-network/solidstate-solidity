@@ -21,6 +21,20 @@ abstract contract _DiamondWritable is _IDiamondWritable, _Ownable {
      * @param target optional recipient of initialization delegatecall
      * @param data optional initialization call data
      */
+    function _diamondCutExternal(
+        FacetCut[] memory facetCuts,
+        address target,
+        bytes memory data
+    ) internal virtual onlyOwner {
+        _diamondCut(facetCuts, target, data);
+    }
+
+    /**
+     * @notice update functions callable on Diamond proxy
+     * @param facetCuts array of structured Diamond facet update data
+     * @param target optional recipient of initialization delegatecall
+     * @param data optional initialization call data
+     */
     function _diamondCut(
         FacetCut[] memory facetCuts,
         address target,
