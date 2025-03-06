@@ -7,14 +7,14 @@ import { IERC4626 } from '../../../interfaces/IERC4626.sol';
 import { ERC20Base } from '../../ERC20/base/ERC20Base.sol';
 import { ERC20Metadata } from '../../ERC20/metadata/ERC20Metadata.sol';
 import { IERC4626Base } from './IERC4626Base.sol';
-import { ERC4626BaseInternal } from './ERC4626BaseInternal.sol';
+import { _ERC4626Base } from './_ERC4626Base.sol';
 
 /**
  * @title Base ERC4626 implementation
  */
 abstract contract ERC4626Base is
     IERC4626Base,
-    ERC4626BaseInternal,
+    _ERC4626Base,
     ERC20Base,
     ERC20Metadata
 {

@@ -67,7 +67,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IERC2535DiamondLoupeInternal.Facet[]",
+        "internalType": "struct _IERC2535DiamondLoupe.Facet[]",
         "name": "diamondFacets",
         "type": "tuple[]"
       }

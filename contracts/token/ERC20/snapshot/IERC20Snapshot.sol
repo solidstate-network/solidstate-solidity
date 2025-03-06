@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20SnapshotInternal } from './IERC20SnapshotInternal.sol';
+import { _IERC20Snapshot } from './_IERC20Snapshot.sol';
 
-interface IERC20Snapshot is IERC20SnapshotInternal {}
+interface IERC20Snapshot is _IERC20Snapshot {}

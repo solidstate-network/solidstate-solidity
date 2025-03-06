@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IERC20Extended } from './IERC20Extended.sol';
-import { ERC20ExtendedInternal } from './ERC20ExtendedInternal.sol';
+import { _ERC20Extended } from './_ERC20Extended.sol';
 
 /**
  * @title ERC20 safe approval extensions
  * @dev mitigations for transaction-ordering vulnerability (see https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729)
  */
-abstract contract ERC20Extended is IERC20Extended, ERC20ExtendedInternal {
+abstract contract ERC20Extended is IERC20Extended, _ERC20Extended {
     /**
      * @inheritdoc IERC20Extended
      */

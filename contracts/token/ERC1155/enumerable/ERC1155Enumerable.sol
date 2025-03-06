@@ -3,17 +3,15 @@
 pragma solidity ^0.8.20;
 
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
-import { ERC1155BaseInternal } from '../base/ERC1155BaseInternal.sol';
+import { _ERC1155Base } from '../base/_ERC1155Base.sol';
 import { IERC1155Enumerable } from './IERC1155Enumerable.sol';
-import { ERC1155EnumerableInternal, ERC1155EnumerableStorage } from './ERC1155EnumerableInternal.sol';
+import { _ERC1155Enumerable } from './_ERC1155Enumerable.sol';
+import { ERC1155EnumerableStorage } from './ERC1155EnumerableStorage.sol';
 
 /**
  * @title ERC1155 implementation including enumerable and aggregate functions
  */
-abstract contract ERC1155Enumerable is
-    IERC1155Enumerable,
-    ERC1155EnumerableInternal
-{
+abstract contract ERC1155Enumerable is IERC1155Enumerable, _ERC1155Enumerable {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.UintSet;
 

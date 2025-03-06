@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IDiamondBase } from '../base/IDiamondBase.sol';
-import { IDiamondFallbackInternal } from './IDiamondFallbackInternal.sol';
+import { _IDiamondFallback } from './_IDiamondFallback.sol';
 
-interface IDiamondFallback is IDiamondFallbackInternal, IDiamondBase {
+interface IDiamondFallback is _IDiamondFallback, IDiamondBase {
     /**
      * @notice query the address of the fallback implementation
      * @return fallbackAddress address of fallback implementation

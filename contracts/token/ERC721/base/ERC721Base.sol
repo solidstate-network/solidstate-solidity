@@ -4,13 +4,13 @@ pragma solidity ^0.8.20;
 
 import { IERC721 } from '../../../interfaces/IERC721.sol';
 import { IERC721Base } from './IERC721Base.sol';
-import { ERC721BaseInternal } from './ERC721BaseInternal.sol';
+import { _ERC721Base } from './_ERC721Base.sol';
 
 /**
  * @title Base ERC721 implementation, excluding optional extensions
  * @dev inheritor must either implement ERC165 supportsInterface or inherit ERC165Base
  */
-abstract contract ERC721Base is IERC721Base, ERC721BaseInternal {
+abstract contract ERC721Base is IERC721Base, _ERC721Base {
     /**
      * @inheritdoc IERC721
      */

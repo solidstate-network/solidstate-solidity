@@ -4,10 +4,10 @@ pragma solidity ^0.8.20;
 
 import { IOwnable } from '../../access/ownable/IOwnable.sol';
 import { IUpgradeableProxy } from './IUpgradeableProxy.sol';
-import { IUpgradeableProxyOwnableInternal } from './IUpgradeableProxyOwnableInternal.sol';
+import { _IUpgradeableProxyOwnable } from './_IUpgradeableProxyOwnable.sol';
 
 interface IUpgradeableProxyOwnable is
-    IUpgradeableProxyOwnableInternal,
+    _IUpgradeableProxyOwnable,
     IUpgradeableProxy,
     IOwnable
 {

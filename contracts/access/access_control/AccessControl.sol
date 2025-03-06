@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IAccessControl } from './IAccessControl.sol';
-import { AccessControlInternal } from './AccessControlInternal.sol';
+import { _AccessControl } from './_AccessControl.sol';
 
 /**
  * @title Role-based access control system
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract AccessControl is IAccessControl, AccessControlInternal {
+abstract contract AccessControl is IAccessControl, _AccessControl {
     /**
      * @inheritdoc IAccessControl
      */
