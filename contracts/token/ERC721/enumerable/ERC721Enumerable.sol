@@ -6,12 +6,9 @@ import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
 import { IERC721Enumerable } from './IERC721Enumerable.sol';
-import { ERC721EnumerableInternal } from './ERC721EnumerableInternal.sol';
+import { _ERC721Enumerable } from './_ERC721Enumerable.sol';
 
-abstract contract ERC721Enumerable is
-    IERC721Enumerable,
-    ERC721EnumerableInternal
-{
+abstract contract ERC721Enumerable is IERC721Enumerable, _ERC721Enumerable {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 

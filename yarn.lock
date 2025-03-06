@@ -3651,6 +3651,14 @@ hardhat-contract-sizer@^2.10.0:
     cli-table3 "^0.6.0"
     strip-ansi "^6.0.0"
 
+hardhat-exposed@^0.3.16:
+  version "0.3.16"
+  resolved "https://registry.yarnpkg.com/hardhat-exposed/-/hardhat-exposed-0.3.16.tgz#451570cf21c9fe793fcd9836c64bae98d7f2bb99"
+  integrity sha512-LbbC2myI6k8kp2kbvxrZuJ9wsQUwHtA0sKYkdijybyuf3v2RKLeHaUGWGE3vVsj87bCN1WvcYY7MtZ6IndsChg==
+  dependencies:
+    micromatch "^4.0.8"
+    solidity-ast "^0.4.59"
+
 hardhat-gas-reporter@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/hardhat-gas-reporter/-/hardhat-gas-reporter-2.2.2.tgz#b1530b1938b994d67dffda207314504b7946af09"
@@ -6243,7 +6251,7 @@ solc@0.8.26:
     semver "^5.5.0"
     tmp "0.0.33"
 
-solidity-ast@^0.4.35:
+solidity-ast@^0.4.35, solidity-ast@^0.4.59:
   version "0.4.59"
   resolved "https://registry.yarnpkg.com/solidity-ast/-/solidity-ast-0.4.59.tgz#290a2815aef70a61092591ab3e991da080ae5931"
   integrity sha512-I+CX0wrYUN9jDfYtcgWSe+OAowaXy8/1YQy7NS4ni5IBDmIYBq7ZzaP/7QqouLjzZapmQtvGLqCaYgoUWqBo5g==

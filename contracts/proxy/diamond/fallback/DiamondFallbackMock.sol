@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import { DiamondWritableInternal } from '../writable/DiamondWritableInternal.sol';
+import { _DiamondWritable } from '../writable/_DiamondWritable.sol';
 import { DiamondFallback } from './DiamondFallback.sol';
 
-contract DiamondFallbackMock is DiamondFallback, DiamondWritableInternal {
+contract DiamondFallbackMock is DiamondFallback, _DiamondWritable {
     constructor(FacetCut[] memory cuts) {
         _setOwner(msg.sender);
         _diamondCut(cuts, address(0), '');

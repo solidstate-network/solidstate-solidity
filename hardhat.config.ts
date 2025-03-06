@@ -4,6 +4,7 @@ import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
 import 'hardhat-contract-sizer';
+import 'hardhat-exposed';
 import 'hardhat-gas-reporter';
 import 'hardhat-linearization';
 import 'hardhat-spdx-license-identifier';
@@ -24,7 +25,13 @@ export default {
     runOnCompile: true,
     clear: true,
     flat: true,
-    except: ['.*Mock$'],
+    except: ['.*Mock$', 'EXPOSED.*'],
+  },
+
+  exposed: {
+    include: ['**/_*.sol', '**/*Storage.sol'],
+    // the default $ prefix appears to conflict with typechain
+    prefix: 'EXPOSED',
   },
 
   gasReporter: {

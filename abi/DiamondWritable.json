@@ -60,7 +60,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -71,7 +71,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -120,7 +120,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -130,7 +130,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },

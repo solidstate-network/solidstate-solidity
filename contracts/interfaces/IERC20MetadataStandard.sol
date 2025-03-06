@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20MetadataStandardInternal } from './IERC20MetadataStandardInternal.sol';
+import { _IERC20MetadataStandard } from './_IERC20MetadataStandard.sol';
 
 // TODO: improve name
 
-interface IERC20MetadataStandard is IERC20MetadataStandardInternal {
+interface IERC20MetadataStandard is _IERC20MetadataStandard {
     /**
      * @notice return token name
      * @return token name

@@ -5,14 +5,15 @@ pragma solidity ^0.8.20;
 import { IERC1155 } from '../../../interfaces/IERC1155.sol';
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { IERC1155Base } from './IERC1155Base.sol';
-import { ERC1155BaseInternal, ERC1155BaseStorage } from './ERC1155BaseInternal.sol';
+import { _ERC1155Base } from './_ERC1155Base.sol';
+import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
 
 /**
  * @title Base ERC1155 contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  * @dev inheritor must either implement ERC165 supportsInterface or inherit ERC165Base
  */
-abstract contract ERC1155Base is IERC1155Base, ERC1155BaseInternal {
+abstract contract ERC1155Base is IERC1155Base, _ERC1155Base {
     /**
      * @inheritdoc IERC1155
      */

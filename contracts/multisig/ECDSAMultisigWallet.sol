@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IECDSAMultisigWallet } from './IECDSAMultisigWallet.sol';
-import { ECDSAMultisigWalletInternal } from './ECDSAMultisigWalletInternal.sol';
+import { _ECDSAMultisigWallet } from './_ECDSAMultisigWallet.sol';
 
 /**
  * @title ECDSA-verified multisig wallet contract
@@ -11,7 +11,7 @@ import { ECDSAMultisigWalletInternal } from './ECDSAMultisigWalletInternal.sol';
  */
 abstract contract ECDSAMultisigWallet is
     IECDSAMultisigWallet,
-    ECDSAMultisigWalletInternal
+    _ECDSAMultisigWallet
 {
     receive() external payable virtual {}
 
