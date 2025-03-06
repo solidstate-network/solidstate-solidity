@@ -13,6 +13,8 @@ export function seedToStorageSlot(seed: string): string {
       ) /
         256n) *
       256n
-    ).toString(16)
+    )
+      .toString(16)
+      .padStart(64, '0')
   );
 }
