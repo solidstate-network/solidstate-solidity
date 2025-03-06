@@ -24,8 +24,10 @@ describe('Inheritance Graph', () => {
   const directAncestors: { [key: string]: string[] } = {};
 
   before(async () => {
-    const allFullyQualifiedNames =
-      await hre.artifacts.getAllFullyQualifiedNames();
+    const allFullyQualifiedNames = (
+      await hre.artifacts.getAllFullyQualifiedNames()
+    ).filter((name) => !name.startsWith(hre.config.exposed.outDir));
+
     allEntityNames = allFullyQualifiedNames.map((name) => name.split(':')[1]);
 
     for (const name of allFullyQualifiedNames) {
