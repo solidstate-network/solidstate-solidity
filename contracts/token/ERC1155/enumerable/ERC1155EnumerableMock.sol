@@ -6,9 +6,9 @@ import { IERC165 } from '../../../interfaces/IERC165.sol';
 import { IERC1155 } from '../../../interfaces/IERC1155.sol';
 import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { ERC1155Base } from '../base/ERC1155Base.sol';
-import { ERC1155BaseInternal } from '../base/ERC1155BaseInternal.sol';
+import { _ERC1155Base } from '../base/_ERC1155Base.sol';
 import { ERC1155Enumerable } from './ERC1155Enumerable.sol';
-import { ERC1155EnumerableInternal } from './ERC1155EnumerableInternal.sol';
+import { _ERC1155Enumerable } from './_ERC1155Enumerable.sol';
 
 contract ERC1155EnumerableMock is ERC1155Enumerable, ERC1155Base, ERC165Base {
     constructor() {
@@ -26,7 +26,7 @@ contract ERC1155EnumerableMock is ERC1155Enumerable, ERC1155Base, ERC165Base {
 
     /**
      * @notice ERC1155 hook: update aggregate values
-     * @inheritdoc ERC1155EnumerableInternal
+     * @inheritdoc _ERC1155Enumerable
      */
     function _beforeTokenTransfer(
         address operator,
@@ -35,11 +35,7 @@ contract ERC1155EnumerableMock is ERC1155Enumerable, ERC1155Base, ERC165Base {
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    )
-        internal
-        virtual
-        override(ERC1155BaseInternal, ERC1155EnumerableInternal)
-    {
+    ) internal virtual override(_ERC1155Base, _ERC1155Enumerable) {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 }

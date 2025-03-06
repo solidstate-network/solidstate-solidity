@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IECDSAMultisigWalletInternal } from './IECDSAMultisigWalletInternal.sol';
+import { _IECDSAMultisigWallet } from './_IECDSAMultisigWallet.sol';
 
-interface IECDSAMultisigWallet is IECDSAMultisigWalletInternal {
+interface IECDSAMultisigWallet is _IECDSAMultisigWallet {
     /**
      * @notice verify signatures and execute "call" or "delegatecall" with given parameters
      * @dev message parameters must be included in signature

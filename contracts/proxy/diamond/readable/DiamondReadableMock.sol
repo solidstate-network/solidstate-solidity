@@ -6,13 +6,13 @@ import { IERC165 } from '../../../interfaces/IERC165.sol';
 import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
-import { DiamondWritableInternal } from '../writable/DiamondWritableInternal.sol';
+import { _DiamondWritable } from '../writable/_DiamondWritable.sol';
 import { DiamondReadable } from './DiamondReadable.sol';
 
 contract DiamondReadableMock is
     DiamondBase,
     DiamondReadable,
-    DiamondWritableInternal,
+    _DiamondWritable,
     ERC165Base
 {
     constructor(FacetCut[] memory cuts) {

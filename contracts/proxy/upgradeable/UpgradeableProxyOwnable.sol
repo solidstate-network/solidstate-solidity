@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
 import { IUpgradeableProxyOwnable } from './IUpgradeableProxyOwnable.sol';
-import { UpgradeableProxyOwnableInternal } from './UpgradeableProxyOwnableInternal.sol';
+import { _UpgradeableProxyOwnable } from './_UpgradeableProxyOwnable.sol';
 import { UpgradeableProxy } from './UpgradeableProxy.sol';
 
 /**
@@ -12,7 +12,7 @@ import { UpgradeableProxy } from './UpgradeableProxy.sol';
  */
 abstract contract UpgradeableProxyOwnable is
     IUpgradeableProxyOwnable,
-    UpgradeableProxyOwnableInternal,
+    _UpgradeableProxyOwnable,
     UpgradeableProxy,
     Ownable
 {

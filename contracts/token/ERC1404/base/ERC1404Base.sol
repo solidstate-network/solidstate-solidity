@@ -3,14 +3,15 @@
 pragma solidity ^0.8.20;
 
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
-import { ERC20Base, ERC20BaseInternal } from '../../ERC20/base/ERC20Base.sol';
+import { ERC20Base } from '../../ERC20/base/ERC20Base.sol';
+import { _ERC20Base } from '../../ERC20/base/_ERC20Base.sol';
 import { IERC1404Base } from './IERC1404Base.sol';
-import { ERC1404BaseInternal } from './ERC1404BaseInternal.sol';
+import { _ERC1404Base } from './_ERC1404Base.sol';
 
 /**
  * @title Base ERC1404 implementation
  */
-abstract contract ERC1404Base is IERC1404Base, ERC1404BaseInternal, ERC20Base {
+abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, ERC20Base {
     /**
      * @inheritdoc IERC1404
      */
@@ -34,13 +35,13 @@ abstract contract ERC1404Base is IERC1404Base, ERC1404BaseInternal, ERC20Base {
 
     /**
      * @notice ERC20 hook: detect and handle transfer restriction
-     * @inheritdoc ERC1404BaseInternal
+     * @inheritdoc _ERC1404Base
      */
     function _beforeTokenTransfer(
         address from,
         address to,
         uint256 amount
-    ) internal virtual override(ERC1404BaseInternal, ERC20BaseInternal) {
+    ) internal virtual override(_ERC1404Base, _ERC20Base) {
         super._beforeTokenTransfer(from, to, amount);
     }
 }

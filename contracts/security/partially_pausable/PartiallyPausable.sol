@@ -3,15 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { IPartiallyPausable } from './IPartiallyPausable.sol';
-import { PartiallyPausableInternal } from './PartiallyPausableInternal.sol';
+import { _PartiallyPausable } from './_PartiallyPausable.sol';
 
 /**
  * @title PartiallyPausable security control module.
  */
-abstract contract PartiallyPausable is
-    IPartiallyPausable,
-    PartiallyPausableInternal
-{
+abstract contract PartiallyPausable is IPartiallyPausable, _PartiallyPausable {
     /**
      * @inheritdoc IPartiallyPausable
      */

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC2612 } from '../../../interfaces/IERC2612.sol';
-import { ERC20PermitInternal } from './ERC20PermitInternal.sol';
+import { _ERC20Permit } from './_ERC20Permit.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
 import { IERC20Permit } from './IERC20Permit.sol';
 
@@ -11,7 +11,7 @@ import { IERC20Permit } from './IERC20Permit.sol';
  * @title ERC20 extension with support for ERC2612 permits
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
-abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
+abstract contract ERC20Permit is IERC20Permit, _ERC20Permit {
     /**
      * @inheritdoc IERC2612
      */

@@ -5,13 +5,13 @@ pragma solidity ^0.8.20;
 import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondReadable } from './IDiamondReadable.sol';
-import { DiamondReadableInternal } from './DiamondReadableInternal.sol';
+import { _DiamondReadable } from './_DiamondReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract DiamondReadable is IDiamondReadable, DiamondReadableInternal {
+abstract contract DiamondReadable is IDiamondReadable, _DiamondReadable {
     /**
      * @inheritdoc IERC2535DiamondLoupe
      */

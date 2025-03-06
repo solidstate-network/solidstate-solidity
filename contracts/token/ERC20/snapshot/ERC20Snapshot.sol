@@ -4,12 +4,13 @@ pragma solidity ^0.8.20;
 
 import { Math } from '../../../utils/Math.sol';
 import { IERC20Snapshot } from './IERC20Snapshot.sol';
-import { ERC20SnapshotInternal, ERC20SnapshotStorage } from './ERC20SnapshotInternal.sol';
+import { _ERC20Snapshot } from './_ERC20Snapshot.sol';
+import { ERC20SnapshotStorage } from './ERC20SnapshotStorage.sol';
 
 /**
  * @title ERC20 base implementation with support for token balance and supply snapshots
  */
-abstract contract ERC20Snapshot is IERC20Snapshot, ERC20SnapshotInternal {
+abstract contract ERC20Snapshot is IERC20Snapshot, _ERC20Snapshot {
     error ERC20Snapshot__SnapshotIdDoesNotExists();
     error ERC20Snapshot__SnapshotIdIsZero();
 

@@ -3,12 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { IPausable } from './IPausable.sol';
-import { PausableInternal } from './PausableInternal.sol';
+import { _Pausable } from './_Pausable.sol';
 
 /**
  * @title Pausable security control module.
  */
-abstract contract Pausable is IPausable, PausableInternal {
+abstract contract Pausable is IPausable, _Pausable {
     /**
      * @inheritdoc IPausable
      */

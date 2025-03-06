@@ -6,10 +6,10 @@ import { IERC165Base } from '../../introspection/ERC165/base/IERC165Base.sol';
 import { IERC1155Base } from './base/IERC1155Base.sol';
 import { IERC1155Enumerable } from './enumerable/IERC1155Enumerable.sol';
 import { IERC1155Metadata } from './metadata/IERC1155Metadata.sol';
-import { ISolidStateERC1155Internal } from './ISolidStateERC1155Internal.sol';
+import { _ISolidStateERC1155 } from './_ISolidStateERC1155.sol';
 
 interface ISolidStateERC1155 is
-    ISolidStateERC1155Internal,
+    _ISolidStateERC1155,
     IERC1155Base,
     IERC1155Enumerable,
     IERC1155Metadata,
