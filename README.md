@@ -4,6 +4,7 @@
   <img width=240 src="./assets/solidstate_mark.png" alt="asdf"/>
   <h5 align="center">The Solidstate smart contract development library.</h5>
   <br/>
+  <img src="https://img.shields.io/npm/v/@solidstate/contracts?color=FDF685&style=flat-square" alt="style" />
   <img src="https://img.shields.io/github/stars/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" alt="style" />
   <img src="https://img.shields.io/github/contributors/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" alt="style" />
   <img src="https://img.shields.io/npm/dy/@solidstate/contracts?color=FDF685&style=flat-square" alt="style" />
