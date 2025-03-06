@@ -47,6 +47,16 @@ abstract contract _DiamondFallback is
      * @notice set the address of the fallback implementation
      * @param fallbackAddress address of fallback implementation
      */
+    function _setFallbackAddressExternal(
+        address fallbackAddress
+    ) internal virtual onlyOwner {
+        _setFallbackAddress(fallbackAddress);
+    }
+
+    /**
+     * @notice set the address of the fallback implementation
+     * @param fallbackAddress address of fallback implementation
+     */
     function _setFallbackAddress(address fallbackAddress) internal virtual {
         DiamondBaseStorage.layout().fallbackAddress = fallbackAddress;
     }
