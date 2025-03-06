@@ -21,7 +21,7 @@ abstract contract SafeOwnable is ISafeOwnable, _SafeOwnable, Ownable {
     /**
      * @inheritdoc ISafeOwnable
      */
-    function acceptOwnership() public virtual onlyNomineeOwner {
+    function acceptOwnership() public virtual {
         _acceptOwnership();
     }
 
