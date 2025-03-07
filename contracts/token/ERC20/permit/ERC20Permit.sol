@@ -26,7 +26,7 @@ abstract contract ERC20Permit is IERC20Permit, _ERC20Permit {
     /**
      * @inheritdoc IERC2612
      */
-    function nonces(address owner) public view returns (uint256) {
+    function nonces(address owner) external view returns (uint256) {
         return _nonces(owner);
     }
 
@@ -41,7 +41,7 @@ abstract contract ERC20Permit is IERC20Permit, _ERC20Permit {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public virtual {
+    ) external {
         _permit(owner, spender, amount, deadline, v, r, s);
     }
 }

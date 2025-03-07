@@ -45,6 +45,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ERC20Snapshot__SnapshotIdDoesNotExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20Snapshot__SnapshotIdIsZero",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -93,5 +103,48 @@
     ],
     "name": "Transfer",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "snapshotId",
+        "type": "uint256"
+      }
+    ],
+    "name": "balanceOfAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "snapshotId",
+        "type": "uint256"
+      }
+    ],
+    "name": "totalSupplyAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "totalSupply",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]

@@ -30,6 +30,59 @@ abstract contract _ERC1155Base is _IERC1155Base {
     }
 
     /**
+     * @notice query the balances of given tokens held by given addresses
+     * @param accounts addresss to query
+     * @param ids tokens to query
+     * @return token balances
+     */
+    function _balanceOfBatch(
+        address[] memory accounts,
+        uint256[] memory ids
+    ) internal view virtual returns (uint256[] memory) {
+        if (accounts.length != ids.length)
+            revert ERC1155Base__ArrayLengthMismatch();
+
+        mapping(uint256 => mapping(address => uint256))
+            storage balances = ERC1155BaseStorage.layout().balances;
+
+        uint256[] memory batchBalances = new uint256[](accounts.length);
+
+        unchecked {
+            for (uint256 i; i < accounts.length; i++) {
+                if (accounts[i] == address(0))
+                    revert ERC1155Base__BalanceQueryZeroAddress();
+                batchBalances[i] = balances[ids[i]][accounts[i]];
+            }
+        }
+
+        return batchBalances;
+    }
+
+    /**
+     * @notice query approval status of given operator with respect to given address
+     * @param account address to query for approval granted
+     * @param operator address to query for approval received
+     * @return whether operator is approved to spend tokens held by account
+     */
+    function _isApprovedForAll(
+        address account,
+        address operator
+    ) internal view virtual returns (bool) {
+        return ERC1155BaseStorage.layout().operatorApprovals[account][operator];
+    }
+
+    function _setApprovalForAll(
+        address operator,
+        bool status
+    ) internal virtual {
+        if (msg.sender == operator) revert ERC1155Base__SelfApproval();
+        ERC1155BaseStorage.layout().operatorApprovals[msg.sender][
+            operator
+        ] = status;
+        emit ApprovalForAll(msg.sender, operator, status);
+    }
+
+    /**
      * @notice mint given quantity of tokens for given address
      * @dev ERC1155Receiver implementation is not checked
      * @param account beneficiary of minting
@@ -214,6 +267,30 @@ abstract contract _ERC1155Base is _IERC1155Base {
         }
 
         emit TransferBatch(msg.sender, account, address(0), ids, amounts);
+    }
+
+    function _safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) internal virtual {
+        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+            revert ERC1155Base__NotOwnerOrApproved();
+        _safeTransfer(msg.sender, from, to, id, amount, data);
+    }
+
+    function _safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal virtual {
+        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+            revert ERC1155Base__NotOwnerOrApproved();
+        _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
     }
 
     /**
