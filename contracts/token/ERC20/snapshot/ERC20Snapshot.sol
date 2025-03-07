@@ -23,7 +23,7 @@ abstract contract ERC20Snapshot is IERC20Snapshot, _ERC20Snapshot {
     function balanceOfAt(
         address account,
         uint256 snapshotId
-    ) public view returns (uint256) {
+    ) external view returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
             ERC20SnapshotStorage.layout().accountBalanceSnapshots[account]
@@ -36,7 +36,7 @@ abstract contract ERC20Snapshot is IERC20Snapshot, _ERC20Snapshot {
      * @param snapshotId snapshot id to query
      * @return token supply
      */
-    function totalSupplyAt(uint256 snapshotId) public view returns (uint256) {
+    function totalSupplyAt(uint256 snapshotId) external view returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
             ERC20SnapshotStorage.layout().totalSupplySnapshots
