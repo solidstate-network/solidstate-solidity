@@ -20,7 +20,7 @@ abstract contract UpgradeableProxyOwnable is
      * @notice set logic implementation address
      * @param implementation implementation address
      */
-    function setImplementation(address implementation) external onlyOwner {
-        _setImplementation(implementation);
+    function setImplementation(address implementation) external {
+        _setImplementationExternal(implementation);
     }
 }

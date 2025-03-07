@@ -20,7 +20,7 @@ abstract contract Ownable is IOwnable, _Ownable {
     /**
      * @inheritdoc IERC173
      */
-    function transferOwnership(address account) public virtual onlyOwner {
+    function transferOwnership(address account) public virtual {
         _transferOwnership(account);
     }
 }

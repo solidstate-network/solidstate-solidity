@@ -10,4 +10,13 @@ abstract contract _UpgradeableProxyOwnable is
     _IUpgradeableProxyOwnable,
     _UpgradeableProxy,
     _Ownable
-{}
+{
+    /**
+     * TODO: standardize use of externally accessible functions with "External" suffix
+     */
+    function _setImplementationExternal(
+        address implementation
+    ) internal virtual onlyOwner {
+        _setImplementation(implementation);
+    }
+}
