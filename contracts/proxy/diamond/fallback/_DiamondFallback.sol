@@ -44,8 +44,7 @@ abstract contract _DiamondFallback is
     }
 
     /**
-     * @notice set the address of the fallback implementation
-     * @param fallbackAddress address of fallback implementation
+     * TODO: standardize use of externally accessible functions with "External" suffix
      */
     function _setFallbackAddressExternal(
         address fallbackAddress
