@@ -1,6 +1,6 @@
 import {
-  MerkleProofMock,
-  MerkleProofMock__factory,
+  __hh_exposed_MerkleProof,
+  __hh_exposed_MerkleProof__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -8,11 +8,11 @@ import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
 describe('MerkleProof', () => {
-  let instance: MerkleProofMock;
+  let instance: __hh_exposed_MerkleProof;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new MerkleProofMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_MerkleProof__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -28,8 +28,13 @@ describe('MerkleProof', () => {
         for (const leaf of leaves) {
           const proof = tree.getHexProof(keccak256(leaf));
 
-          expect(await instance.verify.staticCall(proof, root, keccak256(leaf)))
-            .to.be.true;
+          expect(
+            await instance.__hh_exposed_verify.staticCall(
+              proof,
+              root,
+              keccak256(leaf),
+            ),
+          ).to.be.true;
         }
       });
 
@@ -43,8 +48,13 @@ describe('MerkleProof', () => {
 
         const proof = tree.getHexProof(keccak256(leaves[0]));
 
-        expect(await instance.verify.staticCall(proof, root, keccak256('4'))).to
-          .be.false;
+        expect(
+          await instance.__hh_exposed_verify.staticCall(
+            proof,
+            root,
+            keccak256('4'),
+          ),
+        ).to.be.false;
       });
     });
   });
