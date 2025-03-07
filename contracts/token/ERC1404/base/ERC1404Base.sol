@@ -19,7 +19,7 @@ abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, ERC20Base {
         address from,
         address to,
         uint256 amount
-    ) public view returns (uint8) {
+    ) external view returns (uint8) {
         return _detectTransferRestriction(from, to, amount);
     }
 
@@ -29,7 +29,7 @@ abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, ERC20Base {
      */
     function messageForTransferRestriction(
         uint8 restrictionCode
-    ) public view returns (string memory) {
+    ) external view returns (string memory) {
         return _messageForTransferRestriction(restrictionCode);
     }
 

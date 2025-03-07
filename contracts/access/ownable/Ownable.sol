@@ -13,14 +13,14 @@ abstract contract Ownable is IOwnable, _Ownable {
     /**
      * @inheritdoc IERC173
      */
-    function owner() public view virtual returns (address) {
+    function owner() external view returns (address) {
         return _owner();
     }
 
     /**
      * @inheritdoc IERC173
      */
-    function transferOwnership(address account) public virtual {
+    function transferOwnership(address account) external {
         _transferOwnership(account);
     }
 }
