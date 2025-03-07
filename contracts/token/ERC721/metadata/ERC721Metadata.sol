@@ -12,23 +12,21 @@ abstract contract ERC721Metadata is IERC721Metadata, _ERC721Metadata {
     /**
      * @notice inheritdoc IERC721Metadata
      */
-    function name() external view virtual returns (string memory) {
+    function name() external view returns (string memory) {
         return _name();
     }
 
     /**
      * @notice inheritdoc IERC721Metadata
      */
-    function symbol() external view virtual returns (string memory) {
+    function symbol() external view returns (string memory) {
         return _symbol();
     }
 
     /**
      * @notice inheritdoc IERC721Metadata
      */
-    function tokenURI(
-        uint256 tokenId
-    ) external view virtual returns (string memory) {
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
         return _tokenURI(tokenId);
     }
 }

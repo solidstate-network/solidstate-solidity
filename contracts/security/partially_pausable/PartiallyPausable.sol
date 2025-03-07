@@ -12,9 +12,7 @@ abstract contract PartiallyPausable is IPartiallyPausable, _PartiallyPausable {
     /**
      * @inheritdoc IPartiallyPausable
      */
-    function partiallyPaused(
-        bytes32 key
-    ) external view virtual returns (bool status) {
+    function partiallyPaused(bytes32 key) external view returns (bool status) {
         status = _partiallyPaused(key);
     }
 }
