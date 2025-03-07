@@ -1,9 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfSafeOwnable } from '@solidstate/spec';
-import {
-  SafeOwnableMock,
-  SafeOwnableMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

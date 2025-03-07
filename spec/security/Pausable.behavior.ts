@@ -1,5 +1,4 @@
 import { describeFilter } from '@solidstate/library';
-import { Pausable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface PausableBehaviorArgs {}

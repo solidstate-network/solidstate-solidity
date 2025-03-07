@@ -11,7 +11,6 @@ import {
   ERC1155MetadataBehaviorArgs,
 } from './ERC1155Metadata.behavior';
 import { describeFilter } from '@solidstate/library';
-import { ISolidStateERC1155 } from '@solidstate/typechain-types';
 
 export interface SolidStateERC1155BehaviorArgs
   extends ERC1155BaseBehaviorArgs,

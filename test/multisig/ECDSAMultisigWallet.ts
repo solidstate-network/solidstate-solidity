@@ -1,9 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
-import {
-  ECDSAMultisigWalletMock,
-  ECDSAMultisigWalletMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ECDSAMultisigWallet', () => {

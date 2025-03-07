@@ -1,10 +1,5 @@
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBeaconProxy } from '@solidstate/spec';
-import {
-  DiamondBeaconProxyMock,
-  DiamondBeaconProxyMock__factory,
-  OwnableMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

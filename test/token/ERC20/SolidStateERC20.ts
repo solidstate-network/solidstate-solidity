@@ -1,8 +1,4 @@
 import { describeBehaviorOfSolidStateERC20 } from '@solidstate/spec';
-import {
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';

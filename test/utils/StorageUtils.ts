@@ -1,9 +1,5 @@
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { seedToStorageSlot } from '@solidstate/library/storage_layout';
-import {
-  StorageUtilsMock,
-  StorageUtilsMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

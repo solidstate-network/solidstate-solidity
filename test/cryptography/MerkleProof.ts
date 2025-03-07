@@ -1,7 +1,3 @@
-import {
-  MerkleProofMock,
-  MerkleProofMock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';

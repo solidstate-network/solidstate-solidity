@@ -1,7 +1,6 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
-import { ERC20Permit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';

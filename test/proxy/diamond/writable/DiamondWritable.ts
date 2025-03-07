@@ -1,9 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondWritable } from '@solidstate/spec';
-import {
-  DiamondWritableMock,
-  DiamondWritableMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('DiamondWritable', () => {

@@ -1,11 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes16 } from '@solidstate/library';
-import {
-  PackedDoublyLinkedListBytes16Mock,
-  PackedDoublyLinkedListBytes16Mock__factory,
-  PackedDoublyLinkedListUint128Mock,
-  PackedDoublyLinkedListUint128Mock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

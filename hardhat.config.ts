@@ -1,7 +1,7 @@
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
+import '@nomicfoundation/hardhat-viem';
 import '@solidstate/hardhat-4byte-uploader';
-import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
 import 'hardhat-contract-sizer';
 import 'hardhat-gas-reporter';

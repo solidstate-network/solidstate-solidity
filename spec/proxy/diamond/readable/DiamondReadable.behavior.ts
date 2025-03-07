@@ -1,6 +1,5 @@
 import { describeBehaviorOfERC165Base } from '../../../introspection';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

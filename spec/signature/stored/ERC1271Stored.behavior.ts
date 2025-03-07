@@ -1,6 +1,5 @@
 import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
 import { describeFilter } from '@solidstate/library';
-import { IERC1271Stored } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 export interface ERC1271StoredBehaviorArgs {

@@ -1,6 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC2981 } from '@solidstate/spec';
-import { ERC2981Mock, ERC2981Mock__factory } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC2981', () => {

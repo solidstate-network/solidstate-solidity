@@ -1,8 +1,4 @@
 import { describeBehaviorOfERC20Extended } from '@solidstate/spec';
-import {
-  ERC20ExtendedMock,
-  ERC20ExtendedMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC20Extended', () => {

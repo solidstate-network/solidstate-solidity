@@ -1,11 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
-import {
-  ERC4626BaseMock,
-  ERC4626BaseMock__factory,
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
-} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

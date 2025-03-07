@@ -1,5 +1,4 @@
 import { describeFilter } from '@solidstate/library';
-import { IERC1271Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface ERC1271BaseBehaviorArgs {

@@ -1,8 +1,4 @@
 import { describeBehaviorOfERC20Metadata } from '@solidstate/spec';
-import {
-  ERC20MetadataMock,
-  ERC20MetadataMock__factory,
-} from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC20Metadata', () => {

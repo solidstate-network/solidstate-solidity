@@ -1,5 +1,4 @@
 import { describeFilter } from '@solidstate/library';
-import { ERC721Enumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 
