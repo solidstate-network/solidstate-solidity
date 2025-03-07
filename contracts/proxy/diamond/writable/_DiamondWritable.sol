@@ -16,10 +16,7 @@ abstract contract _DiamondWritable is _IDiamondWritable, _Ownable {
         bytes32(uint256(0xffffffff << 224));
 
     /**
-     * @notice update functions callable on Diamond proxy
-     * @param facetCuts array of structured Diamond facet update data
-     * @param target optional recipient of initialization delegatecall
-     * @param data optional initialization call data
+     * TODO: standardize use of externally accessible functions with "External" suffix
      */
     function _diamondCutExternal(
         FacetCut[] memory facetCuts,
