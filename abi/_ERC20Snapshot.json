@@ -45,6 +45,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ERC20Snapshot__SnapshotIdDoesNotExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20Snapshot__SnapshotIdIsZero",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

@@ -8,7 +8,7 @@ contract DiamondBeaconProxyMock is DiamondBeaconProxy {
     address private _beacon;
 
     constructor(address beacon) {
-        setBeacon(beacon);
+        _setBeacon(beacon);
     }
 
     function _getBeacon() internal view override returns (address) {
@@ -23,7 +23,11 @@ contract DiamondBeaconProxyMock is DiamondBeaconProxy {
         return _getImplementation(sig);
     }
 
-    function setBeacon(address beacon) public {
+    function setBeacon(address beacon) external {
+        _setBeacon(beacon);
+    }
+
+    function _setBeacon(address beacon) private {
         _beacon = beacon;
     }
 
