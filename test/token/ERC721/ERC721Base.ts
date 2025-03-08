@@ -22,6 +22,9 @@ describe('ERC721Base', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new __hh_exposed_ERC721Base__factory(deployer).deploy();
+
+    await instance.__hh_exposed__setSupportsInterface('0x01ffc9a7', true);
+    await instance.__hh_exposed__setSupportsInterface('0x80ac58cd', true);
   });
 
   describeBehaviorOfERC721Base(async () => instance, {
