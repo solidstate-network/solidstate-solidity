@@ -5,14 +5,8 @@ pragma solidity ^0.8.20;
 import { DiamondBeaconProxy } from './DiamondBeaconProxy.sol';
 
 contract DiamondBeaconProxyMock is DiamondBeaconProxy {
-    address private _beacon;
-
     constructor(address beacon) {
         _setBeacon(beacon);
-    }
-
-    function _getBeacon() internal view override returns (address) {
-        return _beacon;
     }
 
     function __getImplementation() external view returns (address) {
@@ -25,10 +19,6 @@ contract DiamondBeaconProxyMock is DiamondBeaconProxy {
 
     function setBeacon(address beacon) external {
         _setBeacon(beacon);
-    }
-
-    function _setBeacon(address beacon) private {
-        _beacon = beacon;
     }
 
     /**
