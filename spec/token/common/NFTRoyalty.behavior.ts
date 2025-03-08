@@ -1,14 +1,14 @@
 import { describeBehaviorOfERC165Base } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { NFTRoyaltyMock } from '@solidstate/typechain-types';
+import { INFTRoyalty } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface NFTRoyaltyBehaviorArgs {}
 
 export function describeBehaviorOfNFTRoyalty(
-  deploy: () => Promise<NFTRoyaltyMock>,
+  deploy: () => Promise<INFTRoyalty>,
   args: NFTRoyaltyBehaviorArgs,
   skips?: string[],
 ) {
@@ -20,7 +20,7 @@ export function describeBehaviorOfNFTRoyalty(
     let tokenIdThree = 3;
 
     let receiver: SignerWithAddress;
-    let instance: NFTRoyaltyMock;
+    let instance: INFTRoyalty;
 
     beforeEach(async () => {
       receiver = (await ethers.getSigners())[1];
