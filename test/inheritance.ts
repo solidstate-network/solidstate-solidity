@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import hre from 'hardhat';
+import path from 'path';
 
 const surya = require('surya');
 
@@ -26,7 +27,10 @@ describe('Inheritance Graph', () => {
   before(async () => {
     const allFullyQualifiedNames = (
       await hre.artifacts.getAllFullyQualifiedNames()
-    ).filter((name) => !name.startsWith(hre.config.exposed.outDir));
+    ).filter(
+      (name) =>
+        !path.resolve(name).startsWith(path.resolve(hre.config.exposed.outDir)),
+    );
 
     allEntityNames = allFullyQualifiedNames.map((name) => name.split(':')[1]);
 

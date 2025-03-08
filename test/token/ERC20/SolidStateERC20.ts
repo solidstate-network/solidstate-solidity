@@ -1,7 +1,7 @@
 import { describeBehaviorOfSolidStateERC20 } from '@solidstate/spec';
 import {
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
+  __hh_exposed_SolidStateERC20,
+  __hh_exposed_SolidStateERC20__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -11,21 +11,26 @@ const decimals = 18n;
 const supply = ethers.parseEther('1');
 
 describe('SolidStateERC20', () => {
-  let instance: SolidStateERC20Mock;
+  let instance: __hh_exposed_SolidStateERC20;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      name,
-      symbol,
-      decimals,
-      supply,
-    );
+    instance = await new __hh_exposed_SolidStateERC20__factory(
+      deployer,
+    ).deploy();
+
+    await instance.__hh_exposed__setName(name);
+    await instance.__hh_exposed__setSymbol(symbol);
+    await instance.__hh_exposed__setDecimals(decimals);
+
+    await instance.__hh_exposed__mint(await deployer.getAddress(), supply);
   });
 
   describeBehaviorOfSolidStateERC20(async () => instance, {
-    mint: async (recipient, amount) => instance.__mint(recipient, amount),
-    burn: async (recipient, amount) => instance.__burn(recipient, amount),
+    mint: async (recipient, amount) =>
+      instance.__hh_exposed__mint(recipient, amount),
+    burn: async (recipient, amount) =>
+      instance.__hh_exposed__burn(recipient, amount),
     allowance: (holder, spender) =>
       instance.allowance.staticCall(holder, spender),
     name,
