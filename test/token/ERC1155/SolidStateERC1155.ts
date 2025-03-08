@@ -1,18 +1,23 @@
 import { describeBehaviorOfSolidStateERC1155 } from '@solidstate/spec';
 import {
-  SolidStateERC1155Mock,
-  SolidStateERC1155Mock__factory,
+  __hh_exposed_SolidStateERC1155,
+  __hh_exposed_SolidStateERC1155__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-const tokenURI = 'ERC1155Metadata.tokenURI';
+const baseURI = 'ERC1155Metadata.baseURI';
 
 describe('SolidStateERC1155', () => {
-  let instance: SolidStateERC1155Mock;
+  let instance: __hh_exposed_SolidStateERC1155;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new SolidStateERC1155Mock__factory(deployer).deploy();
+    instance = await new __hh_exposed_SolidStateERC1155__factory(
+      deployer,
+    ).deploy();
+
+    await instance.__hh_exposed__setSupportsInterface('0x01ffc9a7', true);
+    await instance.__hh_exposed__setSupportsInterface('0xd9b67a26', true);
   });
 
   describeBehaviorOfSolidStateERC1155(async () => instance, {
@@ -27,9 +32,9 @@ describe('SolidStateERC1155', () => {
           ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
-      instance.__mint(recipient, tokenId, amount),
+      instance.__hh_exposed__mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>
-      instance.__burn(recipient, tokenId, amount),
-    tokenURI,
+      instance.__hh_exposed__burn(recipient, tokenId, amount),
+    baseURI,
   });
 });

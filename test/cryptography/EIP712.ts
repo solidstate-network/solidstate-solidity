@@ -1,14 +1,17 @@
 import { hashData, signData } from '@solidstate/library';
-import { EIP712Mock, EIP712Mock__factory } from '@solidstate/typechain-types';
+import {
+  __hh_exposed_EIP712,
+  __hh_exposed_EIP712__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('EIP712', () => {
-  let instance: EIP712Mock;
+  let instance: __hh_exposed_EIP712;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new EIP712Mock__factory(deployer).deploy();
+    instance = await new __hh_exposed_EIP712__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -42,7 +45,7 @@ describe('EIP712', () => {
         );
 
         expect(
-          await instance.calculateDomainSeparator.staticCall(
+          await instance.__hh_exposed_calculateDomainSeparator.staticCall(
             nameHash,
             versionHash,
           ),

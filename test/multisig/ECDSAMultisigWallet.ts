@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfECDSAMultisigWallet } from '@solidstate/spec';
 import {
-  ECDSAMultisigWalletMock,
-  ECDSAMultisigWalletMock__factory,
+  __hh_exposed_ECDSAMultisigWallet,
+  __hh_exposed_ECDSAMultisigWallet__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -10,7 +10,7 @@ describe('ECDSAMultisigWallet', () => {
   const quorum = 1n;
   let signers: SignerWithAddress[];
   let nonSigner: SignerWithAddress;
-  let instance: ECDSAMultisigWalletMock;
+  let instance: __hh_exposed_ECDSAMultisigWallet;
 
   before(async () => {
     [nonSigner, ...signers] = (await ethers.getSigners()).slice(0, 4);
@@ -18,10 +18,15 @@ describe('ECDSAMultisigWallet', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ECDSAMultisigWalletMock__factory(deployer).deploy(
-      signers.map((s) => s.address),
-      quorum,
-    );
+    instance = await new __hh_exposed_ECDSAMultisigWallet__factory(
+      deployer,
+    ).deploy();
+
+    for (const signer of signers) {
+      await instance.__hh_exposed__addSigner(await signer.getAddress());
+    }
+
+    await instance.__hh_exposed__setQuorum(quorum);
   });
 
   describeBehaviorOfECDSAMultisigWallet(async () => instance, {

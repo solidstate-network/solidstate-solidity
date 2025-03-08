@@ -35,6 +35,7 @@
     "hardhat": "^2.22.19",
     "hardhat-abi-exporter": "^2.10.1",
     "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-exposed": "^0.3.16",
     "hardhat-gas-reporter": "^2.2.2",
     "hardhat-linearization": "^0.1.1",
     "hardhat-spdx-license-identifier": "^2.3.1",

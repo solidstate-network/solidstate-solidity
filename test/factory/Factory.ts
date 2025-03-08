@@ -1,13 +1,16 @@
-import { FactoryMock, FactoryMock__factory } from '@solidstate/typechain-types';
+import {
+  __hh_exposed_Factory,
+  __hh_exposed_Factory__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('Factory', () => {
-  let instance: FactoryMock;
+  let instance: __hh_exposed_Factory;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new FactoryMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_Factory__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -15,10 +18,11 @@ describe('Factory', () => {
       it('deploys bytecode and returns deployment address', async () => {
         const { data: initCode } = instance.deploymentTransaction()!;
 
-        const address = await instance['deploy(bytes)'].staticCall(initCode);
+        const address =
+          await instance['__hh_exposed_deploy(bytes)'].staticCall(initCode);
         expect(address).to.be.properAddress;
 
-        await instance['deploy(bytes)'](initCode);
+        await instance['__hh_exposed_deploy(bytes)'](initCode);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -30,7 +34,7 @@ describe('Factory', () => {
           const initCode = '0xfe';
 
           await expect(
-            instance['deploy(bytes)'](initCode),
+            instance['__hh_exposed_deploy(bytes)'](initCode),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -45,18 +49,17 @@ describe('Factory', () => {
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
-        const address = await instance['deploy(bytes,bytes32)'].staticCall(
-          initCode,
-          salt,
-        );
+        const address = await instance[
+          '__hh_exposed_deploy(bytes,bytes32)'
+        ].staticCall(initCode, salt);
         expect(address).to.equal(
-          await instance.calculateDeploymentAddress.staticCall(
+          await instance.__hh_exposed_calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),
         );
 
-        await instance['deploy(bytes,bytes32)'](initCode, salt);
+        await instance['__hh_exposed_deploy(bytes,bytes32)'](initCode, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -69,7 +72,7 @@ describe('Factory', () => {
           const salt = ethers.randomBytes(32);
 
           await expect(
-            instance['deploy(bytes,bytes32)'](initCode, salt),
+            instance['__hh_exposed_deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -80,10 +83,10 @@ describe('Factory', () => {
           const { data: initCode } = instance.deploymentTransaction()!;
           const salt = ethers.randomBytes(32);
 
-          await instance['deploy(bytes,bytes32)'](initCode, salt);
+          await instance['__hh_exposed_deploy(bytes,bytes32)'](initCode, salt);
 
           await expect(
-            instance['deploy(bytes,bytes32)'](initCode, salt),
+            instance['__hh_exposed_deploy(bytes,bytes32)'](initCode, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -99,7 +102,7 @@ describe('Factory', () => {
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.calculateDeploymentAddress.staticCall(
+          await instance.__hh_exposed_calculateDeploymentAddress.staticCall(
             initCodeHash,
             salt,
           ),

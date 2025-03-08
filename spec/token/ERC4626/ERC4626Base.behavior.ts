@@ -61,7 +61,13 @@ export function describeBehaviorOfERC4626Base(
       });
 
       it('returns the correct amount of shares if totalSupply is non-zero', async () => {
-        await args.mint(await instance.getAddress(), 10n);
+        await args.mintAsset(await depositor.getAddress(), 10n);
+        await assetInstance
+          .connect(depositor)
+          .approve(await instance.getAddress(), 10n);
+        await instance
+          .connect(depositor)
+          .deposit(10n, await depositor.getAddress());
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();
@@ -174,7 +180,13 @@ export function describeBehaviorOfERC4626Base(
       it('todo: supply is 0');
 
       it('returns the withdraw input amount converted to shares', async () => {
-        await args.mint(await instance.getAddress(), 10n);
+        await args.mintAsset(await depositor.getAddress(), 10n);
+        await assetInstance
+          .connect(depositor)
+          .approve(await instance.getAddress(), 10n);
+        await instance
+          .connect(depositor)
+          .deposit(10n, await depositor.getAddress());
 
         const supply = await instance.totalSupply.staticCall();
         const assets = await instance.totalAssets.staticCall();

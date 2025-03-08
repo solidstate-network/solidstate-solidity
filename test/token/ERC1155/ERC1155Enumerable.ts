@@ -1,16 +1,18 @@
 import { describeBehaviorOfERC1155Enumerable } from '@solidstate/spec';
 import {
-  ERC1155EnumerableMock,
-  ERC1155EnumerableMock__factory,
+  __hh_exposed_ERC1155Enumerable,
+  __hh_exposed_ERC1155Enumerable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('ERC1155Enumerable', () => {
-  let instance: ERC1155EnumerableMock;
+  let instance: __hh_exposed_ERC1155Enumerable;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1155EnumerableMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_ERC1155Enumerable__factory(
+      deployer,
+    ).deploy();
   });
 
   describeBehaviorOfERC1155Enumerable(async () => instance, {
@@ -25,8 +27,8 @@ describe('ERC1155Enumerable', () => {
           ethers.randomBytes(0),
         ),
     mint: (recipient, tokenId, amount) =>
-      instance.__mint(recipient, tokenId, amount),
+      instance.__hh_exposed__mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>
-      instance.__burn(recipient, tokenId, amount),
+      instance.__hh_exposed__burn(recipient, tokenId, amount),
   });
 });
