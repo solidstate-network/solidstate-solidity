@@ -2,8 +2,8 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   OwnableMock__factory,
-  UpgradeableProxyMock,
-  UpgradeableProxyMock__factory,
+  __hh_exposed_UpgradeableProxy,
+  __hh_exposed_UpgradeableProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -11,7 +11,7 @@ import { ethers } from 'hardhat';
 describe('UpgradeableProxy', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: UpgradeableProxyMock;
+  let instance: __hh_exposed_UpgradeableProxy;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -24,10 +24,14 @@ describe('UpgradeableProxy', () => {
       deployer,
     ).deploy(ethers.ZeroAddress);
 
-    instance = await new UpgradeableProxyMock__factory(deployer).deploy(
+    instance = await new __hh_exposed_UpgradeableProxy__factory(
+      deployer,
+    ).deploy();
+
+    await instance.__hh_exposed__setImplementation(
       await implementationInstance.getAddress(),
-      owner.address,
     );
+    await instance.__hh_exposed__setOwner(await owner.getAddress());
   });
 
   describeBehaviorOfUpgradeableProxy(async () => instance, {
@@ -40,8 +44,8 @@ describe('UpgradeableProxy', () => {
   describe('__internal', () => {
     describe('#_getImplementation()', () => {
       it('returns implementation address', async () => {
-        expect(await instance.__getImplementation.staticCall()).to.be
-          .properAddress;
+        expect(await instance.__hh_exposed__getImplementation.staticCall()).to
+          .be.properAddress;
       });
     });
 
@@ -49,15 +53,15 @@ describe('UpgradeableProxy', () => {
       it('updates implementation address', async () => {
         const address = await instance.getAddress();
 
-        expect(await instance.__getImplementation.staticCall()).not.to.equal(
-          address,
-        );
+        expect(
+          await instance.__hh_exposed__getImplementation.staticCall(),
+        ).not.to.equal(address);
 
-        await instance.__setImplementation(address);
+        await instance.__hh_exposed__setImplementation(address);
 
-        expect(await instance.__getImplementation.staticCall()).to.equal(
-          address,
-        );
+        expect(
+          await instance.__hh_exposed__getImplementation.staticCall(),
+        ).to.equal(address);
       });
     });
   });
