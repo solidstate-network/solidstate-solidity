@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
 import {
-  ERC1155BaseMock,
-  ERC1155BaseMock__factory,
+  __hh_exposed_ERC1155Base,
+  __hh_exposed_ERC1155Base__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -10,7 +10,7 @@ import { ethers } from 'hardhat';
 describe('ERC1155Base', () => {
   let holder: SignerWithAddress;
   let recipient: SignerWithAddress;
-  let instance: ERC1155BaseMock;
+  let instance: __hh_exposed_ERC1155Base;
   let invalidReceiver: string;
 
   before(async () => {
@@ -19,15 +19,18 @@ describe('ERC1155Base', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1155BaseMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_ERC1155Base__factory(deployer).deploy();
     invalidReceiver = await instance.getAddress();
+
+    await instance.__hh_exposed__setSupportsInterface('0x01ffc9a7', true);
+    await instance.__hh_exposed__setSupportsInterface('0xd9b67a26', true);
   });
 
   describeBehaviorOfERC1155Base(async () => instance, {
     mint: (recipient, tokenId, amount) =>
-      instance.__mint(recipient, tokenId, amount),
+      instance.__hh_exposed__mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>
-      instance.__burn(recipient, tokenId, amount),
+      instance.__hh_exposed__burn(recipient, tokenId, amount),
   });
 
   describe('__internal', () => {
@@ -45,7 +48,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -59,7 +62,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__mint(holder.address, id, amount))
+        await expect(
+          instance.__hh_exposed__mint(holder.address, id, amount, '0x'),
+        )
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -73,7 +78,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__mint(ethers.ZeroAddress, 0, 0),
+            instance.__hh_exposed__mint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -92,7 +97,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeMint(holder.address, id, amount);
+        await instance.__hh_exposed__safeMint(holder.address, id, amount, '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -106,7 +111,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__safeMint(holder.address, id, amount))
+        await expect(
+          instance.__hh_exposed__safeMint(holder.address, id, amount, '0x'),
+        )
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -120,7 +127,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__safeMint(ethers.ZeroAddress, 0, 0),
+            instance.__hh_exposed__safeMint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -129,7 +136,7 @@ describe('ERC1155Base', () => {
 
         it('mint is made to invalid receiver', async () => {
           await expect(
-            instance.__safeMint(invalidReceiver, 0, 0),
+            instance.__hh_exposed__safeMint(invalidReceiver, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverNotImplemented',
@@ -148,7 +155,12 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -162,7 +174,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__mintBatch(holder.address, [id], [amount]))
+        await expect(
+          instance.__hh_exposed__mintBatch(
+            holder.address,
+            [id],
+            [amount],
+            '0x',
+          ),
+        )
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -176,7 +195,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__mintBatch(ethers.ZeroAddress, [], []),
+            instance.__hh_exposed__mintBatch(ethers.ZeroAddress, [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -185,7 +204,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__mintBatch(holder.address, [0], []),
+            instance.__hh_exposed__mintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -204,7 +223,12 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeMintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__safeMintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -218,7 +242,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__safeMintBatch(holder.address, [id], [amount]))
+        await expect(
+          instance.__hh_exposed__safeMintBatch(
+            holder.address,
+            [id],
+            [amount],
+            '0x',
+          ),
+        )
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -232,7 +263,12 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__safeMintBatch(ethers.ZeroAddress, [], []),
+            instance.__hh_exposed__safeMintBatch(
+              ethers.ZeroAddress,
+              [],
+              [],
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -241,7 +277,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__safeMintBatch(holder.address, [0], []),
+            instance.__hh_exposed__safeMintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -250,7 +286,12 @@ describe('ERC1155Base', () => {
 
         it('mint is made to invalid receiver', async () => {
           await expect(
-            instance.__safeMintBatch(await instance.getAddress(), [], []),
+            instance.__hh_exposed__safeMintBatch(
+              await instance.getAddress(),
+              [],
+              [],
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverNotImplemented',
@@ -264,14 +305,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        await instance.__burn(holder.address, id, amount);
+        await instance.__hh_exposed__burn(holder.address, id, amount);
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -285,9 +326,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
-        await expect(instance.__burn(holder.address, id, amount))
+        await expect(instance.__hh_exposed__burn(holder.address, id, amount))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -301,7 +342,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('burn is made from the zero address', async () => {
           await expect(
-            instance.__burn(ethers.ZeroAddress, 0, 0),
+            instance.__hh_exposed__burn(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -310,7 +351,7 @@ describe('ERC1155Base', () => {
 
         it('burn amount exceeds balance', async () => {
           await expect(
-            instance.__burn(holder.address, 0, 1),
+            instance.__hh_exposed__burn(holder.address, 0, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnExceedsBalance',
@@ -324,14 +365,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        await instance.__burnBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__burnBatch(holder.address, [id], [amount]);
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -345,9 +386,16 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
-        await expect(instance.__burnBatch(holder.address, [id], [amount]))
+        await expect(
+          instance.__hh_exposed__burnBatch(holder.address, [id], [amount]),
+        )
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -361,7 +409,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('burn is made from the zero address', async () => {
           await expect(
-            instance.__burnBatch(ethers.ZeroAddress, [], []),
+            instance.__hh_exposed__burnBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -370,7 +418,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__burnBatch(holder.address, [0], []),
+            instance.__hh_exposed__burnBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -379,7 +427,7 @@ describe('ERC1155Base', () => {
 
         it('burn amount exceeds balance', async () => {
           await expect(
-            instance.__burnBatch(holder.address, [0], [1]),
+            instance.__hh_exposed__burnBatch(holder.address, [0], [1]),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnExceedsBalance',
@@ -393,7 +441,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -405,7 +453,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__transfer(
+        await instance.__hh_exposed__transfer(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -434,10 +482,15 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         await expect(
-          instance.__transfer(
+          instance.__hh_exposed__transfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -459,7 +512,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__transfer(
+            instance.__hh_exposed__transfer(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -475,7 +528,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__transfer(
+            instance.__hh_exposed__transfer(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -496,7 +549,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -508,7 +561,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeTransfer(
+        await instance.__hh_exposed__safeTransfer(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -537,10 +590,15 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         await expect(
-          instance.__safeTransfer(
+          instance.__hh_exposed__safeTransfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -562,7 +620,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.__hh_exposed__safeTransfer(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -578,7 +636,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.__hh_exposed__safeTransfer(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -594,7 +652,7 @@ describe('ERC1155Base', () => {
 
         it('transfer is made to invalid receiver', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.__hh_exposed__safeTransfer(
               await instance.getAddress(),
               holder.address,
               invalidReceiver,
@@ -615,7 +673,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -627,7 +685,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__transferBatch(
+        await instance.__hh_exposed__transferBatch(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -656,10 +714,15 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         await expect(
-          instance.__transferBatch(
+          instance.__hh_exposed__transferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -681,7 +744,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.__hh_exposed__transferBatch(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -697,7 +760,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.__hh_exposed__transferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -713,7 +776,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.__hh_exposed__transferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -734,7 +797,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.__hh_exposed__mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -746,7 +809,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeTransferBatch(
+        await instance.__hh_exposed__safeTransferBatch(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -775,10 +838,15 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.__hh_exposed__mintBatch(
+          holder.address,
+          [id],
+          [amount],
+          '0x',
+        );
 
         await expect(
-          instance.__safeTransferBatch(
+          instance.__hh_exposed__safeTransferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -800,7 +868,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.__hh_exposed__safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -816,7 +884,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.__hh_exposed__safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -832,7 +900,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.__hh_exposed__safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -848,7 +916,7 @@ describe('ERC1155Base', () => {
 
         it('transfer is made to invalid receiver', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.__hh_exposed__safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               invalidReceiver,

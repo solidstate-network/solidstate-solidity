@@ -3,7 +3,7 @@ import { IERC1155Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface ERC1155MetadataBehaviorArgs {
-  tokenURI: string;
+  baseURI: string;
 }
 
 export function describeBehaviorOfERC1155Metadata(
