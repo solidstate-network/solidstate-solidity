@@ -4,11 +4,10 @@ pragma solidity ^0.8.20;
 
 import { IERC165 } from '../../../interfaces/IERC165.sol';
 import { IERC2981 } from '../../../interfaces/IERC2981.sol';
-import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { NFTRoyalty } from './NFTRoyalty.sol';
 import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
 
-contract NFTRoyaltyMock is NFTRoyalty, ERC165Base {
+contract NFTRoyaltyMock is NFTRoyalty {
     constructor(
         uint16 defaultRoyaltyBPS,
         uint16[] memory royaltiesBPS,

@@ -2,13 +2,14 @@
 
 pragma solidity ^0.8.20;
 
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { _INFTRoyalty } from './_INFTRoyalty.sol';
 import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
 
 /**
  * @title NFTRoyalty internal functions
  */
-abstract contract _NFTRoyalty is _INFTRoyalty {
+abstract contract _NFTRoyalty is _INFTRoyalty, _ERC165Base {
     uint16 private constant MAX_ROYALTY = 10000;
 
     /**
