@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { ERC165Base } from '../../introspection/ERC165/base/ERC165Base.sol';
 import { ERC1155Base } from './base/ERC1155Base.sol';
 import { _ERC1155Base } from './base/_ERC1155Base.sol';
 import { ERC1155Enumerable } from './enumerable/ERC1155Enumerable.sol';
@@ -19,8 +18,7 @@ abstract contract SolidStateERC1155 is
     _SolidStateERC1155,
     ERC1155Base,
     ERC1155Enumerable,
-    ERC1155Metadata,
-    ERC165Base
+    ERC1155Metadata
 {
     /**
      * @inheritdoc _ERC1155Base

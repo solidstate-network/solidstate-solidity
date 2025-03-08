@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { _ERC165Base } from '../../introspection/ERC165/base/_ERC165Base.sol';
 import { _ERC721Base } from './base/_ERC721Base.sol';
 import { _ERC721Enumerable } from './enumerable/_ERC721Enumerable.sol';
 import { _ERC721Metadata } from './metadata/_ERC721Metadata.sol';
@@ -12,8 +11,7 @@ abstract contract _SolidStateERC721 is
     _ISolidStateERC721,
     _ERC721Base,
     _ERC721Enumerable,
-    _ERC721Metadata,
-    _ERC165Base
+    _ERC721Metadata
 {
     /**
      * @inheritdoc _ERC721Base
