@@ -7,18 +7,18 @@ import { AccessControlStorage } from './AccessControlStorage.sol';
 
 contract AccessControlMock is AccessControl {
     constructor(address admin) {
-        _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, admin);
+        _setRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, admin, true);
     }
 
-    function setRoleAdmin(bytes32 role, bytes32 adminRole) public {
+    function setRoleAdmin(bytes32 role, bytes32 adminRole) external {
         _setRoleAdmin(role, adminRole);
     }
 
-    function checkRole(bytes32 role) public view {
+    function checkRole(bytes32 role) external view {
         _checkRole(role);
     }
 
-    function checkRole(bytes32 role, address account) public view {
+    function checkRole(bytes32 role, address account) external view {
         _checkRole(role, account);
     }
 }

@@ -57,12 +57,22 @@ describe('SafeOwnable', () => {
 
     describe('#_nomineeOwner()', () => {
       it('returns nominee owner address', async () => {
-        await instance.__setNomineeOwner;
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
+          ethers.ZeroAddress,
+        );
+
+        await instance.connect(owner).transferOwnership(nomineeOwner);
+
+        expect(await instance.__nomineeOwner.staticCall()).to.equal(
+          nomineeOwner.address,
+        );
       });
     });
 
     describe('#_acceptOwnership()', () => {
       it('sets message sender as owner', async () => {
+        await instance.connect(owner).transferOwnership(nomineeOwner);
+
         await instance.connect(nomineeOwner).__acceptOwnership();
 
         expect(await instance.__owner.staticCall()).to.equal(

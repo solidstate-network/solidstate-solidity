@@ -115,7 +115,7 @@ abstract contract SolidStateDiamond is
     function _getImplementation()
         internal
         view
-        override(DiamondFallback, _Proxy, _DiamondBase, _SolidStateDiamond)
+        override(DiamondBase, DiamondFallback, _SolidStateDiamond)
         returns (address implementation)
     {
         implementation = super._getImplementation();

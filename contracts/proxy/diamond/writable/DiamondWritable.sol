@@ -17,7 +17,7 @@ abstract contract DiamondWritable is IDiamondWritable, _DiamondWritable {
         FacetCut[] calldata facetCuts,
         address target,
         bytes calldata data
-    ) external onlyOwner {
-        _diamondCut(facetCuts, target, data);
+    ) external {
+        _diamondCutExternal(facetCuts, target, data);
     }
 }

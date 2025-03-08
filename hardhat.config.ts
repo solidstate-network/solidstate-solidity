@@ -25,13 +25,13 @@ export default {
     runOnCompile: true,
     clear: true,
     flat: true,
-    except: ['.*Mock$', 'EXPOSED.*'],
+    except: ['.*Mock$', '__hh_exposed_.*'],
   },
 
   exposed: {
-    include: ['**/_*.sol', '**/*Storage.sol'],
     // the default $ prefix appears to conflict with typechain
-    prefix: 'EXPOSED',
+    prefix: '__hh_exposed_',
+    outDir: './contracts/exposed',
   },
 
   gasReporter: {

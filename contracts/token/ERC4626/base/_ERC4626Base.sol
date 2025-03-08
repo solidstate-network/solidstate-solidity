@@ -17,20 +17,21 @@ abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
 
     /**
      * @notice get the address of the base token used for vault accountin purposes
-     * @return base token address
+     * @return asset base token address
      */
-    function _asset() internal view virtual returns (address) {
-        return
-            ERC4626BaseStorage
-                .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
-                .asset;
+    function _asset() internal view virtual returns (address asset) {
+        asset = ERC4626BaseStorage
+            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
+            .asset;
     }
 
     /**
      * @notice get the total quantity of the base asset currently managed by the vault
      * @return total managed asset amount
      */
-    function _totalAssets() internal view virtual returns (uint256);
+    function _totalAssets() internal view virtual returns (uint256) {
+        return IERC20(_asset()).balanceOf(address(this));
+    }
 
     /**
      * @notice calculate the quantity of shares received in exchange for a given quantity of assets, not accounting for slippage
@@ -364,5 +365,15 @@ abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
         }
 
         emit Withdraw(caller, receiver, owner, assetAmount, shareAmount);
+    }
+
+    /**
+     * @notice set the address of the base token used for vault accountin purposes
+     * @param asset base token address
+     */
+    function _setAsset(address asset) internal virtual {
+        ERC4626BaseStorage
+            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
+            .asset = asset;
     }
 }

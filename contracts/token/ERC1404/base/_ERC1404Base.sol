@@ -45,7 +45,9 @@ abstract contract _ERC1404Base is _IERC1404Base, _ERC20Base {
         address from,
         address to,
         uint256 amount
-    ) internal view virtual returns (uint8 restrictionCode);
+    ) internal view virtual returns (uint8 restrictionCode) {
+        return 0;
+    }
 
     /**
      * @notice query the restriction message for a given restriction code
