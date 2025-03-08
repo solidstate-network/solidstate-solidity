@@ -26,12 +26,12 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "receiver",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "royaltyAmount",
         "type": "uint256"
       }
     ],

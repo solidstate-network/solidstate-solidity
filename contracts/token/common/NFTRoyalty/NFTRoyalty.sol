@@ -17,7 +17,7 @@ abstract contract NFTRoyalty is INFTRoyalty, _NFTRoyalty, ERC165Base {
     function royaltyInfo(
         uint256 tokenId,
         uint256 salePrice
-    ) external view returns (address, uint256) {
+    ) external view returns (address receiver, uint256 royaltyAmount) {
         return _royaltyInfo(tokenId, salePrice);
     }
 }

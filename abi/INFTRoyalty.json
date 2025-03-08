@@ -26,7 +26,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "receiever",
+        "name": "receiver",
         "type": "address"
       },
       {

@@ -14,11 +14,11 @@ interface IERC2981 is _IERC2981, IERC165 {
      * @notice called with the sale price to determine how much royalty is owed and to whom
      * @param tokenId the ERC721 or ERC1155 token id to query for royalty information
      * @param salePrice the sale price of the given asset
-     * @return receiever rightful recipient of royalty
+     * @return receiver rightful recipient of royalty
      * @return royaltyAmount amount of royalty owed
      */
     function royaltyInfo(
         uint256 tokenId,
         uint256 salePrice
-    ) external view returns (address receiever, uint256 royaltyAmount);
+    ) external view returns (address receiver, uint256 royaltyAmount);
 }
