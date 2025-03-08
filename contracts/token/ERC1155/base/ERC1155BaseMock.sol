@@ -3,10 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IERC165 } from '../../../interfaces/IERC165.sol';
-import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { ERC1155Base, IERC1155 } from './ERC1155Base.sol';
 
-contract ERC1155BaseMock is ERC1155Base, ERC165Base {
+contract ERC1155BaseMock is ERC1155Base {
     constructor() {
         _setSupportsInterface(type(IERC165).interfaceId, true);
         _setSupportsInterface(type(IERC1155).interfaceId, true);
