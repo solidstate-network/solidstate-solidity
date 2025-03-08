@@ -1,7 +1,7 @@
 import { describeBehaviorOfSolidStateERC4626 } from '@solidstate/spec';
 import {
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
+  __hh_exposed_SolidStateERC20,
+  __hh_exposed_SolidStateERC20__factory,
   SolidStateERC4626Mock,
   SolidStateERC4626Mock__factory,
 } from '@solidstate/typechain-types';
@@ -12,18 +12,15 @@ const symbol = 'ERC20Metadata.symbol';
 const decimals = 18n;
 
 describe('SolidStateERC4626', () => {
-  let assetInstance: SolidStateERC20Mock;
+  let assetInstance: __hh_exposed_SolidStateERC20;
   let instance: SolidStateERC4626Mock;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      name,
-      symbol,
-      decimals,
-      0,
-    );
+    assetInstance = await new __hh_exposed_SolidStateERC20__factory(
+      deployer,
+    ).deploy();
 
     instance = await new SolidStateERC4626Mock__factory(deployer).deploy(
       await assetInstance.getAddress(),
@@ -40,7 +37,7 @@ describe('SolidStateERC4626', () => {
     allowance: (holder, spender) =>
       instance.allowance.staticCall(holder, spender),
     mintAsset: (recipient: string, amount: bigint) =>
-      assetInstance.__mint(recipient, amount),
+      assetInstance.__hh_exposed__mint(recipient, amount),
     name,
     symbol,
     decimals,

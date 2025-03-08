@@ -3,8 +3,8 @@ import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
   ERC4626BaseMock,
   ERC4626BaseMock__factory,
-  SolidStateERC20Mock,
-  SolidStateERC20Mock__factory,
+  __hh_exposed_SolidStateERC20,
+  __hh_exposed_SolidStateERC20__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -17,19 +17,16 @@ describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
   let instance: ERC4626BaseMock;
-  let assetInstance: SolidStateERC20Mock;
+  let assetInstance: __hh_exposed_SolidStateERC20;
 
   before(async () => {
     [deployer, depositor] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    assetInstance = await new SolidStateERC20Mock__factory(deployer).deploy(
-      '',
-      '',
-      0,
-      0,
-    );
+    assetInstance = await new __hh_exposed_SolidStateERC20__factory(
+      deployer,
+    ).deploy();
 
     instance = await new ERC4626BaseMock__factory(deployer).deploy(
       await assetInstance.getAddress(),
@@ -47,7 +44,7 @@ describe('ERC4626Base', () => {
     burn: (recipient: string, amount: bigint) =>
       instance.__burn(recipient, amount),
     mintAsset: (recipient: string, amount: bigint) =>
-      assetInstance.__mint(recipient, amount),
+      assetInstance.__hh_exposed__mint(recipient, amount),
     name,
     symbol,
     decimals,
@@ -59,7 +56,7 @@ describe('ERC4626Base', () => {
         const assetAmount = 10;
 
         await instance.__mint(deployer.address, assetAmount);
-        await assetInstance.__mint(depositor.address, assetAmount);
+        await assetInstance.__hh_exposed__mint(depositor.address, assetAmount);
         await assetInstance
           .connect(depositor)
           .approve(await instance.getAddress(), assetAmount);
