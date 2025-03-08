@@ -1,25 +1,28 @@
 import { describeBehaviorOfERC165Base } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { ERC2981Mock } from '@solidstate/typechain-types';
+import { INFTRoyalty } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export function describeBehaviorOfERC2981(
-  deploy: () => Promise<ERC2981Mock>,
+export interface NFTRoyaltyBehaviorArgs {}
+
+export function describeBehaviorOfNFTRoyalty(
+  deploy: () => Promise<INFTRoyalty>,
+  args: NFTRoyaltyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC2981', () => {
+  describe('::NFTRoyalty', () => {
     let tokenIdOne = 1;
     let tokenIdTwo = 2;
     let tokenIdThree = 3;
 
     let receiver: SignerWithAddress;
-    let instance: ERC2981Mock;
+    let instance: INFTRoyalty;
 
-    before(async () => {
+    beforeEach(async () => {
       receiver = (await ethers.getSigners())[1];
       instance = await deploy();
     });

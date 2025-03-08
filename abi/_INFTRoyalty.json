@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NFTRoyalty__RoyaltyTooHigh",
+    "type": "error"
+  }
+]
