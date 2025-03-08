@@ -27,7 +27,9 @@ abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
      * @notice get the total quantity of the base asset currently managed by the vault
      * @return total managed asset amount
      */
-    function _totalAssets() internal view virtual returns (uint256);
+    function _totalAssets() internal view virtual returns (uint256) {
+        return IERC20(_asset()).balanceOf(address(this));
+    }
 
     /**
      * @notice calculate the quantity of shares received in exchange for a given quantity of assets, not accounting for slippage
