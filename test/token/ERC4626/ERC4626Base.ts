@@ -1,12 +1,11 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
-  ERC4626BaseMock,
-  ERC4626BaseMock__factory,
+  __hh_exposed_ERC4626Base,
+  __hh_exposed_ERC4626Base__factory,
   __hh_exposed_SolidStateERC20,
   __hh_exposed_SolidStateERC20__factory,
 } from '@solidstate/typechain-types';
-import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 const name = 'ERC20Metadata.name';
@@ -16,7 +15,7 @@ const decimals = 18n;
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
-  let instance: ERC4626BaseMock;
+  let instance: __hh_exposed_ERC4626Base;
   let assetInstance: __hh_exposed_SolidStateERC20;
 
   before(async () => {
@@ -28,50 +27,26 @@ describe('ERC4626Base', () => {
       deployer,
     ).deploy();
 
-    instance = await new ERC4626BaseMock__factory(deployer).deploy(
-      await assetInstance.getAddress(),
-      name,
-      symbol,
-      decimals,
-    );
+    instance = await new __hh_exposed_ERC4626Base__factory(deployer).deploy();
+
+    await instance.__hh_exposed__setAsset(await assetInstance.getAddress());
+
+    await instance.__hh_exposed__setName(name);
+    await instance.__hh_exposed__setSymbol(symbol);
+    await instance.__hh_exposed__setDecimals(decimals);
   });
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
-      instance.__mint(recipient, amount),
+      instance['__hh_exposed__mint(address,uint256)'](recipient, amount),
     burn: (recipient: string, amount: bigint) =>
-      instance.__burn(recipient, amount),
+      instance.__hh_exposed__burn(recipient, amount),
     mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.__hh_exposed__mint(recipient, amount),
     name,
     symbol,
     decimals,
-  });
-
-  describe('__internal', () => {
-    describe('#_deposit(uint256,address)', () => {
-      it('calls the _afterDeposit hook', async () => {
-        const assetAmount = 10;
-
-        await instance.__mint(deployer.address, assetAmount);
-        await assetInstance.__hh_exposed__mint(depositor.address, assetAmount);
-        await assetInstance
-          .connect(depositor)
-          .approve(await instance.getAddress(), assetAmount);
-
-        const shareAmount =
-          await instance.previewDeposit.staticCall(assetAmount);
-
-        expect(
-          await instance
-            .connect(depositor)
-            .deposit(assetAmount, depositor.address),
-        )
-          .to.emit(instance, 'AfterDepositCheck')
-          .withArgs(depositor.address, assetAmount, shareAmount);
-      });
-    });
   });
 });
