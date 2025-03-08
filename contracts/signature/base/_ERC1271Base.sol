@@ -21,5 +21,7 @@ abstract contract _ERC1271Base is _IERC1271Base {
     function _isValidSignature(
         bytes32 hash,
         bytes memory signature
-    ) internal view virtual returns (bytes4 magicValue);
+    ) internal view virtual returns (bytes4 magicValue) {
+        return bytes4(0);
+    }
 }

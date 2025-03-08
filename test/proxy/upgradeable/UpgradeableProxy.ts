@@ -1,3 +1,4 @@
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
   OwnableMock__factory,
@@ -8,7 +9,13 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('UpgradeableProxy', () => {
+  let owner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
   let instance: UpgradeableProxyMock;
+
+  before(async () => {
+    [owner, nonOwner] = await ethers.getSigners();
+  });
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
@@ -19,10 +26,13 @@ describe('UpgradeableProxy', () => {
 
     instance = await new UpgradeableProxyMock__factory(deployer).deploy(
       await implementationInstance.getAddress(),
+      owner.address,
     );
   });
 
   describeBehaviorOfUpgradeableProxy(async () => instance, {
+    getOwner: async () => owner,
+    getNonOwner: async () => nonOwner,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
