@@ -2,9 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
+import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IERC721Base } from './_IERC721Base.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
@@ -12,7 +13,7 @@ import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 /**
  * @title Base ERC721 internal functions
  */
-abstract contract _ERC721Base is _IERC721Base {
+abstract contract _ERC721Base is _IERC721Base, _ERC165Base {
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;

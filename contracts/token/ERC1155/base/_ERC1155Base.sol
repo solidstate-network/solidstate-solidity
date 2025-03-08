@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IERC1155Base } from './_IERC1155Base.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
@@ -11,7 +12,7 @@ import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
  * @title Base ERC1155 internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract _ERC1155Base is _IERC1155Base {
+abstract contract _ERC1155Base is _IERC1155Base, _ERC165Base {
     using AddressUtils for address;
 
     /**
@@ -30,6 +31,64 @@ abstract contract _ERC1155Base is _IERC1155Base {
             ERC1155BaseStorage
                 .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
                 .balances[id][account];
+    }
+
+    /**
+     * @notice query the balances of given tokens held by given addresses
+     * @param accounts addresss to query
+     * @param ids tokens to query
+     * @return token balances
+     */
+    function _balanceOfBatch(
+        address[] memory accounts,
+        uint256[] memory ids
+    ) internal view virtual returns (uint256[] memory) {
+        if (accounts.length != ids.length)
+            revert ERC1155Base__ArrayLengthMismatch();
+
+        mapping(uint256 => mapping(address => uint256))
+            storage balances = ERC1155BaseStorage
+                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+                .balances;
+
+        uint256[] memory batchBalances = new uint256[](accounts.length);
+
+        unchecked {
+            for (uint256 i; i < accounts.length; i++) {
+                if (accounts[i] == address(0))
+                    revert ERC1155Base__BalanceQueryZeroAddress();
+                batchBalances[i] = balances[ids[i]][accounts[i]];
+            }
+        }
+
+        return batchBalances;
+    }
+
+    /**
+     * @notice query approval status of given operator with respect to given address
+     * @param account address to query for approval granted
+     * @param operator address to query for approval received
+     * @return whether operator is approved to spend tokens held by account
+     */
+    function _isApprovedForAll(
+        address account,
+        address operator
+    ) internal view virtual returns (bool) {
+        return
+            ERC1155BaseStorage
+                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+                .operatorApprovals[account][operator];
+    }
+
+    function _setApprovalForAll(
+        address operator,
+        bool status
+    ) internal virtual {
+        if (msg.sender == operator) revert ERC1155Base__SelfApproval();
+        ERC1155BaseStorage
+            .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            .operatorApprovals[msg.sender][operator] = status;
+        emit ApprovalForAll(msg.sender, operator, status);
     }
 
     /**
@@ -223,6 +282,30 @@ abstract contract _ERC1155Base is _IERC1155Base {
         }
 
         emit TransferBatch(msg.sender, account, address(0), ids, amounts);
+    }
+
+    function _safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) internal virtual {
+        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+            revert ERC1155Base__NotOwnerOrApproved();
+        _safeTransfer(msg.sender, from, to, id, amount, data);
+    }
+
+    function _safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal virtual {
+        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+            revert ERC1155Base__NotOwnerOrApproved();
+        _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
     }
 
     /**

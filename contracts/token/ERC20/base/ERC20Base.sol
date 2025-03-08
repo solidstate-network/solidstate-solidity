@@ -39,7 +39,7 @@ abstract contract ERC20Base is IERC20Base, _ERC20Base {
      * @inheritdoc IERC20
      */
     function approve(address spender, uint256 amount) external returns (bool) {
-        return _approve(msg.sender, spender, amount);
+        return _approve(spender, amount);
     }
 
     /**
@@ -49,7 +49,7 @@ abstract contract ERC20Base is IERC20Base, _ERC20Base {
         address recipient,
         uint256 amount
     ) external returns (bool) {
-        return _transfer(msg.sender, recipient, amount);
+        return _transfer(recipient, amount);
     }
 
     /**

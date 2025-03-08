@@ -20,7 +20,7 @@ abstract contract _ERC1271Ownable is _IERC1271Ownable, _ERC1271Base, _Ownable {
     function _isValidSignature(
         bytes32 hash,
         bytes memory signature
-    ) internal view override returns (bytes4 magicValue) {
+    ) internal view virtual override returns (bytes4 magicValue) {
         return
             hash.toEthSignedMessageHash().recover(signature) == _owner()
                 ? MAGIC_VALUE

@@ -12,7 +12,7 @@ abstract contract Pausable is IPausable, _Pausable {
     /**
      * @inheritdoc IPausable
      */
-    function paused() external view virtual returns (bool status) {
+    function paused() external view returns (bool status) {
         status = _paused();
     }
 }

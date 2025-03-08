@@ -2,10 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { _Proxy } from '../../_Proxy.sol';
 import { DiamondBase } from '../base/DiamondBase.sol';
-import { _DiamondBase } from '../base/_DiamondBase.sol';
-import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { IDiamondFallback } from './IDiamondFallback.sol';
 import { _DiamondFallback } from './_DiamondFallback.sol';
 
@@ -31,8 +28,8 @@ abstract contract DiamondFallback is
     /**
      * @inheritdoc IDiamondFallback
      */
-    function setFallbackAddress(address fallbackAddress) external onlyOwner {
-        _setFallbackAddress(fallbackAddress);
+    function setFallbackAddress(address fallbackAddress) external {
+        _setFallbackAddressExternal(fallbackAddress);
     }
 
     /**
@@ -42,7 +39,7 @@ abstract contract DiamondFallback is
         internal
         view
         virtual
-        override(_Proxy, _DiamondBase, _DiamondFallback)
+        override(DiamondBase, _DiamondFallback)
         returns (address implementation)
     {
         implementation = super._getImplementation();

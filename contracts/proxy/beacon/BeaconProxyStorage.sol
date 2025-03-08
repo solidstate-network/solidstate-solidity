@@ -2,19 +2,16 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: this storage library is now referenced by Proxy, so should be renamed
-library UpgradeableProxyStorage {
+library BeaconProxyStorage {
     struct Layout {
-        address implementation;
+        address beacon;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.UpgradeableProxy')
-                    )
+                    keccak256(bytes('solidstate.contracts.storage.BeaconProxy'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

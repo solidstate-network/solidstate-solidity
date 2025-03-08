@@ -102,13 +102,11 @@ abstract contract _AccessControl is _IAccessControl {
      * @param role role to assign
      * @param account recipient of role assignment
      */
-    function _grantRole(bytes32 role, address account) internal virtual {
-        AccessControlStorage
-            .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
-            .roles[role]
-            .members
-            .add(account);
-        emit RoleGranted(role, account, msg.sender);
+    function _grantRole(
+        bytes32 role,
+        address account
+    ) internal virtual onlyRole(_getRoleAdmin(role)) {
+        _setRole(role, account, true);
     }
 
     /*
@@ -116,13 +114,11 @@ abstract contract _AccessControl is _IAccessControl {
      * @param role role to unassign
      * @parm account
      */
-    function _revokeRole(bytes32 role, address account) internal virtual {
-        AccessControlStorage
-            .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
-            .roles[role]
-            .members
-            .remove(account);
-        emit RoleRevoked(role, account, msg.sender);
+    function _revokeRole(
+        bytes32 role,
+        address account
+    ) internal virtual onlyRole(_getRoleAdmin(role)) {
+        _setRole(role, account, false);
     }
 
     /**
@@ -130,7 +126,29 @@ abstract contract _AccessControl is _IAccessControl {
      * @param role role to relinquish
      */
     function _renounceRole(bytes32 role) internal virtual {
-        _revokeRole(role, msg.sender);
+        _setRole(role, msg.sender, false);
+    }
+
+    function _setRole(
+        bytes32 role,
+        address account,
+        bool status
+    ) internal virtual {
+        if (status) {
+            AccessControlStorage
+                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .roles[role]
+                .members
+                .add(account);
+            emit RoleGranted(role, account, msg.sender);
+        } else {
+            AccessControlStorage
+                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .roles[role]
+                .members
+                .remove(account);
+            emit RoleRevoked(role, account, msg.sender);
+        }
     }
 
     /**

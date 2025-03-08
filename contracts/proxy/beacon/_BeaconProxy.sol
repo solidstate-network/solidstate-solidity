@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 import { _Proxy } from '../_Proxy.sol';
 import { IBeacon } from './IBeacon.sol';
 import { _IBeaconProxy } from './_IBeaconProxy.sol';
+import { BeaconProxyStorage } from './BeaconProxyStorage.sol';
 
 abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
     /**
@@ -22,7 +23,21 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
 
     /**
      * @notice get beacon of proxy implementation
-     * @return beacon address
+     * @return beacon beacon contract address
      */
-    function _getBeacon() internal view virtual returns (address);
+    function _getBeacon() internal view virtual returns (address beacon) {
+        beacon = BeaconProxyStorage
+            .layout(BeaconProxyStorage.DEFAULT_STORAGE_SLOT)
+            .beacon;
+    }
+
+    /**
+     * @notice set beacon of proxy implementation
+     * @param beacon beacon contract address
+     */
+    function _setBeacon(address beacon) internal virtual {
+        BeaconProxyStorage
+            .layout(BeaconProxyStorage.DEFAULT_STORAGE_SLOT)
+            .beacon = beacon;
+    }
 }

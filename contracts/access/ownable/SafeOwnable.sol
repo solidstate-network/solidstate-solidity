@@ -14,14 +14,14 @@ abstract contract SafeOwnable is ISafeOwnable, _SafeOwnable, Ownable {
     /**
      * @inheritdoc ISafeOwnable
      */
-    function nomineeOwner() public view virtual returns (address) {
+    function nomineeOwner() external view returns (address) {
         return _nomineeOwner();
     }
 
     /**
      * @inheritdoc ISafeOwnable
      */
-    function acceptOwnership() public virtual onlyNomineeOwner {
+    function acceptOwnership() external {
         _acceptOwnership();
     }
 

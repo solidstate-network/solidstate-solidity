@@ -50,6 +50,10 @@ abstract contract _ERC20Base is _IERC20Base {
                 .allowances[holder][spender];
     }
 
+    function _approve(address spender, uint256 amount) internal returns (bool) {
+        return _approve(msg.sender, spender, amount);
+    }
+
     /**
      * @notice enable spender to spend tokens on behalf of holder
      * @param holder address on whose behalf tokens may be spent
@@ -134,6 +138,13 @@ abstract contract _ERC20Base is _IERC20Base {
         l.totalSupply -= amount;
 
         emit Transfer(account, address(0), amount);
+    }
+
+    function _transfer(
+        address recipient,
+        uint256 amount
+    ) internal returns (bool) {
+        return _transfer(msg.sender, recipient, amount);
     }
 
     /**

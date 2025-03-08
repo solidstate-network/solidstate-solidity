@@ -1,25 +1,26 @@
 import {
-  CloneFactoryMock,
-  CloneFactoryMock__factory,
+  __hh_exposed_CloneFactory,
+  __hh_exposed_CloneFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('CloneFactory', () => {
-  let instance: CloneFactoryMock;
+  let instance: __hh_exposed_CloneFactory;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new CloneFactoryMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_CloneFactory__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
     describe('#deployClone()', () => {
       it('deploys clone and returns deployment address', async () => {
-        const address = await instance['deployClone()'].staticCall();
+        const address =
+          await instance['__hh_exposed_deployClone()'].staticCall();
         expect(address).to.be.properAddress;
 
-        await instance['deployClone()']();
+        await instance['__hh_exposed_deployClone()']();
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -35,10 +36,11 @@ describe('CloneFactory', () => {
       it('deploys clone and returns deployment address', async () => {
         const salt = ethers.randomBytes(32);
 
-        const address = await instance['deployClone(bytes32)'].staticCall(salt);
+        const address =
+          await instance['__hh_exposed_deployClone(bytes32)'].staticCall(salt);
         expect(address).to.be.properAddress;
 
-        await instance['deployClone(bytes32)'](salt);
+        await instance['__hh_exposed_deployClone(bytes32)'](salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           await ethers.provider.getCode(await instance.getAddress()),
@@ -51,10 +53,10 @@ describe('CloneFactory', () => {
         it('salt has already been used', async () => {
           const salt = ethers.randomBytes(32);
 
-          await instance['deployClone(bytes32)'](salt);
+          await instance['__hh_exposed_deployClone(bytes32)'](salt);
 
           await expect(
-            instance['deployClone(bytes32)'](salt),
+            instance['__hh_exposed_deployClone(bytes32)'](salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -70,7 +72,9 @@ describe('CloneFactory', () => {
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.calculateCloneDeploymentAddress.staticCall(salt),
+          await instance.__hh_exposed_calculateCloneDeploymentAddress.staticCall(
+            salt,
+          ),
         ).to.equal(
           ethers.getCreate2Address(
             await instance.getAddress(),

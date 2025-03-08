@@ -58,4 +58,18 @@ abstract contract _ERC20ImplicitApproval is
                 .layout(ERC20ImplicitApprovalStorage.DEFAULT_STORAGE_SLOT)
                 .implicitApprovals[account];
     }
+
+    /**
+     * @notice set whether address is implicitly approved to spend tokens
+     * @param account address whose status to set
+     * @param status approval status
+     */
+    function _setImplicitlyApproved(
+        address account,
+        bool status
+    ) internal virtual {
+        ERC20ImplicitApprovalStorage
+            .layout(ERC20ImplicitApprovalStorage.DEFAULT_STORAGE_SLOT)
+            .implicitApprovals[account] = status;
+    }
 }

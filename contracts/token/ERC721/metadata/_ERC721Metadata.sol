@@ -16,29 +16,27 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
 
     /**
      * @notice get token name
-     * @return token name
+     * @return name token name
      */
-    function _name() internal view virtual returns (string memory) {
-        return
-            ERC721MetadataStorage
-                .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
-                .name;
+    function _name() internal view virtual returns (string memory name) {
+        name = ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .name;
     }
 
     /**
      * @notice get token symbol
-     * @return token symbol
+     * @return symbol token symbol
      */
-    function _symbol() internal view virtual returns (string memory) {
-        return
-            ERC721MetadataStorage
-                .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
-                .symbol;
+    function _symbol() internal view virtual returns (string memory symbol) {
+        symbol = ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .symbol;
     }
 
     /**
-     * @notice get generated URI for given token
-     * @return token URI
+     * @notice get generated metatdata URI for given token
+     * @return token metadata URI
      */
     function _tokenURI(
         uint256 tokenId
@@ -59,6 +57,50 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
         } else {
             return string(abi.encodePacked(baseURI, tokenId.toDecString()));
         }
+    }
+
+    /**
+     * @notice set token name
+     * @param name token name
+     */
+    function _setName(string memory name) internal virtual {
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .name = name;
+    }
+
+    /**
+     * @notice set token symbol
+     * @param symbol token symbol
+     */
+    function _setSymbol(string memory symbol) internal virtual {
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .symbol = symbol;
+    }
+
+    /**
+     * @notice set metadata URI component for single token
+     * @param tokenId id of token whose URI component to set
+     * @param tokenURI URI string to set
+     */
+    function _setTokenURI(
+        uint256 tokenId,
+        string memory tokenURI
+    ) internal virtual {
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .tokenURIs[tokenId] = tokenURI;
+    }
+
+    /**
+     * @notice set base metadata URI
+     * @param baseURI URI string to set
+     */
+    function _setBaseURI(string memory baseURI) internal virtual {
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .baseURI = baseURI;
     }
 
     /**

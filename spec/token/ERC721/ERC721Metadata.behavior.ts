@@ -5,7 +5,7 @@ import { expect } from 'chai';
 export interface ERC721MetadataBehaviorArgs {
   name: string;
   symbol: string;
-  tokenURI: string;
+  baseURI: string;
 }
 
 export function describeBehaviorOfERC721Metadata(
