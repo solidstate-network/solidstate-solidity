@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfAccessControl } from '@solidstate/spec';
 import {
-  AccessControlMock,
-  AccessControlMock__factory,
+  __hh_exposed_AccessControl,
+  __hh_exposed_AccessControl__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -15,15 +15,19 @@ describe('AccessControl', () => {
   let nonAdmin: SignerWithAddress;
   let nonAdmin2: SignerWithAddress;
   let nonAdmin3: SignerWithAddress;
-  let instance: AccessControlMock;
+  let instance: __hh_exposed_AccessControl;
 
   before(async () => {
     [admin, nonAdmin, nonAdmin2, nonAdmin3] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new AccessControlMock__factory(admin).deploy(
-      admin.address,
+    instance = await new __hh_exposed_AccessControl__factory(admin).deploy();
+
+    await instance.__hh_exposed__setRole(
+      ethers.ZeroHash,
+      await admin.getAddress(),
+      true,
     );
   });
 
@@ -33,19 +37,25 @@ describe('AccessControl', () => {
     getNonAdmin: async () => nonAdmin,
   });
 
+  // TODO: test modifiers
+
   describe('#_checkRole(bytes32)', () => {
     it('does not revert if sender has role', async () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
-        instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
+        instance
+          .connect(nonAdmin)
+          ['__hh_exposed__checkRole(bytes32)'].staticCall(ROLE),
       ).not.to.be.reverted;
     });
 
     describe('reverts if', () => {
       it('sender does not have role', async () => {
         await expect(
-          instance.connect(nonAdmin)['checkRole(bytes32)'].staticCall(ROLE),
+          instance
+            .connect(nonAdmin)
+            ['__hh_exposed__checkRole(bytes32)'].staticCall(ROLE),
         ).to.revertedWith(
           `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
         );
@@ -58,7 +68,7 @@ describe('AccessControl', () => {
       await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
       await expect(
-        instance['checkRole(bytes32,address)'].staticCall(
+        instance['__hh_exposed__checkRole(bytes32,address)'].staticCall(
           ROLE,
           nonAdmin.address,
         ),
@@ -68,7 +78,7 @@ describe('AccessControl', () => {
     describe('reverts if', () => {
       it('given account does not have role', async () => {
         await expect(
-          instance['checkRole(bytes32,address)'].staticCall(
+          instance['__hh_exposed__checkRole(bytes32,address)'].staticCall(
             ROLE,
             nonAdmin.address,
           ),
@@ -86,7 +96,7 @@ describe('AccessControl', () => {
         ['NEW_ADMIN_ROLE'],
       );
 
-      await instance.setRoleAdmin(ROLE, newAdminRole);
+      await instance.__hh_exposed__setRoleAdmin(ROLE, newAdminRole);
 
       expect(await instance.getRoleAdmin.staticCall(ROLE)).to.equal(
         newAdminRole,
@@ -99,7 +109,7 @@ describe('AccessControl', () => {
         ['NEW_ADMIN_ROLE'],
       );
 
-      await expect(instance.setRoleAdmin(ROLE, newAdminRole))
+      await expect(instance.__hh_exposed__setRoleAdmin(ROLE, newAdminRole))
         .to.emit(instance, 'RoleAdminChanged')
         .withArgs(ROLE, DEFAULT_ADMIN_ROLE, newAdminRole);
     });
