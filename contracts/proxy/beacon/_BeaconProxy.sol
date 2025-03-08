@@ -26,7 +26,9 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
      * @return beacon beacon contract address
      */
     function _getBeacon() internal view virtual returns (address beacon) {
-        beacon = BeaconProxyStorage.layout().beacon;
+        beacon = BeaconProxyStorage
+            .layout(BeaconProxyStorage.DEFAULT_STORAGE_SLOT)
+            .beacon;
     }
 
     /**
@@ -34,6 +36,8 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
      * @param beacon beacon contract address
      */
     function _setBeacon(address beacon) internal virtual {
-        BeaconProxyStorage.layout().beacon = beacon;
+        BeaconProxyStorage
+            .layout(BeaconProxyStorage.DEFAULT_STORAGE_SLOT)
+            .beacon = beacon;
     }
 }

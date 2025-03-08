@@ -21,7 +21,10 @@ abstract contract _ERC1155Enumerable is _IERC1155Enumerable, _ERC1155Base {
      * @return token supply
      */
     function _totalSupply(uint256 id) internal view virtual returns (uint256) {
-        return ERC1155EnumerableStorage.layout().totalSupply[id];
+        return
+            ERC1155EnumerableStorage
+                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+                .totalSupply[id];
     }
 
     /**
@@ -30,7 +33,11 @@ abstract contract _ERC1155Enumerable is _IERC1155Enumerable, _ERC1155Base {
      * @return quantity of holders
      */
     function _totalHolders(uint256 id) internal view virtual returns (uint256) {
-        return ERC1155EnumerableStorage.layout().accountsByToken[id].length();
+        return
+            ERC1155EnumerableStorage
+                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+                .accountsByToken[id]
+                .length();
     }
 
     /**
@@ -42,7 +49,7 @@ abstract contract _ERC1155Enumerable is _IERC1155Enumerable, _ERC1155Base {
         uint256 id
     ) internal view virtual returns (address[] memory) {
         EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
-            .layout()
+            .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
             .accountsByToken[id];
 
         address[] memory addresses = new address[](accounts.length());
@@ -65,7 +72,7 @@ abstract contract _ERC1155Enumerable is _IERC1155Enumerable, _ERC1155Base {
         address account
     ) internal view virtual returns (uint256[] memory) {
         EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
-            .layout()
+            .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
             .tokensByAccount[account];
 
         uint256[] memory ids = new uint256[](tokens.length());
@@ -95,7 +102,7 @@ abstract contract _ERC1155Enumerable is _IERC1155Enumerable, _ERC1155Base {
 
         if (from != to) {
             ERC1155EnumerableStorage.Layout storage l = ERC1155EnumerableStorage
-                .layout();
+                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT);
             mapping(uint256 => EnumerableSet.AddressSet)
                 storage tokenAccounts = l.accountsByToken;
             EnumerableSet.UintSet storage fromTokens = l.tokensByAccount[from];

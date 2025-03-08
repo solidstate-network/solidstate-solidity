@@ -17,7 +17,10 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      * @notice get the nominated owner who has permission to call acceptOwnership
      */
     function _nomineeOwner() internal view virtual returns (address) {
-        return SafeOwnableStorage.layout().nomineeOwner;
+        return
+            SafeOwnableStorage
+                .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+                .nomineeOwner;
     }
 
     /**
@@ -25,7 +28,9 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      */
     function _acceptOwnership() internal virtual onlyNomineeOwner {
         _setOwner(msg.sender);
-        delete SafeOwnableStorage.layout().nomineeOwner;
+        delete SafeOwnableStorage
+            .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+            .nomineeOwner;
     }
 
     /**
@@ -41,6 +46,8 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      * @notice set nominee owner
      */
     function _setNomineeOwner(address account) internal virtual {
-        SafeOwnableStorage.layout().nomineeOwner = account;
+        SafeOwnableStorage
+            .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+            .nomineeOwner = account;
     }
 }

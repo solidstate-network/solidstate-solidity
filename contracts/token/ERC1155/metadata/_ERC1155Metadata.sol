@@ -15,8 +15,9 @@ abstract contract _ERC1155Metadata is _IERC1155Metadata {
     function _uri(
         uint256 tokenId
     ) internal view virtual returns (string memory) {
-        ERC1155MetadataStorage.Layout storage l = ERC1155MetadataStorage
-            .layout();
+        ERC1155MetadataStorage.Layout storage l = ERC1155MetadataStorage.layout(
+            ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT
+        );
 
         string memory tokenIdURI = l.tokenURIs[tokenId];
         string memory baseURI = l.baseURI;
@@ -36,7 +37,9 @@ abstract contract _ERC1155Metadata is _IERC1155Metadata {
      * @param baseURI base URI
      */
     function _setBaseURI(string memory baseURI) internal {
-        ERC1155MetadataStorage.layout().baseURI = baseURI;
+        ERC1155MetadataStorage
+            .layout(ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .baseURI = baseURI;
     }
 
     /**
@@ -45,7 +48,9 @@ abstract contract _ERC1155Metadata is _IERC1155Metadata {
      * @param tokenURI per-token URI
      */
     function _setTokenURI(uint256 tokenId, string memory tokenURI) internal {
-        ERC1155MetadataStorage.layout().tokenURIs[tokenId] = tokenURI;
+        ERC1155MetadataStorage
+            .layout(ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .tokenURIs[tokenId] = tokenURI;
         emit URI(tokenURI, tokenId);
     }
 }

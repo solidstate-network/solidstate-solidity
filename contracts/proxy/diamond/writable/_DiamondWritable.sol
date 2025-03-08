@@ -37,7 +37,9 @@ abstract contract _DiamondWritable is _IDiamondWritable, _Ownable {
         address target,
         bytes memory data
     ) internal virtual {
-        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
+        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout(
+            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        );
 
         unchecked {
             // record selector count at start of operation for later comparison

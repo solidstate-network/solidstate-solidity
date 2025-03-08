@@ -17,7 +17,9 @@ abstract contract _Beacon is _IBeacon, _Ownable {
         virtual
         returns (address implementation)
     {
-        implementation = BeaconStorage.layout().implementation;
+        implementation = BeaconStorage
+            .layout(BeaconStorage.DEFAULT_STORAGE_SLOT)
+            .implementation;
     }
 
     /**
@@ -27,6 +29,8 @@ abstract contract _Beacon is _IBeacon, _Ownable {
     function _setImplementation(
         address implementation
     ) internal virtual onlyOwner {
-        BeaconStorage.layout().implementation = implementation;
+        BeaconStorage
+            .layout(BeaconStorage.DEFAULT_STORAGE_SLOT)
+            .implementation = implementation;
     }
 }

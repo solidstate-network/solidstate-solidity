@@ -30,9 +30,9 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
         view
         returns (bytes32 domainSeparator)
     {
-        domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            block.chainid
-        ];
+        domainSeparator = ERC20PermitStorage
+            .layout(ERC20PermitStorage.DEFAULT_STORAGE_SLOT)
+            .domainSeparators[block.chainid];
 
         if (domainSeparator == 0x00) {
             domainSeparator = EIP712.calculateDomainSeparator(
@@ -47,7 +47,10 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
      * @return current nonce
      */
     function _nonces(address owner) internal view returns (uint256) {
-        return ERC20PermitStorage.layout().nonces[owner];
+        return
+            ERC20PermitStorage
+                .layout(ERC20PermitStorage.DEFAULT_STORAGE_SLOT)
+                .nonces[owner];
     }
 
     /**
@@ -79,7 +82,9 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     ) internal virtual {
         if (deadline < block.timestamp) revert ERC20Permit__ExpiredDeadline();
 
-        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
+        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout(
+            ERC20PermitStorage.DEFAULT_STORAGE_SLOT
+        );
 
         // execute EIP-712 hashStruct procedure using assembly, equavalent to:
         //
@@ -169,6 +174,8 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     function _setName(string memory name) internal virtual override {
         // TODO: cache invalidation can fail if chainid is reverted to a previous value
         super._setName(name);
-        delete ERC20PermitStorage.layout().domainSeparators[block.chainid];
+        delete ERC20PermitStorage
+            .layout(ERC20PermitStorage.DEFAULT_STORAGE_SLOT)
+            .domainSeparators[block.chainid];
     }
 }

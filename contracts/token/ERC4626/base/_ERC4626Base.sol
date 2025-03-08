@@ -20,7 +20,9 @@ abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
      * @return asset base token address
      */
     function _asset() internal view virtual returns (address asset) {
-        asset = ERC4626BaseStorage.layout().asset;
+        asset = ERC4626BaseStorage
+            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
+            .asset;
     }
 
     /**
@@ -370,6 +372,8 @@ abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
      * @param asset base token address
      */
     function _setAsset(address asset) internal virtual {
-        ERC4626BaseStorage.layout().asset = asset;
+        ERC4626BaseStorage
+            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
+            .asset = asset;
     }
 }
