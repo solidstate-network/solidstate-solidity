@@ -6,6 +6,7 @@
   "scripts": {
     "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
     "build": "hardhat compile && lerna run tsc",
+    "postinstall": "patch-package",
     "prepare": "husky",
     "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports .",
     "upgrade-dependencies": "yarn-up -u -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types,chai'"
@@ -44,6 +45,7 @@
     "lerna": "^8.2.0",
     "lint-staged": "^15.4.3",
     "merkletreejs": "^0.4.1",
+    "patch-package": "^8.0.0",
     "prettier": "^3.5.2",
     "prettier-plugin-solidity": "^1.4.2",
     "solidity-coverage": "^0.8.14",
