@@ -1,17 +1,14 @@
-import {
-  __hh_exposed_Multicall,
-  __hh_exposed_Multicall__factory,
-} from '@solidstate/typechain-types';
+import { $Multicall, $Multicall__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('Multicall', () => {
-  let instance: __hh_exposed_Multicall;
+  let instance: $Multicall;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new __hh_exposed_Multicall__factory(deployer).deploy();
+    instance = await new $Multicall__factory(deployer).deploy();
   });
 
   // TODO: move to behavior tests

@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToAddress } from '@solidstate/library';
 import {
-  __hh_exposed_EnumerableMap,
-  __hh_exposed_EnumerableMap__factory,
+  $EnumerableMap,
+  $EnumerableMap__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -13,14 +13,12 @@ const STORAGE_SLOT = 0n;
 
 describe('EnumerableMap', () => {
   describe('AddressToAddressMap', async () => {
-    let instance: __hh_exposed_EnumerableMap;
+    let instance: $EnumerableMap;
     let deployer: SignerWithAddress;
 
     beforeEach(async () => {
       [deployer] = await ethers.getSigners();
-      instance = await new __hh_exposed_EnumerableMap__factory(
-        deployer,
-      ).deploy();
+      instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
@@ -33,14 +31,14 @@ describe('EnumerableMap', () => {
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           const [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
@@ -52,7 +50,7 @@ describe('EnumerableMap', () => {
         describe('reverts if', () => {
           it('index is out of bounds', async () => {
             await expect(
-              instance.__hh_exposed_at_EnumerableMap_AddressToAddressMap.staticCall(
+              instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
                 STORAGE_SLOT,
                 0n,
               ),
@@ -66,14 +64,14 @@ describe('EnumerableMap', () => {
 
       describe('#contains(address)', () => {
         it('returns true if value has been added', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -82,7 +80,7 @@ describe('EnumerableMap', () => {
 
         it('returns false if value has not been added', async () => {
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressFour,
             ),
@@ -93,70 +91,64 @@ describe('EnumerableMap', () => {
       describe('#length()', () => {
         it('returns length of enumerable map', async () => {
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
 
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressTwo,
             addressFive,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressThree,
             addressSix,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
+          await instance['$remove(uint256,address)'](
             STORAGE_SLOT,
             addressThree,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            addressTwo,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, addressTwo);
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            addressOne,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, addressOne);
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
@@ -165,14 +157,14 @@ describe('EnumerableMap', () => {
 
       describe('#get(address)', () => {
         it('returns address stored at key', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           expect(
-            await instance['__hh_exposed_get(uint256,address)'].staticCall(
+            await instance['$get(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -182,7 +174,7 @@ describe('EnumerableMap', () => {
         describe('reverts if', () => {
           it('key does not exist', async () => {
             await expect(
-              instance['__hh_exposed_get(uint256,address)'].staticCall(
+              instance['$get(uint256,address)'].staticCall(
                 STORAGE_SLOT,
                 addressOne,
               ),
@@ -196,20 +188,20 @@ describe('EnumerableMap', () => {
 
       describe('#set(address,address)', () => {
         it('sets the address value at address key', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_get(uint256,address)'].staticCall(
+            await instance['$get(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -217,48 +209,48 @@ describe('EnumerableMap', () => {
         });
 
         it('does not increase length if overwriting value at already set key', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressThree,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressTwo,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
         });
 
         it('overwrites value if key already set', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressThree,
           );
           let [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
           expect(key).to.eq(addressOne);
           expect(value).to.eq(addressThree);
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
           [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
@@ -268,47 +260,48 @@ describe('EnumerableMap', () => {
 
         it('returns true if address value is added at address key', async () => {
           expect(
-            await instance[
-              '__hh_exposed_set(uint256,address,address)'
-            ].staticCall(STORAGE_SLOT, addressOne, addressFour),
+            await instance['$set(uint256,address,address)'].staticCall(
+              STORAGE_SLOT,
+              addressOne,
+              addressFour,
+            ),
           ).to.be.true;
         });
 
         it('returns false if address value is already added at address key', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           expect(
-            await instance[
-              '__hh_exposed_set(uint256,address,address)'
-            ].staticCall(STORAGE_SLOT, addressOne, addressFour),
+            await instance['$set(uint256,address,address)'].staticCall(
+              STORAGE_SLOT,
+              addressOne,
+              addressFour,
+            ),
           ).to.be.false;
         });
       });
 
       describe('#remove(address)', () => {
         it('removes the address value at given address key', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
 
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            addressOne,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, addressOne);
           await expect(
-            instance['__hh_exposed_get(uint256,address)'].staticCall(
+            instance['$get(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -317,20 +310,20 @@ describe('EnumerableMap', () => {
             'EnumerableMap__NonExistentKey',
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(0);
         });
 
         it('returns true if address key removed', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
           expect(
-            await instance['__hh_exposed_remove(uint256,address)'].staticCall(
+            await instance['$remove(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -338,7 +331,7 @@ describe('EnumerableMap', () => {
         });
         it('returns false if address key does not exist', async () => {
           expect(
-            await instance['__hh_exposed_remove(uint256,address)'].staticCall(
+            await instance['$remove(uint256,address)'].staticCall(
               STORAGE_SLOT,
               addressOne,
             ),
@@ -348,24 +341,24 @@ describe('EnumerableMap', () => {
 
       describe('#toArray()', () => {
         it('returns arrays of keys and values in map', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressTwo,
             addressFive,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressThree,
             addressSix,
           );
 
           const [keys, values] =
-            await instance.__hh_exposed_toArray_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$toArray_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 
@@ -376,24 +369,24 @@ describe('EnumerableMap', () => {
 
       describe('#keys()', () => {
         it('returns array of keys in map', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressTwo,
             addressFive,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressThree,
             addressSix,
           );
 
           const keys =
-            await instance.__hh_exposed_keys_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$keys_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 
@@ -403,24 +396,24 @@ describe('EnumerableMap', () => {
 
       describe('#values()', () => {
         it('returns array of values in map', async () => {
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressOne,
             addressFour,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressTwo,
             addressFive,
           );
-          await instance['__hh_exposed_set(uint256,address,address)'](
+          await instance['$set(uint256,address,address)'](
             STORAGE_SLOT,
             addressThree,
             addressSix,
           );
 
           const values =
-            await instance.__hh_exposed_values_EnumerableMap_AddressToAddressMap.staticCall(
+            await instance.$values_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 
@@ -431,14 +424,12 @@ describe('EnumerableMap', () => {
   });
 
   describe('UintToAddressMap', async () => {
-    let instance: __hh_exposed_EnumerableMap;
+    let instance: $EnumerableMap;
     let deployer: SignerWithAddress;
 
     beforeEach(async () => {
       [deployer] = await ethers.getSigners();
-      instance = await new __hh_exposed_EnumerableMap__factory(
-        deployer,
-      ).deploy();
+      instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
@@ -451,14 +442,14 @@ describe('EnumerableMap', () => {
 
       describe('#at(uint256)', () => {
         it('returns value coresponding to index provided', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           const [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
@@ -470,7 +461,7 @@ describe('EnumerableMap', () => {
         describe('reverts if', () => {
           it('index is out of bounds', async () => {
             await expect(
-              instance.__hh_exposed_at_EnumerableMap_UintToAddressMap.staticCall(
+              instance.$at_EnumerableMap_UintToAddressMap.staticCall(
                 STORAGE_SLOT,
                 0n,
               ),
@@ -484,14 +475,14 @@ describe('EnumerableMap', () => {
 
       describe('#contains(uint256)', () => {
         it('returns true if value has been added', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -500,7 +491,7 @@ describe('EnumerableMap', () => {
 
         it('returns false if value has not been added', async () => {
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -511,70 +502,61 @@ describe('EnumerableMap', () => {
       describe('#length()', () => {
         it('returns length of enumerable map', async () => {
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
 
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintTwo,
             addressTwo,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintThree,
             addressThree,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            uintOne,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, uintOne);
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            uintTwo,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, uintTwo);
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            uintThree,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, uintThree);
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
@@ -583,14 +565,14 @@ describe('EnumerableMap', () => {
 
       describe('#get(uint256)', () => {
         it('returns address stored at key', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           expect(
-            await instance['__hh_exposed_get(uint256,uint256)'].staticCall(
+            await instance['$get(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -600,7 +582,7 @@ describe('EnumerableMap', () => {
         describe('reverts if', () => {
           it('key does not exist', async () => {
             await expect(
-              instance['__hh_exposed_get(uint256,uint256)'].staticCall(
+              instance['$get(uint256,uint256)'].staticCall(
                 STORAGE_SLOT,
                 uintOne,
               ),
@@ -614,20 +596,20 @@ describe('EnumerableMap', () => {
 
       describe('#set(uint256,address)', () => {
         it('sets the address value at uint256 key', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_get(uint256,uint256)'].staticCall(
+            await instance['$get(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -635,48 +617,48 @@ describe('EnumerableMap', () => {
         });
 
         it('does not increase length if overwriting value at already set key', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressThree,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressTwo,
           );
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
         });
 
         it('overwrites value if key already set', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressThree,
           );
           let [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
           expect(key).to.eq(uintOne);
           expect(value).to.eq(addressThree);
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressTwo,
           );
           [key, value] =
-            await instance.__hh_exposed_at_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             );
@@ -686,50 +668,48 @@ describe('EnumerableMap', () => {
 
         it('returns true if address value is added at uint256 key', async () => {
           expect(
-            await instance[
-              '__hh_exposed_set(uint256,uint256,address)'
-            ].staticCall(STORAGE_SLOT, uintOne, addressOne),
+            await instance['$set(uint256,uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              uintOne,
+              addressOne,
+            ),
           ).to.be.true;
         });
 
         it('returns false if address value is already added at uint256 key', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           expect(
-            await instance[
-              '__hh_exposed_set(uint256,uint256,address)'
-            ].staticCall(STORAGE_SLOT, uintOne, addressOne),
+            await instance['$set(uint256,uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              uintOne,
+              addressOne,
+            ),
           ).to.be.false;
         });
       });
 
       describe('#remove(uint256)', () => {
         it('removes the address value at given uint256 key', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
 
           expect(
-            await instance.__hh_exposed_length_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$length_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             ),
           ).to.eq(1);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            uintOne,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, uintOne);
           await expect(
-            instance['__hh_exposed_get(uint256,uint256)'].staticCall(
-              STORAGE_SLOT,
-              uintOne,
-            ),
+            instance['$get(uint256,uint256)'].staticCall(STORAGE_SLOT, uintOne),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableMap__NonExistentKey',
@@ -737,13 +717,13 @@ describe('EnumerableMap', () => {
         });
 
         it('returns true if uint256 key removed', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
           expect(
-            await instance['__hh_exposed_remove(uint256,uint256)'].staticCall(
+            await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -751,7 +731,7 @@ describe('EnumerableMap', () => {
         });
         it('returns false if uint256 key does not exist', async () => {
           expect(
-            await instance['__hh_exposed_remove(uint256,uint256)'].staticCall(
+            await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               uintOne,
             ),
@@ -761,24 +741,24 @@ describe('EnumerableMap', () => {
 
       describe('#toArray()', () => {
         it('returns arrays of keys and values in map', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintTwo,
             addressTwo,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintThree,
             addressThree,
           );
 
           const [keys, values] =
-            await instance.__hh_exposed_toArray_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$toArray_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 
@@ -789,24 +769,24 @@ describe('EnumerableMap', () => {
 
       describe('#keys()', () => {
         it('returns array of keys in map', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintTwo,
             addressTwo,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintThree,
             addressThree,
           );
 
           const keys =
-            await instance.__hh_exposed_keys_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$keys_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 
@@ -816,24 +796,24 @@ describe('EnumerableMap', () => {
 
       describe('#values()', () => {
         it('returns array of values in map', async () => {
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintOne,
             addressOne,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintTwo,
             addressTwo,
           );
-          await instance['__hh_exposed_set(uint256,uint256,address)'](
+          await instance['$set(uint256,uint256,address)'](
             STORAGE_SLOT,
             uintThree,
             addressThree,
           );
 
           const values =
-            await instance.__hh_exposed_values_EnumerableMap_UintToAddressMap.staticCall(
+            await instance.$values_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
             );
 

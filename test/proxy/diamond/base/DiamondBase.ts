@@ -2,9 +2,9 @@ import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
-  __hh_exposed_DiamondBase,
-  __hh_exposed_DiamondBase__factory,
-  __hh_exposed_Ownable__factory,
+  $DiamondBase,
+  $DiamondBase__factory,
+  $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -12,20 +12,18 @@ import { ethers } from 'hardhat';
 describe('DiamondBase', () => {
   let deployer: HardhatEthersSigner;
   let receiver;
-  let instance: __hh_exposed_DiamondBase;
+  let instance: $DiamondBase;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    const facetInstance = await new __hh_exposed_Ownable__factory(
-      deployer,
-    ).deploy();
+    const facetInstance = await new $Ownable__factory(deployer).deploy();
 
     // empty mock contract used as second facet
     receiver = await deployMockContract(deployer, []);
 
-    instance = await new __hh_exposed_DiamondBase__factory(deployer).deploy();
+    instance = await new $DiamondBase__factory(deployer).deploy();
 
-    // await instance.__hh_exposed__diamondCut(
+    // await instance.$_diamondCut(
     //   [
     //     {
     //       target: await facetInstance.getAddress(),

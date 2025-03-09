@@ -1,7 +1,7 @@
 import { describeBehaviorOfERC721Metadata } from '@solidstate/spec';
 import {
-  __hh_exposed_ERC721Metadata,
-  __hh_exposed_ERC721Metadata__factory,
+  $ERC721Metadata,
+  $ERC721Metadata__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -9,17 +9,15 @@ describe('ERC721Metadata', () => {
   const name = 'ERC721Metadata.name';
   const symbol = 'ERC721Metadata.symbol';
   const baseURI = 'ERC721Metadata.baseURI';
-  let instance: __hh_exposed_ERC721Metadata;
+  let instance: $ERC721Metadata;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new __hh_exposed_ERC721Metadata__factory(
-      deployer,
-    ).deploy();
+    instance = await new $ERC721Metadata__factory(deployer).deploy();
 
-    await instance.__hh_exposed__setName(name);
-    await instance.__hh_exposed__setSymbol(symbol);
-    await instance.__hh_exposed__setBaseURI(baseURI);
+    await instance.$_setName(name);
+    await instance.$_setSymbol(symbol);
+    await instance.$_setBaseURI(baseURI);
   });
 
   describeBehaviorOfERC721Metadata(async () => instance, {

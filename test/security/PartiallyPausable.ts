@@ -1,24 +1,22 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfPartiallyPausable } from '@solidstate/spec';
 import {
-  __hh_exposed_PartiallyPausable,
-  __hh_exposed_PartiallyPausable__factory,
+  $PartiallyPausable,
+  $PartiallyPausable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('PartiallyPausable', () => {
   let deployer: SignerWithAddress;
-  let instance: __hh_exposed_PartiallyPausable;
+  let instance: $PartiallyPausable;
 
   before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new __hh_exposed_PartiallyPausable__factory(
-      deployer,
-    ).deploy();
+    instance = await new $PartiallyPausable__factory(deployer).deploy();
   });
 
   describeBehaviorOfPartiallyPausable(async () => instance, {});
@@ -82,7 +80,7 @@ describe('PartiallyPausable', () => {
       it('sets paused status to true', async () => {
         const key = ethers.randomBytes(32);
 
-        await instance.__hh_exposed__partiallyPause(key);
+        await instance.$_partiallyPause(key);
 
         expect(await instance.partiallyPaused.staticCall(key)).to.be.true;
       });
@@ -90,9 +88,7 @@ describe('PartiallyPausable', () => {
       it('emits PartiallyPaused event', async () => {
         const key = ethers.randomBytes(32);
 
-        await expect(
-          instance.connect(deployer).__hh_exposed__partiallyPause(key),
-        )
+        await expect(instance.connect(deployer).$_partiallyPause(key))
           .to.emit(instance, 'PartiallyPaused')
           .withArgs(deployer.address, key);
       });
@@ -101,7 +97,7 @@ describe('PartiallyPausable', () => {
         const key = ethers.randomBytes(32);
         const otherKey = ethers.randomBytes(32);
 
-        await instance.__hh_exposed__partiallyPause(key);
+        await instance.$_partiallyPause(key);
 
         expect(await instance.partiallyPaused.staticCall(otherKey)).to.be.false;
       });
@@ -110,10 +106,10 @@ describe('PartiallyPausable', () => {
         it('contract is partially paused already', async () => {
           const key = ethers.randomBytes(32);
 
-          await instance.__hh_exposed__partiallyPause(key);
+          await instance.$_partiallyPause(key);
 
           await expect(
-            instance.__hh_exposed__partiallyPause(key),
+            instance.$_partiallyPause(key),
           ).to.be.revertedWithCustomError(
             instance,
             'PartiallyPausable__PartiallyPaused',
@@ -126,8 +122,8 @@ describe('PartiallyPausable', () => {
       it('sets paused status to false', async () => {
         const key = ethers.randomBytes(32);
 
-        await instance.__hh_exposed__partiallyPause(key);
-        await instance.__hh_exposed__partiallyUnpause(key);
+        await instance.$_partiallyPause(key);
+        await instance.$_partiallyUnpause(key);
 
         expect(await instance.partiallyPaused.staticCall(key)).to.be.false;
       });
@@ -135,11 +131,9 @@ describe('PartiallyPausable', () => {
       it('emits PartiallyUnpaused event', async () => {
         const key = ethers.randomBytes(32);
 
-        await instance.__hh_exposed__partiallyPause(key);
+        await instance.$_partiallyPause(key);
 
-        await expect(
-          instance.connect(deployer).__hh_exposed__partiallyUnpause(key),
-        )
+        await expect(instance.connect(deployer).$_partiallyUnpause(key))
           .to.emit(instance, 'PartiallyUnpaused')
           .withArgs(deployer.address, key);
       });
@@ -148,9 +142,9 @@ describe('PartiallyPausable', () => {
         const key = ethers.randomBytes(32);
         const otherKey = ethers.randomBytes(32);
 
-        await instance.__hh_exposed__partiallyPause(key);
-        await instance.__hh_exposed__partiallyPause(otherKey);
-        await instance.__hh_exposed__partiallyUnpause(key);
+        await instance.$_partiallyPause(key);
+        await instance.$_partiallyPause(otherKey);
+        await instance.$_partiallyUnpause(key);
 
         expect(await instance.partiallyPaused.staticCall(otherKey)).to.be.true;
       });
@@ -160,7 +154,7 @@ describe('PartiallyPausable', () => {
           const key = ethers.randomBytes(32);
 
           await expect(
-            instance.__hh_exposed__partiallyUnpause(key),
+            instance.$_partiallyUnpause(key),
           ).to.be.revertedWithCustomError(
             instance,
             'PartiallyPausable__NotPartiallyPaused',

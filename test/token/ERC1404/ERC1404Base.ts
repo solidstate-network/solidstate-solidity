@@ -1,7 +1,7 @@
 import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
 import {
-  __hh_exposed_ERC1404Base,
-  __hh_exposed_ERC1404Base__factory,
+  $ERC1404Base,
+  $ERC1404Base__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -12,12 +12,12 @@ const restrictions = [
 ];
 
 describe('ERC1404Base', () => {
-  let instance: __hh_exposed_ERC1404Base;
+  let instance: $ERC1404Base;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new __hh_exposed_ERC1404Base__factory(deployer).deploy();
-    await instance.__hh_exposed__setRestrictions(
+    instance = await new $ERC1404Base__factory(deployer).deploy();
+    await instance.$_setRestrictions(
       restrictions.map((e) => e.code),
       restrictions.map((e) => e.message),
     );
@@ -27,9 +27,9 @@ describe('ERC1404Base', () => {
     restrictions,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
-      instance.__hh_exposed__mint(recipient, amount),
+      instance.$_mint(recipient, amount),
     burn: (recipient: string, amount: bigint) =>
-      instance.__hh_exposed__burn(recipient, amount),
+      instance.$_burn(recipient, amount),
   });
 
   describe('__internal', () => {
@@ -38,7 +38,7 @@ describe('ERC1404Base', () => {
         const code = 4n;
         const message = 'err';
 
-        await instance.__hh_exposed__setRestrictions([code], [message]);
+        await instance.$_setRestrictions([code], [message]);
 
         expect(
           await instance.messageForTransferRestriction.staticCall(code),
@@ -48,7 +48,7 @@ describe('ERC1404Base', () => {
       describe('reverts if', () => {
         it('array lengts do not match', async () => {
           await expect(
-            instance.__hh_exposed__setRestrictions([0n], []),
+            instance.$_setRestrictions([0n], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1404Base__ArrayLengthMismatch',

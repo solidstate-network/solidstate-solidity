@@ -1,21 +1,21 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  __hh_exposed_Initializable,
-  __hh_exposed_Initializable__factory,
+  $Initializable,
+  $Initializable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('Initializable', () => {
   let deployer: SignerWithAddress;
-  let instance: __hh_exposed_Initializable;
+  let instance: $Initializable;
 
   before(async () => {
     [deployer] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new __hh_exposed_Initializable__factory(deployer).deploy();
+    instance = await new $Initializable__factory(deployer).deploy();
   });
 
   // TODO: test modifiers
@@ -92,38 +92,38 @@ describe('Initializable', () => {
   describe('__internal', () => {
     describe('#_getInitializedVersion()', () => {
       it('returns initialized version', async () => {
-        expect(
-          await instance.__hh_exposed__getInitializedVersion.staticCall(),
-        ).to.equal(0n);
+        expect(await instance.$_getInitializedVersion.staticCall()).to.equal(
+          0n,
+        );
 
-        await instance.__hh_exposed__setInitializedVersion(1n);
+        await instance.$_setInitializedVersion(1n);
 
-        expect(
-          await instance.__hh_exposed__getInitializedVersion.staticCall(),
-        ).to.equal(1n);
+        expect(await instance.$_getInitializedVersion.staticCall()).to.equal(
+          1n,
+        );
       });
     });
 
     describe('#_setInitializedVersion(uint8)', () => {
       it('sets monotonically increasing initialize version', async () => {
-        await instance.__hh_exposed__setInitializedVersion(1n);
-        await instance.__hh_exposed__setInitializedVersion(2n);
-        await instance.__hh_exposed__setInitializedVersion(100n);
+        await instance.$_setInitializedVersion(1n);
+        await instance.$_setInitializedVersion(2n);
+        await instance.$_setInitializedVersion(100n);
       });
 
       describe('reverts if', () => {
         it('version is less than or equal to previously initialized version', async () => {
-          await instance.__hh_exposed__setInitializedVersion(2n);
+          await instance.$_setInitializedVersion(2n);
 
           await expect(
-            instance.__hh_exposed__setInitializedVersion(1n),
+            instance.$_setInitializedVersion(1n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',
           );
 
           await expect(
-            instance.__hh_exposed__setInitializedVersion(2n),
+            instance.$_setInitializedVersion(2n),
           ).to.be.revertedWithCustomError(
             instance,
             'Initializable__AlreadyInitialized',

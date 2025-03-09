@@ -1,7 +1,7 @@
 import { describeBehaviorOfSolidStateERC1404 } from '@solidstate/spec';
 import {
-  __hh_exposed_SolidStateERC1404,
-  __hh_exposed_SolidStateERC1404__factory,
+  $SolidStateERC1404,
+  $SolidStateERC1404__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -11,22 +11,20 @@ let restrictions = [
 ];
 
 describe('SolidStateERC1404', () => {
-  let instance: __hh_exposed_SolidStateERC1404;
+  let instance: $SolidStateERC1404;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new __hh_exposed_SolidStateERC1404__factory(
-      deployer,
-    ).deploy();
-    await instance.__hh_exposed__setRestrictions(
+    instance = await new $SolidStateERC1404__factory(deployer).deploy();
+    await instance.$_setRestrictions(
       restrictions.map((r) => r.code),
       restrictions.map((r) => r.message),
     );
   });
 
   describeBehaviorOfSolidStateERC1404(async () => instance, {
-    mint: (recipient, amount) => instance.__hh_exposed__mint(recipient, amount),
-    burn: (recipient, amount) => instance.__hh_exposed__burn(recipient, amount),
+    mint: (recipient, amount) => instance.$_mint(recipient, amount),
+    burn: (recipient, amount) => instance.$_burn(recipient, amount),
     allowance: (holder, spender) =>
       instance.allowance.staticCall(holder, spender),
     restrictions,
