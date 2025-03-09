@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC2612 } from '../../../interfaces/IERC2612.sol';
+import { IERC5267 } from '../../../interfaces/IERC5267.sol';
 import { _ERC20Permit } from './_ERC20Permit.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
 import { IERC20Permit } from './IERC20Permit.sol';
@@ -43,5 +44,24 @@ abstract contract ERC20Permit is IERC20Permit, _ERC20Permit {
         bytes32 s
     ) external {
         _permit(owner, spender, amount, deadline, v, r, s);
+    }
+
+    /**
+     * @inheritdoc IERC5267
+     */
+    function eip712Domain()
+        external
+        view
+        returns (
+            bytes1 fields,
+            string memory name,
+            string memory version,
+            uint256 chainId,
+            address verifyingContract,
+            bytes32 salt,
+            uint256[] memory extensions
+        )
+    {
+        return _eip712Domain();
     }
 }
