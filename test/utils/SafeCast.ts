@@ -21,8 +21,6 @@ describe('SafeCast', () => {
         expect(await instance.__hh_exposed_toUint224.staticCall(input)).to.eq(
           input,
         );
-        //  (uint224) {
-        // if (value > type(uint224).max) revert SafeCast__ValueDoesNotFit();
       });
     });
 
