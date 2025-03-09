@@ -1,8 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { IERC20Permit, IERC5267 } from '@solidstate/typechain-types';
+import { Signature } from 'ethers';
 import { ethers } from 'hardhat';
 
-const getDomain = async (instance: IERC5267) => {
+interface Domain {
+  fields?: string;
+  name?: string;
+  version?: string;
+  chainId?: bigint;
+  verifyingContract?: string;
+  salt?: string;
+  extensions?: bigint[];
+}
+
+const getDomain = async (instance: IERC5267): Promise<Domain> => {
   const {
     fields,
     name,
@@ -43,7 +54,7 @@ const buildBasicDomain = (
   chainId: bigint,
   verifyingContract: string,
   salt: string,
-) => {
+): Domain => {
   const domain = { name, version, chainId, verifyingContract, salt };
 
   for (const [i, fieldName] of fieldNames.entries()) {
@@ -61,7 +72,7 @@ const signERC2612Permit = async (
   spender: SignerWithAddress,
   amount: bigint,
   deadline: bigint = ethers.MaxUint256,
-) => {
+): Promise<Signature> => {
   const domain = await getDomain(instance);
 
   const types = {
