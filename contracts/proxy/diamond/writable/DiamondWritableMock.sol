@@ -8,7 +8,7 @@ import { ERC165Base, ERC165BaseStorage } from '../../../introspection/ERC165/bas
 import { DiamondBase } from '../base/DiamondBase.sol';
 import { DiamondWritable } from './DiamondWritable.sol';
 
-contract DiamondWritableMock is DiamondBase, DiamondWritable, ERC165Base {
+contract DiamondWritableMock is DiamondBase, DiamondWritable {
     constructor() {
         _setOwner(msg.sender);
         _setSupportsInterface(type(IERC165).interfaceId, true);

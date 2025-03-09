@@ -9,12 +9,7 @@ import { DiamondBase } from '../base/DiamondBase.sol';
 import { _DiamondWritable } from '../writable/_DiamondWritable.sol';
 import { DiamondReadable } from './DiamondReadable.sol';
 
-contract DiamondReadableMock is
-    DiamondBase,
-    DiamondReadable,
-    _DiamondWritable,
-    ERC165Base
-{
+contract DiamondReadableMock is DiamondBase, DiamondReadable, _DiamondWritable {
     constructor(FacetCut[] memory cuts) {
         _diamondCut(cuts, address(0), '');
         _setSupportsInterface(type(IERC165).interfaceId, true);

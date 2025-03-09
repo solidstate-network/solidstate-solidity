@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 
 import { _SafeOwnable } from '../../access/ownable/_SafeOwnable.sol';
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
-import { _ERC165Base } from '../../introspection/ERC165/base/_ERC165Base.sol';
 import { _DiamondBase } from './base/_DiamondBase.sol';
 import { _DiamondFallback } from './fallback/_DiamondFallback.sol';
 import { _DiamondReadable } from './readable/_DiamondReadable.sol';
@@ -17,8 +16,7 @@ abstract contract _SolidStateDiamond is
     _DiamondFallback,
     _DiamondReadable,
     _DiamondWritable,
-    _SafeOwnable,
-    _ERC165Base
+    _SafeOwnable
 {
     function _transferOwnership(
         address account
