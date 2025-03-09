@@ -1411,8 +1411,6 @@
 
 "@solidstate/library@file:lib":
   version "0.0.61"
-  dependencies:
-    eth-permit "^0.1.10"
 
 "@solidstate/library@link:lib":
   version "0.0.0"
@@ -2937,13 +2935,6 @@ esutils@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
-
-eth-permit@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/eth-permit/-/eth-permit-0.1.10.tgz#73f6176dd0dc9b66c87eb381cb1509e3dfe4b273"
-  integrity sha512-cMAjWvGEaCQoWSlKWBqkBMQvhCtXzVlkTCnYBxGRsCxznbBZSiYuOsHpTAb4EerRwQJkRgwd3vPvcZh3OA7Siw==
-  dependencies:
-    utf8 "^3.0.0"
 
 ethereum-bloom-filters@^1.0.6:
   version "1.2.0"
@@ -6875,7 +6866,7 @@ upath@2.0.1:
   resolved "https://registry.yarnpkg.com/upath/-/upath-2.0.1.tgz#50c73dea68d6f6b990f51d279ce6081665d61a8b"
   integrity sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==
 
-utf8@3.0.0, utf8@^3.0.0:
+utf8@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
   integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
