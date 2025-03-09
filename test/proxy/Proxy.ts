@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
-  Ownable,
-  OwnableMock__factory,
+  __hh_exposed_Ownable,
+  __hh_exposed_Ownable__factory,
   __hh_exposed_Proxy,
   __hh_exposed_Proxy__factory,
 } from '@solidstate/typechain-types';
@@ -10,15 +10,13 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('Proxy', () => {
-  let implementation: Ownable;
+  let implementation: __hh_exposed_Ownable;
   let instance: __hh_exposed_Proxy;
   let deployer: SignerWithAddress;
 
   before(async () => {
     [deployer] = await ethers.getSigners();
-    implementation = await new OwnableMock__factory(deployer).deploy(
-      deployer.address,
-    );
+    implementation = await new __hh_exposed_Ownable__factory(deployer).deploy();
   });
 
   beforeEach(async () => {

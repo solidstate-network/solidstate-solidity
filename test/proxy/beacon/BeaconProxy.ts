@@ -3,7 +3,7 @@ import { describeBehaviorOfBeaconProxy } from '@solidstate/spec';
 import {
   __hh_exposed_BeaconProxy,
   __hh_exposed_BeaconProxy__factory,
-  OwnableMock__factory,
+  __hh_exposed_Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -16,9 +16,7 @@ describe('BeaconProxy', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    implementation = await new OwnableMock__factory(deployer).deploy(
-      ethers.ZeroAddress,
-    );
+    implementation = await new __hh_exposed_Ownable__factory(deployer).deploy();
 
     beacon = await deployMockContract((await ethers.getSigners())[0], [
       'function getImplementation () external view returns (address)',

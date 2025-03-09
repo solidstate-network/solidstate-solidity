@@ -1,7 +1,7 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
-  OwnableMock__factory,
+  __hh_exposed_Ownable__factory,
   __hh_exposed_UpgradeableProxy,
   __hh_exposed_UpgradeableProxy__factory,
 } from '@solidstate/typechain-types';
@@ -20,9 +20,9 @@ describe('UpgradeableProxy', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    const implementationInstance = await new OwnableMock__factory(
+    const implementationInstance = await new __hh_exposed_Ownable__factory(
       deployer,
-    ).deploy(ethers.ZeroAddress);
+    ).deploy();
 
     instance = await new __hh_exposed_UpgradeableProxy__factory(
       deployer,

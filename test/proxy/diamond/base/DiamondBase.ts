@@ -4,7 +4,7 @@ import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
   __hh_exposed_DiamondBase,
   __hh_exposed_DiamondBase__factory,
-  OwnableMock__factory,
+  __hh_exposed_Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -16,9 +16,9 @@ describe('DiamondBase', () => {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    const facetInstance = await new OwnableMock__factory(deployer).deploy(
-      deployer.address,
-    );
+    const facetInstance = await new __hh_exposed_Ownable__factory(
+      deployer,
+    ).deploy();
 
     // empty mock contract used as second facet
     receiver = await deployMockContract(deployer, []);

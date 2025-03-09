@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 import { deployMockContract } from '@solidstate/library';
 import {
-  OwnableMock__factory,
+  __hh_exposed_Ownable__factory,
   AddressUtils__factory,
   __hh_exposed_AddressUtils,
   __hh_exposed_AddressUtils__factory,
@@ -307,15 +307,20 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
-          const targetContract = await new OwnableMock__factory(
+          const targetContract = await new __hh_exposed_Ownable__factory(
             deployer,
-          ).deploy(await instance.getAddress());
+          ).deploy();
 
-          // the sendValue function is used as a transaction target because it is itself nonpayable
+          await targetContract.__hh_exposed__setOwner(
+            await instance.getAddress(),
+          );
 
-          const { data } = (await targetContract.__setOwner.populateTransaction(
-            ethers.ZeroAddress,
-          )) as { data: BytesLike };
+          // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
+
+          const { data } = (await targetContract.__hh_exposed_bytecode_marker
+            .populateTransaction
+            // ethers.ZeroAddress,
+            ()) as { data: BytesLike };
 
           await expect(
             instance
@@ -447,15 +452,20 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
-          const targetContract = await new OwnableMock__factory(
+          const targetContract = await new __hh_exposed_Ownable__factory(
             deployer,
-          ).deploy(await instance.getAddress());
+          ).deploy();
 
-          // the sendValue function is used as a transaction target because it is itself nonpayable
+          await targetContract.__hh_exposed__setOwner(
+            await instance.getAddress(),
+          );
 
-          const { data } = (await targetContract.__setOwner.populateTransaction(
-            ethers.ZeroAddress,
-          )) as { data: BytesLike };
+          // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
+
+          const { data } =
+            (await targetContract.__hh_exposed_bytecode_marker.populateTransaction()) as {
+              data: BytesLike;
+            };
 
           await expect(
             instance
