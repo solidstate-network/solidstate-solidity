@@ -9,6 +9,16 @@ import { _IERC5267 } from './_IERC5267.sol';
  * @dev see https://eips.ethereum.org/EIPS/eip-5267.
  */
 interface IERC5267 is _IERC5267 {
+    /**
+     * @notice TODO
+     * @return fields
+     * @return name
+     * @return version
+     * @return chainId
+     * @return verifyingContract
+     * @return salt
+     * @return extensions
+     */
     function eip712Domain()
         external
         view
