@@ -35,7 +35,7 @@ library SafeERC20 {
         );
     }
 
-    function forceApprove(
+    function safeApprove(
         IERC20 token,
         address spender,
         uint256 value

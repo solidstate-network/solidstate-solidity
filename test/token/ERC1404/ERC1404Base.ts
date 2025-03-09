@@ -1,21 +1,23 @@
 import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
 import {
-  ERC1404BaseMock,
-  ERC1404BaseMock__factory,
+  __hh_exposed_ERC1404Base,
+  __hh_exposed_ERC1404Base__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-let restrictions = [
-  { code: 1, message: 'one' },
-  { code: 3, message: 'three' },
+const restrictions = [
+  { code: 1n, message: 'one' },
+  { code: 3n, message: 'three' },
 ];
 
 describe('ERC1404Base', () => {
-  let instance: ERC1404BaseMock;
+  let instance: __hh_exposed_ERC1404Base;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1404BaseMock__factory(deployer).deploy(
+    instance = await new __hh_exposed_ERC1404Base__factory(deployer).deploy();
+    await instance.__hh_exposed__setRestrictions(
       restrictions.map((e) => e.code),
       restrictions.map((e) => e.message),
     );
@@ -25,18 +27,34 @@ describe('ERC1404Base', () => {
     restrictions,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
-      instance.__mint(recipient, amount),
+      instance.__hh_exposed__mint(recipient, amount),
     burn: (recipient: string, amount: bigint) =>
-      instance.__burn(recipient, amount),
+      instance.__hh_exposed__burn(recipient, amount),
   });
 
   describe('__internal', () => {
-    describe('#_detectTransferRestriction(address,address,uint256)', () => {
-      it('todo');
-    });
+    describe('#_setRestrictions', () => {
+      it('sets messages for restriction codes', async () => {
+        const code = 4n;
+        const message = 'err';
 
-    describe('#_messageForTransferRestriction(uint8)', () => {
-      it('todo');
+        await instance.__hh_exposed__setRestrictions([code], [message]);
+
+        expect(
+          await instance.messageForTransferRestriction.staticCall(code),
+        ).to.eq(message);
+      });
+
+      describe('reverts if', () => {
+        it('array lengts do not match', async () => {
+          await expect(
+            instance.__hh_exposed__setRestrictions([0n], []),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'ERC1404Base__ArrayLengthMismatch',
+          );
+        });
+      });
     });
   });
 });

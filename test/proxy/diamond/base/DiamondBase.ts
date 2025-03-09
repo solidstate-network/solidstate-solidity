@@ -2,8 +2,8 @@ import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBase } from '@solidstate/spec';
 import {
-  DiamondBaseMock,
-  DiamondBaseMock__factory,
+  __hh_exposed_DiamondBase,
+  __hh_exposed_DiamondBase__factory,
   OwnableMock__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -12,7 +12,7 @@ import { ethers } from 'hardhat';
 describe('DiamondBase', () => {
   let deployer: HardhatEthersSigner;
   let receiver;
-  let instance: DiamondBaseMock;
+  let instance: __hh_exposed_DiamondBase;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
@@ -23,23 +23,29 @@ describe('DiamondBase', () => {
     // empty mock contract used as second facet
     receiver = await deployMockContract(deployer, []);
 
-    instance = await new DiamondBaseMock__factory(deployer).deploy([
-      {
-        target: await facetInstance.getAddress(),
-        action: 0,
-        selectors: [facetInstance.interface.getFunction('owner').selector],
-      },
-      {
-        target: await receiver.getAddress(),
-        action: 0,
-        selectors: ['0x00000000'],
-      },
-    ]);
+    instance = await new __hh_exposed_DiamondBase__factory(deployer).deploy();
+
+    // await instance.__hh_exposed__diamondCut(
+    //   [
+    //     {
+    //       target: await facetInstance.getAddress(),
+    //       action: 0,
+    //       selectors: [facetInstance.interface.getFunction('owner').selector],
+    //     },
+    //     {
+    //       target: await receiver.getAddress(),
+    //       action: 0,
+    //       selectors: ['0x00000000'],
+    //     },
+    //   ],
+    //   ethers.ZeroAddress,
+    //   '0x',
+    // );
   });
 
   describeBehaviorOfDiamondBase(async () => instance, {
-    facetFunction: 'owner()',
-    facetFunctionArgs: [],
+    implementationFunction: 'owner()',
+    implementationFunctionArgs: [],
   });
 
   describe('fallback()', () => {

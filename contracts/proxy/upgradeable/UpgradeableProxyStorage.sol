@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.20;
 
+// TODO: this storage library is now referenced by Proxy, so should be renamed
 library UpgradeableProxyStorage {
     struct Layout {
         address implementation;

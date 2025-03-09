@@ -4,11 +4,12 @@ pragma solidity ^0.8.20;
 
 import { AddressUtils } from '../utils/AddressUtils.sol';
 import { IProxy } from './IProxy.sol';
+import { _Proxy } from './_Proxy.sol';
 
 /**
  * @title Base proxy contract
  */
-abstract contract Proxy is IProxy {
+abstract contract Proxy is IProxy, _Proxy {
     using AddressUtils for address;
 
     /**
@@ -43,10 +44,4 @@ abstract contract Proxy is IProxy {
             }
         }
     }
-
-    /**
-     * @notice get logic implementation address
-     * @return implementation address
-     */
-    function _getImplementation() internal virtual returns (address);
 }

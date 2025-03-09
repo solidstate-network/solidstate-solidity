@@ -3,32 +3,26 @@
 pragma solidity ^0.8.20;
 
 import { Proxy } from '../../Proxy.sol';
+import { _Proxy } from '../../_Proxy.sol';
 import { IDiamondBase } from './IDiamondBase.sol';
-import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
+import { _DiamondBase } from './_DiamondBase.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy base contract
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  * @dev note that for EIP-2535 compliance this base contract must also include the DiamondReadable functions (either within the same deployment or by proxy)
  */
-abstract contract DiamondBase is IDiamondBase, Proxy {
+abstract contract DiamondBase is IDiamondBase, _DiamondBase, Proxy {
     /**
-     * @inheritdoc Proxy
+     * @inheritdoc _DiamondBase
      */
     function _getImplementation()
         internal
         view
         virtual
-        override
+        override(_Proxy, _DiamondBase)
         returns (address implementation)
     {
-        // inline storage layout retrieval uses less gas
-        DiamondBaseStorage.Layout storage l;
-        bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
-        assembly {
-            l.slot := slot
-        }
-
-        implementation = address(bytes20(l.selectorInfo[msg.sig]));
+        implementation = super._getImplementation();
     }
 }

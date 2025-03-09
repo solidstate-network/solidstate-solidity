@@ -2,20 +2,22 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 import { deployMockContract } from '@solidstate/library';
 import {
-  AddressUtilsMock,
-  AddressUtilsMock__factory,
+  OwnableMock__factory,
+  AddressUtils__factory,
+  __hh_exposed_AddressUtils,
+  __hh_exposed_AddressUtils__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('AddressUtils', async () => {
-  let instance: AddressUtilsMock;
+  let instance: __hh_exposed_AddressUtils;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new AddressUtilsMock__factory(deployer).deploy();
+    instance = await new __hh_exposed_AddressUtils__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -23,10 +25,7 @@ describe('AddressUtils', async () => {
       it('returns a string from an address', async () => {
         expect(
           ethers.getAddress(
-            // must cast to any type because of a collision in the `toString` function name
-            await (instance as any)['toString(address)'].staticCall(
-              deployer.address,
-            ),
+            await instance.__hh_exposed_toString.staticCall(deployer.address),
           ),
         ).to.eq(deployer.address);
       });
@@ -34,12 +33,14 @@ describe('AddressUtils', async () => {
 
     describe('#isContract(address)', () => {
       it('returns true when an address is a contract', async () => {
-        expect(await instance.isContract(await instance.getAddress())).to.be
-          .true;
+        expect(
+          await instance.__hh_exposed_isContract(await instance.getAddress()),
+        ).to.be.true;
       });
 
       it('returns false when an address is not a contract', async () => {
-        expect(await instance.isContract(deployer.address)).to.be.false;
+        expect(await instance.__hh_exposed_isContract(deployer.address)).to.be
+          .false;
       });
     });
 
@@ -52,7 +53,9 @@ describe('AddressUtils', async () => {
         const target = deployer;
 
         await expect(() =>
-          instance.connect(deployer).sendValue(target.address, value),
+          instance
+            .connect(deployer)
+            .__hh_exposed_sendValue(target.address, value),
         ).to.changeEtherBalances([instance, target], [-value, value]);
       });
 
@@ -62,10 +65,14 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
+          const mock = await deployMockContract(deployer, []);
+
+          await mock.mock.receive.reverts();
+
           await expect(
             instance
               .connect(deployer)
-              .sendValue(await instance.getAddress(), value),
+              .__hh_exposed_sendValue(mock.address, value),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__SendValueFailed',
@@ -90,14 +97,19 @@ describe('AddressUtils', async () => {
         expect(
           await instance
             .connect(deployer)
-            ['functionCall(address,bytes)'].staticCall(target, data),
+            [
+              '__hh_exposed_functionCall(address,bytes)'
+            ].staticCall(target, data),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
+            instance['__hh_exposed_functionCall(address,bytes)'](
+              ethers.ZeroAddress,
+              '0x',
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -121,17 +133,21 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes)'](target, data),
+              ['__hh_exposed_functionCall(address,bytes)'](target, data),
           ).to.be.revertedWith(revertReason);
         });
 
         it('target contract reverts, with default error message', async () => {
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCall(address,bytes)'
-              ](await instance.getAddress(), '0x'),
+                '__hh_exposed_functionCall(address,bytes)'
+              ](await targetContract.getAddress(), '0x'),
           ).to.be.revertedWith('AddressUtils: failed low-level call');
         });
       });
@@ -155,7 +171,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             [
-              'functionCall(address,bytes,string)'
+              '__hh_exposed_functionCall(address,bytes,string)'
             ].staticCall(target, data, revertReason),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
@@ -163,7 +179,7 @@ describe('AddressUtils', async () => {
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCall(address,bytes,string)'](
+            instance['__hh_exposed_functionCall(address,bytes,string)'](
               ethers.ZeroAddress,
               '0x',
               '',
@@ -191,19 +207,25 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCall(address,bytes,string)'](target, data, ''),
+              [
+                '__hh_exposed_functionCall(address,bytes,string)'
+              ](target, data, ''),
           ).to.be.revertedWith(revertReason);
         });
 
         it('target contract reverts, with provided error message', async () => {
           const revertReason = 'REVERT_REASON';
 
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCall(address,bytes,string)'
-              ](await instance.getAddress(), '0x', revertReason),
+                '__hh_exposed_functionCall(address,bytes,string)'
+              ](await targetContract.getAddress(), '0x', revertReason),
           ).to.be.revertedWith(revertReason);
         });
       });
@@ -226,7 +248,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             [
-              'functionCallWithValue(address,bytes,uint256)'
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
             ].staticCall(target, data, 0),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
@@ -250,7 +272,7 @@ describe('AddressUtils', async () => {
           instance
             .connect(deployer)
             [
-              'functionCallWithValue(address,bytes,uint256)'
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
             ](target, data, value),
         ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
@@ -258,11 +280,9 @@ describe('AddressUtils', async () => {
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCallWithValue(address,bytes,uint256)'](
-              ethers.ZeroAddress,
-              '0x',
-              0,
-            ),
+            instance[
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
+            ](ethers.ZeroAddress, '0x', 0),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -274,7 +294,7 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256)'
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
               ](await instance.getAddress(), '0x', 1),
           ).to.be.revertedWithCustomError(
             instance,
@@ -287,25 +307,22 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
-          const targetContract = await new AddressUtilsMock__factory(
+          const targetContract = await new OwnableMock__factory(
             deployer,
-          ).deploy();
-
-          const target = await targetContract.getAddress();
+          ).deploy(await instance.getAddress());
 
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
-          const { data } = (await targetContract.sendValue.populateTransaction(
+          const { data } = (await targetContract.__setOwner.populateTransaction(
             ethers.ZeroAddress,
-            0,
           )) as { data: BytesLike };
 
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256)'
-              ](target, data, value),
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
+              ](await targetContract.getAddress(), data, value),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
           );
@@ -328,17 +345,23 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['functionCallWithValue(address,bytes,uint256)'](target, data, 0),
+              [
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
+              ](target, data, 0),
           ).to.be.revertedWith(revertReason);
         });
 
         it('target contract reverts, with default error message', async () => {
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256)'
-              ](await instance.getAddress(), '0x', 0),
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256)'
+              ](await targetContract.getAddress(), '0x', 0),
           ).to.be.revertedWith(
             'AddressUtils: failed low-level call with value',
           );
@@ -363,7 +386,7 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             [
-              'functionCallWithValue(address,bytes,uint256,string)'
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
             ].staticCall(target, data, 0, ''),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
@@ -388,7 +411,7 @@ describe('AddressUtils', async () => {
           instance
             .connect(deployer)
             [
-              'functionCallWithValue(address,bytes,uint256,string)'
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
             ](target, data, value, ''),
         ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
@@ -396,12 +419,9 @@ describe('AddressUtils', async () => {
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['functionCallWithValue(address,bytes,uint256,string)'](
-              ethers.ZeroAddress,
-              '0x',
-              0,
-              '',
-            ),
+            instance[
+              '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
+            ](ethers.ZeroAddress, '0x', 0, ''),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__NotContract',
@@ -413,7 +433,7 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256,string)'
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
               ](await instance.getAddress(), '0x', 1, ''),
           ).to.be.revertedWithCustomError(
             instance,
@@ -427,25 +447,22 @@ describe('AddressUtils', async () => {
 
           await setBalance(await instance.getAddress(), value);
 
-          const targetContract = await new AddressUtilsMock__factory(
+          const targetContract = await new OwnableMock__factory(
             deployer,
-          ).deploy();
-
-          const target = await targetContract.getAddress();
+          ).deploy(await instance.getAddress());
 
           // the sendValue function is used as a transaction target because it is itself nonpayable
 
-          const { data } = (await targetContract.sendValue.populateTransaction(
+          const { data } = (await targetContract.__setOwner.populateTransaction(
             ethers.ZeroAddress,
-            0,
           )) as { data: BytesLike };
 
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256,string)'
-              ](target, data, value, revertReason),
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
+              ](await targetContract.getAddress(), data, value, revertReason),
           ).to.be.revertedWith(revertReason);
         });
 
@@ -467,7 +484,7 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256,string)'
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
               ](target, data, 0, ''),
           ).to.be.revertedWith(revertReason);
         });
@@ -475,12 +492,16 @@ describe('AddressUtils', async () => {
         it('target contract reverts, with provided error message', async () => {
           const revertReason = 'REVERT_REASON';
 
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
           await expect(
             instance
               .connect(deployer)
               [
-                'functionCallWithValue(address,bytes,uint256,string)'
-              ](await instance.getAddress(), '0x', 0, revertReason),
+                '__hh_exposed_functionCallWithValue(address,bytes,uint256,string)'
+              ](await targetContract.getAddress(), '0x', 0, revertReason),
           ).to.be.revertedWith(revertReason);
         });
       });

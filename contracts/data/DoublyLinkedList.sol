@@ -4,23 +4,24 @@ pragma solidity ^0.8.20;
 
 /**
  * @title Doubly linked list implementation with enumeration functions
+ * @dev implementation does not support insertion of zero values into the list
  */
 library DoublyLinkedList {
-    struct DoublyLinkedListInternal {
+    struct _DoublyLinkedList {
         mapping(bytes32 => bytes32) _nextValues;
         mapping(bytes32 => bytes32) _prevValues;
     }
 
     struct Bytes32List {
-        DoublyLinkedListInternal _inner;
+        _DoublyLinkedList _inner;
     }
 
     struct AddressList {
-        DoublyLinkedListInternal _inner;
+        _DoublyLinkedList _inner;
     }
 
     struct Uint256List {
-        DoublyLinkedListInternal _inner;
+        _DoublyLinkedList _inner;
     }
 
     /**
@@ -290,7 +291,7 @@ library DoublyLinkedList {
     }
 
     function _contains(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 value
     ) private view returns (bool) {
         return
@@ -299,7 +300,7 @@ library DoublyLinkedList {
     }
 
     function _prev(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 nextValue
     ) private view returns (bytes32 prevValue) {
         prevValue = self._prevValues[nextValue];
@@ -311,7 +312,7 @@ library DoublyLinkedList {
     }
 
     function _next(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 prevValue
     ) private view returns (bytes32 nextValue) {
         nextValue = self._nextValues[prevValue];
@@ -323,7 +324,7 @@ library DoublyLinkedList {
     }
 
     function _insertBefore(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 nextValue,
         bytes32 newValue
     ) private returns (bool status) {
@@ -336,7 +337,7 @@ library DoublyLinkedList {
     }
 
     function _insertAfter(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 prevValue,
         bytes32 newValue
     ) private returns (bool status) {
@@ -349,7 +350,7 @@ library DoublyLinkedList {
     }
 
     function _insertBetween(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 prevValue,
         bytes32 nextValue,
         bytes32 newValue
@@ -364,35 +365,35 @@ library DoublyLinkedList {
     }
 
     function _push(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 value
     ) private returns (bool status) {
         status = _insertBetween(self, _prev(self, 0), 0, value);
     }
 
     function _pop(
-        DoublyLinkedListInternal storage self
+        _DoublyLinkedList storage self
     ) private returns (bytes32 value) {
         value = _prev(self, 0);
         _remove(self, value);
     }
 
     function _shift(
-        DoublyLinkedListInternal storage self
+        _DoublyLinkedList storage self
     ) private returns (bytes32 value) {
         value = _next(self, 0);
         _remove(self, value);
     }
 
     function _unshift(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 value
     ) private returns (bool status) {
         status = _insertBetween(self, 0, _next(self, 0), value);
     }
 
     function _remove(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 value
     ) private returns (bool status) {
         if (_contains(self, value)) {
@@ -404,7 +405,7 @@ library DoublyLinkedList {
     }
 
     function _replace(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 oldValue,
         bytes32 newValue
     ) private returns (bool status) {
@@ -425,7 +426,7 @@ library DoublyLinkedList {
     }
 
     function _link(
-        DoublyLinkedListInternal storage self,
+        _DoublyLinkedList storage self,
         bytes32 prevValue,
         bytes32 nextValue
     ) private {

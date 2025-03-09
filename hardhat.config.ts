@@ -4,6 +4,7 @@ import '@solidstate/hardhat-4byte-uploader';
 import '@typechain/hardhat';
 import 'hardhat-abi-exporter';
 import 'hardhat-contract-sizer';
+import 'hardhat-exposed';
 import 'hardhat-gas-reporter';
 import 'hardhat-linearization';
 import 'hardhat-spdx-license-identifier';
@@ -11,7 +12,7 @@ import 'solidity-coverage';
 
 export default {
   solidity: {
-    version: '0.8.25',
+    version: '0.8.28',
     settings: {
       optimizer: {
         enabled: true,
@@ -24,7 +25,13 @@ export default {
     runOnCompile: true,
     clear: true,
     flat: true,
-    except: ['.*Mock$'],
+    except: ['.*Test$', '.*Mock$', '__hh_exposed_.*'],
+  },
+
+  exposed: {
+    // the default $ prefix appears to conflict with typechain
+    prefix: '__hh_exposed_',
+    outDir: './contracts/exposed',
   },
 
   gasReporter: {

@@ -40,6 +40,21 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotTransitiveOwner",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -50,7 +65,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -61,7 +76,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -82,6 +97,25 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -91,7 +125,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum IERC2535DiamondCutInternal.FacetCutAction",
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
             "name": "action",
             "type": "uint8"
           },
@@ -101,7 +135,7 @@
             "type": "bytes4[]"
           }
         ],
-        "internalType": "struct IERC2535DiamondCutInternal.FacetCut[]",
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
         "name": "facetCuts",
         "type": "tuple[]"
       },
@@ -119,6 +153,25 @@
     "name": "diamondCut",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

@@ -3,17 +3,17 @@
 pragma solidity ^0.8.20;
 
 import { ERC20Base } from '../base/ERC20Base.sol';
-import { ERC20BaseInternal } from '../base/ERC20BaseInternal.sol';
+import { _ERC20Base } from '../base/_ERC20Base.sol';
 import { IERC20ImplicitApproval } from './IERC20ImplicitApproval.sol';
-import { ERC20ImplicitApprovalInternal } from './ERC20ImplicitApprovalInternal.sol';
+import { _ERC20ImplicitApproval } from './_ERC20ImplicitApproval.sol';
 
 /**
  * @title ERC20 token with approval whitelist
  */
 abstract contract ERC20ImplicitApproval is
     IERC20ImplicitApproval,
-    ERC20Base,
-    ERC20ImplicitApprovalInternal
+    _ERC20ImplicitApproval,
+    ERC20Base
 {
     function _allowance(
         address holder,
@@ -22,7 +22,7 @@ abstract contract ERC20ImplicitApproval is
         internal
         view
         virtual
-        override(ERC20BaseInternal, ERC20ImplicitApprovalInternal)
+        override(_ERC20Base, _ERC20ImplicitApproval)
         returns (uint256)
     {
         return super._allowance(holder, spender);
@@ -35,7 +35,7 @@ abstract contract ERC20ImplicitApproval is
     )
         internal
         virtual
-        override(ERC20BaseInternal, ERC20ImplicitApprovalInternal)
+        override(_ERC20Base, _ERC20ImplicitApproval)
         returns (bool)
     {
         return super._transferFrom(holder, recipient, amount);

@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-interface IERC3156FlashBorrower {
+import { _IERC3156FlashBorrower } from './_IERC3156FlashBorrower.sol';
+
+interface IERC3156FlashBorrower is _IERC3156FlashBorrower {
     /**
      * @notice Receive a flash loan.
      * @param initiator The initiator of the loan.

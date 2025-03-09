@@ -2,33 +2,25 @@
 
 pragma solidity ^0.8.20;
 
+import { Ownable } from '../../access/ownable/Ownable.sol';
 import { Proxy } from '../Proxy.sol';
 import { IUpgradeableProxy } from './IUpgradeableProxy.sol';
-import { UpgradeableProxyStorage } from './UpgradeableProxyStorage.sol';
+import { _UpgradeableProxy } from './_UpgradeableProxy.sol';
 
 /**
- * @title Proxy with upgradeable implementation
+ * @title Proxy with upgradeable implementation controlled by ERC171 owner
  */
-abstract contract UpgradeableProxy is IUpgradeableProxy, Proxy {
-    /**
-     * @inheritdoc Proxy
-     */
-    function _getImplementation() internal view override returns (address) {
-        // inline storage layout retrieval uses less gas
-        UpgradeableProxyStorage.Layout storage l;
-        bytes32 slot = UpgradeableProxyStorage.STORAGE_SLOT;
-        assembly {
-            l.slot := slot
-        }
-
-        return l.implementation;
-    }
-
+abstract contract UpgradeableProxy is
+    IUpgradeableProxy,
+    _UpgradeableProxy,
+    Proxy,
+    Ownable
+{
     /**
      * @notice set logic implementation address
      * @param implementation implementation address
      */
-    function _setImplementation(address implementation) internal {
-        UpgradeableProxyStorage.layout().implementation = implementation;
+    function setImplementation(address implementation) external {
+        _setImplementationExternal(implementation);
     }
 }

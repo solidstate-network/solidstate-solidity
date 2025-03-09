@@ -2,11 +2,10 @@ import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import { describeFilter } from '@solidstate/library';
 import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
-  restrictions: any;
+  restrictions: { code: bigint; message: string }[];
 }
 
 export function describeBehaviorOfERC1404Base(
@@ -24,8 +23,6 @@ export function describeBehaviorOfERC1404Base(
     });
 
     describeBehaviorOfERC20Base(deploy, args, skips);
-
-    // TODO: transfers blocked if restriction exists
 
     describe('#detectTransferRestriction(address,address,uint256)', () => {
       it('returns zero if no restriction exists', async () => {
@@ -55,6 +52,12 @@ export function describeBehaviorOfERC1404Base(
           ).to.equal(restriction.message);
         });
       }
+    });
+
+    describe('#transfer(address,uint256)', () => {
+      describe('reverts if', () => {
+        it('transfer is restricted');
+      });
     });
   });
 }
