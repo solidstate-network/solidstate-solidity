@@ -31,7 +31,7 @@ export default {
   exposed: {
     // the default $ prefix appears to conflict with typechain
     prefix: '__hh_exposed_',
-    outDir: './contracts/exposed',
+    outDir: './contracts/test/exposed',
   },
 
   gasReporter: {
