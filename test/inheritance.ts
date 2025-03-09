@@ -5,7 +5,7 @@ import path from 'path';
 
 const surya = require('surya');
 
-const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Storage|Mock|Test)$/;
+const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Storage|Test)$/;
 const INTERNAL_CONTRACT = /\b_(([I][a-z])|([A-HJ-Z]))\w*$/;
 const EXTERNAL_INTERFACE = /\bI[A-Z]\w*$/;
 const INTERNAL_INTERFACE = /\b_I[A-Z]\w*$/;
@@ -411,7 +411,6 @@ describe('Inheritance Graph', () => {
             INTERNAL_CONTRACT.test(name) ||
             EXTERNAL_CONTRACT.test(name) ||
             name.endsWith('Storage') ||
-            name.endsWith('Mock') ||
             name.endsWith('Test'),
         ).to.equal(true, `Uncategorized entity: ${name}`);
       }

@@ -25,7 +25,7 @@ export default {
     runOnCompile: true,
     clear: true,
     flat: true,
-    except: ['.*Test$', '.*Mock$', '__hh_exposed_.*'],
+    except: ['.*Test$', '__hh_exposed_.*'],
   },
 
   exposed: {
