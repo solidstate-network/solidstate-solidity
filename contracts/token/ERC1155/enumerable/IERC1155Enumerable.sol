@@ -2,12 +2,13 @@
 
 pragma solidity ^0.8.20;
 
+import { IERC1155Base } from '../base/IERC1155Base.sol';
 import { _IERC1155Enumerable } from './_IERC1155Enumerable.sol';
 
 /**
  * @title ERC1155 enumerable and aggregate function interface
  */
-interface IERC1155Enumerable is _IERC1155Enumerable {
+interface IERC1155Enumerable is _IERC1155Enumerable, IERC1155Base {
     /**
      * @notice query total minted supply of given token
      * @param id token id to query
