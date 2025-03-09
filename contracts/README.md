@@ -16,6 +16,8 @@ yarn add --dev @solidstate/contracts
 
 ## Code Structure
 
+All contracts are designed to either be deployed through the standard `constructor` method, or referenced by a proxy. To this end, the [diamond storage](https://medium.com/1milliondevs/new-storage-layout-for-proxy-contracts-and-diamonds-98d01d0eadb) pattern is employed exclusively.
+
 ### Layers Pattern
 
 Each of the Solidstate contracts is split into multiple "layers" across multiple files: external contracts, internal contracts, external interfaces, internal interfaces, and storage libraries.
