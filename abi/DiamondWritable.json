@@ -41,6 +41,11 @@
   },
   {
     "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Ownable__NotOwner",
     "type": "error"
   },
@@ -148,6 +153,25 @@
     "name": "diamondCut",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

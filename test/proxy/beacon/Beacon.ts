@@ -1,13 +1,13 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfBeacon } from '@solidstate/spec';
-import { BeaconMock, BeaconMock__factory } from '@solidstate/typechain-types';
+import { $Beacon, $Beacon__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('Beacon', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: BeaconMock;
+  let instance: $Beacon;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -16,9 +16,9 @@ describe('Beacon', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    instance = await new BeaconMock__factory(deployer).deploy(
-      await owner.getAddress(),
-    );
+    instance = await new $Beacon__factory(deployer).deploy();
+
+    await instance.$_setOwner(await owner.getAddress());
   });
 
   describeBehaviorOfBeacon(async () => instance, {

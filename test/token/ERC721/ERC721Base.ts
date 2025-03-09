@@ -1,10 +1,7 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfERC721Base } from '@solidstate/spec';
-import {
-  ERC721BaseMock,
-  ERC721BaseMock__factory,
-} from '@solidstate/typechain-types';
+import { $ERC721Base, $ERC721Base__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -13,7 +10,7 @@ describe('ERC721Base', () => {
   let receiver: SignerWithAddress;
   let holder: SignerWithAddress;
   let spender: SignerWithAddress;
-  let instance: ERC721BaseMock;
+  let instance: $ERC721Base;
 
   before(async () => {
     [sender, receiver, holder, spender] = await ethers.getSigners();
@@ -21,13 +18,16 @@ describe('ERC721Base', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC721BaseMock__factory(deployer).deploy();
+    instance = await new $ERC721Base__factory(deployer).deploy();
+
+    await instance.$_setSupportsInterface('0x01ffc9a7', true);
+    await instance.$_setSupportsInterface('0x80ac58cd', true);
   });
 
   describeBehaviorOfERC721Base(async () => instance, {
     supply: 0n,
-    mint: (recipient, tokenId) => instance.mint(recipient, tokenId),
-    burn: (tokenId) => instance.burn(tokenId),
+    mint: (recipient, tokenId) => instance.$_mint(recipient, tokenId),
+    burn: (tokenId) => instance.$_burn(tokenId),
   });
 
   describe('__internal', () => {
@@ -50,41 +50,53 @@ describe('ERC721Base', () => {
     describe('#_isApprovedOrOwner(address,uint256)', () => {
       it('returns true if given spender is approved for given token', async () => {
         const tokenId = 2;
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
 
         await instance.connect(holder).approve(spender.address, tokenId);
 
         expect(
-          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
+          await instance.$_isApprovedOrOwner.staticCall(
+            spender.address,
+            tokenId,
+          ),
         ).to.be.true;
       });
 
       it('returns true if given spender is approved for all tokens held by owner', async () => {
         const tokenId = 2;
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
 
         await instance.connect(holder).setApprovalForAll(spender.address, true);
 
         expect(
-          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
+          await instance.$_isApprovedOrOwner.staticCall(
+            spender.address,
+            tokenId,
+          ),
         ).to.be.true;
       });
 
       it('returns true if given spender is owner of given token', async () => {
         const tokenId = 2;
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
 
         expect(
-          await instance.isApprovedOrOwner.staticCall(holder.address, tokenId),
+          await instance.$_isApprovedOrOwner.staticCall(
+            holder.address,
+            tokenId,
+          ),
         ).to.be.true;
       });
 
       it('returns false if given spender is neither owner of given token nor approved to spend it', async () => {
         const tokenId = 2;
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
 
         expect(
-          await instance.isApprovedOrOwner.staticCall(spender.address, tokenId),
+          await instance.$_isApprovedOrOwner.staticCall(
+            spender.address,
+            tokenId,
+          ),
         ).to.be.false;
       });
 
@@ -93,7 +105,10 @@ describe('ERC721Base', () => {
           const tokenId = 2;
 
           await expect(
-            instance.isApprovedOrOwner.staticCall(ethers.ZeroAddress, tokenId),
+            instance.$_isApprovedOrOwner.staticCall(
+              ethers.ZeroAddress,
+              tokenId,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NonExistentToken',
@@ -107,7 +122,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
@@ -117,14 +132,14 @@ describe('ERC721Base', () => {
         const tokenId = 2;
 
         await expect(() =>
-          instance.mint(receiver.address, tokenId),
+          instance.$_mint(receiver.address, tokenId),
         ).to.changeTokenBalance(instance, receiver, 1);
       });
 
       it('emits Transfer event', async () => {
         const tokenId = 2;
 
-        await expect(instance.mint(receiver.address, tokenId))
+        await expect(instance.$_mint(receiver.address, tokenId))
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
       });
@@ -132,7 +147,7 @@ describe('ERC721Base', () => {
       describe('reverts if', () => {
         it('given account is zero address', async () => {
           await expect(
-            instance.mint(ethers.ZeroAddress, 0),
+            instance.$_mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -141,10 +156,10 @@ describe('ERC721Base', () => {
 
         it('given token already exists', async () => {
           const tokenId = 2;
-          await instance.mint(await instance.getAddress(), tokenId);
+          await instance.$_mint(await instance.getAddress(), tokenId);
 
           await expect(
-            instance.mint(await instance.getAddress(), tokenId),
+            instance.$_mint(await instance.getAddress(), tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TokenAlreadyMinted',
@@ -158,7 +173,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
-        await instance['safeMint(address,uint256)'](holder.address, tokenId);
+        await instance['$_safeMint(address,uint256)'](holder.address, tokenId);
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
@@ -168,7 +183,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
 
         await expect(() =>
-          instance['safeMint(address,uint256)'](receiver.address, tokenId),
+          instance['$_safeMint(address,uint256)'](receiver.address, tokenId),
         ).to.changeTokenBalance(instance, receiver, 1);
       });
 
@@ -176,7 +191,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
 
         await expect(
-          instance['safeMint(address,uint256)'](receiver.address, tokenId),
+          instance['$_safeMint(address,uint256)'](receiver.address, tokenId),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(ethers.ZeroAddress, receiver.address, tokenId);
@@ -190,14 +205,14 @@ describe('ERC721Base', () => {
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
         await expect(
-          instance['safeMint(address,uint256)'](receiverContract.address, 2),
+          instance['$_safeMint(address,uint256)'](receiverContract.address, 2),
         ).not.to.be.reverted;
       });
 
       describe('reverts if', () => {
         it('given account is zero address', async () => {
           await expect(
-            instance['safeMint(address,uint256)'](ethers.ZeroAddress, 0),
+            instance['$_safeMint(address,uint256)'](ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__MintToZeroAddress',
@@ -206,10 +221,10 @@ describe('ERC721Base', () => {
 
         it('given token already exists', async () => {
           const tokenId = 2;
-          await instance.mint(await instance.getAddress(), tokenId);
+          await instance.$_mint(await instance.getAddress(), tokenId);
 
           await expect(
-            instance['safeMint(address,uint256)'](
+            instance['$_safeMint(address,uint256)'](
               await instance.getAddress(),
               tokenId,
             ),
@@ -223,7 +238,7 @@ describe('ERC721Base', () => {
           // TODO: test against contract other than self
 
           await expect(
-            instance['safeMint(address,uint256)'](
+            instance['$_safeMint(address,uint256)'](
               await instance.getAddress(),
               2,
             ),
@@ -242,7 +257,10 @@ describe('ERC721Base', () => {
           );
 
           await expect(
-            instance['safeMint(address,uint256)'](receiverContract.address, 2),
+            instance['$_safeMint(address,uint256)'](
+              receiverContract.address,
+              2,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__ERC721ReceiverNotImplemented',
@@ -256,7 +274,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
 
-        await instance['safeMint(address,uint256,bytes)'](
+        await instance['$_safeMint(address,uint256,bytes)'](
           holder.address,
           tokenId,
           '0x',
@@ -270,7 +288,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
 
         await expect(() =>
-          instance['safeMint(address,uint256,bytes)'](
+          instance['$_safeMint(address,uint256,bytes)'](
             receiver.address,
             tokenId,
             '0x',
@@ -282,7 +300,7 @@ describe('ERC721Base', () => {
         const tokenId = 2;
 
         await expect(
-          instance['safeMint(address,uint256,bytes)'](
+          instance['$_safeMint(address,uint256,bytes)'](
             receiver.address,
             tokenId,
             '0x',
@@ -300,7 +318,7 @@ describe('ERC721Base', () => {
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
         await expect(
-          instance['safeMint(address,uint256,bytes)'](
+          instance['$_safeMint(address,uint256,bytes)'](
             receiverContract.address,
             2,
             '0x',
@@ -311,7 +329,7 @@ describe('ERC721Base', () => {
       describe('reverts if', () => {
         it('given account is zero address', async () => {
           await expect(
-            instance['safeMint(address,uint256,bytes)'](
+            instance['$_safeMint(address,uint256,bytes)'](
               ethers.ZeroAddress,
               0,
               '0x',
@@ -324,10 +342,10 @@ describe('ERC721Base', () => {
 
         it('given token already exists', async () => {
           const tokenId = 2;
-          await instance.mint(await instance.getAddress(), tokenId);
+          await instance.$_mint(await instance.getAddress(), tokenId);
 
           await expect(
-            instance['safeMint(address,uint256,bytes)'](
+            instance['$_safeMint(address,uint256,bytes)'](
               await instance.getAddress(),
               tokenId,
               '0x',
@@ -342,7 +360,7 @@ describe('ERC721Base', () => {
           // TODO: test against contract other than self
 
           await expect(
-            instance['safeMint(address,uint256,bytes)'](
+            instance['$_safeMint(address,uint256,bytes)'](
               await instance.getAddress(),
               2,
               '0x',
@@ -362,7 +380,7 @@ describe('ERC721Base', () => {
           );
 
           await expect(
-            instance['safeMint(address,uint256,bytes)'](
+            instance['$_safeMint(address,uint256,bytes)'](
               receiverContract.address,
               2,
               '0x',
@@ -379,19 +397,19 @@ describe('ERC721Base', () => {
       it('destroys given token', async () => {
         const tokenId = 2;
 
-        await instance.mint(holder.address, tokenId);
+        await instance.$_mint(holder.address, tokenId);
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           holder.address,
         );
 
-        await instance.burn(tokenId);
+        await instance.$_burn(tokenId);
         await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
       });
 
       it('decreases balance of owner by one', async () => {
         const tokenId = 2;
-        await instance.mint(receiver.address, tokenId),
-          await expect(() => instance.burn(tokenId)).to.changeTokenBalance(
+        await instance.$_mint(receiver.address, tokenId),
+          await expect(() => instance.$_burn(tokenId)).to.changeTokenBalance(
             instance,
             receiver,
             -1,
@@ -400,9 +418,9 @@ describe('ERC721Base', () => {
 
       it('emits Transfer event', async () => {
         const tokenId = 2;
-        await instance.mint(receiver.address, tokenId);
+        await instance.$_mint(receiver.address, tokenId);
 
-        await expect(instance.burn(tokenId))
+        await expect(instance.$_burn(tokenId))
           .to.emit(instance, 'Transfer')
           .withArgs(receiver.address, ethers.ZeroAddress, tokenId);
       });
@@ -411,22 +429,22 @@ describe('ERC721Base', () => {
     describe('#_transfer(address,address,uint256)', () => {
       it('decreases balance of sender and increases balance of recipient by one', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
         await expect(() =>
-          instance.transfer(sender.address, receiver.address, tokenId),
+          instance.$_transfer(sender.address, receiver.address, tokenId),
         ).to.changeTokenBalances(instance, [sender, receiver], [-1, 1]);
       });
 
       it('updates owner of token', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           sender.address,
         );
 
-        await instance.transfer(sender.address, receiver.address, tokenId);
+        await instance.$_transfer(sender.address, receiver.address, tokenId);
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
@@ -435,12 +453,12 @@ describe('ERC721Base', () => {
 
       it('emits Transfer event', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
         await expect(
           instance
             .connect(sender)
-            .transfer(sender.address, receiver.address, tokenId),
+            .$_transfer(sender.address, receiver.address, tokenId),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(sender.address, receiver.address, tokenId);
@@ -449,12 +467,12 @@ describe('ERC721Base', () => {
       describe('reverts if', () => {
         it('sender is not token owner', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           await expect(
             instance
               .connect(sender)
-              .transfer(ethers.ZeroAddress, sender.address, tokenId),
+              .$_transfer(ethers.ZeroAddress, sender.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotTokenOwner',
@@ -463,12 +481,12 @@ describe('ERC721Base', () => {
 
         it('receiver is the zero address', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           await expect(
             instance
               .connect(sender)
-              .transfer(sender.address, ethers.ZeroAddress, tokenId),
+              .$_transfer(sender.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -480,10 +498,10 @@ describe('ERC721Base', () => {
     describe('#_safeTransfer(address,address,uint256,bytes)', () => {
       it('decreases balance of sender and increases balance of recipient by one', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
         await expect(() =>
-          instance.safeTransfer(
+          instance.$_safeTransfer(
             sender.address,
             receiver.address,
             tokenId,
@@ -494,9 +512,9 @@ describe('ERC721Base', () => {
 
       it('updates owner of token', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
-        await instance.safeTransfer(
+        await instance.$_safeTransfer(
           sender.address,
           receiver.address,
           tokenId,
@@ -510,12 +528,12 @@ describe('ERC721Base', () => {
 
       it('emits Transfer event', async () => {
         const tokenId = 2;
-        await instance.mint(sender.address, tokenId);
+        await instance.$_mint(sender.address, tokenId);
 
         await expect(
           instance
             .connect(sender)
-            .safeTransfer(sender.address, receiver.address, tokenId, '0x'),
+            .$_safeTransfer(sender.address, receiver.address, tokenId, '0x'),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(sender.address, receiver.address, tokenId);
@@ -524,12 +542,17 @@ describe('ERC721Base', () => {
       describe('reverts if', () => {
         it('sender is not token owner', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           await expect(
             instance
               .connect(sender)
-              .safeTransfer(ethers.ZeroAddress, sender.address, tokenId, '0x'),
+              .$_safeTransfer(
+                ethers.ZeroAddress,
+                sender.address,
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__NotTokenOwner',
@@ -538,12 +561,17 @@ describe('ERC721Base', () => {
 
         it('receiver is the zero address', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           await expect(
             instance
               .connect(sender)
-              .safeTransfer(sender.address, ethers.ZeroAddress, tokenId, '0x'),
+              .$_safeTransfer(
+                sender.address,
+                ethers.ZeroAddress,
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC721Base__TransferToZeroAddress',
@@ -552,12 +580,12 @@ describe('ERC721Base', () => {
 
         it('recipient is not ERC721Receiver implementer', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           // TODO: test against contract other than self
 
           await expect(
-            instance.safeTransfer(
+            instance.$_safeTransfer(
               sender.address,
               await instance.getAddress(),
               tokenId,
@@ -570,7 +598,7 @@ describe('ERC721Base', () => {
 
         it('recipient is ERC721Receiver implementer but does not accept transfer', async () => {
           const tokenId = 2;
-          await instance.mint(sender.address, tokenId);
+          await instance.$_mint(sender.address, tokenId);
 
           const receiverContract = await deployMockContract(sender, [
             'function onERC721Received (address, address, uint256, bytes) returns (bytes4)',
@@ -581,7 +609,7 @@ describe('ERC721Base', () => {
           );
 
           await expect(
-            instance.safeTransfer(
+            instance.$_safeTransfer(
               sender.address,
               receiverContract.address,
               tokenId,
@@ -598,7 +626,7 @@ describe('ERC721Base', () => {
     describe('#_checkOnERC721Received(address,address,uint256,bytes)', () => {
       it('returns true if recipient is not a contract', async () => {
         expect(
-          await instance.checkOnERC721Received.staticCall(
+          await instance.$_checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiver.address,
             0,
@@ -615,7 +643,7 @@ describe('ERC721Base', () => {
         await receiverContract.mock.onERC721Received.returns('0x150b7a02');
 
         expect(
-          await instance.checkOnERC721Received.staticCall(
+          await instance.$_checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiverContract.address,
             0,
@@ -634,7 +662,7 @@ describe('ERC721Base', () => {
         );
 
         expect(
-          await instance.checkOnERC721Received.staticCall(
+          await instance.$_checkOnERC721Received.staticCall(
             ethers.ZeroAddress,
             receiverContract.address,
             0,
@@ -648,7 +676,7 @@ describe('ERC721Base', () => {
           // TODO: test against contract other than self
 
           await expect(
-            instance.checkOnERC721Received.staticCall(
+            instance.$_checkOnERC721Received.staticCall(
               ethers.ZeroAddress,
               await instance.getAddress(),
               0,

@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1155Base } from '@solidstate/spec';
 import {
-  ERC1155BaseMock,
-  ERC1155BaseMock__factory,
+  $ERC1155Base,
+  $ERC1155Base__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -10,7 +10,7 @@ import { ethers } from 'hardhat';
 describe('ERC1155Base', () => {
   let holder: SignerWithAddress;
   let recipient: SignerWithAddress;
-  let instance: ERC1155BaseMock;
+  let instance: $ERC1155Base;
   let invalidReceiver: string;
 
   before(async () => {
@@ -19,15 +19,18 @@ describe('ERC1155Base', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ERC1155BaseMock__factory(deployer).deploy();
+    instance = await new $ERC1155Base__factory(deployer).deploy();
     invalidReceiver = await instance.getAddress();
+
+    await instance.$_setSupportsInterface('0x01ffc9a7', true);
+    await instance.$_setSupportsInterface('0xd9b67a26', true);
   });
 
   describeBehaviorOfERC1155Base(async () => instance, {
     mint: (recipient, tokenId, amount) =>
-      instance.__mint(recipient, tokenId, amount),
+      instance.$_mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>
-      instance.__burn(recipient, tokenId, amount),
+      instance.$_burn(recipient, tokenId, amount),
   });
 
   describe('__internal', () => {
@@ -45,7 +48,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -59,7 +62,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__mint(holder.address, id, amount))
+        await expect(instance.$_mint(holder.address, id, amount, '0x'))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -73,7 +76,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__mint(ethers.ZeroAddress, 0, 0),
+            instance.$_mint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -92,7 +95,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeMint(holder.address, id, amount);
+        await instance.$_safeMint(holder.address, id, amount, '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -106,7 +109,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__safeMint(holder.address, id, amount))
+        await expect(instance.$_safeMint(holder.address, id, amount, '0x'))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -120,7 +123,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__safeMint(ethers.ZeroAddress, 0, 0),
+            instance.$_safeMint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -129,7 +132,7 @@ describe('ERC1155Base', () => {
 
         it('mint is made to invalid receiver', async () => {
           await expect(
-            instance.__safeMint(invalidReceiver, 0, 0),
+            instance.$_safeMint(invalidReceiver, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverNotImplemented',
@@ -148,7 +151,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -162,7 +165,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__mintBatch(holder.address, [id], [amount]))
+        await expect(instance.$_mintBatch(holder.address, [id], [amount], '0x'))
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -176,7 +179,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__mintBatch(ethers.ZeroAddress, [], []),
+            instance.$_mintBatch(ethers.ZeroAddress, [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -185,7 +188,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__mintBatch(holder.address, [0], []),
+            instance.$_mintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -204,7 +207,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeMintBatch(holder.address, [id], [amount]);
+        await instance.$_safeMintBatch(holder.address, [id], [amount], '0x');
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -218,7 +221,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await expect(instance.__safeMintBatch(holder.address, [id], [amount]))
+        await expect(
+          instance.$_safeMintBatch(holder.address, [id], [amount], '0x'),
+        )
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -232,7 +237,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('mint is made to the zero address', async () => {
           await expect(
-            instance.__safeMintBatch(ethers.ZeroAddress, [], []),
+            instance.$_safeMintBatch(ethers.ZeroAddress, [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__MintToZeroAddress',
@@ -241,7 +246,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__safeMintBatch(holder.address, [0], []),
+            instance.$_safeMintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -250,7 +255,7 @@ describe('ERC1155Base', () => {
 
         it('mint is made to invalid receiver', async () => {
           await expect(
-            instance.__safeMintBatch(await instance.getAddress(), [], []),
+            instance.$_safeMintBatch(await instance.getAddress(), [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ERC1155ReceiverNotImplemented',
@@ -264,14 +269,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        await instance.__burn(holder.address, id, amount);
+        await instance.$_burn(holder.address, id, amount);
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -285,9 +290,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
-        await expect(instance.__burn(holder.address, id, amount))
+        await expect(instance.$_burn(holder.address, id, amount))
           .to.emit(instance, 'TransferSingle')
           .withArgs(
             holder.address,
@@ -301,7 +306,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('burn is made from the zero address', async () => {
           await expect(
-            instance.__burn(ethers.ZeroAddress, 0, 0),
+            instance.$_burn(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -310,7 +315,7 @@ describe('ERC1155Base', () => {
 
         it('burn amount exceeds balance', async () => {
           await expect(
-            instance.__burn(holder.address, 0, 1),
+            instance.$_burn(holder.address, 0, 1),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnExceedsBalance',
@@ -324,14 +329,14 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialBalance = await instance.balanceOf.staticCall(
           holder.address,
           id,
         );
 
-        await instance.__burnBatch(holder.address, [id], [amount]);
+        await instance.$_burnBatch(holder.address, [id], [amount]);
 
         let finalBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -345,9 +350,9 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
-        await expect(instance.__burnBatch(holder.address, [id], [amount]))
+        await expect(instance.$_burnBatch(holder.address, [id], [amount]))
           .to.emit(instance, 'TransferBatch')
           .withArgs(
             holder.address,
@@ -361,7 +366,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('burn is made from the zero address', async () => {
           await expect(
-            instance.__burnBatch(ethers.ZeroAddress, [], []),
+            instance.$_burnBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnFromZeroAddress',
@@ -370,7 +375,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__burnBatch(holder.address, [0], []),
+            instance.$_burnBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__ArrayLengthMismatch',
@@ -379,7 +384,7 @@ describe('ERC1155Base', () => {
 
         it('burn amount exceeds balance', async () => {
           await expect(
-            instance.__burnBatch(holder.address, [0], [1]),
+            instance.$_burnBatch(holder.address, [0], [1]),
           ).to.be.revertedWithCustomError(
             instance,
             'ERC1155Base__BurnExceedsBalance',
@@ -393,7 +398,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -405,7 +410,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__transfer(
+        await instance.$_transfer(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -434,10 +439,10 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
         await expect(
-          instance.__transfer(
+          instance.$_transfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -459,7 +464,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__transfer(
+            instance.$_transfer(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -475,7 +480,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__transfer(
+            instance.$_transfer(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -496,7 +501,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -508,7 +513,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeTransfer(
+        await instance.$_safeTransfer(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -537,10 +542,10 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
         await expect(
-          instance.__safeTransfer(
+          instance.$_safeTransfer(
             holder.address,
             holder.address,
             recipient.address,
@@ -562,7 +567,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.$_safeTransfer(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -578,7 +583,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.$_safeTransfer(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -594,7 +599,7 @@ describe('ERC1155Base', () => {
 
         it('transfer is made to invalid receiver', async () => {
           await expect(
-            instance.__safeTransfer(
+            instance.$_safeTransfer(
               await instance.getAddress(),
               holder.address,
               invalidReceiver,
@@ -615,7 +620,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -627,7 +632,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__transferBatch(
+        await instance.$_transferBatch(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -656,10 +661,10 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
         await expect(
-          instance.__transferBatch(
+          instance.$_transferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -681,7 +686,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.$_transferBatch(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -697,7 +702,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.$_transferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -713,7 +718,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__transferBatch(
+            instance.$_transferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -734,7 +739,7 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mint(holder.address, id, amount);
+        await instance.$_mint(holder.address, id, amount, '0x');
 
         let initialSenderBalance = await instance.balanceOf.staticCall(
           holder.address,
@@ -746,7 +751,7 @@ describe('ERC1155Base', () => {
           id,
         );
 
-        await instance.__safeTransferBatch(
+        await instance.$_safeTransferBatch(
           await instance.getAddress(),
           holder.address,
           recipient.address,
@@ -775,10 +780,10 @@ describe('ERC1155Base', () => {
         let id = 0;
         let amount = 2;
 
-        await instance.__mintBatch(holder.address, [id], [amount]);
+        await instance.$_mintBatch(holder.address, [id], [amount], '0x');
 
         await expect(
-          instance.__safeTransferBatch(
+          instance.$_safeTransferBatch(
             holder.address,
             holder.address,
             recipient.address,
@@ -800,7 +805,7 @@ describe('ERC1155Base', () => {
       describe('reverts if', () => {
         it('transfer is made to the zero address', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.$_safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               ethers.ZeroAddress,
@@ -816,7 +821,7 @@ describe('ERC1155Base', () => {
 
         it('input array lengths do not match', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.$_safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -832,7 +837,7 @@ describe('ERC1155Base', () => {
 
         it('transfer amount exceeds balance', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.$_safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               recipient.address,
@@ -848,7 +853,7 @@ describe('ERC1155Base', () => {
 
         it('transfer is made to invalid receiver', async () => {
           await expect(
-            instance.__safeTransferBatch(
+            instance.$_safeTransferBatch(
               await instance.getAddress(),
               holder.address,
               invalidReceiver,

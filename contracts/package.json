@@ -20,7 +20,7 @@
   "repository": "github:solidstate-network/solidstate-solidity",
   "files": [
     "/**/*.sol",
-    "!/**/*Mock.sol"
+    "!/test/"
   ],
   "publishConfig": {
     "access": "public"

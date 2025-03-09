@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
 import {
-  ERC1271OwnableMock,
-  ERC1271OwnableMock__factory,
+  $ERC1271Ownable,
+  $ERC1271Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -10,16 +10,15 @@ import { ethers } from 'hardhat';
 describe('ERC1271Ownable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: ERC1271OwnableMock;
+  let instance: $ERC1271Ownable;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new ERC1271OwnableMock__factory(owner).deploy(
-      owner.address,
-    );
+    instance = await new $ERC1271Ownable__factory(owner).deploy();
+    await instance.$_setOwner(await owner.getAddress());
   });
 
   describeBehaviorOfERC1271Ownable(async () => instance as any, {
@@ -34,7 +33,7 @@ describe('ERC1271Ownable', () => {
         const signature = await owner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.__isValidSignature.staticCall(hash, signature),
+          await instance.$_isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
       });
 
@@ -43,7 +42,7 @@ describe('ERC1271Ownable', () => {
         const signature = await nonOwner.signMessage(ethers.getBytes(hash));
 
         expect(
-          await instance.__isValidSignature.staticCall(hash, signature),
+          await instance.$_isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

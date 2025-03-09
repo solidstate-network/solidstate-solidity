@@ -21,7 +21,7 @@ abstract contract SolidStateERC1155 is
     ERC1155Metadata
 {
     /**
-     * @inheritdoc _ERC1155Base
+     * @inheritdoc ERC1155Enumerable
      */
     function _beforeTokenTransfer(
         address operator,
@@ -33,7 +33,7 @@ abstract contract SolidStateERC1155 is
     )
         internal
         virtual
-        override(_SolidStateERC1155, _ERC1155Base, _ERC1155Enumerable)
+        override(_SolidStateERC1155, _ERC1155Base, ERC1155Enumerable)
     {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }

@@ -4,10 +4,11 @@ pragma solidity ^0.8.20;
 
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
+import { _ERC721Base } from '../base/_ERC721Base.sol';
 import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
 import { _IERC721Enumerable } from './_IERC721Enumerable.sol';
 
-abstract contract _ERC721Enumerable is _IERC721Enumerable {
+abstract contract _ERC721Enumerable is _IERC721Enumerable, _ERC721Base {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 

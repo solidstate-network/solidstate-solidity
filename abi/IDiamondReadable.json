@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes4",
@@ -70,6 +75,25 @@
         "internalType": "struct _IERC2535DiamondLoupe.Facet[]",
         "name": "diamondFacets",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

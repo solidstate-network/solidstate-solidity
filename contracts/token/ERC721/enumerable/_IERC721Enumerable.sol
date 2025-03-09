@@ -2,4 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-interface _IERC721Enumerable {}
+import { _IERC721Base } from '../base/_IERC721Base.sol';
+
+interface _IERC721Enumerable is _IERC721Base {}

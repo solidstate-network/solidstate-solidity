@@ -1,15 +1,15 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondWritable } from '@solidstate/spec';
 import {
-  DiamondWritableMock,
-  DiamondWritableMock__factory,
+  $DiamondWritable,
+  $DiamondWritable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('DiamondWritable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: DiamondWritableMock;
+  let instance: $DiamondWritable;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -17,7 +17,12 @@ describe('DiamondWritable', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new DiamondWritableMock__factory(deployer).deploy();
+    instance = await new $DiamondWritable__factory(deployer).deploy();
+
+    await instance.$_setOwner(await deployer.getAddress());
+
+    await instance.$_setSupportsInterface('0x01ffc9a7', true);
+    await instance.$_setSupportsInterface('0x1f931c1c', true);
   });
 
   describeBehaviorOfDiamondWritable(async () => instance, {

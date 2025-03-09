@@ -2,13 +2,14 @@
 
 pragma solidity ^0.8.20;
 
+import { IERC165 } from './IERC165.sol';
 import { _IERC2535DiamondLoupe } from './_IERC2535DiamondLoupe.sol';
 
 /**
  * @title ERC2535 read interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IERC2535DiamondLoupe is _IERC2535DiamondLoupe {
+interface IERC2535DiamondLoupe is _IERC2535DiamondLoupe, IERC165 {
     /**
      * @notice get all facets and their selectors
      * @return diamondFacets array of structured facet data

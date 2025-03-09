@@ -3,7 +3,6 @@
 pragma solidity ^0.8.20;
 
 import { _ISafeOwnable } from '../../access/ownable/_ISafeOwnable.sol';
-import { _IERC165Base } from '../../introspection/ERC165/base/_IERC165Base.sol';
 import { _IDiamondBase } from './base/_IDiamondBase.sol';
 import { _IDiamondFallback } from './fallback/_IDiamondFallback.sol';
 import { _IDiamondReadable } from './readable/_IDiamondReadable.sol';
@@ -14,6 +13,5 @@ interface _ISolidStateDiamond is
     _IDiamondFallback,
     _IDiamondReadable,
     _IDiamondWritable,
-    _ISafeOwnable,
-    _IERC165Base
+    _ISafeOwnable
 {}

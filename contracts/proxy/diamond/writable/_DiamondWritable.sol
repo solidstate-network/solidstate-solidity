@@ -3,11 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { _IDiamondWritable } from './_IDiamondWritable.sol';
 
-abstract contract _DiamondWritable is _IDiamondWritable, _Ownable {
+abstract contract _DiamondWritable is _IDiamondWritable, _Ownable, _ERC165Base {
     using AddressUtils for address;
 
     bytes32 private constant CLEAR_ADDRESS_MASK =
