@@ -10,7 +10,7 @@ import { ISolidStateERC1404 } from './ISolidStateERC1404.sol';
 import { SolidStateERC1404Internal } from './SolidStateERC1404Internal.sol';
 
 /**
- * @title SolidState ERC1404 implementation, including recommended ERC20 extensions
+ * @title Solidstate ERC1404 implementation, including recommended ERC20 extensions
  */
 abstract contract SolidStateERC1404 is
     ISolidStateERC1404,

@@ -1,6 +1,6 @@
-# SolidState Spec
+# Solidstate Spec
 
-Portable specifications for SolidState contracts. Part of the SolidState Solidity monorepo.
+Portable specifications for Solidstate contracts. Part of the Solidstate Solidity monorepo.
 
 ## Installation
 

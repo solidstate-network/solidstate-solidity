@@ -1,6 +1,6 @@
-# SolidState Library
+# Solidstate Library
 
-Utility functions for interaction with SolidState contracts. Part of the SolidState Solidity monorepo.
+Utility functions for interaction with Solidstate contracts. Part of the Solidstate Solidity monorepo.
 
 ## Installation
 

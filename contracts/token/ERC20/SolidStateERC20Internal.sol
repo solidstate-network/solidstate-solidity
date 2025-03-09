@@ -9,7 +9,7 @@ import { ERC20PermitInternal } from './permit/ERC20PermitInternal.sol';
 import { ISolidStateERC20Internal } from './ISolidStateERC20Internal.sol';
 
 /**
- * @title SolidState ERC20 implementation, including recommended extensions
+ * @title Solidstate ERC20 implementation, including recommended extensions
  */
 abstract contract SolidStateERC20Internal is
     ISolidStateERC20Internal,

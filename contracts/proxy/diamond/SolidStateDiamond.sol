@@ -19,7 +19,7 @@ import { ISolidStateDiamond } from './ISolidStateDiamond.sol';
 import { SolidStateDiamondInternal } from './SolidStateDiamondInternal.sol';
 
 /**
- * @title SolidState "Diamond" proxy reference implementation
+ * @title Solidstate "Diamond" proxy reference implementation
  */
 abstract contract SolidStateDiamond is
     ISolidStateDiamond,

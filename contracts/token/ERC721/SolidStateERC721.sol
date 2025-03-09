@@ -11,7 +11,7 @@ import { ISolidStateERC721 } from './ISolidStateERC721.sol';
 import { SolidStateERC721Internal } from './SolidStateERC721Internal.sol';
 
 /**
- * @title SolidState ERC721 implementation, including recommended extensions
+ * @title Solidstate ERC721 implementation, including recommended extensions
  */
 abstract contract SolidStateERC721 is
     ISolidStateERC721,

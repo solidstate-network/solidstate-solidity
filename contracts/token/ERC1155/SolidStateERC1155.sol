@@ -11,7 +11,7 @@ import { ISolidStateERC1155 } from './ISolidStateERC1155.sol';
 import { SolidStateERC1155Internal } from './SolidStateERC1155Internal.sol';
 
 /**
- * @title SolidState ERC1155 implementation
+ * @title Solidstate ERC1155 implementation
  */
 abstract contract SolidStateERC1155 is
     ISolidStateERC1155,

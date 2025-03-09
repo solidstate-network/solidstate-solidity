@@ -1,6 +1,6 @@
-# SolidState Contracts
+# Solidstate Contracts
 
-SolidState contract library. Part of the SolidState Solidity monorepo.
+Solidstate contract library. Part of the Solidstate Solidity monorepo.
 
 > **Note**: An old version of this library has been audited by Hacken. More details are available in [the report](https://hacken.io/wp-content/uploads/2021/10/15092021_Premia_SC_Audit_Report.pdf).
 
@@ -37,9 +37,9 @@ An overview of the uses of each layer is as follows:
 | Internal Interface | `event`, `error`, `enum`, `struct`                                                                               | set of non-function elements of a module's interface                                                                                                                                               | `IERC20BaseInternal.sol` |
 | Storage Library    | storage layout `struct` (`Layout`), getter function (`layout()`), and standard storage location (`STORAGE_SLOT`) | library for accessing and modifying storage; useful when sharing access to storage between implementation contracts that will be deployed separately (such as in the "diamond" proxy architecture) | `ERC20BaseStorage.sol`   |
 
-### SolidState Pre-Configured Contracts
+### Solidstate Pre-Configured Contracts
 
-SolidState maintains "recommended" implementations of various standards, which are suitable for most users. Internally, these implementations may be composed of several modules, which themselves may be composed of several "visibility layers". Visibility layers are subject to a consistent naming convention so that their purposes may be easily identified.
+Solidstate maintains "recommended" implementations of various standards, which are suitable for most users. Internally, these implementations may be composed of several modules, which themselves may be composed of several "visibility layers". Visibility layers are subject to a consistent naming convention so that their purposes may be easily identified.
 
 For example, the `SolidStateERC20` contract contains `ERC20Base`, `ERC20Extended` and `ERC20Metadata` modules (among others), which are recommended for most projects.
 
