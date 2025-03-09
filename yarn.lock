@@ -3685,10 +3685,10 @@ hardhat-contract-sizer@^2.10.0:
     cli-table3 "^0.6.0"
     strip-ansi "^6.0.0"
 
-hardhat-exposed@^0.3.16:
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/hardhat-exposed/-/hardhat-exposed-0.3.16.tgz#451570cf21c9fe793fcd9836c64bae98d7f2bb99"
-  integrity sha512-LbbC2myI6k8kp2kbvxrZuJ9wsQUwHtA0sKYkdijybyuf3v2RKLeHaUGWGE3vVsj87bCN1WvcYY7MtZ6IndsChg==
+hardhat-exposed@^0.3.17:
+  version "0.3.17"
+  resolved "https://registry.yarnpkg.com/hardhat-exposed/-/hardhat-exposed-0.3.17.tgz#4bb84b3f00f5c50ecd3d1848ef82b6ecfcc93391"
+  integrity sha512-5tllAofE9gQoWsNiZgAjJrglFuW5fvb3XTAqM2vkqTYQ1eNJcqpEuhjOu2eYqkewCDjxqAya5Y43FGnbQYwxOA==
   dependencies:
     micromatch "^4.0.8"
     solidity-ast "^0.4.59"
