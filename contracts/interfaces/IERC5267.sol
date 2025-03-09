@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC5267Internal } from './IERC5267Internal.sol';
+import { _IERC5267 } from './_IERC5267.sol';
 
 /**
  * @title ERC5267 interface
  * @dev see https://eips.ethereum.org/EIPS/eip-5267.
  */
-interface IERC5267 is IERC5267Internal {
+interface IERC5267 is _IERC5267 {
     function eip712Domain()
         external
         view
