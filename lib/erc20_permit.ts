@@ -1,14 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { IERC20Permit } from '@solidstate/typechain-types';
+import { IERC20Permit, IERC5267 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-const signERC2612Permit = async (
-  instance: IERC20Permit,
-  owner: SignerWithAddress,
-  spender: SignerWithAddress,
-  amount: bigint,
-  deadline: bigint = ethers.MaxUint256,
-) => {
+const getDomain = async (instance: IERC5267) => {
   const {
     fields,
     name,
@@ -20,10 +14,55 @@ const signERC2612Permit = async (
   } = await instance.eip712Domain.staticCall();
 
   if (extensions.length > 0) {
-    throw new Error('Extensions not implemented');
+    throw Error('Extensions not implemented');
   }
 
-  const domain = { name, version, chainId, verifyingContract };
+  return buildBasicDomain(
+    fields,
+    name,
+    version,
+    chainId,
+    verifyingContract,
+    salt,
+  );
+};
+
+const fieldNames = [
+  'name',
+  'version',
+  'chainId',
+  'verifyingContract',
+  'salt',
+] as const;
+
+/** Builds a domain object without extensions based on the return values of `eip712Domain()`. */
+const buildBasicDomain = (
+  fields: string,
+  name: string,
+  version: string,
+  chainId: bigint,
+  verifyingContract: string,
+  salt: string,
+) => {
+  const domain = { name, version, chainId, verifyingContract, salt };
+
+  for (const [i, fieldName] of fieldNames.entries()) {
+    if (!(parseInt(fields) & (1 << i))) {
+      delete domain[fieldName];
+    }
+  }
+
+  return domain;
+};
+
+const signERC2612Permit = async (
+  instance: IERC20Permit,
+  owner: SignerWithAddress,
+  spender: SignerWithAddress,
+  amount: bigint,
+  deadline: bigint = ethers.MaxUint256,
+) => {
+  const domain = await getDomain(instance);
 
   const types = {
     Permit: [
