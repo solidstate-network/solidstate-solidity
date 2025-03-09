@@ -3,7 +3,7 @@ import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
   __hh_exposed_DiamondFallback,
   __hh_exposed_DiamondFallback__factory,
-  SafeOwnableMock__factory,
+  __hh_exposed_SafeOwnable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -18,9 +18,11 @@ describe('DiamondFallback', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new SafeOwnableMock__factory(deployer).deploy(
-      deployer.address,
-    );
+    const facetInstance = await new __hh_exposed_SafeOwnable__factory(
+      deployer,
+    ).deploy();
+
+    await instance.__hh_exposed__setOwner(await deployer.getAddress());
 
     instance = await new __hh_exposed_DiamondFallback__factory(
       deployer,
