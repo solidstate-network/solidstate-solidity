@@ -33,10 +33,6 @@ describe('Multicall', () => {
     describe('reverts if', () => {
       it('component function call reverts', async () => {
         // use the built-in hardhat-exposed public constant as a function that will not revert
-        console.log(
-          (await instance.__hh_exposed_bytecode_marker.populateTransaction())
-            .data as BytesLike,
-        );
         await expect(
           instance.multicall([
             (await instance.__hh_exposed_bytecode_marker.populateTransaction())
