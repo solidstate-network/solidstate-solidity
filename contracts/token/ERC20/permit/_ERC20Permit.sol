@@ -28,6 +28,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     function _DOMAIN_SEPARATOR()
         internal
         view
+        virtual
         returns (bytes32 domainSeparator)
     {
         domainSeparator = ERC20PermitStorage.layout().domainSeparators[
@@ -46,7 +47,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
      * @notice get the current ERC2612 nonce for the given address
      * @return current nonce
      */
-    function _nonces(address owner) internal view returns (uint256) {
+    function _nonces(address owner) internal view virtual returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
     }
 
