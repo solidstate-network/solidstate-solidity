@@ -1,16 +1,16 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondFallback } from '@solidstate/spec';
 import {
-  __hh_exposed_DiamondFallback,
-  __hh_exposed_DiamondFallback__factory,
-  SafeOwnableMock__factory,
+  $DiamondFallback,
+  $DiamondFallback__factory,
+  $SafeOwnable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
 describe('DiamondFallback', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: __hh_exposed_DiamondFallback;
+  let instance: $DiamondFallback;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -18,17 +18,15 @@ describe('DiamondFallback', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    const facetInstance = await new SafeOwnableMock__factory(deployer).deploy(
-      deployer.address,
-    );
+    const facetInstance = await new $SafeOwnable__factory(deployer).deploy();
 
-    instance = await new __hh_exposed_DiamondFallback__factory(
-      deployer,
-    ).deploy();
+    await instance.$_setOwner(await deployer.getAddress());
 
-    await instance.__hh_exposed__setOwner(await deployer.getAddress());
+    instance = await new $DiamondFallback__factory(deployer).deploy();
 
-    // await instance.__hh_exposed__diamondCut(
+    await instance.$_setOwner(await deployer.getAddress());
+
+    // await instance.$_diamondCut(
     //   [
     //     {
     //       target: await facetInstance.getAddress(),

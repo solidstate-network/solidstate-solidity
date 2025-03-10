@@ -1,10 +1,10 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
 import {
-  __hh_exposed_ERC4626Base,
-  __hh_exposed_ERC4626Base__factory,
-  __hh_exposed_SolidStateERC20,
-  __hh_exposed_SolidStateERC20__factory,
+  $ERC4626Base,
+  $ERC4626Base__factory,
+  $SolidStateERC20,
+  $SolidStateERC20__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -15,36 +15,34 @@ const decimals = 18n;
 describe('ERC4626Base', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
-  let instance: __hh_exposed_ERC4626Base;
-  let assetInstance: __hh_exposed_SolidStateERC20;
+  let instance: $ERC4626Base;
+  let assetInstance: $SolidStateERC20;
 
   before(async () => {
     [deployer, depositor] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    assetInstance = await new __hh_exposed_SolidStateERC20__factory(
-      deployer,
-    ).deploy();
+    assetInstance = await new $SolidStateERC20__factory(deployer).deploy();
 
-    instance = await new __hh_exposed_ERC4626Base__factory(deployer).deploy();
+    instance = await new $ERC4626Base__factory(deployer).deploy();
 
-    await instance.__hh_exposed__setAsset(await assetInstance.getAddress());
+    await instance.$_setAsset(await assetInstance.getAddress());
 
-    await instance.__hh_exposed__setName(name);
-    await instance.__hh_exposed__setSymbol(symbol);
-    await instance.__hh_exposed__setDecimals(decimals);
+    await instance.$_setName(name);
+    await instance.$_setSymbol(symbol);
+    await instance.$_setDecimals(decimals);
   });
 
   describeBehaviorOfERC4626Base(async () => instance, {
     getAsset: async () => assetInstance,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
-      instance['__hh_exposed__mint(address,uint256)'](recipient, amount),
+      instance['$_mint(address,uint256)'](recipient, amount),
     burn: (recipient: string, amount: bigint) =>
-      instance.__hh_exposed__burn(recipient, amount),
+      instance.$_burn(recipient, amount),
     mintAsset: (recipient: string, amount: bigint) =>
-      assetInstance.__hh_exposed__mint(recipient, amount),
+      assetInstance.$_mint(recipient, amount),
     name,
     symbol,
     decimals,
