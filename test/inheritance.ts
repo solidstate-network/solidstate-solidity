@@ -25,19 +25,21 @@ describe('Inheritance Graph', () => {
   const directAncestors: { [key: string]: string[] } = {};
 
   before(async () => {
-    const testContractDirectory = path.resolve(
-      hre.config.paths.sources,
-      'test',
-    );
-
     const allFullyQualifiedNames = (
       await hre.artifacts.getAllFullyQualifiedNames()
-    ).filter((name) => !path.resolve(name).startsWith(testContractDirectory));
-
-    // ensure that hardhat-exposed generated files are also being skipped
-    expect(
-      path.resolve(hre.config.exposed.outDir).startsWith(testContractDirectory),
-    ).to.be.true;
+    )
+      .filter(
+        (name) =>
+          !path
+            .resolve(name)
+            .startsWith(path.resolve(hre.config.paths.sources, 'test')),
+      )
+      .filter(
+        (name) =>
+          !path
+            .resolve(name)
+            .startsWith(path.resolve(hre.config.exposed.outDir)),
+      );
 
     allEntityNames = allFullyQualifiedNames.map((name) => name.split(':')[1]);
 
