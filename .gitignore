@@ -12,6 +12,6 @@ cache/
 coverage/
 coverage.json
 
-contracts/test/exposed/
+contracts-exposed/
 
 .env

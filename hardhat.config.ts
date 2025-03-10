@@ -29,10 +29,6 @@ export default {
     except: ['.*Test$', '[$].*'],
   },
 
-  exposed: {
-    outDir: './contracts/test/exposed',
-  },
-
   gasReporter: {
     enabled: true,
     reportPureAndViewMethods: true,
