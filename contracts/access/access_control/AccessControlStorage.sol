@@ -10,6 +10,9 @@ library AccessControlStorage {
         bytes32 adminRole;
     }
 
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.AccessControl
+     */
     struct Layout {
         mapping(bytes32 => RoleData) roles;
     }

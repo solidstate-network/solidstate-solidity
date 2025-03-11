@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library PartiallyPausableStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.PartiallyPausable
+     */
     struct Layout {
         mapping(bytes32 => bool) partiallyPaused;
     }

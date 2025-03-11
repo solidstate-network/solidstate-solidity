@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ReentrancyGuardStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ReentrancyGuard
+     */
     struct Layout {
         uint256 status;
     }

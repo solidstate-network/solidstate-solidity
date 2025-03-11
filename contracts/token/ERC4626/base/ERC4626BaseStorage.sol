@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC4626BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC4626Base
+     */
     struct Layout {
         address asset;
     }

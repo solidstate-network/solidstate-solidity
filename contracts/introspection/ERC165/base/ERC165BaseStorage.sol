@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC165BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165Base
+     */
     struct Layout {
         mapping(bytes4 => bool) supportedInterfaces;
     }

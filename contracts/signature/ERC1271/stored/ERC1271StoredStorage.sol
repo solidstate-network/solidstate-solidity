@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC1271StoredStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271Stored
+     */
     struct Layout {
         mapping(bytes32 => bool) hashes;
     }

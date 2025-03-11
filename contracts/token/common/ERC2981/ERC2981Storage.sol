@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC2981Storage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2981
+     */
     struct Layout {
         // token id -> royalty (denominated in basis points)
         mapping(uint256 => uint16) royaltiesBPS;

@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library SafeOwnableStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.SafeOwnable
+     */
     struct Layout {
         address nomineeOwner;
     }

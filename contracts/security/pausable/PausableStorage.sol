@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library PausableStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Pausable
+     */
     struct Layout {
         bool paused;
     }

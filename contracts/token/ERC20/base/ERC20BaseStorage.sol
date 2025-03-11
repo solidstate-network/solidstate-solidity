@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC20BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Base
+     */
     struct Layout {
         mapping(address => uint256) balances;
         mapping(address => mapping(address => uint256)) allowances;

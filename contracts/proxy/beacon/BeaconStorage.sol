@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library BeaconStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Beacon
+     */
     struct Layout {
         address implementation;
     }

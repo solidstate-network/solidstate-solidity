@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC20MetadataStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Metadata
+     */
     struct Layout {
         string name;
         string symbol;

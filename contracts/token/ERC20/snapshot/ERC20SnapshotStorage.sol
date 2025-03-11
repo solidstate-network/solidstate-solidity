@@ -8,6 +8,9 @@ library ERC20SnapshotStorage {
         uint256[] values;
     }
 
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Snapshot
+     */
     struct Layout {
         mapping(address => Snapshots) accountBalanceSnapshots;
         Snapshots totalSupplySnapshots;

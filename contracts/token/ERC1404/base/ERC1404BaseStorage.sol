@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC1404BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1404Base
+     */
     struct Layout {
         mapping(uint8 => string) restrictions;
     }

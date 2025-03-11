@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC20ImplicitApprovalStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20ImplicitApproval
+     */
     struct Layout {
         mapping(address => bool) implicitApprovals;
     }

@@ -5,6 +5,9 @@ pragma solidity ^0.8.20;
 import { EnumerableSet } from '../data/EnumerableSet.sol';
 
 library ECDSAMultisigWalletStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ECDSAMultisigWallet
+     */
     struct Layout {
         uint256 quorum;
         EnumerableSet.AddressSet signers;

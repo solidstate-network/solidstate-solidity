@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library InitializableStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Initializable
+     */
     struct Layout {
         uint8 initialized;
     }

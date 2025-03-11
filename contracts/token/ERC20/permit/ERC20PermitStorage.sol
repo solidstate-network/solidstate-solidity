@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC20PermitStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Permit
+     */
     struct Layout {
         mapping(address => uint256) nonces;
         // Mapping of ChainID to domain separators. This is a very gas efficient way

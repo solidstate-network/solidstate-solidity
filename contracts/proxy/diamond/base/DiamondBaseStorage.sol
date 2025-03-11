@@ -6,6 +6,9 @@ pragma solidity ^0.8.20;
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 library DiamondBaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.DiamondBase
+     */
     struct Layout {
         // function selector => (facet address, selector slug position)
         mapping(bytes4 => bytes32) selectorInfo;

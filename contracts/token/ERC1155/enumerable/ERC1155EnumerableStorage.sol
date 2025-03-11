@@ -5,6 +5,9 @@ pragma solidity ^0.8.20;
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 
 library ERC1155EnumerableStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155Enumerable
+     */
     struct Layout {
         mapping(uint256 => uint256) totalSupply;
         mapping(uint256 => EnumerableSet.AddressSet) accountsByToken;

@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC1155BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155Base
+     */
     struct Layout {
         mapping(uint256 => mapping(address => uint256)) balances;
         mapping(address => mapping(address => bool)) operatorApprovals;
