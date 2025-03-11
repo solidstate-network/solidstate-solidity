@@ -7,9 +7,10 @@ import 'hardhat-contract-sizer';
 import 'hardhat-gas-reporter';
 import 'hardhat-linearization';
 import 'hardhat-spdx-license-identifier';
+import { HardhatUserConfig } from 'hardhat/types';
 import 'solidity-coverage';
 
-export default {
+const config: HardhatUserConfig = {
   solidity: {
     version: '0.8.28',
     settings: {
@@ -37,3 +38,5 @@ export default {
     runOnCompile: true,
   },
 };
+
+export default config;
