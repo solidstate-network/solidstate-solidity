@@ -46,11 +46,12 @@ describe('AccessControl', () => {
 
       describe('reverts if', () => {
         it('sender does not have role', async () => {
-          await expect(
-            instance.connect(nonAdmin).$onlyRole(DEFAULT_ADMIN_ROLE),
-          ).to.be.revertedWith(
-            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-          );
+          await expect(instance.connect(nonAdmin).$onlyRole(DEFAULT_ADMIN_ROLE))
+            .to.be.revertedWithCustomError(
+              instance,
+              'AccessControl__Unauthorized',
+            )
+            .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
         });
       });
     });
@@ -68,9 +69,12 @@ describe('AccessControl', () => {
         it('sender does not have role', async () => {
           await expect(
             instance.connect(nonAdmin)['$_checkRole(bytes32)'].staticCall(ROLE),
-          ).to.revertedWith(
-            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
-          );
+          )
+            .to.be.revertedWithCustomError(
+              instance,
+              'AccessControl__Unauthorized',
+            )
+            .withArgs(ROLE, await nonAdmin.getAddress());
         });
       });
     });
@@ -94,9 +98,12 @@ describe('AccessControl', () => {
               ROLE,
               nonAdmin.address,
             ),
-          ).to.revertedWith(
-            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${ROLE}`,
-          );
+          )
+            .to.be.revertedWithCustomError(
+              instance,
+              'AccessControl__Unauthorized',
+            )
+            .withArgs(ROLE, await nonAdmin.getAddress());
         });
       });
     });
