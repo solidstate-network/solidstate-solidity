@@ -24,13 +24,13 @@ library ERC721MetadataStorage {
             )
         ) & ~bytes32(uint256(0xff));
 
-    function layout() internal pure returns (Layout storage l) {
-        l = layout(DEFAULT_STORAGE_SLOT);
+    function layout() internal pure returns (Layout storage $) {
+        $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(bytes32 slot) internal pure returns (Layout storage l) {
+    function layout(bytes32 slot) internal pure returns (Layout storage $) {
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
     }
 }

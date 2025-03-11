@@ -17,13 +17,13 @@ abstract contract _Proxy is _IProxy {
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        UpgradeableProxyStorage.Layout storage l;
+        UpgradeableProxyStorage.Layout storage $;
         bytes32 slot = UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT;
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
 
-        implementation = l.implementation;
+        implementation = $.implementation;
     }
 
     /**

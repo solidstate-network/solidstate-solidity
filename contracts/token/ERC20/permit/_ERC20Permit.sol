@@ -82,7 +82,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     ) internal virtual {
         if (deadline < block.timestamp) revert ERC20Permit__ExpiredDeadline();
 
-        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout(
+        ERC20PermitStorage.Layout storage $ = ERC20PermitStorage.layout(
             ERC20PermitStorage.DEFAULT_STORAGE_SLOT
         );
 
@@ -100,7 +100,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
         // );
 
         bytes32 structHash;
-        uint256 nonce = l.nonces[owner];
+        uint256 nonce = $.nonces[owner];
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
@@ -118,14 +118,14 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
             structHash := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = l.domainSeparators[block.chainid];
+        bytes32 domainSeparator = $.domainSeparators[block.chainid];
 
         if (domainSeparator == 0x00) {
             domainSeparator = EIP712.calculateDomainSeparator(
                 keccak256(bytes(_name())),
                 keccak256(bytes(_version()))
             );
-            l.domainSeparators[block.chainid] = domainSeparator;
+            $.domainSeparators[block.chainid] = domainSeparator;
         }
 
         // recreate and hash data payload using assembly, equivalent to:
@@ -162,7 +162,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
 
         if (signer != owner) revert ERC20Permit__InvalidSignature();
 
-        l.nonces[owner]++;
+        $.nonces[owner]++;
         _approve(owner, spender, amount);
     }
 

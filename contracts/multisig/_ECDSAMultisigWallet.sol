@@ -32,12 +32,12 @@ abstract contract _ECDSAMultisigWallet is _IECDSAMultisigWallet {
     }
 
     function _setQuorum(uint256 quorum) internal {
-        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+        ECDSAMultisigWalletStorage.Layout storage $ = ECDSAMultisigWalletStorage
             .layout(ECDSAMultisigWalletStorage.DEFAULT_STORAGE_SLOT);
 
-        if (quorum > l.signers.length())
+        if (quorum > $.signers.length())
             revert ECDSAMultisigWallet__InsufficientSigners();
-        l.quorum = quorum;
+        $.quorum = quorum;
     }
 
     function _isSigner(address account) internal view returns (bool) {
@@ -49,22 +49,22 @@ abstract contract _ECDSAMultisigWallet is _IECDSAMultisigWallet {
     }
 
     function _addSigner(address account) internal {
-        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+        ECDSAMultisigWalletStorage.Layout storage $ = ECDSAMultisigWalletStorage
             .layout(ECDSAMultisigWalletStorage.DEFAULT_STORAGE_SLOT);
 
-        if (l.signers.length() >= 256)
+        if ($.signers.length() >= 256)
             revert ECDSAMultisigWallet__SignerLimitReached();
-        if (!l.signers.add(account))
+        if (!$.signers.add(account))
             revert ECDSAMultisigWallet__AddSignerFailed();
     }
 
     function _removeSigner(address account) internal {
-        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+        ECDSAMultisigWalletStorage.Layout storage $ = ECDSAMultisigWalletStorage
             .layout(ECDSAMultisigWalletStorage.DEFAULT_STORAGE_SLOT);
 
-        if (l.quorum > l.signers.length() - 1)
+        if ($.quorum > $.signers.length() - 1)
             revert ECDSAMultisigWallet__InsufficientSigners();
-        if (!l.signers.remove(account))
+        if (!$.signers.remove(account))
             revert ECDSAMultisigWallet__RemoveSignerFailed();
     }
 
@@ -133,10 +133,10 @@ abstract contract _ECDSAMultisigWallet is _IECDSAMultisigWallet {
         bytes memory data,
         Signature[] memory signatures
     ) internal virtual {
-        ECDSAMultisigWalletStorage.Layout storage l = ECDSAMultisigWalletStorage
+        ECDSAMultisigWalletStorage.Layout storage $ = ECDSAMultisigWalletStorage
             .layout(ECDSAMultisigWalletStorage.DEFAULT_STORAGE_SLOT);
 
-        if (l.quorum > signatures.length)
+        if ($.quorum > signatures.length)
             revert ECDSAMultisigWallet__QuorumNotReached();
 
         uint256 signerBitmap;
@@ -149,7 +149,7 @@ abstract contract _ECDSAMultisigWallet is _IECDSAMultisigWallet {
                     abi.encodePacked(data, signature.nonce, address(this))
                 ).toEthSignedMessageHash().recover(signature.data);
 
-                uint256 index = l.signers.indexOf(signer);
+                uint256 index = $.signers.indexOf(signer);
 
                 if (index >= 256)
                     revert ECDSAMultisigWallet__RecoveredSignerNotAuthorized();
