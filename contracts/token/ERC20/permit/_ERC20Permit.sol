@@ -31,31 +31,10 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
         virtual
         returns (bytes32 domainSeparator)
     {
-        (domainSeparator, ) = _getDomainSeparator();
-    }
-
-    /**
-     * @notice return the EIP-712 domain separator unique to contract and chain
-     * @return domainSeparator EIP-712 domain separator
-     * @return invalidateCache whether domain separator needs to be updated in storage
-     */
-    function _getDomainSeparator()
-        internal
-        view
-        virtual
-        returns (bytes32 domainSeparator, bool invalidateCache)
-    {
-        domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            block.chainid
-        ];
-
-        if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name())),
-                keccak256(bytes(_version()))
-            );
-            invalidateCache = true;
-        }
+        domainSeparator = EIP712.calculateDomainSeparator(
+            keccak256(bytes(_name())),
+            keccak256(bytes(_version()))
+        );
     }
 
     /**
@@ -164,17 +143,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
             structHash := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator;
-
-        {
-            bool invalidateCache;
-
-            (domainSeparator, invalidateCache) = _getDomainSeparator();
-
-            if (invalidateCache) {
-                l.domainSeparators[block.chainid] = domainSeparator;
-            }
-        }
+        bytes32 domainSeparator = _DOMAIN_SEPARATOR();
 
         // recreate and hash data payload using assembly, equivalent to:
         //
@@ -212,16 +181,5 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
 
         l.nonces[owner]++;
         _approve(owner, spender, amount);
-    }
-
-    /**
-     * @inheritdoc _ERC20Metadata
-     * @notice set new token name and invalidate cached domain separator
-     * @dev domain separator is not immediately recalculated, and will ultimately depend on the output of the _name view function
-     */
-    function _setName(string memory name) internal virtual override {
-        // TODO: cache invalidation can fail if chainid is reverted to a previous value
-        super._setName(name);
-        delete ERC20PermitStorage.layout().domainSeparators[block.chainid];
     }
 }

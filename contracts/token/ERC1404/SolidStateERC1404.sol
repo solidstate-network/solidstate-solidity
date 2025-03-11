@@ -25,10 +25,4 @@ abstract contract SolidStateERC1404 is
     ) internal virtual override(_SolidStateERC1404, ERC1404Base, _ERC20Base) {
         super._beforeTokenTransfer(from, to, amount);
     }
-
-    function _setName(
-        string memory name
-    ) internal virtual override(SolidStateERC20, _SolidStateERC20) {
-        super._setName(name);
-    }
 }
