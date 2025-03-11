@@ -47,15 +47,15 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
             ERC721MetadataStorage.DEFAULT_STORAGE_SLOT
         );
 
-        string memory tokenIdURI = l.tokenURIs[tokenId];
+        string memory tokenURI = l.tokenURIs[tokenId];
         string memory baseURI = l.baseURI;
 
         if (bytes(baseURI).length == 0) {
-            return tokenIdURI;
-        } else if (bytes(tokenIdURI).length > 0) {
-            return string(abi.encodePacked(baseURI, tokenIdURI));
-        } else {
+            return tokenURI;
+        } else if (bytes(tokenURI).length == 0) {
             return string(abi.encodePacked(baseURI, tokenId.toDecString()));
+        } else {
+            return string(abi.encodePacked(baseURI, tokenURI));
         }
     }
 
