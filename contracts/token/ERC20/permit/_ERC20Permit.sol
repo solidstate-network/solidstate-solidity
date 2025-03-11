@@ -31,6 +31,20 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
         virtual
         returns (bytes32 domainSeparator)
     {
+        (domainSeparator, ) = _getDomainSeparator();
+    }
+
+    /**
+     * @notice return the EIP-712 domain separator unique to contract and chain
+     * @return domainSeparator EIP-712 domain separator
+     * @return invalidateCache whether domain separator needs to be updated in storage
+     */
+    function _getDomainSeparator()
+        internal
+        view
+        virtual
+        returns (bytes32 domainSeparator, bool invalidateCache)
+    {
         domainSeparator = ERC20PermitStorage.layout().domainSeparators[
             block.chainid
         ];
@@ -40,6 +54,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
                 keccak256(bytes(_name())),
                 keccak256(bytes(_version()))
             );
+            invalidateCache = true;
         }
     }
 
@@ -149,14 +164,16 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
             structHash := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = l.domainSeparators[block.chainid];
+        bytes32 domainSeparator;
 
-        if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name())),
-                keccak256(bytes(_version()))
-            );
-            l.domainSeparators[block.chainid] = domainSeparator;
+        {
+            bool invalidateCache;
+
+            (domainSeparator, invalidateCache) = _getDomainSeparator();
+
+            if (invalidateCache) {
+                l.domainSeparators[block.chainid] = domainSeparator;
+            }
         }
 
         // recreate and hash data payload using assembly, equivalent to:
