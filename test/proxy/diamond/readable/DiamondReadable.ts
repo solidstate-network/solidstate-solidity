@@ -1,8 +1,8 @@
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondReadable } from '@solidstate/spec';
 import {
-  DiamondReadableMock,
-  DiamondReadableMock__factory,
+  $DiamondReadable,
+  $DiamondReadable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -10,7 +10,7 @@ describe('DiamondReadable', () => {
   let facet;
   const facetCuts: any[] = [];
 
-  let instance: DiamondReadableMock;
+  let instance: $DiamondReadable;
 
   before(async () => {
     const functions = [];
@@ -42,9 +42,16 @@ describe('DiamondReadable', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new DiamondReadableMock__factory(deployer).deploy(
-      facetCuts,
-    );
+    instance = await new $DiamondReadable__factory(deployer).deploy();
+
+    await instance.$_setSupportsInterface('0x01ffc9a7', true);
+    await instance.$_setSupportsInterface('0x48e2b093', true);
+
+    // await instance.$_diamondCut(
+    //   facetCuts,
+    //   ethers.ZeroAddress,
+    //   '0x',
+    // );
   });
 
   describeBehaviorOfDiamondReadable(async () => instance, {

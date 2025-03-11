@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
-  __hh_exposed_EnumerableSet,
-  __hh_exposed_EnumerableSet__factory,
+  $EnumerableSet,
+  $EnumerableSet__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -13,14 +13,12 @@ const STORAGE_SLOT = 0n;
 
 describe('EnumerableSet', async () => {
   describe('Bytes32Set', async () => {
-    let instance: __hh_exposed_EnumerableSet;
+    let instance: $EnumerableSet;
     let deployer: SignerWithAddress;
 
     beforeEach(async () => {
       [deployer] = await ethers.getSigners();
-      instance = await new __hh_exposed_EnumerableSet__factory(
-        deployer,
-      ).deploy();
+      instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
@@ -30,33 +28,24 @@ describe('EnumerableSet', async () => {
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$at_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
               0n,
             ),
           ).to.equal(zeroBytes32);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$at_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
               1n,
             ),
           ).to.equal(oneBytes32);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$at_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
               2n,
             ),
@@ -66,7 +55,7 @@ describe('EnumerableSet', async () => {
         describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(
-              instance.__hh_exposed_at_EnumerableSet_Bytes32Set.staticCall(
+              instance.$at_EnumerableSet_Bytes32Set.staticCall(
                 STORAGE_SLOT,
                 0n,
               ),
@@ -80,33 +69,24 @@ describe('EnumerableSet', async () => {
 
       describe('#contains(bytes32)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance['__hh_exposed_contains(uint256,bytes32)'].staticCall(
+            await instance['$contains(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,bytes32)'].staticCall(
+            await instance['$contains(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               oneBytes32,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,bytes32)'].staticCall(
+            await instance['$contains(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               twoBytes32,
             ),
@@ -115,7 +95,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if the value has not been added', async () => {
           expect(
-            await instance['__hh_exposed_contains(uint256,bytes32)'].staticCall(
+            await instance['$contains(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -125,67 +105,49 @@ describe('EnumerableSet', async () => {
 
       describe('#indexOf(bytes32)', () => {
         it('returns index of the value', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
           ).to.equal(0);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               oneBytes32,
             ),
           ).to.equal(2);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               twoBytes32,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               twoBytes32,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               oneBytes32,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -194,7 +156,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(
-            await instance['__hh_exposed_indexOf(uint256,bytes32)'].staticCall(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -205,67 +167,49 @@ describe('EnumerableSet', async () => {
       describe('#length()', () => {
         it('returns length of enumerable set', async () => {
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
 
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3);
 
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$length_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
@@ -274,21 +218,12 @@ describe('EnumerableSet', async () => {
 
       describe('#add(bytes32)', () => {
         it('adds value to set', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zeroBytes32, oneBytes32, twoBytes32]);
@@ -296,7 +231,7 @@ describe('EnumerableSet', async () => {
 
         it('returns true if value is added', async () => {
           expect(
-            await instance['__hh_exposed_add(uint256,bytes32)'].staticCall(
+            await instance['$add(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -304,12 +239,9 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
           expect(
-            await instance['__hh_exposed_add(uint256,bytes32)'].staticCall(
+            await instance['$add(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -319,46 +251,25 @@ describe('EnumerableSet', async () => {
 
       describe('#remove(bytes32)', () => {
         it('removes value from set', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
-          await instance['__hh_exposed_remove(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([twoBytes32, oneBytes32]);
         });
 
         it('returns true if value is removed', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance['__hh_exposed_remove(uint256,bytes32)'].staticCall(
+            await instance['$remove(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -367,7 +278,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if value is not removed', async () => {
           expect(
-            await instance['__hh_exposed_remove(uint256,bytes32)'].staticCall(
+            await instance['$remove(uint256,bytes32)'].staticCall(
               STORAGE_SLOT,
               zeroBytes32,
             ),
@@ -377,21 +288,12 @@ describe('EnumerableSet', async () => {
 
       describe('#toArray()', () => {
         it('returns the set as an array', async () => {
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            zeroBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            twoBytes32,
-          );
-          await instance['__hh_exposed_add(uint256,bytes32)'](
-            STORAGE_SLOT,
-            oneBytes32,
-          );
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_Bytes32Set.staticCall(
+            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zeroBytes32, twoBytes32, oneBytes32]);
@@ -401,14 +303,12 @@ describe('EnumerableSet', async () => {
   });
 
   describe('AddressSet', async () => {
-    let instance: __hh_exposed_EnumerableSet;
+    let instance: $EnumerableSet;
     let deployer: SignerWithAddress;
 
     beforeEach(async () => {
       [deployer] = await ethers.getSigners();
-      instance = await new __hh_exposed_EnumerableSet__factory(
-        deployer,
-      ).deploy();
+      instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
@@ -418,33 +318,24 @@ describe('EnumerableSet', async () => {
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_AddressSet.staticCall(
+            await instance.$at_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
               0n,
             ),
           ).to.equal(zeroAddress);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_AddressSet.staticCall(
+            await instance.$at_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
               1n,
             ),
           ).to.equal(twoAddress);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_AddressSet.staticCall(
+            await instance.$at_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
               2n,
             ),
@@ -454,7 +345,7 @@ describe('EnumerableSet', async () => {
         describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(
-              instance.__hh_exposed_at_EnumerableSet_AddressSet.staticCall(
+              instance.$at_EnumerableSet_AddressSet.staticCall(
                 STORAGE_SLOT,
                 0n,
               ),
@@ -468,33 +359,24 @@ describe('EnumerableSet', async () => {
 
       describe('#contains(address)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               oneAddress,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               twoAddress,
             ),
@@ -503,7 +385,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if the value has not been added', async () => {
           expect(
-            await instance['__hh_exposed_contains(uint256,address)'].staticCall(
+            await instance['$contains(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -513,67 +395,49 @@ describe('EnumerableSet', async () => {
 
       describe('#indexOf(address)', () => {
         it('returns index of the value', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
           ).to.equal(0);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               oneAddress,
             ),
           ).to.equal(2);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               twoAddress,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, twoAddress);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               twoAddress,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               oneAddress,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -582,7 +446,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(
-            await instance['__hh_exposed_indexOf(uint256,address)'].staticCall(
+            await instance['$indexOf(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -593,67 +457,49 @@ describe('EnumerableSet', async () => {
       describe('#length()', () => {
         it('returns length of enumerable set', async () => {
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0n);
 
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1n);
 
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2n);
 
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3n);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, twoAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2n);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, oneAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1n);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, zeroAddress);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_AddressSet.staticCall(
+            await instance.$length_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0n);
@@ -662,21 +508,12 @@ describe('EnumerableSet', async () => {
 
       describe('#add(address)', () => {
         it('adds value to set', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_AddressSet.staticCall(
+            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zeroAddress, oneAddress, twoAddress]);
@@ -684,7 +521,7 @@ describe('EnumerableSet', async () => {
 
         it('returns true if value is added', async () => {
           expect(
-            await instance['__hh_exposed_add(uint256,address)'].staticCall(
+            await instance['$add(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -692,12 +529,9 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
           expect(
-            await instance['__hh_exposed_add(uint256,address)'].staticCall(
+            await instance['$add(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -707,46 +541,25 @@ describe('EnumerableSet', async () => {
 
       describe('#remove(address)', () => {
         it('removes value from set', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
 
-          await instance['__hh_exposed_remove(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, zeroAddress);
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_AddressSet.staticCall(
+            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([twoAddress, oneAddress]);
         });
 
         it('returns true if value is removed', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
 
           expect(
-            await instance['__hh_exposed_remove(uint256,address)'].staticCall(
+            await instance['$remove(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -755,7 +568,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if value is not removed', async () => {
           expect(
-            await instance['__hh_exposed_remove(uint256,address)'].staticCall(
+            await instance['$remove(uint256,address)'].staticCall(
               STORAGE_SLOT,
               zeroAddress,
             ),
@@ -765,21 +578,12 @@ describe('EnumerableSet', async () => {
 
       describe('#toArray()', () => {
         it('returns the set as an array', async () => {
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            zeroAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            twoAddress,
-          );
-          await instance['__hh_exposed_add(uint256,address)'](
-            STORAGE_SLOT,
-            oneAddress,
-          );
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_AddressSet.staticCall(
+            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zeroAddress, twoAddress, oneAddress]);
@@ -789,14 +593,12 @@ describe('EnumerableSet', async () => {
   });
 
   describe('UintSet', async () => {
-    let instance: __hh_exposed_EnumerableSet;
+    let instance: $EnumerableSet;
     let deployer: SignerWithAddress;
 
     beforeEach(async () => {
       [deployer] = await ethers.getSigners();
-      instance = await new __hh_exposed_EnumerableSet__factory(
-        deployer,
-      ).deploy();
+      instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
@@ -806,33 +608,24 @@ describe('EnumerableSet', async () => {
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
 
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_UintSet.staticCall(
+            await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               0n,
             ),
           ).to.equal(zero);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_UintSet.staticCall(
+            await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               1n,
             ),
           ).to.equal(two);
           expect(
-            await instance.__hh_exposed_at_EnumerableSet_UintSet.staticCall(
+            await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               2n,
             ),
@@ -842,10 +635,7 @@ describe('EnumerableSet', async () => {
         describe('reverts if', () => {
           it('index out of bounds', async () => {
             await expect(
-              instance.__hh_exposed_at_EnumerableSet_UintSet.staticCall(
-                STORAGE_SLOT,
-                0n,
-              ),
+              instance.$at_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
             ).to.be.revertedWithCustomError(
               instance,
               'EnumerableSet__IndexOutOfBounds',
@@ -856,33 +646,24 @@ describe('EnumerableSet', async () => {
 
       describe('#contains(uint256)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
 
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               one,
             ),
           ).to.be.true;
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               two,
             ),
@@ -891,7 +672,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if the value has not been added', async () => {
           expect(
-            await instance['__hh_exposed_contains(uint256,uint256)'].staticCall(
+            await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -901,67 +682,49 @@ describe('EnumerableSet', async () => {
 
       describe('#indexOf(uint256)', () => {
         it('returns index of the value', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
           ).to.equal(0);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               one,
             ),
           ).to.equal(2);
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               two,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, two);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               two,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               one,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -970,7 +733,7 @@ describe('EnumerableSet', async () => {
 
         it('returns max uint256 if value does not exist', async () => {
           expect(
-            await instance['__hh_exposed_indexOf(uint256,uint256)'].staticCall(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -981,67 +744,49 @@ describe('EnumerableSet', async () => {
       describe('#length()', () => {
         it('returns length of enumerable set', async () => {
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
 
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, two);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, one);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
           expect(
-            await instance.__hh_exposed_length_EnumerableSet_UintSet.staticCall(
+            await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(0);
@@ -1050,21 +795,12 @@ describe('EnumerableSet', async () => {
 
       describe('#add(uint256)', () => {
         it('adds value to set', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_UintSet.staticCall(
+            await instance.$toArray_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zero, one, two]);
@@ -1072,7 +808,7 @@ describe('EnumerableSet', async () => {
 
         it('returns true if value is added', async () => {
           expect(
-            await instance['__hh_exposed_add(uint256,uint256)'].staticCall(
+            await instance['$add(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -1080,12 +816,9 @@ describe('EnumerableSet', async () => {
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
           expect(
-            await instance['__hh_exposed_add(uint256,uint256)'].staticCall(
+            await instance['$add(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -1095,46 +828,25 @@ describe('EnumerableSet', async () => {
 
       describe('#remove(uint256)', () => {
         it('removes value from set', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
 
-          await instance['__hh_exposed_remove(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_UintSet.staticCall(
+            await instance.$toArray_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([two, one]);
         });
 
         it('returns true if value is removed', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
 
           expect(
-            await instance['__hh_exposed_remove(uint256,uint256)'].staticCall(
+            await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -1143,7 +855,7 @@ describe('EnumerableSet', async () => {
 
         it('returns false if value is not removed', async () => {
           expect(
-            await instance['__hh_exposed_remove(uint256,uint256)'].staticCall(
+            await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
               zero,
             ),
@@ -1153,21 +865,12 @@ describe('EnumerableSet', async () => {
 
       describe('#toArray()', () => {
         it('returns the set as an array', async () => {
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            zero,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            two,
-          );
-          await instance['__hh_exposed_add(uint256,uint256)'](
-            STORAGE_SLOT,
-            one,
-          );
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
 
           expect(
-            await instance.__hh_exposed_toArray_EnumerableSet_UintSet.staticCall(
+            await instance.$toArray_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.deep.equal([zero, two, one]);

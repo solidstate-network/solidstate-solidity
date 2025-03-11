@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.20;
 
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { _IDiamondReadable } from './_IDiamondReadable.sol';
 
@@ -9,7 +10,7 @@ import { _IDiamondReadable } from './_IDiamondReadable.sol';
  * @title EIP-2535 "Diamond" proxy introspection contract _ functions
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract _DiamondReadable is _IDiamondReadable {
+abstract contract _DiamondReadable is _IDiamondReadable, _ERC165Base {
     /**
      * @notice get all facets and their selectors
      * @return diamondFacets array of structured facet data

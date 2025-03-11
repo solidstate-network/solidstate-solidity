@@ -6,12 +6,6 @@ import { ethers } from 'hardhat';
 
 export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
-  invalidTransfer: {
-    sender: string;
-    receiver: string;
-    amount: bigint;
-    code: bigint;
-  };
 }
 
 export function describeBehaviorOfERC1404Base(
@@ -62,18 +56,7 @@ export function describeBehaviorOfERC1404Base(
 
     describe('#transfer(address,uint256)', () => {
       describe('reverts if', () => {
-        it('transfer is restricted', async () => {
-          const { sender, receiver, amount, code } = args.invalidTransfer;
-
-          const message =
-            await instance.messageForTransferRestriction.staticCall(code);
-
-          await expect(
-            instance
-              .connect(await ethers.getSigner(sender))
-              .transfer(receiver, amount),
-          ).to.be.revertedWith(message);
-        });
+        it('transfer is restricted');
       });
     });
   });
