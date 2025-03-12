@@ -1,3 +1,4 @@
+import './tasks/rename_files';
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';
