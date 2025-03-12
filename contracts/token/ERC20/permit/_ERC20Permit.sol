@@ -28,25 +28,20 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     function _DOMAIN_SEPARATOR()
         internal
         view
+        virtual
         returns (bytes32 domainSeparator)
     {
-        domainSeparator = ERC20PermitStorage.layout().domainSeparators[
-            block.chainid
-        ];
-
-        if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name())),
-                keccak256(bytes(_version()))
-            );
-        }
+        domainSeparator = EIP712.calculateDomainSeparator(
+            keccak256(bytes(_name())),
+            keccak256(bytes(_version()))
+        );
     }
 
     /**
      * @notice get the current ERC2612 nonce for the given address
      * @return current nonce
      */
-    function _nonces(address owner) internal view returns (uint256) {
+    function _nonces(address owner) internal view virtual returns (uint256) {
         return ERC20PermitStorage.layout().nonces[owner];
     }
 
@@ -148,15 +143,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
             structHash := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = l.domainSeparators[block.chainid];
-
-        if (domainSeparator == 0x00) {
-            domainSeparator = EIP712.calculateDomainSeparator(
-                keccak256(bytes(_name())),
-                keccak256(bytes(_version()))
-            );
-            l.domainSeparators[block.chainid] = domainSeparator;
-        }
+        bytes32 domainSeparator = _DOMAIN_SEPARATOR();
 
         // recreate and hash data payload using assembly, equivalent to:
         //
@@ -194,16 +181,5 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
 
         l.nonces[owner]++;
         _approve(owner, spender, amount);
-    }
-
-    /**
-     * @inheritdoc _ERC20Metadata
-     * @notice set new token name and invalidate cached domain separator
-     * @dev domain separator is not immediately recalculated, and will ultimately depend on the output of the _name view function
-     */
-    function _setName(string memory name) internal virtual override {
-        // TODO: cache invalidation can fail if chainid is reverted to a previous value
-        super._setName(name);
-        delete ERC20PermitStorage.layout().domainSeparators[block.chainid];
     }
 }
