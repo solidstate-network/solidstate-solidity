@@ -3,7 +3,6 @@ import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { ERC20Permit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ContractTransaction } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC20PermitBehaviorArgs {
@@ -38,18 +37,16 @@ export function describeBehaviorOfERC20Permit(
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', () => {
       it('should increase allowance using permit', async () => {
-        const timestamp = await time.latest();
+        const timestamp = BigInt(await time.latest());
 
-        const amount = 2;
-        const deadline = timestamp + 100;
+        const amount = 2n;
+        const deadline = timestamp + 100n;
 
-        // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
         const permit = await signERC2612Permit(
-          ethers.provider,
-          await instance.getAddress(),
-          holder.address,
-          spender.address,
-          amount.toString(),
+          instance,
+          holder,
+          spender,
+          amount,
           deadline,
         );
 
@@ -74,22 +71,20 @@ export function describeBehaviorOfERC20Permit(
 
       describe('reverts if', () => {
         it('deadline has passed', async () => {
-          const timestamp = await time.latest();
+          const timestamp = BigInt(await time.latest());
 
-          const amount = 2;
-          const deadline = timestamp + 100;
+          const amount = 2n;
+          const deadline = timestamp + 100n;
 
-          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
-            ethers.provider,
-            await instance.getAddress(),
-            holder.address,
-            spender.address,
-            amount.toString(),
+            instance,
+            holder,
+            spender,
+            amount,
             deadline,
           );
 
-          await time.setNextBlockTimestamp(deadline + 1);
+          await time.setNextBlockTimestamp(deadline + 1n);
 
           await expect(
             instance
@@ -110,18 +105,16 @@ export function describeBehaviorOfERC20Permit(
         });
 
         it('signature is invalid', async () => {
-          const timestamp = await time.latest();
+          const timestamp = BigInt(await time.latest());
 
-          const amount = 2;
-          const deadline = timestamp + 100;
+          const amount = 2n;
+          const deadline = timestamp + 100n;
 
-          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
-            ethers.provider,
-            await instance.getAddress(),
-            holder.address,
-            spender.address,
-            amount.toString(),
+            instance,
+            holder,
+            spender,
+            amount,
             deadline,
           );
 
@@ -143,22 +136,20 @@ export function describeBehaviorOfERC20Permit(
         });
 
         it('signature has already been used', async () => {
-          const timestamp = await time.latest();
+          const timestamp = BigInt(await time.latest());
 
-          const amount = 2;
-          const deadline = timestamp + 100;
+          const amount = 2n;
+          const deadline = timestamp + 100n;
 
-          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
-            ethers.provider,
-            await instance.getAddress(),
-            holder.address,
-            spender.address,
-            amount.toString(),
+            instance,
+            holder,
+            spender,
+            amount,
             deadline,
           );
 
-          await time.setNextBlockTimestamp(deadline - 1);
+          await time.setNextBlockTimestamp(deadline - 1n);
 
           await instance
             .connect(thirdParty)

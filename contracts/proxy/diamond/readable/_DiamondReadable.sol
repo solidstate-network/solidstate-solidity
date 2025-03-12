@@ -2,32 +2,38 @@
 
 pragma solidity ^0.8.20;
 
+import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { _DiamondCommon } from '../common/_DiamondCommon.sol';
 import { _IDiamondReadable } from './_IDiamondReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract _ functions
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract _DiamondReadable is _IDiamondReadable {
+abstract contract _DiamondReadable is
+    _IDiamondReadable,
+    _DiamondCommon,
+    _ERC165Base
+{
     /**
      * @notice get all facets and their selectors
      * @return diamondFacets array of structured facet data
      */
     function _facets() internal view returns (Facet[] memory diamondFacets) {
-        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout(
+        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
             DiamondBaseStorage.DEFAULT_STORAGE_SLOT
         );
 
-        diamondFacets = new Facet[](l.selectorCount);
+        diamondFacets = new Facet[]($.selectorCount);
 
-        uint8[] memory numFacetSelectors = new uint8[](l.selectorCount);
+        uint8[] memory numFacetSelectors = new uint8[]($.selectorCount);
         uint256 numFacets;
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
-            bytes32 slug = l.selectorSlugs[slugIndex];
+        for (uint256 slugIndex; selectorIndex < $.selectorCount; slugIndex++) {
+            bytes32 slug = $.selectorSlugs[slugIndex];
 
             for (
                 uint256 slugSelectorIndex;
@@ -36,12 +42,12 @@ abstract contract _DiamondReadable is _IDiamondReadable {
             ) {
                 selectorIndex++;
 
-                if (selectorIndex > l.selectorCount) {
+                if (selectorIndex > $.selectorCount) {
                     break;
                 }
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
-                address facet = address(bytes20(l.selectorInfo[selector]));
+                address facet = address(bytes20($.selectorInfo[selector]));
 
                 bool continueLoop;
 
@@ -64,7 +70,7 @@ abstract contract _DiamondReadable is _IDiamondReadable {
 
                 diamondFacets[numFacets].target = facet;
                 diamondFacets[numFacets].selectors = new bytes4[](
-                    l.selectorCount
+                    $.selectorCount
                 );
                 diamondFacets[numFacets].selectors[0] = selector;
                 numFacetSelectors[numFacets] = 1;
@@ -96,20 +102,20 @@ abstract contract _DiamondReadable is _IDiamondReadable {
     function _facetFunctionSelectors(
         address facet
     ) internal view returns (bytes4[] memory selectors) {
-        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout(
+        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
             DiamondBaseStorage.DEFAULT_STORAGE_SLOT
         );
 
         // initialize array with maximum possible required length
         // it will be truncated to correct length via assembly later
-        selectors = new bytes4[](l.selectorCount);
+        selectors = new bytes4[]($.selectorCount);
 
         uint256 numSelectors;
         uint256 selectorIndex;
 
         // loop through function selectors
-        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
-            bytes32 slug = l.selectorSlugs[slugIndex];
+        for (uint256 slugIndex; selectorIndex < $.selectorCount; slugIndex++) {
+            bytes32 slug = $.selectorSlugs[slugIndex];
 
             for (
                 uint256 slugSelectorIndex;
@@ -118,13 +124,13 @@ abstract contract _DiamondReadable is _IDiamondReadable {
             ) {
                 selectorIndex++;
 
-                if (selectorIndex > l.selectorCount) {
+                if (selectorIndex > $.selectorCount) {
                     break;
                 }
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
 
-                if (facet == address(bytes20(l.selectorInfo[selector]))) {
+                if (facet == address(bytes20($.selectorInfo[selector]))) {
                     selectors[numSelectors] = selector;
                     numSelectors++;
                 }
@@ -146,16 +152,16 @@ abstract contract _DiamondReadable is _IDiamondReadable {
         view
         returns (address[] memory addresses)
     {
-        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout(
+        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
             DiamondBaseStorage.DEFAULT_STORAGE_SLOT
         );
 
-        addresses = new address[](l.selectorCount);
+        addresses = new address[]($.selectorCount);
         uint256 numFacets;
         uint256 selectorIndex;
 
-        for (uint256 slugIndex; selectorIndex < l.selectorCount; slugIndex++) {
-            bytes32 slug = l.selectorSlugs[slugIndex];
+        for (uint256 slugIndex; selectorIndex < $.selectorCount; slugIndex++) {
+            bytes32 slug = $.selectorSlugs[slugIndex];
 
             for (
                 uint256 slugSelectorIndex;
@@ -164,12 +170,12 @@ abstract contract _DiamondReadable is _IDiamondReadable {
             ) {
                 selectorIndex++;
 
-                if (selectorIndex > l.selectorCount) {
+                if (selectorIndex > $.selectorCount) {
                     break;
                 }
 
                 bytes4 selector = bytes4(slug << (slugSelectorIndex << 5));
-                address facet = address(bytes20(l.selectorInfo[selector]));
+                address facet = address(bytes20($.selectorInfo[selector]));
 
                 bool continueLoop;
 

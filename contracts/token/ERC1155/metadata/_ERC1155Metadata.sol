@@ -15,19 +15,19 @@ abstract contract _ERC1155Metadata is _IERC1155Metadata {
     function _uri(
         uint256 tokenId
     ) internal view virtual returns (string memory) {
-        ERC1155MetadataStorage.Layout storage l = ERC1155MetadataStorage.layout(
+        ERC1155MetadataStorage.Layout storage $ = ERC1155MetadataStorage.layout(
             ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT
         );
 
-        string memory tokenIdURI = l.tokenURIs[tokenId];
-        string memory baseURI = l.baseURI;
+        string memory tokenURI = $.tokenURIs[tokenId];
+        string memory baseURI = $.baseURI;
 
         if (bytes(baseURI).length == 0) {
-            return tokenIdURI;
-        } else if (bytes(tokenIdURI).length > 0) {
-            return string(abi.encodePacked(baseURI, tokenIdURI));
-        } else {
+            return tokenURI;
+        } else if (bytes(tokenURI).length == 0) {
             return string(abi.encodePacked(baseURI, tokenId.toDecString()));
+        } else {
+            return string(abi.encodePacked(baseURI, tokenURI));
         }
     }
 

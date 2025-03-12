@@ -86,12 +86,12 @@ abstract contract _ERC721Base is _IERC721Base, _ERC165Base {
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout(
+        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
             ERC721BaseStorage.DEFAULT_STORAGE_SLOT
         );
 
-        l.holderTokens[to].add(tokenId);
-        l.tokenOwners.set(tokenId, to);
+        $.holderTokens[to].add(tokenId);
+        $.tokenOwners.set(tokenId, to);
 
         emit Transfer(address(0), to, tokenId);
     }
@@ -115,14 +115,14 @@ abstract contract _ERC721Base is _IERC721Base, _ERC165Base {
 
         _beforeTokenTransfer(owner, address(0), tokenId);
 
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout(
+        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
             ERC721BaseStorage.DEFAULT_STORAGE_SLOT
         );
 
-        l.holderTokens[owner].remove(tokenId);
-        l.tokenOwners.remove(tokenId);
+        $.holderTokens[owner].remove(tokenId);
+        $.tokenOwners.remove(tokenId);
 
-        l.tokenApprovals[tokenId] = address(0);
+        $.tokenApprovals[tokenId] = address(0);
 
         emit Approval(owner, address(0), tokenId);
         emit Transfer(owner, address(0), tokenId);
@@ -140,14 +140,14 @@ abstract contract _ERC721Base is _IERC721Base, _ERC165Base {
 
         _beforeTokenTransfer(from, to, tokenId);
 
-        ERC721BaseStorage.Layout storage l = ERC721BaseStorage.layout(
+        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
             ERC721BaseStorage.DEFAULT_STORAGE_SLOT
         );
 
-        l.holderTokens[from].remove(tokenId);
-        l.holderTokens[to].add(tokenId);
-        l.tokenOwners.set(tokenId, to);
-        l.tokenApprovals[tokenId] = address(0);
+        $.holderTokens[from].remove(tokenId);
+        $.holderTokens[to].add(tokenId);
+        $.tokenOwners.set(tokenId, to);
+        $.tokenApprovals[tokenId] = address(0);
 
         emit Approval(owner, address(0), tokenId);
         emit Transfer(from, to, tokenId);

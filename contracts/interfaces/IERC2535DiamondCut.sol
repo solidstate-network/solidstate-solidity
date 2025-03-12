@@ -2,13 +2,14 @@
 
 pragma solidity ^0.8.20;
 
+import { IERC165 } from './IERC165.sol';
 import { _IERC2535DiamondCut } from './_IERC2535DiamondCut.sol';
 
 /**
  * @title ERC2535 write interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IERC2535DiamondCut is _IERC2535DiamondCut {
+interface IERC2535DiamondCut is _IERC2535DiamondCut, IERC165 {
     /**
      * @notice update diamond facets and optionally execute arbitrary initialization function
      * @param facetCuts array of structured Diamond facet update data

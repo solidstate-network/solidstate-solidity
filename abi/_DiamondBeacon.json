@@ -46,6 +46,11 @@
   },
   {
     "inputs": [],
+    "name": "ERC165Base__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Ownable__NotOwner",
     "type": "error"
   },

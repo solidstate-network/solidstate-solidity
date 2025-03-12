@@ -3,10 +3,11 @@
 pragma solidity ^0.8.20;
 
 import { _Proxy } from '../../_Proxy.sol';
+import { _DiamondCommon } from '../common/_DiamondCommon.sol';
 import { _IDiamondBase } from './_IDiamondBase.sol';
 import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
 
-abstract contract _DiamondBase is _IDiamondBase, _Proxy {
+abstract contract _DiamondBase is _IDiamondBase, _DiamondCommon, _Proxy {
     /**
      * @inheritdoc _Proxy
      */
@@ -18,12 +19,12 @@ abstract contract _DiamondBase is _IDiamondBase, _Proxy {
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        DiamondBaseStorage.Layout storage l;
+        DiamondBaseStorage.Layout storage $;
         bytes32 slot = DiamondBaseStorage.DEFAULT_STORAGE_SLOT;
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
 
-        implementation = address(bytes20(l.selectorInfo[msg.sig]));
+        implementation = address(bytes20($.selectorInfo[msg.sig]));
     }
 }

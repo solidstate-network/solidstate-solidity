@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 import { Proxy } from '../../Proxy.sol';
 import { _Proxy } from '../../_Proxy.sol';
+import { DiamondCommon } from '../common/DiamondCommon.sol';
 import { IDiamondBase } from './IDiamondBase.sol';
 import { _DiamondBase } from './_DiamondBase.sol';
 
@@ -12,7 +13,12 @@ import { _DiamondBase } from './_DiamondBase.sol';
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  * @dev note that for EIP-2535 compliance this base contract must also include the DiamondReadable functions (either within the same deployment or by proxy)
  */
-abstract contract DiamondBase is IDiamondBase, _DiamondBase, Proxy {
+abstract contract DiamondBase is
+    IDiamondBase,
+    _DiamondBase,
+    DiamondCommon,
+    Proxy
+{
     /**
      * @inheritdoc _DiamondBase
      */

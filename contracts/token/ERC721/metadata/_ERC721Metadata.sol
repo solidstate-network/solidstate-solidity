@@ -43,19 +43,19 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
     ) internal view virtual returns (string memory) {
         if (!_exists(tokenId)) revert ERC721Metadata__NonExistentToken();
 
-        ERC721MetadataStorage.Layout storage l = ERC721MetadataStorage.layout(
+        ERC721MetadataStorage.Layout storage $ = ERC721MetadataStorage.layout(
             ERC721MetadataStorage.DEFAULT_STORAGE_SLOT
         );
 
-        string memory tokenIdURI = l.tokenURIs[tokenId];
-        string memory baseURI = l.baseURI;
+        string memory tokenURI = $.tokenURIs[tokenId];
+        string memory baseURI = $.baseURI;
 
         if (bytes(baseURI).length == 0) {
-            return tokenIdURI;
-        } else if (bytes(tokenIdURI).length > 0) {
-            return string(abi.encodePacked(baseURI, tokenIdURI));
-        } else {
+            return tokenURI;
+        } else if (bytes(tokenURI).length == 0) {
             return string(abi.encodePacked(baseURI, tokenId.toDecString()));
+        } else {
+            return string(abi.encodePacked(baseURI, tokenURI));
         }
     }
 

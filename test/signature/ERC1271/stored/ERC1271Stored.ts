@@ -1,7 +1,7 @@
 import { describeBehaviorOfERC1271Stored } from '@solidstate/spec';
 import {
-  __hh_exposed_ERC1271Stored,
-  __hh_exposed_ERC1271Stored__factory,
+  $ERC1271Stored,
+  $ERC1271Stored__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -12,12 +12,12 @@ const validParams: [Uint8Array, Uint8Array] = [
 ];
 
 describe('ERC1271Stored', () => {
-  let instance: __hh_exposed_ERC1271Stored;
+  let instance: $ERC1271Stored;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new __hh_exposed_ERC1271Stored__factory(deployer).deploy();
-    await instance.__hh_exposed__setValidSignature(validParams[0], true);
+    instance = await new $ERC1271Stored__factory(deployer).deploy();
+    await instance.$_setValidSignature(validParams[0], true);
   });
 
   describeBehaviorOfERC1271Stored(async () => instance as any, {
@@ -28,7 +28,7 @@ describe('ERC1271Stored', () => {
     describe('#_isValidSignature(bytes32,bytes)', () => {
       it('returns magic value if signature is stored', async () => {
         expect(
-          await instance.__hh_exposed__isValidSignature.staticCall(
+          await instance.$_isValidSignature.staticCall(
             validParams[0],
             validParams[1],
           ),
@@ -37,7 +37,7 @@ describe('ERC1271Stored', () => {
 
       it('returns null bytes if signature is not stored', async () => {
         expect(
-          await instance.__hh_exposed__isValidSignature.staticCall(
+          await instance.$_isValidSignature.staticCall(
             ethers.randomBytes(32),
             ethers.randomBytes(0),
           ),
@@ -51,28 +51,19 @@ describe('ERC1271Stored', () => {
         let signature = ethers.randomBytes(0);
 
         expect(
-          await instance.__hh_exposed__isValidSignature.staticCall(
-            hash,
-            signature,
-          ),
+          await instance.$_isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
 
-        await instance.__hh_exposed__setValidSignature(hash, true);
+        await instance.$_setValidSignature(hash, true);
 
         expect(
-          await instance.__hh_exposed__isValidSignature.staticCall(
-            hash,
-            signature,
-          ),
+          await instance.$_isValidSignature.staticCall(hash, signature),
         ).to.equal('0x1626ba7e');
 
-        await instance.__hh_exposed__setValidSignature(hash, false);
+        await instance.$_setValidSignature(hash, false);
 
         expect(
-          await instance.__hh_exposed__isValidSignature.staticCall(
-            hash,
-            signature,
-          ),
+          await instance.$_isValidSignature.staticCall(hash, signature),
         ).to.equal('0x00000000');
       });
     });

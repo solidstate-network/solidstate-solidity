@@ -80,9 +80,12 @@ export function describeBehaviorOfAccessControl(
 
           await expect(
             instance.connect(nonAdmin).grantRole(ROLE, nonAdmin.address),
-          ).to.be.revertedWith(
-            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-          );
+          )
+            .to.be.revertedWithCustomError(
+              instance,
+              'AccessControl__Unauthorized',
+            )
+            .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
         });
       });
     });
@@ -112,9 +115,12 @@ export function describeBehaviorOfAccessControl(
 
           await expect(
             instance.connect(nonAdmin).revokeRole(ROLE, nonAdmin.address),
-          ).to.be.revertedWith(
-            `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-          );
+          )
+            .to.be.revertedWithCustomError(
+              instance,
+              'AccessControl__Unauthorized',
+            )
+            .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
         });
       });
     });

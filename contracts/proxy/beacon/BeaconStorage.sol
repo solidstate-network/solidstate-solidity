@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library BeaconStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Beacon
+     */
     struct Layout {
         address implementation;
     }
@@ -16,13 +19,13 @@ library BeaconStorage {
             )
         ) & ~bytes32(uint256(0xff));
 
-    function layout() internal pure returns (Layout storage l) {
-        l = layout(DEFAULT_STORAGE_SLOT);
+    function layout() internal pure returns (Layout storage $) {
+        $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(bytes32 slot) internal pure returns (Layout storage l) {
+    function layout(bytes32 slot) internal pure returns (Layout storage $) {
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
     }
 }

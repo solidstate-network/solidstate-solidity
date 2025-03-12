@@ -1,9 +1,6 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfNFTRoyalty } from '@solidstate/spec';
-import {
-  __hh_exposed_NFTRoyalty,
-  __hh_exposed_NFTRoyalty__factory,
-} from '@solidstate/typechain-types';
+import { $NFTRoyalty, $NFTRoyalty__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -18,25 +15,23 @@ describe('NFTRoyalty', () => {
 
   let deployer: SignerWithAddress;
   let receiver: SignerWithAddress;
-  let instance: __hh_exposed_NFTRoyalty;
+  let instance: $NFTRoyalty;
 
   beforeEach(async () => {
     [deployer, receiver] = await ethers.getSigners();
 
-    instance = await new __hh_exposed_NFTRoyalty__factory(deployer).deploy();
+    instance = await new $NFTRoyalty__factory(deployer).deploy();
 
-    await instance.__hh_exposed__setDefaultRoyaltyBPS(royalty);
+    await instance.$_setDefaultRoyaltyBPS(royalty);
 
     for (let i = 0; i < royalties.length; i++) {
-      await instance.__hh_exposed__setRoyaltyBPS(i, royalties[i]);
+      await instance.$_setRoyaltyBPS(i, royalties[i]);
     }
 
-    await instance.__hh_exposed__setDefaultRoyaltyReceiver(
-      await receiver.getAddress(),
-    );
+    await instance.$_setDefaultRoyaltyReceiver(await receiver.getAddress());
 
-    await instance.__hh_exposed__setSupportsInterface('0x01ffc9a7', true);
-    await instance.__hh_exposed__setSupportsInterface('0x2a55205a', true);
+    await instance.$_setSupportsInterface('0x01ffc9a7', true);
+    await instance.$_setSupportsInterface('0x2a55205a', true);
   });
 
   describeBehaviorOfNFTRoyalty(async () => instance, {});
@@ -48,16 +43,16 @@ describe('NFTRoyalty', () => {
         const defaultRoyalty = 6000n;
         const royalty = 9001n;
 
-        await instance.__hh_exposed__setDefaultRoyaltyBPS(defaultRoyalty);
+        await instance.$_setDefaultRoyaltyBPS(defaultRoyalty);
 
-        expect(
-          await instance.__hh_exposed__getRoyaltyBPS.staticCall(tokenId),
-        ).to.eq(defaultRoyalty);
+        expect(await instance.$_getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          defaultRoyalty,
+        );
 
-        await instance.__hh_exposed__setRoyaltyBPS(tokenId, royalty);
-        expect(
-          await instance.__hh_exposed__getRoyaltyBPS.staticCall(tokenId),
-        ).to.eq(royalty);
+        await instance.$_setRoyaltyBPS(tokenId, royalty);
+        expect(await instance.$_getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          royalty,
+        );
       });
     });
 
@@ -67,21 +62,16 @@ describe('NFTRoyalty', () => {
         const defaultRoyaltyReceiver = await instance.getAddress();
         const royaltyReceiver = await deployer.getAddress();
 
-        await instance.__hh_exposed__setDefaultRoyaltyReceiver(
+        await instance.$_setDefaultRoyaltyReceiver(defaultRoyaltyReceiver);
+
+        expect(await instance.$_getRoyaltyReceiver.staticCall(tokenId)).to.eq(
           defaultRoyaltyReceiver,
         );
 
-        expect(
-          await instance.__hh_exposed__getRoyaltyReceiver.staticCall(tokenId),
-        ).to.eq(defaultRoyaltyReceiver);
-
-        await instance.__hh_exposed__setRoyaltyReceiver(
-          tokenId,
+        await instance.$_setRoyaltyReceiver(tokenId, royaltyReceiver);
+        expect(await instance.$_getRoyaltyReceiver.staticCall(tokenId)).to.eq(
           royaltyReceiver,
         );
-        expect(
-          await instance.__hh_exposed__getRoyaltyReceiver.staticCall(tokenId),
-        ).to.eq(royaltyReceiver);
       });
     });
 
@@ -91,21 +81,21 @@ describe('NFTRoyalty', () => {
         const otherTokenId = 100n;
         const royalty = 9001n;
 
-        await instance.__hh_exposed__setRoyaltyBPS(tokenId, royalty);
+        await instance.$_setRoyaltyBPS(tokenId, royalty);
+
+        expect(await instance.$_getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          royalty,
+        );
 
         expect(
-          await instance.__hh_exposed__getRoyaltyBPS.staticCall(tokenId),
-        ).to.eq(royalty);
-
-        expect(
-          await instance.__hh_exposed__getRoyaltyBPS.staticCall(otherTokenId),
+          await instance.$_getRoyaltyBPS.staticCall(otherTokenId),
         ).not.to.eq(royalty);
       });
 
       describe('reverts if', () => {
         it('royalty exceeds 10000 BPS', async () => {
           await expect(
-            instance.__hh_exposed__setRoyaltyBPS(0n, 10001n),
+            instance.$_setRoyaltyBPS(0n, 10001n),
           ).to.be.revertedWithCustomError(
             instance,
             'NFTRoyalty__RoyaltyTooHigh',
@@ -119,17 +109,17 @@ describe('NFTRoyalty', () => {
         const tokenId = 99n;
         const defaultRoyalty = 9001n;
 
-        await instance.__hh_exposed__setDefaultRoyaltyBPS(defaultRoyalty);
+        await instance.$_setDefaultRoyaltyBPS(defaultRoyalty);
 
-        expect(
-          await instance.__hh_exposed__getRoyaltyBPS.staticCall(tokenId),
-        ).to.eq(defaultRoyalty);
+        expect(await instance.$_getRoyaltyBPS.staticCall(tokenId)).to.eq(
+          defaultRoyalty,
+        );
       });
 
       describe('reverts if', () => {
         it('royalty exceeds 10000 BPS', async () => {
           await expect(
-            instance.__hh_exposed__setDefaultRoyaltyBPS(10001n),
+            instance.$_setDefaultRoyaltyBPS(10001n),
           ).to.be.revertedWithCustomError(
             instance,
             'NFTRoyalty__RoyaltyTooHigh',
@@ -144,19 +134,14 @@ describe('NFTRoyalty', () => {
         const otherTokenId = 100n;
         const receiverAddress = await instance.getAddress();
 
-        await instance.__hh_exposed__setRoyaltyReceiver(
-          tokenId,
+        await instance.$_setRoyaltyReceiver(tokenId, receiverAddress);
+
+        expect(await instance.$_getRoyaltyReceiver.staticCall(tokenId)).to.eq(
           receiverAddress,
         );
 
         expect(
-          await instance.__hh_exposed__getRoyaltyReceiver.staticCall(tokenId),
-        ).to.eq(receiverAddress);
-
-        expect(
-          await instance.__hh_exposed__getRoyaltyReceiver.staticCall(
-            otherTokenId,
-          ),
+          await instance.$_getRoyaltyReceiver.staticCall(otherTokenId),
         ).not.to.eq(receiverAddress);
       });
     });
@@ -166,13 +151,11 @@ describe('NFTRoyalty', () => {
         const tokenId = 99n;
         const defaultReceiverAddress = await instance.getAddress();
 
-        await instance.__hh_exposed__setDefaultRoyaltyReceiver(
+        await instance.$_setDefaultRoyaltyReceiver(defaultReceiverAddress);
+
+        expect(await instance.$_getRoyaltyReceiver.staticCall(tokenId)).to.eq(
           defaultReceiverAddress,
         );
-
-        expect(
-          await instance.__hh_exposed__getRoyaltyReceiver.staticCall(tokenId),
-        ).to.eq(defaultReceiverAddress);
       });
     });
   });

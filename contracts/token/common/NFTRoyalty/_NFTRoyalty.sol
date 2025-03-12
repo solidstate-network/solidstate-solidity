@@ -40,13 +40,13 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _ERC165Base {
     function _getRoyaltyBPS(
         uint256 tokenId
     ) internal view virtual returns (uint16 royaltyBPS) {
-        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout(
+        NFTRoyaltyStorage.Layout storage $ = NFTRoyaltyStorage.layout(
             NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT
         );
-        royaltyBPS = l.royaltiesBPS[tokenId];
+        royaltyBPS = $.royaltiesBPS[tokenId];
 
         if (royaltyBPS == 0) {
-            royaltyBPS = l.defaultRoyaltyBPS;
+            royaltyBPS = $.defaultRoyaltyBPS;
         }
     }
 
@@ -59,13 +59,13 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _ERC165Base {
     function _getRoyaltyReceiver(
         uint256 tokenId
     ) internal view virtual returns (address royaltyReceiver) {
-        NFTRoyaltyStorage.Layout storage l = NFTRoyaltyStorage.layout(
+        NFTRoyaltyStorage.Layout storage $ = NFTRoyaltyStorage.layout(
             NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT
         );
-        royaltyReceiver = l.royaltyReceivers[tokenId];
+        royaltyReceiver = $.royaltyReceivers[tokenId];
 
         if (royaltyReceiver == address(0)) {
-            royaltyReceiver = l.defaultRoyaltyReceiver;
+            royaltyReceiver = $.defaultRoyaltyReceiver;
         }
     }
 

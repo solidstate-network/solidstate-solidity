@@ -42,10 +42,10 @@ abstract contract _Ownable is _IOwnable {
     }
 
     function _setOwner(address account) internal virtual {
-        OwnableStorage.Layout storage l = OwnableStorage.layout(
+        OwnableStorage.Layout storage $ = OwnableStorage.layout(
             OwnableStorage.DEFAULT_STORAGE_SLOT
         );
-        emit OwnershipTransferred(l.owner, account);
-        l.owner = account;
+        emit OwnershipTransferred($.owner, account);
+        $.owner = account;
     }
 }

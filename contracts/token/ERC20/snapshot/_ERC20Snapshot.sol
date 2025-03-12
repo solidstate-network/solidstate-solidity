@@ -50,13 +50,13 @@ abstract contract _ERC20Snapshot is _IERC20Snapshot, _ERC20Base {
     }
 
     function _snapshot() internal virtual returns (uint256) {
-        ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout(
+        ERC20SnapshotStorage.Layout storage $ = ERC20SnapshotStorage.layout(
             ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT
         );
 
-        l.snapshotId++;
+        $.snapshotId++;
 
-        uint256 current = l.snapshotId;
+        uint256 current = $.snapshotId;
         emit Snapshot(current);
         return current;
     }
@@ -127,11 +127,11 @@ abstract contract _ERC20Snapshot is _IERC20Snapshot, _ERC20Base {
         ERC20SnapshotStorage.Snapshots storage snapshots
     ) private view returns (bool, uint256) {
         if (snapshotId == 0) revert ERC20Snapshot__SnapshotIdIsZero();
-        ERC20SnapshotStorage.Layout storage l = ERC20SnapshotStorage.layout(
+        ERC20SnapshotStorage.Layout storage $ = ERC20SnapshotStorage.layout(
             ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT
         );
 
-        if (snapshotId > l.snapshotId)
+        if (snapshotId > $.snapshotId)
             revert ERC20Snapshot__SnapshotIdDoesNotExists();
 
         uint256 index = _findUpperBound(snapshots.ids, snapshotId);

@@ -108,11 +108,11 @@ abstract contract _ERC20Base is _IERC20Base {
 
         _beforeTokenTransfer(address(0), account, amount);
 
-        ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout(
+        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
             ERC20BaseStorage.DEFAULT_STORAGE_SLOT
         );
-        l.totalSupply += amount;
-        l.balances[account] += amount;
+        $.totalSupply += amount;
+        $.balances[account] += amount;
 
         emit Transfer(address(0), account, amount);
     }
@@ -127,15 +127,15 @@ abstract contract _ERC20Base is _IERC20Base {
 
         _beforeTokenTransfer(account, address(0), amount);
 
-        ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout(
+        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
             ERC20BaseStorage.DEFAULT_STORAGE_SLOT
         );
-        uint256 balance = l.balances[account];
+        uint256 balance = $.balances[account];
         if (amount > balance) revert ERC20Base__BurnExceedsBalance();
         unchecked {
-            l.balances[account] = balance - amount;
+            $.balances[account] = balance - amount;
         }
-        l.totalSupply -= amount;
+        $.totalSupply -= amount;
 
         emit Transfer(account, address(0), amount);
     }
@@ -164,15 +164,15 @@ abstract contract _ERC20Base is _IERC20Base {
 
         _beforeTokenTransfer(holder, recipient, amount);
 
-        ERC20BaseStorage.Layout storage l = ERC20BaseStorage.layout(
+        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
             ERC20BaseStorage.DEFAULT_STORAGE_SLOT
         );
-        uint256 holderBalance = l.balances[holder];
+        uint256 holderBalance = $.balances[holder];
         if (amount > holderBalance) revert ERC20Base__TransferExceedsBalance();
         unchecked {
-            l.balances[holder] = holderBalance - amount;
+            $.balances[holder] = holderBalance - amount;
         }
-        l.balances[recipient] += amount;
+        $.balances[recipient] += amount;
 
         emit Transfer(holder, recipient, amount);
 

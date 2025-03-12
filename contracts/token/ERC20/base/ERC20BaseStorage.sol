@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library ERC20BaseStorage {
+    /**
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Base
+     */
     struct Layout {
         mapping(address => uint256) balances;
         mapping(address => mapping(address => uint256)) allowances;
@@ -18,13 +21,13 @@ library ERC20BaseStorage {
             )
         ) & ~bytes32(uint256(0xff));
 
-    function layout() internal pure returns (Layout storage l) {
-        l = layout(DEFAULT_STORAGE_SLOT);
+    function layout() internal pure returns (Layout storage $) {
+        $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(bytes32 slot) internal pure returns (Layout storage l) {
+    function layout(bytes32 slot) internal pure returns (Layout storage $) {
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
     }
 }
