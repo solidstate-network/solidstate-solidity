@@ -18,7 +18,7 @@ task('rename-files', 'Batch replace text in local filenames')
       )
     )
       .flat()
-      .filter((f) => f.includes(args.oldText));
+      .filter((f) => path.basename(f).includes(args.oldText));
 
     if (files.length === 0) {
       console.log(`No files found matching text: ${args.oldText}`);
@@ -28,7 +28,10 @@ task('rename-files', 'Batch replace text in local filenames')
     console.log(`Found ${files.length} files to rename:`);
 
     for (const oldName of files) {
-      const newName = oldName.replace(args.oldText, args.newText);
+      const newName = path.resolve(
+        path.dirname(oldName),
+        path.basename(oldName).replace(args.oldText, args.newText),
+      );
 
       console.log(
         path.relative('.', oldName),
