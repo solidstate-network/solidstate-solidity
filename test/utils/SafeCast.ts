@@ -17,6 +17,19 @@ describe('SafeCast', () => {
 
         expect(await instance.$toUint224.staticCall(input)).to.eq(input);
       });
+
+      describe('reverts if', () => {
+        it('value does not fit', async () => {
+          const input = 2n ** 224n;
+
+          await expect(
+            instance.$toUint224.staticCall(input),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SafeCast__ValueDoesNotFit',
+          );
+        });
+      });
     });
 
     describe('#toUint128(uint256)', () => {

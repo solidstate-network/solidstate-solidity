@@ -21,57 +21,53 @@ describe('PartiallyPausable', () => {
 
   describeBehaviorOfPartiallyPausable(async () => instance, {});
 
-  // TODO: test modifiers
-
-  // describe('whenNotPartiallyPaused(bytes32) modifier', () => {
-  //   it('does not revert if contract is not paused', async () => {
-  //     const key = ethers.randomBytes(32);
-
-  //     await expect(instance.modifier_whenNotPartiallyPaused(key)).not.to.be
-  //       .reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('contract is paused', async () => {
-  //       const key = ethers.randomBytes(32);
-
-  //       await instance.__partiallyPause(key);
-
-  //       await expect(
-  //         instance.modifier_whenNotPartiallyPaused(key),
-  //       ).to.be.revertedWithCustomError(
-  //         instance,
-  //         'PartiallyPausable__PartiallyPaused',
-  //       );
-  //     });
-  //   });
-  // });
-
-  // describe('whenPartiallyPaused(bytes32) modifier', () => {
-  //   it('does not revert if contract is paused', async () => {
-  //     const key = ethers.randomBytes(32);
-
-  //     await instance.__partiallyPause(key);
-
-  //     await expect(instance.modifier_whenPartiallyPaused(key)).not.to.be
-  //       .reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('contract is not paused', async () => {
-  //       const key = ethers.randomBytes(32);
-
-  //       await expect(
-  //         instance.modifier_whenPartiallyPaused(key),
-  //       ).to.be.revertedWithCustomError(
-  //         instance,
-  //         'PartiallyPausable__NotPartiallyPaused',
-  //       );
-  //     });
-  //   });
-  // });
-
   describe('__internal', () => {
+    describe('whenNotPartiallyPaused(bytes32) modifier', () => {
+      it('does not revert if contract is not paused', async () => {
+        const key = ethers.randomBytes(32);
+
+        await expect(instance.$whenNotPartiallyPaused(key)).not.to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('contract is paused', async () => {
+          const key = ethers.randomBytes(32);
+
+          await instance.$_partiallyPause(key);
+
+          await expect(
+            instance.$whenNotPartiallyPaused(key),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'PartiallyPausable__PartiallyPaused',
+          );
+        });
+      });
+    });
+
+    describe('whenPartiallyPaused(bytes32) modifier', () => {
+      it('does not revert if contract is paused', async () => {
+        const key = ethers.randomBytes(32);
+
+        await instance.$_partiallyPause(key);
+
+        await expect(instance.$whenPartiallyPaused(key)).not.to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('contract is not paused', async () => {
+          const key = ethers.randomBytes(32);
+
+          await expect(
+            instance.$whenPartiallyPaused(key),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'PartiallyPausable__NotPartiallyPaused',
+          );
+        });
+      });
+    });
+
     describe('#_partiallyPaused(bytes32)', () => {
       it('todo');
     });

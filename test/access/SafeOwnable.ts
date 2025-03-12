@@ -29,36 +29,34 @@ describe('SafeOwnable', () => {
     getNonOwner: async () => nonOwner,
   });
 
-  // TODO: test modifiers
-
-  // describe('onlyNomineeOwner() modifier', () => {
-  //   it('does not revert if sender is nominee owner', async () => {
-  //     await instance.__setNomineeOwner(nomineeOwner.address);
-
-  //     await expect(instance.connect(nomineeOwner).modifier_onlyNomineeOwner())
-  //       .not.to.be.reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('sender is not nominee owner', async () => {
-  //       await expect(
-  //         instance.connect(nonOwner).modifier_onlyNomineeOwner(),
-  //       ).to.be.revertedWithCustomError(
-  //         instance,
-  //         'SafeOwnable__NotNomineeOwner',
-  //       );
-
-  //       await expect(
-  //         instance.connect(owner).modifier_onlyNomineeOwner(),
-  //       ).to.be.revertedWithCustomError(
-  //         instance,
-  //         'SafeOwnable__NotNomineeOwner',
-  //       );
-  //     });
-  //   });
-  // });
-
   describe('__internal', () => {
+    describe('onlyNomineeOwner() modifier', () => {
+      it('does not revert if sender is nominee owner', async () => {
+        await instance.$_setNomineeOwner(nomineeOwner.address);
+
+        await expect(instance.connect(nomineeOwner).$onlyNomineeOwner()).not.to
+          .be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('sender is not nominee owner', async () => {
+          await expect(
+            instance.connect(nonOwner).$onlyNomineeOwner(),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SafeOwnable__NotNomineeOwner',
+          );
+
+          await expect(
+            instance.connect(owner).$onlyNomineeOwner(),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'SafeOwnable__NotNomineeOwner',
+          );
+        });
+      });
+    });
+
     describe('#_nomineeOwner()', () => {
       it('returns nominee owner address', async () => {
         expect(await instance.$_nomineeOwner.staticCall()).to.equal(
