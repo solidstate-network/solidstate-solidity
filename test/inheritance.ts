@@ -1,16 +1,17 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import hre from 'hardhat';
+import path from 'path';
 
 const surya = require('surya');
 
-const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Storage|Mock)$/;
+const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*(?<!Storage)$/;
 const INTERNAL_CONTRACT = /\b_(([I][a-z])|([A-HJ-Z]))\w*$/;
 const EXTERNAL_INTERFACE = /\bI[A-Z]\w*$/;
 const INTERNAL_INTERFACE = /\b_I[A-Z]\w*$/;
 
 const getExternalContractName = (entityName: string) =>
-  entityName.replace('_', '').replace(/I(?=[A-Z])/, '');
+  entityName.replace(/^_/, '').replace(/I(?=[A-Z])/, '');
 const getInternalContractName = (entityName: string) =>
   `_${getExternalContractName(entityName)}`;
 const getExternalInterfaceName = (entityName: string) =>
@@ -24,8 +25,22 @@ describe('Inheritance Graph', () => {
   const directAncestors: { [key: string]: string[] } = {};
 
   before(async () => {
-    const allFullyQualifiedNames =
-      await hre.artifacts.getAllFullyQualifiedNames();
+    const allFullyQualifiedNames = (
+      await hre.artifacts.getAllFullyQualifiedNames()
+    )
+      .filter(
+        (name) =>
+          !path
+            .resolve(name)
+            .startsWith(path.resolve(hre.config.paths.sources, 'test')),
+      )
+      .filter(
+        (name) =>
+          !path
+            .resolve(name)
+            .startsWith(path.resolve(hre.config.exposed.outDir)),
+      );
+
     allEntityNames = allFullyQualifiedNames.map((name) => name.split(':')[1]);
 
     for (const name of allFullyQualifiedNames) {
@@ -296,30 +311,32 @@ describe('Inheritance Graph', () => {
       names = allEntityNames.filter((name) => EXTERNAL_CONTRACT.test(name));
 
       // TODO: skip libraries dynamically
-      names = names.filter(
-        (name) =>
-          ![
-            'ECDSA',
-            'EIP712',
-            'MerkleProof',
-            'BinaryHeap',
-            'DoublyLinkedList',
-            'PackedDoublyLinkedList',
-            'EnumerableMap',
-            'EnumerableSet',
-            'IncrementalMerkleTree',
-            'CloneFactory',
-            'Factory',
-            'MinimalProxyFactory',
-            'AddressUtils',
-            'ArrayUtils',
-            'Math',
-            'SafeCast',
-            'SafeERC20',
-            'StorageUtils',
-            'UintUtils',
-          ].includes(name),
-      );
+      names = names
+        .filter((name) => !name.endsWith('Storage'))
+        .filter(
+          (name) =>
+            ![
+              'ECDSA',
+              'EIP712',
+              'MerkleProof',
+              'BinaryHeap',
+              'DoublyLinkedList',
+              'PackedDoublyLinkedList',
+              'EnumerableMap',
+              'EnumerableSet',
+              'IncrementalMerkleTree',
+              'CloneFactory',
+              'Factory',
+              'MinimalProxyFactory',
+              'AddressUtils',
+              'ArrayUtils',
+              'Math',
+              'SafeCast',
+              'SafeERC20',
+              'StorageUtils',
+              'UintUtils',
+            ].includes(name),
+        );
     });
 
     it('do not directly inherit from internal interfaces', async () => {
@@ -404,8 +421,7 @@ describe('Inheritance Graph', () => {
             EXTERNAL_INTERFACE.test(name) ||
             INTERNAL_CONTRACT.test(name) ||
             EXTERNAL_CONTRACT.test(name) ||
-            name.endsWith('Storage') ||
-            name.endsWith('Mock'),
+            name.endsWith('Storage'),
         ).to.equal(true, `Uncategorized entity: ${name}`);
       }
     });

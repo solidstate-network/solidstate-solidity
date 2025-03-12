@@ -6,6 +6,7 @@
   "scripts": {
     "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
     "build": "hardhat compile && lerna run tsc",
+    "postinstall": "patch-package",
     "prepare": "husky",
     "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports .",
     "upgrade-dependencies": "yarn-up -u -e '@solidstate/library,@solidstate/spec,@solidstate/typechain-types,chai'"
@@ -35,6 +36,7 @@
     "hardhat": "^2.22.19",
     "hardhat-abi-exporter": "^2.10.1",
     "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-exposed": "^0.3.17",
     "hardhat-gas-reporter": "^2.2.2",
     "hardhat-linearization": "^0.1.1",
     "hardhat-spdx-license-identifier": "^2.3.1",
@@ -43,6 +45,7 @@
     "lerna": "^8.2.1",
     "lint-staged": "^15.4.3",
     "merkletreejs": "^0.5.1",
+    "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-solidity": "^1.4.2",
     "solidity-coverage": "^0.8.14",

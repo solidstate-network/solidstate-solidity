@@ -43,6 +43,7 @@ export function describeBehaviorOfERC20Permit(
         const amount = 2;
         const deadline = timestamp + 100;
 
+        // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
         const permit = await signERC2612Permit(
           ethers.provider,
           await instance.getAddress(),
@@ -78,6 +79,7 @@ export function describeBehaviorOfERC20Permit(
           const amount = 2;
           const deadline = timestamp + 100;
 
+          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
             ethers.provider,
             await instance.getAddress(),
@@ -113,6 +115,7 @@ export function describeBehaviorOfERC20Permit(
           const amount = 2;
           const deadline = timestamp + 100;
 
+          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
             ethers.provider,
             await instance.getAddress(),
@@ -145,6 +148,7 @@ export function describeBehaviorOfERC20Permit(
           const amount = 2;
           const deadline = timestamp + 100;
 
+          // TODO: signERC2612Permit from eth-permit library relies on presence of `name` function, which is nonstandard and not present in ERC20Permit
           const permit = await signERC2612Permit(
             ethers.provider,
             await instance.getAddress(),

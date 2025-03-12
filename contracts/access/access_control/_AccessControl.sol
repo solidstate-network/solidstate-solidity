@@ -51,16 +51,7 @@ abstract contract _AccessControl is _IAccessControl {
      */
     function _checkRole(bytes32 role, address account) internal view virtual {
         if (!_hasRole(role, account)) {
-            revert(
-                string(
-                    abi.encodePacked(
-                        'AccessControl: account ',
-                        account.toString(),
-                        ' is missing role ',
-                        uint256(role).toHexString(32)
-                    )
-                )
-            );
+            revert AccessControl__Unauthorized(role, account);
         }
     }
 

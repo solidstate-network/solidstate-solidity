@@ -1,15 +1,12 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
-import {
-  BinaryHeapAddressMock,
-  BinaryHeapBytes32Mock,
-  BinaryHeapUintMock,
-  BinaryHeapAddressMock__factory,
-  BinaryHeapBytes32Mock__factory,
-  BinaryHeapUintMock__factory,
-} from '@solidstate/typechain-types';
+import { $BinaryHeap, $BinaryHeap__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+
+// data structures can be defined at any storage slot
+// it doesn't matter which slot is used as long as it's consistent
+const STORAGE_SLOT = 0n;
 
 const numbers = [0, 1, 2].map((n) => n);
 
@@ -44,33 +41,48 @@ function checkNodes(nodes: any[]) {
 
 describe('BinaryHeap', async () => {
   describe('Bytes32Heap', async () => {
-    let instance: BinaryHeapBytes32Mock;
+    let instance: $BinaryHeap;
 
     beforeEach(async () => {
       const [deployer] = await ethers.getSigners();
-      instance = await new BinaryHeapBytes32Mock__factory(deployer).deploy();
+      instance = await new $BinaryHeap__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
       describe('#at(bytes32)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance.add(randomBytes32());
-          await instance.add(randomBytes32());
-          await instance.add(randomBytes32());
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
-            const value = await instance.at.staticCall(key);
+            const value = await instance.$at_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+              key,
+            );
             expect(value).to.equal(array[key]);
           }
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.at(0)).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$at_BinaryHeap_Bytes32Heap(STORAGE_SLOT, 0n),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -79,35 +91,62 @@ describe('BinaryHeap', async () => {
         it('returns true if the value has been added', async () => {
           const value = randomBytes32();
 
-          await instance.add(value);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, value);
 
-          expect(await instance.contains(value)).to.be.true;
+          expect(
+            await instance['$contains(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance.contains(randomBytes32())).to.be.false;
+          expect(
+            await instance['$contains(uint256,bytes32)'](
+              STORAGE_SLOT,
+              randomBytes32(),
+            ),
+          ).to.be.false;
         });
       });
 
       describe('#indexOf(bytes32)', () => {
         it('returns index of the value', async () => {
-          await instance.add(randomBytes32());
-          await instance.add(randomBytes32());
-          await instance.add(randomBytes32());
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
+          await instance['$add(uint256,bytes32)'](
+            STORAGE_SLOT,
+            randomBytes32(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.indexOf.staticCall(value);
+            const index = await instance[
+              '$indexOf(uint256,bytes32)'
+            ].staticCall(STORAGE_SLOT, value);
             expect(index).to.equal(key);
           }
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance.indexOf(randomBytes32())).to.equal(
-            ethers.MaxUint256,
-          );
+          expect(
+            await instance['$indexOf(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              randomBytes32(),
+            ),
+          ).to.equal(ethers.MaxUint256);
         });
       });
 
@@ -115,25 +154,53 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           const values = [randomBytes32(), randomBytes32(), randomBytes32()];
 
-          expect(await instance.length()).to.equal(0);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(0);
 
-          await instance.add(values[0]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(1);
 
-          await instance.add(values[1]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(2);
 
-          await instance.add(values[2]);
-          expect(await instance.length()).to.equal(3);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(3);
 
-          await instance.remove(values[0]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(2);
 
-          await instance.remove(values[1]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(1);
 
-          await instance.remove(values[2]);
-          expect(await instance.length()).to.equal(0);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(0);
         });
       });
 
@@ -141,26 +208,38 @@ describe('BinaryHeap', async () => {
         it('returns the highest value in the heap', async () => {
           const [min, mid, max] = constants.bytes32;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(max);
+          expect(
+            await instance.$root_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(max);
 
-          await instance.remove(max);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(mid);
+          expect(
+            await instance.$root_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(mid);
 
-          await instance.remove(mid);
+          await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, mid);
 
-          expect(await instance.root.staticCall()).to.equal(min);
+          expect(
+            await instance.$root_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(min);
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.root.staticCall()).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$root_BinaryHeap_Bytes32Heap.staticCall(STORAGE_SLOT),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -169,22 +248,35 @@ describe('BinaryHeap', async () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
-            await instance.add(value);
-            const nodes = await instance.toArray.staticCall();
+            await instance['$add(uint256,bytes32)'](STORAGE_SLOT, value);
+            const nodes =
+              await instance.$toArray_BinaryHeap_Bytes32Heap.staticCall(
+                STORAGE_SLOT,
+              );
             checkNodes(Array.from(nodes));
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.add.staticCall(randomBytes32())).to.be.true;
+          expect(
+            await instance['$add(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              randomBytes32(),
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
           const value = randomBytes32();
 
-          await instance.add(value);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, value);
 
-          expect(await instance.add.staticCall(value)).to.be.false;
+          expect(
+            await instance['$add(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.false;
         });
       });
 
@@ -194,26 +286,40 @@ describe('BinaryHeap', async () => {
 
           for (let index = 0; index < 10; index++) {
             const value = randomBytes32();
-            await instance.add(value);
+            await instance['$add(uint256,bytes32)'](STORAGE_SLOT, value);
             values.push(value);
           }
 
           for (const value of values) {
-            await instance.remove(value);
-            checkNodes(await instance.toArray.staticCall());
+            await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, value);
+            checkNodes(
+              await instance.$toArray_BinaryHeap_Bytes32Heap.staticCall(
+                STORAGE_SLOT,
+              ),
+            );
           }
         });
 
         it('returns true if value is removed', async () => {
           const value = randomBytes32();
 
-          await instance.add(value);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, value);
 
-          expect(await instance.remove.staticCall(value)).to.be.true;
+          expect(
+            await instance['$remove(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.remove.staticCall(randomBytes32())).to.be.false;
+          expect(
+            await instance['$remove(uint256,bytes32)'].staticCall(
+              STORAGE_SLOT,
+              randomBytes32(),
+            ),
+          ).to.be.false;
         });
       });
 
@@ -221,11 +327,14 @@ describe('BinaryHeap', async () => {
         it('returns the max heap as an array', async () => {
           const [min, mid, max] = constants.bytes32;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, max);
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_Bytes32Heap.staticCall(
+              STORAGE_SLOT,
+            );
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);
@@ -235,33 +344,48 @@ describe('BinaryHeap', async () => {
   });
 
   describe('AddressHeap', async () => {
-    let instance: BinaryHeapAddressMock;
+    let instance: $BinaryHeap;
 
     beforeEach(async () => {
       const [deployer] = await ethers.getSigners();
-      instance = await new BinaryHeapAddressMock__factory(deployer).deploy();
+      instance = await new $BinaryHeap__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
       describe('#at(address)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance.add(randomAddress());
-          await instance.add(randomAddress());
-          await instance.add(randomAddress());
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
-            const value = await instance.at.staticCall(key);
+            const value = await instance.$at_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+              key,
+            );
             expect(value).to.equal(array[key]);
           }
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.at(0)).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$at_BinaryHeap_AddressHeap.staticCall(STORAGE_SLOT, 0n),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -270,35 +394,62 @@ describe('BinaryHeap', async () => {
         it('returns true if the value has been added', async () => {
           const value = randomAddress();
 
-          await instance.add(value);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, value);
 
-          expect(await instance.contains(value)).to.be.true;
+          expect(
+            await instance['$contains(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance.contains(randomAddress())).to.be.false;
+          expect(
+            await instance['$contains(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              randomAddress(),
+            ),
+          ).to.be.false;
         });
       });
 
       describe('#indexOf(address)', () => {
         it('returns index of the value', async () => {
-          await instance.add(randomAddress());
-          await instance.add(randomAddress());
-          await instance.add(randomAddress());
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
+          await instance['$add(uint256,address)'](
+            STORAGE_SLOT,
+            randomAddress(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.indexOf.staticCall(value);
+            const index = await instance[
+              '$indexOf(uint256,address)'
+            ].staticCall(STORAGE_SLOT, value);
             expect(index).to.equal(key);
           }
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance.indexOf(randomAddress())).to.equal(
-            ethers.MaxUint256,
-          );
+          expect(
+            await instance['$indexOf(uint256,address)'](
+              STORAGE_SLOT,
+              randomAddress(),
+            ),
+          ).to.equal(ethers.MaxUint256);
         });
       });
 
@@ -306,25 +457,53 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           const values = [randomAddress(), randomAddress(), randomAddress()];
 
-          expect(await instance.length()).to.equal(0);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(0);
 
-          await instance.add(values[0]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(1);
 
-          await instance.add(values[1]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(2);
 
-          await instance.add(values[2]);
-          expect(await instance.length()).to.equal(3);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(3);
 
-          await instance.remove(values[0]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(2);
 
-          await instance.remove(values[1]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(1);
 
-          await instance.remove(values[2]);
-          expect(await instance.length()).to.equal(0);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(0);
         });
       });
 
@@ -332,26 +511,38 @@ describe('BinaryHeap', async () => {
         it('returns the highest value in the heap', async () => {
           const [min, mid, max] = constants.address;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(max);
+          expect(
+            await instance.$root_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(max);
 
-          await instance.remove(max);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(mid);
+          expect(
+            await instance.$root_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(mid);
 
-          await instance.remove(mid);
+          await instance['$remove(uint256,address)'](STORAGE_SLOT, mid);
 
-          expect(await instance.root.staticCall()).to.equal(min);
+          expect(
+            await instance.$root_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            ),
+          ).to.equal(min);
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.root.staticCall()).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$root_BinaryHeap_AddressHeap.staticCall(STORAGE_SLOT),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -360,22 +551,35 @@ describe('BinaryHeap', async () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
-            await instance.add(value);
-            const nodes = await instance.toArray.staticCall();
+            await instance['$add(uint256,address)'](STORAGE_SLOT, value);
+            const nodes =
+              await instance.$toArray_BinaryHeap_AddressHeap.staticCall(
+                STORAGE_SLOT,
+              );
             checkNodes(Array.from(nodes));
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.add.staticCall(randomAddress())).to.be.true;
+          expect(
+            await instance['$add(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              randomAddress(),
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
           const value = randomAddress();
 
-          await instance.add(value);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, value);
 
-          expect(await instance.add.staticCall(value)).to.be.false;
+          expect(
+            await instance['$add(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.false;
         });
       });
 
@@ -385,26 +589,40 @@ describe('BinaryHeap', async () => {
 
           for (let index = 0; index < 10; index++) {
             const value = randomAddress();
-            await instance.add(value);
+            await instance['$add(uint256,address)'](STORAGE_SLOT, value);
             values.push(value);
           }
 
           for (const value of values) {
-            await instance.remove(value);
-            checkNodes(await instance.toArray.staticCall());
+            await instance['$remove(uint256,address)'](STORAGE_SLOT, value);
+            checkNodes(
+              await instance.$toArray_BinaryHeap_AddressHeap.staticCall(
+                STORAGE_SLOT,
+              ),
+            );
           }
         });
 
         it('returns true if value is removed', async () => {
           const value = randomAddress();
 
-          await instance.add(value);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, value);
 
-          expect(await instance.remove.staticCall(value)).to.be.true;
+          expect(
+            await instance['$remove(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.remove.staticCall(randomAddress())).to.be.false;
+          expect(
+            await instance['$remove(uint256,address)'].staticCall(
+              STORAGE_SLOT,
+              randomAddress(),
+            ),
+          ).to.be.false;
         });
       });
 
@@ -412,11 +630,14 @@ describe('BinaryHeap', async () => {
         it('returns the max heap as an array', async () => {
           const [min, mid, max] = constants.address;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, max);
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_AddressHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);
@@ -426,33 +647,48 @@ describe('BinaryHeap', async () => {
   });
 
   describe('UintHeap', async () => {
-    let instance: BinaryHeapUintMock;
+    let instance: $BinaryHeap;
 
     beforeEach(async () => {
       const [deployer] = await ethers.getSigners();
-      instance = await new BinaryHeapUintMock__factory(deployer).deploy();
+      instance = await new $BinaryHeap__factory(deployer).deploy();
     });
 
     describe('__internal', () => {
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance.add(randomUint256());
-          await instance.add(randomUint256());
-          await instance.add(randomUint256());
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_UintHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
-            const value = await instance.at.staticCall(key);
+            const value = await instance.$at_BinaryHeap_UintHeap.staticCall(
+              STORAGE_SLOT,
+              key,
+            );
             expect(value).to.equal(array[key]);
           }
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.at(0)).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$at_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT, 0n),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -461,35 +697,62 @@ describe('BinaryHeap', async () => {
         it('returns true if the value has been added', async () => {
           const value = randomUint256();
 
-          await instance.add(value);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, value);
 
-          expect(await instance.contains(value)).to.be.true;
+          expect(
+            await instance['$contains(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if the value has not been added', async () => {
-          expect(await instance.contains(randomUint256())).to.be.false;
+          expect(
+            await instance['$contains(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              randomUint256(),
+            ),
+          ).to.be.false;
         });
       });
 
       describe('#indexOf(uint256)', () => {
         it('returns index of the value', async () => {
-          await instance.add(randomUint256());
-          await instance.add(randomUint256());
-          await instance.add(randomUint256());
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
+          await instance['$add(uint256,uint256)'](
+            STORAGE_SLOT,
+            randomUint256(),
+          );
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_UintHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           for (const key in array) {
             const value = array[key];
-            const index = await instance.indexOf.staticCall(value);
+            const index = await instance[
+              '$indexOf(uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, value);
             expect(index).to.equal(key);
           }
         });
 
         it('returns max uint256 if value does not exist', async () => {
-          expect(await instance.indexOf(randomUint256())).to.equal(
-            ethers.MaxUint256,
-          );
+          expect(
+            await instance['$indexOf(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              randomUint256(),
+            ),
+          ).to.equal(ethers.MaxUint256);
         });
       });
 
@@ -497,25 +760,39 @@ describe('BinaryHeap', async () => {
         it('returns length of binary heap', async () => {
           const values = [randomUint256(), randomUint256(), randomUint256()];
 
-          expect(await instance.length()).to.equal(0);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(0);
 
-          await instance.add(values[0]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(1);
 
-          await instance.add(values[1]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(2);
 
-          await instance.add(values[2]);
-          expect(await instance.length()).to.equal(3);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(3);
 
-          await instance.remove(values[0]);
-          expect(await instance.length()).to.equal(2);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, values[0]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(2);
 
-          await instance.remove(values[1]);
-          expect(await instance.length()).to.equal(1);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, values[1]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(1);
 
-          await instance.remove(values[2]);
-          expect(await instance.length()).to.equal(0);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, values[2]);
+          expect(
+            await instance.$length_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(0);
         });
       });
 
@@ -523,26 +800,32 @@ describe('BinaryHeap', async () => {
         it('returns the highest value in the heap', async () => {
           const [min, mid, max] = constants.uint256;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(max);
+          expect(
+            await instance.$root_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(max);
 
-          await instance.remove(max);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, max);
 
-          expect(await instance.root.staticCall()).to.equal(mid);
+          expect(
+            await instance.$root_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(mid);
 
-          await instance.remove(mid);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, mid);
 
-          expect(await instance.root.staticCall()).to.equal(min);
+          expect(
+            await instance.$root_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+          ).to.equal(min);
         });
 
         describe('reverts if', () => {
           it('index out of bounds', async () => {
-            await expect(instance.root.staticCall()).to.be.revertedWithPanic(
-              PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-            );
+            await expect(
+              instance.$root_BinaryHeap_UintHeap.staticCall(STORAGE_SLOT),
+            ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
           });
         });
       });
@@ -551,22 +834,35 @@ describe('BinaryHeap', async () => {
         it('sets the parent node such that it is greater than or equal to the values of its children when a node is added', async () => {
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
-            await instance.add(value);
-            const nodes = await instance.toArray.staticCall();
+            await instance['$add(uint256,uint256)'](STORAGE_SLOT, value);
+            const nodes =
+              await instance.$toArray_BinaryHeap_UintHeap.staticCall(
+                STORAGE_SLOT,
+              );
             checkNodes(Array.from(nodes));
           }
         });
 
         it('returns true if value is added', async () => {
-          expect(await instance.add.staticCall(randomUint256())).to.be.true;
+          expect(
+            await instance['$add(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              randomUint256(),
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
           const value = randomUint256();
 
-          await instance.add(value);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, value);
 
-          expect(await instance.add.staticCall(value)).to.be.false;
+          expect(
+            await instance['$add(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.false;
         });
       });
 
@@ -576,26 +872,40 @@ describe('BinaryHeap', async () => {
 
           for (let index = 0; index < 10; index++) {
             const value = randomUint256();
-            await instance.add(value);
+            await instance['$add(uint256,uint256)'](STORAGE_SLOT, value);
             values.push(value);
           }
 
           for (const value of values) {
-            await instance.remove(value);
-            checkNodes(await instance.toArray.staticCall());
+            await instance['$remove(uint256,uint256)'](STORAGE_SLOT, value);
+            checkNodes(
+              await instance.$toArray_BinaryHeap_UintHeap.staticCall(
+                STORAGE_SLOT,
+              ),
+            );
           }
         });
 
         it('returns true if value is removed', async () => {
           const value = randomUint256();
 
-          await instance.add(value);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, value);
 
-          expect(await instance.remove.staticCall(value)).to.be.true;
+          expect(
+            await instance['$remove(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              value,
+            ),
+          ).to.be.true;
         });
 
         it('returns false if value does not exist', async () => {
-          expect(await instance.remove.staticCall(randomUint256())).to.be.false;
+          expect(
+            await instance['$remove(uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              randomUint256(),
+            ),
+          ).to.be.false;
         });
       });
 
@@ -603,11 +913,14 @@ describe('BinaryHeap', async () => {
         it('returns the max heap as an array', async () => {
           const [min, mid, max] = constants.uint256;
 
-          await instance.add(min);
-          await instance.add(mid);
-          await instance.add(max);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, min);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, mid);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, max);
 
-          const array = await instance.toArray.staticCall();
+          const array =
+            await instance.$toArray_BinaryHeap_UintHeap.staticCall(
+              STORAGE_SLOT,
+            );
 
           expect(array.length).to.equal(3);
           expect(array).to.deep.equal([max, min, mid]);
