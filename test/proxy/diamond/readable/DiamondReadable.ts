@@ -47,11 +47,7 @@ describe('DiamondReadable', () => {
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0x48e2b093', true);
 
-    // await instance.$_diamondCut(
-    //   facetCuts,
-    //   ethers.ZeroAddress,
-    //   '0x',
-    // );
+    await instance.$_diamondCut(facetCuts, ethers.ZeroAddress, '0x');
   });
 
   describeBehaviorOfDiamondReadable(async () => instance, {

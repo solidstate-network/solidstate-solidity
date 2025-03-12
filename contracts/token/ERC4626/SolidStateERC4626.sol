@@ -17,14 +17,4 @@ abstract contract SolidStateERC4626 is
     _SolidStateERC4626,
     ERC4626Base,
     SolidStateERC20
-{
-    function _setName(
-        string memory name
-    )
-        internal
-        virtual
-        override(_SolidStateERC4626, _ERC20Metadata, SolidStateERC20)
-    {
-        super._setName(name);
-    }
-}
+{}

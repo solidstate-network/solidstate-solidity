@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { DiamondCommon } from '../common/DiamondCommon.sol';
 import { IDiamondReadable } from './IDiamondReadable.sol';
 import { _DiamondReadable } from './_DiamondReadable.sol';
 
@@ -15,6 +16,7 @@ import { _DiamondReadable } from './_DiamondReadable.sol';
 abstract contract DiamondReadable is
     IDiamondReadable,
     _DiamondReadable,
+    DiamondCommon,
     ERC165Base
 {
     /**

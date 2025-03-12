@@ -23,7 +23,7 @@ describe('SafeCast', () => {
           const input = 2n ** 224n;
 
           await expect(
-            instance.$toUint128.staticCall(input),
+            instance.$toUint224.staticCall(input),
           ).to.be.revertedWithCustomError(
             instance,
             'SafeCast__ValueDoesNotFit',

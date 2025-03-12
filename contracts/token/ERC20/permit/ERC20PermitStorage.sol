@@ -8,10 +8,6 @@ library ERC20PermitStorage {
      */
     struct Layout {
         mapping(address => uint256) nonces;
-        // Mapping of ChainID to domain separators. This is a very gas efficient way
-        // to not recalculate the domain separator on every call, while still
-        // automatically detecting ChainID changes.
-        mapping(uint256 => bytes32) domainSeparators;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

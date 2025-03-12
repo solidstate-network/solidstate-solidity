@@ -20,25 +20,23 @@ describe('DiamondFallback', () => {
     const [deployer] = await ethers.getSigners();
     const facetInstance = await new $SafeOwnable__factory(deployer).deploy();
 
-    await instance.$_setOwner(await deployer.getAddress());
-
     instance = await new $DiamondFallback__factory(deployer).deploy();
 
     await instance.$_setOwner(await deployer.getAddress());
 
-    // await instance.$_diamondCut(
-    //   [
-    //     {
-    //       target: await facetInstance.getAddress(),
-    //       action: 0,
-    //       selectors: [
-    //         facetInstance.interface.getFunction('nomineeOwner').selector,
-    //       ],
-    //     },
-    //   ],
-    //   ethers.ZeroAddress,
-    //   '0x',
-    // );
+    await instance.$_diamondCut(
+      [
+        {
+          target: await facetInstance.getAddress(),
+          action: 0,
+          selectors: [
+            facetInstance.interface.getFunction('nomineeOwner').selector,
+          ],
+        },
+      ],
+      ethers.ZeroAddress,
+      '0x',
+    );
   });
 
   describeBehaviorOfDiamondFallback(async () => instance, {

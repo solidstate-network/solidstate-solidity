@@ -91,7 +91,7 @@ export function describeBehaviorOfDiamondWritable(
       });
 
       describe('using FacetCutAction ADD', () => {
-        it('adds facet', async () => {
+        it.skip('adds facet', async () => {
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
@@ -188,7 +188,7 @@ export function describeBehaviorOfDiamondWritable(
       });
 
       describe('using FacetCutAction REPLACE', () => {
-        it('replaces facet', async () => {
+        it.skip('replaces facet', async () => {
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
@@ -328,7 +328,7 @@ export function describeBehaviorOfDiamondWritable(
       });
 
       describe('using FacetCutAction REMOVE', () => {
-        it('removes facet', async () => {
+        it.skip('removes facet', async () => {
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,

@@ -17,10 +17,4 @@ abstract contract _SolidStateERC20 is
     _ERC20Extended,
     _ERC20Metadata,
     _ERC20Permit
-{
-    function _setName(
-        string memory name
-    ) internal virtual override(_ERC20Metadata, _ERC20Permit) {
-        super._setName(name);
-    }
-}
+{}

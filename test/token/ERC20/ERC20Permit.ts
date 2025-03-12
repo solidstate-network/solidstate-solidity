@@ -29,8 +29,8 @@ describe('ERC20Permit', () => {
   });
 
   describe('__internal', () => {
-    describe('#_setName(string)', () => {
-      it('invalidates cached domain separator', async () => {
+    describe('#_DOMAIN_SEPARATOR()', () => {
+      it('changes is token name is changed', async () => {
         const oldDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
         await instance.$_setName(`new ${name}`);
         const newDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
