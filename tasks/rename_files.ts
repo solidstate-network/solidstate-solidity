@@ -18,6 +18,7 @@ task('rename-files', 'Batch replace text in local filenames')
       )
     )
       .flat()
+      .filter((f) => fs.statSync(f).isFile())
       .filter((f) => path.basename(f).includes(args.oldText));
 
     if (files.length === 0) {
