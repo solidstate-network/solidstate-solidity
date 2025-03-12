@@ -59,6 +59,41 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     }
 
     /**
+     * @notice TODO
+     * @return fields
+     * @return name
+     * @return version
+     * @return chainId
+     * @return verifyingContract
+     * @return salt
+     * @return extensions
+     */
+    function _eip712Domain()
+        internal
+        view
+        virtual
+        returns (
+            bytes1 fields,
+            string memory name,
+            string memory version,
+            uint256 chainId,
+            address verifyingContract,
+            bytes32 salt,
+            uint256[] memory extensions
+        )
+    {
+        return (
+            hex'0f', // 01111
+            _name(),
+            _version(),
+            block.chainid,
+            address(this),
+            bytes32(0),
+            new uint256[](0)
+        );
+    }
+
+    /**
      * @notice approve spender to transfer tokens held by owner via signature
      * @dev this function may be vulnerable to approval replay attacks
      * @param owner holder of tokens and signer of permit
