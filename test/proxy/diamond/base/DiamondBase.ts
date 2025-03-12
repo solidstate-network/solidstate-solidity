@@ -23,22 +23,22 @@ describe('DiamondBase', () => {
 
     instance = await new $DiamondBase__factory(deployer).deploy();
 
-    // await instance.$_diamondCut(
-    //   [
-    //     {
-    //       target: await facetInstance.getAddress(),
-    //       action: 0,
-    //       selectors: [facetInstance.interface.getFunction('owner').selector],
-    //     },
-    //     {
-    //       target: await receiver.getAddress(),
-    //       action: 0,
-    //       selectors: ['0x00000000'],
-    //     },
-    //   ],
-    //   ethers.ZeroAddress,
-    //   '0x',
-    // );
+    await instance.$_diamondCut(
+      [
+        {
+          target: await facetInstance.getAddress(),
+          action: 0,
+          selectors: [facetInstance.interface.getFunction('owner').selector],
+        },
+        {
+          target: await receiver.getAddress(),
+          action: 0,
+          selectors: ['0x00000000'],
+        },
+      ],
+      ethers.ZeroAddress,
+      '0x',
+    );
   });
 
   describeBehaviorOfDiamondBase(async () => instance, {
