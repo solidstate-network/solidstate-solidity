@@ -3,7 +3,8 @@
 pragma solidity ^0.8.20;
 
 import { IERC2612 } from '../../../interfaces/IERC2612.sol';
-import { ERC20PermitInternal } from './ERC20PermitInternal.sol';
+import { IERC5267 } from '../../../interfaces/IERC5267.sol';
+import { _ERC20Permit } from './_ERC20Permit.sol';
 import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
 import { IERC20Permit } from './IERC20Permit.sol';
 
@@ -11,7 +12,7 @@ import { IERC20Permit } from './IERC20Permit.sol';
  * @title ERC20 extension with support for ERC2612 permits
  * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
-abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
+abstract contract ERC20Permit is IERC20Permit, _ERC20Permit {
     /**
      * @inheritdoc IERC2612
      */
@@ -26,7 +27,7 @@ abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
     /**
      * @inheritdoc IERC2612
      */
-    function nonces(address owner) public view returns (uint256) {
+    function nonces(address owner) external view returns (uint256) {
         return _nonces(owner);
     }
 
@@ -41,7 +42,26 @@ abstract contract ERC20Permit is IERC20Permit, ERC20PermitInternal {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public virtual {
+    ) external {
         _permit(owner, spender, amount, deadline, v, r, s);
+    }
+
+    /**
+     * @inheritdoc IERC5267
+     */
+    function eip712Domain()
+        external
+        view
+        returns (
+            bytes1 fields,
+            string memory name,
+            string memory version,
+            uint256 chainId,
+            address verifyingContract,
+            bytes32 salt,
+            uint256[] memory extensions
+        )
+    {
+        return _eip712Domain();
     }
 }

@@ -1,0 +1,59 @@
+diff --git a/node_modules/hardhat-exposed/dist/core.js b/node_modules/hardhat-exposed/dist/core.js
+index 9b2dc30..fe65d75 100644
+--- a/node_modules/hardhat-exposed/dist/core.js
++++ b/node_modules/hardhat-exposed/dist/core.js
+@@ -107,6 +107,7 @@ function getExposedContent(ast, relativizePath, deref, prefix, initializers = fa
+         const subset = isLibrary ? ['internal', 'public', 'external'] : ['internal'];
+         const hasReceiveFunction = getFunctions(c, deref, ['external']).some(fn => fn.kind === 'receive');
+         const externalizableVariables = getVariables(c, deref, subset).filter(v => v.typeName?.nodeType !== 'UserDefinedTypeName' || isTypeExternalizable(v.typeName, deref));
++        const modifiers = getModifiers(c, deref);
+         const externalizableFunctions = getFunctions(c, deref, subset).filter(f => isExternalizable(f, deref));
+         const returnedEventFunctions = externalizableFunctions.filter(fn => isNonViewWithReturns(fn));
+         const clashingFunctions = {};
+@@ -125,7 +126,7 @@ function getExposedContent(ast, relativizePath, deref, prefix, initializers = fa
+             [`bytes32 public constant __hh_exposed_bytecode_marker = "hardhat-exposed";\n`],
+             (0, format_lines_1.spaceBetween)(
+             // slots for storage function parameters
+-            ...getAllStorageArguments(externalizableFunctions, c, deref).map(a => [
++            ...getAllStorageArguments([...externalizableFunctions, ...modifiers], c, deref).map(a => [
+                 `mapping(uint256 => ${a.storageType}) internal ${prefix}${a.storageVar};`,
+             ]), 
+             // events for internal returns
+@@ -154,6 +155,20 @@ function getExposedContent(ast, relativizePath, deref, prefix, initializers = fa
+                 ],
+                 '}',
+             ]), 
++            // modifiers
++            ...modifiers.map(m => {
++                const fnArgs = getFunctionArguments(m, c, deref);
++                // function header
++                const header = [
++                    'function',
++                    `${prefix}${m.name}(${fnArgs.map(printArgument).join(', ')})`,
++                    'external',
++                    'payable',
++                    `${m.name}(${fnArgs.map(a => a.storageVar ? `${prefix}${a.storageVar}[${a.name}]` : a.name).join(', ')})`,
++                    '{}',
++                ];
++                return [header.join(' ')];
++            }), 
+             // external functions
+             ...externalizableFunctions.map(fn => {
+                 const fnName = clashingFunctions[getFunctionId(fn, c, deref)] === 1 ? fn.name : getFunctionNameQualified(fn, c, deref, true);
+@@ -503,6 +518,16 @@ function getFunctions(contract, deref, subset) {
+     }
+     return res;
+ }
++function getModifiers(contract, deref) {
++    const parents = contract.linearizedBaseContracts.map(deref('ContractDefinition'));
++    const res = [];
++    for (const parent of parents) {
++        for (const m of (0, utils_1.findAll)('ModifierDefinition', parent)) {
++            res.push(m);
++        }
++    }
++    return res;
++}
+ function* getNeededImports(ast, deref) {
+     const needed = new Set([ast].concat([...(0, utils_1.findAll)('ContractDefinition', ast)]
+         .flatMap(c => c.linearizedBaseContracts.map(p => {

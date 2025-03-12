@@ -3,7 +3,7 @@ import { IERC1155Metadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 
 export interface ERC1155MetadataBehaviorArgs {
-  tokenURI: string;
+  baseURI: string;
 }
 
 export function describeBehaviorOfERC1155Metadata(
@@ -21,15 +21,7 @@ export function describeBehaviorOfERC1155Metadata(
     });
 
     describe('#uri(uint256)', () => {
-      it('returns empty string if neither base URI nor token URI is set');
-
-      it('returns stored token URI if base URI is not set');
-
-      it('returns concatenation of base URI and token URI if both are set');
-
-      it(
-        'returns concatenation of base URI and token ID if only base URI is set',
-      );
+      it('todo');
     });
   });
 }

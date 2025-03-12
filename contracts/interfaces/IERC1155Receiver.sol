@@ -3,12 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { IERC165 } from './IERC165.sol';
-import { IERC1155ReceiverInternal } from './IERC1155ReceiverInternal.sol';
+import { _IERC1155Receiver } from './_IERC1155Receiver.sol';
 
 /**
  * @title ERC1155 transfer receiver interface
  */
-interface IERC1155Receiver is IERC1155ReceiverInternal, IERC165 {
+interface IERC1155Receiver is _IERC1155Receiver, IERC165 {
     /**
      * @notice validate receipt of ERC1155 transfer
      * @param operator executor of transfer

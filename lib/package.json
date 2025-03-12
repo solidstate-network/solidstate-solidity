@@ -24,9 +24,6 @@
     "tsc": "tsc --build tsconfig.json",
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
-  "dependencies": {
-    "eth-permit": "^0.1.10"
-  },
   "files": [
     "dist/"
   ],

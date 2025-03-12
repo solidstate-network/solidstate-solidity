@@ -5,7 +5,7 @@ import { expect } from 'chai';
 export interface ERC721MetadataBehaviorArgs {
   name: string;
   symbol: string;
-  tokenURI: string;
+  baseURI: string;
 }
 
 export function describeBehaviorOfERC721Metadata(
@@ -35,15 +35,7 @@ export function describeBehaviorOfERC721Metadata(
     });
 
     describe('#tokenURI(uint256)', () => {
-      it('returns empty string if neither base URI nor token URI is set');
-
-      it('returns stored token URI if base URI is not set');
-
-      it('returns concatenation of base URI and token URI if both are set');
-
-      it(
-        'returns concatenation of base URI and token ID if only base URI is set',
-      );
+      it('todo');
     });
   });
 }

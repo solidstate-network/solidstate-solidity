@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC173Internal } from './IERC173Internal.sol';
+import { _IERC173 } from './_IERC173.sol';
 
 /**
  * @title Contract ownership standard interface
  * @dev see https://eips.ethereum.org/EIPS/eip-173
  */
-interface IERC173 is IERC173Internal {
+interface IERC173 is _IERC173 {
     /**
      * @notice get the ERC173 contract owner
      * @return contract owner
