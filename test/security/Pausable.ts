@@ -18,41 +18,41 @@ describe('Pausable', () => {
 
   describeBehaviorOfPausable(async () => instance, {});
 
-  // TODO: test modifiers
-
-  // describe('whenNotPaused() modifier', () => {
-  //   it('does not revert if contract is not paused', async () => {
-  //     await expect(instance.modifier_whenNotPaused()).not.to.be.reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('contract is paused', async () => {
-  //       await instance.__pause();
-
-  //       await expect(
-  //         instance.modifier_whenNotPaused(),
-  //       ).to.be.revertedWithCustomError(instance, 'Pausable__Paused');
-  //     });
-  //   });
-  // });
-
-  // describe('whenPaused() modifier', () => {
-  //   it('does not revert if contract is paused', async () => {
-  //     await instance.__pause();
-
-  //     await expect(instance.modifier_whenPaused()).not.to.be.reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('contract is not paused', async () => {
-  //       await expect(
-  //         instance.modifier_whenPaused(),
-  //       ).to.be.revertedWithCustomError(instance, 'Pausable__NotPaused');
-  //     });
-  //   });
-  // });
-
   describe('__internal', () => {
+    describe('whenNotPaused() modifier', () => {
+      it('does not revert if contract is not paused', async () => {
+        await expect(instance.$whenNotPaused()).not.to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('contract is paused', async () => {
+          await instance.$_pause();
+
+          await expect(instance.$whenNotPaused()).to.be.revertedWithCustomError(
+            instance,
+            'Pausable__Paused',
+          );
+        });
+      });
+    });
+
+    describe('whenPaused() modifier', () => {
+      it('does not revert if contract is paused', async () => {
+        await instance.$_pause();
+
+        await expect(instance.$whenPaused()).not.to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('contract is not paused', async () => {
+          await expect(instance.$whenPaused()).to.be.revertedWithCustomError(
+            instance,
+            'Pausable__NotPaused',
+          );
+        });
+      });
+    });
+
     describe('#_paused()', () => {
       it('returns whether contract is paused', async () => {
         expect(await instance.$_paused.staticCall()).to.be.false;

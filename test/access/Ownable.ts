@@ -26,60 +26,56 @@ describe('Ownable', () => {
     getNonOwner: async () => nonOwner,
   });
 
-  // TODO: test modifiers
-
-  // describe('onlyOwner() modifier', () => {
-  //   it('does not revert if sender is owner', async () => {
-  //     await expect(instance.connect(owner).modifier_onlyOwner()).not.to.be
-  //       .reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('sender is not owner', async () => {
-  //       await expect(
-  //         instance.connect(nonOwner).modifier_onlyOwner(),
-  //       ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
-  //     });
-  //   });
-  // });
-
-  // describe('onlyTransitiveOwner() modifier', () => {
-  //   it('does not revert if sender is transitive owner', async () => {
-  //     await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
-  //       .to.be.reverted;
-
-  //     const intermediateOwner = await new OwnableMock__factory(owner).deploy(
-  //       owner.address,
-  //     );
-
-  //     await instance.__setOwner(await intermediateOwner.getAddress());
-
-  //     await expect(instance.connect(owner).modifier_onlyTransitiveOwner()).not
-  //       .to.be.reverted;
-  //   });
-
-  //   describe('reverts if', () => {
-  //     it('sender is not transitive owner', async () => {
-  //       const intermediateOwner = await new OwnableMock__factory(
-  //         owner,
-  //       ).deploy(owner.address);
-  //       const intermediateOwnerAddress = await intermediateOwner.getAddress();
-
-  //       await impersonateAccount(intermediateOwnerAddress);
-
-  //       const signer = await ethers.getSigner(intermediateOwnerAddress);
-
-  //       await expect(
-  //         instance.connect(signer).modifier_onlyTransitiveOwner.staticCall(),
-  //       ).to.be.revertedWithCustomError(
-  //         instance,
-  //         'Ownable__NotTransitiveOwner',
-  //       );
-  //     });
-  //   });
-  // });
-
   describe('__internal', () => {
+    describe('onlyOwner() modifier', () => {
+      it('does not revert if sender is owner', async () => {
+        await expect(instance.connect(owner).$onlyOwner()).not.to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('sender is not owner', async () => {
+          await expect(
+            instance.connect(nonOwner).$onlyOwner(),
+          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
+        });
+      });
+    });
+
+    describe('onlyTransitiveOwner() modifier', () => {
+      it('does not revert if sender is transitive owner', async () => {
+        await expect(instance.connect(owner).$onlyTransitiveOwner()).not.to.be
+          .reverted;
+
+        const intermediateOwner = await new $Ownable__factory(owner).deploy();
+        await intermediateOwner.$_setOwner(await owner.getAddress());
+
+        await instance.$_setOwner(await intermediateOwner.getAddress());
+
+        await expect(instance.connect(owner).$onlyTransitiveOwner()).not.to.be
+          .reverted;
+      });
+
+      describe('reverts if', () => {
+        it('sender is not transitive owner', async () => {
+          const intermediateOwner = await new $Ownable__factory(owner).deploy();
+          await intermediateOwner.$_setOwner(await owner.getAddress());
+
+          const intermediateOwnerAddress = await intermediateOwner.getAddress();
+
+          await impersonateAccount(intermediateOwnerAddress);
+
+          const signer = await ethers.getSigner(intermediateOwnerAddress);
+
+          await expect(
+            instance.connect(signer).$onlyTransitiveOwner.staticCall(),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'Ownable__NotTransitiveOwner',
+          );
+        });
+      });
+    });
+
     describe('#_owner()', () => {
       it('returns contract owner', async () => {
         expect(await instance.$_owner.staticCall()).to.equal(owner.address);

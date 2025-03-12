@@ -23,4 +23,6 @@ interface _IAccessControl {
         address indexed account,
         address indexed sender
     );
+
+    error AccessControl__Unauthorized(bytes32 role, address account);
 }
