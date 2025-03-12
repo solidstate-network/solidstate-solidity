@@ -19,7 +19,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
      * @return name token name
      */
     function _name() internal view virtual returns (string memory name) {
-        name = ERC721MetadataStorage.layout().name;
+        name = ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .name;
     }
 
     /**
@@ -27,7 +29,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
      * @return symbol token symbol
      */
     function _symbol() internal view virtual returns (string memory symbol) {
-        symbol = ERC721MetadataStorage.layout().symbol;
+        symbol = ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .symbol;
     }
 
     /**
@@ -39,10 +43,12 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
     ) internal view virtual returns (string memory) {
         if (!_exists(tokenId)) revert ERC721Metadata__NonExistentToken();
 
-        ERC721MetadataStorage.Layout storage l = ERC721MetadataStorage.layout();
+        ERC721MetadataStorage.Layout storage $ = ERC721MetadataStorage.layout(
+            ERC721MetadataStorage.DEFAULT_STORAGE_SLOT
+        );
 
-        string memory tokenURI = l.tokenURIs[tokenId];
-        string memory baseURI = l.baseURI;
+        string memory tokenURI = $.tokenURIs[tokenId];
+        string memory baseURI = $.baseURI;
 
         if (bytes(baseURI).length == 0) {
             return tokenURI;
@@ -58,7 +64,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
      * @param name token name
      */
     function _setName(string memory name) internal virtual {
-        ERC721MetadataStorage.layout().name = name;
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .name = name;
     }
 
     /**
@@ -66,7 +74,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
      * @param symbol token symbol
      */
     function _setSymbol(string memory symbol) internal virtual {
-        ERC721MetadataStorage.layout().symbol = symbol;
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .symbol = symbol;
     }
 
     /**
@@ -78,7 +88,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
         uint256 tokenId,
         string memory tokenURI
     ) internal virtual {
-        ERC721MetadataStorage.layout().tokenURIs[tokenId] = tokenURI;
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .tokenURIs[tokenId] = tokenURI;
     }
 
     /**
@@ -86,7 +98,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
      * @param baseURI URI string to set
      */
     function _setBaseURI(string memory baseURI) internal virtual {
-        ERC721MetadataStorage.layout().baseURI = baseURI;
+        ERC721MetadataStorage
+            .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+            .baseURI = baseURI;
     }
 
     /**
@@ -101,7 +115,9 @@ abstract contract _ERC721Metadata is _IERC721Metadata, _ERC721Base {
         super._beforeTokenTransfer(from, to, tokenId);
 
         if (to == address(0)) {
-            delete ERC721MetadataStorage.layout().tokenURIs[tokenId];
+            delete ERC721MetadataStorage
+                .layout(ERC721MetadataStorage.DEFAULT_STORAGE_SLOT)
+                .tokenURIs[tokenId];
         }
     }
 }

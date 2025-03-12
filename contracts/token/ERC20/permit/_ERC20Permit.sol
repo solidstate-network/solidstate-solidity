@@ -42,7 +42,10 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
      * @return current nonce
      */
     function _nonces(address owner) internal view virtual returns (uint256) {
-        return ERC20PermitStorage.layout().nonces[owner];
+        return
+            ERC20PermitStorage
+                .layout(ERC20PermitStorage.DEFAULT_STORAGE_SLOT)
+                .nonces[owner];
     }
 
     /**
@@ -109,7 +112,9 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
     ) internal virtual {
         if (deadline < block.timestamp) revert ERC20Permit__ExpiredDeadline();
 
-        ERC20PermitStorage.Layout storage l = ERC20PermitStorage.layout();
+        ERC20PermitStorage.Layout storage $ = ERC20PermitStorage.layout(
+            ERC20PermitStorage.DEFAULT_STORAGE_SLOT
+        );
 
         // execute EIP-712 hashStruct procedure using assembly, equavalent to:
         //
@@ -125,7 +130,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
         // );
 
         bytes32 structHash;
-        uint256 nonce = l.nonces[owner];
+        uint256 nonce = $.nonces[owner];
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
@@ -179,7 +184,7 @@ abstract contract _ERC20Permit is _IERC20Permit, _ERC20Base, _ERC20Metadata {
 
         if (signer != owner) revert ERC20Permit__InvalidSignature();
 
-        l.nonces[owner]++;
+        $.nonces[owner]++;
         _approve(owner, spender, amount);
     }
 }

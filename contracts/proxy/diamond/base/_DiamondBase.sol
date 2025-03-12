@@ -19,12 +19,12 @@ abstract contract _DiamondBase is _IDiamondBase, _DiamondCommon, _Proxy {
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        DiamondBaseStorage.Layout storage l;
-        bytes32 slot = DiamondBaseStorage.STORAGE_SLOT;
+        DiamondBaseStorage.Layout storage $;
+        bytes32 slot = DiamondBaseStorage.DEFAULT_STORAGE_SLOT;
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
 
-        implementation = address(bytes20(l.selectorInfo[msg.sig]));
+        implementation = address(bytes20($.selectorInfo[msg.sig]));
     }
 }

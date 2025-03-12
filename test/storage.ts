@@ -23,7 +23,9 @@ describe('Storage Libraries', () => {
         `solidstate.contracts.storage.${name.replace('Storage', '')}`,
       );
 
-      expect(await instance[`${prefix}STORAGE_SLOT`].staticCall()).to.eq(slot);
+      expect(
+        await instance[`${prefix}DEFAULT_STORAGE_SLOT`].staticCall(),
+      ).to.eq(slot);
     }
   });
 });

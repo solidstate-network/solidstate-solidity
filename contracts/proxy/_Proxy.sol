@@ -17,13 +17,13 @@ abstract contract _Proxy is _IProxy {
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        UpgradeableProxyStorage.Layout storage l;
-        bytes32 slot = UpgradeableProxyStorage.STORAGE_SLOT;
+        UpgradeableProxyStorage.Layout storage $;
+        bytes32 slot = UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT;
         assembly {
-            l.slot := slot
+            $.slot := slot
         }
 
-        implementation = l.implementation;
+        implementation = $.implementation;
     }
 
     /**
@@ -31,6 +31,8 @@ abstract contract _Proxy is _IProxy {
      * @param implementation address of implementation contract
      */
     function _setImplementation(address implementation) internal virtual {
-        UpgradeableProxyStorage.layout().implementation = implementation;
+        UpgradeableProxyStorage
+            .layout(UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT)
+            .implementation = implementation;
     }
 }

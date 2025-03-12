@@ -37,11 +37,13 @@ abstract contract _ERC2981 is _IERC2981 {
     function _getRoyaltyBPS(
         uint256 tokenId
     ) internal view virtual returns (uint16 royaltyBPS) {
-        ERC2981Storage.Layout storage l = ERC2981Storage.layout();
-        royaltyBPS = l.royaltiesBPS[tokenId];
+        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+            ERC2981Storage.DEFAULT_STORAGE_SLOT
+        );
+        royaltyBPS = $.royaltiesBPS[tokenId];
 
         if (royaltyBPS == 0) {
-            royaltyBPS = l.defaultRoyaltyBPS;
+            royaltyBPS = $.defaultRoyaltyBPS;
         }
     }
 
@@ -54,11 +56,13 @@ abstract contract _ERC2981 is _IERC2981 {
     function _getRoyaltyReceiver(
         uint256 tokenId
     ) internal view virtual returns (address royaltyReceiver) {
-        ERC2981Storage.Layout storage l = ERC2981Storage.layout();
-        royaltyReceiver = l.royaltyReceivers[tokenId];
+        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+            ERC2981Storage.DEFAULT_STORAGE_SLOT
+        );
+        royaltyReceiver = $.royaltyReceivers[tokenId];
 
         if (royaltyReceiver == address(0)) {
-            royaltyReceiver = l.defaultRoyaltyReceiver;
+            royaltyReceiver = $.defaultRoyaltyReceiver;
         }
     }
 }

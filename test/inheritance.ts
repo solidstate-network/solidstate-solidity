@@ -328,6 +328,7 @@ describe('Inheritance Graph', () => {
               'CloneFactory',
               'Factory',
               'MinimalProxyFactory',
+              'ERC7201',
               'AddressUtils',
               'ArrayUtils',
               'Math',

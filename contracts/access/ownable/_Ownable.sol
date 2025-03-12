@@ -22,7 +22,7 @@ abstract contract _Ownable is _IOwnable {
     }
 
     function _owner() internal view virtual returns (address) {
-        return OwnableStorage.layout().owner;
+        return OwnableStorage.layout(OwnableStorage.DEFAULT_STORAGE_SLOT).owner;
     }
 
     function _transitiveOwner() internal view virtual returns (address owner) {
@@ -42,8 +42,10 @@ abstract contract _Ownable is _IOwnable {
     }
 
     function _setOwner(address account) internal virtual {
-        OwnableStorage.Layout storage l = OwnableStorage.layout();
-        emit OwnershipTransferred(l.owner, account);
-        l.owner = account;
+        OwnableStorage.Layout storage $ = OwnableStorage.layout(
+            OwnableStorage.DEFAULT_STORAGE_SLOT
+        );
+        emit OwnershipTransferred($.owner, account);
+        $.owner = account;
     }
 }

@@ -24,7 +24,7 @@ abstract contract _ERC1404Base is _IERC1404Base, _ERC20Base {
             revert ERC1404Base__ArrayLengthMismatch();
 
         mapping(uint8 => string) storage restrictions = ERC1404BaseStorage
-            .layout()
+            .layout(ERC1404BaseStorage.DEFAULT_STORAGE_SLOT)
             .restrictions;
 
         unchecked {
@@ -57,7 +57,9 @@ abstract contract _ERC1404Base is _IERC1404Base, _ERC20Base {
     function _messageForTransferRestriction(
         uint8 restrictionCode
     ) internal view virtual returns (string memory message) {
-        message = ERC1404BaseStorage.layout().restrictions[restrictionCode];
+        message = ERC1404BaseStorage
+            .layout(ERC1404BaseStorage.DEFAULT_STORAGE_SLOT)
+            .restrictions[restrictionCode];
     }
 
     /**

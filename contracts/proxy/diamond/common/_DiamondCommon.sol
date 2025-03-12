@@ -25,11 +25,13 @@ abstract contract _DiamondCommon is _IDiamondCommon {
         address target,
         bytes memory data
     ) internal virtual {
-        DiamondBaseStorage.Layout storage l = DiamondBaseStorage.layout();
+        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
+            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        );
 
         unchecked {
             // record selector count at start of operation for later comparison
-            uint256 originalSelectorCount = l.selectorCount;
+            uint256 originalSelectorCount = $.selectorCount;
             // maintain an up-to-date selector count in the stack
             uint256 selectorCount = originalSelectorCount;
             // declare a 32-byte sequence of up to 8 function selectors
@@ -38,7 +40,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
             // if selector count is not a multiple of 8, load the last slug because it is not full
             // else leave the default zero-bytes value as is, and use it as a new slug
             if (selectorCount & 7 != 0) {
-                slug = l.selectorSlugs[selectorCount >> 3];
+                slug = $.selectorSlugs[selectorCount >> 3];
             }
 
             // process each facet cut struct according to its action
@@ -52,16 +54,16 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
                 if (action == FacetCutAction.ADD) {
                     (selectorCount, slug) = _addFacetSelectors(
-                        l,
+                        $,
                         facetCut,
                         selectorCount,
                         slug
                     );
                 } else if (action == FacetCutAction.REPLACE) {
-                    _replaceFacetSelectors(l, facetCut);
+                    _replaceFacetSelectors($, facetCut);
                 } else if (action == FacetCutAction.REMOVE) {
                     (selectorCount, slug) = _removeFacetSelectors(
-                        l,
+                        $,
                         facetCut,
                         selectorCount,
                         slug
@@ -71,13 +73,13 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
             // if selector count has changed, update it in storage
             if (selectorCount != originalSelectorCount) {
-                l.selectorCount = uint16(selectorCount);
+                $.selectorCount = uint16(selectorCount);
             }
 
             // if final selector count is not a multiple of 8, write the slug to storage
             // else it was already written to storage by the add/remove loops
             if (selectorCount & 7 != 0) {
-                l.selectorSlugs[selectorCount >> 3] = slug;
+                $.selectorSlugs[selectorCount >> 3] = slug;
             }
 
             // event must be emitted before initializer is called, in case initializer triggers further diamond cuts
@@ -91,7 +93,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
      * @dev selectors are added one-by-one to lastSlug, which is written to storage and updated to represent the subsequent slug when full
      * @dev lastSlug may be initialized with "dirty" higher-index bits, but these are ignored because they are out of range
      * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
-     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the DiamondBaseStorage Layout struct
      * @param facetCut structured data representing facet address and selectors to add
      * @param selectorCount total number of selectors registered on the diamond proxy
      * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
@@ -99,7 +101,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
      * @return lastSlug after selectors have been added
      */
     function _addFacetSelectors(
-        DiamondBaseStorage.Layout storage l,
+        DiamondBaseStorage.Layout storage $,
         FacetCut memory facetCut,
         uint256 selectorCount,
         bytes32 lastSlug
@@ -116,11 +118,11 @@ abstract contract _DiamondCommon is _IDiamondCommon {
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
 
-                if (l.selectorInfo[selector] != bytes32(0))
+                if ($.selectorInfo[selector] != bytes32(0))
                     revert DiamondWritable__SelectorAlreadyAdded();
 
                 // for current selector, write facet address and global index to storage
-                l.selectorInfo[selector] =
+                $.selectorInfo[selector] =
                     bytes32(selectorCount) |
                     bytes20(facetCut.target);
 
@@ -136,7 +138,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
                 if (selectorBitIndexInSlug == 224) {
                     // slug is now full, so write it to storage
-                    l.selectorSlugs[selectorCount >> 3] = lastSlug;
+                    $.selectorSlugs[selectorCount >> 3] = lastSlug;
                 }
 
                 selectorCount++;
@@ -151,7 +153,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
      * @dev selectors are removed one-by-one from lastSlug, which is updated to represent the preceeding slug when empty
      * @dev lastSlug is not updated in storage when modified or removed, leaving "dirty" higher-index bits, but these are ignored because they are out of range
      * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
-     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the DiamondBaseStorage Layout struct
      * @param facetCut structured data representing facet address and selectors to remove
      * @param selectorCount total number of selectors registered on the diamond proxy
      * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
@@ -159,7 +161,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
      * @return lastSlug after selectors have been removed
      */
     function _removeFacetSelectors(
-        DiamondBaseStorage.Layout storage l,
+        DiamondBaseStorage.Layout storage $,
         FacetCut memory facetCut,
         uint256 selectorCount,
         bytes32 lastSlug
@@ -175,8 +177,8 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                 bytes4 selector = facetCut.selectors[i];
 
                 // lookup the selector's facet route and lookup index, then delete it from storage
-                bytes32 selectorInfo = l.selectorInfo[selector];
-                delete l.selectorInfo[selector];
+                bytes32 selectorInfo = $.selectorInfo[selector];
+                delete $.selectorInfo[selector];
 
                 if (address(bytes20(selectorInfo)) == address(0))
                     revert DiamondWritable__SelectorNotFound();
@@ -186,7 +188,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
                 if (selectorCount & 7 == 7) {
                     // the last selector is located at the end of the last slug, which has not been loaded yet
-                    lastSlug = l.selectorSlugs[selectorCount >> 3];
+                    lastSlug = $.selectorSlugs[selectorCount >> 3];
                 }
 
                 // extract the last selector from the last slug
@@ -197,9 +199,9 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
                 if (lastSelector != selector) {
                     // update last selector's index to match removed selector's index, where last selector is being moved
-                    l.selectorInfo[lastSelector] =
+                    $.selectorInfo[lastSelector] =
                         (selectorInfo & CLEAR_ADDRESS_MASK) |
-                        bytes20(l.selectorInfo[lastSelector]);
+                        bytes20($.selectorInfo[lastSelector]);
                 }
 
                 // derive the index of the slug where the selector is stored
@@ -222,8 +224,8 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                 } else {
                     // selector being removed is from a slug that hasn't been loaded to the stack
                     // slug must be updated in storage now because it isn't being tracked on the stack
-                    l.selectorSlugs[slugIndex] = _insertSelectorIntoSlug(
-                        l.selectorSlugs[slugIndex],
+                    $.selectorSlugs[slugIndex] = _insertSelectorIntoSlug(
+                        $.selectorSlugs[slugIndex],
                         lastSelector,
                         selectorBitIndexInSlug
                     );
@@ -236,11 +238,11 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
     /**
      * @notice replace in the diamond a set of selectors associated with a particular facet
-     * @param l storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the DiamondBaseStorage Layout struct
      * @param facetCut structured data representing facet address and selectors to replace
      */
     function _replaceFacetSelectors(
-        DiamondBaseStorage.Layout storage l,
+        DiamondBaseStorage.Layout storage $,
         FacetCut memory facetCut
     ) internal {
         unchecked {
@@ -249,7 +251,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
-                bytes32 selectorInfo = l.selectorInfo[selector];
+                bytes32 selectorInfo = $.selectorInfo[selector];
                 address oldFacetAddress = address(bytes20(selectorInfo));
 
                 if (oldFacetAddress == address(0))
@@ -260,7 +262,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                     revert DiamondWritable__ReplaceTargetIsIdentical();
 
                 // replace old facet address
-                l.selectorInfo[selector] =
+                $.selectorInfo[selector] =
                     (selectorInfo & CLEAR_ADDRESS_MASK) |
                     bytes20(facetCut.target);
             }

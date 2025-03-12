@@ -2,13 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: this storage library is now referenced by Proxy, so should be renamed
-library UpgradeableProxyStorage {
+library ERC1271StoredStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.UpgradeableProxy
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271Stored
      */
     struct Layout {
-        address implementation;
+        mapping(bytes32 => bool) hashes;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
@@ -16,7 +15,7 @@ library UpgradeableProxyStorage {
             abi.encode(
                 uint256(
                     keccak256(
-                        bytes('solidstate.contracts.storage.UpgradeableProxy')
+                        bytes('solidstate.contracts.storage.ERC1271Stored')
                     )
                 ) - 1
             )
