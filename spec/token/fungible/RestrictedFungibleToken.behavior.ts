@@ -1,7 +1,7 @@
 import {
   describeBehaviorOfFungibleTokenBase,
   FungibleTokenBaseBehaviorArgs,
-} from '../fungible';
+} from '.';
 import { describeFilter } from '@solidstate/library';
 import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';

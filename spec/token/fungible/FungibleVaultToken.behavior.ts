@@ -1,11 +1,11 @@
 import {
   describeBehaviorOfFungibleTokenBase,
   FungibleTokenBaseBehaviorArgs,
-} from '../fungible';
+} from '.';
 import {
   describeBehaviorOfFungibleTokenMetadata,
   FungibleTokenMetadataBehaviorArgs,
-} from '../fungible';
+} from '.';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import {

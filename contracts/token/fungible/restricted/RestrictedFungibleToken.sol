@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1404 } from '../../interfaces/IERC1404.sol';
-import { FungibleTokenBase } from '../fungible/base/FungibleTokenBase.sol';
-import { _FungibleTokenBase } from '../fungible/base/_FungibleTokenBase.sol';
+import { IERC1404 } from '../../../interfaces/IERC1404.sol';
+import { FungibleTokenBase } from '../../fungible/base/FungibleTokenBase.sol';
+import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
 import { IRestrictedFungibleToken } from './IRestrictedFungibleToken.sol';
 import { _RestrictedFungibleToken } from './_RestrictedFungibleToken.sol';
 
