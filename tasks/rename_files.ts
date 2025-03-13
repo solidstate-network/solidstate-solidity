@@ -6,8 +6,12 @@ import path from 'path';
 task('rename-files', 'Batch replace text in local filenames')
   .addPositionalParam('oldText', 'text to to replace', undefined, types.string)
   .addPositionalParam('newText', 'new text to insert', undefined, types.string)
-  .addFlag('write', 'write changes to disk')
+  .addFlag(
+    'global',
+    'search for text occurrences in all files (rather than only those with matching names)',
+  )
   .addFlag('noDiff', 'skip printing file diffs')
+  .addFlag('write', 'write changes to disk')
   .setAction(async (args, hre) => {
     const directories = ['./contracts', './test', './spec'];
 
@@ -22,14 +26,12 @@ task('rename-files', 'Batch replace text in local filenames')
     )
       .flat()
       .filter((f) => fs.statSync(f).isFile())
-      .filter((f) => path.basename(f).includes(args.oldText));
+      .filter((f) => args.global || path.basename(f).includes(args.oldText));
 
     if (files.length === 0) {
       console.log(`No files found matching text: ${args.oldText}`);
       return;
     }
-
-    console.log(`Found ${files.length} files to rename:`);
 
     const fileContents: { [file: string]: string } = {};
 
