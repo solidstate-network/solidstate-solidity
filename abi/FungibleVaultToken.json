@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "AddressUtils__NotContract",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "FungibleTokenBase__ApproveFromZeroAddress",
     "type": "error"
   },
@@ -46,12 +51,17 @@
   },
   {
     "inputs": [],
-    "name": "FungibleVaultTokenBase__AllowanceExceeded",
+    "name": "FungibleVaultToken__AllowanceExceeded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleVaultTokenBase__MaximumAmountExceeded",
+    "name": "FungibleVaultToken__MaximumAmountExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SafeERC20__OperationFailed",
     "type": "error"
   },
   {

@@ -9,11 +9,11 @@ import { _IFungibleTokenMetadata } from '../fungible/metadata/_IFungibleTokenMet
 /**
  * @title FungibleVaultToken base interface
  */
-interface _IFungibleVaultTokenBase is
+interface _IFungibleVaultToken is
     _IFungibleTokenBase,
     _IFungibleTokenMetadata,
     _IERC4626
 {
-    error FungibleVaultTokenBase__MaximumAmountExceeded();
-    error FungibleVaultTokenBase__AllowanceExceeded();
+    error FungibleVaultToken__MaximumAmountExceeded();
+    error FungibleVaultToken__AllowanceExceeded();
 }

@@ -10,13 +10,13 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import {
   IFungibleToken,
-  IFungibleVaultTokenBase,
+  IFungibleVaultToken,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface FungibleVaultTokenBaseBehaviorArgs
+export interface FungibleVaultTokenBehaviorArgs
   extends FungibleTokenBaseBehaviorArgs,
     FungibleTokenMetadataBehaviorArgs {
   getAsset: () => Promise<IFungibleToken>;
@@ -26,19 +26,19 @@ export interface FungibleVaultTokenBaseBehaviorArgs
   ) => Promise<ContractTransactionResponse>;
 }
 
-export function describeBehaviorOfFungibleVaultTokenBase(
-  deploy: () => Promise<IFungibleVaultTokenBase>,
-  args: FungibleVaultTokenBaseBehaviorArgs,
+export function describeBehaviorOfFungibleVaultToken(
+  deploy: () => Promise<IFungibleVaultToken>,
+  args: FungibleVaultTokenBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::FungibleVaultTokenBase', () => {
+  describe('::FungibleVaultToken', () => {
     let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
     let recipient: SignerWithAddress;
     let assetInstance: IFungibleToken;
-    let instance: IFungibleVaultTokenBase;
+    let instance: IFungibleVaultToken;
 
     before(async () => {
       [caller, depositor, recipient] = await ethers.getSigners();
@@ -513,7 +513,7 @@ export function describeBehaviorOfFungibleVaultTokenBase(
             instance.withdraw(max + 1n, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleVaultTokenBase__MaximumAmountExceeded',
+            'FungibleVaultToken__MaximumAmountExceeded',
           );
         });
 
@@ -538,7 +538,7 @@ export function describeBehaviorOfFungibleVaultTokenBase(
               .withdraw(assetAmountOut, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleVaultTokenBase__AllowanceExceeded',
+            'FungibleVaultToken__AllowanceExceeded',
           );
         });
       });
@@ -662,7 +662,7 @@ export function describeBehaviorOfFungibleVaultTokenBase(
             instance.redeem(max + 1n, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleVaultTokenBase__MaximumAmountExceeded',
+            'FungibleVaultToken__MaximumAmountExceeded',
           );
         });
 
@@ -677,7 +677,7 @@ export function describeBehaviorOfFungibleVaultTokenBase(
               .redeem(shareAmount, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleVaultTokenBase__AllowanceExceeded',
+            'FungibleVaultToken__AllowanceExceeded',
           );
         });
       });

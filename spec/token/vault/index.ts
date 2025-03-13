@@ -1,1 +1,1 @@
-export * from './FungibleVaultTokenBase.behavior';
+export * from './FungibleVaultToken.behavior';

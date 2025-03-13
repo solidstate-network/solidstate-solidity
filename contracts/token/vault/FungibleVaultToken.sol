@@ -5,15 +5,15 @@ pragma solidity ^0.8.20;
 import { IERC4626 } from '../../interfaces/IERC4626.sol';
 import { FungibleTokenBase } from '../fungible/base/FungibleTokenBase.sol';
 import { FungibleTokenMetadata } from '../fungible/metadata/FungibleTokenMetadata.sol';
-import { IFungibleVaultTokenBase } from './IFungibleVaultTokenBase.sol';
-import { _FungibleVaultTokenBase } from './_FungibleVaultTokenBase.sol';
+import { IFungibleVaultToken } from './IFungibleVaultToken.sol';
+import { _FungibleVaultToken } from './_FungibleVaultToken.sol';
 
 /**
  * @title Base FungibleVaultToken implementation
  */
-abstract contract FungibleVaultTokenBase is
-    IFungibleVaultTokenBase,
-    _FungibleVaultTokenBase,
+abstract contract FungibleVaultToken is
+    IFungibleVaultToken,
+    _FungibleVaultToken,
     FungibleTokenBase,
     FungibleTokenMetadata
 {

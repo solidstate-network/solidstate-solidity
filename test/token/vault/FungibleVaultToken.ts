@@ -1,8 +1,8 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfFungibleVaultTokenBase } from '@solidstate/spec';
+import { describeBehaviorOfFungibleVaultToken } from '@solidstate/spec';
 import {
-  $FungibleVaultTokenBase,
-  $FungibleVaultTokenBase__factory,
+  $FungibleVaultToken,
+  $FungibleVaultToken__factory,
   $SolidstateFungibleToken,
   $SolidstateFungibleToken__factory,
 } from '@solidstate/typechain-types';
@@ -12,10 +12,10 @@ const name = 'FungibleTokenMetadata.name';
 const symbol = 'FungibleTokenMetadata.symbol';
 const decimals = 18n;
 
-describe('FungibleVaultTokenBase', () => {
+describe('FungibleVaultToken', () => {
   let deployer: SignerWithAddress;
   let depositor: SignerWithAddress;
-  let instance: $FungibleVaultTokenBase;
+  let instance: $FungibleVaultToken;
   let assetInstance: $SolidstateFungibleToken;
 
   before(async () => {
@@ -27,7 +27,7 @@ describe('FungibleVaultTokenBase', () => {
       deployer,
     ).deploy();
 
-    instance = await new $FungibleVaultTokenBase__factory(deployer).deploy();
+    instance = await new $FungibleVaultToken__factory(deployer).deploy();
 
     await instance.$_setAsset(await assetInstance.getAddress());
 
@@ -36,7 +36,7 @@ describe('FungibleVaultTokenBase', () => {
     await instance.$_setDecimals(decimals);
   });
 
-  describeBehaviorOfFungibleVaultTokenBase(async () => instance, {
+  describeBehaviorOfFungibleVaultToken(async () => instance, {
     getAsset: async () => assetInstance,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>

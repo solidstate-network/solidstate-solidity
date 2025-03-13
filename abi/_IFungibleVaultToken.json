@@ -46,12 +46,12 @@
   },
   {
     "inputs": [],
-    "name": "FungibleVaultTokenBase__AllowanceExceeded",
+    "name": "FungibleVaultToken__AllowanceExceeded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleVaultTokenBase__MaximumAmountExceeded",
+    "name": "FungibleVaultToken__MaximumAmountExceeded",
     "type": "error"
   },
   {

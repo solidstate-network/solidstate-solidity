@@ -6,14 +6,14 @@ import { IERC20 } from '../../interfaces/IERC20.sol';
 import { SafeERC20 } from '../../utils/SafeERC20.sol';
 import { _FungibleTokenBase } from '../fungible/base/_FungibleTokenBase.sol';
 import { _FungibleTokenMetadata } from '../fungible/metadata/_FungibleTokenMetadata.sol';
-import { _IFungibleVaultTokenBase } from './_IFungibleVaultTokenBase.sol';
+import { _IFungibleVaultToken } from './_IFungibleVaultToken.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base FungibleVaultToken internal functions
  */
-abstract contract _FungibleVaultTokenBase is
-    _IFungibleVaultTokenBase,
+abstract contract _FungibleVaultToken is
+    _IFungibleVaultToken,
     _FungibleTokenBase,
     _FungibleTokenMetadata
 {
@@ -195,7 +195,7 @@ abstract contract _FungibleVaultTokenBase is
         address receiver
     ) internal virtual returns (uint256 shareAmount) {
         if (assetAmount > _maxDeposit(receiver))
-            revert FungibleVaultTokenBase__MaximumAmountExceeded();
+            revert FungibleVaultToken__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -213,7 +213,7 @@ abstract contract _FungibleVaultTokenBase is
         address receiver
     ) internal virtual returns (uint256 assetAmount) {
         if (shareAmount > _maxMint(receiver))
-            revert FungibleVaultTokenBase__MaximumAmountExceeded();
+            revert FungibleVaultToken__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -233,7 +233,7 @@ abstract contract _FungibleVaultTokenBase is
         address owner
     ) internal virtual returns (uint256 shareAmount) {
         if (assetAmount > _maxWithdraw(owner))
-            revert FungibleVaultTokenBase__MaximumAmountExceeded();
+            revert FungibleVaultToken__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -253,7 +253,7 @@ abstract contract _FungibleVaultTokenBase is
         address owner
     ) internal virtual returns (uint256 assetAmount) {
         if (shareAmount > _maxRedeem(owner))
-            revert FungibleVaultTokenBase__MaximumAmountExceeded();
+            revert FungibleVaultToken__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -347,7 +347,7 @@ abstract contract _FungibleVaultTokenBase is
             uint256 allowance = _allowance(owner, caller);
 
             if (shareAmount > allowance)
-                revert FungibleVaultTokenBase__AllowanceExceeded();
+                revert FungibleVaultToken__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);
