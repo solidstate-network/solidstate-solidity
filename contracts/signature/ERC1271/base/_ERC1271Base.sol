@@ -30,7 +30,7 @@ abstract contract _ERC1271Base is _IERC1271Base {
                 : bytes4(0);
     }
 
-    function _setValidSignature(bytes32 hash, bool status) internal {
+    function _setValidSignature(bytes32 hash, bool status) internal virtual {
         ERC1271StoredStorage
             .layout(ERC1271StoredStorage.DEFAULT_STORAGE_SLOT)
             .hashes[hash] = status;
