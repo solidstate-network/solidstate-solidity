@@ -1,10 +1,9 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfERC4626Base } from '@solidstate/spec';
+import { describeBehaviorOfSolidstateERC4626 } from '@solidstate/spec';
 import {
-  $ERC4626Base,
-  $ERC4626Base__factory,
   $SolidstateERC20,
   $SolidstateERC20__factory,
+  $SolidstateERC4626,
+  $SolidstateERC4626__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
@@ -12,20 +11,16 @@ const name = 'ERC20Metadata.name';
 const symbol = 'ERC20Metadata.symbol';
 const decimals = 18n;
 
-describe('ERC4626Base', () => {
-  let deployer: SignerWithAddress;
-  let depositor: SignerWithAddress;
-  let instance: $ERC4626Base;
+describe('SolidstateERC4626', () => {
   let assetInstance: $SolidstateERC20;
-
-  before(async () => {
-    [deployer, depositor] = await ethers.getSigners();
-  });
+  let instance: $SolidstateERC4626;
 
   beforeEach(async () => {
+    const [deployer] = await ethers.getSigners();
+
     assetInstance = await new $SolidstateERC20__factory(deployer).deploy();
 
-    instance = await new $ERC4626Base__factory(deployer).deploy();
+    instance = await new $SolidstateERC4626__factory(deployer).deploy();
 
     await instance.$_setAsset(await assetInstance.getAddress());
 
@@ -34,17 +29,18 @@ describe('ERC4626Base', () => {
     await instance.$_setDecimals(decimals);
   });
 
-  describeBehaviorOfERC4626Base(async () => instance, {
+  describeBehaviorOfSolidstateERC4626(async () => instance, {
     getAsset: async () => assetInstance,
-    supply: 0n,
-    mint: (recipient: string, amount: bigint) =>
+    mint: (recipient, amount) =>
       instance['$_mint(address,uint256)'](recipient, amount),
-    burn: (recipient: string, amount: bigint) =>
-      instance.$_burn(recipient, amount),
+    burn: (recipient, amount) => instance.$_burn(recipient, amount),
+    allowance: (holder, spender) =>
+      instance.allowance.staticCall(holder, spender),
     mintAsset: (recipient: string, amount: bigint) =>
       assetInstance.$_mint(recipient, amount),
     name,
     symbol,
     decimals,
+    supply: 0n,
   });
 });
