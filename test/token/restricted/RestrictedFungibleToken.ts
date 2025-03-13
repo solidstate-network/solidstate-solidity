@@ -1,7 +1,7 @@
-import { describeBehaviorOfERC1404Base } from '@solidstate/spec';
+import { describeBehaviorOfRestrictedFungibleToken } from '@solidstate/spec';
 import {
-  $ERC1404Base,
-  $ERC1404Base__factory,
+  $RestrictedFungibleToken,
+  $RestrictedFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -11,19 +11,19 @@ const restrictions = [
   { code: 3n, message: 'three' },
 ];
 
-describe('ERC1404Base', () => {
-  let instance: $ERC1404Base;
+describe('RestrictedFungibleToken', () => {
+  let instance: $RestrictedFungibleToken;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $ERC1404Base__factory(deployer).deploy();
+    instance = await new $RestrictedFungibleToken__factory(deployer).deploy();
     await instance.$_setRestrictions(
       restrictions.map((e) => e.code),
       restrictions.map((e) => e.message),
     );
   });
 
-  describeBehaviorOfERC1404Base(async () => instance, {
+  describeBehaviorOfRestrictedFungibleToken(async () => instance, {
     restrictions,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>
@@ -51,7 +51,7 @@ describe('ERC1404Base', () => {
             instance.$_setRestrictions([0n], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC1404Base__ArrayLengthMismatch',
+            'RestrictedFungibleToken__ArrayLengthMismatch',
           );
         });
       });

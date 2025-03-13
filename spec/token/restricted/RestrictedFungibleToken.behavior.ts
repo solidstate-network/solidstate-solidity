@@ -3,23 +3,24 @@ import {
   FungibleTokenBaseBehaviorArgs,
 } from '../fungible';
 import { describeFilter } from '@solidstate/library';
-import { IERC1404Base } from '@solidstate/typechain-types';
+import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface ERC1404BaseBehaviorArgs extends FungibleTokenBaseBehaviorArgs {
+export interface RestrictedFungibleTokenBehaviorArgs
+  extends FungibleTokenBaseBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
 }
 
-export function describeBehaviorOfERC1404Base(
-  deploy: () => Promise<IERC1404Base>,
-  args: ERC1404BaseBehaviorArgs,
+export function describeBehaviorOfRestrictedFungibleToken(
+  deploy: () => Promise<IRestrictedFungibleToken>,
+  args: RestrictedFungibleTokenBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1404Base', () => {
-    let instance: IERC1404Base;
+  describe('::RestrictedFungibleToken', () => {
+    let instance: IRestrictedFungibleToken;
 
     beforeEach(async () => {
       instance = await deploy();

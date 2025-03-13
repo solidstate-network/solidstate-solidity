@@ -2,15 +2,18 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1404 } from '../../../interfaces/IERC1404.sol';
-import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
-import { _IERC1404Base } from './_IERC1404Base.sol';
+import { IERC1404 } from '../../interfaces/IERC1404.sol';
+import { _FungibleTokenBase } from '../fungible/base/_FungibleTokenBase.sol';
+import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
 import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
 
 /**
  * @title Base ERC1404 internal functions
  */
-abstract contract _ERC1404Base is _IERC1404Base, _FungibleTokenBase {
+abstract contract _RestrictedFungibleToken is
+    _IRestrictedFungibleToken,
+    _FungibleTokenBase
+{
     /**
      * @notice define restriction codes and their associated messages
      * @param restrictionCodes list of restriction codes whose messages to set
@@ -21,7 +24,7 @@ abstract contract _ERC1404Base is _IERC1404Base, _FungibleTokenBase {
         string[] memory restrictionMessages
     ) internal {
         if (restrictionCodes.length != restrictionMessages.length)
-            revert ERC1404Base__ArrayLengthMismatch();
+            revert RestrictedFungibleToken__ArrayLengthMismatch();
 
         mapping(uint8 => string) storage restrictions = ERC1404BaseStorage
             .layout(ERC1404BaseStorage.DEFAULT_STORAGE_SLOT)
