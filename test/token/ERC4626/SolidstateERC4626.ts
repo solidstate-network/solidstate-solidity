@@ -1,24 +1,26 @@
 import { describeBehaviorOfSolidstateERC4626 } from '@solidstate/spec';
 import {
-  $SolidstateERC20,
-  $SolidstateERC20__factory,
+  $SolidstateFungibleToken,
+  $SolidstateFungibleToken__factory,
   $SolidstateERC4626,
   $SolidstateERC4626__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-const name = 'ERC20Metadata.name';
-const symbol = 'ERC20Metadata.symbol';
+const name = 'FungibleTokenMetadata.name';
+const symbol = 'FungibleTokenMetadata.symbol';
 const decimals = 18n;
 
 describe('SolidstateERC4626', () => {
-  let assetInstance: $SolidstateERC20;
+  let assetInstance: $SolidstateFungibleToken;
   let instance: $SolidstateERC4626;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    assetInstance = await new $SolidstateERC20__factory(deployer).deploy();
+    assetInstance = await new $SolidstateFungibleToken__factory(
+      deployer,
+    ).deploy();
 
     instance = await new $SolidstateERC4626__factory(deployer).deploy();
 

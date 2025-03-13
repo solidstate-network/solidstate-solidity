@@ -6,47 +6,47 @@
   },
   {
     "inputs": [],
-    "name": "ERC20Base__ApproveFromZeroAddress",
+    "name": "FungibleTokenBase__ApproveFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__ApproveToZeroAddress",
+    "name": "FungibleTokenBase__ApproveToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__BurnExceedsBalance",
+    "name": "FungibleTokenBase__BurnExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__BurnFromZeroAddress",
+    "name": "FungibleTokenBase__BurnFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__InsufficientAllowance",
+    "name": "FungibleTokenBase__InsufficientAllowance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__MintToZeroAddress",
+    "name": "FungibleTokenBase__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__TransferExceedsBalance",
+    "name": "FungibleTokenBase__TransferExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__TransferFromZeroAddress",
+    "name": "FungibleTokenBase__TransferFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ERC20Base__TransferToZeroAddress",
+    "name": "FungibleTokenBase__TransferToZeroAddress",
     "type": "error"
   },
   {

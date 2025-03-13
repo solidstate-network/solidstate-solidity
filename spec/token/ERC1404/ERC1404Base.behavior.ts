@@ -1,10 +1,13 @@
-import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
+import {
+  describeBehaviorOfFungibleTokenBase,
+  FungibleTokenBaseBehaviorArgs,
+} from '../fungible';
 import { describeFilter } from '@solidstate/library';
 import { IERC1404Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface ERC1404BaseBehaviorArgs extends ERC20BaseBehaviorArgs {
+export interface ERC1404BaseBehaviorArgs extends FungibleTokenBaseBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
 }
 
@@ -22,7 +25,7 @@ export function describeBehaviorOfERC1404Base(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(deploy, args, skips);
+    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
 
     describe('#detectTransferRestriction(address,address,uint256)', () => {
       it('returns zero if no restriction exists', async () => {

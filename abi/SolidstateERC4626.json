@@ -21,77 +21,77 @@
   },
   {
     "inputs": [],
-    "name": "ERC20Base__ApproveFromZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__ApproveToZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__BurnExceedsBalance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__BurnFromZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__InsufficientAllowance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__MintToZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__TransferExceedsBalance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__TransferFromZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Base__TransferToZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Extended__ExcessiveAllowance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Extended__InsufficientAllowance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Permit__ExpiredDeadline",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC20Permit__InvalidSignature",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "ERC4626Base__AllowanceExceeded",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "ERC4626Base__MaximumAmountExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__ApproveFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__ApproveToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__BurnExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__BurnFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__InsufficientAllowance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__TransferExceedsBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__TransferFromZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenBase__TransferToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenExtended__ExcessiveAllowance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenExtended__InsufficientAllowance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenPermit__ExpiredDeadline",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FungibleTokenPermit__InvalidSignature",
     "type": "error"
   },
   {

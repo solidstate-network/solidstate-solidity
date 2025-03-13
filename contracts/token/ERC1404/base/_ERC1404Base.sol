@@ -3,14 +3,14 @@
 pragma solidity ^0.8.20;
 
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
-import { _ERC20Base } from '../../ERC20/base/_ERC20Base.sol';
+import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
 import { _IERC1404Base } from './_IERC1404Base.sol';
 import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
 
 /**
  * @title Base ERC1404 internal functions
  */
-abstract contract _ERC1404Base is _IERC1404Base, _ERC20Base {
+abstract contract _ERC1404Base is _IERC1404Base, _FungibleTokenBase {
     /**
      * @notice define restriction codes and their associated messages
      * @param restrictionCodes list of restriction codes whose messages to set
@@ -64,7 +64,7 @@ abstract contract _ERC1404Base is _IERC1404Base, _ERC20Base {
 
     /**
      * @notice ERC20 hook: detect and handle transfer restriction
-     * @inheritdoc _ERC20Base
+     * @inheritdoc _FungibleTokenBase
      */
     function _beforeTokenTransfer(
         address from,

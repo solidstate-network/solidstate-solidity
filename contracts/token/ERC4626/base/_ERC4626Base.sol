@@ -4,15 +4,19 @@ pragma solidity ^0.8.20;
 
 import { IERC20 } from '../../../interfaces/IERC20.sol';
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
-import { _ERC20Base } from '../../ERC20/base/_ERC20Base.sol';
-import { _ERC20Metadata } from '../../ERC20/metadata/_ERC20Metadata.sol';
+import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
+import { _FungibleTokenMetadata } from '../../fungible/metadata/_FungibleTokenMetadata.sol';
 import { _IERC4626Base } from './_IERC4626Base.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
  * @title Base ERC4626 internal functions
  */
-abstract contract _ERC4626Base is _IERC4626Base, _ERC20Base, _ERC20Metadata {
+abstract contract _ERC4626Base is
+    _IERC4626Base,
+    _FungibleTokenBase,
+    _FungibleTokenMetadata
+{
     using SafeERC20 for IERC20;
 
     /**

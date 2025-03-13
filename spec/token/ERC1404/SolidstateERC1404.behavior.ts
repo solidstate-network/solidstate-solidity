@@ -1,7 +1,7 @@
 import {
-  describeBehaviorOfSolidstateERC20,
-  SolidstateERC20BehaviorArgs,
-} from '../ERC20';
+  describeBehaviorOfSolidstateFungibleToken,
+  SolidstateFungibleTokenBehaviorArgs,
+} from '../fungible';
 import {
   describeBehaviorOfERC1404Base,
   ERC1404BaseBehaviorArgs,
@@ -10,7 +10,7 @@ import { describeFilter } from '@solidstate/library';
 import { ISolidstateERC1404 } from '@solidstate/typechain-types';
 
 export interface SolidstateERC1404BehaviorArgs
-  extends SolidstateERC20BehaviorArgs,
+  extends SolidstateFungibleTokenBehaviorArgs,
     ERC1404BaseBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateERC1404(
@@ -21,10 +21,10 @@ export function describeBehaviorOfSolidstateERC1404(
   const describe = describeFilter(skips);
 
   describe('::SolidstateERC1404', () => {
-    describeBehaviorOfSolidstateERC20(deploy, args, skips);
+    describeBehaviorOfSolidstateFungibleToken(deploy, args, skips);
 
     describeBehaviorOfERC1404Base(deploy, args, [
-      '::ERC20Base',
+      '::FungibleTokenBase',
       ...(skips ?? []),
     ]);
   });

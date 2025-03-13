@@ -3,15 +3,15 @@
 pragma solidity ^0.8.20;
 
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
-import { ERC20Base } from '../../ERC20/base/ERC20Base.sol';
-import { _ERC20Base } from '../../ERC20/base/_ERC20Base.sol';
+import { FungibleTokenBase } from '../../fungible/base/FungibleTokenBase.sol';
+import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
 import { IERC1404Base } from './IERC1404Base.sol';
 import { _ERC1404Base } from './_ERC1404Base.sol';
 
 /**
  * @title Base ERC1404 implementation
  */
-abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, ERC20Base {
+abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, FungibleTokenBase {
     /**
      * @inheritdoc IERC1404
      */
@@ -41,7 +41,7 @@ abstract contract ERC1404Base is IERC1404Base, _ERC1404Base, ERC20Base {
         address from,
         address to,
         uint256 amount
-    ) internal virtual override(_ERC1404Base, _ERC20Base) {
+    ) internal virtual override(_ERC1404Base, _FungibleTokenBase) {
         super._beforeTokenTransfer(from, to, amount);
     }
 }

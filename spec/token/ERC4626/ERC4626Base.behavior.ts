@@ -1,19 +1,22 @@
-import { describeBehaviorOfERC20Base, ERC20BaseBehaviorArgs } from '../ERC20';
 import {
-  describeBehaviorOfERC20Metadata,
-  ERC20MetadataBehaviorArgs,
-} from '../ERC20';
+  describeBehaviorOfFungibleTokenBase,
+  FungibleTokenBaseBehaviorArgs,
+} from '../fungible';
+import {
+  describeBehaviorOfFungibleTokenMetadata,
+  FungibleTokenMetadataBehaviorArgs,
+} from '../fungible';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IERC20, IERC4626Base } from '@solidstate/typechain-types';
+import { IFungibleToken, IERC4626Base } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface ERC4626BaseBehaviorArgs
-  extends ERC20BaseBehaviorArgs,
-    ERC20MetadataBehaviorArgs {
-  getAsset: () => Promise<IERC20>;
+  extends FungibleTokenBaseBehaviorArgs,
+    FungibleTokenMetadataBehaviorArgs {
+  getAsset: () => Promise<IFungibleToken>;
   mintAsset: (
     address: string,
     amount: bigint,
@@ -31,7 +34,7 @@ export function describeBehaviorOfERC4626Base(
     let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
     let recipient: SignerWithAddress;
-    let assetInstance: IERC20;
+    let assetInstance: IFungibleToken;
     let instance: IERC4626Base;
 
     before(async () => {
@@ -43,9 +46,9 @@ export function describeBehaviorOfERC4626Base(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC20Base(deploy, args, skips);
+    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
 
-    describeBehaviorOfERC20Metadata(deploy, args, skips);
+    describeBehaviorOfFungibleTokenMetadata(deploy, args, skips);
 
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {

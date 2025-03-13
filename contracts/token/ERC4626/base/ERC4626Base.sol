@@ -4,8 +4,8 @@ pragma solidity ^0.8.20;
 
 import { IERC4626 } from '../../../interfaces/IERC4626.sol';
 import { IERC4626 } from '../../../interfaces/IERC4626.sol';
-import { ERC20Base } from '../../ERC20/base/ERC20Base.sol';
-import { ERC20Metadata } from '../../ERC20/metadata/ERC20Metadata.sol';
+import { FungibleTokenBase } from '../../fungible/base/FungibleTokenBase.sol';
+import { FungibleTokenMetadata } from '../../fungible/metadata/FungibleTokenMetadata.sol';
 import { IERC4626Base } from './IERC4626Base.sol';
 import { _ERC4626Base } from './_ERC4626Base.sol';
 
@@ -15,8 +15,8 @@ import { _ERC4626Base } from './_ERC4626Base.sol';
 abstract contract ERC4626Base is
     IERC4626Base,
     _ERC4626Base,
-    ERC20Base,
-    ERC20Metadata
+    FungibleTokenBase,
+    FungibleTokenMetadata
 {
     /**
      * @inheritdoc IERC4626
