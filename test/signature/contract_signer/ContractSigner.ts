@@ -1,7 +1,7 @@
-import { describeBehaviorOfERC1271Base } from '@solidstate/spec';
+import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import {
-  $ERC1271Base,
-  $ERC1271Base__factory,
+  $ContractSigner,
+  $ContractSigner__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -16,16 +16,16 @@ const invalidParams: [Uint8Array, Uint8Array] = [
   ethers.randomBytes(0),
 ];
 
-describe('ERC1271Base', () => {
-  let instance: $ERC1271Base;
+describe('ContractSigner', () => {
+  let instance: $ContractSigner;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $ERC1271Base__factory(deployer).deploy();
+    instance = await new $ContractSigner__factory(deployer).deploy();
     await instance.$_setValidSignature(validParams[0], true);
   });
 
-  describeBehaviorOfERC1271Base(async () => instance as any, {
+  describeBehaviorOfContractSigner(async () => instance as any, {
     getValidParams: async () => validParams,
     getInvalidParams: async () => invalidParams,
   });

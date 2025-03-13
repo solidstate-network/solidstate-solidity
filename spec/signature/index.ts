@@ -1,1 +1,1 @@
-export * from './ERC1271';
+export * from './contract_signer';

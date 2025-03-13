@@ -1,22 +1,22 @@
-import { describeBehaviorOfERC1271Base } from '../base/ERC1271Base.behavior';
+import { describeBehaviorOfContractSigner } from './ContractSigner.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IERC1271Ownable } from '@solidstate/typechain-types';
+import { IContractSignerOwnable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-export interface ERC1271OwnableBehaviorArgs {
+export interface ContractSignerOwnableBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
-export function describeBehaviorOfERC1271Ownable(
-  deploy: () => Promise<IERC1271Ownable>,
-  args: ERC1271OwnableBehaviorArgs,
+export function describeBehaviorOfContractSignerOwnable(
+  deploy: () => Promise<IContractSignerOwnable>,
+  args: ContractSignerOwnableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC1271Ownable', () => {
+  describe('::ContractSignerOwnable', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
@@ -26,7 +26,7 @@ export function describeBehaviorOfERC1271Ownable(
     });
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC1271Base(
+    describeBehaviorOfContractSigner(
       deploy,
       {
         getValidParams: async () => {

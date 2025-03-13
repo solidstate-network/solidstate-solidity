@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: this storage library is now referenced by ERC1271Base, so should be renamed
+// TODO: this storage library is now referenced by ContractSigner, so should be renamed
 library ERC1271StoredStorage {
     /**
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271Stored

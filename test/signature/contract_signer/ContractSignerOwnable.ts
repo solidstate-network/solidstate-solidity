@@ -1,27 +1,27 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfERC1271Ownable } from '@solidstate/spec';
+import { describeBehaviorOfContractSignerOwnable } from '@solidstate/spec';
 import {
-  $ERC1271Ownable,
-  $ERC1271Ownable__factory,
+  $ContractSignerOwnable,
+  $ContractSignerOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC1271Ownable', () => {
+describe('ContractSignerOwnable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: $ERC1271Ownable;
+  let instance: $ContractSignerOwnable;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new $ERC1271Ownable__factory(owner).deploy();
+    instance = await new $ContractSignerOwnable__factory(owner).deploy();
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describeBehaviorOfERC1271Ownable(async () => instance as any, {
+  describeBehaviorOfContractSignerOwnable(async () => instance as any, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

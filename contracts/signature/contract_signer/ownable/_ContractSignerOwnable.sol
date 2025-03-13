@@ -4,17 +4,21 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
-import { _ERC1271Base } from '../base/_ERC1271Base.sol';
-import { _IERC1271Ownable } from './_IERC1271Ownable.sol';
+import { _ContractSigner } from '../_ContractSigner.sol';
+import { _IContractSignerOwnable } from './_IContractSignerOwnable.sol';
 
 /**
- * @title ERC1271Ownable internal functions
+ * @title ContractSignerOwnable internal functions
  */
-abstract contract _ERC1271Ownable is _IERC1271Ownable, _ERC1271Base, _Ownable {
+abstract contract _ContractSignerOwnable is
+    _IContractSignerOwnable,
+    _ContractSigner,
+    _Ownable
+{
     using ECDSA for bytes32;
 
     /**
-     * @inheritdoc _ERC1271Base
+     * @inheritdoc _ContractSigner
      * @notice return whether given signature is signed by contract owner
      */
     function _isValidSignature(

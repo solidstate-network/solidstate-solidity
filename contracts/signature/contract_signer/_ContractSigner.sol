@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1271 } from '../../../interfaces/IERC1271.sol';
+import { IERC1271 } from '../../interfaces/IERC1271.sol';
 import { ERC1271StoredStorage } from './ERC1271StoredStorage.sol';
-import { _IERC1271Base } from './_IERC1271Base.sol';
+import { _IContractSigner } from './_IContractSigner.sol';
 
 /**
- * @title ERC1271Base internal functions
+ * @title ContractSigner internal functions
  */
-abstract contract _ERC1271Base is _IERC1271Base {
+abstract contract _ContractSigner is _IContractSigner {
     bytes4 internal constant MAGIC_VALUE = IERC1271.isValidSignature.selector;
 
     /**
