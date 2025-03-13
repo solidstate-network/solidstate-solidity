@@ -43,11 +43,12 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
       ),
     );
 
+    let count = 0;
+
     for (const oldName of files) {
       const newName = oldName.replaceAll(args.oldText, args.newText);
 
       const oldContents = fileContents[oldName];
-
       const newContents = oldContents.replaceAll(args.oldText, args.newText);
 
       if (oldName !== newName || oldContents !== newContents) {
@@ -77,6 +78,12 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
             newContents,
           );
         }
+
+        count++;
       }
+    }
+
+    if (args.write) {
+      console.log(`Updated ${count} files.`);
     }
   });
