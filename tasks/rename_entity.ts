@@ -71,7 +71,6 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
 
         if (args.write) {
           await fs.promises.rm(oldName);
-          await deleteEmpty(path.dirname(oldName));
           await fs.promises.mkdir(path.dirname(newName), { recursive: true });
           await fs.promises.writeFile(
             path.resolve(hre.config.paths.root, newName),
@@ -85,5 +84,9 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
 
     if (args.write) {
       console.log(`Updated ${count} files.`);
+
+      for (const directory of directories) {
+        await deleteEmpty(path.resolve(hre.config.paths.root, directory));
+      }
     }
   });
