@@ -2,4 +2,4 @@
 
 pragma solidity ^0.8.20;
 
-interface _IERC20MetadataStandard {}
+interface _IERC20Metadata {}

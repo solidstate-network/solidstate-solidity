@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20MetadataStandard } from '../../../interfaces/IERC20MetadataStandard.sol';
+import { IERC20Metadata } from '../../../interfaces/IERC20Metadata.sol';
 import { IFungibleTokenMetadata } from './IFungibleTokenMetadata.sol';
 import { _FungibleTokenMetadata } from './_FungibleTokenMetadata.sol';
 
@@ -14,21 +14,21 @@ abstract contract FungibleTokenMetadata is
     _FungibleTokenMetadata
 {
     /**
-     * @inheritdoc IERC20MetadataStandard
+     * @inheritdoc IERC20Metadata
      */
     function name() external view returns (string memory) {
         return _name();
     }
 
     /**
-     * @inheritdoc IERC20MetadataStandard
+     * @inheritdoc IERC20Metadata
      */
     function symbol() external view returns (string memory) {
         return _symbol();
     }
 
     /**
-     * @inheritdoc IERC20MetadataStandard
+     * @inheritdoc IERC20Metadata
      */
     function decimals() external view returns (uint8) {
         return _decimals();
