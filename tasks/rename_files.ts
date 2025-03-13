@@ -1,4 +1,5 @@
 import fs from 'fs';
+import gitDiff from 'git-diff';
 import { task, types } from 'hardhat/config';
 import path from 'path';
 
@@ -6,6 +7,7 @@ task('rename-files', 'Batch replace text in local filenames')
   .addPositionalParam('oldText', 'text to to replace', undefined, types.string)
   .addPositionalParam('newText', 'new text to insert', undefined, types.string)
   .addFlag('write', 'write changes to disk')
+  .addFlag('noDiff', 'skip printing file diffs')
   .setAction(async (args, hre) => {
     const directories = ['./contracts', './test', './spec'];
 
@@ -44,16 +46,18 @@ task('rename-files', 'Batch replace text in local filenames')
         path.basename(oldName).replace(args.oldText, args.newText),
       );
 
-      const newContents = fileContents[oldName].replaceAll(
-        args.oldText,
-        args.newText,
-      );
+      const oldContents = fileContents[oldName];
 
-      console.log(
-        path.relative('.', oldName),
-        '=>',
-        path.relative('.', newName),
-      );
+      const newContents = oldContents.replaceAll(args.oldText, args.newText);
+
+      if (!args.skipDiff) {
+        console.log(
+          `diff --git a/${path.relative('.', oldName)} b/${path.relative('.', newName)}`,
+        );
+        console.log('---', path.relative('.', oldName));
+        console.log('+++', path.relative('.', newName));
+        console.log(gitDiff(oldContents, newContents, { color: true }));
+      }
 
       if (args.write) {
         await fs.promises.writeFile(oldName, newContents);
