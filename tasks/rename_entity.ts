@@ -43,7 +43,8 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
       ),
     );
 
-    let count = 0;
+    let nameChangedCount = 0;
+    let contentsChangedCount = 0;
 
     for (const oldName of files) {
       const newName = oldName.replaceAll(args.oldText, args.newText);
@@ -51,18 +52,22 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
       const oldContents = fileContents[oldName];
       const newContents = oldContents.replaceAll(args.oldText, args.newText);
 
-      if (oldName !== newName || oldContents !== newContents) {
+      const nameChanged = newName !== oldName;
+      const contentsChanged = newContents !== oldContents;
+
+      if (nameChanged || contentsChanged) {
         if (!args.skipDiff) {
           console.log(`diff --git a/${oldName} b/${newName}`);
 
           if (oldName !== newName) {
+            nameChangedCount++;
             console.log(`rename from ${oldName}`);
             console.log(`rename to ${newName}`);
           }
 
-          const diff = gitDiff(oldContents, newContents, { color: true });
-
-          if (diff) {
+          if (contentsChanged) {
+            contentsChangedCount++;
+            const diff = gitDiff(oldContents, newContents, { color: true });
             console.log('---', oldName);
             console.log('+++', newName);
             console.log(diff);
@@ -78,15 +83,19 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
           );
         }
 
-        count++;
+        nameChangedCount++;
       }
     }
 
     if (args.write) {
-      console.log(`Updated ${count} files.`);
-
       for (const directory of directories) {
         await deleteEmpty(path.resolve(hre.config.paths.root, directory));
       }
+    }
+
+    console.log(`${nameChangedCount} files renamed`);
+    console.log(`${contentsChangedCount} files modified`);
+    if (!args.write) {
+      console.log('No changes written to disk (use --write flag)');
     }
   });
