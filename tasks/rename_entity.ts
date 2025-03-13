@@ -4,7 +4,7 @@ import gitDiff from 'git-diff';
 import { task, types } from 'hardhat/config';
 import path from 'path';
 
-task('rename-files', 'Batch replace text in local filenames')
+task('rename-entity', 'Batch replace text in local filenames and contents')
   .addPositionalParam('oldText', 'text to to replace', undefined, types.string)
   .addPositionalParam('newText', 'new text to insert', undefined, types.string)
   .addFlag(
