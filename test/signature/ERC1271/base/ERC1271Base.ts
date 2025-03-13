@@ -1,7 +1,7 @@
-import { describeBehaviorOfERC1271Stored } from '@solidstate/spec';
+import { describeBehaviorOfERC1271Base } from '@solidstate/spec';
 import {
-  $ERC1271Stored,
-  $ERC1271Stored__factory,
+  $ERC1271Base,
+  $ERC1271Base__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -11,17 +11,23 @@ const validParams: [Uint8Array, Uint8Array] = [
   ethers.randomBytes(0),
 ];
 
-describe('ERC1271Stored', () => {
-  let instance: $ERC1271Stored;
+const invalidParams: [Uint8Array, Uint8Array] = [
+  ethers.randomBytes(32),
+  ethers.randomBytes(0),
+];
+
+describe('ERC1271Base', () => {
+  let instance: $ERC1271Base;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $ERC1271Stored__factory(deployer).deploy();
+    instance = await new $ERC1271Base__factory(deployer).deploy();
     await instance.$_setValidSignature(validParams[0], true);
   });
 
-  describeBehaviorOfERC1271Stored(async () => instance as any, {
+  describeBehaviorOfERC1271Base(async () => instance as any, {
     getValidParams: async () => validParams,
+    getInvalidParams: async () => invalidParams,
   });
 
   describe('__internal', () => {
