@@ -52,14 +52,18 @@ task('rename-files', 'Batch replace text in local filenames')
       if (oldName !== newName || oldContents !== newContents) {
         if (!args.skipDiff) {
           console.log(`diff --git a/${oldName} b/${newName}`);
-          console.log('---', oldName);
-          console.log('+++', newName);
-          const diff = gitDiff(oldContents, newContents, { color: true });
-          if (diff) {
-            console.log(diff);
-          } else {
+
+          if (oldName !== newName) {
             console.log(`rename from ${oldName}`);
             console.log(`rename to ${newName}`);
+          }
+
+          const diff = gitDiff(oldContents, newContents, { color: true });
+
+          if (diff) {
+            console.log('---', oldName);
+            console.log('+++', newName);
+            console.log(diff);
           }
         }
 
