@@ -1,3 +1,4 @@
+import deleteEmpty from 'delete-empty';
 import fs from 'fs';
 import gitDiff from 'git-diff';
 import { task, types } from 'hardhat/config';
@@ -69,7 +70,12 @@ task('rename-files', 'Batch replace text in local filenames')
 
         if (args.write) {
           await fs.promises.rm(oldName);
-          await fs.promises.writeFile(newName, newContents);
+          await deleteEmpty(path.dirname(oldName));
+          await fs.promises.mkdir(path.dirname(newName), { recursive: true });
+          await fs.promises.writeFile(
+            path.resolve(hre.config.paths.root, newName),
+            newContents,
+          );
         }
       }
     }

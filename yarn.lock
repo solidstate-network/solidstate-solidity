@@ -1508,6 +1508,11 @@
   resolved "https://registry.yarnpkg.com/@types/deep-eql/-/deep-eql-4.0.2.tgz#334311971d3a07121e7eb91b684a605e7eea9cbd"
   integrity sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==
 
+"@types/delete-empty@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@types/delete-empty/-/delete-empty-3.0.5.tgz#03ae6a38f9c805d8f31ef5e5210c65e040bf56eb"
+  integrity sha512-/7fn2o9NpN6GhAfa2enr17kgcO7Bi49j8vj08eSJ4vCh9RgSUPyQft45XLHSCBhlselWl21p7Kl5a0y79qWzqw==
+
 "@types/git-diff@^2.0.7":
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@types/git-diff/-/git-diff-2.0.7.tgz#533b2fc74c4739440900808e8960124de87feb24"
