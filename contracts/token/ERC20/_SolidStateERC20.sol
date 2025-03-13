@@ -9,7 +9,7 @@ import { _ERC20Permit } from './permit/_ERC20Permit.sol';
 import { _ISolidStateERC20 } from './_ISolidStateERC20.sol';
 
 /**
- * @title SolidState ERC20 implementation, including recommended extensions
+ * @title Solidstate ERC20 implementation, including recommended extensions
  */
 abstract contract _SolidStateERC20 is
     _ISolidStateERC20,
