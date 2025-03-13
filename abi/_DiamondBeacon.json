@@ -46,7 +46,7 @@
   },
   {
     "inputs": [],
-    "name": "ERC165Base__InvalidInterfaceId",
+    "name": "Introspectable__InvalidInterfaceId",
     "type": "error"
   },
   {

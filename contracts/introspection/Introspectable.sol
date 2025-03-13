@@ -2,15 +2,15 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC165 } from '../../../interfaces/IERC165.sol';
-import { IERC165Base } from './IERC165Base.sol';
-import { _ERC165Base } from './_ERC165Base.sol';
+import { IERC165 } from '../interfaces/IERC165.sol';
+import { IIntrospectable } from './IIntrospectable.sol';
+import { _Introspectable } from './_Introspectable.sol';
 import { ERC165BaseStorage } from './ERC165BaseStorage.sol';
 
 /**
  * @title ERC165 implementation
  */
-abstract contract ERC165Base is IERC165Base, _ERC165Base {
+abstract contract Introspectable is IIntrospectable, _Introspectable {
     /**
      * @inheritdoc IERC165
      */

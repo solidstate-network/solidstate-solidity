@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC165Base } from '../../introspection';
+import { describeBehaviorOfIntrospectable } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
@@ -42,7 +42,7 @@ export function describeBehaviorOfMultiTokenBase(
     });
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165Base(
+    describeBehaviorOfIntrospectable(
       deploy,
       {
         interfaceIds: ['0xd9b67a26'],

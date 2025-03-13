@@ -38,7 +38,7 @@ export function describeBehaviorOfDiamondBeacon(
     describeBehaviorOfOwnable(deploy, args, skips);
 
     describeBehaviorOfDiamondReadable(deploy, args, [
-      '::ERC165Base',
+      '::Introspectable',
       ...(skips ?? []),
     ]);
 

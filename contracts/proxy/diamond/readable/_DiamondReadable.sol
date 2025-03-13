@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
+import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { _DiamondCommon } from '../common/_DiamondCommon.sol';
 import { _IDiamondReadable } from './_IDiamondReadable.sol';
@@ -14,7 +14,7 @@ import { _IDiamondReadable } from './_IDiamondReadable.sol';
 abstract contract _DiamondReadable is
     _IDiamondReadable,
     _DiamondCommon,
-    _ERC165Base
+    _Introspectable
 {
     /**
      * @notice get all facets and their selectors

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _IERC2535DiamondLoupe } from '../../../interfaces/_IERC2535DiamondLoupe.sol';
-import { _IERC165Base } from '../../../introspection/ERC165/base/_IERC165Base.sol';
+import { _IIntrospectable } from '../../../introspection/_IIntrospectable.sol';
 import { _IDiamondCommon } from '../common/_IDiamondCommon.sol';
 
 /**
@@ -13,5 +13,5 @@ import { _IDiamondCommon } from '../common/_IDiamondCommon.sol';
 interface _IDiamondReadable is
     _IERC2535DiamondLoupe,
     _IDiamondCommon,
-    _IERC165Base
+    _IIntrospectable
 {}

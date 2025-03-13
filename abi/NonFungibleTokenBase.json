@@ -6,12 +6,12 @@
   },
   {
     "inputs": [],
-    "name": "ERC165Base__InvalidInterfaceId",
+    "name": "EnumerableMap__NonExistentKey",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "EnumerableMap__NonExistentKey",
+    "name": "Introspectable__InvalidInterfaceId",
     "type": "error"
   },
   {

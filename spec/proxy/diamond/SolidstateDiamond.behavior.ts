@@ -2,7 +2,7 @@ import {
   describeBehaviorOfSafeOwnable,
   SafeOwnableBehaviorArgs,
 } from '../../access';
-import { describeBehaviorOfERC165Base } from '../../introspection';
+import { describeBehaviorOfIntrospectable } from '../../introspection';
 import {
   describeBehaviorOfDiamondBase,
   DiamondBaseBehaviorArgs,
@@ -68,7 +68,7 @@ export function describeBehaviorOfSolidstateDiamond(
     describeBehaviorOfDiamondWritable(deploy, args, skips);
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165Base(
+    describeBehaviorOfIntrospectable(
       deploy as any,
       {
         interfaceIds: ['0x7f5828d0'],

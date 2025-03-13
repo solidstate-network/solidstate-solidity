@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { _IERC165Base } from './_IERC165Base.sol';
+import { _IIntrospectable } from './_IIntrospectable.sol';
 import { ERC165BaseStorage } from './ERC165BaseStorage.sol';
 
 /**
  * @title ERC165 implementation
  */
-abstract contract _ERC165Base is _IERC165Base {
+abstract contract _Introspectable is _IIntrospectable {
     /**
      * @notice indicates whether an interface is already supported based on the interfaceId
      * @param interfaceId id of interface to check
@@ -32,7 +32,8 @@ abstract contract _ERC165Base is _IERC165Base {
         bytes4 interfaceId,
         bool status
     ) internal virtual {
-        if (interfaceId == 0xffffffff) revert ERC165Base__InvalidInterfaceId();
+        if (interfaceId == 0xffffffff)
+            revert Introspectable__InvalidInterfaceId();
         ERC165BaseStorage
             .layout(ERC165BaseStorage.DEFAULT_STORAGE_SLOT)
             .supportedInterfaces[interfaceId] = status;

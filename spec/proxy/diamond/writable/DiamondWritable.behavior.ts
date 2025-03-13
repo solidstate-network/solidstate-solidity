@@ -1,4 +1,7 @@
-import { OwnableBehaviorArgs, describeBehaviorOfERC165Base } from '../../../';
+import {
+  OwnableBehaviorArgs,
+  describeBehaviorOfIntrospectable,
+} from '../../../';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
@@ -61,7 +64,7 @@ export function describeBehaviorOfDiamondWritable(
     });
 
     // TODO: nonstandard usage
-    describeBehaviorOfERC165Base(
+    describeBehaviorOfIntrospectable(
       deploy as any,
       {
         interfaceIds: ['0x1f931c1c'],

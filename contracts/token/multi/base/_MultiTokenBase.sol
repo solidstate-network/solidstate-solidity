@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
-import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
+import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IMultiTokenBase } from './_IMultiTokenBase.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
@@ -12,7 +12,7 @@ import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
  * @title Base MultiToken internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract _MultiTokenBase is _IMultiTokenBase, _ERC165Base {
+abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
     using AddressUtils for address;
 
     /**

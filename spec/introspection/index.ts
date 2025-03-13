@@ -1,1 +1,1 @@
-export * from './ERC165Base.behavior';
+export * from './Introspectable.behavior';

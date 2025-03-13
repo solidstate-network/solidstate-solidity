@@ -1,19 +1,22 @@
-import { describeBehaviorOfERC165Base } from '@solidstate/spec';
-import { $ERC165Base, $ERC165Base__factory } from '@solidstate/typechain-types';
+import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
+import {
+  $Introspectable,
+  $Introspectable__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC165Base', () => {
-  let instance: $ERC165Base;
+describe('Introspectable', () => {
+  let instance: $Introspectable;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $ERC165Base__factory(deployer).deploy();
+    instance = await new $Introspectable__factory(deployer).deploy();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
   });
 
-  describeBehaviorOfERC165Base(async () => instance, {
+  describeBehaviorOfIntrospectable(async () => instance, {
     interfaceIds: [],
   });
 
@@ -53,7 +56,7 @@ describe('ERC165Base', () => {
             instance.$_setSupportsInterface('0xffffffff', true),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC165Base__InvalidInterfaceId',
+            'Introspectable__InvalidInterfaceId',
           );
         });
       });

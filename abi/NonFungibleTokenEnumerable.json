@@ -6,11 +6,6 @@
   },
   {
     "inputs": [],
-    "name": "ERC165Base__InvalidInterfaceId",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "EnumerableMap__IndexOutOfBounds",
     "type": "error"
   },
@@ -22,6 +17,11 @@
   {
     "inputs": [],
     "name": "EnumerableSet__IndexOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Introspectable__InvalidInterfaceId",
     "type": "error"
   },
   {

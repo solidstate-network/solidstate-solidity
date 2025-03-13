@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1155 } from '../../../interfaces/IERC1155.sol';
-import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
+import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { IMultiTokenBase } from './IMultiTokenBase.sol';
 import { _MultiTokenBase } from './_MultiTokenBase.sol';
 
@@ -14,7 +14,7 @@ import { _MultiTokenBase } from './_MultiTokenBase.sol';
 abstract contract MultiTokenBase is
     IMultiTokenBase,
     _MultiTokenBase,
-    ERC165Base
+    Introspectable
 {
     /**
      * @inheritdoc IERC1155

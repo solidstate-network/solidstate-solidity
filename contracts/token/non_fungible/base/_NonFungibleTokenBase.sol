@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
-import { _ERC165Base } from '../../../introspection/ERC165/base/_ERC165Base.sol';
+import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _INonFungibleTokenBase } from './_INonFungibleTokenBase.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
@@ -13,7 +13,10 @@ import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 /**
  * @title Base NonFungibleToken internal functions
  */
-abstract contract _NonFungibleTokenBase is _INonFungibleTokenBase, _ERC165Base {
+abstract contract _NonFungibleTokenBase is
+    _INonFungibleTokenBase,
+    _Introspectable
+{
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;

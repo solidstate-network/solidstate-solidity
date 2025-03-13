@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "ERC165Base__InvalidInterfaceId",
+    "name": "EnumerableSet__IndexOutOfBounds",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "EnumerableSet__IndexOutOfBounds",
+    "name": "Introspectable__InvalidInterfaceId",
     "type": "error"
   },
   {

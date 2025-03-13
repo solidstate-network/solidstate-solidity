@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC721 } from '../../../interfaces/IERC721.sol';
-import { ERC165Base } from '../../../introspection/ERC165/base/ERC165Base.sol';
+import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { INonFungibleTokenBase } from './INonFungibleTokenBase.sol';
 import { _NonFungibleTokenBase } from './_NonFungibleTokenBase.sol';
 
@@ -13,7 +13,7 @@ import { _NonFungibleTokenBase } from './_NonFungibleTokenBase.sol';
 abstract contract NonFungibleTokenBase is
     INonFungibleTokenBase,
     _NonFungibleTokenBase,
-    ERC165Base
+    Introspectable
 {
     /**
      * @inheritdoc IERC721
