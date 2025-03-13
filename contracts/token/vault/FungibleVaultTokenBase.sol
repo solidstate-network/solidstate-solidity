@@ -2,19 +2,18 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC4626 } from '../../../interfaces/IERC4626.sol';
-import { IERC4626 } from '../../../interfaces/IERC4626.sol';
-import { FungibleTokenBase } from '../../fungible/base/FungibleTokenBase.sol';
-import { FungibleTokenMetadata } from '../../fungible/metadata/FungibleTokenMetadata.sol';
-import { IERC4626Base } from './IERC4626Base.sol';
-import { _ERC4626Base } from './_ERC4626Base.sol';
+import { IERC4626 } from '../../interfaces/IERC4626.sol';
+import { FungibleTokenBase } from '../fungible/base/FungibleTokenBase.sol';
+import { FungibleTokenMetadata } from '../fungible/metadata/FungibleTokenMetadata.sol';
+import { IFungibleVaultTokenBase } from './IFungibleVaultTokenBase.sol';
+import { _FungibleVaultTokenBase } from './_FungibleVaultTokenBase.sol';
 
 /**
- * @title Base ERC4626 implementation
+ * @title Base FungibleVaultToken implementation
  */
-abstract contract ERC4626Base is
-    IERC4626Base,
-    _ERC4626Base,
+abstract contract FungibleVaultTokenBase is
+    IFungibleVaultTokenBase,
+    _FungibleVaultTokenBase,
     FungibleTokenBase,
     FungibleTokenMetadata
 {

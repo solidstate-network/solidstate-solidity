@@ -8,12 +8,15 @@ import {
 } from '../fungible';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IFungibleToken, IERC4626Base } from '@solidstate/typechain-types';
+import {
+  IFungibleToken,
+  IFungibleVaultTokenBase,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface ERC4626BaseBehaviorArgs
+export interface FungibleVaultTokenBaseBehaviorArgs
   extends FungibleTokenBaseBehaviorArgs,
     FungibleTokenMetadataBehaviorArgs {
   getAsset: () => Promise<IFungibleToken>;
@@ -23,19 +26,19 @@ export interface ERC4626BaseBehaviorArgs
   ) => Promise<ContractTransactionResponse>;
 }
 
-export function describeBehaviorOfERC4626Base(
-  deploy: () => Promise<IERC4626Base>,
-  args: ERC4626BaseBehaviorArgs,
+export function describeBehaviorOfFungibleVaultTokenBase(
+  deploy: () => Promise<IFungibleVaultTokenBase>,
+  args: FungibleVaultTokenBaseBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::ERC4626Base', () => {
+  describe('::FungibleVaultTokenBase', () => {
     let caller: SignerWithAddress;
     let depositor: SignerWithAddress;
     let recipient: SignerWithAddress;
     let assetInstance: IFungibleToken;
-    let instance: IERC4626Base;
+    let instance: IFungibleVaultTokenBase;
 
     before(async () => {
       [caller, depositor, recipient] = await ethers.getSigners();
@@ -301,7 +304,7 @@ export function describeBehaviorOfERC4626Base(
         it.skip('deposit amount is too large', async () => {
           await expect(
             instance.deposit(ethers.MaxUint256, depositor.address),
-          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+          ).to.be.revertedWith('FungibleVaultToken: maximum amount exceeded');
         });
       });
     });
@@ -386,7 +389,7 @@ export function describeBehaviorOfERC4626Base(
         it.skip('mint amount is too large', async () => {
           await expect(
             instance.mint(ethers.MaxUint256, depositor.address),
-          ).to.be.revertedWith('ERC4626: maximum amount exceeded');
+          ).to.be.revertedWith('FungibleVaultToken: maximum amount exceeded');
         });
       });
     });
@@ -510,7 +513,7 @@ export function describeBehaviorOfERC4626Base(
             instance.withdraw(max + 1n, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Base__MaximumAmountExceeded',
+            'FungibleVaultTokenBase__MaximumAmountExceeded',
           );
         });
 
@@ -535,7 +538,7 @@ export function describeBehaviorOfERC4626Base(
               .withdraw(assetAmountOut, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Base__AllowanceExceeded',
+            'FungibleVaultTokenBase__AllowanceExceeded',
           );
         });
       });
@@ -659,7 +662,7 @@ export function describeBehaviorOfERC4626Base(
             instance.redeem(max + 1n, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Base__MaximumAmountExceeded',
+            'FungibleVaultTokenBase__MaximumAmountExceeded',
           );
         });
 
@@ -674,7 +677,7 @@ export function describeBehaviorOfERC4626Base(
               .redeem(shareAmount, recipient.address, depositor.address),
           ).to.be.revertedWithCustomError(
             instance,
-            'ERC4626Base__AllowanceExceeded',
+            'FungibleVaultTokenBase__AllowanceExceeded',
           );
         });
       });

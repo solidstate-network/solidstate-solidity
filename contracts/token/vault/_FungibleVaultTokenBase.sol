@@ -2,18 +2,18 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20 } from '../../../interfaces/IERC20.sol';
-import { SafeERC20 } from '../../../utils/SafeERC20.sol';
-import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
-import { _FungibleTokenMetadata } from '../../fungible/metadata/_FungibleTokenMetadata.sol';
-import { _IERC4626Base } from './_IERC4626Base.sol';
+import { IERC20 } from '../../interfaces/IERC20.sol';
+import { SafeERC20 } from '../../utils/SafeERC20.sol';
+import { _FungibleTokenBase } from '../fungible/base/_FungibleTokenBase.sol';
+import { _FungibleTokenMetadata } from '../fungible/metadata/_FungibleTokenMetadata.sol';
+import { _IFungibleVaultTokenBase } from './_IFungibleVaultTokenBase.sol';
 import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
 
 /**
- * @title Base ERC4626 internal functions
+ * @title Base FungibleVaultToken internal functions
  */
-abstract contract _ERC4626Base is
-    _IERC4626Base,
+abstract contract _FungibleVaultTokenBase is
+    _IFungibleVaultTokenBase,
     _FungibleTokenBase,
     _FungibleTokenMetadata
 {
@@ -195,7 +195,7 @@ abstract contract _ERC4626Base is
         address receiver
     ) internal virtual returns (uint256 shareAmount) {
         if (assetAmount > _maxDeposit(receiver))
-            revert ERC4626Base__MaximumAmountExceeded();
+            revert FungibleVaultTokenBase__MaximumAmountExceeded();
 
         shareAmount = _previewDeposit(assetAmount);
 
@@ -213,7 +213,7 @@ abstract contract _ERC4626Base is
         address receiver
     ) internal virtual returns (uint256 assetAmount) {
         if (shareAmount > _maxMint(receiver))
-            revert ERC4626Base__MaximumAmountExceeded();
+            revert FungibleVaultTokenBase__MaximumAmountExceeded();
 
         assetAmount = _previewMint(shareAmount);
 
@@ -233,7 +233,7 @@ abstract contract _ERC4626Base is
         address owner
     ) internal virtual returns (uint256 shareAmount) {
         if (assetAmount > _maxWithdraw(owner))
-            revert ERC4626Base__MaximumAmountExceeded();
+            revert FungibleVaultTokenBase__MaximumAmountExceeded();
 
         shareAmount = _previewWithdraw(assetAmount);
 
@@ -253,7 +253,7 @@ abstract contract _ERC4626Base is
         address owner
     ) internal virtual returns (uint256 assetAmount) {
         if (shareAmount > _maxRedeem(owner))
-            revert ERC4626Base__MaximumAmountExceeded();
+            revert FungibleVaultTokenBase__MaximumAmountExceeded();
 
         assetAmount = _previewRedeem(shareAmount);
 
@@ -261,7 +261,7 @@ abstract contract _ERC4626Base is
     }
 
     /**
-     * @notice ERC4626 hook, called deposit and mint actions
+     * @notice FungibleVaultToken hook, called deposit and mint actions
      * @dev function should be overridden and new implementation must call super
      * @param receiver recipient of shares resulting from deposit
      * @param assetAmount quantity of assets being deposited
@@ -274,7 +274,7 @@ abstract contract _ERC4626Base is
     ) internal virtual {}
 
     /**
-     * @notice ERC4626 hook, called before withdraw and redeem actions
+     * @notice FungibleVaultToken hook, called before withdraw and redeem actions
      * @dev function should be overridden and new implementation must call super
      * @param owner holder of shares to be redeemed
      * @param assetAmount quantity of assets being withdrawn
@@ -347,7 +347,7 @@ abstract contract _ERC4626Base is
             uint256 allowance = _allowance(owner, caller);
 
             if (shareAmount > allowance)
-                revert ERC4626Base__AllowanceExceeded();
+                revert FungibleVaultTokenBase__AllowanceExceeded();
 
             unchecked {
                 _approve(owner, caller, allowance - shareAmount);
