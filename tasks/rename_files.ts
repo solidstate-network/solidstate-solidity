@@ -19,7 +19,7 @@ task('rename-files', 'Batch replace text in local filenames')
       await Promise.all(
         directories.map(async (dir) =>
           (await fs.promises.readdir(dir, { recursive: true })).map((file) =>
-            path.resolve(dir, file),
+            path.relative(hre.config.paths.root, path.resolve(dir, file)),
           ),
         ),
       )
@@ -43,10 +43,7 @@ task('rename-files', 'Batch replace text in local filenames')
     );
 
     for (const oldName of files) {
-      const newName = path.resolve(
-        path.dirname(oldName),
-        path.basename(oldName).replace(args.oldText, args.newText),
-      );
+      const newName = oldName.replaceAll(args.oldText, args.newText);
 
       const oldContents = fileContents[oldName];
 
@@ -54,17 +51,15 @@ task('rename-files', 'Batch replace text in local filenames')
 
       if (oldName !== newName || oldContents !== newContents) {
         if (!args.skipDiff) {
-          console.log(
-            `diff --git a/${path.relative('.', oldName)} b/${path.relative('.', newName)}`,
-          );
-          console.log('---', path.relative('.', oldName));
-          console.log('+++', path.relative('.', newName));
+          console.log(`diff --git a/${oldName} b/${newName}`);
+          console.log('---', oldName);
+          console.log('+++', newName);
           const diff = gitDiff(oldContents, newContents, { color: true });
           if (diff) {
             console.log(diff);
           } else {
-            console.log(`rename from ${path.relative('.', oldName)}`);
-            console.log(`rename to ${path.relative('.', newName)}`);
+            console.log(`rename from ${oldName}`);
+            console.log(`rename to ${newName}`);
           }
         }
 
