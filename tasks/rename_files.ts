@@ -50,18 +50,26 @@ task('rename-files', 'Batch replace text in local filenames')
 
       const newContents = oldContents.replaceAll(args.oldText, args.newText);
 
-      if (!args.skipDiff) {
-        console.log(
-          `diff --git a/${path.relative('.', oldName)} b/${path.relative('.', newName)}`,
-        );
-        console.log('---', path.relative('.', oldName));
-        console.log('+++', path.relative('.', newName));
-        console.log(gitDiff(oldContents, newContents, { color: true }));
-      }
+      if (oldName !== newName || oldContents !== newContents) {
+        if (!args.skipDiff) {
+          console.log(
+            `diff --git a/${path.relative('.', oldName)} b/${path.relative('.', newName)}`,
+          );
+          console.log('---', path.relative('.', oldName));
+          console.log('+++', path.relative('.', newName));
+          const diff = gitDiff(oldContents, newContents, { color: true });
+          if (diff) {
+            console.log(diff);
+          } else {
+            console.log(`rename from ${path.relative('.', oldName)}`);
+            console.log(`rename to ${path.relative('.', newName)}`);
+          }
+        }
 
-      if (args.write) {
-        await fs.promises.writeFile(oldName, newContents);
-        await fs.promises.rename(oldName, newName);
+        if (args.write) {
+          await fs.promises.rm(oldName);
+          await fs.promises.writeFile(newName, newContents);
+        }
       }
     }
   });
