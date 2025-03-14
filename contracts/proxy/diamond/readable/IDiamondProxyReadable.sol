@@ -5,14 +5,14 @@ pragma solidity ^0.8.20;
 import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { IIntrospectable } from '../../../introspection/IIntrospectable.sol';
 import { IDiamondCommon } from '../common/IDiamondCommon.sol';
-import { _IDiamondReadable } from './_IDiamondReadable.sol';
+import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
 /**
  * @title Diamond proxy introspection interface
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface IDiamondReadable is
-    _IDiamondReadable,
+interface IDiamondProxyReadable is
+    _IDiamondProxyReadable,
     IERC2535DiamondLoupe,
     IDiamondCommon,
     IIntrospectable

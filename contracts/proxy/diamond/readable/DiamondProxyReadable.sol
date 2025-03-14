@@ -6,16 +6,16 @@ import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.s
 import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { DiamondCommon } from '../common/DiamondCommon.sol';
-import { IDiamondReadable } from './IDiamondReadable.sol';
-import { _DiamondReadable } from './_DiamondReadable.sol';
+import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
+import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract DiamondReadable is
-    IDiamondReadable,
-    _DiamondReadable,
+abstract contract DiamondProxyReadable is
+    IDiamondProxyReadable,
+    _DiamondProxyReadable,
     DiamondCommon,
     Introspectable
 {

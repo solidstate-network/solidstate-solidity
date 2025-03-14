@@ -6,7 +6,7 @@ import { _SafeOwnable } from '../../access/ownable/_SafeOwnable.sol';
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
 import { _DiamondBase } from './base/_DiamondBase.sol';
 import { _DiamondFallback } from './fallback/_DiamondFallback.sol';
-import { _DiamondReadable } from './readable/_DiamondReadable.sol';
+import { _DiamondProxyReadable } from './readable/_DiamondProxyReadable.sol';
 import { _DiamondProxyWritable } from './writable/_DiamondProxyWritable.sol';
 import { _ISolidstateDiamond } from './_ISolidstateDiamond.sol';
 
@@ -14,7 +14,7 @@ abstract contract _SolidstateDiamond is
     _ISolidstateDiamond,
     _DiamondBase,
     _DiamondFallback,
-    _DiamondReadable,
+    _DiamondProxyReadable,
     _DiamondProxyWritable,
     _SafeOwnable
 {

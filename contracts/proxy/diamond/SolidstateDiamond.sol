@@ -16,7 +16,7 @@ import { _DiamondBase } from './base/_DiamondBase.sol';
 import { DiamondFallback } from './fallback/DiamondFallback.sol';
 import { IDiamondFallback } from './fallback/IDiamondFallback.sol';
 import { _DiamondFallback } from './fallback/_DiamondFallback.sol';
-import { DiamondReadable } from './readable/DiamondReadable.sol';
+import { DiamondProxyReadable } from './readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from './writable/DiamondProxyWritable.sol';
 import { ISolidstateDiamond } from './ISolidstateDiamond.sol';
 import { _SolidstateDiamond } from './_SolidstateDiamond.sol';
@@ -28,7 +28,7 @@ abstract contract SolidstateDiamond is
     ISolidstateDiamond,
     _SolidstateDiamond,
     DiamondBase,
-    DiamondReadable,
+    DiamondProxyReadable,
     DiamondProxyWritable,
     DiamondFallback,
     SafeOwnable
@@ -54,7 +54,7 @@ abstract contract SolidstateDiamond is
 
         _setSupportsInterface(type(IERC2535DiamondCut).interfaceId, true);
 
-        // register DiamondReadable
+        // register DiamondProxyReadable
 
         selectors[selectorIndex++] = IERC2535DiamondLoupe.facets.selector;
         selectors[selectorIndex++] = IERC2535DiamondLoupe

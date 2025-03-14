@@ -3,9 +3,9 @@ import {
   OwnableBehaviorArgs,
 } from '../../../access/ownable/Ownable.behavior';
 import {
-  describeBehaviorOfDiamondReadable,
+  describeBehaviorOfDiamondProxyReadable,
   describeBehaviorOfDiamondProxyWritable,
-  DiamondReadableBehaviorArgs,
+  DiamondProxyReadableBehaviorArgs,
   DiamondProxyWritableBehaviorArgs,
 } from '../../diamond';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
@@ -16,7 +16,7 @@ import { ethers } from 'ethers';
 
 export interface DiamondBeaconBehaviorArgs
   extends OwnableBehaviorArgs,
-    DiamondReadableBehaviorArgs,
+    DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(
@@ -37,7 +37,7 @@ export function describeBehaviorOfDiamondBeacon(
 
     describeBehaviorOfOwnable(deploy, args, skips);
 
-    describeBehaviorOfDiamondReadable(deploy, args, [
+    describeBehaviorOfDiamondProxyReadable(deploy, args, [
       '::Introspectable',
       ...(skips ?? []),
     ]);

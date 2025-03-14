@@ -5,14 +5,14 @@ pragma solidity ^0.8.20;
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { _DiamondCommon } from '../common/_DiamondCommon.sol';
-import { _IDiamondReadable } from './_IDiamondReadable.sol';
+import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract _ functions
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-abstract contract _DiamondReadable is
-    _IDiamondReadable,
+abstract contract _DiamondProxyReadable is
+    _IDiamondProxyReadable,
     _DiamondCommon,
     _Introspectable
 {

@@ -7,7 +7,7 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   IDiamondProxyWritable,
-  IDiamondReadable__factory,
+  IDiamondProxyReadable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

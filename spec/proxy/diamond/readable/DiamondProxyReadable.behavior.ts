@@ -1,22 +1,22 @@
 import { describeBehaviorOfIntrospectable } from '../../../introspection';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondReadable } from '@solidstate/typechain-types';
+import { IDiamondProxyReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondReadableBehaviorArgs {
+export interface DiamondProxyReadableBehaviorArgs {
   facetCuts: any[];
 }
 
-export function describeBehaviorOfDiamondReadable(
-  deploy: () => Promise<IDiamondReadable>,
-  args: DiamondReadableBehaviorArgs,
+export function describeBehaviorOfDiamondProxyReadable(
+  deploy: () => Promise<IDiamondProxyReadable>,
+  args: DiamondProxyReadableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondReadable', () => {
-    let instance: IDiamondReadable;
+  describe('::DiamondProxyReadable', () => {
+    let instance: IDiamondProxyReadable;
 
     beforeEach(async () => {
       expect(args.facetCuts).to.have.lengthOf.at.least(1);

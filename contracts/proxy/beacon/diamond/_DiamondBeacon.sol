@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
-import { _DiamondReadable } from '../../diamond/readable/_DiamondReadable.sol';
+import { _DiamondProxyReadable } from '../../diamond/readable/_DiamondProxyReadable.sol';
 import { _DiamondProxyWritable } from '../../diamond/writable/_DiamondProxyWritable.sol';
 import { _DiamondCommon } from '../../diamond/common/_DiamondCommon.sol';
 import { _IDiamondBeacon } from './_IDiamondBeacon.sol';
@@ -11,7 +11,7 @@ import { _IDiamondBeacon } from './_IDiamondBeacon.sol';
 abstract contract _DiamondBeacon is
     _IDiamondBeacon,
     _Ownable,
-    _DiamondReadable,
+    _DiamondProxyReadable,
     _DiamondProxyWritable
 {
     /**

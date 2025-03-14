@@ -10,7 +10,7 @@ import { _IDiamondCommon } from '../common/_IDiamondCommon.sol';
  * @title Diamond proxy introspection interface needed for internal functions
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
  */
-interface _IDiamondReadable is
+interface _IDiamondProxyReadable is
     _IERC2535DiamondLoupe,
     _IDiamondCommon,
     _IIntrospectable

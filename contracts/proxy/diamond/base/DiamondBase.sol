@@ -11,7 +11,7 @@ import { _DiamondBase } from './_DiamondBase.sol';
 /**
  * @title EIP-2535 "Diamond" proxy base contract
  * @dev see https://eips.ethereum.org/EIPS/eip-2535
- * @dev note that for EIP-2535 compliance this base contract must also include the DiamondReadable functions (either within the same deployment or by proxy)
+ * @dev note that for EIP-2535 compliance this base contract must also include the DiamondProxyReadable functions (either within the same deployment or by proxy)
  */
 abstract contract DiamondBase is
     IDiamondBase,
