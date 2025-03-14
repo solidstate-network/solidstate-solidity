@@ -8,10 +8,10 @@ import { _DiamondProxyExecutable } from './executable/_DiamondProxyExecutable.so
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { _DiamondProxyReadable } from './readable/_DiamondProxyReadable.sol';
 import { _DiamondProxyWritable } from './writable/_DiamondProxyWritable.sol';
-import { _ISolidstateDiamond } from './_ISolidstateDiamond.sol';
+import { _ISolidstateDiamondProxy } from './_ISolidstateDiamondProxy.sol';
 
-abstract contract _SolidstateDiamond is
-    _ISolidstateDiamond,
+abstract contract _SolidstateDiamondProxy is
+    _ISolidstateDiamondProxy,
     _DiamondProxyExecutable,
     _DiamondProxyFallback,
     _DiamondProxyReadable,

@@ -7,10 +7,10 @@ import { IDiamondProxyExecutable } from './executable/IDiamondProxyExecutable.so
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
 import { IDiamondProxyReadable } from './readable/IDiamondProxyReadable.sol';
 import { IDiamondProxyWritable } from './writable/IDiamondProxyWritable.sol';
-import { _ISolidstateDiamond } from './_ISolidstateDiamond.sol';
+import { _ISolidstateDiamondProxy } from './_ISolidstateDiamondProxy.sol';
 
-interface ISolidstateDiamond is
-    _ISolidstateDiamond,
+interface ISolidstateDiamondProxy is
+    _ISolidstateDiamondProxy,
     IDiamondProxyExecutable,
     IDiamondProxyFallback,
     IDiamondProxyReadable,

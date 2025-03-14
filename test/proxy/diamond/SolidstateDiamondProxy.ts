@@ -1,18 +1,18 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfSolidstateDiamond } from '@solidstate/spec';
+import { describeBehaviorOfSolidstateDiamondProxy } from '@solidstate/spec';
 import {
-  $SolidstateDiamond,
-  $SolidstateDiamond__factory,
+  $SolidstateDiamondProxy,
+  $SolidstateDiamondProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('SolidstateDiamond', () => {
+describe('SolidstateDiamondProxy', () => {
   let owner: SignerWithAddress;
   let nomineeOwner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
 
-  let instance: $SolidstateDiamond;
+  let instance: $SolidstateDiamondProxy;
 
   let facetCuts: any[] = [];
   let immutableSelectors: string[] = [];
@@ -23,7 +23,7 @@ describe('SolidstateDiamond', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $SolidstateDiamond__factory(deployer).deploy();
+    instance = await new $SolidstateDiamondProxy__factory(deployer).deploy();
 
     const facets = await instance.facets.staticCall();
 
@@ -42,7 +42,7 @@ describe('SolidstateDiamond', () => {
     expect(immutableSelectors.length).to.be.gt(0);
   });
 
-  describeBehaviorOfSolidstateDiamond(
+  describeBehaviorOfSolidstateDiamondProxy(
     async () => instance,
     {
       getOwner: async () => owner,

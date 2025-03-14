@@ -22,29 +22,29 @@ import {
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { ISolidstateDiamond } from '@solidstate/typechain-types';
+import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface SolidstateDiamondBehaviorArgs
+export interface SolidstateDiamondProxyBehaviorArgs
   extends DiamondProxyExecutableBehaviorArgs,
     DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs,
     SafeOwnableBehaviorArgs {}
 
-export function describeBehaviorOfSolidstateDiamond(
-  deploy: () => Promise<ISolidstateDiamond>,
-  args: SolidstateDiamondBehaviorArgs,
+export function describeBehaviorOfSolidstateDiamondProxy(
+  deploy: () => Promise<ISolidstateDiamondProxy>,
+  args: SolidstateDiamondProxyBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::SolidstateDiamond', () => {
+  describe('::SolidstateDiamondProxy', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
-    let instance: ISolidstateDiamond;
+    let instance: ISolidstateDiamondProxy;
 
     before(async () => {
       owner = await args.getOwner();

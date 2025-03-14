@@ -18,15 +18,15 @@ import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { DiamondProxyReadable } from './readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from './writable/DiamondProxyWritable.sol';
-import { ISolidstateDiamond } from './ISolidstateDiamond.sol';
-import { _SolidstateDiamond } from './_SolidstateDiamond.sol';
+import { ISolidstateDiamondProxy } from './ISolidstateDiamondProxy.sol';
+import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
 
 /**
  * @title Solidstate "Diamond" proxy reference implementation
  */
-abstract contract SolidstateDiamond is
-    ISolidstateDiamond,
-    _SolidstateDiamond,
+abstract contract SolidstateDiamondProxy is
+    ISolidstateDiamondProxy,
+    _SolidstateDiamondProxy,
     DiamondProxyExecutable,
     DiamondProxyReadable,
     DiamondProxyWritable,
@@ -103,7 +103,11 @@ abstract contract SolidstateDiamond is
 
     function _transferOwnership(
         address account
-    ) internal virtual override(SafeOwnable, _Ownable, _SolidstateDiamond) {
+    )
+        internal
+        virtual
+        override(SafeOwnable, _Ownable, _SolidstateDiamondProxy)
+    {
         super._transferOwnership(account);
     }
 
@@ -116,7 +120,7 @@ abstract contract SolidstateDiamond is
         override(
             DiamondProxyExecutable,
             DiamondProxyFallback,
-            _SolidstateDiamond
+            _SolidstateDiamondProxy
         )
         returns (address implementation)
     {
