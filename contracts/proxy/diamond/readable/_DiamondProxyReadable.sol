@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
-import { _DiamondCommon } from '../common/_DiamondCommon.sol';
+import { _DiamondProxyCommon } from '../common/_DiamondProxyCommon.sol';
 import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
 /**
@@ -13,7 +13,7 @@ import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
  */
 abstract contract _DiamondProxyReadable is
     _IDiamondProxyReadable,
-    _DiamondCommon,
+    _DiamondProxyCommon,
     _Introspectable
 {
     /**

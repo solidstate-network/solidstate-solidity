@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { Proxy } from '../../Proxy.sol';
 import { _Proxy } from '../../_Proxy.sol';
-import { DiamondCommon } from '../common/DiamondCommon.sol';
+import { DiamondProxyCommon } from '../common/DiamondProxyCommon.sol';
 import { IDiamondProxyExecutable } from './IDiamondProxyExecutable.sol';
 import { _DiamondProxyExecutable } from './_DiamondProxyExecutable.sol';
 
@@ -16,7 +16,7 @@ import { _DiamondProxyExecutable } from './_DiamondProxyExecutable.sol';
 abstract contract DiamondProxyExecutable is
     IDiamondProxyExecutable,
     _DiamondProxyExecutable,
-    DiamondCommon,
+    DiamondProxyCommon,
     Proxy
 {
     /**

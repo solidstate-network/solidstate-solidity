@@ -4,9 +4,9 @@ pragma solidity ^0.8.20;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
-import { _IDiamondCommon } from './_IDiamondCommon.sol';
+import { _IDiamondProxyCommon } from './_IDiamondProxyCommon.sol';
 
-abstract contract _DiamondCommon is _IDiamondCommon {
+abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
     using AddressUtils for address;
 
     bytes32 private constant CLEAR_ADDRESS_MASK =

@@ -7,7 +7,7 @@ import { Ownable } from '../../../access/ownable/Ownable.sol';
 import { DiamondProxyReadable } from '../../diamond/readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from '../../diamond/writable/DiamondProxyWritable.sol';
 import { _DiamondProxyWritable } from '../../diamond/writable/_DiamondProxyWritable.sol';
-import { _DiamondCommon } from '../../diamond/common/_DiamondCommon.sol';
+import { _DiamondProxyCommon } from '../../diamond/common/_DiamondProxyCommon.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { _DiamondBeacon } from './_DiamondBeacon.sol';
 
@@ -29,7 +29,7 @@ contract DiamondBeacon is
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
-    ) internal virtual override(_DiamondCommon, _DiamondBeacon) {
+    ) internal virtual override(_DiamondProxyCommon, _DiamondBeacon) {
         super._diamondCut(facetCuts, target, data);
     }
 }
