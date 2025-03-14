@@ -1,15 +1,15 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfDiamondWritable } from '@solidstate/spec';
+import { describeBehaviorOfDiamondProxyWritable } from '@solidstate/spec';
 import {
-  $DiamondWritable,
-  $DiamondWritable__factory,
+  $DiamondProxyWritable,
+  $DiamondProxyWritable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
-describe('DiamondWritable', () => {
+describe('DiamondProxyWritable', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: $DiamondWritable;
+  let instance: $DiamondProxyWritable;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -17,7 +17,7 @@ describe('DiamondWritable', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $DiamondWritable__factory(deployer).deploy();
+    instance = await new $DiamondProxyWritable__factory(deployer).deploy();
 
     await instance.$_setOwner(await deployer.getAddress());
 
@@ -25,7 +25,7 @@ describe('DiamondWritable', () => {
     await instance.$_setSupportsInterface('0x1f931c1c', true);
   });
 
-  describeBehaviorOfDiamondWritable(async () => instance, {
+  describeBehaviorOfDiamondProxyWritable(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
     immutableSelectors: [],

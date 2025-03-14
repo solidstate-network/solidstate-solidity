@@ -6,24 +6,24 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
-  IDiamondWritable,
+  IDiamondProxyWritable,
   IDiamondReadable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondWritableBehaviorArgs extends OwnableBehaviorArgs {
+export interface DiamondProxyWritableBehaviorArgs extends OwnableBehaviorArgs {
   immutableSelectors: string[];
 }
 
-export function describeBehaviorOfDiamondWritable(
-  deploy: () => Promise<IDiamondWritable>,
-  args: DiamondWritableBehaviorArgs,
+export function describeBehaviorOfDiamondProxyWritable(
+  deploy: () => Promise<IDiamondProxyWritable>,
+  args: DiamondProxyWritableBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondWritable', () => {
+  describe('::DiamondProxyWritable', () => {
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 
@@ -32,7 +32,7 @@ export function describeBehaviorOfDiamondWritable(
     let abi: any;
     let facet: any;
 
-    let instance: IDiamondWritable;
+    let instance: IDiamondProxyWritable;
 
     before(async () => {
       owner = await args.getOwner();
@@ -142,7 +142,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__TargetHasNoCode',
+              'DiamondProxyWritable__TargetHasNoCode',
             );
           });
 
@@ -161,7 +161,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__SelectorIsImmutable',
+              'DiamondProxyWritable__SelectorIsImmutable',
             );
           });
 
@@ -184,7 +184,7 @@ export function describeBehaviorOfDiamondWritable(
                 .diamondCut(facetCuts, ethers.ZeroAddress, '0x'),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__SelectorAlreadyAdded',
+              'DiamondProxyWritable__SelectorAlreadyAdded',
             );
           });
         });
@@ -251,7 +251,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__TargetHasNoCode',
+              'DiamondProxyWritable__TargetHasNoCode',
             );
           });
 
@@ -270,7 +270,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__SelectorNotFound',
+              'DiamondProxyWritable__SelectorNotFound',
             );
           });
 
@@ -290,7 +290,7 @@ export function describeBehaviorOfDiamondWritable(
                 ),
               ).to.be.revertedWithCustomError(
                 instance,
-                'DiamondWritable__SelectorIsImmutable',
+                'DiamondProxyWritable__SelectorIsImmutable',
               );
             }
           });
@@ -324,7 +324,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__ReplaceTargetIsIdentical',
+              'DiamondProxyWritable__ReplaceTargetIsIdentical',
             );
           });
         });
@@ -387,7 +387,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__RemoveTargetNotZeroAddress',
+              'DiamondProxyWritable__RemoveTargetNotZeroAddress',
             );
           });
 
@@ -406,7 +406,7 @@ export function describeBehaviorOfDiamondWritable(
               ),
             ).to.be.revertedWithCustomError(
               instance,
-              'DiamondWritable__SelectorNotFound',
+              'DiamondProxyWritable__SelectorNotFound',
             );
           });
 
@@ -426,7 +426,7 @@ export function describeBehaviorOfDiamondWritable(
                 ),
               ).to.be.revertedWithCustomError(
                 instance,
-                'DiamondWritable__SelectorIsImmutable',
+                'DiamondProxyWritable__SelectorIsImmutable',
               );
             }
           });
@@ -471,7 +471,7 @@ export function describeBehaviorOfDiamondWritable(
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondWritable__SelectorNotSpecified',
+            'DiamondProxyWritable__SelectorNotSpecified',
           );
         });
 
@@ -480,7 +480,7 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut([], facet.address, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondWritable__InvalidInitializationParameters',
+            'DiamondProxyWritable__InvalidInitializationParameters',
           );
         });
 
@@ -489,7 +489,7 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondWritable__InvalidInitializationParameters',
+            'DiamondProxyWritable__InvalidInitializationParameters',
           );
         });
 
@@ -498,7 +498,7 @@ export function describeBehaviorOfDiamondWritable(
             instance.connect(owner).diamondCut([], owner.address, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondWritable__TargetHasNoCode',
+            'DiamondProxyWritable__TargetHasNoCode',
           );
         });
 

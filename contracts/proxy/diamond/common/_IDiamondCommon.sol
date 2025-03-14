@@ -6,12 +6,12 @@ import { _IERC2535DiamondCut } from '../../../interfaces/_IERC2535DiamondCut.sol
 import { _IERC2535DiamondLoupe } from '../../../interfaces/_IERC2535DiamondLoupe.sol';
 
 interface _IDiamondCommon is _IERC2535DiamondCut, _IERC2535DiamondLoupe {
-    error DiamondWritable__InvalidInitializationParameters();
-    error DiamondWritable__RemoveTargetNotZeroAddress();
-    error DiamondWritable__ReplaceTargetIsIdentical();
-    error DiamondWritable__SelectorAlreadyAdded();
-    error DiamondWritable__SelectorIsImmutable();
-    error DiamondWritable__SelectorNotFound();
-    error DiamondWritable__SelectorNotSpecified();
-    error DiamondWritable__TargetHasNoCode();
+    error DiamondProxyWritable__InvalidInitializationParameters();
+    error DiamondProxyWritable__RemoveTargetNotZeroAddress();
+    error DiamondProxyWritable__ReplaceTargetIsIdentical();
+    error DiamondProxyWritable__SelectorAlreadyAdded();
+    error DiamondProxyWritable__SelectorIsImmutable();
+    error DiamondProxyWritable__SelectorNotFound();
+    error DiamondProxyWritable__SelectorNotSpecified();
+    error DiamondProxyWritable__TargetHasNoCode();
 }

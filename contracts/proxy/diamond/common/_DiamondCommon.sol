@@ -50,7 +50,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                 FacetCutAction action = facetCut.action;
 
                 if (facetCut.selectors.length == 0)
-                    revert DiamondWritable__SelectorNotSpecified();
+                    revert DiamondProxyWritable__SelectorNotSpecified();
 
                 if (action == FacetCutAction.ADD) {
                     (selectorCount, slug) = _addFacetSelectors(
@@ -109,17 +109,17 @@ abstract contract _DiamondCommon is _IDiamondCommon {
         unchecked {
             if (facetCut.target.isContract()) {
                 if (facetCut.target == address(this)) {
-                    revert DiamondWritable__SelectorIsImmutable();
+                    revert DiamondProxyWritable__SelectorIsImmutable();
                 }
             } else if (facetCut.target != address(this)) {
-                revert DiamondWritable__TargetHasNoCode();
+                revert DiamondProxyWritable__TargetHasNoCode();
             }
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
 
                 if ($.selectorInfo[selector] != bytes32(0))
-                    revert DiamondWritable__SelectorAlreadyAdded();
+                    revert DiamondProxyWritable__SelectorAlreadyAdded();
 
                 // for current selector, write facet address and global index to storage
                 $.selectorInfo[selector] =
@@ -168,7 +168,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
     ) internal returns (uint256, bytes32) {
         unchecked {
             if (facetCut.target != address(0))
-                revert DiamondWritable__RemoveTargetNotZeroAddress();
+                revert DiamondProxyWritable__RemoveTargetNotZeroAddress();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 // selectorCount is used to derive the index of the last selector, so decrement it before each loop
@@ -181,10 +181,10 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                 delete $.selectorInfo[selector];
 
                 if (address(bytes20(selectorInfo)) == address(0))
-                    revert DiamondWritable__SelectorNotFound();
+                    revert DiamondProxyWritable__SelectorNotFound();
 
                 if (address(bytes20(selectorInfo)) == address(this))
-                    revert DiamondWritable__SelectorIsImmutable();
+                    revert DiamondProxyWritable__SelectorIsImmutable();
 
                 if (selectorCount & 7 == 7) {
                     // the last selector is located at the end of the last slug, which has not been loaded yet
@@ -247,7 +247,7 @@ abstract contract _DiamondCommon is _IDiamondCommon {
     ) internal {
         unchecked {
             if (!facetCut.target.isContract())
-                revert DiamondWritable__TargetHasNoCode();
+                revert DiamondProxyWritable__TargetHasNoCode();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
@@ -255,11 +255,11 @@ abstract contract _DiamondCommon is _IDiamondCommon {
                 address oldFacetAddress = address(bytes20(selectorInfo));
 
                 if (oldFacetAddress == address(0))
-                    revert DiamondWritable__SelectorNotFound();
+                    revert DiamondProxyWritable__SelectorNotFound();
                 if (oldFacetAddress == address(this))
-                    revert DiamondWritable__SelectorIsImmutable();
+                    revert DiamondProxyWritable__SelectorIsImmutable();
                 if (oldFacetAddress == facetCut.target)
-                    revert DiamondWritable__ReplaceTargetIsIdentical();
+                    revert DiamondProxyWritable__ReplaceTargetIsIdentical();
 
                 // replace old facet address
                 $.selectorInfo[selector] =
@@ -277,12 +277,12 @@ abstract contract _DiamondCommon is _IDiamondCommon {
      */
     function _initialize(address target, bytes memory data) private {
         if ((target == address(0)) != (data.length == 0))
-            revert DiamondWritable__InvalidInitializationParameters();
+            revert DiamondProxyWritable__InvalidInitializationParameters();
 
         if (target != address(0)) {
             if (target != address(this)) {
                 if (!target.isContract())
-                    revert DiamondWritable__TargetHasNoCode();
+                    revert DiamondProxyWritable__TargetHasNoCode();
             }
 
             (bool success, ) = target.delegatecall(data);

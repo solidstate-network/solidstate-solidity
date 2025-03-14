@@ -7,7 +7,7 @@ import { _IERC2535DiamondCut } from '../../../interfaces/_IERC2535DiamondCut.sol
 import { _IIntrospectable } from '../../../introspection/_IIntrospectable.sol';
 import { _IDiamondCommon } from '../common/_IDiamondCommon.sol';
 
-interface _IDiamondWritable is
+interface _IDiamondProxyWritable is
     _IERC2535DiamondCut,
     _IDiamondCommon,
     _IOwnable,

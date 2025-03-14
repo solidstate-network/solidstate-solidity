@@ -6,42 +6,42 @@
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__InvalidInitializationParameters",
+    "name": "DiamondProxyWritable__InvalidInitializationParameters",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__RemoveTargetNotZeroAddress",
+    "name": "DiamondProxyWritable__RemoveTargetNotZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__ReplaceTargetIsIdentical",
+    "name": "DiamondProxyWritable__ReplaceTargetIsIdentical",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__SelectorAlreadyAdded",
+    "name": "DiamondProxyWritable__SelectorAlreadyAdded",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__SelectorIsImmutable",
+    "name": "DiamondProxyWritable__SelectorIsImmutable",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__SelectorNotFound",
+    "name": "DiamondProxyWritable__SelectorNotFound",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__SelectorNotSpecified",
+    "name": "DiamondProxyWritable__SelectorNotSpecified",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DiamondWritable__TargetHasNoCode",
+    "name": "DiamondProxyWritable__TargetHasNoCode",
     "type": "error"
   },
   {

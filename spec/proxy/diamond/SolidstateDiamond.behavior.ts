@@ -16,9 +16,9 @@ import {
   DiamondReadableBehaviorArgs,
 } from './readable/DiamondReadable.behavior';
 import {
-  describeBehaviorOfDiamondWritable,
-  DiamondWritableBehaviorArgs,
-} from './writable/DiamondWritable.behavior';
+  describeBehaviorOfDiamondProxyWritable,
+  DiamondProxyWritableBehaviorArgs,
+} from './writable/DiamondProxyWritable.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
@@ -30,7 +30,7 @@ export interface SolidstateDiamondBehaviorArgs
   extends DiamondBaseBehaviorArgs,
     DiamondFallbackBehaviorArgs,
     DiamondReadableBehaviorArgs,
-    DiamondWritableBehaviorArgs,
+    DiamondProxyWritableBehaviorArgs,
     SafeOwnableBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateDiamond(
@@ -65,7 +65,7 @@ export function describeBehaviorOfSolidstateDiamond(
 
     describeBehaviorOfDiamondReadable(deploy, args, skips);
 
-    describeBehaviorOfDiamondWritable(deploy, args, skips);
+    describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(

@@ -6,10 +6,10 @@ import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
 import { _DiamondCommon } from '../common/_DiamondCommon.sol';
-import { _IDiamondWritable } from './_IDiamondWritable.sol';
+import { _IDiamondProxyWritable } from './_IDiamondProxyWritable.sol';
 
-abstract contract _DiamondWritable is
-    _IDiamondWritable,
+abstract contract _DiamondProxyWritable is
+    _IDiamondProxyWritable,
     _DiamondCommon,
     _Ownable,
     _Introspectable
