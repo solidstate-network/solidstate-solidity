@@ -13,9 +13,9 @@ import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol'
 import { _Proxy } from '../_Proxy.sol';
 import { DiamondBase } from './base/DiamondBase.sol';
 import { _DiamondBase } from './base/_DiamondBase.sol';
-import { DiamondFallback } from './fallback/DiamondFallback.sol';
-import { IDiamondFallback } from './fallback/IDiamondFallback.sol';
-import { _DiamondFallback } from './fallback/_DiamondFallback.sol';
+import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
+import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
+import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { DiamondProxyReadable } from './readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from './writable/DiamondProxyWritable.sol';
 import { ISolidstateDiamond } from './ISolidstateDiamond.sol';
@@ -30,23 +30,23 @@ abstract contract SolidstateDiamond is
     DiamondBase,
     DiamondProxyReadable,
     DiamondProxyWritable,
-    DiamondFallback,
+    DiamondProxyFallback,
     SafeOwnable
 {
     constructor() {
         bytes4[] memory selectors = new bytes4[](12);
         uint256 selectorIndex;
 
-        // register DiamondFallback
+        // register DiamondProxyFallback
 
-        selectors[selectorIndex++] = IDiamondFallback
+        selectors[selectorIndex++] = IDiamondProxyFallback
             .getFallbackAddress
             .selector;
-        selectors[selectorIndex++] = IDiamondFallback
+        selectors[selectorIndex++] = IDiamondProxyFallback
             .setFallbackAddress
             .selector;
 
-        _setSupportsInterface(type(IDiamondFallback).interfaceId, true);
+        _setSupportsInterface(type(IDiamondProxyFallback).interfaceId, true);
 
         // register DiamondProxyWritable
 
@@ -108,12 +108,12 @@ abstract contract SolidstateDiamond is
     }
 
     /**
-     * @inheritdoc _DiamondFallback
+     * @inheritdoc _DiamondProxyFallback
      */
     function _getImplementation()
         internal
         view
-        override(DiamondBase, DiamondFallback, _SolidstateDiamond)
+        override(DiamondBase, DiamondProxyFallback, _SolidstateDiamond)
         returns (address implementation)
     {
         implementation = super._getImplementation();

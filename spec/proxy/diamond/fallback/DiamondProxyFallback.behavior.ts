@@ -6,25 +6,25 @@ import {
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { IDiamondFallback } from '@solidstate/typechain-types';
+import { IDiamondProxyFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondFallbackBehaviorArgs
+export interface DiamondProxyFallbackBehaviorArgs
   extends DiamondBaseBehaviorArgs,
     OwnableBehaviorArgs {
   fallbackAddress: string;
 }
 
-export function describeBehaviorOfDiamondFallback(
-  deploy: () => Promise<IDiamondFallback>,
-  args: DiamondFallbackBehaviorArgs,
+export function describeBehaviorOfDiamondProxyFallback(
+  deploy: () => Promise<IDiamondProxyFallback>,
+  args: DiamondProxyFallbackBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondFallback', () => {
-    let instance: IDiamondFallback;
+  describe('::DiamondProxyFallback', () => {
+    let instance: IDiamondProxyFallback;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 

@@ -8,9 +8,9 @@ import {
   DiamondBaseBehaviorArgs,
 } from './base/DiamondBase.behavior';
 import {
-  describeBehaviorOfDiamondFallback,
-  DiamondFallbackBehaviorArgs,
-} from './fallback/DiamondFallback.behavior';
+  describeBehaviorOfDiamondProxyFallback,
+  DiamondProxyFallbackBehaviorArgs,
+} from './fallback/DiamondProxyFallback.behavior';
 import {
   describeBehaviorOfDiamondProxyReadable,
   DiamondProxyReadableBehaviorArgs,
@@ -28,7 +28,7 @@ import { ethers } from 'hardhat';
 
 export interface SolidstateDiamondBehaviorArgs
   extends DiamondBaseBehaviorArgs,
-    DiamondFallbackBehaviorArgs,
+    DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs,
     SafeOwnableBehaviorArgs {}
@@ -57,7 +57,7 @@ export function describeBehaviorOfSolidstateDiamond(
 
     describeBehaviorOfDiamondBase(deploy, args, skips);
 
-    describeBehaviorOfDiamondFallback(deploy, args, [
+    describeBehaviorOfDiamondProxyFallback(deploy, args, [
       '::DiamondBase',
       '::Ownable',
       ...(skips ?? []),
