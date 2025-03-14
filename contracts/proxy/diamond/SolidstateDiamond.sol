@@ -11,8 +11,8 @@ import { IERC173 } from '../../interfaces/IERC173.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
 import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { _Proxy } from '../_Proxy.sol';
-import { DiamondBase } from './base/DiamondBase.sol';
-import { _DiamondBase } from './base/_DiamondBase.sol';
+import { DiamondProxyExecutable } from './executable/DiamondProxyExecutable.sol';
+import { _DiamondProxyExecutable } from './executable/_DiamondProxyExecutable.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
@@ -27,7 +27,7 @@ import { _SolidstateDiamond } from './_SolidstateDiamond.sol';
 abstract contract SolidstateDiamond is
     ISolidstateDiamond,
     _SolidstateDiamond,
-    DiamondBase,
+    DiamondProxyExecutable,
     DiamondProxyReadable,
     DiamondProxyWritable,
     DiamondProxyFallback,
@@ -113,7 +113,11 @@ abstract contract SolidstateDiamond is
     function _getImplementation()
         internal
         view
-        override(DiamondBase, DiamondProxyFallback, _SolidstateDiamond)
+        override(
+            DiamondProxyExecutable,
+            DiamondProxyFallback,
+            _SolidstateDiamond
+        )
         returns (address implementation)
     {
         implementation = super._getImplementation();

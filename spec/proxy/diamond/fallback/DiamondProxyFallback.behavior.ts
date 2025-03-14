@@ -1,8 +1,8 @@
 import { OwnableBehaviorArgs } from '../../../access';
 import {
-  DiamondBaseBehaviorArgs,
-  describeBehaviorOfDiamondBase,
-} from '../base';
+  DiamondProxyExecutableBehaviorArgs,
+  describeBehaviorOfDiamondProxyExecutable,
+} from '../executable';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
@@ -11,7 +11,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondProxyFallbackBehaviorArgs
-  extends DiamondBaseBehaviorArgs,
+  extends DiamondProxyExecutableBehaviorArgs,
     OwnableBehaviorArgs {
   fallbackAddress: string;
 }
@@ -34,7 +34,7 @@ export function describeBehaviorOfDiamondProxyFallback(
       nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfDiamondBase(async () => instance, args, skips);
+    describeBehaviorOfDiamondProxyExecutable(async () => instance, args, skips);
 
     describe('fallback()', () => {
       it('forwards data without matching selector to fallback contract');

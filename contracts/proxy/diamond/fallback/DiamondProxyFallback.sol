@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { DiamondBase } from '../base/DiamondBase.sol';
+import { DiamondProxyExecutable } from '../executable/DiamondProxyExecutable.sol';
 import { IDiamondProxyFallback } from './IDiamondProxyFallback.sol';
 import { _DiamondProxyFallback } from './_DiamondProxyFallback.sol';
 
@@ -12,7 +12,7 @@ import { _DiamondProxyFallback } from './_DiamondProxyFallback.sol';
 abstract contract DiamondProxyFallback is
     IDiamondProxyFallback,
     _DiamondProxyFallback,
-    DiamondBase
+    DiamondProxyExecutable
 {
     /**
      * @inheritdoc IDiamondProxyFallback
@@ -39,7 +39,7 @@ abstract contract DiamondProxyFallback is
         internal
         view
         virtual
-        override(DiamondBase, _DiamondProxyFallback)
+        override(DiamondProxyExecutable, _DiamondProxyFallback)
         returns (address implementation)
     {
         implementation = super._getImplementation();

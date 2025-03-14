@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { DiamondBaseStorage } from '../base/DiamondBaseStorage.sol';
+import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
 import { _DiamondCommon } from '../common/_DiamondCommon.sol';
 import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 

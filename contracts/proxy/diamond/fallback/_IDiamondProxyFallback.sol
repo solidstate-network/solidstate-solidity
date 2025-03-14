@@ -3,6 +3,6 @@
 pragma solidity ^0.8.20;
 
 import { _IOwnable } from '../../../access/ownable/_IOwnable.sol';
-import { _IDiamondBase } from '../base/_IDiamondBase.sol';
+import { _IDiamondProxyExecutable } from '../executable/_IDiamondProxyExecutable.sol';
 
-interface _IDiamondProxyFallback is _IDiamondBase, _IOwnable {}
+interface _IDiamondProxyFallback is _IDiamondProxyExecutable, _IOwnable {}

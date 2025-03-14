@@ -4,10 +4,14 @@ pragma solidity ^0.8.20;
 
 import { _Proxy } from '../../_Proxy.sol';
 import { _DiamondCommon } from '../common/_DiamondCommon.sol';
-import { _IDiamondBase } from './_IDiamondBase.sol';
+import { _IDiamondProxyExecutable } from './_IDiamondProxyExecutable.sol';
 import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
 
-abstract contract _DiamondBase is _IDiamondBase, _DiamondCommon, _Proxy {
+abstract contract _DiamondProxyExecutable is
+    _IDiamondProxyExecutable,
+    _DiamondCommon,
+    _Proxy
+{
     /**
      * @inheritdoc _Proxy
      */

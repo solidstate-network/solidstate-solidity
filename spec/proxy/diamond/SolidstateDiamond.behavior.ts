@@ -4,9 +4,9 @@ import {
 } from '../../access';
 import { describeBehaviorOfIntrospectable } from '../../introspection';
 import {
-  describeBehaviorOfDiamondBase,
-  DiamondBaseBehaviorArgs,
-} from './base/DiamondBase.behavior';
+  describeBehaviorOfDiamondProxyExecutable,
+  DiamondProxyExecutableBehaviorArgs,
+} from './executable/DiamondProxyExecutable.behavior';
 import {
   describeBehaviorOfDiamondProxyFallback,
   DiamondProxyFallbackBehaviorArgs,
@@ -27,7 +27,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface SolidstateDiamondBehaviorArgs
-  extends DiamondBaseBehaviorArgs,
+  extends DiamondProxyExecutableBehaviorArgs,
     DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs,
@@ -55,10 +55,10 @@ export function describeBehaviorOfSolidstateDiamond(
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondBase(deploy, args, skips);
+    describeBehaviorOfDiamondProxyExecutable(deploy, args, skips);
 
     describeBehaviorOfDiamondProxyFallback(deploy, args, [
-      '::DiamondBase',
+      '::DiamondProxyExecutable',
       '::Ownable',
       ...(skips ?? []),
     ]);
