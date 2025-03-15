@@ -1,1 +1,1 @@
-export * from './DiamondFallback.behavior';
+export * from './DiamondProxyFallback.behavior';

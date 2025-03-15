@@ -1,1 +1,1 @@
-export * from './DiamondWritable.behavior';
+export * from './DiamondProxyWritable.behavior';
