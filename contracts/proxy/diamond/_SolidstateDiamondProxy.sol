@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _SafeOwnable } from '../../access/ownable/_SafeOwnable.sol';
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
-import { _DiamondProxyCommon } from './common/_DiamondProxyCommon.sol';
+import { _DiamondProxy } from './_DiamondProxy.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { _DiamondProxyReadable } from './readable/_DiamondProxyReadable.sol';
 import { _DiamondProxyWritable } from './writable/_DiamondProxyWritable.sol';
@@ -12,7 +12,7 @@ import { _ISolidstateDiamondProxy } from './_ISolidstateDiamondProxy.sol';
 
 abstract contract _SolidstateDiamondProxy is
     _ISolidstateDiamondProxy,
-    _DiamondProxyCommon,
+    _DiamondProxy,
     _DiamondProxyFallback,
     _DiamondProxyReadable,
     _DiamondProxyWritable,
@@ -31,7 +31,7 @@ abstract contract _SolidstateDiamondProxy is
         internal
         view
         virtual
-        override(_DiamondProxyCommon, _DiamondProxyFallback)
+        override(_DiamondProxy, _DiamondProxyFallback)
         returns (address implementation)
     {
         implementation = super._getImplementation();

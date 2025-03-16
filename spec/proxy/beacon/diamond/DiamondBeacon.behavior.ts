@@ -42,7 +42,7 @@ export function describeBehaviorOfDiamondBeacon(
       ...(skips ?? []),
     ]);
 
-    // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on DiamondProxyCommon
+    // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on external DiamondProxy contract
     // describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
