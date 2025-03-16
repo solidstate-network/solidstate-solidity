@@ -3,10 +3,10 @@
 pragma solidity ^0.8.20;
 
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
+import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { UintUtils } from '../../utils/UintUtils.sol';
 import { _IAccessControl } from './_IAccessControl.sol';
-import { AccessControlStorage } from './AccessControlStorage.sol';
 
 /**
  * @title Role-based access control system

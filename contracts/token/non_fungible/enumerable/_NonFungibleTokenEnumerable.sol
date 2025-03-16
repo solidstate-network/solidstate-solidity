@@ -4,13 +4,13 @@ pragma solidity ^0.8.20;
 
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
-import { _NonFungibleTokenBase } from '../base/_NonFungibleTokenBase.sol';
-import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
+import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
+import { _NonFungibleToken } from '../_NonFungibleToken.sol';
 import { _INonFungibleTokenEnumerable } from './_INonFungibleTokenEnumerable.sol';
 
 abstract contract _NonFungibleTokenEnumerable is
     _INonFungibleTokenEnumerable,
-    _NonFungibleTokenBase
+    _NonFungibleToken
 {
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -20,8 +20,8 @@ abstract contract _NonFungibleTokenEnumerable is
      */
     function _totalSupply() internal view returns (uint256) {
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenOwners
                 .length();
     }
@@ -34,8 +34,8 @@ abstract contract _NonFungibleTokenEnumerable is
         uint256 index
     ) internal view returns (uint256) {
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .holderTokens[owner]
                 .at(index);
     }
@@ -46,8 +46,8 @@ abstract contract _NonFungibleTokenEnumerable is
     function _tokenByIndex(
         uint256 index
     ) internal view returns (uint256 tokenId) {
-        (tokenId, ) = ERC721BaseStorage
-            .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+        (tokenId, ) = ERC721Storage
+            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
             .at(index);
     }

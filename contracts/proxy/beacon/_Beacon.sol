@@ -3,8 +3,8 @@
 pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
+import { BeaconStorage } from '../../storage/BeaconStorage.sol';
 import { _IBeacon } from './_IBeacon.sol';
-import { BeaconStorage } from './BeaconStorage.sol';
 
 abstract contract _Beacon is _IBeacon, _Ownable {
     /**

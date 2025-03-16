@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
-import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
-import { ERC20BaseStorage } from '../base/ERC20BaseStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IFungibleTokenExtended } from './_IFungibleTokenExtended.sol';
 
 /**
@@ -12,7 +12,7 @@ import { _IFungibleTokenExtended } from './_IFungibleTokenExtended.sol';
  */
 abstract contract _FungibleTokenExtended is
     _IFungibleTokenExtended,
-    _FungibleTokenBase
+    _FungibleToken
 {
     /**
      * @notice increase spend amount granted to spender

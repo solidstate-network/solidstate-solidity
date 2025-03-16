@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { ERC173Storage } from '../../storage/ERC173Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { _IOwnable } from './_IOwnable.sol';
-import { OwnableStorage } from './OwnableStorage.sol';
 
 abstract contract _Ownable is _IOwnable {
     using AddressUtils for address;
@@ -22,7 +22,7 @@ abstract contract _Ownable is _IOwnable {
     }
 
     function _owner() internal view virtual returns (address) {
-        return OwnableStorage.layout(OwnableStorage.DEFAULT_STORAGE_SLOT).owner;
+        return ERC173Storage.layout(ERC173Storage.DEFAULT_STORAGE_SLOT).owner;
     }
 
     function _transitiveOwner() internal view virtual returns (address owner) {
@@ -42,8 +42,8 @@ abstract contract _Ownable is _IOwnable {
     }
 
     function _setOwner(address account) internal virtual {
-        OwnableStorage.Layout storage $ = OwnableStorage.layout(
-            OwnableStorage.DEFAULT_STORAGE_SLOT
+        ERC173Storage.Layout storage $ = ERC173Storage.layout(
+            ERC173Storage.DEFAULT_STORAGE_SLOT
         );
         emit OwnershipTransferred($.owner, account);
         $.owner = account;

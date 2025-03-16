@@ -33,10 +33,6 @@ describe('MinimalProxyFactory', () => {
             ].join(''),
         );
       });
-
-      describe('reverts if', () => {
-        it('contract creation fails');
-      });
     });
 
     describe('#deployMinimalProxy(address,bytes32)', () => {
@@ -62,8 +58,6 @@ describe('MinimalProxyFactory', () => {
       });
 
       describe('reverts if', () => {
-        it('contract creation fails');
-
         it('salt has already been used', async () => {
           const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
