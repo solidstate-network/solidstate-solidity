@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IMultiTokenBase } from '../base/IMultiTokenBase.sol';
+import { IMultiToken } from '../IMultiToken.sol';
 import { _IMultiTokenEnumerable } from './_IMultiTokenEnumerable.sol';
 
 /**
  * @title MultiToken enumerable and aggregate function interface
  */
-interface IMultiTokenEnumerable is _IMultiTokenEnumerable, IMultiTokenBase {
+interface IMultiTokenEnumerable is _IMultiTokenEnumerable, IMultiToken {
     /**
      * @notice query total minted supply of given token
      * @param id token id to query

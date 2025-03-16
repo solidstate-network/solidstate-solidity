@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { _IMultiTokenBase } from '../base/_IMultiTokenBase.sol';
+import { _IMultiToken } from '../_IMultiToken.sol';
 
-interface _IMultiTokenEnumerable is _IMultiTokenBase {}
+interface _IMultiTokenEnumerable is _IMultiToken {}

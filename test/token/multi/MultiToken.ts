@@ -1,16 +1,13 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfMultiTokenBase } from '@solidstate/spec';
-import {
-  $MultiTokenBase,
-  $MultiTokenBase__factory,
-} from '@solidstate/typechain-types';
+import { describeBehaviorOfMultiToken } from '@solidstate/spec';
+import { $MultiToken, $MultiToken__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('MultiTokenBase', () => {
+describe('MultiToken', () => {
   let holder: SignerWithAddress;
   let recipient: SignerWithAddress;
-  let instance: $MultiTokenBase;
+  let instance: $MultiToken;
   let invalidReceiver: string;
 
   before(async () => {
@@ -19,14 +16,14 @@ describe('MultiTokenBase', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $MultiTokenBase__factory(deployer).deploy();
+    instance = await new $MultiToken__factory(deployer).deploy();
     invalidReceiver = await instance.getAddress();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0xd9b67a26', true);
   });
 
-  describeBehaviorOfMultiTokenBase(async () => instance, {
+  describeBehaviorOfMultiToken(async () => instance, {
     mint: (recipient, tokenId, amount) =>
       instance.$_mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>
@@ -79,7 +76,7 @@ describe('MultiTokenBase', () => {
             instance.$_mint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__MintToZeroAddress',
+            'MultiToken__MintToZeroAddress',
           );
         });
       });
@@ -126,7 +123,7 @@ describe('MultiTokenBase', () => {
             instance.$_safeMint(ethers.ZeroAddress, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__MintToZeroAddress',
+            'MultiToken__MintToZeroAddress',
           );
         });
 
@@ -135,7 +132,7 @@ describe('MultiTokenBase', () => {
             instance.$_safeMint(invalidReceiver, 0, 0, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverNotImplemented',
+            'MultiToken__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -182,7 +179,7 @@ describe('MultiTokenBase', () => {
             instance.$_mintBatch(ethers.ZeroAddress, [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__MintToZeroAddress',
+            'MultiToken__MintToZeroAddress',
           );
         });
 
@@ -191,7 +188,7 @@ describe('MultiTokenBase', () => {
             instance.$_mintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
       });
@@ -240,7 +237,7 @@ describe('MultiTokenBase', () => {
             instance.$_safeMintBatch(ethers.ZeroAddress, [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__MintToZeroAddress',
+            'MultiToken__MintToZeroAddress',
           );
         });
 
@@ -249,7 +246,7 @@ describe('MultiTokenBase', () => {
             instance.$_safeMintBatch(holder.address, [0], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
 
@@ -258,7 +255,7 @@ describe('MultiTokenBase', () => {
             instance.$_safeMintBatch(await instance.getAddress(), [], [], '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverNotImplemented',
+            'MultiToken__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -309,7 +306,7 @@ describe('MultiTokenBase', () => {
             instance.$_burn(ethers.ZeroAddress, 0, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BurnFromZeroAddress',
+            'MultiToken__BurnFromZeroAddress',
           );
         });
 
@@ -318,7 +315,7 @@ describe('MultiTokenBase', () => {
             instance.$_burn(holder.address, 0, 1),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BurnExceedsBalance',
+            'MultiToken__BurnExceedsBalance',
           );
         });
       });
@@ -369,7 +366,7 @@ describe('MultiTokenBase', () => {
             instance.$_burnBatch(ethers.ZeroAddress, [], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BurnFromZeroAddress',
+            'MultiToken__BurnFromZeroAddress',
           );
         });
 
@@ -378,7 +375,7 @@ describe('MultiTokenBase', () => {
             instance.$_burnBatch(holder.address, [0], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
 
@@ -387,7 +384,7 @@ describe('MultiTokenBase', () => {
             instance.$_burnBatch(holder.address, [0], [1]),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BurnExceedsBalance',
+            'MultiToken__BurnExceedsBalance',
           );
         });
       });
@@ -474,7 +471,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferToZeroAddress',
+            'MultiToken__TransferToZeroAddress',
           );
         });
 
@@ -490,7 +487,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
       });
@@ -577,7 +574,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferToZeroAddress',
+            'MultiToken__TransferToZeroAddress',
           );
         });
 
@@ -593,7 +590,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
 
@@ -609,7 +606,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverNotImplemented',
+            'MultiToken__ERC1155ReceiverNotImplemented',
           );
         });
       });
@@ -696,7 +693,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferToZeroAddress',
+            'MultiToken__TransferToZeroAddress',
           );
         });
 
@@ -712,7 +709,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
 
@@ -728,7 +725,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
       });
@@ -815,7 +812,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferToZeroAddress',
+            'MultiToken__TransferToZeroAddress',
           );
         });
 
@@ -831,7 +828,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
 
@@ -847,7 +844,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
 
@@ -863,7 +860,7 @@ describe('MultiTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverNotImplemented',
+            'MultiToken__ERC1155ReceiverNotImplemented',
           );
         });
       });

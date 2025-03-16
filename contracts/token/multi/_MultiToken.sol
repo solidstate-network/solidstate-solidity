@@ -2,17 +2,17 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
-import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { AddressUtils } from '../../../utils/AddressUtils.sol';
-import { _IMultiTokenBase } from './_IMultiTokenBase.sol';
+import { IERC1155Receiver } from '../../interfaces/IERC1155Receiver.sol';
+import { _Introspectable } from '../../introspection/_Introspectable.sol';
+import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { _IMultiToken } from './_IMultiToken.sol';
 import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
 
 /**
  * @title Base MultiToken internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
+abstract contract _MultiToken is _IMultiToken, _Introspectable {
     using AddressUtils for address;
 
     /**
@@ -25,8 +25,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         address account,
         uint256 id
     ) internal view virtual returns (uint256) {
-        if (account == address(0))
-            revert MultiTokenBase__BalanceQueryZeroAddress();
+        if (account == address(0)) revert MultiToken__BalanceQueryZeroAddress();
         return
             ERC1155BaseStorage
                 .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
@@ -44,7 +43,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256[] memory ids
     ) internal view virtual returns (uint256[] memory) {
         if (accounts.length != ids.length)
-            revert MultiTokenBase__ArrayLengthMismatch();
+            revert MultiToken__ArrayLengthMismatch();
 
         mapping(uint256 => mapping(address => uint256))
             storage balances = ERC1155BaseStorage
@@ -56,7 +55,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         unchecked {
             for (uint256 i; i < accounts.length; i++) {
                 if (accounts[i] == address(0))
-                    revert MultiTokenBase__BalanceQueryZeroAddress();
+                    revert MultiToken__BalanceQueryZeroAddress();
                 batchBalances[i] = balances[ids[i]][accounts[i]];
             }
         }
@@ -84,7 +83,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         address operator,
         bool status
     ) internal virtual {
-        if (msg.sender == operator) revert MultiTokenBase__SelfApproval();
+        if (msg.sender == operator) revert MultiToken__SelfApproval();
         ERC1155BaseStorage
             .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
             .operatorApprovals[msg.sender][operator] = status;
@@ -105,7 +104,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        if (account == address(0)) revert MultiTokenBase__MintToZeroAddress();
+        if (account == address(0)) revert MultiToken__MintToZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -162,9 +161,9 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        if (account == address(0)) revert MultiTokenBase__MintToZeroAddress();
+        if (account == address(0)) revert MultiToken__MintToZeroAddress();
         if (ids.length != amounts.length)
-            revert MultiTokenBase__ArrayLengthMismatch();
+            revert MultiToken__ArrayLengthMismatch();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -226,7 +225,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256 id,
         uint256 amount
     ) internal virtual {
-        if (account == address(0)) revert MultiTokenBase__BurnFromZeroAddress();
+        if (account == address(0)) revert MultiToken__BurnFromZeroAddress();
 
         _beforeTokenTransfer(
             msg.sender,
@@ -243,7 +242,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
 
         unchecked {
             if (amount > balances[account])
-                revert MultiTokenBase__BurnExceedsBalance();
+                revert MultiToken__BurnExceedsBalance();
             balances[account] -= amount;
         }
 
@@ -261,9 +260,9 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256[] memory ids,
         uint256[] memory amounts
     ) internal virtual {
-        if (account == address(0)) revert MultiTokenBase__BurnFromZeroAddress();
+        if (account == address(0)) revert MultiToken__BurnFromZeroAddress();
         if (ids.length != amounts.length)
-            revert MultiTokenBase__ArrayLengthMismatch();
+            revert MultiToken__ArrayLengthMismatch();
 
         _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
 
@@ -276,7 +275,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
             for (uint256 i; i < ids.length; i++) {
                 uint256 id = ids[i];
                 if (amounts[i] > balances[id][account])
-                    revert MultiTokenBase__BurnExceedsBalance();
+                    revert MultiToken__BurnExceedsBalance();
                 balances[id][account] -= amounts[i];
             }
         }
@@ -292,7 +291,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         bytes memory data
     ) internal virtual {
         if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
-            revert MultiTokenBase__NotOwnerOrApproved();
+            revert MultiToken__NotOwnerOrApproved();
         _safeTransfer(msg.sender, from, to, id, amount, data);
     }
 
@@ -304,7 +303,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         bytes memory data
     ) internal virtual {
         if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
-            revert MultiTokenBase__NotOwnerOrApproved();
+            revert MultiToken__NotOwnerOrApproved();
         _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
     }
 
@@ -326,8 +325,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        if (recipient == address(0))
-            revert MultiTokenBase__TransferToZeroAddress();
+        if (recipient == address(0)) revert MultiToken__TransferToZeroAddress();
 
         _beforeTokenTransfer(
             operator,
@@ -346,7 +344,7 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         unchecked {
             uint256 senderBalance = balances[id][sender];
             if (amount > senderBalance)
-                revert MultiTokenBase__TransferExceedsBalance();
+                revert MultiToken__TransferExceedsBalance();
             balances[id][sender] = senderBalance - amount;
         }
 
@@ -402,10 +400,9 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        if (recipient == address(0))
-            revert MultiTokenBase__TransferToZeroAddress();
+        if (recipient == address(0)) revert MultiToken__TransferToZeroAddress();
         if (ids.length != amounts.length)
-            revert MultiTokenBase__ArrayLengthMismatch();
+            revert MultiToken__ArrayLengthMismatch();
 
         _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
 
@@ -422,14 +419,14 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
                 uint256 senderBalance = balances[token][sender];
 
                 if (amount > senderBalance)
-                    revert MultiTokenBase__TransferExceedsBalance();
+                    revert MultiToken__TransferExceedsBalance();
 
                 balances[token][sender] = senderBalance - amount;
 
                 i++;
             }
 
-            // balance increase cannot be unchecked because MultiTokenBase neither tracks nor validates a totalSupply
+            // balance increase cannot be unchecked because MultiToken neither tracks nor validates a totalSupply
             balances[token][recipient] += amount;
         }
 
@@ -506,11 +503,11 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
                 )
             returns (bytes4 response) {
                 if (response != IERC1155Receiver.onERC1155Received.selector)
-                    revert MultiTokenBase__ERC1155ReceiverRejected();
+                    revert MultiToken__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert MultiTokenBase__ERC1155ReceiverNotImplemented();
+                revert MultiToken__ERC1155ReceiverNotImplemented();
             }
         }
     }
@@ -544,11 +541,11 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
             returns (bytes4 response) {
                 if (
                     response != IERC1155Receiver.onERC1155BatchReceived.selector
-                ) revert MultiTokenBase__ERC1155ReceiverRejected();
+                ) revert MultiToken__ERC1155ReceiverRejected();
             } catch Error(string memory reason) {
                 revert(reason);
             } catch {
-                revert MultiTokenBase__ERC1155ReceiverNotImplemented();
+                revert MultiToken__ERC1155ReceiverNotImplemented();
             }
         }
     }

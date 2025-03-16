@@ -2,20 +2,16 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1155 } from '../../../interfaces/IERC1155.sol';
-import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { IMultiTokenBase } from './IMultiTokenBase.sol';
-import { _MultiTokenBase } from './_MultiTokenBase.sol';
+import { IERC1155 } from '../../interfaces/IERC1155.sol';
+import { Introspectable } from '../../introspection/Introspectable.sol';
+import { IMultiToken } from './IMultiToken.sol';
+import { _MultiToken } from './_MultiToken.sol';
 
 /**
  * @title Base MultiToken contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract MultiTokenBase is
-    IMultiTokenBase,
-    _MultiTokenBase,
-    Introspectable
-{
+abstract contract MultiToken is IMultiToken, _MultiToken, Introspectable {
     /**
      * @inheritdoc IERC1155
      */

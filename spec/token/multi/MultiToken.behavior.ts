@@ -2,12 +2,12 @@ import { describeBehaviorOfIntrospectable } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { IMultiTokenBase } from '@solidstate/typechain-types';
+import { IMultiToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface MultiTokenBaseBehaviorArgs {
+export interface MultiTokenBehaviorArgs {
   mint: (
     address: string,
     id: bigint,
@@ -21,17 +21,17 @@ export interface MultiTokenBaseBehaviorArgs {
   tokenId?: bigint;
 }
 
-export function describeBehaviorOfMultiTokenBase(
-  deploy: () => Promise<IMultiTokenBase>,
-  args: MultiTokenBaseBehaviorArgs,
+export function describeBehaviorOfMultiToken(
+  deploy: () => Promise<IMultiToken>,
+  args: MultiTokenBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::MultiTokenBase', () => {
+  describe('::MultiToken', () => {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
-    let instance: IMultiTokenBase;
+    let instance: IMultiToken;
 
     before(async () => {
       [holder, spender] = await ethers.getSigners();
@@ -77,7 +77,7 @@ export function describeBehaviorOfMultiTokenBase(
             instance.balanceOf.staticCall(ethers.ZeroAddress, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BalanceQueryZeroAddress',
+            'MultiToken__BalanceQueryZeroAddress',
           );
         });
       });
@@ -99,7 +99,7 @@ export function describeBehaviorOfMultiTokenBase(
             instance.balanceOfBatch.staticCall([holder.address], []),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ArrayLengthMismatch',
+            'MultiToken__ArrayLengthMismatch',
           );
         });
 
@@ -108,7 +108,7 @@ export function describeBehaviorOfMultiTokenBase(
             instance.balanceOfBatch.staticCall([ethers.ZeroAddress], [0n]),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__BalanceQueryZeroAddress',
+            'MultiToken__BalanceQueryZeroAddress',
           );
         });
       });
@@ -152,10 +152,7 @@ export function describeBehaviorOfMultiTokenBase(
         it('given operator is sender', async () => {
           await expect(
             instance.connect(holder).setApprovalForAll(holder.address, true),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'MultiTokenBase__SelfApproval',
-          );
+          ).to.be.revertedWithCustomError(instance, 'MultiToken__SelfApproval');
         });
       });
     });
@@ -206,7 +203,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
 
@@ -223,7 +220,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__NotOwnerOrApproved',
+            'MultiToken__NotOwnerOrApproved',
           );
         });
 
@@ -264,7 +261,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverRejected',
+            'MultiToken__ERC1155ReceiverRejected',
           );
         });
       });
@@ -322,7 +319,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__TransferExceedsBalance',
+            'MultiToken__TransferExceedsBalance',
           );
         });
 
@@ -339,7 +336,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__NotOwnerOrApproved',
+            'MultiToken__NotOwnerOrApproved',
           );
         });
 
@@ -380,7 +377,7 @@ export function describeBehaviorOfMultiTokenBase(
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'MultiTokenBase__ERC1155ReceiverRejected',
+            'MultiToken__ERC1155ReceiverRejected',
           );
         });
       });
