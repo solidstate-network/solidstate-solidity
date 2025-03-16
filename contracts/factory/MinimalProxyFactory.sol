@@ -6,6 +6,7 @@ import { Factory } from './Factory.sol';
 
 /**
  * @title Factory for the deployment of EIP1167 minimal proxies
+ * @dev see https://eips.ethereum.org/EIPS/eip-1167
  * @dev derived from https://github.com/optionality/clone-factory (MIT license)
  */
 library MinimalProxyFactory {
