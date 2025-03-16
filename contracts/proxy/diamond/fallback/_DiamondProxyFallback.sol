@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { _DiamondProxyCommon } from '../common/_DiamondProxyCommon.sol';
-import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
+import { DiamondBaseStorage } from '../DiamondBaseStorage.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
 abstract contract _DiamondProxyFallback is
