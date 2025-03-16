@@ -5,9 +5,9 @@ pragma solidity ^0.8.20;
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
-library DiamondBaseStorage {
+library ERC2535Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.DiamondBase
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2535
      */
     struct Layout {
         // function selector => (facet address, selector slug position)
@@ -23,7 +23,7 @@ library DiamondBaseStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.DiamondBase'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC2535'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

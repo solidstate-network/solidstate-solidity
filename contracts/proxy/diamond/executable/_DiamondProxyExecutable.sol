@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { _Proxy } from '../../_Proxy.sol';
 import { _DiamondProxyCommon } from '../common/_DiamondProxyCommon.sol';
 import { _IDiamondProxyExecutable } from './_IDiamondProxyExecutable.sol';
-import { DiamondBaseStorage } from '../../../storage/DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 
 abstract contract _DiamondProxyExecutable is
     _IDiamondProxyExecutable,
@@ -23,8 +23,8 @@ abstract contract _DiamondProxyExecutable is
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        DiamondBaseStorage.Layout storage $;
-        bytes32 slot = DiamondBaseStorage.DEFAULT_STORAGE_SLOT;
+        ERC2535Storage.Layout storage $;
+        bytes32 slot = ERC2535Storage.DEFAULT_STORAGE_SLOT;
         assembly {
             $.slot := slot
         }

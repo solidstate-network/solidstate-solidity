@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
-import { DiamondBaseStorage } from '../../../storage/DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxyExecutable } from '../executable/_DiamondProxyExecutable.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
@@ -40,8 +40,8 @@ abstract contract _DiamondProxyFallback is
         virtual
         returns (address fallbackAddress)
     {
-        fallbackAddress = DiamondBaseStorage
-            .layout(DiamondBaseStorage.DEFAULT_STORAGE_SLOT)
+        fallbackAddress = ERC2535Storage
+            .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
             .fallbackAddress;
     }
 
@@ -59,8 +59,8 @@ abstract contract _DiamondProxyFallback is
      * @param fallbackAddress address of fallback implementation
      */
     function _setFallbackAddress(address fallbackAddress) internal virtual {
-        DiamondBaseStorage
-            .layout(DiamondBaseStorage.DEFAULT_STORAGE_SLOT)
+        ERC2535Storage
+            .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
             .fallbackAddress = fallbackAddress;
     }
 }

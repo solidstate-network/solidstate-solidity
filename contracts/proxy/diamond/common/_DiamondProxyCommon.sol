@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { DiamondBaseStorage } from '../../../storage/DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IDiamondProxyCommon } from './_IDiamondProxyCommon.sol';
 
@@ -25,8 +25,8 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
         address target,
         bytes memory data
     ) internal virtual {
-        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
-            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+            ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
         unchecked {
@@ -93,7 +93,7 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
      * @dev selectors are added one-by-one to lastSlug, which is written to storage and updated to represent the subsequent slug when full
      * @dev lastSlug may be initialized with "dirty" higher-index bits, but these are ignored because they are out of range
      * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
-     * @param $ storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the ERC2535Storage Layout struct
      * @param facetCut structured data representing facet address and selectors to add
      * @param selectorCount total number of selectors registered on the diamond proxy
      * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
@@ -101,7 +101,7 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
      * @return lastSlug after selectors have been added
      */
     function _addFacetSelectors(
-        DiamondBaseStorage.Layout storage $,
+        ERC2535Storage.Layout storage $,
         FacetCut memory facetCut,
         uint256 selectorCount,
         bytes32 lastSlug
@@ -153,7 +153,7 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
      * @dev selectors are removed one-by-one from lastSlug, which is updated to represent the preceeding slug when empty
      * @dev lastSlug is not updated in storage when modified or removed, leaving "dirty" higher-index bits, but these are ignored because they are out of range
      * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
-     * @param $ storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the ERC2535Storage Layout struct
      * @param facetCut structured data representing facet address and selectors to remove
      * @param selectorCount total number of selectors registered on the diamond proxy
      * @param lastSlug the last entry in the selectorSlugs mapping, cached in stack and updated in place
@@ -161,7 +161,7 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
      * @return lastSlug after selectors have been removed
      */
     function _removeFacetSelectors(
-        DiamondBaseStorage.Layout storage $,
+        ERC2535Storage.Layout storage $,
         FacetCut memory facetCut,
         uint256 selectorCount,
         bytes32 lastSlug
@@ -238,11 +238,11 @@ abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
 
     /**
      * @notice replace in the diamond a set of selectors associated with a particular facet
-     * @param $ storage pointer to the DiamondBaseStorage Layout struct
+     * @param $ storage pointer to the ERC2535Storage Layout struct
      * @param facetCut structured data representing facet address and selectors to replace
      */
     function _replaceFacetSelectors(
-        DiamondBaseStorage.Layout storage $,
+        ERC2535Storage.Layout storage $,
         FacetCut memory facetCut
     ) internal {
         unchecked {
