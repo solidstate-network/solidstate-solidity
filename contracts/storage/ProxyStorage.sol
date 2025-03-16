@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: this storage library is now referenced by Proxy, so should be renamed
 library ProxyStorage {
     /**
      * @custom:storage-location erc7201:solidstate.contracts.storage.Proxy
