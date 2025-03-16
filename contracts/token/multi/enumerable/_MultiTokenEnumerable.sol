@@ -3,10 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
+import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 import { _MultiToken } from '../_MultiToken.sol';
-import { ERC1155BaseStorage } from '../ERC1155BaseStorage.sol';
 import { _IMultiTokenEnumerable } from './_IMultiTokenEnumerable.sol';
-import { ERC1155EnumerableStorage } from './ERC1155EnumerableStorage.sol';
 
 /**
  * @title MultiTokenEnumerable internal functions
@@ -22,8 +21,8 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
      */
     function _totalSupply(uint256 id) internal view virtual returns (uint256) {
         return
-            ERC1155EnumerableStorage
-                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+            ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .totalSupply[id];
     }
 
@@ -34,8 +33,8 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
      */
     function _totalHolders(uint256 id) internal view virtual returns (uint256) {
         return
-            ERC1155EnumerableStorage
-                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+            ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .accountsByToken[id]
                 .length();
     }
@@ -48,8 +47,8 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
     function _accountsByToken(
         uint256 id
     ) internal view virtual returns (address[] memory) {
-        EnumerableSet.AddressSet storage accounts = ERC1155EnumerableStorage
-            .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+        EnumerableSet.AddressSet storage accounts = ERC1155Storage
+            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .accountsByToken[id];
 
         address[] memory addresses = new address[](accounts.length());
@@ -71,8 +70,8 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
     function _tokensByAccount(
         address account
     ) internal view virtual returns (uint256[] memory) {
-        EnumerableSet.UintSet storage tokens = ERC1155EnumerableStorage
-            .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT)
+        EnumerableSet.UintSet storage tokens = ERC1155Storage
+            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .tokensByAccount[account];
 
         uint256[] memory ids = new uint256[](tokens.length());
@@ -101,8 +100,9 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 
         if (from != to) {
-            ERC1155EnumerableStorage.Layout storage $ = ERC1155EnumerableStorage
-                .layout(ERC1155EnumerableStorage.DEFAULT_STORAGE_SLOT);
+            ERC1155Storage.Layout storage $ = ERC1155Storage.layout(
+                ERC1155Storage.DEFAULT_STORAGE_SLOT
+            );
             mapping(uint256 => EnumerableSet.AddressSet)
                 storage tokenAccounts = $.accountsByToken;
             EnumerableSet.UintSet storage fromTokens = $.tokensByAccount[from];

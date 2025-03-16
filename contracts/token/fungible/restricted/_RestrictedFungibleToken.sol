@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
-import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
 /**
  * @title Base ERC1404 internal functions
@@ -26,9 +26,9 @@ abstract contract _RestrictedFungibleToken is
         if (restrictionCodes.length != restrictionMessages.length)
             revert RestrictedFungibleToken__ArrayLengthMismatch();
 
-        mapping(uint8 => string) storage restrictions = ERC1404BaseStorage
-            .layout(ERC1404BaseStorage.DEFAULT_STORAGE_SLOT)
-            .restrictions;
+        mapping(uint8 => string) storage restrictions = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc1404RestrictionMessages;
 
         unchecked {
             for (uint256 i; i < restrictionCodes.length; i++) {
@@ -60,9 +60,9 @@ abstract contract _RestrictedFungibleToken is
     function _messageForTransferRestriction(
         uint8 restrictionCode
     ) internal view virtual returns (string memory message) {
-        message = ERC1404BaseStorage
-            .layout(ERC1404BaseStorage.DEFAULT_STORAGE_SLOT)
-            .restrictions[restrictionCode];
+        message = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc1404RestrictionMessages[restrictionCode];
     }
 
     /**

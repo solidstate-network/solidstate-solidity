@@ -2,30 +2,22 @@
 
 pragma solidity ^0.8.20;
 
-import { EnumerableSet } from '../../data/EnumerableSet.sol';
-
-library AccessControlStorage {
-    struct RoleData {
-        EnumerableSet.AddressSet members;
-        bytes32 adminRole;
-    }
-
+library ERC2981Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.AccessControl
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2981
      */
     struct Layout {
-        mapping(bytes32 => RoleData) roles;
+        mapping(uint256 tokenId => uint16 royaltyBPS) royaltiesBPS;
+        uint16 defaultRoyaltyBPS;
+        mapping(uint256 tokenId => address royaltyReceiver) royaltyReceivers;
+        address defaultRoyaltyReceiver;
     }
-
-    bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.AccessControl')
-                    )
+                    keccak256(bytes('solidstate.contracts.storage.ERC2981'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

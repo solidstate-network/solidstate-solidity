@@ -2,21 +2,20 @@
 
 pragma solidity ^0.8.20;
 
-library ERC20BaseStorage {
+library ERC173Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20Base
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC173
      */
     struct Layout {
-        mapping(address => uint256) balances;
-        mapping(address => mapping(address => uint256)) allowances;
-        uint256 totalSupply;
+        address owner;
+        address nomineeOwner;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC20Base'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC173'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

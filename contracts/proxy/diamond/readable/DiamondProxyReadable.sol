@@ -4,7 +4,8 @@ pragma solidity ^0.8.20;
 
 import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { DiamondBaseStorage } from '../DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
+import { DiamondProxy } from '../DiamondProxy.sol';
 import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
 import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
 

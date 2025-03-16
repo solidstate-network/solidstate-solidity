@@ -2,13 +2,16 @@
 
 pragma solidity ^0.8.20;
 
-// TODO: this storage library is now referenced by Proxy, so should be renamed
-library UpgradeableProxyStorage {
+import { EnumerableSet } from '../data/EnumerableSet.sol';
+
+library ECDSAMultisigWalletStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.UpgradeableProxy
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ECDSAMultisigWallet
      */
     struct Layout {
-        address implementation;
+        uint256 quorum;
+        EnumerableSet.AddressSet signers;
+        mapping(address account => mapping(uint256 nonce => bool invalidationStatus)) nonces;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
@@ -16,7 +19,9 @@ library UpgradeableProxyStorage {
             abi.encode(
                 uint256(
                     keccak256(
-                        bytes('solidstate.contracts.storage.UpgradeableProxy')
+                        bytes(
+                            'solidstate.contracts.storage.ECDSAMultisigWallet'
+                        )
                     )
                 ) - 1
             )

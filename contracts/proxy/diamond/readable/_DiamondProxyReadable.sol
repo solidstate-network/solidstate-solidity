@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { DiamondBaseStorage } from '../DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
@@ -21,8 +21,8 @@ abstract contract _DiamondProxyReadable is
      * @return diamondFacets array of structured facet data
      */
     function _facets() internal view returns (Facet[] memory diamondFacets) {
-        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
-            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+            ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
         diamondFacets = new Facet[]($.selectorCount);
@@ -102,8 +102,8 @@ abstract contract _DiamondProxyReadable is
     function _facetFunctionSelectors(
         address facet
     ) internal view returns (bytes4[] memory selectors) {
-        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
-            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+            ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
         // initialize array with maximum possible required length
@@ -152,8 +152,8 @@ abstract contract _DiamondProxyReadable is
         view
         returns (address[] memory addresses)
     {
-        DiamondBaseStorage.Layout storage $ = DiamondBaseStorage.layout(
-            DiamondBaseStorage.DEFAULT_STORAGE_SLOT
+        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+            ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
         addresses = new address[]($.selectorCount);
@@ -211,8 +211,8 @@ abstract contract _DiamondProxyReadable is
     ) internal view returns (address facet) {
         facet = address(
             bytes20(
-                DiamondBaseStorage
-                    .layout(DiamondBaseStorage.DEFAULT_STORAGE_SLOT)
+                ERC2535Storage
+                    .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
                     .selectorInfo[selector]
             )
         );

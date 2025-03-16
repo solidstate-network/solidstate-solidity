@@ -7,7 +7,7 @@ import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
 import { _FungibleTokenMetadata } from '../../fungible/metadata/_FungibleTokenMetadata.sol';
 import { _IFungibleVaultToken } from './_IFungibleVaultToken.sol';
-import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
 /**
  * @title Base FungibleVaultToken internal functions
@@ -24,9 +24,9 @@ abstract contract _FungibleVaultToken is
      * @return asset base token address
      */
     function _asset() internal view virtual returns (address asset) {
-        asset = ERC4626BaseStorage
-            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
-            .asset;
+        asset = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc4626Asset;
     }
 
     /**
@@ -376,8 +376,8 @@ abstract contract _FungibleVaultToken is
      * @param asset base token address
      */
     function _setAsset(address asset) internal virtual {
-        ERC4626BaseStorage
-            .layout(ERC4626BaseStorage.DEFAULT_STORAGE_SLOT)
-            .asset = asset;
+        ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc4626Asset = asset;
     }
 }

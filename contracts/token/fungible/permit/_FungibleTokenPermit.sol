@@ -6,7 +6,7 @@ import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
 import { _FungibleTokenMetadata } from '../metadata/_FungibleTokenMetadata.sol';
-import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 import { _IFungibleTokenPermit } from './_IFungibleTokenPermit.sol';
 
 /**
@@ -47,9 +47,9 @@ abstract contract _FungibleTokenPermit is
      */
     function _nonces(address owner) internal view virtual returns (uint256) {
         return
-            ERC20PermitStorage
-                .layout(ERC20PermitStorage.DEFAULT_STORAGE_SLOT)
-                .nonces[owner];
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+                .erc2612Nonces[owner];
     }
 
     /**
@@ -117,8 +117,8 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        ERC20PermitStorage.Layout storage $ = ERC20PermitStorage.layout(
-            ERC20PermitStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
 
         // execute EIP-712 hashStruct procedure using assembly, equavalent to:
@@ -135,7 +135,7 @@ abstract contract _FungibleTokenPermit is
         // );
 
         bytes32 structHash;
-        uint256 nonce = $.nonces[owner];
+        uint256 nonce = $.erc2612Nonces[owner];
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
@@ -189,7 +189,7 @@ abstract contract _FungibleTokenPermit is
 
         if (signer != owner) revert FungibleTokenPermit__InvalidSignature();
 
-        $.nonces[owner]++;
+        $.erc2612Nonces[owner]++;
         _approve(owner, spender, amount);
     }
 }

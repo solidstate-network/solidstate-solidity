@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { DiamondBaseStorage } from '../DiamondBaseStorage.sol';
+import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyWritable } from './_IDiamondProxyWritable.sol';
 

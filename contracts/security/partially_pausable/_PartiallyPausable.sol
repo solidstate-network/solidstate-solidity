@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { PausableStorage } from '../../storage/PausableStorage.sol';
 import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
-import { PartiallyPausableStorage } from './PartiallyPausableStorage.sol';
 
 /**
  * @title Internal functions for PartiallyPausable security control module.
@@ -27,8 +27,8 @@ abstract contract _PartiallyPausable is _IPartiallyPausable {
     function _partiallyPaused(
         bytes32 key
     ) internal view virtual returns (bool status) {
-        status = PartiallyPausableStorage
-            .layout(PartiallyPausableStorage.DEFAULT_STORAGE_SLOT)
+        status = PausableStorage
+            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key];
     }
 
@@ -39,8 +39,8 @@ abstract contract _PartiallyPausable is _IPartiallyPausable {
     function _partiallyPause(
         bytes32 key
     ) internal virtual whenNotPartiallyPaused(key) {
-        PartiallyPausableStorage
-            .layout(PartiallyPausableStorage.DEFAULT_STORAGE_SLOT)
+        PausableStorage
+            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key] = true;
         emit PartiallyPaused(msg.sender, key);
     }
@@ -52,8 +52,8 @@ abstract contract _PartiallyPausable is _IPartiallyPausable {
     function _partiallyUnpause(
         bytes32 key
     ) internal virtual whenPartiallyPaused(key) {
-        delete PartiallyPausableStorage
-            .layout(PartiallyPausableStorage.DEFAULT_STORAGE_SLOT)
+        delete PausableStorage
+            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key];
         emit PartiallyUnpaused(msg.sender, key);
     }

@@ -2,19 +2,20 @@
 
 pragma solidity ^0.8.20;
 
-library BeaconProxyStorage {
+library PausableStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.BeaconProxy
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Pausable
      */
     struct Layout {
-        address beacon;
+        bool paused;
+        mapping(bytes32 key => bool pausedStatus) partiallyPaused;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.BeaconProxy'))
+                    keccak256(bytes('solidstate.contracts.storage.Pausable'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

@@ -6,9 +6,9 @@ import { EnumerableMap } from '../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
+import { ERC721Storage } from '../../storage/ERC721Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
-import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 
 /**
  * @title Base NonFungibleToken internal functions
@@ -24,15 +24,15 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         if (account == address(0))
             revert NonFungibleToken__BalanceQueryZeroAddress();
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .holderTokens[account]
                 .length();
     }
 
     function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
-        address owner = ERC721BaseStorage
-            .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+        address owner = ERC721Storage
+            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
             .get(tokenId);
         if (owner == address(0)) revert NonFungibleToken__InvalidOwner();
@@ -41,8 +41,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
 
     function _exists(uint256 tokenId) internal view virtual returns (bool) {
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenOwners
                 .contains(tokenId);
     }
@@ -53,8 +53,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         if (!_exists(tokenId)) revert NonFungibleToken__NonExistentToken();
 
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenApprovals[tokenId];
     }
 
@@ -63,8 +63,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         address operator
     ) internal view virtual returns (bool) {
         return
-            ERC721BaseStorage
-                .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC721Storage
+                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .operatorApprovals[account][operator];
     }
 
@@ -87,8 +87,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
-        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
-            ERC721BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC721Storage.Layout storage $ = ERC721Storage.layout(
+            ERC721Storage.DEFAULT_STORAGE_SLOT
         );
 
         $.holderTokens[to].add(tokenId);
@@ -116,8 +116,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
 
         _beforeTokenTransfer(owner, address(0), tokenId);
 
-        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
-            ERC721BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC721Storage.Layout storage $ = ERC721Storage.layout(
+            ERC721Storage.DEFAULT_STORAGE_SLOT
         );
 
         $.holderTokens[owner].remove(tokenId);
@@ -141,8 +141,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
 
         _beforeTokenTransfer(from, to, tokenId);
 
-        ERC721BaseStorage.Layout storage $ = ERC721BaseStorage.layout(
-            ERC721BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC721Storage.Layout storage $ = ERC721Storage.layout(
+            ERC721Storage.DEFAULT_STORAGE_SLOT
         );
 
         $.holderTokens[from].remove(tokenId);
@@ -205,9 +205,9 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         if (msg.sender != owner && !_isApprovedForAll(owner, msg.sender))
             revert NonFungibleToken__NotOwnerOrApproved();
 
-        ERC721BaseStorage
-            .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
-            .tokenApprovals[tokenId] = operator;
+        ERC721Storage.layout(ERC721Storage.DEFAULT_STORAGE_SLOT).tokenApprovals[
+            tokenId
+        ] = operator;
         emit Approval(owner, operator, tokenId);
     }
 
@@ -216,8 +216,8 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         bool status
     ) internal virtual {
         if (operator == msg.sender) revert NonFungibleToken__SelfApproval();
-        ERC721BaseStorage
-            .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
+        ERC721Storage
+            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .operatorApprovals[msg.sender][operator] = status;
         emit ApprovalForAll(msg.sender, operator, status);
     }

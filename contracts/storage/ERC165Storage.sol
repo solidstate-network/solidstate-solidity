@@ -2,19 +2,19 @@
 
 pragma solidity ^0.8.20;
 
-library SafeOwnableStorage {
+library ERC165Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.SafeOwnable
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165
      */
     struct Layout {
-        address nomineeOwner;
+        mapping(bytes4 interfaceId => bool supportStatus) supportedInterfaces;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.SafeOwnable'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC165'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));
