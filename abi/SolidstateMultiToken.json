@@ -11,57 +11,57 @@
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__ArrayLengthMismatch",
+    "name": "MultiToken__ArrayLengthMismatch",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__BalanceQueryZeroAddress",
+    "name": "MultiToken__BalanceQueryZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__BurnExceedsBalance",
+    "name": "MultiToken__BurnExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__BurnFromZeroAddress",
+    "name": "MultiToken__BurnFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__ERC1155ReceiverNotImplemented",
+    "name": "MultiToken__ERC1155ReceiverNotImplemented",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__ERC1155ReceiverRejected",
+    "name": "MultiToken__ERC1155ReceiverRejected",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__MintToZeroAddress",
+    "name": "MultiToken__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__NotOwnerOrApproved",
+    "name": "MultiToken__NotOwnerOrApproved",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__SelfApproval",
+    "name": "MultiToken__SelfApproval",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__TransferExceedsBalance",
+    "name": "MultiToken__TransferExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "MultiTokenBase__TransferToZeroAddress",
+    "name": "MultiToken__TransferToZeroAddress",
     "type": "error"
   },
   {

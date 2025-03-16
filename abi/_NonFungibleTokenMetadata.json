@@ -6,57 +6,57 @@
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__BalanceQueryZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__ERC721ReceiverNotImplemented",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__InvalidOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__MintToZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__NonExistentToken",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__NotOwnerOrApproved",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__NotTokenOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__SelfApproval",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__TokenAlreadyMinted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonFungibleTokenBase__TransferToZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NonFungibleTokenMetadata__NonExistentToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__BalanceQueryZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__ERC721ReceiverNotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__InvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__MintToZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__NonExistentToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__NotOwnerOrApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__NotTokenOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__SelfApproval",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__TokenAlreadyMinted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonFungibleToken__TransferToZeroAddress",
     "type": "error"
   },
   {

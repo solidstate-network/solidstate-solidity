@@ -1,7 +1,7 @@
 import {
-  describeBehaviorOfFungibleTokenBase,
-  FungibleTokenBaseBehaviorArgs,
-} from './FungibleTokenBase.behavior';
+  describeBehaviorOfFungibleToken,
+  FungibleTokenBehaviorArgs,
+} from './FungibleToken.behavior';
 import {
   describeBehaviorOfFungibleTokenExtended,
   FungibleTokenExtendedBehaviorArgs,
@@ -19,7 +19,7 @@ import { ISolidstateFungibleToken } from '@solidstate/typechain-types';
 import { ContractTransaction } from 'ethers';
 
 export interface SolidstateFungibleTokenBehaviorArgs
-  extends FungibleTokenBaseBehaviorArgs,
+  extends FungibleTokenBehaviorArgs,
     FungibleTokenExtendedBehaviorArgs,
     FungibleTokenMetadataBehaviorArgs,
     FungibleTokenPermitBehaviorArgs {}
@@ -32,7 +32,7 @@ export function describeBehaviorOfSolidstateFungibleToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateFungibleToken', () => {
-    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
+    describeBehaviorOfFungibleToken(deploy, args, skips);
 
     describeBehaviorOfFungibleTokenExtended(deploy, args, skips);
 

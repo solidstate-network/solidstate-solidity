@@ -149,7 +149,7 @@ export function describeBehaviorOfFungibleTokenExtended(
             instance.connect(holder).decreaseAllowance(spender.address, 1),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__InsufficientAllowance',
+            'FungibleToken__InsufficientAllowance',
           );
         });
       });

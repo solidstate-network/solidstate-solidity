@@ -16,17 +16,17 @@ yarn add --dev @solidstate/spec
 
 Where possible, automated tests are designed to be imported by repositories which make use of the Solidstate contracts and run against any derived contracts. This is to help prevent unintended changes to the base contract behavior.
 
-For example, consider a custom `FungibleTokenBase` implementation:
+For example, consider a custom `FungibleToken` implementation:
 
 ```solidity
-import '@solidstate/contracts/token/FungibleToken/base/FungibleTokenBase.sol';
+import '@solidstate/contracts/token/fungible/FungibleToken.sol';
 
-contract CustomToken is FungibleTokenBase {
+contract CustomToken is FungibleToken {
   // custom code...
 }
 ```
 
-Rather than rewrite the `FungibleTokenBase` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
+Rather than rewrite the `FungibleToken` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
 
 ```javascript
 describe('CustomToken', () => {
@@ -38,7 +38,7 @@ describe('CustomToken', () => {
     await instance.deployed();
   });
 
-  describeBehaviorOfFungibleTokenBase(
+  describeBehaviorOfFungibleToken(
     async () => instance,
     {
       args: ...,
@@ -52,7 +52,7 @@ describe('CustomToken', () => {
 If parts of the base implementation are changed intentionally, tests can be selectively skipped:
 
 ```javascript
-describeBehaviorOfFungibleTokenBase(
+describeBehaviorOfFungibleToken(
   async () => instance,
   {
     args: ...

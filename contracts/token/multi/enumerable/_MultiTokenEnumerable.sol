@@ -4,17 +4,13 @@ pragma solidity ^0.8.20;
 
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
-import { _MultiTokenBase } from '../base/_MultiTokenBase.sol';
+import { _MultiToken } from '../_MultiToken.sol';
 import { _IMultiTokenEnumerable } from './_IMultiTokenEnumerable.sol';
-import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 
 /**
  * @title MultiTokenEnumerable internal functions
  */
-abstract contract _MultiTokenEnumerable is
-    _IMultiTokenEnumerable,
-    _MultiTokenBase
-{
+abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -91,7 +87,7 @@ abstract contract _MultiTokenEnumerable is
 
     /**
      * @notice ERC1155 hook: update aggregate values
-     * @inheritdoc _MultiTokenBase
+     * @inheritdoc _MultiToken
      */
     function _beforeTokenTransfer(
         address operator,

@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
-import { _DiamondProxyCommon } from '../common/_DiamondProxyCommon.sol';
+import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
 /**
@@ -13,7 +13,7 @@ import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
  */
 abstract contract _DiamondProxyReadable is
     _IDiamondProxyReadable,
-    _DiamondProxyCommon,
+    _DiamondProxy,
     _Introspectable
 {
     /**

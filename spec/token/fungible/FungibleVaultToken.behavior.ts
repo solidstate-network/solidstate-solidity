@@ -1,7 +1,4 @@
-import {
-  describeBehaviorOfFungibleTokenBase,
-  FungibleTokenBaseBehaviorArgs,
-} from '.';
+import { describeBehaviorOfFungibleToken, FungibleTokenBehaviorArgs } from '.';
 import {
   describeBehaviorOfFungibleTokenMetadata,
   FungibleTokenMetadataBehaviorArgs,
@@ -17,7 +14,7 @@ import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface FungibleVaultTokenBehaviorArgs
-  extends FungibleTokenBaseBehaviorArgs,
+  extends FungibleTokenBehaviorArgs,
     FungibleTokenMetadataBehaviorArgs {
   getAsset: () => Promise<IFungibleToken>;
   mintAsset: (
@@ -49,7 +46,7 @@ export function describeBehaviorOfFungibleVaultToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
+    describeBehaviorOfFungibleToken(deploy, args, skips);
 
     describeBehaviorOfFungibleTokenMetadata(deploy, args, skips);
 

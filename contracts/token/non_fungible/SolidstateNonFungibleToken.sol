@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-import { NonFungibleTokenBase } from './base/NonFungibleTokenBase.sol';
-import { _NonFungibleTokenBase } from './base/NonFungibleTokenBase.sol';
 import { NonFungibleTokenEnumerable } from './enumerable/NonFungibleTokenEnumerable.sol';
 import { NonFungibleTokenMetadata } from './metadata/NonFungibleTokenMetadata.sol';
 import { _NonFungibleTokenMetadata } from './metadata/_NonFungibleTokenMetadata.sol';
+import { NonFungibleToken } from './NonFungibleToken.sol';
+import { _NonFungibleToken } from './_NonFungibleToken.sol';
 import { ISolidstateNonFungibleToken } from './ISolidstateNonFungibleToken.sol';
 import { _SolidstateNonFungibleToken } from './_SolidstateNonFungibleToken.sol';
 
@@ -16,12 +16,12 @@ import { _SolidstateNonFungibleToken } from './_SolidstateNonFungibleToken.sol';
 abstract contract SolidstateNonFungibleToken is
     ISolidstateNonFungibleToken,
     _SolidstateNonFungibleToken,
-    NonFungibleTokenBase,
+    NonFungibleToken,
     NonFungibleTokenEnumerable,
     NonFungibleTokenMetadata
 {
     /**
-     * @inheritdoc _NonFungibleTokenBase
+     * @inheritdoc _NonFungibleToken
      * @notice ERC721 hook: revert if value is included in external approve function call
      */
     function _handleApproveMessageValue(
@@ -31,13 +31,13 @@ abstract contract SolidstateNonFungibleToken is
     )
         internal
         virtual
-        override(_NonFungibleTokenBase, _SolidstateNonFungibleToken)
+        override(_NonFungibleToken, _SolidstateNonFungibleToken)
     {
         super._handleApproveMessageValue(operator, tokenId, value);
     }
 
     /**
-     * @inheritdoc _NonFungibleTokenBase
+     * @inheritdoc _NonFungibleToken
      * @notice ERC721 hook: revert if value is included in external transfer function call
      */
     function _handleTransferMessageValue(
@@ -48,13 +48,13 @@ abstract contract SolidstateNonFungibleToken is
     )
         internal
         virtual
-        override(_NonFungibleTokenBase, _SolidstateNonFungibleToken)
+        override(_NonFungibleToken, _SolidstateNonFungibleToken)
     {
         super._handleTransferMessageValue(from, to, tokenId, value);
     }
 
     /**
-     * @inheritdoc _NonFungibleTokenBase
+     * @inheritdoc _NonFungibleToken
      */
     function _beforeTokenTransfer(
         address from,
@@ -64,7 +64,7 @@ abstract contract SolidstateNonFungibleToken is
         internal
         virtual
         override(
-            _NonFungibleTokenBase,
+            _NonFungibleToken,
             _NonFungibleTokenMetadata,
             _SolidstateNonFungibleToken
         )

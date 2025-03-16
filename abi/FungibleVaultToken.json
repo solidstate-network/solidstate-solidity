@@ -6,47 +6,47 @@
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__ApproveFromZeroAddress",
+    "name": "FungibleToken__ApproveFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__ApproveToZeroAddress",
+    "name": "FungibleToken__ApproveToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__BurnExceedsBalance",
+    "name": "FungibleToken__BurnExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__BurnFromZeroAddress",
+    "name": "FungibleToken__BurnFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__InsufficientAllowance",
+    "name": "FungibleToken__InsufficientAllowance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__MintToZeroAddress",
+    "name": "FungibleToken__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__TransferExceedsBalance",
+    "name": "FungibleToken__TransferExceedsBalance",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__TransferFromZeroAddress",
+    "name": "FungibleToken__TransferFromZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "FungibleTokenBase__TransferToZeroAddress",
+    "name": "FungibleToken__TransferToZeroAddress",
     "type": "error"
   },
   {

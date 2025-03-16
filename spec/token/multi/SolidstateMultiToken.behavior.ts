@@ -1,7 +1,7 @@
 import {
-  describeBehaviorOfMultiTokenBase,
-  MultiTokenBaseBehaviorArgs,
-} from './MultiTokenBase.behavior';
+  describeBehaviorOfMultiToken,
+  MultiTokenBehaviorArgs,
+} from './MultiToken.behavior';
 import {
   describeBehaviorOfMultiTokenEnumerable,
   MultiTokenEnumerableBehaviorArgs,
@@ -14,7 +14,7 @@ import { describeFilter } from '@solidstate/library';
 import { ISolidstateMultiToken } from '@solidstate/typechain-types';
 
 export interface SolidstateMultiTokenBehaviorArgs
-  extends MultiTokenBaseBehaviorArgs,
+  extends MultiTokenBehaviorArgs,
     MultiTokenEnumerableBehaviorArgs,
     MultiTokenMetadataBehaviorArgs {}
 
@@ -26,7 +26,7 @@ export function describeBehaviorOfSolidstateMultiToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateMultiToken', () => {
-    describeBehaviorOfMultiTokenBase(deploy, args, skips);
+    describeBehaviorOfMultiToken(deploy, args, skips);
 
     describeBehaviorOfMultiTokenEnumerable(deploy, args, skips);
 

@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { _IFungibleTokenBase } from '../base/_IFungibleTokenBase.sol';
+import { _IFungibleToken } from '../_IFungibleToken.sol';
 
-interface _IFungibleTokenSnapshot is _IFungibleTokenBase {
+interface _IFungibleTokenSnapshot is _IFungibleToken {
     error FungibleTokenSnapshot__SnapshotIdDoesNotExists();
     error FungibleTokenSnapshot__SnapshotIdIsZero();
 }
