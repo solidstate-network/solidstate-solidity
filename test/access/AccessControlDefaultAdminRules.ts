@@ -126,11 +126,12 @@ describe('AccessControlDefaultAdminRules', () => {
       it('sender is not current or pending default admin', async () => {
         await instance.beginDefaultAdminTransfer(nonAdmin.address);
 
-        await expect(
-          instance.connect(nonAdmin2).cancelDefaultAdminTransfer(),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin2.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        await expect(instance.connect(nonAdmin2).cancelDefaultAdminTransfer())
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin2.getAddress());
       });
     });
   });
