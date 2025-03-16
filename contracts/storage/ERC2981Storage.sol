@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-library NFTRoyaltyStorage {
+library ERC2981Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.NFTRoyalty
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2981
      */
     struct Layout {
         // token id -> royalty (denominated in basis points)
@@ -19,7 +19,7 @@ library NFTRoyaltyStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.NFTRoyalty'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC2981'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

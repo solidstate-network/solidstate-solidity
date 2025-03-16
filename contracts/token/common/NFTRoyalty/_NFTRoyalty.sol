@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { _INFTRoyalty } from './_INFTRoyalty.sol';
-import { NFTRoyaltyStorage } from '../../../storage/NFTRoyaltyStorage.sol';
+import { ERC2981Storage } from '../../../storage/ERC2981Storage.sol';
 
 /**
  * @title NFTRoyalty internal functions
@@ -40,8 +40,8 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
     function _getRoyaltyBPS(
         uint256 tokenId
     ) internal view virtual returns (uint16 royaltyBPS) {
-        NFTRoyaltyStorage.Layout storage $ = NFTRoyaltyStorage.layout(
-            NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT
+        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+            ERC2981Storage.DEFAULT_STORAGE_SLOT
         );
         royaltyBPS = $.royaltiesBPS[tokenId];
 
@@ -59,8 +59,8 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
     function _getRoyaltyReceiver(
         uint256 tokenId
     ) internal view virtual returns (address royaltyReceiver) {
-        NFTRoyaltyStorage.Layout storage $ = NFTRoyaltyStorage.layout(
-            NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT
+        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+            ERC2981Storage.DEFAULT_STORAGE_SLOT
         );
         royaltyReceiver = $.royaltyReceivers[tokenId];
 
@@ -76,9 +76,9 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      */
     function _setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) internal {
         if (royaltyBPS > MAX_ROYALTY) revert NFTRoyalty__RoyaltyTooHigh();
-        NFTRoyaltyStorage
-            .layout(NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT)
-            .royaltiesBPS[tokenId] = royaltyBPS;
+        ERC2981Storage.layout(ERC2981Storage.DEFAULT_STORAGE_SLOT).royaltiesBPS[
+            tokenId
+        ] = royaltyBPS;
     }
 
     /**
@@ -88,8 +88,8 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
     function _setDefaultRoyaltyBPS(uint16 defaultRoyaltyBPS) internal {
         if (defaultRoyaltyBPS > MAX_ROYALTY)
             revert NFTRoyalty__RoyaltyTooHigh();
-        NFTRoyaltyStorage
-            .layout(NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT)
+        ERC2981Storage
+            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
 
@@ -99,8 +99,8 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      * @param receiver royalty receiver
      */
     function _setRoyaltyReceiver(uint256 tokenId, address receiver) internal {
-        NFTRoyaltyStorage
-            .layout(NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT)
+        ERC2981Storage
+            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .royaltyReceivers[tokenId] = receiver;
     }
 
@@ -109,8 +109,8 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      * @param defaultReceiver royalty receiver
      */
     function _setDefaultRoyaltyReceiver(address defaultReceiver) internal {
-        NFTRoyaltyStorage
-            .layout(NFTRoyaltyStorage.DEFAULT_STORAGE_SLOT)
+        ERC2981Storage
+            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .defaultRoyaltyReceiver = defaultReceiver;
     }
 }
