@@ -7,7 +7,7 @@ import { _IAccessControl } from './_IAccessControl.sol';
 /**
  * @title Partial IAccessControlDefaultAdminRules interface needed by internal functions
  */
-interface IAccessControlDefaultAdminRulesInternal is _IAccessControl {
+interface _IAccessControlDefaultAdminRules is _IAccessControl {
     error AccessControlInvalidDefaultAdmin(address defaultAdmin);
 
     error AccessControlEnforcedDefaultAdminRules();

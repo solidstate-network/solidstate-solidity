@@ -6,14 +6,14 @@ import { Math } from '../../utils/Math.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { SafeCast } from '../../utils/SafeCast.sol';
 import { _AccessControl } from './_AccessControl.sol';
-import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
+import { _IAccessControlDefaultAdminRules } from './_IAccessControlDefaultAdminRules.sol';
 
 /**
  * @title Role-based access control system with default admin rules
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract AccessControlDefaultAdminRulesInternal is
-    IAccessControlDefaultAdminRulesInternal,
+abstract contract _AccessControlDefaultAdminRules is
+    _IAccessControlDefaultAdminRules,
     _AccessControl
 {
     /**

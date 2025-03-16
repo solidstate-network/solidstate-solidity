@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { IAccessControl } from './IAccessControl.sol';
-import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
+import { _IAccessControlDefaultAdminRules } from './_IAccessControlDefaultAdminRules.sol';
 
 /**
  * @title AccessControlDefaultAdminRules interface
  */
 interface IAccessControlDefaultAdminRules is
-    IAccessControlDefaultAdminRulesInternal,
+    _IAccessControlDefaultAdminRules,
     IAccessControl
 {
     /**

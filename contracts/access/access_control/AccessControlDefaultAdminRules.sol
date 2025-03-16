@@ -6,7 +6,7 @@ import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AccessControl } from './AccessControl.sol';
 import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRules } from './IAccessControlDefaultAdminRules.sol';
-import { AccessControlDefaultAdminRulesInternal } from './AccessControlDefaultAdminRulesInternal.sol';
+import { _AccessControlDefaultAdminRules } from './_AccessControlDefaultAdminRules.sol';
 
 /**
  * @title Role-based access control system with default admin rules
@@ -14,7 +14,7 @@ import { AccessControlDefaultAdminRulesInternal } from './AccessControlDefaultAd
  */
 abstract contract AccessControlDefaultAdminRules is
     IAccessControlDefaultAdminRules,
-    AccessControlDefaultAdminRulesInternal,
+    _AccessControlDefaultAdminRules,
     AccessControl
 {
     /**
@@ -120,7 +120,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, _AccessControlDefaultAdminRules)
     {
         super._grantRole(role, account);
     }
@@ -131,7 +131,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, _AccessControlDefaultAdminRules)
     {
         super._revokeRole(role, account);
     }
@@ -142,7 +142,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, _AccessControlDefaultAdminRules)
     {
         super._setRoleAdmin(role, adminRole);
     }
