@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 
 import { IOwnable } from '../../access/ownable/IOwnable.sol';
 import { _IBeacon } from './_IBeacon.sol';
-import { BeaconStorage } from './BeaconStorage.sol';
 
 interface IBeacon is _IBeacon, IOwnable {
     /**

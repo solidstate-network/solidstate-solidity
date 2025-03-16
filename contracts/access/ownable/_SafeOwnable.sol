@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
+import { ERC173Storage } from '../../storage/ERC173Storage.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';
 import { _Ownable } from './_Ownable.sol';
-import { SafeOwnableStorage } from './SafeOwnableStorage.sol';
 
 abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     modifier onlyNomineeOwner() {
@@ -18,8 +18,8 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      */
     function _nomineeOwner() internal view virtual returns (address) {
         return
-            SafeOwnableStorage
-                .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+            ERC173Storage
+                .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
                 .nomineeOwner;
     }
 
@@ -28,8 +28,8 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      */
     function _acceptOwnership() internal virtual onlyNomineeOwner {
         _setOwner(msg.sender);
-        delete SafeOwnableStorage
-            .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+        delete ERC173Storage
+            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .nomineeOwner;
     }
 
@@ -46,8 +46,8 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      * @notice set nominee owner
      */
     function _setNomineeOwner(address account) internal virtual {
-        SafeOwnableStorage
-            .layout(SafeOwnableStorage.DEFAULT_STORAGE_SLOT)
+        ERC173Storage
+            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .nomineeOwner = account;
     }
 }

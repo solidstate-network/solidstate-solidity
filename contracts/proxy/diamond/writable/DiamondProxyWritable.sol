@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 
 import { IERC2535DiamondCut } from '../../../interfaces/IERC2535DiamondCut.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { DiamondProxyCommon } from '../common/DiamondProxyCommon.sol';
 import { IDiamondProxyWritable } from './IDiamondProxyWritable.sol';
 import { _DiamondProxyWritable } from './_DiamondProxyWritable.sol';
 
@@ -14,7 +13,6 @@ import { _DiamondProxyWritable } from './_DiamondProxyWritable.sol';
 abstract contract DiamondProxyWritable is
     IDiamondProxyWritable,
     _DiamondProxyWritable,
-    DiamondProxyCommon,
     Introspectable
 {
     /**

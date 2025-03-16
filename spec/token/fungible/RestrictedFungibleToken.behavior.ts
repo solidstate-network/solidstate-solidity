@@ -1,14 +1,11 @@
-import {
-  describeBehaviorOfFungibleTokenBase,
-  FungibleTokenBaseBehaviorArgs,
-} from '.';
+import { describeBehaviorOfFungibleToken, FungibleTokenBehaviorArgs } from '.';
 import { describeFilter } from '@solidstate/library';
 import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface RestrictedFungibleTokenBehaviorArgs
-  extends FungibleTokenBaseBehaviorArgs {
+  extends FungibleTokenBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
 }
 
@@ -26,7 +23,7 @@ export function describeBehaviorOfRestrictedFungibleToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
+    describeBehaviorOfFungibleToken(deploy, args, skips);
 
     describe('#detectTransferRestriction(address,address,uint256)', () => {
       it('returns zero if no restriction exists', async () => {

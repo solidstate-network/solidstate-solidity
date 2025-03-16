@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-import { _INonFungibleTokenBase } from '../base/_INonFungibleTokenBase.sol';
+import { _INonFungibleToken } from '..//_INonFungibleToken.sol';
 
 /**
  * @title NonFungibleTokenMetadata internal interface
  */
-interface _INonFungibleTokenMetadata is _INonFungibleTokenBase {
+interface _INonFungibleTokenMetadata is _INonFungibleToken {
     error NonFungibleTokenMetadata__NonExistentToken();
 }

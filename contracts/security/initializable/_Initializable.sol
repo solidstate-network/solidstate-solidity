@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
+import { InitializableStorage } from '../../storage/InitializableStorage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { _IInitializable } from './_IInitializable.sol';
-import { InitializableStorage } from './InitializableStorage.sol';
 
 abstract contract _Initializable is _IInitializable {
     using AddressUtils for address;
