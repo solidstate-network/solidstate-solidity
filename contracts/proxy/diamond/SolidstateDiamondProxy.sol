@@ -11,8 +11,8 @@ import { IERC173 } from '../../interfaces/IERC173.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
 import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { _Proxy } from '../_Proxy.sol';
-import { DiamondProxyExecutable } from './executable/DiamondProxyExecutable.sol';
-import { _DiamondProxyExecutable } from './executable/_DiamondProxyExecutable.sol';
+import { DiamondProxyCommon } from './common/DiamondProxyCommon.sol';
+import { _DiamondProxyCommon } from './common/_DiamondProxyCommon.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
@@ -27,7 +27,6 @@ import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
 abstract contract SolidstateDiamondProxy is
     ISolidstateDiamondProxy,
     _SolidstateDiamondProxy,
-    DiamondProxyExecutable,
     DiamondProxyReadable,
     DiamondProxyWritable,
     DiamondProxyFallback,
@@ -118,7 +117,7 @@ abstract contract SolidstateDiamondProxy is
         internal
         view
         override(
-            DiamondProxyExecutable,
+            _DiamondProxyCommon,
             DiamondProxyFallback,
             _SolidstateDiamondProxy
         )

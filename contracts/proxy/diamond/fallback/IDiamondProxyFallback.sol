@@ -2,13 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import { IDiamondProxyExecutable } from '../executable/IDiamondProxyExecutable.sol';
+import { IDiamondProxyCommon } from '../common/IDiamondProxyCommon.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
-interface IDiamondProxyFallback is
-    _IDiamondProxyFallback,
-    IDiamondProxyExecutable
-{
+interface IDiamondProxyFallback is _IDiamondProxyFallback, IDiamondProxyCommon {
     /**
      * @notice query the address of the fallback implementation
      * @return fallbackAddress address of fallback implementation

@@ -3,16 +3,37 @@
 pragma solidity ^0.8.20;
 
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
+import { _Proxy } from '../../_Proxy.sol';
 import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
 import { _IDiamondProxyCommon } from './_IDiamondProxyCommon.sol';
 
-abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {
+abstract contract _DiamondProxyCommon is _IDiamondProxyCommon, _Proxy {
     using AddressUtils for address;
 
     bytes32 private constant CLEAR_ADDRESS_MASK =
         bytes32(uint256(0xffffffffffffffffffffffff));
     bytes32 private constant CLEAR_SELECTOR_MASK =
         bytes32(uint256(0xffffffff << 224));
+
+    /**
+     * @inheritdoc _Proxy
+     */
+    function _getImplementation()
+        internal
+        view
+        virtual
+        override
+        returns (address implementation)
+    {
+        // inline storage layout retrieval uses less gas
+        DiamondBaseStorage.Layout storage $;
+        bytes32 slot = DiamondBaseStorage.DEFAULT_STORAGE_SLOT;
+        assembly {
+            $.slot := slot
+        }
+
+        implementation = address(bytes20($.selectorInfo[msg.sig]));
+    }
 
     /**
      * @notice update functions callable on Diamond proxy

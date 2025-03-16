@@ -40,6 +40,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "Proxy__ImplementationIsNotContract",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -80,5 +85,9 @@
     ],
     "name": "DiamondCut",
     "type": "event"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
   }
 ]
