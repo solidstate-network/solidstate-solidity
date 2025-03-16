@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AccessControl } from './AccessControl.sol';
 import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRules } from './IAccessControlDefaultAdminRules.sol';
@@ -58,20 +57,14 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function beginDefaultAdminTransfer(
-        address newAdmin
-    ) external virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+    function beginDefaultAdminTransfer(address newAdmin) external virtual {
         _beginDefaultAdminTransfer(newAdmin);
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function cancelDefaultAdminTransfer()
-        external
-        virtual
-        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
-    {
+    function cancelDefaultAdminTransfer() external virtual {
         _cancelDefaultAdminTransfer();
     }
 
@@ -85,20 +78,14 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function changeDefaultAdminDelay(
-        uint48 newDelay
-    ) external virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+    function changeDefaultAdminDelay(uint48 newDelay) external virtual {
         _changeDefaultAdminDelay(newDelay);
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function rollbackDefaultAdminDelay()
-        external
-        virtual
-        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
-    {
+    function rollbackDefaultAdminDelay() external virtual {
         _rollbackDefaultAdminDelay();
     }
 

@@ -142,7 +142,9 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice start a default admin transfer
      * @param newAdmin new admin
      */
-    function _beginDefaultAdminTransfer(address newAdmin) internal virtual {
+    function _beginDefaultAdminTransfer(
+        address newAdmin
+    ) internal virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
         uint48 newSchedule = uint48(block.timestamp) + _defaultAdminDelay();
         _setPendingDefaultAdmin(newAdmin, newSchedule);
         emit DefaultAdminTransferScheduled(newAdmin, newSchedule);
@@ -151,7 +153,11 @@ abstract contract _AccessControlDefaultAdminRules is
     /**
      * @notice cancel a default admin transfer
      */
-    function _cancelDefaultAdminTransfer() internal virtual {
+    function _cancelDefaultAdminTransfer()
+        internal
+        virtual
+        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
+    {
         _setPendingDefaultAdmin(address(0), 0);
     }
 
@@ -180,7 +186,9 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice change a default admin delay
      * @param newDelay new delay
      */
-    function _changeDefaultAdminDelay(uint48 newDelay) internal virtual {
+    function _changeDefaultAdminDelay(
+        uint48 newDelay
+    ) internal virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
         uint48 newSchedule = uint48(block.timestamp) +
             _delayChangeWait(newDelay);
         _setPendingDelay(newDelay, newSchedule);
@@ -190,7 +198,11 @@ abstract contract _AccessControlDefaultAdminRules is
     /**
      * @notice roll back a default admin delay
      */
-    function _rollbackDefaultAdminDelay() internal virtual {
+    function _rollbackDefaultAdminDelay()
+        internal
+        virtual
+        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
+    {
         _setPendingDelay(0, 0);
     }
 
