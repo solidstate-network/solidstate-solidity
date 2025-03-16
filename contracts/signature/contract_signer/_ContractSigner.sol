@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1271 } from '../../interfaces/IERC1271.sol';
-import { ERC1271StoredStorage } from '../../storage/ERC1271StoredStorage.sol';
+import { ERC1271Storage } from '../../storage/ERC1271Storage.sol';
 import { _IContractSigner } from './_IContractSigner.sol';
 
 /**
@@ -23,16 +23,16 @@ abstract contract _ContractSigner is _IContractSigner {
         bytes memory signature
     ) internal view virtual returns (bytes4 magicValue) {
         return
-            ERC1271StoredStorage
-                .layout(ERC1271StoredStorage.DEFAULT_STORAGE_SLOT)
-                .hashes[hash]
+            ERC1271Storage.layout(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
+                hash
+            ]
                 ? MAGIC_VALUE
                 : bytes4(0);
     }
 
     function _setValidSignature(bytes32 hash, bool status) internal virtual {
-        ERC1271StoredStorage
-            .layout(ERC1271StoredStorage.DEFAULT_STORAGE_SLOT)
-            .hashes[hash] = status;
+        ERC1271Storage.layout(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
+            hash
+        ] = status;
     }
 }

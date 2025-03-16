@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 // TODO: this storage library is now referenced by ContractSigner, so should be renamed
-library ERC1271StoredStorage {
+library ERC1271Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271Stored
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271
      */
     struct Layout {
         mapping(bytes32 => bool) hashes;
@@ -15,9 +15,7 @@ library ERC1271StoredStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.ERC1271Stored')
-                    )
+                    keccak256(bytes('solidstate.contracts.storage.ERC1271'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));
