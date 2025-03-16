@@ -18,12 +18,12 @@ library ERC20Storage {
         string name;
         string symbol;
         uint8 decimals;
-        mapping(address account => uint256 nonce) nonces;
         mapping(address account => Snapshots balanceSnapshots) accountBalanceSnapshots;
         Snapshots totalSupplySnapshots;
         uint256 snapshotId;
-        mapping(uint8 restrictionCode => string restrictionMessage) restrictions;
-        address asset;
+        mapping(uint8 restrictionCode => string restrictionMessage) erc1404RestrictionMessages;
+        mapping(address account => uint256 nonce) erc2612Nonces;
+        address erc4626Asset;
         mapping(address account => bool isApproved) implicitApprovals;
     }
 
