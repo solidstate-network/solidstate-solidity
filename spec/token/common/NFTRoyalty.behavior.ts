@@ -1,4 +1,4 @@
-import { describeBehaviorOfERC165Base } from '../../introspection';
+import { describeBehaviorOfIntrospectable } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { INFTRoyalty } from '@solidstate/typechain-types';
@@ -27,7 +27,7 @@ export function describeBehaviorOfNFTRoyalty(
       instance = await deploy();
     });
 
-    describeBehaviorOfERC165Base(
+    describeBehaviorOfIntrospectable(
       deploy,
       {
         interfaceIds: ['0x2a55205a'],

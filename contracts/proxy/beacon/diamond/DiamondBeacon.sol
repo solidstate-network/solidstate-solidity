@@ -4,10 +4,10 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/Ownable.sol';
 import { Ownable } from '../../../access/ownable/Ownable.sol';
-import { DiamondReadable } from '../../diamond/readable/DiamondReadable.sol';
-import { DiamondWritable } from '../../diamond/writable/DiamondWritable.sol';
-import { _DiamondWritable } from '../../diamond/writable/_DiamondWritable.sol';
-import { _DiamondCommon } from '../../diamond/common/_DiamondCommon.sol';
+import { DiamondProxyReadable } from '../../diamond/readable/DiamondProxyReadable.sol';
+import { DiamondProxyWritable } from '../../diamond/writable/DiamondProxyWritable.sol';
+import { _DiamondProxyWritable } from '../../diamond/writable/_DiamondProxyWritable.sol';
+import { _DiamondProxy } from '../../diamond/_DiamondProxy.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { _DiamondBeacon } from './_DiamondBeacon.sol';
 
@@ -18,8 +18,8 @@ import { _DiamondBeacon } from './_DiamondBeacon.sol';
 contract DiamondBeacon is
     IDiamondBeacon,
     _DiamondBeacon,
-    DiamondReadable,
-    DiamondWritable,
+    DiamondProxyReadable,
+    DiamondProxyWritable,
     Ownable
 {
     /**
@@ -29,7 +29,7 @@ contract DiamondBeacon is
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
-    ) internal virtual override(_DiamondCommon, _DiamondBeacon) {
+    ) internal virtual override(_DiamondProxy, _DiamondBeacon) {
         super._diamondCut(facetCuts, target, data);
     }
 }
