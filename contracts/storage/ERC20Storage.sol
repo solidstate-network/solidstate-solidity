@@ -22,6 +22,8 @@ library ERC20Storage {
         mapping(address => Snapshots) accountBalanceSnapshots;
         Snapshots totalSupplySnapshots;
         uint256 snapshotId;
+        mapping(uint8 => string) restrictions;
+        address asset;
         mapping(address => bool) implicitApprovals;
     }
 
