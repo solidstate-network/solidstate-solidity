@@ -8,6 +8,7 @@ library ProxyStorage {
      */
     struct Layout {
         address implementation;
+        address beacon;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
