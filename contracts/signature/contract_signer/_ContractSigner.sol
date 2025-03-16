@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1271 } from '../../interfaces/IERC1271.sol';
-import { ERC1271StoredStorage } from './ERC1271StoredStorage.sol';
+import { ERC1271StoredStorage } from '../../storage/ERC1271StoredStorage.sol';
 import { _IContractSigner } from './_IContractSigner.sol';
 
 /**

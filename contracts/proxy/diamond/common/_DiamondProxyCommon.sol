@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { DiamondBaseStorage } from '../../../storage/DiamondBaseStorage.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
-import { DiamondBaseStorage } from '../executable/DiamondBaseStorage.sol';
 import { _IDiamondProxyCommon } from './_IDiamondProxyCommon.sol';
 
 abstract contract _DiamondProxyCommon is _IDiamondProxyCommon {

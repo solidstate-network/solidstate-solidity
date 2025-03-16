@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { UpgradeableProxyStorage } from './upgradeable/UpgradeableProxyStorage.sol';
+import { UpgradeableProxyStorage } from '../storage/UpgradeableProxyStorage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {

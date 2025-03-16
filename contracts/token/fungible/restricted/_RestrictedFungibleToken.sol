@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
 import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
-import { ERC1404BaseStorage } from './ERC1404BaseStorage.sol';
+import { ERC1404BaseStorage } from '../../../storage/ERC1404BaseStorage.sol';
 
 /**
  * @title Base ERC1404 internal functions

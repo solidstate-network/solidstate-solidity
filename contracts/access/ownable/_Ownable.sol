@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { OwnableStorage } from '../../storage/OwnableStorage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { _IOwnable } from './_IOwnable.sol';
-import { OwnableStorage } from './OwnableStorage.sol';
 
 abstract contract _Ownable is _IOwnable {
     using AddressUtils for address;

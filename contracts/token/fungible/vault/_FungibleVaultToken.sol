@@ -7,7 +7,7 @@ import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
 import { _FungibleTokenMetadata } from '../../fungible/metadata/_FungibleTokenMetadata.sol';
 import { _IFungibleVaultToken } from './_IFungibleVaultToken.sol';
-import { ERC4626BaseStorage } from './ERC4626BaseStorage.sol';
+import { ERC4626BaseStorage } from '../../../storage/ERC4626BaseStorage.sol';
 
 /**
  * @title Base FungibleVaultToken internal functions

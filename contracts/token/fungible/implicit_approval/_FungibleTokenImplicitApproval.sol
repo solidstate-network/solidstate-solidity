@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
 import { _IFungibleTokenImplicitApproval } from './_IFungibleTokenImplicitApproval.sol';
-import { ERC20ImplicitApprovalStorage } from './ERC20ImplicitApprovalStorage.sol';
+import { ERC20ImplicitApprovalStorage } from '../../../storage/ERC20ImplicitApprovalStorage.sol';
 
 /**
  * @title FungibleTokenImplicitApproval internal functions

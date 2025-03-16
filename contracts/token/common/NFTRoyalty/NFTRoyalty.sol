@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { INFTRoyalty } from './INFTRoyalty.sol';
-import { NFTRoyaltyStorage } from './NFTRoyaltyStorage.sol';
+import { NFTRoyaltyStorage } from '../../../storage/NFTRoyaltyStorage.sol';
 import { _NFTRoyalty } from './_NFTRoyalty.sol';
 
 /**

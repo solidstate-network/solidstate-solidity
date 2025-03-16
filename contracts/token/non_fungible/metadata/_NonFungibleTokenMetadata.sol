@@ -3,10 +3,10 @@
 pragma solidity ^0.8.20;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
-import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
+import { ERC721BaseStorage } from '../../../storage/ERC721BaseStorage.sol';
+import { ERC721MetadataStorage } from '../../../storage/ERC721MetadataStorage.sol';
 import { _NonFungibleTokenBase } from '../base/_NonFungibleTokenBase.sol';
 import { _INonFungibleTokenMetadata } from './_INonFungibleTokenMetadata.sol';
-import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 
 /**
  * @title NonFungibleTokenMetadata internal functions

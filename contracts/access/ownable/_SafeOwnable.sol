@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
+import { SafeOwnableStorage } from '../../storage/SafeOwnableStorage.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';
 import { _Ownable } from './_Ownable.sol';
-import { SafeOwnableStorage } from './SafeOwnableStorage.sol';
 
 abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     modifier onlyNomineeOwner() {

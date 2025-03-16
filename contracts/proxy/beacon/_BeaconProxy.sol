@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
+import { BeaconProxyStorage } from '../../storage/BeaconProxyStorage.sol';
 import { _Proxy } from '../_Proxy.sol';
 import { IBeacon } from './IBeacon.sol';
 import { _IBeaconProxy } from './_IBeaconProxy.sol';
-import { BeaconProxyStorage } from './BeaconProxyStorage.sol';
 
 abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
     /**

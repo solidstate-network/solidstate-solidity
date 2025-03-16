@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { _Proxy } from '../../_Proxy.sol';
 import { _DiamondProxyCommon } from '../common/_DiamondProxyCommon.sol';
 import { _IDiamondProxyExecutable } from './_IDiamondProxyExecutable.sol';
-import { DiamondBaseStorage } from './DiamondBaseStorage.sol';
+import { DiamondBaseStorage } from '../../../storage/DiamondBaseStorage.sol';
 
 abstract contract _DiamondProxyExecutable is
     _IDiamondProxyExecutable,

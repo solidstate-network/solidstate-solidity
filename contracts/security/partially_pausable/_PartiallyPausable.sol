@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { PartiallyPausableStorage } from '../../storage/PartiallyPausableStorage.sol';
 import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
-import { PartiallyPausableStorage } from './PartiallyPausableStorage.sol';
 
 /**
  * @title Internal functions for PartiallyPausable security control module.

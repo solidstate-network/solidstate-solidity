@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { EnumerableSet } from '../../../data/EnumerableSet.sol';
+import { EnumerableSet } from '../data/EnumerableSet.sol';
 
 library ERC1155EnumerableStorage {
     /**

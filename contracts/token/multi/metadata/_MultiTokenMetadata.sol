@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { _IMultiTokenMetadata } from './_IMultiTokenMetadata.sol';
-import { ERC1155MetadataStorage } from './ERC1155MetadataStorage.sol';
+import { ERC1155MetadataStorage } from '../../../storage/ERC1155MetadataStorage.sol';
 
 /**
  * @title MultiTokenMetadata internal functions

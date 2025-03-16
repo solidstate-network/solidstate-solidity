@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { PausableStorage } from '../../storage/PausableStorage.sol';
 import { _IPausable } from './_IPausable.sol';
-import { PausableStorage } from './PausableStorage.sol';
 
 /**
  * @title Internal functions for Pausable security control module.

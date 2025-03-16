@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { ERC165BaseStorage } from '../storage/ERC165BaseStorage.sol';
 import { _IIntrospectable } from './_IIntrospectable.sol';
-import { ERC165BaseStorage } from './ERC165BaseStorage.sol';
 
 /**
  * @title ERC165 implementation

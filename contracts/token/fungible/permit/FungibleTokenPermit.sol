@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { IERC2612 } from '../../../interfaces/IERC2612.sol';
 import { IERC5267 } from '../../../interfaces/IERC5267.sol';
 import { _FungibleTokenPermit } from './_FungibleTokenPermit.sol';
-import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
+import { ERC20PermitStorage } from '../../../storage/ERC20PermitStorage.sol';
 import { IFungibleTokenPermit } from './IFungibleTokenPermit.sol';
 
 /**

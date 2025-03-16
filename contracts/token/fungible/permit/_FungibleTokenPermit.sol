@@ -6,7 +6,7 @@ import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
 import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
 import { _FungibleTokenMetadata } from '../metadata/_FungibleTokenMetadata.sol';
-import { ERC20PermitStorage } from './ERC20PermitStorage.sol';
+import { ERC20PermitStorage } from '../../../storage/ERC20PermitStorage.sol';
 import { _IFungibleTokenPermit } from './_IFungibleTokenPermit.sol';
 
 /**

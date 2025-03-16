@@ -6,7 +6,7 @@ import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IMultiTokenBase } from './_IMultiTokenBase.sol';
-import { ERC1155BaseStorage } from './ERC1155BaseStorage.sol';
+import { ERC1155BaseStorage } from '../../../storage/ERC1155BaseStorage.sol';
 
 /**
  * @title Base MultiToken internal functions

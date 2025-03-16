@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _IFungibleTokenMetadata } from './_IFungibleTokenMetadata.sol';
-import { ERC20MetadataStorage } from './ERC20MetadataStorage.sol';
+import { ERC20MetadataStorage } from '../../../storage/ERC20MetadataStorage.sol';
 
 /**
  * @title FungibleTokenMetadata internal functions

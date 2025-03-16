@@ -3,10 +3,10 @@
 pragma solidity ^0.8.20;
 
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
+import { ERC1155BaseStorage } from '../../../storage/ERC1155BaseStorage.sol';
 import { _MultiTokenBase } from '../base/_MultiTokenBase.sol';
-import { ERC1155BaseStorage } from '../base/ERC1155BaseStorage.sol';
 import { _IMultiTokenEnumerable } from './_IMultiTokenEnumerable.sol';
-import { ERC1155EnumerableStorage } from './ERC1155EnumerableStorage.sol';
+import { ERC1155EnumerableStorage } from '../../../storage/ERC1155EnumerableStorage.sol';
 
 /**
  * @title MultiTokenEnumerable internal functions

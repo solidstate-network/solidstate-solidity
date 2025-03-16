@@ -8,7 +8,7 @@ import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _INonFungibleTokenBase } from './_INonFungibleTokenBase.sol';
-import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
+import { ERC721BaseStorage } from '../../../storage/ERC721BaseStorage.sol';
 
 /**
  * @title Base NonFungibleToken internal functions
