@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { UpgradeableProxyStorage } from '../storage/UpgradeableProxyStorage.sol';
+import { ProxyStorage } from '../storage/ProxyStorage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
@@ -17,8 +17,8 @@ abstract contract _Proxy is _IProxy {
         returns (address implementation)
     {
         // inline storage layout retrieval uses less gas
-        UpgradeableProxyStorage.Layout storage $;
-        bytes32 slot = UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT;
+        ProxyStorage.Layout storage $;
+        bytes32 slot = ProxyStorage.DEFAULT_STORAGE_SLOT;
         assembly {
             $.slot := slot
         }
@@ -31,8 +31,8 @@ abstract contract _Proxy is _IProxy {
      * @param implementation address of implementation contract
      */
     function _setImplementation(address implementation) internal virtual {
-        UpgradeableProxyStorage
-            .layout(UpgradeableProxyStorage.DEFAULT_STORAGE_SLOT)
+        ProxyStorage
+            .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
             .implementation = implementation;
     }
 }

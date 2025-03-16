@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 // TODO: this storage library is now referenced by Proxy, so should be renamed
-library UpgradeableProxyStorage {
+library ProxyStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.UpgradeableProxy
+     * @custom:storage-location erc7201:solidstate.contracts.storage.Proxy
      */
     struct Layout {
         address implementation;
@@ -15,9 +15,7 @@ library UpgradeableProxyStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.UpgradeableProxy')
-                    )
+                    keccak256(bytes('solidstate.contracts.storage.Proxy'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));
