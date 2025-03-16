@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-import { IAccessControlInternal } from './IAccessControlInternal.sol';
+import { _IAccessControl } from './_IAccessControl.sol';
 
 /**
  * @title Partial IAccessControlDefaultAdminRules interface needed by internal functions
  */
-interface IAccessControlDefaultAdminRulesInternal is IAccessControlInternal {
+interface IAccessControlDefaultAdminRulesInternal is _IAccessControl {
     error AccessControlInvalidDefaultAdmin(address defaultAdmin);
 
     error AccessControlEnforcedDefaultAdminRules();

@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { Math } from '../../utils/Math.sol';
 import { SafeCast } from '../../utils/SafeCast.sol';
-import { AccessControlInternal } from './AccessControlInternal.sol';
+import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
 import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
 
@@ -14,7 +14,7 @@ import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdm
  */
 abstract contract AccessControlDefaultAdminRulesInternal is
     IAccessControlDefaultAdminRulesInternal,
-    AccessControlInternal
+    _AccessControl
 {
     /**
      * @notice query default admin

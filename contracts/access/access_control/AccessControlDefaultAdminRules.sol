@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { AccessControl } from './AccessControl.sol';
-import { AccessControlInternal } from './AccessControlInternal.sol';
+import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRules } from './IAccessControlDefaultAdminRules.sol';
 import { AccessControlDefaultAdminRulesInternal } from './AccessControlDefaultAdminRulesInternal.sol';
 import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
@@ -128,7 +128,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(AccessControlInternal, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
     {
         super._grantRole(role, account);
     }
@@ -139,7 +139,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(AccessControlInternal, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
     {
         super._revokeRole(role, account);
     }
@@ -150,7 +150,7 @@ abstract contract AccessControlDefaultAdminRules is
     )
         internal
         virtual
-        override(AccessControlInternal, AccessControlDefaultAdminRulesInternal)
+        override(_AccessControl, AccessControlDefaultAdminRulesInternal)
     {
         super._setRoleAdmin(role, adminRole);
     }
