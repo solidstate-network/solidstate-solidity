@@ -20,11 +20,15 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice query default admin
      * @return defaultAdmin the default admin
      */
-    function _defaultAdmin() internal view virtual returns (address) {
-        return
-            AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
-                .currentDefaultAdmin;
+    function _defaultAdmin()
+        internal
+        view
+        virtual
+        returns (address defaultAdmin)
+    {
+        defaultAdmin = AccessControlStorage
+            .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+            .currentDefaultAdmin;
     }
 
     /**
@@ -49,16 +53,20 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice query default admin delay
      * @return defaultAdminDelay default admin delay
      */
-    function _defaultAdminDelay() internal view virtual returns (uint48) {
+    function _defaultAdminDelay()
+        internal
+        view
+        virtual
+        returns (uint48 defaultAdminDelay)
+    {
         AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
 
-        return
-            (_isScheduleSet($.pendingDelaySchedule) &&
-                _hasSchedulePassed($.pendingDelaySchedule))
-                ? $.pendingDelay
-                : $.currentDelay;
+        defaultAdminDelay = (_isScheduleSet($.pendingDelaySchedule) &&
+            _hasSchedulePassed($.pendingDelaySchedule))
+            ? $.pendingDelay
+            : $.currentDelay;
     }
 
     /**
@@ -289,9 +297,7 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice query if schedule is set
      * @return isSet is set
      */
-    function _isScheduleSet(
-        uint48 schedule
-    ) internal pure virtual returns (bool) {
+    function _isScheduleSet(uint48 schedule) private pure returns (bool) {
         return schedule != 0;
     }
 
@@ -299,9 +305,7 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice query if schedule is passed
      * @return isPassed is passed
      */
-    function _hasSchedulePassed(
-        uint48 schedule
-    ) internal view virtual returns (bool) {
+    function _hasSchedulePassed(uint48 schedule) private view returns (bool) {
         return schedule < block.timestamp;
     }
 }
