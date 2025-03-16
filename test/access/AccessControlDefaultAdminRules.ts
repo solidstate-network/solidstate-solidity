@@ -1,7 +1,7 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  AccessControlDefaultAdminRulesMock,
-  AccessControlDefaultAdminRulesMock__factory,
+  $AccessControlDefaultAdminRules,
+  $AccessControlDefaultAdminRules__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -13,7 +13,7 @@ describe('AccessControlDefaultAdminRules', () => {
   let nonAdmin: SignerWithAddress;
   let nonAdmin2: SignerWithAddress;
   let nonAdmin3: SignerWithAddress;
-  let instance: AccessControlDefaultAdminRulesMock;
+  let instance: $AccessControlDefaultAdminRules;
   const oneDayInSeconds = 86400;
 
   before(async () => {
@@ -21,9 +21,15 @@ describe('AccessControlDefaultAdminRules', () => {
   });
 
   beforeEach(async () => {
-    instance = await new AccessControlDefaultAdminRulesMock__factory(
+    instance = await new $AccessControlDefaultAdminRules__factory(
       defaultAdmin,
     ).deploy();
+
+    await instance.$_setRole(
+      DEFAULT_ADMIN_ROLE,
+      await defaultAdmin.getAddress(),
+      true,
+    );
   });
 
   describe('#grantRole(bytes32,address)', () => {
@@ -42,9 +48,12 @@ describe('AccessControlDefaultAdminRules', () => {
           instance
             .connect(nonAdmin)
             .grantRole(ethers.id('ROLE'), nonAdmin.address),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        )
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
       });
     });
   });
@@ -68,9 +77,12 @@ describe('AccessControlDefaultAdminRules', () => {
           instance
             .connect(nonAdmin)
             .grantRole(ethers.id('ROLE'), nonAdmin.address),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        )
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
       });
     });
   });
@@ -90,9 +102,12 @@ describe('AccessControlDefaultAdminRules', () => {
           instance
             .connect(nonAdmin)
             .beginDefaultAdminTransfer(nonAdmin2.address),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        )
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
       });
     });
   });
@@ -162,11 +177,12 @@ describe('AccessControlDefaultAdminRules', () => {
 
     describe('reverts if', () => {
       it('sender is not default admin', async () => {
-        await expect(
-          instance.connect(nonAdmin).changeDefaultAdminDelay(2000),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        await expect(instance.connect(nonAdmin).changeDefaultAdminDelay(2000))
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
       });
     });
   });
@@ -182,11 +198,12 @@ describe('AccessControlDefaultAdminRules', () => {
 
     describe('reverts if', () => {
       it('sender is not default admin', async () => {
-        await expect(
-          instance.connect(nonAdmin).rollbackDefaultAdminDelay(),
-        ).to.be.revertedWith(
-          `AccessControl: account ${nonAdmin.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`,
-        );
+        await expect(instance.connect(nonAdmin).rollbackDefaultAdminDelay())
+          .to.be.revertedWithCustomError(
+            instance,
+            'AccessControl__Unauthorized',
+          )
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
       });
     });
   });
