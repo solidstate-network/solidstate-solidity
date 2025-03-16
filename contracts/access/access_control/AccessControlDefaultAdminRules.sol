@@ -19,7 +19,7 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function defaultAdmin() external view virtual returns (address) {
+    function defaultAdmin() external view returns (address) {
         return _defaultAdmin();
     }
 
@@ -29,7 +29,6 @@ abstract contract AccessControlDefaultAdminRules is
     function pendingDefaultAdmin()
         external
         view
-        virtual
         returns (address newAdmin, uint48 acceptSchedule)
     {
         return _pendingDefaultAdmin();
@@ -38,7 +37,7 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function defaultAdminDelay() external view virtual returns (uint48) {
+    function defaultAdminDelay() external view returns (uint48) {
         return _defaultAdminDelay();
     }
 
@@ -48,7 +47,6 @@ abstract contract AccessControlDefaultAdminRules is
     function pendingDefaultAdminDelay()
         external
         view
-        virtual
         returns (uint48 newDelay, uint48 effectSchedule)
     {
         return _pendingDefaultAdminDelay();
@@ -57,80 +55,63 @@ abstract contract AccessControlDefaultAdminRules is
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function beginDefaultAdminTransfer(address newAdmin) external virtual {
+    function beginDefaultAdminTransfer(address newAdmin) external {
         _beginDefaultAdminTransfer(newAdmin);
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function cancelDefaultAdminTransfer() external virtual {
+    function cancelDefaultAdminTransfer() external {
         _cancelDefaultAdminTransfer();
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function acceptDefaultAdminTransfer() external virtual {
+    function acceptDefaultAdminTransfer() external {
         _acceptDefaultAdminTransfer();
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function changeDefaultAdminDelay(uint48 newDelay) external virtual {
+    function changeDefaultAdminDelay(uint48 newDelay) external {
         _changeDefaultAdminDelay(newDelay);
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function rollbackDefaultAdminDelay() external virtual {
+    function rollbackDefaultAdminDelay() external {
         _rollbackDefaultAdminDelay();
     }
 
     /**
      * @inheritdoc IAccessControlDefaultAdminRules
      */
-    function defaultAdminDelayIncreaseWait()
-        external
-        view
-        virtual
-        returns (uint48)
-    {
+    function defaultAdminDelayIncreaseWait() external view returns (uint48) {
         return _defaultAdminDelayIncreaseWait();
     }
 
     function _grantRole(
         bytes32 role,
         address account
-    )
-        internal
-        virtual
-        override(_AccessControl, _AccessControlDefaultAdminRules)
-    {
+    ) internal override(_AccessControl, _AccessControlDefaultAdminRules) {
         super._grantRole(role, account);
     }
 
     function _revokeRole(
         bytes32 role,
         address account
-    )
-        internal
-        virtual
-        override(_AccessControl, _AccessControlDefaultAdminRules)
-    {
+    ) internal override(_AccessControl, _AccessControlDefaultAdminRules) {
         super._revokeRole(role, account);
     }
 
     function _setRoleAdmin(
         bytes32 role,
         bytes32 adminRole
-    )
-        internal
-        virtual
-        override(_AccessControl, _AccessControlDefaultAdminRules)
-    {
+    ) internal override(_AccessControl, _AccessControlDefaultAdminRules) {
         super._setRoleAdmin(role, adminRole);
     }
 }
