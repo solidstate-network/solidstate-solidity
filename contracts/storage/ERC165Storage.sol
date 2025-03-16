@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-library ERC165BaseStorage {
+library ERC165Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165Base
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165
      */
     struct Layout {
         mapping(bytes4 => bool) supportedInterfaces;
@@ -14,7 +14,7 @@ library ERC165BaseStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC165Base'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC165'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));

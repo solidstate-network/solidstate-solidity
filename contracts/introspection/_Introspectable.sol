@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { ERC165BaseStorage } from '../storage/ERC165BaseStorage.sol';
+import { ERC165Storage } from '../storage/ERC165Storage.sol';
 import { _IIntrospectable } from './_IIntrospectable.sol';
 
 /**
@@ -18,8 +18,8 @@ abstract contract _Introspectable is _IIntrospectable {
         bytes4 interfaceId
     ) internal view virtual returns (bool) {
         return
-            ERC165BaseStorage
-                .layout(ERC165BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC165Storage
+                .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
                 .supportedInterfaces[interfaceId];
     }
 
@@ -34,8 +34,8 @@ abstract contract _Introspectable is _IIntrospectable {
     ) internal virtual {
         if (interfaceId == 0xffffffff)
             revert Introspectable__InvalidInterfaceId();
-        ERC165BaseStorage
-            .layout(ERC165BaseStorage.DEFAULT_STORAGE_SLOT)
+        ERC165Storage
+            .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
             .supportedInterfaces[interfaceId] = status;
     }
 }
