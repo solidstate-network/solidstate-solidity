@@ -7,11 +7,9 @@ library ERC2981Storage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2981
      */
     struct Layout {
-        // token id -> royalty (denominated in basis points)
-        mapping(uint256 => uint16) royaltiesBPS;
+        mapping(uint256 tokenId => uint16 royaltyBPS) royaltiesBPS;
         uint16 defaultRoyaltyBPS;
-        // token id -> receiver address
-        mapping(uint256 => address) royaltyReceivers;
+        mapping(uint256 tokenId => address royaltyReceiver) royaltyReceivers;
         address defaultRoyaltyReceiver;
     }
 

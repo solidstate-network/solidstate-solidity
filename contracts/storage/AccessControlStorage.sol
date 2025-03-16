@@ -14,7 +14,7 @@ library AccessControlStorage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.AccessControl
      */
     struct Layout {
-        mapping(bytes32 => RoleData) roles;
+        mapping(bytes32 roleId => RoleData roleData) roles;
     }
 
     bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;

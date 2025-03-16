@@ -8,7 +8,7 @@ library PausableStorage {
      */
     struct Layout {
         bool paused;
-        mapping(bytes32 => bool) partiallyPaused;
+        mapping(bytes32 key => bool pausedStatus) partiallyPaused;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

@@ -7,7 +7,7 @@ library ERC165Storage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165
      */
     struct Layout {
-        mapping(bytes4 => bool) supportedInterfaces;
+        mapping(bytes4 interfaceId => bool supportStatus) supportedInterfaces;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

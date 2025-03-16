@@ -12,19 +12,19 @@ library ERC20Storage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20
      */
     struct Layout {
-        mapping(address => uint256) balances;
-        mapping(address => mapping(address => uint256)) allowances;
+        mapping(address account => uint256 balance) balances;
+        mapping(address holder => mapping(address spender => uint256 allowance)) allowances;
         uint256 totalSupply;
         string name;
         string symbol;
         uint8 decimals;
-        mapping(address => uint256) nonces;
-        mapping(address => Snapshots) accountBalanceSnapshots;
+        mapping(address account => uint256 nonce) nonces;
+        mapping(address account => Snapshots balanceSnapshots) accountBalanceSnapshots;
         Snapshots totalSupplySnapshots;
         uint256 snapshotId;
-        mapping(uint8 => string) restrictions;
+        mapping(uint8 restrictionCode => string restrictionMessage) restrictions;
         address asset;
-        mapping(address => bool) implicitApprovals;
+        mapping(address account => bool isApproved) implicitApprovals;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

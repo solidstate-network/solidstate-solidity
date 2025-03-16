@@ -11,7 +11,7 @@ library ECDSAMultisigWalletStorage {
     struct Layout {
         uint256 quorum;
         EnumerableSet.AddressSet signers;
-        mapping(address => mapping(uint256 => bool)) nonces;
+        mapping(address account => mapping(uint256 nonce => bool invalidationStatus)) nonces;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

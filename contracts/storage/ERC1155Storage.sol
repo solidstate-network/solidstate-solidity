@@ -9,13 +9,13 @@ library ERC1155Storage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155
      */
     struct Layout {
-        mapping(uint256 => mapping(address => uint256)) balances;
-        mapping(address => mapping(address => bool)) operatorApprovals;
+        mapping(uint256 tokenId => mapping(address account => uint256 balance)) balances;
+        mapping(address holder => mapping(address operator => bool approvalStatus)) operatorApprovals;
         string baseURI;
-        mapping(uint256 => string) tokenURIs;
-        mapping(uint256 => uint256) totalSupply;
-        mapping(uint256 => EnumerableSet.AddressSet) accountsByToken;
-        mapping(address => EnumerableSet.UintSet) tokensByAccount;
+        mapping(uint256 tokenId => string tokenURI) tokenURIs;
+        mapping(uint256 tokenId => uint256 supply) totalSupply;
+        mapping(uint256 tokenId => EnumerableSet.AddressSet holders) accountsByToken;
+        mapping(address account => EnumerableSet.UintSet tokenIds) tokensByAccount;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

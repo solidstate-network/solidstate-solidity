@@ -7,7 +7,7 @@ library ERC1271Storage {
      * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1271
      */
     struct Layout {
-        mapping(bytes32 => bool) hashes;
+        mapping(bytes32 hash => bool signedStatus) hashes;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =

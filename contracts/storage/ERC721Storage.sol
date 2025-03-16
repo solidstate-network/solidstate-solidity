@@ -11,13 +11,13 @@ library ERC721Storage {
      */
     struct Layout {
         EnumerableMap.UintToAddressMap tokenOwners;
-        mapping(address => EnumerableSet.UintSet) holderTokens;
-        mapping(uint256 => address) tokenApprovals;
-        mapping(address => mapping(address => bool)) operatorApprovals;
+        mapping(address account => EnumerableSet.UintSet tokenIds) holderTokens;
+        mapping(uint256 tokenId => address account) tokenApprovals;
+        mapping(address holder => mapping(address operator => bool approvalStatus)) operatorApprovals;
         string name;
         string symbol;
         string baseURI;
-        mapping(uint256 => string) tokenURIs;
+        mapping(uint256 tokenId => string tokenURI) tokenURIs;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
