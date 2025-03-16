@@ -6,7 +6,7 @@ import { IERC1155Receiver } from '../../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { AddressUtils } from '../../../utils/AddressUtils.sol';
 import { _IMultiTokenBase } from './_IMultiTokenBase.sol';
-import { ERC1155BaseStorage } from '../../../storage/ERC1155BaseStorage.sol';
+import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 
 /**
  * @title Base MultiToken internal functions
@@ -28,9 +28,9 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         if (account == address(0))
             revert MultiTokenBase__BalanceQueryZeroAddress();
         return
-            ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
-                .balances[id][account];
+            ERC1155Storage.layout(ERC1155Storage.DEFAULT_STORAGE_SLOT).balances[
+                id
+            ][account];
     }
 
     /**
@@ -47,8 +47,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
             revert MultiTokenBase__ArrayLengthMismatch();
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            storage balances = ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .balances;
 
         uint256[] memory batchBalances = new uint256[](accounts.length);
@@ -75,8 +75,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         address operator
     ) internal view virtual returns (bool) {
         return
-            ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .operatorApprovals[account][operator];
     }
 
@@ -85,8 +85,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         bool status
     ) internal virtual {
         if (msg.sender == operator) revert MultiTokenBase__SelfApproval();
-        ERC1155BaseStorage
-            .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+        ERC1155Storage
+            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .operatorApprovals[msg.sender][operator] = status;
         emit ApprovalForAll(msg.sender, operator, status);
     }
@@ -116,9 +116,9 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
             data
         );
 
-        ERC1155BaseStorage
-            .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
-            .balances[id][account] += amount;
+        ERC1155Storage.layout(ERC1155Storage.DEFAULT_STORAGE_SLOT).balances[id][
+            account
+        ] += amount;
 
         emit TransferSingle(msg.sender, address(0), account, id, amount);
     }
@@ -176,8 +176,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         );
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            storage balances = ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .balances;
 
         for (uint256 i; i < ids.length; ) {
@@ -237,8 +237,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
             ''
         );
 
-        mapping(address => uint256) storage balances = ERC1155BaseStorage
-            .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+        mapping(address => uint256) storage balances = ERC1155Storage
+            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .balances[id];
 
         unchecked {
@@ -268,8 +268,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            storage balances = ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .balances;
 
         unchecked {
@@ -339,8 +339,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         );
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            storage balances = ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .balances;
 
         unchecked {
@@ -410,8 +410,8 @@ abstract contract _MultiTokenBase is _IMultiTokenBase, _Introspectable {
         _beforeTokenTransfer(operator, sender, recipient, ids, amounts, data);
 
         mapping(uint256 => mapping(address => uint256))
-            storage balances = ERC1155BaseStorage
-                .layout(ERC1155BaseStorage.DEFAULT_STORAGE_SLOT)
+            storage balances = ERC1155Storage
+                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .balances;
 
         for (uint256 i; i < ids.length; ) {

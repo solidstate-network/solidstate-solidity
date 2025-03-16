@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { _IMultiTokenMetadata } from './_IMultiTokenMetadata.sol';
-import { ERC1155MetadataStorage } from '../../../storage/ERC1155MetadataStorage.sol';
+import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 
 /**
  * @title MultiTokenMetadata internal functions
@@ -15,8 +15,8 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
     function _uri(
         uint256 tokenId
     ) internal view virtual returns (string memory) {
-        ERC1155MetadataStorage.Layout storage $ = ERC1155MetadataStorage.layout(
-            ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT
+        ERC1155Storage.Layout storage $ = ERC1155Storage.layout(
+            ERC1155Storage.DEFAULT_STORAGE_SLOT
         );
 
         string memory tokenURI = $.tokenURIs[tokenId];
@@ -37,8 +37,8 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
      * @param baseURI base URI
      */
     function _setBaseURI(string memory baseURI) internal {
-        ERC1155MetadataStorage
-            .layout(ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT)
+        ERC1155Storage
+            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .baseURI = baseURI;
     }
 
@@ -48,9 +48,9 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
      * @param tokenURI per-token URI
      */
     function _setTokenURI(uint256 tokenId, string memory tokenURI) internal {
-        ERC1155MetadataStorage
-            .layout(ERC1155MetadataStorage.DEFAULT_STORAGE_SLOT)
-            .tokenURIs[tokenId] = tokenURI;
+        ERC1155Storage.layout(ERC1155Storage.DEFAULT_STORAGE_SLOT).tokenURIs[
+            tokenId
+        ] = tokenURI;
         emit URI(tokenURI, tokenId);
     }
 }

@@ -2,20 +2,27 @@
 
 pragma solidity ^0.8.20;
 
-library ERC1155BaseStorage {
+import { EnumerableSet } from '../data/EnumerableSet.sol';
+
+library ERC1155Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155Base
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155
      */
     struct Layout {
         mapping(uint256 => mapping(address => uint256)) balances;
         mapping(address => mapping(address => bool)) operatorApprovals;
+        string baseURI;
+        mapping(uint256 => string) tokenURIs;
+        mapping(uint256 => uint256) totalSupply;
+        mapping(uint256 => EnumerableSet.AddressSet) accountsByToken;
+        mapping(address => EnumerableSet.UintSet) tokensByAccount;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC1155Base'))
+                    keccak256(bytes('solidstate.contracts.storage.ERC1155'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));
