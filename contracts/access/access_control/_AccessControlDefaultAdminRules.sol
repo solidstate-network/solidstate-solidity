@@ -38,11 +38,11 @@ abstract contract _AccessControlDefaultAdminRules is
         virtual
         returns (address newAdmin, uint48 acceptSchedule)
     {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
 
-        return (l.pendingDefaultAdmin, l.pendingDefaultAdminSchedule);
+        return ($.pendingDefaultAdmin, $.pendingDefaultAdminSchedule);
     }
 
     /**
@@ -50,15 +50,15 @@ abstract contract _AccessControlDefaultAdminRules is
      * @return defaultAdminDelay default admin delay
      */
     function _defaultAdminDelay() internal view virtual returns (uint48) {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
 
         return
-            (_isScheduleSet(l.pendingDelaySchedule) &&
-                _hasSchedulePassed(l.pendingDelaySchedule))
-                ? l.pendingDelay
-                : l.currentDelay;
+            (_isScheduleSet($.pendingDelaySchedule) &&
+                _hasSchedulePassed($.pendingDelaySchedule))
+                ? $.pendingDelay
+                : $.currentDelay;
     }
 
     /**
@@ -72,14 +72,14 @@ abstract contract _AccessControlDefaultAdminRules is
         virtual
         returns (uint48 newDelay, uint48 effectSchedule)
     {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
-        effectSchedule = l.pendingDelaySchedule;
+        effectSchedule = $.pendingDelaySchedule;
         return
             (_isScheduleSet(effectSchedule) &&
                 !_hasSchedulePassed(effectSchedule))
-                ? (l.pendingDelay, effectSchedule)
+                ? ($.pendingDelay, effectSchedule)
                 : (0, 0);
     }
 
@@ -165,7 +165,7 @@ abstract contract _AccessControlDefaultAdminRules is
      * @notice accept a default admin transfer
      */
     function _acceptDefaultAdminTransfer() internal virtual {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
         (address newAdmin, uint48 schedule) = _pendingDefaultAdmin();
@@ -178,8 +178,8 @@ abstract contract _AccessControlDefaultAdminRules is
         }
         _revokeRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, _defaultAdmin());
         _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, newAdmin);
-        delete l.pendingDefaultAdmin;
-        delete l.pendingDefaultAdminSchedule;
+        delete $.pendingDefaultAdmin;
+        delete $.pendingDefaultAdminSchedule;
     }
 
     /**
@@ -230,13 +230,13 @@ abstract contract _AccessControlDefaultAdminRules is
         address newAdmin,
         uint48 newSchedule
     ) internal virtual {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
         (, uint48 oldSchedule) = _pendingDefaultAdmin();
 
-        l.pendingDefaultAdmin = newAdmin;
-        l.pendingDefaultAdminSchedule = newSchedule;
+        $.pendingDefaultAdmin = newAdmin;
+        $.pendingDefaultAdminSchedule = newSchedule;
 
         // An `oldSchedule` from `pendingDefaultAdmin()` is only set if it hasn't been accepted.
         if (_isScheduleSet(oldSchedule)) {
@@ -254,22 +254,22 @@ abstract contract _AccessControlDefaultAdminRules is
         uint48 newDelay,
         uint48 newSchedule
     ) internal virtual {
-        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+        AccessControlStorage.Layout storage $ = AccessControlStorage.layout(
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
 
-        if (_isScheduleSet(l.pendingDelaySchedule)) {
-            if (_hasSchedulePassed(l.pendingDelaySchedule)) {
+        if (_isScheduleSet($.pendingDelaySchedule)) {
+            if (_hasSchedulePassed($.pendingDelaySchedule)) {
                 // Materialize a virtual delay
-                l.currentDelay = l.pendingDelay;
+                $.currentDelay = $.pendingDelay;
             } else {
                 // Emit for implicit cancellations when another delay was scheduled.
                 emit DefaultAdminDelayChangeCanceled();
             }
         }
 
-        l.pendingDelay = newDelay;
-        l.pendingDelaySchedule = newSchedule;
+        $.pendingDelay = newDelay;
+        $.pendingDelaySchedule = newSchedule;
     }
 
     /**
