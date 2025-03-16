@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
+import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AccessControl } from './AccessControl.sol';
 import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRules } from './IAccessControlDefaultAdminRules.sol';
 import { AccessControlDefaultAdminRulesInternal } from './AccessControlDefaultAdminRulesInternal.sol';
-import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
 
 /**
  * @title Role-based access control system with default admin rules
@@ -60,11 +60,7 @@ abstract contract AccessControlDefaultAdminRules is
      */
     function beginDefaultAdminTransfer(
         address newAdmin
-    )
-        external
-        virtual
-        onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
-    {
+    ) external virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
         _beginDefaultAdminTransfer(newAdmin);
     }
 
@@ -74,7 +70,7 @@ abstract contract AccessControlDefaultAdminRules is
     function cancelDefaultAdminTransfer()
         external
         virtual
-        onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
+        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
     {
         _cancelDefaultAdminTransfer();
     }
@@ -91,11 +87,7 @@ abstract contract AccessControlDefaultAdminRules is
      */
     function changeDefaultAdminDelay(
         uint48 newDelay
-    )
-        external
-        virtual
-        onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
-    {
+    ) external virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
         _changeDefaultAdminDelay(newDelay);
     }
 
@@ -105,7 +97,7 @@ abstract contract AccessControlDefaultAdminRules is
     function rollbackDefaultAdminDelay()
         external
         virtual
-        onlyRole(AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE)
+        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
     {
         _rollbackDefaultAdminDelay();
     }

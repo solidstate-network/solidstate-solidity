@@ -3,10 +3,10 @@
 pragma solidity ^0.8.20;
 
 import { Math } from '../../utils/Math.sol';
+import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { SafeCast } from '../../utils/SafeCast.sol';
 import { _AccessControl } from './_AccessControl.sol';
 import { IAccessControlDefaultAdminRulesInternal } from './IAccessControlDefaultAdminRulesInternal.sol';
-import { AccessControlDefaultAdminRulesStorage } from './AccessControlDefaultAdminRulesStorage.sol';
 
 /**
  * @title Role-based access control system with default admin rules
@@ -22,7 +22,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      */
     function _defaultAdmin() internal view virtual returns (address) {
         return
-            AccessControlDefaultAdminRulesStorage.layout().currentDefaultAdmin;
+            AccessControlStorage
+                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .currentDefaultAdmin;
     }
 
     /**
@@ -36,8 +38,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         virtual
         returns (address newAdmin, uint48 acceptSchedule)
     {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
 
         return (l.pendingDefaultAdmin, l.pendingDefaultAdminSchedule);
     }
@@ -47,8 +50,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @return defaultAdminDelay default admin delay
      */
     function _defaultAdminDelay() internal view virtual returns (uint48) {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
 
         return
             (_isScheduleSet(l.pendingDelaySchedule) &&
@@ -68,8 +72,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         virtual
         returns (uint48 newDelay, uint48 effectSchedule)
     {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
         effectSchedule = l.pendingDelaySchedule;
         return
             (_isScheduleSet(effectSchedule) &&
@@ -87,12 +92,12 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         bytes32 role,
         address account
     ) internal virtual override {
-        if (role == AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE) {
+        if (role == AccessControlStorage.DEFAULT_ADMIN_ROLE) {
             if (_defaultAdmin() != address(0)) {
                 revert AccessControlEnforcedDefaultAdminRules();
             }
-            AccessControlDefaultAdminRulesStorage
-                .layout()
+            AccessControlStorage
+                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .currentDefaultAdmin = account;
         }
         super._grantRole(role, account);
@@ -108,11 +113,11 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         address account
     ) internal virtual override {
         if (
-            role == AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE &&
+            role == AccessControlStorage.DEFAULT_ADMIN_ROLE &&
             account == _defaultAdmin()
         ) {
-            delete AccessControlDefaultAdminRulesStorage
-                .layout()
+            delete AccessControlStorage
+                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .currentDefaultAdmin;
         }
         super._revokeRole(role, account);
@@ -127,7 +132,7 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         bytes32 role,
         bytes32 adminRole
     ) internal virtual override {
-        if (role == AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE) {
+        if (role == AccessControlStorage.DEFAULT_ADMIN_ROLE) {
             revert AccessControlEnforcedDefaultAdminRules();
         }
         super._setRoleAdmin(role, adminRole);
@@ -154,8 +159,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
      * @notice accept a default admin transfer
      */
     function _acceptDefaultAdminTransfer() internal virtual {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
         (address newAdmin, uint48 schedule) = _pendingDefaultAdmin();
         if (msg.sender != newAdmin) {
             revert AccessControlInvalidDefaultAdmin(msg.sender);
@@ -164,14 +170,8 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         if (!_isScheduleSet(schedule) || !_hasSchedulePassed(schedule)) {
             revert AccessControlEnforcedDefaultAdminDelay(schedule);
         }
-        _revokeRole(
-            AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE,
-            _defaultAdmin()
-        );
-        _grantRole(
-            AccessControlDefaultAdminRulesStorage.DEFAULT_ADMIN_ROLE,
-            newAdmin
-        );
+        _revokeRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, _defaultAdmin());
+        _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, newAdmin);
         delete l.pendingDefaultAdmin;
         delete l.pendingDefaultAdminSchedule;
     }
@@ -218,8 +218,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         address newAdmin,
         uint48 newSchedule
     ) internal virtual {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
         (, uint48 oldSchedule) = _pendingDefaultAdmin();
 
         l.pendingDefaultAdmin = newAdmin;
@@ -241,8 +242,9 @@ abstract contract AccessControlDefaultAdminRulesInternal is
         uint48 newDelay,
         uint48 newSchedule
     ) internal virtual {
-        AccessControlDefaultAdminRulesStorage.Layout
-            storage l = AccessControlDefaultAdminRulesStorage.layout();
+        AccessControlStorage.Layout storage l = AccessControlStorage.layout(
+            AccessControlStorage.DEFAULT_STORAGE_SLOT
+        );
 
         if (_isScheduleSet(l.pendingDelaySchedule)) {
             if (_hasSchedulePassed(l.pendingDelaySchedule)) {
