@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { _IFungibleTokenBase } from '../base/_IFungibleTokenBase.sol';
+import { _IFungibleToken } from '../_IFungibleToken.sol';
 
-interface _IFungibleTokenImplicitApproval is _IFungibleTokenBase {}
+interface _IFungibleTokenImplicitApproval is _IFungibleToken {}

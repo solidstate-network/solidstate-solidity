@@ -2,15 +2,15 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC20 } from '../../../interfaces/IERC20.sol';
-import { IFungibleTokenBase } from './IFungibleTokenBase.sol';
-import { _FungibleTokenBase } from './_FungibleTokenBase.sol';
+import { IERC20 } from '../../interfaces/IERC20.sol';
+import { IFungibleToken } from './IFungibleToken.sol';
+import { _FungibleToken } from './_FungibleToken.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
  * @title Base FungibleToken implementation, excluding optional extensions
  */
-abstract contract FungibleTokenBase is IFungibleTokenBase, _FungibleTokenBase {
+abstract contract FungibleToken is IFungibleToken, _FungibleToken {
     /**
      * @inheritdoc IERC20
      */

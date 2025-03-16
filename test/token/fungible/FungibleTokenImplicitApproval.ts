@@ -13,7 +13,7 @@ describe('FungibleTokenImplicitApproval', () => {
   let instance: $FungibleTokenImplicitApproval;
 
   before(async () => {
-    // TODO: avoid need for gap in array by passing separate (non-implicitly-approved) spender to FungibleTokenBase behavior tests
+    // TODO: avoid need for gap in array by passing separate (non-implicitly-approved) spender to FungibleToken behavior tests
     [holder, , implicitlyApprovedSpender] = await ethers.getSigners();
   });
 

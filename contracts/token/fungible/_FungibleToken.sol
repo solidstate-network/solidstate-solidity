@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { _IFungibleTokenBase } from './_IFungibleTokenBase.sol';
+import { _IFungibleToken } from './_IFungibleToken.sol';
 import { ERC20BaseStorage } from './ERC20BaseStorage.sol';
 
 /**
  * @title Base FungibleToken internal functions, excluding optional extensions
  */
-abstract contract _FungibleTokenBase is _IFungibleTokenBase {
+abstract contract _FungibleToken is _IFungibleToken {
     /**
      * @notice query the total minted token supply
      * @return token supply
@@ -67,9 +67,8 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         uint256 amount
     ) internal virtual returns (bool) {
         if (holder == address(0))
-            revert FungibleTokenBase__ApproveFromZeroAddress();
-        if (spender == address(0))
-            revert FungibleTokenBase__ApproveToZeroAddress();
+            revert FungibleToken__ApproveFromZeroAddress();
+        if (spender == address(0)) revert FungibleToken__ApproveToZeroAddress();
 
         ERC20BaseStorage
             .layout(ERC20BaseStorage.DEFAULT_STORAGE_SLOT)
@@ -93,8 +92,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
     ) internal {
         uint256 allowance = _allowance(holder, spender);
 
-        if (amount > allowance)
-            revert FungibleTokenBase__InsufficientAllowance();
+        if (amount > allowance) revert FungibleToken__InsufficientAllowance();
 
         unchecked {
             _approve(holder, spender, allowance - amount);
@@ -107,8 +105,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
      * @param amount quantity of tokens minted
      */
     function _mint(address account, uint256 amount) internal virtual {
-        if (account == address(0))
-            revert FungibleTokenBase__MintToZeroAddress();
+        if (account == address(0)) revert FungibleToken__MintToZeroAddress();
 
         _beforeTokenTransfer(address(0), account, amount);
 
@@ -127,8 +124,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
      * @param amount quantity of tokens burned
      */
     function _burn(address account, uint256 amount) internal virtual {
-        if (account == address(0))
-            revert FungibleTokenBase__BurnFromZeroAddress();
+        if (account == address(0)) revert FungibleToken__BurnFromZeroAddress();
 
         _beforeTokenTransfer(account, address(0), amount);
 
@@ -136,7 +132,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
             ERC20BaseStorage.DEFAULT_STORAGE_SLOT
         );
         uint256 balance = $.balances[account];
-        if (amount > balance) revert FungibleTokenBase__BurnExceedsBalance();
+        if (amount > balance) revert FungibleToken__BurnExceedsBalance();
         unchecked {
             $.balances[account] = balance - amount;
         }
@@ -165,9 +161,9 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         uint256 amount
     ) internal virtual returns (bool) {
         if (holder == address(0))
-            revert FungibleTokenBase__TransferFromZeroAddress();
+            revert FungibleToken__TransferFromZeroAddress();
         if (recipient == address(0))
-            revert FungibleTokenBase__TransferToZeroAddress();
+            revert FungibleToken__TransferToZeroAddress();
 
         _beforeTokenTransfer(holder, recipient, amount);
 
@@ -176,7 +172,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         );
         uint256 holderBalance = $.balances[holder];
         if (amount > holderBalance)
-            revert FungibleTokenBase__TransferExceedsBalance();
+            revert FungibleToken__TransferExceedsBalance();
         unchecked {
             $.balances[holder] = holderBalance - amount;
         }

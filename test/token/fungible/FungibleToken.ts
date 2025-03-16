@@ -1,18 +1,18 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfFungibleTokenBase } from '@solidstate/spec';
+import { describeBehaviorOfFungibleToken } from '@solidstate/spec';
 import {
-  $FungibleTokenBase,
-  $FungibleTokenBase__factory,
+  $FungibleToken,
+  $FungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('FungibleTokenBase', () => {
+describe('FungibleToken', () => {
   let sender: SignerWithAddress;
   let receiver: SignerWithAddress;
   let holder: SignerWithAddress;
   let spender: SignerWithAddress;
-  let instance: $FungibleTokenBase;
+  let instance: $FungibleToken;
 
   before(async () => {
     [sender, receiver, holder, spender] = await ethers.getSigners();
@@ -20,10 +20,10 @@ describe('FungibleTokenBase', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $FungibleTokenBase__factory(deployer).deploy();
+    instance = await new $FungibleToken__factory(deployer).deploy();
   });
 
-  describeBehaviorOfFungibleTokenBase(async () => instance, {
+  describeBehaviorOfFungibleToken(async () => instance, {
     supply: 0n,
     mint: (recipient, amount) => instance.$_mint(recipient, amount),
     burn: (recipient, amount) => instance.$_burn(recipient, amount),
@@ -71,7 +71,7 @@ describe('FungibleTokenBase', () => {
             instance.$_mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__MintToZeroAddress',
+            'FungibleToken__MintToZeroAddress',
           );
         });
       });
@@ -113,7 +113,7 @@ describe('FungibleTokenBase', () => {
             instance.$_burn(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__BurnFromZeroAddress',
+            'FungibleToken__BurnFromZeroAddress',
           );
         });
 
@@ -123,7 +123,7 @@ describe('FungibleTokenBase', () => {
             instance.$_burn(receiver.address, 101),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__BurnExceedsBalance',
+            'FungibleToken__BurnExceedsBalance',
           );
         });
       });
@@ -187,7 +187,7 @@ describe('FungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__TransferFromZeroAddress',
+            'FungibleToken__TransferFromZeroAddress',
           );
         });
 
@@ -200,7 +200,7 @@ describe('FungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__TransferToZeroAddress',
+            'FungibleToken__TransferToZeroAddress',
           );
         });
       });
@@ -254,7 +254,7 @@ describe('FungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__ApproveFromZeroAddress',
+            'FungibleToken__ApproveFromZeroAddress',
           );
         });
 
@@ -267,7 +267,7 @@ describe('FungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__ApproveToZeroAddress',
+            'FungibleToken__ApproveToZeroAddress',
           );
         });
       });
@@ -323,7 +323,7 @@ describe('FungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__ApproveFromZeroAddress',
+            'FungibleToken__ApproveFromZeroAddress',
           );
         });
 
@@ -332,7 +332,7 @@ describe('FungibleTokenBase', () => {
             instance.$_decreaseAllowance(holder.address, ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__ApproveToZeroAddress',
+            'FungibleToken__ApproveToZeroAddress',
           );
         });
       });

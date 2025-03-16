@@ -1,11 +1,11 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
-import { IFungibleTokenBase } from '@solidstate/typechain-types';
+import { IFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface FungibleTokenBaseBehaviorArgs {
+export interface FungibleTokenBehaviorArgs {
   supply: bigint;
   mint: (
     address: string,
@@ -17,20 +17,20 @@ export interface FungibleTokenBaseBehaviorArgs {
   ) => Promise<ContractTransactionResponse>;
 }
 
-export function describeBehaviorOfFungibleTokenBase(
-  deploy: () => Promise<IFungibleTokenBase>,
-  args: FungibleTokenBaseBehaviorArgs,
+export function describeBehaviorOfFungibleToken(
+  deploy: () => Promise<IFungibleToken>,
+  args: FungibleTokenBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::FungibleTokenBase', () => {
+  describe('::FungibleToken', () => {
     // note: holder gets supply (1e18) amount of tokens so use spender/receiver for easier testing
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let receiver: SignerWithAddress;
     let sender: SignerWithAddress;
-    let instance: IFungibleTokenBase;
+    let instance: IFungibleToken;
 
     before(async () => {
       [holder, spender, receiver, sender] = await ethers.getSigners();
@@ -152,7 +152,7 @@ export function describeBehaviorOfFungibleTokenBase(
             instance.connect(spender).transfer(holder.address, amount),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__TransferExceedsBalance',
+            'FungibleToken__TransferExceedsBalance',
           );
         });
       });
@@ -192,7 +192,7 @@ export function describeBehaviorOfFungibleTokenBase(
             instance.connect(spender).transfer(holder.address, amount),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__TransferExceedsBalance',
+            'FungibleToken__TransferExceedsBalance',
           );
         });
 
@@ -206,7 +206,7 @@ export function describeBehaviorOfFungibleTokenBase(
               .transferFrom(sender.address, receiver.address, amount),
           ).to.be.revertedWithCustomError(
             instance,
-            'FungibleTokenBase__InsufficientAllowance',
+            'FungibleToken__InsufficientAllowance',
           );
         });
       });

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
-import { FungibleTokenBase } from '../base/FungibleTokenBase.sol';
-import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
+import { FungibleToken } from '../FungibleToken.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { IFungibleTokenImplicitApproval } from './IFungibleTokenImplicitApproval.sol';
 import { _FungibleTokenImplicitApproval } from './_FungibleTokenImplicitApproval.sol';
 
@@ -13,7 +13,7 @@ import { _FungibleTokenImplicitApproval } from './_FungibleTokenImplicitApproval
 abstract contract FungibleTokenImplicitApproval is
     IFungibleTokenImplicitApproval,
     _FungibleTokenImplicitApproval,
-    FungibleTokenBase
+    FungibleToken
 {
     function _allowance(
         address holder,
@@ -22,7 +22,7 @@ abstract contract FungibleTokenImplicitApproval is
         internal
         view
         virtual
-        override(_FungibleTokenBase, _FungibleTokenImplicitApproval)
+        override(_FungibleToken, _FungibleTokenImplicitApproval)
         returns (uint256)
     {
         return super._allowance(holder, spender);
@@ -35,7 +35,7 @@ abstract contract FungibleTokenImplicitApproval is
     )
         internal
         virtual
-        override(_FungibleTokenBase, _FungibleTokenImplicitApproval)
+        override(_FungibleToken, _FungibleTokenImplicitApproval)
         returns (bool)
     {
         return super._transferFrom(holder, recipient, amount);

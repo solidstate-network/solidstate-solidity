@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { Math } from '../../../utils/Math.sol';
-import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
 import { ERC20SnapshotStorage } from './ERC20SnapshotStorage.sol';
 
@@ -12,7 +12,7 @@ import { ERC20SnapshotStorage } from './ERC20SnapshotStorage.sol';
  */
 abstract contract _FungibleTokenSnapshot is
     _IFungibleTokenSnapshot,
-    _FungibleTokenBase
+    _FungibleToken
 {
     event Snapshot(uint256 id);
 
@@ -104,7 +104,7 @@ abstract contract _FungibleTokenSnapshot is
 
     /**
      * @notice ERC20 hook: update snapshot data
-     * @inheritdoc _FungibleTokenBase
+     * @inheritdoc _FungibleToken
      */
     function _beforeTokenTransfer(
         address from,
