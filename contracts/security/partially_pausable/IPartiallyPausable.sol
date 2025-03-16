@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IPartiallyPausableInternal } from './IPartiallyPausableInternal.sol';
+import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
 
-interface IPartiallyPausable is IPartiallyPausableInternal {
+interface IPartiallyPausable is _IPartiallyPausable {
     /**
      * @notice query whether contract is paused in the scope of given key
      * @return status whether contract is paused in the scope of given key

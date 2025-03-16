@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "Introspectable__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NFTRoyalty__RoyaltyTooHigh",
+    "type": "error"
+  }
+]

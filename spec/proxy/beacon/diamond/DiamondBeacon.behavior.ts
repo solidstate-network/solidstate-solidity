@@ -3,10 +3,10 @@ import {
   OwnableBehaviorArgs,
 } from '../../../access/ownable/Ownable.behavior';
 import {
-  describeBehaviorOfDiamondReadable,
-  describeBehaviorOfDiamondWritable,
-  DiamondReadableBehaviorArgs,
-  DiamondWritableBehaviorArgs,
+  describeBehaviorOfDiamondProxyReadable,
+  describeBehaviorOfDiamondProxyWritable,
+  DiamondProxyReadableBehaviorArgs,
+  DiamondProxyWritableBehaviorArgs,
 } from '../../diamond';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
@@ -16,8 +16,8 @@ import { ethers } from 'ethers';
 
 export interface DiamondBeaconBehaviorArgs
   extends OwnableBehaviorArgs,
-    DiamondReadableBehaviorArgs,
-    DiamondWritableBehaviorArgs {}
+    DiamondProxyReadableBehaviorArgs,
+    DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(
   deploy: () => Promise<IDiamondBeacon>,
@@ -37,13 +37,13 @@ export function describeBehaviorOfDiamondBeacon(
 
     describeBehaviorOfOwnable(deploy, args, skips);
 
-    describeBehaviorOfDiamondReadable(deploy, args, [
-      '::ERC165Base',
+    describeBehaviorOfDiamondProxyReadable(deploy, args, [
+      '::Introspectable',
       ...(skips ?? []),
     ]);
 
-    // TODO: can't use DiamondWritable spec because it's incorrectly designed to rely on DiamondBase
-    // describeBehaviorOfDiamondWritable(deploy, args, skips);
+    // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on DiamondProxyExecutable
+    // describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       describe('reverts if', () => {

@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IPausableInternal } from './IPausableInternal.sol';
+import { _IPausable } from './_IPausable.sol';
 
-interface IPausable is IPausableInternal {
+interface IPausable is _IPausable {
     /**
      * @notice query whether contract is paused
      * @return status whether contract is paused

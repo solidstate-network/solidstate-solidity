@@ -1,6 +1,6 @@
-# SolidState ABI
+# Solidstate ABI
 
-SolidState smart contract ABIs. Part of the SolidState Solidity monorepo.
+Solidstate smart contract ABIs. Part of the Solidstate Solidity monorepo.
 
 ## Installation
 

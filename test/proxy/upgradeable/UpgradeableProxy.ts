@@ -1,28 +1,40 @@
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
-  OwnableMock__factory,
-  UpgradeableProxyMock,
-  UpgradeableProxyMock__factory,
+  $Ownable__factory,
+  $UpgradeableProxy,
+  $UpgradeableProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('UpgradeableProxy', () => {
-  let instance: UpgradeableProxyMock;
+  let owner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
+  let instance: $UpgradeableProxy;
+
+  before(async () => {
+    [owner, nonOwner] = await ethers.getSigners();
+  });
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    const implementationInstance = await new OwnableMock__factory(
+    const implementationInstance = await new $Ownable__factory(
       deployer,
-    ).deploy(ethers.ZeroAddress);
+    ).deploy();
 
-    instance = await new UpgradeableProxyMock__factory(deployer).deploy(
+    instance = await new $UpgradeableProxy__factory(deployer).deploy();
+
+    await instance.$_setImplementation(
       await implementationInstance.getAddress(),
     );
+    await instance.$_setOwner(await owner.getAddress());
   });
 
   describeBehaviorOfUpgradeableProxy(async () => instance, {
+    getOwner: async () => owner,
+    getNonOwner: async () => nonOwner,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
@@ -30,7 +42,7 @@ describe('UpgradeableProxy', () => {
   describe('__internal', () => {
     describe('#_getImplementation()', () => {
       it('returns implementation address', async () => {
-        expect(await instance.__getImplementation.staticCall()).to.be
+        expect(await instance.$_getImplementation.staticCall()).to.be
           .properAddress;
       });
     });
@@ -39,13 +51,13 @@ describe('UpgradeableProxy', () => {
       it('updates implementation address', async () => {
         const address = await instance.getAddress();
 
-        expect(await instance.__getImplementation.staticCall()).not.to.equal(
+        expect(await instance.$_getImplementation.staticCall()).not.to.equal(
           address,
         );
 
-        await instance.__setImplementation(address);
+        await instance.$_setImplementation(address);
 
-        expect(await instance.__getImplementation.staticCall()).to.equal(
+        expect(await instance.$_getImplementation.staticCall()).to.equal(
           address,
         );
       });

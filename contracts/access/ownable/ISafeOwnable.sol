@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IOwnable } from './IOwnable.sol';
-import { ISafeOwnableInternal } from './ISafeOwnableInternal.sol';
+import { _ISafeOwnable } from './_ISafeOwnable.sol';
 
-interface ISafeOwnable is ISafeOwnableInternal, IOwnable {
+interface ISafeOwnable is _ISafeOwnable, IOwnable {
     /**
      * @notice get the nominated owner who has permission to call acceptOwnership
      */

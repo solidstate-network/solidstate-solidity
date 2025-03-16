@@ -1,0 +1,177 @@
+[
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__InvalidInitializationParameters",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__RemoveTargetNotZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__ReplaceTargetIsIdentical",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__SelectorAlreadyAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__SelectorIsImmutable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__SelectorNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__SelectorNotSpecified",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiamondProxyWritable__TargetHasNoCode",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Introspectable__InvalidInterfaceId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Ownable__NotTransitiveOwner",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
+            "name": "action",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes4[]",
+            "name": "selectors",
+            "type": "bytes4[]"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
+        "name": "facetCuts",
+        "type": "tuple[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "DiamondCut",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "enum _IERC2535DiamondCut.FacetCutAction",
+            "name": "action",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes4[]",
+            "name": "selectors",
+            "type": "bytes4[]"
+          }
+        ],
+        "internalType": "struct _IERC2535DiamondCut.FacetCut[]",
+        "name": "facetCuts",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "diamondCut",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

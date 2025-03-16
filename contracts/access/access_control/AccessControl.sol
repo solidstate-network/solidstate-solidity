@@ -3,20 +3,17 @@
 pragma solidity ^0.8.20;
 
 import { IAccessControl } from './IAccessControl.sol';
-import { AccessControlInternal } from './AccessControlInternal.sol';
+import { _AccessControl } from './_AccessControl.sol';
 
 /**
  * @title Role-based access control system
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract AccessControl is IAccessControl, AccessControlInternal {
+abstract contract AccessControl is IAccessControl, _AccessControl {
     /**
      * @inheritdoc IAccessControl
      */
-    function grantRole(
-        bytes32 role,
-        address account
-    ) external onlyRole(_getRoleAdmin(role)) {
+    function grantRole(bytes32 role, address account) external {
         _grantRole(role, account);
     }
 
@@ -40,10 +37,7 @@ abstract contract AccessControl is IAccessControl, AccessControlInternal {
     /**
      * @inheritdoc IAccessControl
      */
-    function revokeRole(
-        bytes32 role,
-        address account
-    ) external onlyRole(_getRoleAdmin(role)) {
+    function revokeRole(bytes32 role, address account) external {
         _revokeRole(role, account);
     }
 
