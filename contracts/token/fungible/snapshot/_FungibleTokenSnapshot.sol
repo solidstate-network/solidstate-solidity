@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import { Math } from '../../../utils/Math.sol';
 import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
 import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
-import { ERC20SnapshotStorage } from '../../../storage/ERC20SnapshotStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
 /**
  * @title FungibleTokenSnapshot internal functions
@@ -28,8 +28,8 @@ abstract contract _FungibleTokenSnapshot is
     ) internal view virtual returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
-            ERC20SnapshotStorage
-                .layout(ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT)
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .accountBalanceSnapshots[account]
         );
         return snapshotted ? value : _balanceOf(account);
@@ -45,16 +45,16 @@ abstract contract _FungibleTokenSnapshot is
     ) internal view returns (uint256) {
         (bool snapshotted, uint256 value) = _valueAt(
             snapshotId,
-            ERC20SnapshotStorage
-                .layout(ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT)
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .totalSupplySnapshots
         );
         return snapshotted ? value : _totalSupply();
     }
 
     function _snapshot() internal virtual returns (uint256) {
-        ERC20SnapshotStorage.Layout storage $ = ERC20SnapshotStorage.layout(
-            ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
 
         $.snapshotId++;
@@ -66,8 +66,8 @@ abstract contract _FungibleTokenSnapshot is
 
     function _updateAccountSnapshot(address account) private {
         _updateSnapshot(
-            ERC20SnapshotStorage
-                .layout(ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT)
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .accountBalanceSnapshots[account],
             _balanceOf(account)
         );
@@ -75,19 +75,19 @@ abstract contract _FungibleTokenSnapshot is
 
     function _updateTotalSupplySnapshot() private {
         _updateSnapshot(
-            ERC20SnapshotStorage
-                .layout(ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT)
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .totalSupplySnapshots,
             _totalSupply()
         );
     }
 
     function _updateSnapshot(
-        ERC20SnapshotStorage.Snapshots storage snapshots,
+        ERC20Storage.Snapshots storage snapshots,
         uint256 value
     ) private {
-        uint256 current = ERC20SnapshotStorage
-            .layout(ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT)
+        uint256 current = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .snapshotId;
 
         if (_lastSnapshotId(snapshots.ids) < current) {
@@ -127,11 +127,11 @@ abstract contract _FungibleTokenSnapshot is
 
     function _valueAt(
         uint256 snapshotId,
-        ERC20SnapshotStorage.Snapshots storage snapshots
+        ERC20Storage.Snapshots storage snapshots
     ) private view returns (bool, uint256) {
         if (snapshotId == 0) revert FungibleTokenSnapshot__SnapshotIdIsZero();
-        ERC20SnapshotStorage.Layout storage $ = ERC20SnapshotStorage.layout(
-            ERC20SnapshotStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
 
         if (snapshotId > $.snapshotId)

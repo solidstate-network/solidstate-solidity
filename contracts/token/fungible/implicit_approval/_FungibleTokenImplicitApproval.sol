@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
 import { _IFungibleTokenImplicitApproval } from './_IFungibleTokenImplicitApproval.sol';
-import { ERC20ImplicitApprovalStorage } from '../../../storage/ERC20ImplicitApprovalStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
 /**
  * @title FungibleTokenImplicitApproval internal functions
@@ -54,8 +54,8 @@ abstract contract _FungibleTokenImplicitApproval is
         address account
     ) internal view virtual returns (bool) {
         return
-            ERC20ImplicitApprovalStorage
-                .layout(ERC20ImplicitApprovalStorage.DEFAULT_STORAGE_SLOT)
+            ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .implicitApprovals[account];
     }
 
@@ -68,8 +68,8 @@ abstract contract _FungibleTokenImplicitApproval is
         address account,
         bool status
     ) internal virtual {
-        ERC20ImplicitApprovalStorage
-            .layout(ERC20ImplicitApprovalStorage.DEFAULT_STORAGE_SLOT)
+        ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .implicitApprovals[account] = status;
     }
 }

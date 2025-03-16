@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _IFungibleTokenBase } from './_IFungibleTokenBase.sol';
-import { ERC20BaseStorage } from '../../../storage/ERC20BaseStorage.sol';
+import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
 /**
  * @title Base FungibleToken internal functions, excluding optional extensions
@@ -15,9 +15,7 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
      */
     function _totalSupply() internal view virtual returns (uint256) {
         return
-            ERC20BaseStorage
-                .layout(ERC20BaseStorage.DEFAULT_STORAGE_SLOT)
-                .totalSupply;
+            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).totalSupply;
     }
 
     /**
@@ -29,9 +27,9 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         address account
     ) internal view virtual returns (uint256) {
         return
-            ERC20BaseStorage
-                .layout(ERC20BaseStorage.DEFAULT_STORAGE_SLOT)
-                .balances[account];
+            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).balances[
+                account
+            ];
     }
 
     /**
@@ -45,9 +43,9 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         address spender
     ) internal view virtual returns (uint256) {
         return
-            ERC20BaseStorage
-                .layout(ERC20BaseStorage.DEFAULT_STORAGE_SLOT)
-                .allowances[holder][spender];
+            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
+                holder
+            ][spender];
     }
 
     function _approve(address spender, uint256 amount) internal returns (bool) {
@@ -71,9 +69,9 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
         if (spender == address(0))
             revert FungibleTokenBase__ApproveToZeroAddress();
 
-        ERC20BaseStorage
-            .layout(ERC20BaseStorage.DEFAULT_STORAGE_SLOT)
-            .allowances[holder][spender] = amount;
+        ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
+            holder
+        ][spender] = amount;
 
         emit Approval(holder, spender, amount);
 
@@ -112,8 +110,8 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
 
         _beforeTokenTransfer(address(0), account, amount);
 
-        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
-            ERC20BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         $.totalSupply += amount;
         $.balances[account] += amount;
@@ -132,8 +130,8 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
 
         _beforeTokenTransfer(account, address(0), amount);
 
-        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
-            ERC20BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         uint256 balance = $.balances[account];
         if (amount > balance) revert FungibleTokenBase__BurnExceedsBalance();
@@ -171,8 +169,8 @@ abstract contract _FungibleTokenBase is _IFungibleTokenBase {
 
         _beforeTokenTransfer(holder, recipient, amount);
 
-        ERC20BaseStorage.Layout storage $ = ERC20BaseStorage.layout(
-            ERC20BaseStorage.DEFAULT_STORAGE_SLOT
+        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+            ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         uint256 holderBalance = $.balances[holder];
         if (amount > holderBalance)
