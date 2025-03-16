@@ -2,11 +2,18 @@
 
 pragma solidity ^0.8.20;
 
-library ERC721MetadataStorage {
+import { EnumerableMap } from '../data/EnumerableMap.sol';
+import { EnumerableSet } from '../data/EnumerableSet.sol';
+
+library ERC721Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC721Metadata
+     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC721
      */
     struct Layout {
+        EnumerableMap.UintToAddressMap tokenOwners;
+        mapping(address => EnumerableSet.UintSet) holderTokens;
+        mapping(uint256 => address) tokenApprovals;
+        mapping(address => mapping(address => bool)) operatorApprovals;
         string name;
         string symbol;
         string baseURI;
@@ -17,9 +24,7 @@ library ERC721MetadataStorage {
         keccak256(
             abi.encode(
                 uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.ERC721Metadata')
-                    )
+                    keccak256(bytes('solidstate.contracts.storage.ERC721'))
                 ) - 1
             )
         ) & ~bytes32(uint256(0xff));
