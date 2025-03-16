@@ -11,3 +11,7 @@ npm install --save-dev @solidstate/abi
 # or
 yarn add --dev @solidstate/abi
 ```
+
+## Development
+
+The contents of this package are generated automatically as a part of the contract compilation process.
