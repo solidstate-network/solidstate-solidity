@@ -1,18 +1,18 @@
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
-import { describeBehaviorOfDiamondProxyExecutable } from '@solidstate/spec';
+import { describeBehaviorOfDiamondProxyCommon } from '@solidstate/spec';
 import {
-  $DiamondProxyExecutable,
-  $DiamondProxyExecutable__factory,
+  $DiamondProxyCommon,
+  $DiamondProxyCommon__factory,
   $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('DiamondProxyExecutable', () => {
+describe('DiamondProxyCommon', () => {
   let deployer: HardhatEthersSigner;
   let receiver;
-  let instance: $DiamondProxyExecutable;
+  let instance: $DiamondProxyCommon;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
@@ -21,7 +21,7 @@ describe('DiamondProxyExecutable', () => {
     // empty mock contract used as second facet
     receiver = await deployMockContract(deployer, []);
 
-    instance = await new $DiamondProxyExecutable__factory(deployer).deploy();
+    instance = await new $DiamondProxyCommon__factory(deployer).deploy();
 
     await instance.$_diamondCut(
       [
@@ -41,7 +41,7 @@ describe('DiamondProxyExecutable', () => {
     );
   });
 
-  describeBehaviorOfDiamondProxyExecutable(async () => instance, {
+  describeBehaviorOfDiamondProxyCommon(async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

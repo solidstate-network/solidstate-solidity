@@ -1,20 +1,20 @@
 import { describeFilter } from '@solidstate/library';
 import { ProxyBehaviorArgs } from '@solidstate/spec';
-import { IDiamondProxyExecutable } from '@solidstate/typechain-types';
+import { IDiamondProxyCommon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondProxyExecutableBehaviorArgs extends ProxyBehaviorArgs {}
+export interface DiamondProxyCommonBehaviorArgs extends ProxyBehaviorArgs {}
 
-export function describeBehaviorOfDiamondProxyExecutable(
-  deploy: () => Promise<IDiamondProxyExecutable>,
-  args: DiamondProxyExecutableBehaviorArgs,
+export function describeBehaviorOfDiamondProxyCommon(
+  deploy: () => Promise<IDiamondProxyCommon>,
+  args: DiamondProxyCommonBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::DiamondProxyExecutable', () => {
-    let instance: IDiamondProxyExecutable;
+  describe('::DiamondProxyCommon', () => {
+    let instance: IDiamondProxyCommon;
 
     beforeEach(async () => {
       instance = await deploy();
