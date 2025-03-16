@@ -10,9 +10,9 @@ import { Factory } from './Factory.sol';
  * @dev derived from https://github.com/optionality/clone-factory (MIT license)
  */
 library MinimalProxyFactory {
-    bytes private constant MINIMAL_PROXY_INIT_CODE_PREFIX =
+    bytes20 private constant MINIMAL_PROXY_INIT_CODE_PREFIX =
         hex'3d602d80600a3d3981f3_363d3d373d3d3d363d73';
-    bytes private constant MINIMAL_PROXY_INIT_CODE_SUFFIX =
+    bytes15 private constant MINIMAL_PROXY_INIT_CODE_SUFFIX =
         hex'5af43d82803e903d91602b57fd5bf3';
 
     /**
