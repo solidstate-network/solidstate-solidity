@@ -27,9 +27,10 @@ import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
 abstract contract SolidstateDiamondProxy is
     ISolidstateDiamondProxy,
     _SolidstateDiamondProxy,
+    DiamondProxyCommon,
+    DiamondProxyFallback,
     DiamondProxyReadable,
     DiamondProxyWritable,
-    DiamondProxyFallback,
     SafeOwnable
 {
     constructor() {
@@ -118,6 +119,7 @@ abstract contract SolidstateDiamondProxy is
         view
         override(
             _DiamondProxyCommon,
+            DiamondProxyCommon,
             DiamondProxyFallback,
             _SolidstateDiamondProxy
         )

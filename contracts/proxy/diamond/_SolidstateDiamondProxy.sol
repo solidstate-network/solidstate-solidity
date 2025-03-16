@@ -12,6 +12,7 @@ import { _ISolidstateDiamondProxy } from './_ISolidstateDiamondProxy.sol';
 
 abstract contract _SolidstateDiamondProxy is
     _ISolidstateDiamondProxy,
+    _DiamondProxyCommon,
     _DiamondProxyFallback,
     _DiamondProxyReadable,
     _DiamondProxyWritable,

@@ -3,11 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { _ISafeOwnable } from '../../access/ownable/_ISafeOwnable.sol';
+import { _IDiamondProxyCommon } from './common/_IDiamondProxyCommon.sol';
 import { _IDiamondProxyFallback } from './fallback/_IDiamondProxyFallback.sol';
 import { _IDiamondProxyReadable } from './readable/_IDiamondProxyReadable.sol';
 import { _IDiamondProxyWritable } from './writable/_IDiamondProxyWritable.sol';
 
 interface _ISolidstateDiamondProxy is
+    _IDiamondProxyCommon,
     _IDiamondProxyFallback,
     _IDiamondProxyReadable,
     _IDiamondProxyWritable,
