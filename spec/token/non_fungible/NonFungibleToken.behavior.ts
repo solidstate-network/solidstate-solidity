@@ -2,12 +2,12 @@ import { describeBehaviorOfIntrospectable } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { NonFungibleTokenBase } from '@solidstate/typechain-types';
+import { NonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
-export interface NonFungibleTokenBaseBehaviorArgs {
+export interface NonFungibleTokenBehaviorArgs {
   supply: bigint;
   mint: (
     address: string,
@@ -16,19 +16,19 @@ export interface NonFungibleTokenBaseBehaviorArgs {
   burn: (tokenId: bigint) => Promise<ContractTransactionResponse>;
 }
 
-export function describeBehaviorOfNonFungibleTokenBase(
-  deploy: () => Promise<NonFungibleTokenBase>,
-  args: NonFungibleTokenBaseBehaviorArgs,
+export function describeBehaviorOfNonFungibleToken(
+  deploy: () => Promise<NonFungibleToken>,
+  args: NonFungibleTokenBehaviorArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::NonFungibleTokenBase', () => {
+  describe('::NonFungibleToken', () => {
     let holder: SignerWithAddress;
     let spender: SignerWithAddress;
     let receiver: SignerWithAddress;
     let sender: SignerWithAddress;
-    let instance: NonFungibleTokenBase;
+    let instance: NonFungibleToken;
 
     before(async () => {
       // TODO: move to behavior args
@@ -71,7 +71,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
             instance.balanceOf.staticCall(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__BalanceQueryZeroAddress',
+            'NonFungibleToken__BalanceQueryZeroAddress',
           );
         });
       });
@@ -129,7 +129,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
             instance.getApproved.staticCall(2),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NonExistentToken',
+            'NonFungibleToken__NonExistentToken',
           );
         });
       });
@@ -255,7 +255,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               .transferFrom(holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotOwnerOrApproved',
+            'NonFungibleToken__NotOwnerOrApproved',
           );
         });
 
@@ -271,7 +271,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               .transferFrom(holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TransferToZeroAddress',
+            'NonFungibleToken__TransferToZeroAddress',
           );
         });
       });
@@ -344,7 +344,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotOwnerOrApproved',
+            'NonFungibleToken__NotOwnerOrApproved',
           );
         });
 
@@ -362,7 +362,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TransferToZeroAddress',
+            'NonFungibleToken__TransferToZeroAddress',
           );
         });
 
@@ -403,7 +403,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, receiverContract.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__ERC721ReceiverNotImplemented',
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -476,7 +476,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotOwnerOrApproved',
+            'NonFungibleToken__NotOwnerOrApproved',
           );
         });
 
@@ -494,7 +494,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TransferToZeroAddress',
+            'NonFungibleToken__TransferToZeroAddress',
           );
         });
 
@@ -535,7 +535,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
               ](holder.address, receiverContract.address, tokenId, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__ERC721ReceiverNotImplemented',
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -602,7 +602,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
             instance.connect(holder).approve(holder.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__SelfApproval',
+            'NonFungibleToken__SelfApproval',
           );
         });
 
@@ -614,7 +614,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
             instance.connect(receiver).approve(receiver.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotOwnerOrApproved',
+            'NonFungibleToken__NotOwnerOrApproved',
           );
         });
       });
@@ -664,7 +664,7 @@ export function describeBehaviorOfNonFungibleTokenBase(
             instance.connect(holder).setApprovalForAll(holder.address, true),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__SelfApproval',
+            'NonFungibleToken__SelfApproval',
           );
         });
       });

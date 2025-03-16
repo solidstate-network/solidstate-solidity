@@ -2,21 +2,18 @@
 
 pragma solidity ^0.8.20;
 
-import { EnumerableMap } from '../../../data/EnumerableMap.sol';
-import { EnumerableSet } from '../../../data/EnumerableSet.sol';
-import { IERC721Receiver } from '../../../interfaces/IERC721Receiver.sol';
-import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { AddressUtils } from '../../../utils/AddressUtils.sol';
-import { _INonFungibleTokenBase } from './_INonFungibleTokenBase.sol';
+import { EnumerableMap } from '../../data/EnumerableMap.sol';
+import { EnumerableSet } from '../../data/EnumerableSet.sol';
+import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
+import { _Introspectable } from '../../introspection/_Introspectable.sol';
+import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { _INonFungibleToken } from './_INonFungibleToken.sol';
 import { ERC721BaseStorage } from './ERC721BaseStorage.sol';
 
 /**
  * @title Base NonFungibleToken internal functions
  */
-abstract contract _NonFungibleTokenBase is
-    _INonFungibleTokenBase,
-    _Introspectable
-{
+abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -25,7 +22,7 @@ abstract contract _NonFungibleTokenBase is
         address account
     ) internal view virtual returns (uint256) {
         if (account == address(0))
-            revert NonFungibleTokenBase__BalanceQueryZeroAddress();
+            revert NonFungibleToken__BalanceQueryZeroAddress();
         return
             ERC721BaseStorage
                 .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
@@ -38,7 +35,7 @@ abstract contract _NonFungibleTokenBase is
             .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
             .get(tokenId);
-        if (owner == address(0)) revert NonFungibleTokenBase__InvalidOwner();
+        if (owner == address(0)) revert NonFungibleToken__InvalidOwner();
         return owner;
     }
 
@@ -53,7 +50,7 @@ abstract contract _NonFungibleTokenBase is
     function _getApproved(
         uint256 tokenId
     ) internal view virtual returns (address) {
-        if (!_exists(tokenId)) revert NonFungibleTokenBase__NonExistentToken();
+        if (!_exists(tokenId)) revert NonFungibleToken__NonExistentToken();
 
         return
             ERC721BaseStorage
@@ -75,7 +72,7 @@ abstract contract _NonFungibleTokenBase is
         address spender,
         uint256 tokenId
     ) internal view virtual returns (bool) {
-        if (!_exists(tokenId)) revert NonFungibleTokenBase__NonExistentToken();
+        if (!_exists(tokenId)) revert NonFungibleToken__NonExistentToken();
 
         address owner = _ownerOf(tokenId);
 
@@ -85,8 +82,8 @@ abstract contract _NonFungibleTokenBase is
     }
 
     function _mint(address to, uint256 tokenId) internal virtual {
-        if (to == address(0)) revert NonFungibleTokenBase__MintToZeroAddress();
-        if (_exists(tokenId)) revert NonFungibleTokenBase__TokenAlreadyMinted();
+        if (to == address(0)) revert NonFungibleToken__MintToZeroAddress();
+        if (_exists(tokenId)) revert NonFungibleToken__TokenAlreadyMinted();
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
@@ -111,7 +108,7 @@ abstract contract _NonFungibleTokenBase is
     ) internal virtual {
         _mint(to, tokenId);
         if (!_checkOnERC721Received(address(0), to, tokenId, data))
-            revert NonFungibleTokenBase__ERC721ReceiverNotImplemented();
+            revert NonFungibleToken__ERC721ReceiverNotImplemented();
     }
 
     function _burn(uint256 tokenId) internal virtual {
@@ -139,9 +136,8 @@ abstract contract _NonFungibleTokenBase is
     ) internal virtual {
         address owner = _ownerOf(tokenId);
 
-        if (owner != from) revert NonFungibleTokenBase__NotTokenOwner();
-        if (to == address(0))
-            revert NonFungibleTokenBase__TransferToZeroAddress();
+        if (owner != from) revert NonFungibleToken__NotTokenOwner();
+        if (to == address(0)) revert NonFungibleToken__TransferToZeroAddress();
 
         _beforeTokenTransfer(from, to, tokenId);
 
@@ -165,7 +161,7 @@ abstract contract _NonFungibleTokenBase is
     ) internal virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         if (!_isApprovedOrOwner(msg.sender, tokenId))
-            revert NonFungibleTokenBase__NotOwnerOrApproved();
+            revert NonFungibleToken__NotOwnerOrApproved();
         _transfer(from, to, tokenId);
     }
 
@@ -177,7 +173,7 @@ abstract contract _NonFungibleTokenBase is
     ) internal virtual {
         _transfer(from, to, tokenId);
         if (!_checkOnERC721Received(from, to, tokenId, data))
-            revert NonFungibleTokenBase__ERC721ReceiverNotImplemented();
+            revert NonFungibleToken__ERC721ReceiverNotImplemented();
     }
 
     function _safeTransferFrom(
@@ -196,7 +192,7 @@ abstract contract _NonFungibleTokenBase is
     ) internal virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
         if (!_isApprovedOrOwner(msg.sender, tokenId))
-            revert NonFungibleTokenBase__NotOwnerOrApproved();
+            revert NonFungibleToken__NotOwnerOrApproved();
         _safeTransfer(from, to, tokenId, data);
     }
 
@@ -205,9 +201,9 @@ abstract contract _NonFungibleTokenBase is
 
         address owner = _ownerOf(tokenId);
 
-        if (operator == owner) revert NonFungibleTokenBase__SelfApproval();
+        if (operator == owner) revert NonFungibleToken__SelfApproval();
         if (msg.sender != owner && !_isApprovedForAll(owner, msg.sender))
-            revert NonFungibleTokenBase__NotOwnerOrApproved();
+            revert NonFungibleToken__NotOwnerOrApproved();
 
         ERC721BaseStorage
             .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
@@ -219,7 +215,7 @@ abstract contract _NonFungibleTokenBase is
         address operator,
         bool status
     ) internal virtual {
-        if (operator == msg.sender) revert NonFungibleTokenBase__SelfApproval();
+        if (operator == msg.sender) revert NonFungibleToken__SelfApproval();
         ERC721BaseStorage
             .layout(ERC721BaseStorage.DEFAULT_STORAGE_SLOT)
             .operatorApprovals[msg.sender][operator] = status;

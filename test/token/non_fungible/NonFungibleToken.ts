@@ -1,19 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
-import { describeBehaviorOfNonFungibleTokenBase } from '@solidstate/spec';
+import { describeBehaviorOfNonFungibleToken } from '@solidstate/spec';
 import {
-  $NonFungibleTokenBase,
-  $NonFungibleTokenBase__factory,
+  $NonFungibleToken,
+  $NonFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('NonFungibleTokenBase', () => {
+describe('NonFungibleToken', () => {
   let sender: SignerWithAddress;
   let receiver: SignerWithAddress;
   let holder: SignerWithAddress;
   let spender: SignerWithAddress;
-  let instance: $NonFungibleTokenBase;
+  let instance: $NonFungibleToken;
 
   before(async () => {
     [sender, receiver, holder, spender] = await ethers.getSigners();
@@ -21,13 +21,13 @@ describe('NonFungibleTokenBase', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $NonFungibleTokenBase__factory(deployer).deploy();
+    instance = await new $NonFungibleToken__factory(deployer).deploy();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0x80ac58cd', true);
   });
 
-  describeBehaviorOfNonFungibleTokenBase(async () => instance, {
+  describeBehaviorOfNonFungibleToken(async () => instance, {
     supply: 0n,
     mint: (recipient, tokenId) => instance.$_mint(recipient, tokenId),
     burn: (tokenId) => instance.$_burn(tokenId),
@@ -114,7 +114,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NonExistentToken',
+            'NonFungibleToken__NonExistentToken',
           );
         });
       });
@@ -153,7 +153,7 @@ describe('NonFungibleTokenBase', () => {
             instance.$_mint(ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__MintToZeroAddress',
+            'NonFungibleToken__MintToZeroAddress',
           );
         });
 
@@ -165,7 +165,7 @@ describe('NonFungibleTokenBase', () => {
             instance.$_mint(await instance.getAddress(), tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TokenAlreadyMinted',
+            'NonFungibleToken__TokenAlreadyMinted',
           );
         });
       });
@@ -218,7 +218,7 @@ describe('NonFungibleTokenBase', () => {
             instance['$_safeMint(address,uint256)'](ethers.ZeroAddress, 0),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__MintToZeroAddress',
+            'NonFungibleToken__MintToZeroAddress',
           );
         });
 
@@ -233,7 +233,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TokenAlreadyMinted',
+            'NonFungibleToken__TokenAlreadyMinted',
           );
         });
 
@@ -266,7 +266,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__ERC721ReceiverNotImplemented',
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -339,7 +339,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__MintToZeroAddress',
+            'NonFungibleToken__MintToZeroAddress',
           );
         });
 
@@ -355,7 +355,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TokenAlreadyMinted',
+            'NonFungibleToken__TokenAlreadyMinted',
           );
         });
 
@@ -390,7 +390,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__ERC721ReceiverNotImplemented',
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });
@@ -478,7 +478,7 @@ describe('NonFungibleTokenBase', () => {
               .$_transfer(ethers.ZeroAddress, sender.address, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotTokenOwner',
+            'NonFungibleToken__NotTokenOwner',
           );
         });
 
@@ -492,7 +492,7 @@ describe('NonFungibleTokenBase', () => {
               .$_transfer(sender.address, ethers.ZeroAddress, tokenId),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TransferToZeroAddress',
+            'NonFungibleToken__TransferToZeroAddress',
           );
         });
       });
@@ -558,7 +558,7 @@ describe('NonFungibleTokenBase', () => {
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__NotTokenOwner',
+            'NonFungibleToken__NotTokenOwner',
           );
         });
 
@@ -577,7 +577,7 @@ describe('NonFungibleTokenBase', () => {
               ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__TransferToZeroAddress',
+            'NonFungibleToken__TransferToZeroAddress',
           );
         });
 
@@ -620,7 +620,7 @@ describe('NonFungibleTokenBase', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'NonFungibleTokenBase__ERC721ReceiverNotImplemented',
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });

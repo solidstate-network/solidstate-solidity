@@ -3,8 +3,8 @@
 pragma solidity ^0.8.20;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
-import { ERC721BaseStorage } from '../base/ERC721BaseStorage.sol';
-import { _NonFungibleTokenBase } from '../base/_NonFungibleTokenBase.sol';
+import { ERC721BaseStorage } from '../ERC721BaseStorage.sol';
+import { _NonFungibleToken } from '../_NonFungibleToken.sol';
 import { _INonFungibleTokenMetadata } from './_INonFungibleTokenMetadata.sol';
 import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
 
@@ -13,7 +13,7 @@ import { ERC721MetadataStorage } from './ERC721MetadataStorage.sol';
  */
 abstract contract _NonFungibleTokenMetadata is
     _INonFungibleTokenMetadata,
-    _NonFungibleTokenBase
+    _NonFungibleToken
 {
     using UintUtils for uint256;
 
@@ -109,7 +109,7 @@ abstract contract _NonFungibleTokenMetadata is
 
     /**
      * @notice ERC721 hook: clear per-token URI data on burn
-     * @inheritdoc _NonFungibleTokenBase
+     * @inheritdoc _NonFungibleToken
      */
     function _beforeTokenTransfer(
         address from,

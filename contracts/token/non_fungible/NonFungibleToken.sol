@@ -2,17 +2,17 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC721 } from '../../../interfaces/IERC721.sol';
-import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { INonFungibleTokenBase } from './INonFungibleTokenBase.sol';
-import { _NonFungibleTokenBase } from './_NonFungibleTokenBase.sol';
+import { IERC721 } from '../../interfaces/IERC721.sol';
+import { Introspectable } from '../../introspection/Introspectable.sol';
+import { INonFungibleToken } from './INonFungibleToken.sol';
+import { _NonFungibleToken } from './_NonFungibleToken.sol';
 
 /**
  * @title Base NonFungibleToken implementation, excluding optional extensions
  */
-abstract contract NonFungibleTokenBase is
-    INonFungibleTokenBase,
-    _NonFungibleTokenBase,
+abstract contract NonFungibleToken is
+    INonFungibleToken,
+    _NonFungibleToken,
     Introspectable
 {
     /**

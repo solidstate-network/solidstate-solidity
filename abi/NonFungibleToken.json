@@ -16,52 +16,52 @@
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__BalanceQueryZeroAddress",
+    "name": "NonFungibleToken__BalanceQueryZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__ERC721ReceiverNotImplemented",
+    "name": "NonFungibleToken__ERC721ReceiverNotImplemented",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__InvalidOwner",
+    "name": "NonFungibleToken__InvalidOwner",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__MintToZeroAddress",
+    "name": "NonFungibleToken__MintToZeroAddress",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__NonExistentToken",
+    "name": "NonFungibleToken__NonExistentToken",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__NotOwnerOrApproved",
+    "name": "NonFungibleToken__NotOwnerOrApproved",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__NotTokenOwner",
+    "name": "NonFungibleToken__NotTokenOwner",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__SelfApproval",
+    "name": "NonFungibleToken__SelfApproval",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__TokenAlreadyMinted",
+    "name": "NonFungibleToken__TokenAlreadyMinted",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NonFungibleTokenBase__TransferToZeroAddress",
+    "name": "NonFungibleToken__TransferToZeroAddress",
     "type": "error"
   },
   {

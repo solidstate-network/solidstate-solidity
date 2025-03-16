@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-import { INonFungibleTokenBase } from '../base/INonFungibleTokenBase.sol';
+import { INonFungibleToken } from '../INonFungibleToken.sol';
 import { _INonFungibleTokenEnumerable } from './_NonFungibleTokenEnumerable.sol';
 
 interface INonFungibleTokenEnumerable is
     _INonFungibleTokenEnumerable,
-    INonFungibleTokenBase
+    INonFungibleToken
 {
     /**
      * @notice get total token supply
