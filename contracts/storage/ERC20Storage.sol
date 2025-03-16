@@ -24,7 +24,6 @@ library ERC20Storage {
         mapping(uint8 restrictionCode => string restrictionMessage) erc1404RestrictionMessages;
         mapping(address account => uint256 nonce) erc2612Nonces;
         address erc4626Asset;
-        mapping(address account => bool isApproved) implicitApprovals;
     }
 
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
