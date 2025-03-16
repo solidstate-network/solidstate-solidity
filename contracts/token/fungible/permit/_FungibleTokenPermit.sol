@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
-import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _FungibleTokenMetadata } from '../metadata/_FungibleTokenMetadata.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 import { _IFungibleTokenPermit } from './_IFungibleTokenPermit.sol';
@@ -15,7 +15,7 @@ import { _IFungibleTokenPermit } from './_IFungibleTokenPermit.sol';
  */
 abstract contract _FungibleTokenPermit is
     _IFungibleTokenPermit,
-    _FungibleTokenBase,
+    _FungibleToken,
     _FungibleTokenMetadata
 {
     using ECDSA for bytes32;

@@ -1,7 +1,7 @@
 import {
-  describeBehaviorOfFungibleTokenBase,
-  FungibleTokenBaseBehaviorArgs,
-} from './FungibleTokenBase.behavior';
+  describeBehaviorOfFungibleToken,
+  FungibleTokenBehaviorArgs,
+} from './FungibleToken.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { FungibleTokenImplicitApproval } from '@solidstate/typechain-types';
@@ -9,7 +9,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface FungibleTokenImplicitApprovalBehaviorArgs
-  extends FungibleTokenBaseBehaviorArgs {
+  extends FungibleTokenBehaviorArgs {
   getHolder: () => Promise<SignerWithAddress>;
   getImplicitlyApprovedSpender: () => Promise<SignerWithAddress>;
 }
@@ -35,7 +35,7 @@ export function describeBehaviorOfFungibleTokenImplicitApproval(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleTokenBase(deploy, args, skips);
+    describeBehaviorOfFungibleToken(deploy, args, skips);
 
     describe('#allowance(address,address)', () => {
       it('returns maximum uint256 for implicitly approved spender', async () => {

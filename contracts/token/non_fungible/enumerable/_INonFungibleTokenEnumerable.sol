@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { _INonFungibleTokenBase } from '../base/_INonFungibleTokenBase.sol';
+import { _INonFungibleToken } from '../_INonFungibleToken.sol';
 
-interface _INonFungibleTokenEnumerable is _INonFungibleTokenBase {}
+interface _INonFungibleTokenEnumerable is _INonFungibleToken {}

@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-import { _INonFungibleTokenBase } from './base/_INonFungibleTokenBase.sol';
 import { _INonFungibleTokenEnumerable } from './enumerable/_INonFungibleTokenEnumerable.sol';
 import { _INonFungibleTokenMetadata } from './metadata/_INonFungibleTokenMetadata.sol';
+import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 interface _ISolidstateNonFungibleToken is
-    _INonFungibleTokenBase,
+    _INonFungibleToken,
     _INonFungibleTokenEnumerable,
     _INonFungibleTokenMetadata
 {

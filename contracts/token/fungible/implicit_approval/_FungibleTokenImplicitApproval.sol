@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { _FungibleTokenBase } from '../base/_FungibleTokenBase.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IFungibleTokenImplicitApproval } from './_IFungibleTokenImplicitApproval.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
@@ -11,10 +11,10 @@ import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
  */
 abstract contract _FungibleTokenImplicitApproval is
     _IFungibleTokenImplicitApproval,
-    _FungibleTokenBase
+    _FungibleToken
 {
     /**
-     * @inheritdoc _FungibleTokenBase
+     * @inheritdoc _FungibleToken
      * @dev internally stored allowance is ignored for implicitly approved spenders
      */
     function _allowance(
@@ -29,7 +29,7 @@ abstract contract _FungibleTokenImplicitApproval is
     }
 
     /**
-     * @inheritdoc _FungibleTokenBase
+     * @inheritdoc _FungibleToken
      * @dev internally stored allowance is ignored for implicitly approved spenders
      */
     function _transferFrom(
