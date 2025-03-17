@@ -8,7 +8,7 @@ import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC721Storage } from '../../storage/ERC721Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 /**
@@ -17,7 +17,7 @@ import { _INonFungibleToken } from './_INonFungibleToken.sol';
 abstract contract _NonFungibleToken is
     _INonFungibleToken,
     _Introspectable,
-    MsgSenderTrick
+    _MsgSenderTrick
 {
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;

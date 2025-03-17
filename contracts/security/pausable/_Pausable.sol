@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { PausableStorage } from '../../storage/PausableStorage.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _IPausable } from './_IPausable.sol';
 
 /**
  * @title Internal functions for Pausable security control module.
  */
-abstract contract _Pausable is _IPausable, MsgSenderTrick {
+abstract contract _Pausable is _IPausable, _MsgSenderTrick {
     modifier whenNotPaused() {
         if (_paused()) revert Pausable__Paused();
         _;

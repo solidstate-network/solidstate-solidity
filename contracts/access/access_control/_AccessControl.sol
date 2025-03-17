@@ -6,14 +6,14 @@ import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { UintUtils } from '../../utils/UintUtils.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _IAccessControl } from './_IAccessControl.sol';
 
 /**
  * @title Role-based access control system
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract _AccessControl is _IAccessControl, MsgSenderTrick {
+abstract contract _AccessControl is _IAccessControl, _MsgSenderTrick {
     using AddressUtils for address;
     using EnumerableSet for EnumerableSet.AddressSet;
     using UintUtils for uint256;

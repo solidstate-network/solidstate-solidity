@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { ERC20Storage } from '../../storage/ERC20Storage.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _IFungibleToken } from './_IFungibleToken.sol';
 
 /**
  * @title Base FungibleToken internal functions, excluding optional extensions
  */
-abstract contract _FungibleToken is _IFungibleToken, MsgSenderTrick {
+abstract contract _FungibleToken is _IFungibleToken, _MsgSenderTrick {
     /**
      * @notice query the total minted token supply
      * @return token supply

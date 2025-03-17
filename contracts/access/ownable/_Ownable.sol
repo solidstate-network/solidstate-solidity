@@ -5,10 +5,10 @@ pragma solidity ^0.8.20;
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC173Storage } from '../../storage/ERC173Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _IOwnable } from './_IOwnable.sol';
 
-abstract contract _Ownable is _IOwnable, MsgSenderTrick {
+abstract contract _Ownable is _IOwnable, _MsgSenderTrick {
     using AddressUtils for address;
 
     modifier onlyOwner() {

@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-interface _IPartiallyPausable {
+import { _IMsgSenderTrick } from '../../utils/_IMsgSenderTrick.sol';
+
+interface _IPartiallyPausable is _IMsgSenderTrick {
     error PartiallyPausable__PartiallyPaused();
     error PartiallyPausable__NotPartiallyPaused();
 

@@ -3,13 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { PausableStorage } from '../../storage/PausableStorage.sol';
-import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
+import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
 import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
 
 /**
  * @title Internal functions for PartiallyPausable security control module.
  */
-abstract contract _PartiallyPausable is _IPartiallyPausable, MsgSenderTrick {
+abstract contract _PartiallyPausable is _IPartiallyPausable, _MsgSenderTrick {
     modifier whenNotPartiallyPaused(bytes32 key) {
         if (_partiallyPaused(key)) revert PartiallyPausable__PartiallyPaused();
         _;

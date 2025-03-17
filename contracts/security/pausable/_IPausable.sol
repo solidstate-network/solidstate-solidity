@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-interface _IPausable {
+import { _IMsgSenderTrick } from '../../utils/_IMsgSenderTrick.sol';
+
+interface _IPausable is _IMsgSenderTrick {
     error Pausable__Paused();
     error Pausable__NotPaused();
 
