@@ -5,6 +5,7 @@ pragma solidity ^0.8.20;
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
+import { IERC721Enumerable } from '../../../interfaces/IERC721Enumerable.sol';
 import { NonFungibleToken } from '../NonFungibleToken.sol';
 import { INonFungibleTokenEnumerable } from './INonFungibleTokenEnumerable.sol';
 import { _NonFungibleTokenEnumerable } from './_NonFungibleTokenEnumerable.sol';
@@ -18,14 +19,14 @@ abstract contract NonFungibleTokenEnumerable is
     using EnumerableSet for EnumerableSet.UintSet;
 
     /**
-     * @inheritdoc INonFungibleTokenEnumerable
+     * @inheritdoc IERC721Enumerable
      */
     function totalSupply() external view returns (uint256) {
         return _totalSupply();
     }
 
     /**
-     * @inheritdoc INonFungibleTokenEnumerable
+     * @inheritdoc IERC721Enumerable
      */
     function tokenOfOwnerByIndex(
         address owner,
@@ -35,7 +36,7 @@ abstract contract NonFungibleTokenEnumerable is
     }
 
     /**
-     * @inheritdoc INonFungibleTokenEnumerable
+     * @inheritdoc IERC721Enumerable
      */
     function tokenByIndex(uint256 index) external view returns (uint256) {
         return _tokenByIndex(index);
