@@ -2,11 +2,15 @@
 
 pragma solidity ^0.8.20;
 
+import { ArrayUtils } from '../utils/ArrayUtils.sol';
+
 /**
  * @title Binary Heap implementation
  * @dev The data structure is configured as a max-heap
  */
 library BinaryHeap {
+    using ArrayUtils for bytes32[];
+
     struct Heap {
         bytes32[] _values;
         // 1-indexed to allow 0 to signify nonexistence
@@ -153,34 +157,20 @@ library BinaryHeap {
 
     function toArray(
         Bytes32Heap storage heap
-    ) internal view returns (bytes32[] memory) {
-        return heap._inner._values;
+    ) internal view returns (bytes32[] memory array) {
+        array = _toArray(heap._inner);
     }
 
     function toArray(
         AddressHeap storage heap
-    ) internal view returns (address[] memory) {
-        bytes32[] storage values = heap._inner._values;
-        address[] storage array;
-
-        assembly {
-            array.slot := values.slot
-        }
-
-        return array;
+    ) internal view returns (address[] memory array) {
+        array = _toArray(heap._inner).toAddressArray();
     }
 
     function toArray(
         UintHeap storage heap
-    ) internal view returns (uint256[] memory) {
-        bytes32[] storage values = heap._inner._values;
-        uint256[] storage array;
-
-        assembly {
-            array.slot := values.slot
-        }
-
-        return array;
+    ) internal view returns (uint256[] memory array) {
+        array = _toArray(heap._inner).toUint256Array();
     }
 
     function _at(
@@ -246,6 +236,12 @@ library BinaryHeap {
 
             update = true;
         }
+    }
+
+    function _toArray(
+        Heap storage heap
+    ) private view returns (bytes32[] storage array) {
+        array = heap._values;
     }
 
     function _heapify(Heap storage heap) private {
