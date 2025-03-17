@@ -91,7 +91,7 @@ library SafeERC20 {
     function _callOptionalReturn(IERC20 token, bytes memory data) private {
         bytes memory returndata = address(token).functionCall(
             data,
-            'SafeERC20: low-level call failed'
+            SafeERC20__OperationFailed.selector
         );
 
         if (returndata.length > 0) {

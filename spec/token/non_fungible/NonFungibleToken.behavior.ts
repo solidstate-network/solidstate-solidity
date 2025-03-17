@@ -378,8 +378,9 @@ export function describeBehaviorOfNonFungibleToken(
               [
                 'safeTransferFrom(address,address,uint256)'
               ](holder.address, await instance.getAddress(), tokenId),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
 
@@ -510,8 +511,9 @@ export function describeBehaviorOfNonFungibleToken(
               [
                 'safeTransferFrom(address,address,uint256,bytes)'
               ](holder.address, await instance.getAddress(), tokenId, '0x'),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
 
