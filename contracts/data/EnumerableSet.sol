@@ -2,11 +2,15 @@
 
 pragma solidity ^0.8.20;
 
+import { ArrayUtils } from '../utils/ArrayUtils.sol';
+
 /**
  * @title Set implementation with enumeration functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableSet {
+    using ArrayUtils for bytes32[];
+
     error EnumerableSet__IndexOutOfBounds();
 
     struct Set {
@@ -150,27 +154,13 @@ library EnumerableSet {
     function toArray(
         AddressSet storage set
     ) internal view returns (address[] memory) {
-        bytes32[] storage values = set._inner._values;
-        address[] storage array;
-
-        assembly {
-            array.slot := values.slot
-        }
-
-        return array;
+        return set._inner._values.toAddressArray();
     }
 
     function toArray(
         UintSet storage set
     ) internal view returns (uint256[] memory) {
-        bytes32[] storage values = set._inner._values;
-        uint256[] storage array;
-
-        assembly {
-            array.slot := values.slot
-        }
-
-        return array;
+        return set._inner._values.toUint256Array();
     }
 
     function _at(
