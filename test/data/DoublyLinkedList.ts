@@ -761,6 +761,75 @@ describe('DoublyLinkedList', async () => {
           });
         });
       });
+
+      describe('#toArray(uint256,bytes32)', () => {
+        it('returns ordered array of list contents', async () => {
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, threeBytes32);
+
+          expect(
+            await instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroBytes32,
+              3n,
+            ),
+          ).to.deep.equal([oneBytes32, twoBytes32, threeBytes32]);
+
+          expect(
+            await instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroBytes32,
+              1n,
+            ),
+          ).to.deep.equal([oneBytes32]);
+
+          expect(
+            await instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+              STORAGE_SLOT,
+              oneBytes32,
+              2n,
+            ),
+          ).to.deep.equal([twoBytes32, threeBytes32]);
+        });
+
+        it('truncates array if end of list is reached', async () => {
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+          await instance['$push(uint256,bytes32)'](STORAGE_SLOT, threeBytes32);
+
+          expect(
+            await instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroBytes32,
+              10n,
+            ),
+          ).to.deep.equal([oneBytes32, twoBytes32, threeBytes32]);
+
+          expect(
+            await instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+              STORAGE_SLOT,
+              threeBytes32,
+              10n,
+            ),
+          ).to.deep.equal([]);
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['$toArray(uint256,bytes32,uint256)'].staticCall(
+                STORAGE_SLOT,
+                oneBytes32,
+                1n,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__NonExistentEntry',
+            );
+          });
+        });
+      });
     });
   });
 
@@ -1513,6 +1582,75 @@ describe('DoublyLinkedList', async () => {
           });
         });
       });
+
+      describe('#toArray(uint256,address)', () => {
+        it('returns ordered array of list contents', async () => {
+          await instance['$push(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$push(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$push(uint256,address)'](STORAGE_SLOT, threeAddress);
+
+          expect(
+            await instance['$toArray(uint256,address,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroAddress,
+              3n,
+            ),
+          ).to.deep.equal([oneAddress, twoAddress, threeAddress]);
+
+          expect(
+            await instance['$toArray(uint256,address,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroAddress,
+              1n,
+            ),
+          ).to.deep.equal([oneAddress]);
+
+          expect(
+            await instance['$toArray(uint256,address,uint256)'].staticCall(
+              STORAGE_SLOT,
+              oneAddress,
+              2n,
+            ),
+          ).to.deep.equal([twoAddress, threeAddress]);
+        });
+
+        it('truncates array if end of list is reached', async () => {
+          await instance['$push(uint256,address)'](STORAGE_SLOT, oneAddress);
+          await instance['$push(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$push(uint256,address)'](STORAGE_SLOT, threeAddress);
+
+          expect(
+            await instance['$toArray(uint256,address,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroAddress,
+              10n,
+            ),
+          ).to.deep.equal([oneAddress, twoAddress, threeAddress]);
+
+          expect(
+            await instance['$toArray(uint256,address,uint256)'].staticCall(
+              STORAGE_SLOT,
+              threeAddress,
+              10n,
+            ),
+          ).to.deep.equal([]);
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['$toArray(uint256,address,uint256)'].staticCall(
+                STORAGE_SLOT,
+                oneAddress,
+                1n,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__NonExistentEntry',
+            );
+          });
+        });
+      });
     });
   });
 
@@ -2257,6 +2395,75 @@ describe('DoublyLinkedList', async () => {
                 STORAGE_SLOT,
                 oneUint256,
                 twoUint256,
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DoublyLinkedList__NonExistentEntry',
+            );
+          });
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns ordered array of list contents', async () => {
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, threeUint256);
+
+          expect(
+            await instance['$toArray(uint256,uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroUint256,
+              3n,
+            ),
+          ).to.deep.equal([oneUint256, twoUint256, threeUint256]);
+
+          expect(
+            await instance['$toArray(uint256,uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroUint256,
+              1n,
+            ),
+          ).to.deep.equal([oneUint256]);
+
+          expect(
+            await instance['$toArray(uint256,uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              oneUint256,
+              2n,
+            ),
+          ).to.deep.equal([twoUint256, threeUint256]);
+        });
+
+        it('truncates array if end of list is reached', async () => {
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$push(uint256,uint256)'](STORAGE_SLOT, threeUint256);
+
+          expect(
+            await instance['$toArray(uint256,uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              zeroUint256,
+              10n,
+            ),
+          ).to.deep.equal([oneUint256, twoUint256, threeUint256]);
+
+          expect(
+            await instance['$toArray(uint256,uint256,uint256)'].staticCall(
+              STORAGE_SLOT,
+              threeUint256,
+              10n,
+            ),
+          ).to.deep.equal([]);
+        });
+
+        describe('reverts if', () => {
+          it('value is not contained in list', async () => {
+            await expect(
+              instance['$toArray(uint256,uint256,uint256)'].staticCall(
+                STORAGE_SLOT,
+                oneUint256,
+                1n,
               ),
             ).to.be.revertedWithCustomError(
               instance,
