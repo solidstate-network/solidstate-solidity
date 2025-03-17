@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { ArrayUtils } from '../utils/ArrayUtils.sol';
+import { Math } from '../utils/Math.sol';
 
 /**
  * @title Set implementation with enumeration functions
@@ -163,6 +164,38 @@ library EnumerableSet {
         return _toArray(set._inner).toUint256Array();
     }
 
+    function toArray(
+        Bytes32Set storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (bytes32[] memory array) {
+        array = _toArray(set._inner, startIndex, count);
+    }
+
+    function toArray(
+        AddressSet storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (address[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
+
+        assembly {
+            array := bytes32Array
+        }
+    }
+
+    function toArray(
+        UintSet storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (uint256[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
+
+        assembly {
+            array := bytes32Array
+        }
+    }
+
     function _at(
         Set storage set,
         uint256 index
@@ -229,7 +262,25 @@ library EnumerableSet {
 
     function _toArray(
         Set storage set
-    ) private view returns (bytes32[] storage) {
-        return set._values;
+    ) private view returns (bytes32[] storage array) {
+        array = set._values;
+    }
+
+    function _toArray(
+        Set storage set,
+        uint256 startIndex,
+        uint256 count
+    ) private view returns (bytes32[] memory array) {
+        unchecked {
+            uint256 size = _length(set);
+
+            if (startIndex >= size) revert EnumerableSet__IndexOutOfBounds();
+
+            array = new bytes32[](Math.min(count, size - startIndex));
+
+            for (uint256 i; i < count; i++) {
+                array[i] = set._values[startIndex + i];
+            }
+        }
     }
 }
