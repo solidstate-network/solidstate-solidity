@@ -46,7 +46,7 @@ library Factory {
     }
 
     /**
-     * @notice calculate the _deployMetamorphicContract deployment address for a given salt
+     * @notice calculate the deployment address for a given salt
      * @param initCodeHash hash of contract initialization code
      * @param salt input for deterministic address calculation
      * @return deployment address

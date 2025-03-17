@@ -11,7 +11,7 @@ import { _Proxy } from './_Proxy.sol';
 abstract contract Proxy is IProxy, _Proxy {
     /**
      * @notice delegate all calls to implementation contract
-     * @dev reverts if implementation address contains no code, for compatibility with metamorphic contracts
+     * @dev reverts if implementation address contains no code
      * @dev memory location in use by assembly may be unsafe in other contexts
      */
     fallback() external payable virtual {
