@@ -15,6 +15,10 @@ describe('AddressUtils', async () => {
   let instance: $AddressUtils;
   let deployer: SignerWithAddress;
 
+  // the custom errors are not available on the $AddressUtils ABI
+  // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
+  const placeholder = { interface: AddressUtils__factory.createInterface() };
+
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
     instance = await new $AddressUtils__factory(deployer).deploy();
@@ -137,7 +141,10 @@ describe('AddressUtils', async () => {
               [
                 '$functionCall(address,bytes)'
               ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWithCustomError(instance, 'AddressUtils__FailedCall');
+          ).to.be.revertedWithCustomError(
+            placeholder,
+            'AddressUtils__FailedCall',
+          );
         });
       });
     });
@@ -204,7 +211,7 @@ describe('AddressUtils', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
           const customError = 'AddressUtils__InsufficientBalance';
           const revertReason =
-            instance.interface.getError(customError)?.selector!;
+            placeholder.interface.getError(customError)?.selector!;
 
           const targetContract = await new AddressUtils__factory(
             deployer,
@@ -317,7 +324,7 @@ describe('AddressUtils', async () => {
                 '$functionCallWithValue(address,bytes,uint256)'
               ](await targetContract.getAddress(), data, value),
           ).to.be.revertedWithCustomError(
-            instance,
+            placeholder,
             'AddressUtils__FailedCallWithValue',
           );
         });
@@ -357,7 +364,7 @@ describe('AddressUtils', async () => {
                 '$functionCallWithValue(address,bytes,uint256)'
               ](await targetContract.getAddress(), '0x', 0),
           ).to.be.revertedWithCustomError(
-            instance,
+            placeholder,
             'AddressUtils__FailedCallWithValue',
           );
         });
@@ -444,7 +451,7 @@ describe('AddressUtils', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
           const customError = 'AddressUtils__InsufficientBalance';
           const revertReason =
-            instance.interface.getError(customError)?.selector!;
+            placeholder.interface.getError(customError)?.selector!;
 
           await setBalance(await instance.getAddress(), value);
 
@@ -495,7 +502,7 @@ describe('AddressUtils', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
           const customError = 'AddressUtils__InsufficientBalance';
           const revertReason =
-            instance.interface.getError(customError)?.selector!;
+            placeholder.interface.getError(customError)?.selector!;
 
           const targetContract = await new AddressUtils__factory(
             deployer,

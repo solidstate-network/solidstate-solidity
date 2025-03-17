@@ -13,12 +13,6 @@ library AddressUtils {
     error AddressUtils__FailedCall();
     error AddressUtils__FailedCallWithValue();
 
-    // TODO: without this function, custom errors referenced by selector are not available in tests
-    function __placeholder() internal {
-        revert AddressUtils__FailedCall();
-        revert AddressUtils__FailedCallWithValue();
-    }
-
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
     }
