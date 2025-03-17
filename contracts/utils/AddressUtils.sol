@@ -10,6 +10,14 @@ library AddressUtils {
     error AddressUtils__InsufficientBalance();
     error AddressUtils__NotContract();
     error AddressUtils__SendValueFailed();
+    error AddressUtils__FailedCall();
+    error AddressUtils__FailedCallWithValue();
+
+    // TODO: without this function, custom errors referenced by selector are not available in tests
+    function __placeholder() internal {
+        revert AddressUtils__FailedCall();
+        revert AddressUtils__FailedCallWithValue();
+    }
 
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
@@ -32,14 +40,13 @@ library AddressUtils {
         address target,
         bytes memory data
     ) internal returns (bytes memory) {
-        return
-            functionCall(target, data, 'AddressUtils: failed low-level call');
+        return functionCall(target, data, AddressUtils__FailedCall.selector);
     }
 
     function functionCall(
         address target,
         bytes memory data,
-        string memory error
+        bytes4 error
     ) internal returns (bytes memory) {
         return _functionCallWithValue(target, data, 0, error);
     }
@@ -54,7 +61,7 @@ library AddressUtils {
                 target,
                 data,
                 value,
-                'AddressUtils: failed low-level call with value'
+                AddressUtils__FailedCallWithValue.selector
             );
     }
 
@@ -62,7 +69,7 @@ library AddressUtils {
         address target,
         bytes memory data,
         uint256 value,
-        string memory error
+        bytes4 error
     ) internal returns (bytes memory) {
         if (value > address(this).balance)
             revert AddressUtils__InsufficientBalance();
@@ -120,7 +127,7 @@ library AddressUtils {
         address target,
         bytes memory data,
         uint256 value,
-        string memory error
+        bytes4 error
     ) private returns (bytes memory) {
         if (!isContract(target)) revert AddressUtils__NotContract();
 
@@ -136,7 +143,10 @@ library AddressUtils {
                 revert(add(32, returnData), returnData_size)
             }
         } else {
-            revert(error);
+            assembly {
+                mstore(0, error)
+                revert(0, 4)
+            }
         }
     }
 }

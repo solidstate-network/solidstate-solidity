@@ -137,18 +137,16 @@ describe('AddressUtils', async () => {
               [
                 '$functionCall(address,bytes)'
               ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWith('AddressUtils: failed low-level call');
+          ).to.be.revertedWithCustomError(instance, 'AddressUtils__FailedCall');
         });
       });
     });
 
-    describe('#functionCall(address,bytes,string)', () => {
+    describe('#functionCall(address,bytes,bytes4)', () => {
       it('returns the bytes representation of the return value of the target function', async () => {
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
         ]);
-        const revertReason = 'REVERT_REASON';
-
         await mock.mock.fn.returns(true);
 
         const target = mock.address;
@@ -160,18 +158,18 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             [
-              '$functionCall(address,bytes,string)'
-            ].staticCall(target, data, revertReason),
+              '$functionCall(address,bytes,bytes4)'
+            ].staticCall(target, data, ethers.randomBytes(4)),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['$functionCall(address,bytes,string)'](
+            instance['$functionCall(address,bytes,bytes4)'](
               ethers.ZeroAddress,
               '0x',
-              '',
+              ethers.randomBytes(4),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -196,12 +194,17 @@ describe('AddressUtils', async () => {
           await expect(
             instance
               .connect(deployer)
-              ['$functionCall(address,bytes,string)'](target, data, ''),
+              [
+                '$functionCall(address,bytes,bytes4)'
+              ](target, data, ethers.randomBytes(4)),
           ).to.be.revertedWith(revertReason);
         });
 
-        it('target contract reverts, with provided error message', async () => {
-          const revertReason = 'REVERT_REASON';
+        it('target contract reverts, with provided custom error', async () => {
+          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+          const customError = 'AddressUtils__InsufficientBalance';
+          const revertReason =
+            instance.interface.getError(customError)?.selector!;
 
           const targetContract = await new AddressUtils__factory(
             deployer,
@@ -211,9 +214,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                '$functionCall(address,bytes,string)'
+                '$functionCall(address,bytes,bytes4)'
               ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWith(revertReason);
+          ).to.be.revertedWithCustomError(instance, customError);
         });
       });
     });
@@ -278,7 +281,7 @@ describe('AddressUtils', async () => {
           );
         });
 
-        it('contract balance is insufficient for the call', async () => {
+        it('contract balance is insufficient', async () => {
           await expect(
             instance
               .connect(deployer)
@@ -313,8 +316,9 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256)'
               ](await targetContract.getAddress(), data, value),
-          ).to.be.revertedWith(
-            'AddressUtils: failed low-level call with value',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__FailedCallWithValue',
           );
         });
 
@@ -352,14 +356,15 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256)'
               ](await targetContract.getAddress(), '0x', 0),
-          ).to.be.revertedWith(
-            'AddressUtils: failed low-level call with value',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__FailedCallWithValue',
           );
         });
       });
     });
 
-    describe('#functionCallWithValue(address,bytes,uint256,string)', () => {
+    describe('#functionCallWithValue(address,bytes,uint256,bytes4)', () => {
       it('returns the bytes representation of the return value of the target function', async () => {
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
@@ -376,8 +381,8 @@ describe('AddressUtils', async () => {
           await instance
             .connect(deployer)
             [
-              '$functionCallWithValue(address,bytes,uint256,string)'
-            ].staticCall(target, data, 0, ''),
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ].staticCall(target, data, 0, ethers.randomBytes(4)),
         ).to.equal(ethers.zeroPadValue('0x01', 32));
       });
 
@@ -401,19 +406,19 @@ describe('AddressUtils', async () => {
           instance
             .connect(deployer)
             [
-              '$functionCallWithValue(address,bytes,uint256,string)'
-            ](target, data, value, ''),
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ](target, data, value, ethers.randomBytes(4)),
         ).to.changeEtherBalances([instance, mock], [-value, value]);
       });
 
       describe('reverts if', () => {
         it('target is not a contract', async () => {
           await expect(
-            instance['$functionCallWithValue(address,bytes,uint256,string)'](
+            instance['$functionCallWithValue(address,bytes,uint256,bytes4)'](
               ethers.ZeroAddress,
               '0x',
               0,
-              '',
+              ethers.randomBytes(4),
             ),
           ).to.be.revertedWithCustomError(
             instance,
@@ -421,22 +426,25 @@ describe('AddressUtils', async () => {
           );
         });
 
-        it('contract balance is insufficient for the call', async () => {
+        it('contract balance is insufficient', async () => {
           await expect(
             instance
               .connect(deployer)
               [
-                '$functionCallWithValue(address,bytes,uint256,string)'
-              ](await instance.getAddress(), '0x', 1, ''),
+                '$functionCallWithValue(address,bytes,uint256,bytes4)'
+              ](await instance.getAddress(), '0x', 1, ethers.randomBytes(4)),
           ).to.be.revertedWithCustomError(
             instance,
             'AddressUtils__InsufficientBalance',
           );
         });
 
-        it('target function is not payable and value is included', async () => {
+        it('target function is not payable and value is included, with provided custom error', async () => {
           const value = 2n;
-          const revertReason = 'REVERT_REASON';
+          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+          const customError = 'AddressUtils__InsufficientBalance';
+          const revertReason =
+            instance.interface.getError(customError)?.selector!;
 
           await setBalance(await instance.getAddress(), value);
 
@@ -455,9 +463,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                '$functionCallWithValue(address,bytes,uint256,string)'
+                '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), data, value, revertReason),
-          ).to.be.revertedWith(revertReason);
+          ).to.be.revertedWithCustomError(instance, customError);
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -478,13 +486,16 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                '$functionCallWithValue(address,bytes,uint256,string)'
-              ](target, data, 0, ''),
+                '$functionCallWithValue(address,bytes,uint256,bytes4)'
+              ](target, data, 0, ethers.randomBytes(4)),
           ).to.be.revertedWith(revertReason);
         });
 
-        it('target contract reverts, with provided error message', async () => {
-          const revertReason = 'REVERT_REASON';
+        it('target contract reverts, with provided custom error', async () => {
+          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+          const customError = 'AddressUtils__InsufficientBalance';
+          const revertReason =
+            instance.interface.getError(customError)?.selector!;
 
           const targetContract = await new AddressUtils__factory(
             deployer,
@@ -494,9 +505,9 @@ describe('AddressUtils', async () => {
             instance
               .connect(deployer)
               [
-                '$functionCallWithValue(address,bytes,uint256,string)'
+                '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), '0x', 0, revertReason),
-          ).to.be.revertedWith(revertReason);
+          ).to.be.revertedWithCustomError(instance, customError);
         });
       });
     });
