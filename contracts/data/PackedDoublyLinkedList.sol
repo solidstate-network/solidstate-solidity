@@ -188,6 +188,22 @@ library PackedDoublyLinkedList {
         status = _replace(self._inner, bytes16(oldValue), bytes16(newValue));
     }
 
+    function toArray(
+        Bytes16List storage self,
+        bytes16 prevValue,
+        uint256 count
+    ) internal view returns (bytes16[] memory array) {
+        array = _toArray(self._inner, prevValue, count);
+    }
+
+    function toArray(
+        Uint128List storage self,
+        uint128 prevValue,
+        uint256 count
+    ) internal view returns (uint128[] memory array) {
+        array = _toArray(self._inner, prevValue, count);
+    }
+
     function _contains(
         _PackedDoublyLinkedList storage self,
         bytes16 value
@@ -344,6 +360,60 @@ library PackedDoublyLinkedList {
 
         if (status) {
             delete self._links[oldValue];
+        }
+    }
+
+    function _toArray(
+        _PackedDoublyLinkedList storage self,
+        bytes16 prevValue,
+        uint256 count
+    ) internal view returns (bytes16[] memory array) {
+        array = new bytes16[](count);
+
+        for (uint i; i < count; i++) {
+            (, bytes16 nextValue) = _parseLinks(self._links[prevValue]);
+
+            if (nextValue == 0) {
+                if (i == 0 && _prev(self, 0) != prevValue)
+                    revert PackedDoublyLinkedList__NonExistentEntry();
+
+                // truncate the array if end of list is reached
+                assembly {
+                    mstore(array, i)
+                }
+
+                break;
+            }
+
+            array[i] = prevValue = nextValue;
+        }
+    }
+
+    function _toArray(
+        _PackedDoublyLinkedList storage self,
+        uint128 prevValue,
+        uint256 count
+    ) internal view returns (uint128[] memory array) {
+        array = new uint128[](count);
+
+        for (uint i; i < count; i++) {
+            (, bytes16 nextValue) = _parseLinks(
+                self._links[bytes16(prevValue)]
+            );
+
+            if (nextValue == 0) {
+                if (i == 0 && _prev(self, 0) != bytes16(prevValue))
+                    revert PackedDoublyLinkedList__NonExistentEntry();
+
+                // truncate the array if end of list is reached
+                assembly {
+                    mstore(array, i)
+                }
+
+                break;
+            }
+
+            array[i] = prevValue = uint128(nextValue);
         }
     }
 
