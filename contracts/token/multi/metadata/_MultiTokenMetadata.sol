@@ -25,7 +25,7 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
         if (bytes(baseURI).length == 0) {
             return tokenURI;
         } else if (bytes(tokenURI).length == 0) {
-            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
+            return string(abi.encodePacked(baseURI, tokenId.toString(16, 64)));
         } else {
             return string(abi.encodePacked(baseURI, tokenURI));
         }

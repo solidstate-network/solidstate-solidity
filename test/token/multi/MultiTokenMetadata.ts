@@ -44,7 +44,9 @@ describe('MultiTokenMetadata', () => {
 
         await instance.$_setBaseURI(baseURI);
 
-        expect(await instance.$_uri(tokenId)).to.eq(`${baseURI}${tokenId}`);
+        expect(await instance.$_uri(tokenId)).to.eq(
+          `${baseURI}${ethers.toBeHex(tokenId, 32).replace('0x', '')}`,
+        );
       });
 
       it('returns concatenation of base URI and token URI if both are set', async () => {

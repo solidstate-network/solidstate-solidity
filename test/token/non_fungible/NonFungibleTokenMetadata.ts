@@ -60,7 +60,7 @@ describe('NonFungibleTokenMetadata', () => {
         await instance.$_setBaseURI(baseURI);
 
         expect(await instance.$_tokenURI(tokenId)).to.eq(
-          `${baseURI}${tokenId}`,
+          `${baseURI}${ethers.toBeHex(tokenId, 32).replace('0x', '')}`,
         );
       });
 
