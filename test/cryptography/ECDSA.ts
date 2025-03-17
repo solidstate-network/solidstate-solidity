@@ -1,5 +1,5 @@
 import { hashData, signData } from '@solidstate/library';
-import { ECDSAMock, ECDSAMock__factory } from '@solidstate/typechain-types';
+import { $ECDSA, $ECDSA__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -7,11 +7,11 @@ const MAX_S_VALUE =
   '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0';
 
 describe('ECDSA', () => {
-  let instance: ECDSAMock;
+  let instance: $ECDSA;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ECDSAMock__factory(deployer).deploy();
+    instance = await new $ECDSA__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -30,7 +30,7 @@ describe('ECDSA', () => {
         const sig = await signData(signer, data);
 
         expect(
-          await instance['recover(bytes32,bytes)'].staticCall(
+          await instance['$recover(bytes32,bytes)'].staticCall(
             ethers.solidityPackedKeccak256(
               ['string', 'bytes32'],
               ['\x19Ethereum Signed Message:\n32', hash],
@@ -43,7 +43,7 @@ describe('ECDSA', () => {
       describe('reverts if', () => {
         it('signaure length is invalid', async () => {
           await expect(
-            instance['recover(bytes32,bytes)'].staticCall(
+            instance['$recover(bytes32,bytes)'].staticCall(
               ethers.randomBytes(32),
               ethers.randomBytes(64),
             ),
@@ -53,7 +53,7 @@ describe('ECDSA', () => {
           );
 
           await expect(
-            instance['recover(bytes32,bytes)'].staticCall(
+            instance['$recover(bytes32,bytes)'].staticCall(
               ethers.randomBytes(32),
               ethers.randomBytes(66),
             ),
@@ -84,7 +84,7 @@ describe('ECDSA', () => {
         const v = ethers.dataSlice(sig, 64, 65);
 
         expect(
-          await instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+          await instance['$recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
             ethers.solidityPackedKeccak256(
               ['string', 'bytes32'],
               ['\x19Ethereum Signed Message:\n32', hash],
@@ -105,7 +105,7 @@ describe('ECDSA', () => {
           // s must be less than or equal to MAX_S_VALUE
 
           await expect(
-            instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+            instance['$recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
               hash,
               v,
               r,
@@ -123,7 +123,7 @@ describe('ECDSA', () => {
 
           for (let v = 0; v <= 26; v++) {
             await expect(
-              instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+              instance['$recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
                 hash,
                 v,
                 r,
@@ -134,7 +134,7 @@ describe('ECDSA', () => {
 
           for (let v = 29; v <= 255; v++) {
             await expect(
-              instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+              instance['$recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
                 hash,
                 v,
                 r,
@@ -151,7 +151,7 @@ describe('ECDSA', () => {
           // hash and r generated randomly, known not to yield valid signer
 
           await expect(
-            instance['recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
+            instance['$recover(bytes32,uint8,bytes32,bytes32)'].staticCall(
               '0xfb78d190a6ff9c55a28ae24c65cb006029ae15140557db9017a6474592d3fd59',
               v,
               '0xe1a6fa655db25741b29a03d2f8ec44fb5590d0a1ce91c789886b59e54c08f509',
@@ -166,7 +166,9 @@ describe('ECDSA', () => {
       it('returns hash of signed message prefix and message', async () => {
         const hash = ethers.keccak256(ethers.toUtf8Bytes('test'));
 
-        expect(await instance.toEthSignedMessageHash.staticCall(hash)).to.equal(
+        expect(
+          await instance.$toEthSignedMessageHash.staticCall(hash),
+        ).to.equal(
           ethers.solidityPackedKeccak256(
             ['string', 'bytes32'],
             ['\x19Ethereum Signed Message:\n32', hash],

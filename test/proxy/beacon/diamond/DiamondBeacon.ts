@@ -2,8 +2,8 @@ import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBeacon } from '@solidstate/spec';
 import {
-  DiamondBeaconMock,
-  DiamondBeaconMock__factory,
+  $DiamondBeacon,
+  $DiamondBeacon__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -11,7 +11,7 @@ import { ethers } from 'hardhat';
 describe('DiamondBeacon', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: DiamondBeaconMock;
+  let instance: $DiamondBeacon;
   const facetCuts: any[] = [];
 
   before(async () => {
@@ -46,10 +46,11 @@ describe('DiamondBeacon', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    instance = await new DiamondBeaconMock__factory(deployer).deploy(
-      await owner.getAddress(),
-      facetCuts,
-    );
+    instance = await new $DiamondBeacon__factory(deployer).deploy();
+
+    await instance.$_setOwner(await owner.getAddress());
+
+    await instance.$_diamondCut(facetCuts, ethers.ZeroAddress, '0x');
   });
 
   describeBehaviorOfDiamondBeacon(async () => instance, {

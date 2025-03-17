@@ -1,6 +1,6 @@
-# SolidState ABI
+# Solidstate ABI
 
-SolidState smart contract ABIs. Part of the SolidState Solidity monorepo.
+Solidstate smart contract ABIs. Part of the Solidstate Solidity monorepo.
 
 ## Installation
 
@@ -11,3 +11,7 @@ npm install --save-dev @solidstate/abi
 # or
 yarn add --dev @solidstate/abi
 ```
+
+## Development
+
+The contents of this package are generated automatically as a part of the contract compilation process.

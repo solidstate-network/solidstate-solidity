@@ -9,7 +9,12 @@ dist/
 artifacts/
 cache/
 
+abi/*.json
+!abi/package.json
+
 coverage/
 coverage.json
+
+contracts-exposed/
 
 .env

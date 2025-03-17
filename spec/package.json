@@ -3,7 +3,7 @@
   "version": "0.0.61",
   "author": "Nick Barry",
   "license": "MIT",
-  "description": "Portable specifications for SolidState contracts",
+  "description": "Portable specifications for Solidstate contracts",
   "keywords": [
     "solidity",
     "smart-contracts",
