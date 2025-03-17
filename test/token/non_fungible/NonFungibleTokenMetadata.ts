@@ -89,5 +89,15 @@ describe('NonFungibleTokenMetadata', () => {
         });
       });
     });
+
+    describe('#_generateDefaultTokenURI(uint256)', () => {
+      it('returns padded hex representation of token id', async () => {
+        const tokenId = 1n;
+
+        expect(
+          await instance.$_generateDefaultTokenURI.staticCall(tokenId),
+        ).to.eq(ethers.toBeHex(tokenId, 32).replace('0x', ''));
+      });
+    });
   });
 });
