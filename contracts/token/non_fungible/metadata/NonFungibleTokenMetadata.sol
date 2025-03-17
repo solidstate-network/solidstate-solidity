@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.20;
 
+import { IERC721Metadata } from '../../../interfaces/IERC721Metadata.sol';
 import { _NonFungibleTokenMetadata } from './_NonFungibleTokenMetadata.sol';
 import { INonFungibleTokenMetadata } from './INonFungibleTokenMetadata.sol';
 
@@ -13,21 +14,21 @@ abstract contract NonFungibleTokenMetadata is
     _NonFungibleTokenMetadata
 {
     /**
-     * @notice inheritdoc INonFungibleTokenMetadata
+     * @inheritdoc IERC721Metadata
      */
     function name() external view returns (string memory) {
         return _name();
     }
 
     /**
-     * @notice inheritdoc INonFungibleTokenMetadata
+     * @inheritdoc IERC721Metadata
      */
     function symbol() external view returns (string memory) {
         return _symbol();
     }
 
     /**
-     * @notice inheritdoc INonFungibleTokenMetadata
+     * @inheritdoc IERC721Metadata
      */
     function tokenURI(uint256 tokenId) external view returns (string memory) {
         return _tokenURI(tokenId);
