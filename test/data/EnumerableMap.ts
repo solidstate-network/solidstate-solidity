@@ -358,12 +358,66 @@ describe('EnumerableMap', () => {
           );
 
           const [keys, values] =
-            await instance.$toArray_EnumerableMap_AddressToAddressMap.staticCall(
-              STORAGE_SLOT,
-            );
+            await instance[
+              '$toArray_EnumerableMap_AddressToAddressMap(uint256)'
+            ].staticCall(STORAGE_SLOT);
 
           expect(keys).to.deep.equal([addressOne, addressTwo, addressThree]);
           expect(values).to.deep.equal([addressFour, addressFive, addressSix]);
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns arrays of keys and values in map', async () => {
+          await instance['$set(uint256,address,address)'](
+            STORAGE_SLOT,
+            addressOne,
+            addressFour,
+          );
+          await instance['$set(uint256,address,address)'](
+            STORAGE_SLOT,
+            addressTwo,
+            addressFive,
+          );
+          await instance['$set(uint256,address,address)'](
+            STORAGE_SLOT,
+            addressThree,
+            addressSix,
+          );
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_AddressToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 3n),
+          ).to.deep.equal([
+            [addressOne, addressTwo, addressThree],
+            [addressFour, addressFive, addressSix],
+          ]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_AddressToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 1n),
+          ).to.deep.equal([[addressOne], [addressFour]]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_AddressToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 2n, 1n),
+          ).to.deep.equal([[addressThree], [addressSix]]);
+        });
+
+        describe('reverts if', () => {
+          it('index is out of bounds', async () => {
+            await expect(
+              instance[
+                '$toArray_EnumerableMap_AddressToAddressMap(uint256,uint256,uint256)'
+              ].staticCall(STORAGE_SLOT, 0n, 0n),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableMap__IndexOutOfBounds',
+            );
+          });
         });
       });
 
@@ -758,12 +812,66 @@ describe('EnumerableMap', () => {
           );
 
           const [keys, values] =
-            await instance.$toArray_EnumerableMap_UintToAddressMap.staticCall(
-              STORAGE_SLOT,
-            );
+            await instance[
+              '$toArray_EnumerableMap_UintToAddressMap(uint256)'
+            ].staticCall(STORAGE_SLOT);
 
           expect(keys).to.deep.equal([uintOne, uintTwo, uintThree]);
           expect(values).to.deep.equal([addressOne, addressTwo, addressThree]);
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns arrays of keys and values in map', async () => {
+          await instance['$set(uint256,uint256,address)'](
+            STORAGE_SLOT,
+            uintOne,
+            addressOne,
+          );
+          await instance['$set(uint256,uint256,address)'](
+            STORAGE_SLOT,
+            uintTwo,
+            addressTwo,
+          );
+          await instance['$set(uint256,uint256,address)'](
+            STORAGE_SLOT,
+            uintThree,
+            addressThree,
+          );
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 3n),
+          ).to.deep.equal([
+            [uintOne, uintTwo, uintThree],
+            [addressOne, addressTwo, addressThree],
+          ]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 1n),
+          ).to.deep.equal([[uintOne], [addressOne]]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 2n, 1n),
+          ).to.deep.equal([[uintThree], [addressThree]]);
+        });
+
+        describe('reverts if', () => {
+          it('index is out of bounds', async () => {
+            await expect(
+              instance[
+                '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
+              ].staticCall(STORAGE_SLOT, 0n, 0n),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableMap__IndexOutOfBounds',
+            );
+          });
         });
       });
 
