@@ -41,9 +41,13 @@ abstract contract _Proxy is _IProxy {
 
     /**
      * @notice delegate all calls to implementation contract
+     * @return returnData forwarded return data
      */
-    function _handleDelegateCall() internal virtual returns (bytes memory) {
-        address implementation = _getImplementation();
-        return implementation.functionDelegateCall(msg.data);
+    function _handleDelegateCall()
+        internal
+        virtual
+        returns (bytes memory returnData)
+    {
+        returnData = _getImplementation().functionDelegateCall(msg.data);
     }
 }
