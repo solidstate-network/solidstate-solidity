@@ -26,6 +26,15 @@ export function describeBehaviorOfNonFungibleTokenEnumerable(
       instance = await deploy();
     });
 
+    // TODO: enable for compositions that include ERC165
+    // describeBehaviorOfIntrospectable(
+    //   deploy,
+    //   {
+    //     interfaceIds: ['0x780e9d63'],
+    //   },
+    //   skips,
+    // );
+
     describe('#totalSupply()', () => {
       it('returns total token supply', async () => {
         expect(await instance.totalSupply()).to.equal(args.supply);

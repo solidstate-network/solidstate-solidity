@@ -22,6 +22,15 @@ export function describeBehaviorOfNonFungibleTokenMetadata(
       instance = await deploy();
     });
 
+    // TODO: enable for compositions that include ERC165
+    // describeBehaviorOfIntrospectable(
+    //   deploy,
+    //   {
+    //     interfaceIds: ['0x5b5e139f'],
+    //   },
+    //   skips,
+    // );
+
     describe('#name()', () => {
       it('returns token name', async () => {
         expect(await instance.name.staticCall()).to.equal(args.name);

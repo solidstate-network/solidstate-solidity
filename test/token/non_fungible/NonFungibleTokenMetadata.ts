@@ -60,7 +60,7 @@ describe('NonFungibleTokenMetadata', () => {
         await instance.$_setBaseURI(baseURI);
 
         expect(await instance.$_tokenURI(tokenId)).to.eq(
-          `${baseURI}${tokenId}`,
+          `${baseURI}${ethers.toBeHex(tokenId, 32).replace('0x', '')}`,
         );
       });
 
@@ -87,6 +87,16 @@ describe('NonFungibleTokenMetadata', () => {
             'NonFungibleTokenMetadata__NonExistentToken',
           );
         });
+      });
+    });
+
+    describe('#_generateDefaultTokenURI(uint256)', () => {
+      it('returns padded hex representation of token id', async () => {
+        const tokenId = 1n;
+
+        expect(
+          await instance.$_generateDefaultTokenURI.staticCall(tokenId),
+        ).to.eq(ethers.toBeHex(tokenId, 32).replace('0x', ''));
       });
     });
   });
