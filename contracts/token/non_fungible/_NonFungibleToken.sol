@@ -8,12 +8,17 @@ import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC721Storage } from '../../storage/ERC721Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { MsgSenderTrick } from '../../utils/MsgSenderTrick.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 /**
  * @title Base NonFungibleToken internal functions
  */
-abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
+abstract contract _NonFungibleToken is
+    _INonFungibleToken,
+    _Introspectable,
+    MsgSenderTrick
+{
     using AddressUtils for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -160,7 +165,7 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         uint256 tokenId
     ) internal virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
-        if (!_isApprovedOrOwner(msg.sender, tokenId))
+        if (!_isApprovedOrOwner(_msgSender(), tokenId))
             revert NonFungibleToken__NotOwnerOrApproved();
         _transfer(from, to, tokenId);
     }
@@ -191,7 +196,7 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         bytes memory data
     ) internal virtual {
         _handleTransferMessageValue(from, to, tokenId, msg.value);
-        if (!_isApprovedOrOwner(msg.sender, tokenId))
+        if (!_isApprovedOrOwner(_msgSender(), tokenId))
             revert NonFungibleToken__NotOwnerOrApproved();
         _safeTransfer(from, to, tokenId, data);
     }
@@ -202,7 +207,7 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         address owner = _ownerOf(tokenId);
 
         if (operator == owner) revert NonFungibleToken__SelfApproval();
-        if (msg.sender != owner && !_isApprovedForAll(owner, msg.sender))
+        if (_msgSender() != owner && !_isApprovedForAll(owner, _msgSender()))
             revert NonFungibleToken__NotOwnerOrApproved();
 
         ERC721Storage.layout(ERC721Storage.DEFAULT_STORAGE_SLOT).tokenApprovals[
@@ -215,11 +220,11 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         address operator,
         bool status
     ) internal virtual {
-        if (operator == msg.sender) revert NonFungibleToken__SelfApproval();
+        if (operator == _msgSender()) revert NonFungibleToken__SelfApproval();
         ERC721Storage
             .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
-            .operatorApprovals[msg.sender][operator] = status;
-        emit ApprovalForAll(msg.sender, operator, status);
+            .operatorApprovals[_msgSender()][operator] = status;
+        emit ApprovalForAll(_msgSender(), operator, status);
     }
 
     function _checkOnERC721Received(
@@ -235,7 +240,7 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
         bytes memory returnData = to.functionCall(
             abi.encodeWithSelector(
                 IERC721Receiver(to).onERC721Received.selector,
-                msg.sender,
+                _msgSender(),
                 from,
                 tokenId,
                 data

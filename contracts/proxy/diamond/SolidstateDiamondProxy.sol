@@ -96,7 +96,7 @@ abstract contract SolidstateDiamondProxy is
 
         // set owner
 
-        _setOwner(msg.sender);
+        _setOwner(_msgSender());
     }
 
     receive() external payable {}
