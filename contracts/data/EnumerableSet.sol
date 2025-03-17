@@ -148,19 +148,19 @@ library EnumerableSet {
     function toArray(
         Bytes32Set storage set
     ) internal view returns (bytes32[] memory) {
-        return set._inner._values;
+        return _toArray(set._inner);
     }
 
     function toArray(
         AddressSet storage set
     ) internal view returns (address[] memory) {
-        return set._inner._values.toAddressArray();
+        return _toArray(set._inner).toAddressArray();
     }
 
     function toArray(
         UintSet storage set
     ) internal view returns (uint256[] memory) {
-        return set._inner._values.toUint256Array();
+        return _toArray(set._inner).toUint256Array();
     }
 
     function _at(
@@ -225,5 +225,11 @@ library EnumerableSet {
 
             status = true;
         }
+    }
+
+    function _toArray(
+        Set storage set
+    ) private view returns (bytes32[] storage) {
+        return set._values;
     }
 }
