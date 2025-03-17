@@ -12,6 +12,7 @@ library AddressUtils {
     error AddressUtils__SendValueFailed();
     error AddressUtils__FailedCall();
     error AddressUtils__FailedCallWithValue();
+    error AddressUtils__FailedDelegatecall();
 
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
@@ -78,14 +79,14 @@ library AddressUtils {
             functionDelegateCall(
                 target,
                 data,
-                'AddressUtils: failed low-level delegatecall'
+                AddressUtils__FailedDelegatecall.selector
             );
     }
 
     function functionDelegateCall(
         address target,
         bytes memory data,
-        string memory error
+        bytes4 error
     ) internal returns (bytes memory) {
         _revertIfNotContract(target);
         (bool success, bytes memory returnData) = target.delegatecall(data);
@@ -155,7 +156,7 @@ library AddressUtils {
     function _verifyCallResultFromTarget(
         bool success,
         bytes memory returnData,
-        string memory error
+        bytes4 error
     ) private pure returns (bytes memory) {
         if (success) {
             return returnData;
