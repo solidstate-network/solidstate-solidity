@@ -13,7 +13,7 @@ abstract contract MultiTokenMetadata is
     _MultiTokenMetadata
 {
     /**
-     * @notice inheritdoc IMultiTokenMetadata
+     * @inheritdoc IMultiTokenMetadata
      */
     function uri(uint256 tokenId) external view returns (string memory) {
         return _uri(tokenId);
