@@ -1,7 +1,7 @@
 import {
-  describeBehaviorOfNonFungibleTokenBase,
-  NonFungibleTokenBaseBehaviorArgs,
-} from './NonFungibleTokenBase.behavior';
+  describeBehaviorOfNonFungibleToken,
+  NonFungibleTokenBehaviorArgs,
+} from './NonFungibleToken.behavior';
 import {
   describeBehaviorOfNonFungibleTokenEnumerable,
   NonFungibleTokenEnumerableBehaviorArgs,
@@ -17,7 +17,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface SolidstateNonFungibleTokenBehaviorArgs
-  extends NonFungibleTokenBaseBehaviorArgs,
+  extends NonFungibleTokenBehaviorArgs,
     NonFungibleTokenEnumerableBehaviorArgs,
     NonFungibleTokenMetadataBehaviorArgs {}
 
@@ -41,7 +41,7 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfNonFungibleTokenBase(deploy, args, skips);
+    describeBehaviorOfNonFungibleToken(deploy, args, skips);
 
     describeBehaviorOfNonFungibleTokenEnumerable(deploy, args, skips);
 

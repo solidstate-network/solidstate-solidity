@@ -4,16 +4,16 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
-import { _DiamondProxyExecutable } from '../executable/_DiamondProxyExecutable.sol';
+import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
 abstract contract _DiamondProxyFallback is
     _IDiamondProxyFallback,
-    _DiamondProxyExecutable,
+    _DiamondProxy,
     _Ownable
 {
     /**
-     * @inheritdoc _DiamondProxyExecutable
+     * @inheritdoc _DiamondProxy
      * @notice query custom fallback address is no implementation is found
      */
     function _getImplementation()

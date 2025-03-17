@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
-import { _FungibleTokenBase } from '../../fungible/base/_FungibleTokenBase.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
@@ -12,7 +12,7 @@ import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
  */
 abstract contract _RestrictedFungibleToken is
     _IRestrictedFungibleToken,
-    _FungibleTokenBase
+    _FungibleToken
 {
     /**
      * @notice define restriction codes and their associated messages
@@ -67,7 +67,7 @@ abstract contract _RestrictedFungibleToken is
 
     /**
      * @notice ERC20 hook: detect and handle transfer restriction
-     * @inheritdoc _FungibleTokenBase
+     * @inheritdoc _FungibleToken
      */
     function _beforeTokenTransfer(
         address from,

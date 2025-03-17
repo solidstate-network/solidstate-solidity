@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
-import { MultiTokenBase } from '../base/MultiTokenBase.sol';
-import { _MultiTokenBase } from '../base/_MultiTokenBase.sol';
+import { MultiToken } from '../MultiToken.sol';
+import { _MultiToken } from '../_MultiToken.sol';
 import { IMultiTokenEnumerable } from './IMultiTokenEnumerable.sol';
 import { _MultiTokenEnumerable } from './_MultiTokenEnumerable.sol';
 
@@ -13,7 +13,7 @@ import { _MultiTokenEnumerable } from './_MultiTokenEnumerable.sol';
 abstract contract MultiTokenEnumerable is
     IMultiTokenEnumerable,
     _MultiTokenEnumerable,
-    MultiTokenBase
+    MultiToken
 {
     /**
      * @inheritdoc IMultiTokenEnumerable
@@ -57,7 +57,7 @@ abstract contract MultiTokenEnumerable is
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) internal virtual override(_MultiTokenBase, _MultiTokenEnumerable) {
+    ) internal virtual override(_MultiToken, _MultiTokenEnumerable) {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 }
