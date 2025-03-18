@@ -3,12 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { ProxyStorage } from '../storage/ProxyStorage.sol';
-import { AddressUtils } from '../utils/AddressUtils.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
-    using AddressUtils for address;
-
     /**
      * @notice get logic implementation address
      * @return implementation address of implementation contract
