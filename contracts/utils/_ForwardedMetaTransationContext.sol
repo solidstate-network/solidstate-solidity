@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _Context } from './_Context.sol';
 
-abstract contract _MetaTransactionContext is _Context {
+abstract contract _ForwardedMetaTransationContext is _Context {
     /**
      * @inheritdoc _Context
      * @dev sender is read from the calldata context suffix
