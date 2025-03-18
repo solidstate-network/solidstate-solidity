@@ -21,10 +21,15 @@ abstract contract _ForwardedMetaTransationContext is
         override
         returns (address msgSender)
     {
-        if (_isTrustedForwarder(msg.sender)) {
-            msgSender = address(
-                bytes20(msg.data[msg.data.length - _calldataSuffixLength():])
-            );
+        uint256 dataLength = msg.data.length;
+        uint256 suffixLength = _calldataSuffixLength();
+
+        if (dataLength >= suffixLength && _isTrustedForwarder(msg.sender)) {
+            unchecked {
+                msgSender = address(
+                    bytes20(msg.data[dataLength - suffixLength:])
+                );
+            }
         } else {
             msgSender = super._msgSender();
         }
@@ -40,8 +45,13 @@ abstract contract _ForwardedMetaTransationContext is
         override
         returns (bytes calldata msgData)
     {
-        if (_isTrustedForwarder(msg.sender)) {
-            msgData = msg.data[:msg.data.length - _calldataSuffixLength()];
+        uint256 dataLength = msg.data.length;
+        uint256 suffixLength = _calldataSuffixLength();
+
+        if (dataLength >= suffixLength && _isTrustedForwarder(msg.sender)) {
+            unchecked {
+                msgData = msg.data[:dataLength - suffixLength];
+            }
         } else {
             msgData = super._msgData();
         }
