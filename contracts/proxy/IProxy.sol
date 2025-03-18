@@ -6,4 +6,6 @@ import { _IProxy } from './_IProxy.sol';
 
 interface IProxy is _IProxy {
     fallback() external payable;
+
+    receive() external payable;
 }
