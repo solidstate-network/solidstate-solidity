@@ -46,4 +46,28 @@ abstract contract _MetaTransactionContext is _Context {
             msgSender = msg.sender;
         }
     }
+
+    function _msgData()
+        internal
+        view
+        virtual
+        override
+        returns (bytes calldata msgData)
+    {
+        if (msg.sender == address(this)) {
+            msgData = msg.data[:msg.data.length - _calldataSuffixLength()];
+        } else {
+            msgData = msg.data;
+        }
+    }
+
+    function _calldataSuffixLength()
+        internal
+        view
+        virtual
+        override
+        returns (uint256 length)
+    {
+        length = 20;
+    }
 }

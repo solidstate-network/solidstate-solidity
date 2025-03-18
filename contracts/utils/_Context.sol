@@ -10,4 +10,17 @@ abstract contract _Context is _IContext {
     function _msgSender() internal view virtual returns (address msgSender) {
         msgSender = msg.sender;
     }
+
+    function _msgData() internal view virtual returns (bytes calldata msgData) {
+        msgData = msg.data;
+    }
+
+    function _calldataSuffixLength()
+        internal
+        view
+        virtual
+        returns (uint256 length)
+    {
+        length = 0;
+    }
 }
