@@ -13,15 +13,9 @@ abstract contract _MetaTransactionContext is _Context {
         returns (address msgSender)
     {
         if (msg.sender == address(this)) {
-            bytes memory array = msg.data;
-            uint256 index = msg.data.length;
-
-            assembly {
-                msgSender := and(
-                    mload(add(array, index)),
-                    0xffffffffffffffffffffffffffffffffffffffff
-                )
-            }
+            msgSender = address(
+                bytes20(msg.data[msg.data.length - _calldataSuffixLength():])
+            );
         } else {
             msgSender = super._msgSender();
         }
