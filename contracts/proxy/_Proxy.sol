@@ -16,14 +16,9 @@ abstract contract _Proxy is _IProxy {
         virtual
         returns (address implementation)
     {
-        // inline storage layout retrieval uses less gas
-        ProxyStorage.Layout storage $;
-        bytes32 slot = ProxyStorage.DEFAULT_STORAGE_SLOT;
-        assembly {
-            $.slot := slot
-        }
-
-        implementation = $.implementation;
+        implementation = ProxyStorage
+            .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
+            .implementation;
     }
 
     /**
