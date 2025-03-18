@@ -24,6 +24,9 @@ abstract contract _ForwardedMetaTransationContext is
         uint256 dataLength = msg.data.length;
         uint256 suffixLength = _calldataSuffixLength();
 
+        // ideally this would revert when dataLength < suffixLength and sender is a trusted forwarder
+        // but because _isTrustedForwarder reads from storage, it should be called only when necessary
+
         if (dataLength >= suffixLength && _isTrustedForwarder(msg.sender)) {
             unchecked {
                 msgSender = address(
@@ -48,6 +51,9 @@ abstract contract _ForwardedMetaTransationContext is
         uint256 dataLength = msg.data.length;
         uint256 suffixLength = _calldataSuffixLength();
 
+        // ideally this would revert when dataLength < suffixLength and sender is a trusted forwarder
+        // but because _isTrustedForwarder reads from storage, it should be called only when necessary
+
         if (dataLength >= suffixLength && _isTrustedForwarder(msg.sender)) {
             unchecked {
                 msgData = msg.data[:dataLength - suffixLength];
@@ -71,6 +77,11 @@ abstract contract _ForwardedMetaTransationContext is
         length = 20;
     }
 
+    /**
+     * @notice query whether account is a trusted ERC2771 forwarder
+     * @param account address to query
+     * @return trustedStatus whether account is a trusted forwarder
+     */
     function _isTrustedForwarder(
         address account
     ) internal view virtual returns (bool trustedStatus) {
