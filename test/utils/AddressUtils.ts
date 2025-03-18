@@ -590,12 +590,15 @@ describe('AddressUtils', async () => {
               [
                 '$functionDelegateCall(address,bytes)'
               ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWith('AddressUtils: failed low-level delegatecall');
+          ).to.be.revertedWithCustomError(
+            placeholder,
+            'AddressUtils__FailedDelegatecall',
+          );
         });
       });
     });
 
-    describe('#functionDelegateCall(address,bytes,string)', () => {
+    describe('#functionDelegateCall(address,bytes,bytes4)', () => {
       it('todo');
     });
   });
