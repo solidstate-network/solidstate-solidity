@@ -88,9 +88,8 @@ library AddressUtils {
         bytes memory data,
         bytes4 error
     ) internal returns (bytes memory) {
-        _revertIfNotContract(target);
         (bool success, bytes memory returnData) = target.delegatecall(data);
-        return _verifyCallResultFromTarget(success, returnData, error);
+        return _verifyCallResultFromTarget(target, success, returnData, error);
     }
 
     /**
@@ -146,34 +145,36 @@ library AddressUtils {
         uint256 value,
         bytes4 error
     ) private returns (bytes memory) {
-        _revertIfNotContract(target);
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data
         );
-        return _verifyCallResultFromTarget(success, returnData, error);
+        return _verifyCallResultFromTarget(target, success, returnData, error);
     }
 
     function _verifyCallResultFromTarget(
+        address target,
         bool success,
         bytes memory returnData,
         bytes4 error
-    ) private pure returns (bytes memory) {
+    ) private view returns (bytes memory) {
         if (success) {
-            return returnData;
-        } else if (returnData.length > 0) {
-            assembly {
-                let returnData_size := mload(returnData)
-                revert(add(32, returnData), returnData_size)
+            if (returnData.length == 0) {
+                if (!isContract(target)) revert AddressUtils__NotContract();
             }
+
+            return returnData;
         } else {
-            assembly {
-                mstore(0, error)
-                revert(0, 4)
+            if (returnData.length == 0) {
+                assembly {
+                    mstore(0, error)
+                    revert(0, 4)
+                }
+            } else {
+                assembly {
+                    let returnData_size := mload(returnData)
+                    revert(add(32, returnData), returnData_size)
+                }
             }
         }
-    }
-
-    function _revertIfNotContract(address target) private view {
-        if (!isContract(target)) revert AddressUtils__NotContract();
     }
 }
