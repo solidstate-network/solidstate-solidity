@@ -17,7 +17,14 @@ describe('AddressUtils', async () => {
 
   // the custom errors are not available on the $AddressUtils ABI
   // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
-  const placeholder = { interface: AddressUtils__factory.createInterface() };
+  const placeholder = {
+    interface: new ethers.Interface([
+      'error TestError()',
+      'error AddressUtils__FailedCall()',
+      'error AddressUtils__FailedCallWithValue()',
+      'error AddressUtils__FailedDelegatecall()',
+    ]),
+  };
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
@@ -209,7 +216,7 @@ describe('AddressUtils', async () => {
 
         it('target contract reverts, with provided custom error', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -223,7 +230,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCall(address,bytes,bytes4)'
               ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
       });
     });
@@ -449,7 +456,7 @@ describe('AddressUtils', async () => {
         it('target function is not payable and value is included, with provided custom error', async () => {
           const value = 2n;
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -472,7 +479,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), data, value, revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -500,7 +507,7 @@ describe('AddressUtils', async () => {
 
         it('target contract reverts, with provided custom error', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -514,7 +521,168 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), '0x', 0, revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
+        });
+      });
+    });
+
+    describe('#functionDelegateCall(address,bytes)', () => {
+      it('returns the bytes representation of the return value of the target function', async () => {
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+        const target = await targetContract.getAddress();
+
+        // use delegatecall to set the owner in storage, so that a non-zero value can be returned
+        const { data: setOwnerData } =
+          (await targetContract.$_setOwner.populateTransaction(
+            ethers.ZeroAddress,
+          )) as {
+            data: BytesLike;
+          };
+
+        await instance['$functionDelegateCall(address,bytes)'](
+          target,
+          setOwnerData,
+        );
+
+        const { data } = (await targetContract.owner.populateTransaction()) as {
+          data: BytesLike;
+        };
+
+        expect(
+          await instance['$functionDelegateCall(address,bytes)'].staticCall(
+            target,
+            data,
+          ),
+        ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+      });
+
+      describe('reverts if', () => {
+        it('target is not a contract', async () => {
+          await expect(
+            instance['$functionDelegateCall(address,bytes)'](
+              ethers.ZeroAddress,
+              '0x',
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
+        });
+
+        it('target contract reverts, with target contract error message', async () => {
+          const targetContract = await new $Ownable__factory(deployer).deploy();
+
+          const { data } =
+            (await targetContract.transferOwnership.populateTransaction(
+              ethers.ZeroAddress,
+            )) as { data: BytesLike };
+
+          await expect(
+            instance
+              .connect(deployer)
+              [
+                '$functionDelegateCall(address,bytes)'
+              ](await targetContract.getAddress(), data),
+          ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
+        });
+
+        it('target contract reverts, with default error message', async () => {
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
+          await expect(
+            instance
+              .connect(deployer)
+              [
+                '$functionDelegateCall(address,bytes)'
+              ](await targetContract.getAddress(), '0x'),
+          ).to.be.revertedWithCustomError(
+            placeholder,
+            'AddressUtils__FailedDelegatecall',
+          );
+        });
+      });
+    });
+
+    describe('#functionDelegateCall(address,bytes,bytes4)', () => {
+      it('returns the bytes representation of the return value of the target function', async () => {
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+        const target = await targetContract.getAddress();
+
+        // use delegatecall to set the owner in storage, so that a non-zero value can be returned
+        const { data: setOwnerData } =
+          (await targetContract.$_setOwner.populateTransaction(
+            ethers.ZeroAddress,
+          )) as {
+            data: BytesLike;
+          };
+
+        await instance['$functionDelegateCall(address,bytes,bytes4)'](
+          target,
+          setOwnerData,
+          ethers.randomBytes(4),
+        );
+
+        const { data } = (await targetContract.owner.populateTransaction()) as {
+          data: BytesLike;
+        };
+
+        expect(
+          await instance[
+            '$functionDelegateCall(address,bytes,bytes4)'
+          ].staticCall(target, data, ethers.randomBytes(4)),
+        ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+      });
+
+      describe('reverts if', () => {
+        it('target is not a contract', async () => {
+          await expect(
+            instance['$functionDelegateCall(address,bytes,bytes4)'](
+              ethers.ZeroAddress,
+              '0x',
+              ethers.randomBytes(4),
+            ),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'AddressUtils__NotContract',
+          );
+        });
+
+        it('target contract reverts, with target contract error message', async () => {
+          const targetContract = await new $Ownable__factory(deployer).deploy();
+
+          const { data } =
+            (await targetContract.transferOwnership.populateTransaction(
+              ethers.ZeroAddress,
+            )) as { data: BytesLike };
+
+          await expect(
+            instance
+              .connect(deployer)
+              [
+                '$functionDelegateCall(address,bytes,bytes4)'
+              ](await targetContract.getAddress(), data, ethers.randomBytes(4)),
+          ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
+        });
+
+        it('target contract reverts, with provided custom error', async () => {
+          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+          const customError = 'TestError';
+          const revertReason =
+            placeholder.interface.getError(customError)?.selector!;
+
+          const targetContract = await new AddressUtils__factory(
+            deployer,
+          ).deploy();
+
+          await expect(
+            instance
+              .connect(deployer)
+              [
+                '$functionDelegateCall(address,bytes,bytes4)'
+              ](await targetContract.getAddress(), '0x', revertReason),
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
       });
     });

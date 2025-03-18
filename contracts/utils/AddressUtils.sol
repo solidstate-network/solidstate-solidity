@@ -12,6 +12,7 @@ library AddressUtils {
     error AddressUtils__SendValueFailed();
     error AddressUtils__FailedCall();
     error AddressUtils__FailedCallWithValue();
+    error AddressUtils__FailedDelegatecall();
 
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
@@ -70,6 +71,28 @@ library AddressUtils {
         return _functionCallWithValue(target, data, value, error);
     }
 
+    function functionDelegateCall(
+        address target,
+        bytes memory data
+    ) internal returns (bytes memory) {
+        return
+            functionDelegateCall(
+                target,
+                data,
+                AddressUtils__FailedDelegatecall.selector
+            );
+    }
+
+    function functionDelegateCall(
+        address target,
+        bytes memory data,
+        bytes4 error
+    ) internal returns (bytes memory) {
+        (bool success, bytes memory returnData) = target.delegatecall(data);
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
+    }
+
     /**
      * @notice execute arbitrary external call with limited gas usage and amount of copied return data
      * @dev derived from https://github.com/nomad-xyz/ExcessivelySafeCall (MIT License)
@@ -123,24 +146,35 @@ library AddressUtils {
         uint256 value,
         bytes4 error
     ) private returns (bytes memory) {
-        if (!isContract(target)) revert AddressUtils__NotContract();
-
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data
         );
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
+    }
 
-        if (success) {
-            return returnData;
-        } else if (returnData.length > 0) {
-            assembly {
-                let returnData_size := mload(returnData)
-                revert(add(32, returnData), returnData_size)
-            }
-        } else {
-            assembly {
-                mstore(0, error)
-                revert(0, 4)
+    function _verifyCallResultFromTarget(
+        address target,
+        bool success,
+        bytes memory returnData,
+        bytes4 error
+    ) private view {
+        if (!success) {
+            if (returnData.length == 0) {
+                assembly {
+                    mstore(0, error)
+                    revert(0, 4)
+                }
+            } else {
+                assembly {
+                    let returnData_size := mload(returnData)
+                    revert(add(32, returnData), returnData_size)
+                }
             }
         }
+
+        // code check is only required if call is successful and without return data
+        if (returnData.length == 0 && !isContract(target))
+            revert AddressUtils__NotContract();
     }
 }
