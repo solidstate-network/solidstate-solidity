@@ -37,5 +37,9 @@ export function describeBehaviorOfProxy(
         ).not.to.be.reverted;
       });
     });
+
+    describe('receive()', () => {
+      it('forwards value to implementation');
+    });
   });
 }

@@ -55,5 +55,9 @@ export function describeBehaviorOfDiamondProxy(
         });
       });
     });
+
+    describe('receive()', () => {
+      it('todo');
+    });
   });
 }
