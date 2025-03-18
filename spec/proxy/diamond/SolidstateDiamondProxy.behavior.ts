@@ -201,7 +201,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
             }),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__NotContract',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(
@@ -274,7 +274,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
             }),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__NotContract',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(
@@ -347,7 +347,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
             }),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__NotContract',
+            'Proxy__ImplementationIsNotContract',
           );
 
           expect(

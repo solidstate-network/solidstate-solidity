@@ -50,7 +50,7 @@ export function describeBehaviorOfDiamondProxy(
             contract.__function.staticCall(),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__NotContract',
+            'Proxy__ImplementationIsNotContract',
           );
         });
       });

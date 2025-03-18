@@ -12,14 +12,8 @@ abstract contract Proxy is IProxy, _Proxy {
     /**
      * @notice delegate all calls to implementation contract
      * @dev reverts if implementation address contains no code
-     * @dev memory location in use by assembly may be unsafe in other contexts
      */
     fallback() external payable virtual {
-        bytes memory returnData = _handleDelegateCall();
-
-        assembly {
-            let returnData_size := mload(returnData)
-            return(add(32, returnData), returnData_size)
-        }
+        _handleDelegateCall();
     }
 }

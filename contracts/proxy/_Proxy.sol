@@ -41,13 +41,38 @@ abstract contract _Proxy is _IProxy {
 
     /**
      * @notice delegate all calls to implementation contract
-     * @return returnData forwarded return data
+     * @dev memory location in use by assembly may be unsafe in other contexts
      */
-    function _handleDelegateCall()
-        internal
-        virtual
-        returns (bytes memory returnData)
-    {
-        returnData = _getImplementation().functionDelegateCall(msg.data);
+    function _handleDelegateCall() internal virtual returns (bytes memory) {
+        address implementation = _getImplementation();
+
+        assembly {
+            calldatacopy(0, 0, calldatasize())
+
+            let result := delegatecall(
+                gas(),
+                implementation,
+                0,
+                calldatasize(),
+                0,
+                0
+            )
+
+            returndatacopy(0, 0, returndatasize())
+
+            if iszero(result) {
+                revert(0, returndatasize())
+            }
+
+            if returndatasize() {
+                return(0, returndatasize())
+            }
+
+            if extcodesize(implementation) {
+                return(0, returndatasize())
+            }
+        }
+
+        revert Proxy__ImplementationIsNotContract();
     }
 }
