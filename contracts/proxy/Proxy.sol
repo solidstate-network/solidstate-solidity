@@ -13,7 +13,7 @@ abstract contract Proxy is IProxy, _Proxy {
      * @notice delegate all calls to implementation contract
      * @dev reverts if implementation address contains no code
      */
-    fallback() external payable virtual {
+    fallback() external payable {
         _fallback();
     }
 }
