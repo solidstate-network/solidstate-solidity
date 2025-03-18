@@ -43,7 +43,7 @@ abstract contract _MetaTransactionContext is _Context {
                 )
             }
         } else {
-            msgSender = msg.sender;
+            msgSender = super._msgSender();
         }
     }
 
@@ -57,7 +57,7 @@ abstract contract _MetaTransactionContext is _Context {
         if (msg.sender == address(this)) {
             msgData = msg.data[:msg.data.length - _calldataSuffixLength()];
         } else {
-            msgData = msg.data;
+            msgData = super._msgData();
         }
     }
 
