@@ -5,6 +5,10 @@ pragma solidity ^0.8.20;
 import { _Context } from './_Context.sol';
 
 abstract contract _MetaTransactionContext is _Context {
+    /**
+     * @inheritdoc _Context
+     * @dev sender is read from the calldata context suffix
+     */
     function _msgSender()
         internal
         view
@@ -21,6 +25,9 @@ abstract contract _MetaTransactionContext is _Context {
         }
     }
 
+    /**
+     * @inheritdoc _Context
+     */
     function _msgData()
         internal
         view
@@ -35,6 +42,10 @@ abstract contract _MetaTransactionContext is _Context {
         }
     }
 
+    /**
+     * @inheritdoc _Context
+     * @dev this Context extension defines an address suffix with a length of 20
+     */
     function _calldataSuffixLength()
         internal
         view
