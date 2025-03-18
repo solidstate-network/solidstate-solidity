@@ -25,14 +25,13 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         override
         returns (address implementation)
     {
-        // inline storage layout retrieval uses less gas
-        ERC2535Storage.Layout storage $;
-        bytes32 slot = ERC2535Storage.DEFAULT_STORAGE_SLOT;
-        assembly {
-            $.slot := slot
-        }
-
-        implementation = address(bytes20($.selectorInfo[msg.sig]));
+        implementation = address(
+            bytes20(
+                ERC2535Storage
+                    .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
+                    .selectorInfo[msg.sig]
+            )
+        );
     }
 
     /**
