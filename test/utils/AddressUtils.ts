@@ -17,7 +17,14 @@ describe('AddressUtils', async () => {
 
   // the custom errors are not available on the $AddressUtils ABI
   // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
-  const placeholder = { interface: AddressUtils__factory.createInterface() };
+  const placeholder = {
+    interface: new ethers.Interface([
+      'error TestError()',
+      'error AddressUtils__FailedCall()',
+      'error AddressUtils__FailedCallWithValue()',
+      'error AddressUtils__FailedDelegatecall()',
+    ]),
+  };
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
@@ -209,7 +216,7 @@ describe('AddressUtils', async () => {
 
         it('target contract reverts, with provided custom error', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -223,7 +230,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCall(address,bytes,bytes4)'
               ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
       });
     });
@@ -449,7 +456,7 @@ describe('AddressUtils', async () => {
         it('target function is not payable and value is included, with provided custom error', async () => {
           const value = 2n;
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -472,7 +479,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), data, value, revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -500,7 +507,7 @@ describe('AddressUtils', async () => {
 
         it('target contract reverts, with provided custom error', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -514,7 +521,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCallWithValue(address,bytes,uint256,bytes4)'
               ](await targetContract.getAddress(), '0x', 0, revertReason),
-          ).to.be.revertedWithCustomError(instance, customError);
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
       });
     });
@@ -661,7 +668,7 @@ describe('AddressUtils', async () => {
 
         it('target contract reverts, with provided custom error', async () => {
           // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'AddressUtils__InsufficientBalance';
+          const customError = 'TestError';
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
@@ -675,10 +682,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionDelegateCall(address,bytes,bytes4)'
               ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWithCustomError(
-            placeholder,
-            'AddressUtils__InsufficientBalance',
-          );
+          ).to.be.revertedWithCustomError(placeholder, customError);
         });
       });
     });
