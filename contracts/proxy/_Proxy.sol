@@ -42,9 +42,9 @@ abstract contract _Proxy is _IProxy {
     /**
      * @notice delegate all calls to implementation contract
      * @dev memory location in use by assembly may be unsafe in other contexts
-     * @return delegatecall return data
+     * @dev function declares no return value, but data is returned via assembly
      */
-    function _fallback() internal virtual returns (bytes memory) {
+    function _fallback() internal virtual {
         address implementation = _getImplementation();
 
         assembly {
