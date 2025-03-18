@@ -3,12 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { _IERC20 } from '../../interfaces/_IERC20.sol';
-import { _IMsgSenderTrick } from '../../utils/_IMsgSenderTrick.sol';
+import { _IContext } from '../../utils/_IContext.sol';
 
 /**
  * @title FungibleToken base interface
  */
-interface _IFungibleToken is _IERC20, _IMsgSenderTrick {
+interface _IFungibleToken is _IERC20, _IContext {
     error FungibleToken__ApproveFromZeroAddress();
     error FungibleToken__ApproveToZeroAddress();
     error FungibleToken__BurnExceedsBalance();

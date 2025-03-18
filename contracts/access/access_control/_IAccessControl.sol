@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.20;
 
-import { _IMsgSenderTrick } from '../../utils/_IMsgSenderTrick.sol';
+import { _IContext } from '../../utils/_IContext.sol';
 
 /**
  * @title Partial AccessControl interface needed by internal functions
  */
-interface _IAccessControl is _IMsgSenderTrick {
+interface _IAccessControl is _IContext {
     event RoleAdminChanged(
         bytes32 indexed role,
         bytes32 indexed previousAdminRole,

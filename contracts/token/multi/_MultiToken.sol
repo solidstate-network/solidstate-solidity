@@ -6,18 +6,14 @@ import { IERC1155Receiver } from '../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC1155Storage } from '../../storage/ERC1155Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { _MsgSenderTrick } from '../../utils/_MsgSenderTrick.sol';
+import { _Context } from '../../utils/_Context.sol';
 import { _IMultiToken } from './_IMultiToken.sol';
 
 /**
  * @title Base MultiToken internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract _MultiToken is
-    _IMultiToken,
-    _Introspectable,
-    _MsgSenderTrick
-{
+abstract contract _MultiToken is _IMultiToken, _Introspectable, _Context {
     using AddressUtils for address;
 
     /**

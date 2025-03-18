@@ -2,4 +2,4 @@
 
 pragma solidity ^0.8.20;
 
-interface _IMsgSenderTrick {}
+interface _IContext {}

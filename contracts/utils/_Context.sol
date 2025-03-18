@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-import { _IMsgSenderTrick } from './_IMsgSenderTrick.sol';
+import { _IContext } from './_IContext.sol';
 /**
  * @title Utility contract for supporting alternative authorization schemes
  */
-abstract contract _MsgSenderTrick is _IMsgSenderTrick {
+abstract contract _Context is _IContext {
     /*
      * @notice Returns the intended sender of a message. Either msg.sender or the address of the authorizing signer.
      *         Enables MetaTransactions, since the sender doesn't need to be the tx.origin or even the msg.sender.
