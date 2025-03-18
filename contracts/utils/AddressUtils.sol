@@ -159,11 +159,7 @@ library AddressUtils {
         bytes memory returnData,
         bytes4 error
     ) private view {
-        if (success) {
-            if (returnData.length == 0) {
-                if (!isContract(target)) revert AddressUtils__NotContract();
-            }
-        } else {
+        if (!success) {
             if (returnData.length == 0) {
                 assembly {
                     mstore(0, error)
@@ -176,5 +172,9 @@ library AddressUtils {
                 }
             }
         }
+
+        // code check is only required if call is successful and without return data
+        if (returnData.length == 0 && !isContract(target))
+            revert AddressUtils__NotContract();
     }
 }
