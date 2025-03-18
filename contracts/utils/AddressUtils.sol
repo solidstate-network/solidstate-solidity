@@ -89,7 +89,8 @@ library AddressUtils {
         bytes4 error
     ) internal returns (bytes memory) {
         (bool success, bytes memory returnData) = target.delegatecall(data);
-        return _verifyCallResultFromTarget(target, success, returnData, error);
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
     }
 
     /**
@@ -148,7 +149,8 @@ library AddressUtils {
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data
         );
-        return _verifyCallResultFromTarget(target, success, returnData, error);
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
     }
 
     function _verifyCallResultFromTarget(
@@ -156,13 +158,11 @@ library AddressUtils {
         bool success,
         bytes memory returnData,
         bytes4 error
-    ) private view returns (bytes memory) {
+    ) private view {
         if (success) {
             if (returnData.length == 0) {
                 if (!isContract(target)) revert AddressUtils__NotContract();
             }
-
-            return returnData;
         } else {
             if (returnData.length == 0) {
                 assembly {
