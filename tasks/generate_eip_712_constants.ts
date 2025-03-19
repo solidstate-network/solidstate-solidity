@@ -51,9 +51,9 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
         (f) => domainFieldParameterMap[f],
       );
 
-      const domainSeparatorCalculatorComponents = includedFields.map(
-        (c) => domainSeparatorCalculatorParameterMap[c],
-      );
+      const domainSeparatorCalculatorComponents = includedFields
+        .filter((c) => !['chainId', 'verifyingContract'].includes(c))
+        .map((c) => domainSeparatorCalculatorParameterMap[c]);
       const assemblyComponents = includedFields.map(
         (c, j) =>
           `mstore(add(pointer, ${(j + 1) * 32}), ${assemblyReferencesMap[c]})`,
