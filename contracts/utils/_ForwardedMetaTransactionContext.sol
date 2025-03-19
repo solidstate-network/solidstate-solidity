@@ -5,10 +5,10 @@ pragma solidity ^0.8.20;
 import { ERC2771Storage } from '../storage/ERC2771Storage.sol';
 import { AddressUtils } from './AddressUtils.sol';
 import { _Context } from './_Context.sol';
-import { _IForwardedMetaTransationContext } from './_IForwardedMetaTransationContext.sol';
+import { _IForwardedMetaTransactionContext } from './_IForwardedMetaTransactionContext.sol';
 
-abstract contract _ForwardedMetaTransationContext is
-    _IForwardedMetaTransationContext,
+abstract contract _ForwardedMetaTransactionContext is
+    _IForwardedMetaTransactionContext,
     _Context
 {
     using AddressUtils for address;
