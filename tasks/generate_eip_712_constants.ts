@@ -2,10 +2,10 @@ import fs from 'fs';
 import { task, types } from 'hardhat/config';
 import path from 'path';
 
-const filename = 'EIP712Constants.sol';
+const name = 'EIP712Constants';
 const filepath = 'cryptography';
 
-task('generate-eip-712-constants', `Generate ${filename}`).setAction(
+task('generate-eip-712-constants', `Generate ${name}`).setAction(
   async (args, hre) => {
     const fields = [
       'name',
@@ -50,9 +50,15 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
     const constants = [];
     const calculators = [];
 
+    const describeHashes = [];
+    const describeCalculators = [];
+
     for (let i = 0; i < 2 ** fields.length; i++) {
       const fieldsBinString = i.toString(2).padStart(5, '0');
       const includedFields = fields.filter((f, j) => i & (2 ** j));
+
+      const hashName = `EIP_712_DOMAIN_HASH_${fieldsBinString}`;
+      const calculatorName = `calculateDomainSeparator_${fieldsBinString}`;
 
       const domainStringParameters = includedFields.map(
         (f) => domainStringParametersMap[f],
@@ -69,6 +75,10 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
       const assemblyComponents = includedFields.map(
         (c, j) =>
           `mstore(add(pointer, ${(j + 1) * 32}), ${assemblyReferencesMap[c]})`,
+      );
+
+      const calculatorTestTypes = includedFields.map((c) =>
+        calculatorParametersMap[c].split(' ').shift(),
       );
 
       const domainString = `EIP712Domain(${domainStringParameters.join(',')})`;
@@ -89,7 +99,7 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
          * @dev EIP712Domain hash corresponding to ERC5267 fields value ${fieldsBinString} (${domainStringParameters.map((c) => c.split(' ').pop()).join(', ')})
          * @dev evaluates to ${keccak}
          */
-        bytes32 internal constant EIP_712_DOMAIN_HASH_${fieldsBinString} = keccak256('${domainString}');
+        bytes32 internal constant ${hashName} = keccak256('${domainString}');
         `,
       );
 
@@ -99,7 +109,7 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
          * @notice calculate unique EIP-712 domain separator${calculatorComments.map((c) => `\n${c}`).join('')}
          * @return domainSeparator domain separator
          */
-        function calculateDomainSeparator_${fieldsBinString}(${calculatorParameters.join(', ')}) internal ${calculatorVisibility} returns (bytes32 domainSeparator) {
+        function ${calculatorName}(${calculatorParameters.join(', ')}) internal ${calculatorVisibility} returns (bytes32 domainSeparator) {
           assembly {
             let pointer := mload(64)
 
@@ -112,25 +122,88 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
         }
         `,
       );
+
+      describeHashes.push(
+        `
+        describe('#${hashName}()', () => {
+          it('resolves to expected value', async () => {
+            expect(await instance.$${hashName}.staticCall()).to.equal('${keccak}');
+          });
+        });
+        `,
+      );
+
+      describeCalculators.push(
+        `
+        describe('#${calculatorName}(${calculatorTestTypes.join(',')})', () => {
+          it('returns domain separator', async () => {
+            const typeHash = await instance.$${hashName}.staticCall();
+
+            const types: string[] = ['bytes32', ${calculatorTestTypes.map((c) => `'${c}'`).join(', ')}]
+            const values: string[] = [typeHash, ${includedFields.join(', ')}]
+
+            const domainSeparator = ethers.keccak256(
+              ethers.AbiCoder.defaultAbiCoder().encode(types,values));
+
+            expect(await instance.$${calculatorName}.staticCall(${includedFields.filter((c) => !['chainId', 'verifyingContract'].includes(c))})).to.equal(domainSeparator)
+          });
+        });
+        `,
+      );
     }
 
-    const content = `
+    const contractContent = `
       pragma solidity ^0.8.20;
 
-      library ${filename.split('.').shift()} {
+      library ${name} {
         ${constants.join('\n')}
 
         ${calculators.join('\n')}
       }
 `;
 
+    const testContent = `
+import { $${name}, $${name}__factory } from '@solidstate/typechain-types';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+
+describe('${name}', () => {
+  let instance: $${name};
+  const name = ethers.solidityPackedKeccak256(['string'], ['NAME']);
+  const version = ethers.solidityPackedKeccak256(['string'], ['VERSION']);
+  let verifyingContract: string;
+  let chainId: string;
+  let salt = ethers.solidityPackedKeccak256(['string'], ['SALT']);
+
+  before(async () => {
+    const [deployer] = await ethers.getSigners();
+    instance = await new $${name}__factory(deployer).deploy();
+    verifyingContract = await instance.getAddress();
+    chainId = await ethers.provider.send('eth_chainId');
+  });
+
+  ${describeHashes.join('\n')}
+
+  ${describeCalculators.join('\n')}
+});
+`;
+
     await fs.promises.mkdir(path.resolve(hre.config.paths.sources, filepath), {
       recursive: true,
     });
 
+    await fs.promises.mkdir(path.resolve(hre.config.paths.tests, filepath), {
+      recursive: true,
+    });
+
     await fs.promises.writeFile(
-      path.resolve(hre.config.paths.sources, filepath, filename),
-      content,
+      path.resolve(hre.config.paths.sources, filepath, `${name}.sol`),
+      contractContent,
+    );
+
+    await fs.promises.writeFile(
+      path.resolve(hre.config.paths.tests, filepath, `${name}.ts`),
+      testContent,
     );
   },
 );
