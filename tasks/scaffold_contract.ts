@@ -51,13 +51,13 @@ task('scaffold-contract', 'Batch replace text in local filenames and contents')
 
         import { _I${name} } from './_I${name}.sol';
 
-        abstract contract I${name} is _I${name} {}
+        interface I${name} is _I${name} {}
     `;
 
     const internalInterface = `
         pragma solidity ${pragma};
 
-        abstract contract _I${name} {}
+        interface _I${name} {}
     `;
 
     await fs.promises.writeFile(
