@@ -26,8 +26,6 @@ library EIP712 {
     ) internal view returns (bytes32 domainSeparator) {
         // execute EIP-712 hashStruct procedure
 
-        bytes32 typeHash = EIP712_TYPE_HASH;
-
         assembly {
             // assembly block equavalent to:
             //
@@ -44,7 +42,10 @@ library EIP712 {
             // load free memory pointer
             let pointer := mload(64)
 
-            mstore(pointer, typeHash)
+            mstore(
+                pointer,
+                0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f
+            )
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), chainid())

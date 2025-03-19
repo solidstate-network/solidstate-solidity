@@ -119,8 +119,6 @@ abstract contract _FungibleTokenPermit is
 
         // execute EIP-712 hashStruct procedure
 
-        bytes32 typeHash = EIP712_TYPE_HASH;
-
         uint256 nonce = ERC20Storage
             .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc2612Nonces[owner]++;
@@ -144,7 +142,10 @@ abstract contract _FungibleTokenPermit is
             // load free memory pointer
             let pointer := mload(64)
 
-            mstore(pointer, typeHash)
+            mstore(
+                pointer,
+                0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
+            )
             mstore(add(pointer, 32), owner)
             mstore(add(pointer, 64), spender)
             mstore(add(pointer, 96), amount)
