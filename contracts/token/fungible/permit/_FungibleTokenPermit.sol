@@ -156,7 +156,7 @@ abstract contract _FungibleTokenPermit is
 
         // recreate and hash data payload using assembly, equivalent to:
         //
-        // bytes32 hash = keccak256(
+        // bytes32 signedHash = keccak256(
         //   abi.encodePacked(
         //     uint16(0x1901),
         //     domainSeparator,
