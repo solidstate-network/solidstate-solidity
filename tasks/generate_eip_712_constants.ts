@@ -65,6 +65,12 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
         [domainString],
       );
 
+      const calculatorVisibility =
+        includedFields.includes('chainId') ||
+        includedFields.includes('verifyingContract')
+          ? 'view'
+          : 'pure';
+
       domainHashes.push(
         `
         /**
@@ -80,7 +86,7 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
         /**
          * @notice TODO
          */
-        function calculateDomainSeparator_${fieldsBinString}(${domainSeparatorCalculatorComponents.join(', ')}) internal view returns (bytes32 domainSeparator) {
+        function calculateDomainSeparator_${fieldsBinString}(${domainSeparatorCalculatorComponents.join(', ')}) internal ${calculatorVisibility} returns (bytes32 domainSeparator) {
           assembly {
             let pointer := mload(64)
 
