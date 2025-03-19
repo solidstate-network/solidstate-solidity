@@ -16,11 +16,9 @@ describe('Context', () => {
     describe('#_msgSender()', () => {
       it('returns message sender', async () => {
         const tx = await instance.$_msgSender.populateTransaction();
-
         tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
 
         const result = await deployer.call(tx);
-
         const decoded = instance.interface.decodeFunctionResult(
           '$_msgSender',
           result,
@@ -33,13 +31,11 @@ describe('Context', () => {
     describe('#_msgData()', () => {
       it('returns complete message data', async () => {
         const tx = await instance.$_msgData.populateTransaction();
-
         tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
 
         // message data is returned as received, demonstrating the malleability of msg.data
 
         const result = await deployer.call(tx);
-
         const decoded = instance.interface.decodeFunctionResult(
           '$_msgData',
           result,
