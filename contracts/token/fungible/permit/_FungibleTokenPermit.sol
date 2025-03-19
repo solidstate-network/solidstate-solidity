@@ -164,7 +164,7 @@ abstract contract _FungibleTokenPermit is
         //   )
         // );
 
-        bytes32 hash;
+        bytes32 signedHash;
 
         assembly {
             // load free memory pointer
@@ -179,12 +179,12 @@ abstract contract _FungibleTokenPermit is
             mstore(add(pointer, 2), domainSeparator)
             mstore(add(pointer, 34), structHash)
 
-            hash := keccak256(pointer, 66)
+            signedHash := keccak256(pointer, 66)
         }
 
         // validate signature
 
-        address signer = hash.recover(v, r, s);
+        address signer = signedHash.recover(v, r, s);
 
         if (signer != owner) revert FungibleTokenPermit__InvalidSignature();
 
