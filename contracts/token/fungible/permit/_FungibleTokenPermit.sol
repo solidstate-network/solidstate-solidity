@@ -117,18 +117,7 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        // execute EIP-712 hashStruct procedure using assembly, equavalent to:
-        //
-        // bytes32 structHash = keccak256(
-        //   abi.encode(
-        //     EIP712_TYPE_HASH,
-        //     owner,
-        //     spender,
-        //     amount,
-        //     nonce,
-        //     deadline
-        //   )
-        // );
+        // execute EIP-712 hashStruct procedure
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
@@ -139,6 +128,19 @@ abstract contract _FungibleTokenPermit is
         bytes32 structHash;
 
         assembly {
+            // assembly block equavalent to:
+            //
+            // structHash = keccak256(
+            //   abi.encode(
+            //     EIP712_TYPE_HASH,
+            //     owner,
+            //     spender,
+            //     amount,
+            //     nonce,
+            //     deadline
+            //   )
+            // );
+
             // load free memory pointer
             let pointer := mload(64)
 
@@ -152,21 +154,23 @@ abstract contract _FungibleTokenPermit is
             structHash := keccak256(pointer, 192)
         }
 
-        bytes32 domainSeparator = _DOMAIN_SEPARATOR();
+        // recreate and hash data payload
 
-        // recreate and hash data payload using assembly, equivalent to:
-        //
-        // bytes32 signedHash = keccak256(
-        //   abi.encodePacked(
-        //     uint16(0x1901),
-        //     domainSeparator,
-        //     structHash
-        //   )
-        // );
+        bytes32 domainSeparator = _DOMAIN_SEPARATOR();
 
         bytes32 signedHash;
 
         assembly {
+            // assembly block equivalent to:
+            //
+            // signedHash = keccak256(
+            //   abi.encodePacked(
+            //     uint16(0x1901),
+            //     domainSeparator,
+            //     structHash
+            //   )
+            // );
+
             // load free memory pointer
             let pointer := mload(64)
 

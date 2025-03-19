@@ -24,21 +24,23 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
-        // execute EIP-712 hashStruct procedure using assembly, equavalent to:
-        //
-        // domainSeparator = keccak256(
-        //   abi.encode(
-        //     EIP712_TYPE_HASH,
-        //     nameHash,
-        //     versionHash,
-        //     block.chainid,
-        //     address(this)
-        //   )
-        // );
+        // execute EIP-712 hashStruct procedure
 
         bytes32 typeHash = EIP712_TYPE_HASH;
 
         assembly {
+            // assembly block equavalent to:
+            //
+            // domainSeparator = keccak256(
+            //   abi.encode(
+            //     EIP712_TYPE_HASH,
+            //     nameHash,
+            //     versionHash,
+            //     block.chainid,
+            //     address(this)
+            //   )
+            // );
+
             // load free memory pointer
             let pointer := mload(64)
 
