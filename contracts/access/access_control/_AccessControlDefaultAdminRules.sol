@@ -177,8 +177,8 @@ abstract contract _AccessControlDefaultAdminRules is
             AccessControlStorage.DEFAULT_STORAGE_SLOT
         );
         (address newAdmin, uint48 schedule) = _pendingDefaultAdmin();
-        if (msg.sender != newAdmin) {
-            revert AccessControlInvalidDefaultAdmin(msg.sender);
+        if (_msgSender() != newAdmin) {
+            revert AccessControlInvalidDefaultAdmin(_msgSender());
         }
 
         if (!_isScheduleSet(schedule) || !_hasSchedulePassed(schedule)) {
