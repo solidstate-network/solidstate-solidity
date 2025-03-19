@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { ERC2771Storage } from '../storage/ERC2771Storage.sol';
-import { AddressUtils } from './AddressUtils.sol';
+import { AddressUtils } from '../utils/AddressUtils.sol';
 import { _Context } from './_Context.sol';
 import { _IForwardedMetaTransactionContext } from './_IForwardedMetaTransactionContext.sol';
 

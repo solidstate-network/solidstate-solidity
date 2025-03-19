@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import { _IERC721 } from '../../interfaces/_IERC721.sol';
 import { _IIntrospectable } from '../../introspection/_IIntrospectable.sol';
-import { _IContext } from '../../utils/_IContext.sol';
+import { _IContext } from '../../meta/_IContext.sol';
 
 /**
  * @title NonFungibleToken base interface

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { _IContext } from '../../utils/_IContext.sol';
+import { _IContext } from '../../meta/_IContext.sol';
 
 interface _IPausable is _IContext {
     error Pausable__Paused();

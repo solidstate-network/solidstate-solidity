@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { _IContext } from '../../utils/_IContext.sol';
+import { _IContext } from '../../meta/_IContext.sol';
 
 /**
  * @title Partial AccessControl interface needed by internal functions

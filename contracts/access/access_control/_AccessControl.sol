@@ -6,7 +6,7 @@ import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
 import { UintUtils } from '../../utils/UintUtils.sol';
-import { _Context } from '../../utils/_Context.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IAccessControl } from './_IAccessControl.sol';
 
 /**

@@ -6,7 +6,7 @@ import { IERC1155Receiver } from '../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC1155Storage } from '../../storage/ERC1155Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { _Context } from '../../utils/_Context.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IMultiToken } from './_IMultiToken.sol';
 
 /**

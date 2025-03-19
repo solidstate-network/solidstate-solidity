@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { _IERC20 } from '../../interfaces/_IERC20.sol';
-import { _IContext } from '../../utils/_IContext.sol';
+import { _IContext } from '../../meta/_IContext.sol';
 
 /**
  * @title FungibleToken base interface

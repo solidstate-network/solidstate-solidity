@@ -8,7 +8,7 @@ import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC721Storage } from '../../storage/ERC721Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { _Context } from '../../utils/_Context.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 /**
