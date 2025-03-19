@@ -184,9 +184,8 @@ abstract contract _FungibleTokenPermit is
 
         // validate signature
 
-        address signer = signedHash.recover(v, r, s);
-
-        if (signer != owner) revert FungibleTokenPermit__InvalidSignature();
+        if (signedHash.recover(v, r, s) != owner)
+            revert FungibleTokenPermit__InvalidSignature();
 
         _approve(owner, spender, amount);
     }
