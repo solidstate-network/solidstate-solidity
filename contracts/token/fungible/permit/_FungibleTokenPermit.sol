@@ -117,10 +117,6 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        ERC20Storage.Layout storage $ = ERC20Storage.layout(
-            ERC20Storage.DEFAULT_STORAGE_SLOT
-        );
-
         // execute EIP-712 hashStruct procedure using assembly, equavalent to:
         //
         // bytes32 structHash = keccak256(
@@ -134,10 +130,13 @@ abstract contract _FungibleTokenPermit is
         //   )
         // );
 
-        bytes32 structHash;
-        uint256 nonce = $.erc2612Nonces[owner];
-
         bytes32 typeHash = EIP712_TYPE_HASH;
+
+        uint256 nonce = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc2612Nonces[owner]++;
+
+        bytes32 structHash;
 
         assembly {
             // load free memory pointer
@@ -189,7 +188,6 @@ abstract contract _FungibleTokenPermit is
 
         if (signer != owner) revert FungibleTokenPermit__InvalidSignature();
 
-        $.erc2612Nonces[owner]++;
         _approve(owner, spender, amount);
     }
 }
