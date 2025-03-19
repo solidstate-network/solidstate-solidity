@@ -32,6 +32,14 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
       salt: 'bytes32 salt',
     };
 
+    const assemblyReferencesMap = {
+      name: 'nameHash',
+      version: 'versionHash',
+      chainId: 'chainid()',
+      verifyingContract: 'address()',
+      salt: 'salt',
+    };
+
     const domainHashes = [];
     const domainSeparatorCalculators = [];
 
@@ -46,9 +54,9 @@ task('generate-eip-712-constants', `Generate ${filename}`).setAction(
       const domainSeparatorCalculatorComponents = includedFields.map(
         (c) => domainSeparatorCalculatorParameterMap[c],
       );
-      const assemblyComponents = domainSeparatorCalculatorComponents.map(
+      const assemblyComponents = includedFields.map(
         (c, j) =>
-          `mstore(add(pointer, ${(j + 1) * 32}), ${c.split(' ').pop()})`,
+          `mstore(add(pointer, ${(j + 1) * 32}), ${assemblyReferencesMap[c]})`,
       );
 
       const domainString = `EIP712Domain(${domainStringComponents.join(',')})`;
