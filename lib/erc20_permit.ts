@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { IERC20Permit, IERC5267 } from '@solidstate/typechain-types';
+import { IERC2612, IERC5267 } from '@solidstate/typechain-types';
 import { Signature } from 'ethers';
 import { ethers } from 'hardhat';
 
@@ -67,7 +67,7 @@ const buildBasicDomain = (
 };
 
 const signERC2612Permit = async (
-  instance: IERC20Permit,
+  instance: IERC2612 & IERC5267,
   owner: SignerWithAddress,
   spender: SignerWithAddress,
   amount: bigint,
