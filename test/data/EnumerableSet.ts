@@ -223,9 +223,9 @@ describe('EnumerableSet', async () => {
           await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
           expect(
-            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([zeroBytes32, oneBytes32, twoBytes32]);
         });
 
@@ -257,9 +257,9 @@ describe('EnumerableSet', async () => {
 
           await instance['$remove(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
           expect(
-            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([twoBytes32, oneBytes32]);
         });
 
@@ -293,10 +293,49 @@ describe('EnumerableSet', async () => {
           await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
 
           expect(
-            await instance.$toArray_EnumerableSet_Bytes32Set.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([zeroBytes32, twoBytes32, oneBytes32]);
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns the set as an array', async () => {
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+          await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 3n),
+          ).to.deep.equal([zeroBytes32, twoBytes32, oneBytes32]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 1n),
+          ).to.deep.equal([zeroBytes32]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_Bytes32Set(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 2n, 1n),
+          ).to.deep.equal([oneBytes32]);
+        });
+
+        describe('reverts if', () => {
+          it('start index is out of bounds', async () => {
+            await expect(
+              instance[
+                '$toArray_EnumerableSet_Bytes32Set(uint256,uint256,uint256)'
+              ].staticCall(STORAGE_SLOT, 0n, 0n),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableSet__IndexOutOfBounds',
+            );
+          });
         });
       });
     });
@@ -513,9 +552,9 @@ describe('EnumerableSet', async () => {
           await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
 
           expect(
-            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([zeroAddress, oneAddress, twoAddress]);
         });
 
@@ -547,9 +586,9 @@ describe('EnumerableSet', async () => {
 
           await instance['$remove(uint256,address)'](STORAGE_SLOT, zeroAddress);
           expect(
-            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([twoAddress, oneAddress]);
         });
 
@@ -583,10 +622,49 @@ describe('EnumerableSet', async () => {
           await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
           expect(
-            await instance.$toArray_EnumerableSet_AddressSet.staticCall(
-              STORAGE_SLOT,
-            ),
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
           ).to.deep.equal([zeroAddress, twoAddress, oneAddress]);
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns the set as an array', async () => {
+          await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+          await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 3n),
+          ).to.deep.equal([zeroAddress, twoAddress, oneAddress]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 1n),
+          ).to.deep.equal([zeroAddress]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_AddressSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 2n, 1n),
+          ).to.deep.equal([oneAddress]);
+        });
+
+        describe('reverts if', () => {
+          it('start index is out of bounds', async () => {
+            await expect(
+              instance[
+                '$toArray_EnumerableSet_AddressSet(uint256,uint256,uint256)'
+              ].staticCall(STORAGE_SLOT, 0n, 0n),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableSet__IndexOutOfBounds',
+            );
+          });
         });
       });
     });
@@ -602,34 +680,34 @@ describe('EnumerableSet', async () => {
     });
 
     describe('__internal', () => {
-      const zero = 0n;
-      const one = 1n;
-      const two = 2n;
+      const zeroUint256 = 0n;
+      const oneUint256 = 1n;
+      const twoUint256 = 2n;
 
       describe('#at(uint256)', () => {
         it('returns the value corresponding to index provided', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
           expect(
             await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               0n,
             ),
-          ).to.equal(zero);
+          ).to.equal(zeroUint256);
           expect(
             await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               1n,
             ),
-          ).to.equal(two);
+          ).to.equal(twoUint256);
           expect(
             await instance.$at_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
               2n,
             ),
-          ).to.equal(one);
+          ).to.equal(oneUint256);
         });
 
         describe('reverts if', () => {
@@ -646,26 +724,26 @@ describe('EnumerableSet', async () => {
 
       describe('#contains(uint256)', () => {
         it('returns true if the value has been added', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
           expect(
             await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.true;
           expect(
             await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              one,
+              oneUint256,
             ),
           ).to.be.true;
           expect(
             await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              two,
+              twoUint256,
             ),
           ).to.be.true;
         });
@@ -674,7 +752,7 @@ describe('EnumerableSet', async () => {
           expect(
             await instance['$contains(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.false;
         });
@@ -682,51 +760,51 @@ describe('EnumerableSet', async () => {
 
       describe('#indexOf(uint256)', () => {
         it('returns index of the value', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.equal(0);
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              one,
+              oneUint256,
             ),
           ).to.equal(2);
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              two,
+              twoUint256,
             ),
           ).to.equal(1);
 
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, one);
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, twoUint256);
 
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              two,
+              twoUint256,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              one,
+              oneUint256,
             ),
           ).to.be.equal(ethers.MaxUint256);
 
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.equal(ethers.MaxUint256);
         });
@@ -735,7 +813,7 @@ describe('EnumerableSet', async () => {
           expect(
             await instance['$indexOf(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.equal(ethers.MaxUint256);
         });
@@ -749,42 +827,42 @@ describe('EnumerableSet', async () => {
             ),
           ).to.equal(0);
 
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(3);
 
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, twoUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(2);
 
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, oneUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
             ),
           ).to.equal(1);
 
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
           expect(
             await instance.$length_EnumerableSet_UintSet.staticCall(
               STORAGE_SLOT,
@@ -795,32 +873,32 @@ describe('EnumerableSet', async () => {
 
       describe('#add(uint256)', () => {
         it('adds value to set', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
 
           expect(
-            await instance.$toArray_EnumerableSet_UintSet.staticCall(
-              STORAGE_SLOT,
-            ),
-          ).to.deep.equal([zero, one, two]);
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
+          ).to.deep.equal([zeroUint256, oneUint256, twoUint256]);
         });
 
         it('returns true if value is added', async () => {
           expect(
             await instance['$add(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.true;
         });
 
         it('returns false if value has already been added', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
           expect(
             await instance['$add(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.false;
         });
@@ -828,27 +906,27 @@ describe('EnumerableSet', async () => {
 
       describe('#remove(uint256)', () => {
         it('removes value from set', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
 
-          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zero);
+          await instance['$remove(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
           expect(
-            await instance.$toArray_EnumerableSet_UintSet.staticCall(
-              STORAGE_SLOT,
-            ),
-          ).to.deep.equal([two, one]);
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
+          ).to.deep.equal([twoUint256, oneUint256]);
         });
 
         it('returns true if value is removed', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
 
           expect(
             await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.true;
         });
@@ -857,7 +935,7 @@ describe('EnumerableSet', async () => {
           expect(
             await instance['$remove(uint256,uint256)'].staticCall(
               STORAGE_SLOT,
-              zero,
+              zeroUint256,
             ),
           ).to.be.false;
         });
@@ -865,15 +943,54 @@ describe('EnumerableSet', async () => {
 
       describe('#toArray()', () => {
         it('returns the set as an array', async () => {
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zero);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, two);
-          await instance['$add(uint256,uint256)'](STORAGE_SLOT, one);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
           expect(
-            await instance.$toArray_EnumerableSet_UintSet.staticCall(
-              STORAGE_SLOT,
-            ),
-          ).to.deep.equal([zero, two, one]);
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256)'
+            ].staticCall(STORAGE_SLOT),
+          ).to.deep.equal([zeroUint256, twoUint256, oneUint256]);
+        });
+      });
+
+      describe('#toArray(uint256,uint256)', () => {
+        it('returns the set as an array', async () => {
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+          await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 3n),
+          ).to.deep.equal([zeroUint256, twoUint256, oneUint256]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 0n, 1n),
+          ).to.deep.equal([zeroUint256]);
+
+          expect(
+            await instance[
+              '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
+            ].staticCall(STORAGE_SLOT, 2n, 1n),
+          ).to.deep.equal([oneUint256]);
+        });
+
+        describe('reverts if', () => {
+          it('start index is out of bounds', async () => {
+            await expect(
+              instance[
+                '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
+              ].staticCall(STORAGE_SLOT, 0n, 0n),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'EnumerableSet__IndexOutOfBounds',
+            );
+          });
         });
       });
     });

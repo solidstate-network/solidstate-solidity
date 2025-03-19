@@ -2,11 +2,16 @@
 
 pragma solidity ^0.8.20;
 
+import { ArrayUtils } from '../utils/ArrayUtils.sol';
+import { Math } from '../utils/Math.sol';
+
 /**
  * @title Set implementation with enumeration functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableSet {
+    using ArrayUtils for bytes32[];
+
     error EnumerableSet__IndexOutOfBounds();
 
     struct Set {
@@ -144,33 +149,51 @@ library EnumerableSet {
     function toArray(
         Bytes32Set storage set
     ) internal view returns (bytes32[] memory) {
-        return set._inner._values;
+        return _toArray(set._inner);
     }
 
     function toArray(
         AddressSet storage set
     ) internal view returns (address[] memory) {
-        bytes32[] storage values = set._inner._values;
-        address[] storage array;
-
-        assembly {
-            array.slot := values.slot
-        }
-
-        return array;
+        return _toArray(set._inner).toAddressArray();
     }
 
     function toArray(
         UintSet storage set
     ) internal view returns (uint256[] memory) {
-        bytes32[] storage values = set._inner._values;
-        uint256[] storage array;
+        return _toArray(set._inner).toUint256Array();
+    }
+
+    function toArray(
+        Bytes32Set storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (bytes32[] memory array) {
+        array = _toArray(set._inner, startIndex, count);
+    }
+
+    function toArray(
+        AddressSet storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (address[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
 
         assembly {
-            array.slot := values.slot
+            array := bytes32Array
         }
+    }
 
-        return array;
+    function toArray(
+        UintSet storage set,
+        uint256 startIndex,
+        uint256 count
+    ) internal view returns (uint256[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
+
+        assembly {
+            array := bytes32Array
+        }
     }
 
     function _at(
@@ -234,6 +257,30 @@ library EnumerableSet {
             delete set._indexes[value];
 
             status = true;
+        }
+    }
+
+    function _toArray(
+        Set storage set
+    ) private view returns (bytes32[] storage array) {
+        array = set._values;
+    }
+
+    function _toArray(
+        Set storage set,
+        uint256 startIndex,
+        uint256 count
+    ) private view returns (bytes32[] memory array) {
+        unchecked {
+            uint256 size = _length(set);
+
+            if (startIndex >= size) revert EnumerableSet__IndexOutOfBounds();
+
+            array = new bytes32[](Math.min(count, size - startIndex));
+
+            for (uint256 i; i < count; i++) {
+                array[i] = set._values[startIndex + i];
+            }
         }
     }
 }

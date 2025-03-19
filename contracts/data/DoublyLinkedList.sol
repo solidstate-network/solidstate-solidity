@@ -290,6 +290,46 @@ library DoublyLinkedList {
         status = _replace(self._inner, bytes32(oldValue), bytes32(newValue));
     }
 
+    function toArray(
+        Bytes32List storage self,
+        bytes32 prevValue,
+        uint256 count
+    ) internal view returns (bytes32[] memory array) {
+        array = _toArray(self._inner, prevValue, count);
+    }
+
+    function toArray(
+        AddressList storage self,
+        address prevValue,
+        uint256 count
+    ) internal view returns (address[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(
+            self._inner,
+            bytes32(uint256(uint160(prevValue))),
+            count
+        );
+
+        assembly {
+            array := bytes32Array
+        }
+    }
+
+    function toArray(
+        Uint256List storage self,
+        uint256 prevValue,
+        uint256 count
+    ) internal view returns (uint256[] memory array) {
+        bytes32[] memory bytes32Array = _toArray(
+            self._inner,
+            bytes32(prevValue),
+            count
+        );
+
+        assembly {
+            array := bytes32Array
+        }
+    }
+
     function _contains(
         _DoublyLinkedList storage self,
         bytes32 value
@@ -422,6 +462,32 @@ library DoublyLinkedList {
         if (status) {
             delete self._prevValues[oldValue];
             delete self._nextValues[oldValue];
+        }
+    }
+
+    function _toArray(
+        _DoublyLinkedList storage self,
+        bytes32 prevValue,
+        uint256 count
+    ) private view returns (bytes32[] memory array) {
+        array = new bytes32[](count);
+
+        for (uint i; i < count; i++) {
+            bytes32 nextValue = self._nextValues[prevValue];
+
+            if (nextValue == 0) {
+                if (i == 0 && _prev(self, 0) != prevValue)
+                    revert DoublyLinkedList__NonExistentEntry();
+
+                // truncate the array if end of list is reached
+                assembly {
+                    mstore(array, i)
+                }
+
+                break;
+            }
+
+            array[i] = prevValue = nextValue;
         }
     }
 

@@ -200,21 +200,4 @@ abstract contract _DiamondProxyReadable is
             mstore(addresses, numFacets)
         }
     }
-
-    /**
-     * @notice get the address of the facet associated with given selector
-     * @param selector function selector to query
-     * @return facet facet address (zero address if not found)
-     */
-    function _facetAddress(
-        bytes4 selector
-    ) internal view returns (address facet) {
-        facet = address(
-            bytes20(
-                ERC2535Storage
-                    .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
-                    .selectorInfo[selector]
-            )
-        );
-    }
 }

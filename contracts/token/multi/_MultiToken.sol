@@ -6,13 +6,14 @@ import { IERC1155Receiver } from '../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC1155Storage } from '../../storage/ERC1155Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IMultiToken } from './_IMultiToken.sol';
 
 /**
  * @title Base MultiToken internal functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract _MultiToken is _IMultiToken, _Introspectable {
+abstract contract _MultiToken is _IMultiToken, _Introspectable, _Context {
     using AddressUtils for address;
 
     /**
@@ -83,11 +84,11 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         address operator,
         bool status
     ) internal virtual {
-        if (msg.sender == operator) revert MultiToken__SelfApproval();
+        if (_msgSender() == operator) revert MultiToken__SelfApproval();
         ERC1155Storage
             .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
-            .operatorApprovals[msg.sender][operator] = status;
-        emit ApprovalForAll(msg.sender, operator, status);
+            .operatorApprovals[_msgSender()][operator] = status;
+        emit ApprovalForAll(_msgSender(), operator, status);
     }
 
     /**
@@ -107,7 +108,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         if (account == address(0)) revert MultiToken__MintToZeroAddress();
 
         _beforeTokenTransfer(
-            msg.sender,
+            _msgSender(),
             address(0),
             account,
             _asSingletonArray(id),
@@ -119,7 +120,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
             account
         ] += amount;
 
-        emit TransferSingle(msg.sender, address(0), account, id, amount);
+        emit TransferSingle(_msgSender(), address(0), account, id, amount);
     }
 
     /**
@@ -138,7 +139,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         _mint(account, id, amount, data);
 
         _doSafeTransferAcceptanceCheck(
-            msg.sender,
+            _msgSender(),
             address(0),
             account,
             id,
@@ -166,7 +167,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
             revert MultiToken__ArrayLengthMismatch();
 
         _beforeTokenTransfer(
-            msg.sender,
+            _msgSender(),
             address(0),
             account,
             ids,
@@ -186,7 +187,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
             }
         }
 
-        emit TransferBatch(msg.sender, address(0), account, ids, amounts);
+        emit TransferBatch(_msgSender(), address(0), account, ids, amounts);
     }
 
     /**
@@ -205,7 +206,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         _mintBatch(account, ids, amounts, data);
 
         _doSafeBatchTransferAcceptanceCheck(
-            msg.sender,
+            _msgSender(),
             address(0),
             account,
             ids,
@@ -228,7 +229,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         if (account == address(0)) revert MultiToken__BurnFromZeroAddress();
 
         _beforeTokenTransfer(
-            msg.sender,
+            _msgSender(),
             account,
             address(0),
             _asSingletonArray(id),
@@ -246,7 +247,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
             balances[account] -= amount;
         }
 
-        emit TransferSingle(msg.sender, account, address(0), id, amount);
+        emit TransferSingle(_msgSender(), account, address(0), id, amount);
     }
 
     /**
@@ -264,7 +265,14 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         if (ids.length != amounts.length)
             revert MultiToken__ArrayLengthMismatch();
 
-        _beforeTokenTransfer(msg.sender, account, address(0), ids, amounts, '');
+        _beforeTokenTransfer(
+            _msgSender(),
+            account,
+            address(0),
+            ids,
+            amounts,
+            ''
+        );
 
         mapping(uint256 => mapping(address => uint256))
             storage balances = ERC1155Storage
@@ -280,7 +288,7 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
             }
         }
 
-        emit TransferBatch(msg.sender, account, address(0), ids, amounts);
+        emit TransferBatch(_msgSender(), account, address(0), ids, amounts);
     }
 
     function _safeTransferFrom(
@@ -290,9 +298,9 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         uint256 amount,
         bytes memory data
     ) internal virtual {
-        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+        if (from != _msgSender() && !_isApprovedForAll(from, _msgSender()))
             revert MultiToken__NotOwnerOrApproved();
-        _safeTransfer(msg.sender, from, to, id, amount, data);
+        _safeTransfer(_msgSender(), from, to, id, amount, data);
     }
 
     function _safeBatchTransferFrom(
@@ -302,9 +310,9 @@ abstract contract _MultiToken is _IMultiToken, _Introspectable {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        if (from != msg.sender && !_isApprovedForAll(from, msg.sender))
+        if (from != _msgSender() && !_isApprovedForAll(from, _msgSender()))
             revert MultiToken__NotOwnerOrApproved();
-        _safeTransferBatch(msg.sender, from, to, ids, amounts, data);
+        _safeTransferBatch(_msgSender(), from, to, ids, amounts, data);
     }
 
     /**

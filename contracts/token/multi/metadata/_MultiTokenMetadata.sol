@@ -25,10 +25,24 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
         if (bytes(baseURI).length == 0) {
             return tokenURI;
         } else if (bytes(tokenURI).length == 0) {
-            return string(abi.encodePacked(baseURI, tokenId.toDecString()));
+            return
+                string(
+                    abi.encodePacked(baseURI, _generateDefaultTokenURI(tokenId))
+                );
         } else {
             return string(abi.encodePacked(baseURI, tokenURI));
         }
+    }
+
+    /**
+     * @notice generate URI component for token id
+     * @dev padded hex string is used to match https://eips.ethereum.org/EIPS/eip-1155#metadata
+     * @return tokenURI token URI component
+     */
+    function _generateDefaultTokenURI(
+        uint256 tokenId
+    ) internal view virtual returns (string memory tokenURI) {
+        tokenURI = tokenId.toString(16, 64);
     }
 
     /**

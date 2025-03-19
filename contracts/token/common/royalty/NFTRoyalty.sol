@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
+import { IERC2981 } from '../../../interfaces/IERC2981.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { INFTRoyalty } from './INFTRoyalty.sol';
-import { ERC2981Storage } from '../../../storage/ERC2981Storage.sol';
 import { _NFTRoyalty } from './_NFTRoyalty.sol';
 
 /**
@@ -12,7 +12,7 @@ import { _NFTRoyalty } from './_NFTRoyalty.sol';
  */
 abstract contract NFTRoyalty is INFTRoyalty, _NFTRoyalty, Introspectable {
     /**
-     * @notice inheritdoc INFTRoyalty
+     * @inheritdoc IERC2981
      */
     function royaltyInfo(
         uint256 tokenId,

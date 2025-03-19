@@ -3,12 +3,13 @@
 pragma solidity ^0.8.20;
 
 import { PausableStorage } from '../../storage/PausableStorage.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
 
 /**
  * @title Internal functions for PartiallyPausable security control module.
  */
-abstract contract _PartiallyPausable is _IPartiallyPausable {
+abstract contract _PartiallyPausable is _IPartiallyPausable, _Context {
     modifier whenNotPartiallyPaused(bytes32 key) {
         if (_partiallyPaused(key)) revert PartiallyPausable__PartiallyPaused();
         _;
@@ -42,7 +43,7 @@ abstract contract _PartiallyPausable is _IPartiallyPausable {
         PausableStorage
             .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key] = true;
-        emit PartiallyPaused(msg.sender, key);
+        emit PartiallyPaused(_msgSender(), key);
     }
 
     /**
@@ -55,6 +56,6 @@ abstract contract _PartiallyPausable is _IPartiallyPausable {
         delete PausableStorage
             .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key];
-        emit PartiallyUnpaused(msg.sender, key);
+        emit PartiallyUnpaused(_msgSender(), key);
     }
 }

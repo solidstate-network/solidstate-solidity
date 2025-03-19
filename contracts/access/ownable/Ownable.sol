@@ -3,7 +3,6 @@
 pragma solidity ^0.8.20;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
-import { IERC5313 } from '../../interfaces/IERC5313.sol';
 import { IOwnable } from './IOwnable.sol';
 import { _Ownable } from './_Ownable.sol';
 
@@ -12,7 +11,7 @@ import { _Ownable } from './_Ownable.sol';
  */
 abstract contract Ownable is IOwnable, _Ownable {
     /**
-     * @inheritdoc IERC5313
+     * @inheritdoc IERC173
      */
     function owner() external view returns (address) {
         return _owner();

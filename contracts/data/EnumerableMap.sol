@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { Math } from '../utils/Math.sol';
+
 /**
  * @title Map implementation with enumeration functions
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
@@ -154,6 +156,33 @@ library EnumerableMap {
     }
 
     function toArray(
+        AddressToAddressMap storage map,
+        uint256 startIndex,
+        uint256 count
+    )
+        internal
+        view
+        returns (address[] memory keysOut, address[] memory valuesOut)
+    {
+        uint256 size = length(map);
+
+        if (startIndex >= size) revert EnumerableMap__IndexOutOfBounds();
+
+        uint256 outputSize = Math.min(count, size - startIndex);
+        keysOut = new address[](outputSize);
+        valuesOut = new address[](outputSize);
+
+        for (uint256 i; i < count; i++) {
+            keysOut[i] = address(
+                uint160(uint256(map._inner._entries[startIndex + i]._key))
+            );
+            valuesOut[i] = address(
+                uint160(uint256(map._inner._entries[startIndex + i]._value))
+            );
+        }
+    }
+
+    function toArray(
         UintToAddressMap storage map
     )
         internal
@@ -172,6 +201,31 @@ library EnumerableMap {
                     uint160(uint256(map._inner._entries[i]._value))
                 );
             }
+        }
+    }
+
+    function toArray(
+        UintToAddressMap storage map,
+        uint256 startIndex,
+        uint256 count
+    )
+        internal
+        view
+        returns (uint256[] memory keysOut, address[] memory valuesOut)
+    {
+        uint256 size = length(map);
+
+        if (startIndex >= size) revert EnumerableMap__IndexOutOfBounds();
+
+        uint256 outputSize = Math.min(count, size - startIndex);
+        keysOut = new uint256[](outputSize);
+        valuesOut = new address[](outputSize);
+
+        for (uint256 i; i < count; i++) {
+            keysOut[i] = uint256(map._inner._entries[startIndex + i]._key);
+            valuesOut[i] = address(
+                uint160(uint256(map._inner._entries[startIndex + i]._value))
+            );
         }
     }
 
