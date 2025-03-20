@@ -3,8 +3,27 @@ import {
   $ForwardedMetaTransactionContext,
   $ForwardedMetaTransactionContext__factory,
 } from '@solidstate/typechain-types';
+import { TypedContractMethod } from '@solidstate/typechain-types/common';
 import { expect } from 'chai';
+import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
+
+const callMetaTransaction = async (
+  signer: SignerWithAddress,
+  fn: TypedContractMethod<[], [string], 'view'>,
+  data: BytesLike,
+  args: any[] = [],
+) => {
+  const tx = await fn.populateTransaction();
+  tx.data = ethers.concat([tx.data, data]);
+
+  const result = await signer.call(tx);
+
+  return new ethers.Interface([fn.fragment]).decodeFunctionResult(
+    fn.name,
+    result,
+  );
+};
 
 describe('ForwardedMetaTransactionContext', () => {
   let instance: $ForwardedMetaTransactionContext;
@@ -21,17 +40,14 @@ describe('ForwardedMetaTransactionContext', () => {
 
   describe('__internal', () => {
     describe('#_msgSender()', () => {
-      it('returns message sender is sender is not trusted forwarder', async () => {
-        const tx = await instance.$_msgSender.populateTransaction();
-        tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
-
-        const result = await deployer.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgSender',
-          result,
-        );
-
-        expect(decoded).to.deep.equal([await deployer.getAddress()]);
+      it('returns message sender if sender is not trusted forwarder', async () => {
+        expect(
+          await callMetaTransaction(
+            deployer,
+            instance.$_msgSender,
+            ethers.randomBytes(20),
+          ),
+        ).to.deep.equal([await deployer.getAddress()]);
       });
 
       it('returns forwarded sender if sender is trusted forwarder', async () => {
@@ -44,33 +60,26 @@ describe('ForwardedMetaTransactionContext', () => {
 
         const forwardedAddress = ethers.hexlify(ethers.randomBytes(20));
 
-        const tx = await instance.$_msgSender.populateTransaction();
-        tx.data = ethers.concat([tx.data, forwardedAddress]);
-
-        const result = await trustedForwarder.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgSender',
-          result,
-        );
-
-        expect(decoded).to.deep.equal([forwardedAddress]);
+        expect(
+          await callMetaTransaction(
+            trustedForwarder,
+            instance.$_msgSender,
+            forwardedAddress,
+          ),
+        ).to.deep.equal([forwardedAddress]);
       });
     });
 
     describe('#_msgData()', () => {
       it('returns complete message data if sender is not trusted forwarder', async () => {
-        const tx = await instance.$_msgData.populateTransaction();
-        tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
+        const nonSuffixedData = instance.$_msgData.fragment.selector;
+        const data = ethers.randomBytes(20);
 
         // message data is returned as received, demonstrating the malleability of msg.data
 
-        const result = await deployer.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgData',
-          result,
-        );
-
-        expect(decoded).to.deep.equal([tx.data]);
+        expect(
+          await callMetaTransaction(deployer, instance.$_msgData, data),
+        ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
       });
 
       it('returns message data without suffix if sender is trusted forwarder', async () => {
@@ -81,19 +90,15 @@ describe('ForwardedMetaTransactionContext', () => {
           await trustedForwarder.getAddress(),
         );
 
-        const tx = await instance.$_msgData.populateTransaction();
-        const nonSuffixedData = tx.data;
-        tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
+        const nonSuffixedData = instance.$_msgData.fragment.selector;
 
-        // message data is returned as received, demonstrating the malleability of msg.data
-
-        const result = await trustedForwarder.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgData',
-          result,
-        );
-
-        expect(decoded).to.deep.equal([nonSuffixedData]);
+        expect(
+          await callMetaTransaction(
+            trustedForwarder,
+            instance.$_msgData,
+            ethers.randomBytes(20),
+          ),
+        ).to.deep.equal([nonSuffixedData]);
       });
     });
 
