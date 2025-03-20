@@ -79,6 +79,8 @@ abstract contract _ECDSAMetaTransactionContext is
                 }
             }
         } else {
+            // calldata is too short for this to be a valid meta transaction
+            // return message sender as-is
             msgSender = super._msgSender();
         }
     }
@@ -117,6 +119,8 @@ abstract contract _ECDSAMetaTransactionContext is
 
             msgData = msg.data[:split];
         } else {
+            // calldata is too short for this to be a valid meta transaction
+            // return message data as-is
             msgData = super._msgData();
         }
     }
@@ -143,7 +147,7 @@ abstract contract _ECDSAMetaTransactionContext is
             msgSender = address(bytes20(msg.data[split:split + 20]));
             bytes calldata signature = msg.data[split + 20:];
 
-            // TODO: lookup nonce
+            // TODO: lookup and invalidate nonce
             uint256 nonce = 1;
 
             // TODO: include msg.sender in hash to restrict forwarder?
@@ -189,8 +193,6 @@ abstract contract _ECDSAMetaTransactionContext is
             // TODO: see what happens if split calldata v r s
             address signer = signedHash.tryRecover(signature);
 
-            // TODO: invalidate nonce
-
             if (signer == msgSender) {
                 msgDataIndex = split;
             } else {
@@ -202,6 +204,8 @@ abstract contract _ECDSAMetaTransactionContext is
         bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
 
         assembly {
+            // it is necessary to store metadata in transient storage because
+            // subsequent derivation will fail due to none invalidation
             // TODO: suppress warning
             // TODO: pack (msgDataIndex as bytes12)
             tstore(slot, msgSender)
