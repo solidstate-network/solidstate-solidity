@@ -160,6 +160,43 @@ library ECDSA {
     }
 
     /**
+     * @notice generate an EIP712 signable hash of typed structured data
+     * @param domainSeparator EIP712 domain separator
+     * @param structHash hash of underlying signed data generated through the EIP712 "hashStruct" process
+     * @return recoverableHash hash to validate against signature via ECDSA function
+     */
+    function toEIP712RecoverableHash(
+        bytes32 domainSeparator,
+        bytes32 structHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // signedHash = keccak256(
+            //   abi.encodePacked(
+            //     uint16(0x1901),
+            //     domainSeparator,
+            //     structHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            // this magic value is the EIP-191 signed data header, consisting of
+            // the hardcoded 0x19 and the one-byte version 0x01
+            mstore(
+                pointer,
+                0x1901000000000000000000000000000000000000000000000000000000000000
+            )
+            mstore(add(pointer, 2), domainSeparator)
+            mstore(add(pointer, 34), structHash)
+
+            recoverableHash := keccak256(pointer, 66)
+        }
+    }
+
+    /**
      * @notice wrapper function for passing custom errors internally
      */
     function _revert_ECDSA__InvalidS() private pure {
