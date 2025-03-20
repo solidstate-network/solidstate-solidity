@@ -13,7 +13,7 @@ library ECDSA {
     error ECDSA__InvalidV();
 
     /**
-     * @notice recover signer of hashed message from signature
+     * @notice recover signer of hashed message from signature, reverting on failure
      * @param hash hashed data payload
      * @param signature signed data payload
      * @return signer recovered message signer
@@ -32,7 +32,7 @@ library ECDSA {
     }
 
     /**
-     * @notice recover signer of hashed message from signature v, r, and s values
+     * @notice recover signer of hashed message from signature v, r, and s values, reverting on failure
      * @param hash hashed data payload
      * @param v signature "v" value
      * @param r signature "r" value
@@ -55,11 +55,11 @@ library ECDSA {
     }
 
     /**
-     * @notice recover signer of hashed message from signature
+     * @notice attempt to recover signer of hashed message from signature
      * @param hash hashed data payload
      * @param signature signed data payload
-     * @return signer recovered message signer
-     * @return errorFn selector of custom error (zero selector if no error is found)
+     * @return signer recovered message signer (zero address on recovery failure)
+     * @return errorFn wrapper function around custom error revert
      */
     function tryRecover(
         bytes32 hash,
@@ -83,13 +83,13 @@ library ECDSA {
     }
 
     /**
-     * @notice recover signer of hashed message from signature v, r, and s values
+     * @notice attempt to recover signer of hashed message from signature v, r, and s values
      * @param hash hashed data payload
      * @param v signature "v" value
      * @param r signature "r" value
      * @param s signature "s" value
-     * @return signer recovered message signer
-     * @return errorFn selector of custom error (zero selector if no error is found)
+     * @return signer recovered message signer (zero address on recovery failure)
+     * @return errorFn wrapper function around custom error revert
      */
     function tryRecover(
         bytes32 hash,
