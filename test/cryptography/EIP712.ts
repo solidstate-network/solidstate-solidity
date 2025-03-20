@@ -17,6 +17,262 @@ describe('EIP712', () => {
     chainId = await ethers.provider.send('eth_chainId');
   });
 
+  describe('#ERC5267_FIELDS_00000()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00000.staticCall()).to.hexEqual(
+        '0x00',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00001()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00001.staticCall()).to.hexEqual(
+        '0x01',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00010()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00010.staticCall()).to.hexEqual(
+        '0x02',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00011()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00011.staticCall()).to.hexEqual(
+        '0x03',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00100()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00100.staticCall()).to.hexEqual(
+        '0x04',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00101()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00101.staticCall()).to.hexEqual(
+        '0x05',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00110()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00110.staticCall()).to.hexEqual(
+        '0x06',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_00111()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_00111.staticCall()).to.hexEqual(
+        '0x07',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01000()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01000.staticCall()).to.hexEqual(
+        '0x08',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01001()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01001.staticCall()).to.hexEqual(
+        '0x09',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01010()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01010.staticCall()).to.hexEqual(
+        '0x0a',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01011()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01011.staticCall()).to.hexEqual(
+        '0x0b',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01100()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01100.staticCall()).to.hexEqual(
+        '0x0c',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01101()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01101.staticCall()).to.hexEqual(
+        '0x0d',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01110()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01110.staticCall()).to.hexEqual(
+        '0x0e',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_01111()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_01111.staticCall()).to.hexEqual(
+        '0x0f',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10000()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10000.staticCall()).to.hexEqual(
+        '0x10',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10001()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10001.staticCall()).to.hexEqual(
+        '0x11',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10010()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10010.staticCall()).to.hexEqual(
+        '0x12',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10011()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10011.staticCall()).to.hexEqual(
+        '0x13',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10100()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10100.staticCall()).to.hexEqual(
+        '0x14',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10101()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10101.staticCall()).to.hexEqual(
+        '0x15',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10110()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10110.staticCall()).to.hexEqual(
+        '0x16',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_10111()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_10111.staticCall()).to.hexEqual(
+        '0x17',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11000()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11000.staticCall()).to.hexEqual(
+        '0x18',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11001()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11001.staticCall()).to.hexEqual(
+        '0x19',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11010()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11010.staticCall()).to.hexEqual(
+        '0x1a',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11011()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11011.staticCall()).to.hexEqual(
+        '0x1b',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11100()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11100.staticCall()).to.hexEqual(
+        '0x1c',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11101()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11101.staticCall()).to.hexEqual(
+        '0x1d',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11110()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11110.staticCall()).to.hexEqual(
+        '0x1e',
+      );
+    });
+  });
+
+  describe('#ERC5267_FIELDS_11111()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$ERC5267_FIELDS_11111.staticCall()).to.hexEqual(
+        '0x1f',
+      );
+    });
+  });
+
   describe('#EIP_712_DOMAIN_HASH_00000()', () => {
     it('resolves to expected value', async () => {
       expect(await instance.$EIP_712_DOMAIN_HASH_00000.staticCall()).to.equal(

@@ -8,6 +8,166 @@ pragma solidity ^0.8.20;
  **/
 library EIP712 {
     /**
+     * @dev ERC5267 fields value 00000 ()
+     */
+    bytes1 internal constant ERC5267_FIELDS_00000 = hex'00';
+
+    /**
+     * @dev ERC5267 fields value 00001 (name)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00001 = hex'01';
+
+    /**
+     * @dev ERC5267 fields value 00010 (version)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00010 = hex'02';
+
+    /**
+     * @dev ERC5267 fields value 00011 (name, version)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00011 = hex'03';
+
+    /**
+     * @dev ERC5267 fields value 00100 (chainId)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00100 = hex'04';
+
+    /**
+     * @dev ERC5267 fields value 00101 (name, chainId)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00101 = hex'05';
+
+    /**
+     * @dev ERC5267 fields value 00110 (version, chainId)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00110 = hex'06';
+
+    /**
+     * @dev ERC5267 fields value 00111 (name, version, chainId)
+     */
+    bytes1 internal constant ERC5267_FIELDS_00111 = hex'07';
+
+    /**
+     * @dev ERC5267 fields value 01000 (verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01000 = hex'08';
+
+    /**
+     * @dev ERC5267 fields value 01001 (name, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01001 = hex'09';
+
+    /**
+     * @dev ERC5267 fields value 01010 (version, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01010 = hex'0a';
+
+    /**
+     * @dev ERC5267 fields value 01011 (name, version, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01011 = hex'0b';
+
+    /**
+     * @dev ERC5267 fields value 01100 (chainId, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01100 = hex'0c';
+
+    /**
+     * @dev ERC5267 fields value 01101 (name, chainId, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01101 = hex'0d';
+
+    /**
+     * @dev ERC5267 fields value 01110 (version, chainId, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01110 = hex'0e';
+
+    /**
+     * @dev ERC5267 fields value 01111 (name, version, chainId, verifyingContract)
+     */
+    bytes1 internal constant ERC5267_FIELDS_01111 = hex'0f';
+
+    /**
+     * @dev ERC5267 fields value 10000 (salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10000 = hex'10';
+
+    /**
+     * @dev ERC5267 fields value 10001 (name, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10001 = hex'11';
+
+    /**
+     * @dev ERC5267 fields value 10010 (version, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10010 = hex'12';
+
+    /**
+     * @dev ERC5267 fields value 10011 (name, version, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10011 = hex'13';
+
+    /**
+     * @dev ERC5267 fields value 10100 (chainId, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10100 = hex'14';
+
+    /**
+     * @dev ERC5267 fields value 10101 (name, chainId, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10101 = hex'15';
+
+    /**
+     * @dev ERC5267 fields value 10110 (version, chainId, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10110 = hex'16';
+
+    /**
+     * @dev ERC5267 fields value 10111 (name, version, chainId, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_10111 = hex'17';
+
+    /**
+     * @dev ERC5267 fields value 11000 (verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11000 = hex'18';
+
+    /**
+     * @dev ERC5267 fields value 11001 (name, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11001 = hex'19';
+
+    /**
+     * @dev ERC5267 fields value 11010 (version, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11010 = hex'1a';
+
+    /**
+     * @dev ERC5267 fields value 11011 (name, version, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11011 = hex'1b';
+
+    /**
+     * @dev ERC5267 fields value 11100 (chainId, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11100 = hex'1c';
+
+    /**
+     * @dev ERC5267 fields value 11101 (name, chainId, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11101 = hex'1d';
+
+    /**
+     * @dev ERC5267 fields value 11110 (version, chainId, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11110 = hex'1e';
+
+    /**
+     * @dev ERC5267 fields value 11111 (name, version, chainId, verifyingContract, salt)
+     */
+    bytes1 internal constant ERC5267_FIELDS_11111 = hex'1f';
+
+    /**
      * @dev EIP712Domain hash corresponding to ERC5267 fields value 00000 ()
      * @dev evaluates to 0x20bcc3f8105eea47d067386e42e60246e89393cd61c512edd1e87688890fb914
      */

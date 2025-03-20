@@ -14,34 +14,41 @@ pragma solidity ^0.8.20;
  * @dev see https://eips.ethereum.org/EIPS/eip-712
  **/
 library <%- name %> {
-    <% for (const c of constantDefinitions) { %>
+    <% for (const el of fieldsConstantDefinitions) { %>
     /**
-     * @dev EIP712Domain hash corresponding to ERC5267 fields value <%- c.binString %> (<%- c.fields.join(', ') %>)
-     * @dev evaluates to <%- c.keccak %>
+     * @dev ERC5267 fields value <%- el.bin %> (<%- el.fields.join(', ') %>)
      */
-    bytes32 internal constant <%- c.name %> = keccak256('<%- c.domainString %>');
+    bytes1 internal constant <%- el.name %> = hex'<%- el.hex %>';
     <% } %>
 
-    <% for (const fn of functionDefinitions) { %>
+    <% for (const el of constantDefinitions) { %>
+    /**
+     * @dev EIP712Domain hash corresponding to ERC5267 fields value <%- el.binString %> (<%- el.fields.join(', ') %>)
+     * @dev evaluates to <%- el.keccak %>
+     */
+    bytes32 internal constant <%- el.name %> = keccak256('<%- el.domainString %>');
+    <% } %>
+
+    <% for (const el of functionDefinitions) { %>
     /**
      * @notice calculate unique EIP-712 domain separator
-    <%_ for (const f of fn.fields.filter((f) => data[f].description)) { _%>
+    <%_ for (const f of el.fields.filter((f) => data[f].description)) { _%>
      * @param <%- data[f].packedName ?? f %> <%- data[f].description %>
     <%_ } _%>
      * @return domainSeparator domain separator
      */
-    function <%- fn.name %>(<%- fn.parameters %>) internal <%- fn.visibility %> returns (bytes32 domainSeparator) {
-        bytes32 typeHash = <%- fn.hashName %>;
+    function <%- el.name %>(<%- el.parameters %>) internal <%- el.visibility %> returns (bytes32 domainSeparator) {
+        bytes32 typeHash = <%- el.hashName %>;
 
         assembly {
             let pointer := mload(64)
 
             mstore(pointer, typeHash)
-            <%_ for (let i = 0; i < fn.assemblyReferences.length; i++) { _%>
-            mstore(add(pointer, <%- (i + 1) * 32 %>), <%- fn.assemblyReferences[i] %>)
+            <%_ for (let i = 0; i < el.assemblyReferences.length; i++) { _%>
+            mstore(add(pointer, <%- (i + 1) * 32 %>), <%- el.assemblyReferences[i] %>)
             <%_ } _%>
 
-            domainSeparator := keccak256(pointer, <%- (fn.fields.length + 1) * 32 %>)
+            domainSeparator := keccak256(pointer, <%- (el.fields.length + 1) * 32 %>)
         }
     }
     <% } %>
@@ -67,6 +74,14 @@ describe('<%- name %>', () => {
     verifyingContract = await instance.getAddress();
     chainId = await ethers.provider.send('eth_chainId');
   });
+
+  <% for (const el of fieldsConstantDefinitions) { %>
+  describe('#<%- el.name %>()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$<%- el.name %>.staticCall()).to.hexEqual('0x<%- el.hex %>');
+    });
+  });
+  <% } %>
 
   <% for (const c of constantDefinitions) { %>
   describe('#<%- c.name %>()', () => {
@@ -138,6 +153,7 @@ task('generate-eip-712', `Generate ${name}`).setAction(async (args, hre) => {
     },
   };
 
+  const fieldsConstantDefinitions = [];
   const constantDefinitions = [];
   const functionDefinitions = [];
 
@@ -153,6 +169,13 @@ task('generate-eip-712', `Generate ${name}`).setAction(async (args, hre) => {
       ['string'],
       [domainString],
     );
+
+    fieldsConstantDefinitions.push({
+      fields,
+      name: `ERC5267_FIELDS_${binString}`,
+      bin: binString,
+      hex: i.toString(16).padStart(2, '0'),
+    });
 
     constantDefinitions.push({
       fields,
@@ -198,6 +221,7 @@ task('generate-eip-712', `Generate ${name}`).setAction(async (args, hre) => {
   const templateData = {
     data,
     name,
+    fieldsConstantDefinitions,
     constantDefinitions,
     functionDefinitions,
   };

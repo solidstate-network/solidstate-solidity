@@ -85,7 +85,7 @@ abstract contract _FungibleTokenPermit is
         )
     {
         return (
-            hex'0f', // 01111
+            EIP712.ERC5267_FIELDS_01111,
             _name(),
             _version(),
             block.chainid,
