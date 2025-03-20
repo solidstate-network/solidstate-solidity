@@ -18,7 +18,7 @@ library <%- name %> {
     /**
      * @dev ERC5267 fields value <%- el.bin %> (<%- el.fields.join(', ') %>)
      */
-    bytes1 internal constant ERC5267_FIELDS_<%- el.bin %> = hex'<%- el.hex %>';
+    bytes1 internal constant <%- el.name %> = hex'<%- el.hex %>';
     <% } %>
 
     <% for (const el of constantDefinitions) { %>
@@ -74,6 +74,14 @@ describe('<%- name %>', () => {
     verifyingContract = await instance.getAddress();
     chainId = await ethers.provider.send('eth_chainId');
   });
+
+  <% for (const el of fieldsConstantDefinitions) { %>
+  describe('#<%- el.name %>()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$<%- el.name %>.staticCall()).to.hexEqual('0x<%- el.hex %>');
+    });
+  });
+  <% } %>
 
   <% for (const c of constantDefinitions) { %>
   describe('#<%- c.name %>()', () => {
@@ -164,6 +172,7 @@ task('generate-eip-712', `Generate ${name}`).setAction(async (args, hre) => {
 
     fieldsConstantDefinitions.push({
       fields,
+      name: `ERC5267_FIELDS_${binString}`,
       bin: binString,
       hex: i.toString(16).padStart(2, '0'),
     });
