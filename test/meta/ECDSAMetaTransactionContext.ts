@@ -77,18 +77,16 @@ describe('ECDSAMetaTransactionContext', () => {
       });
 
       it('returns message sender if message data length is less than suffix length', async () => {
-        it('returns message sender if message data length is less than suffix length', async () => {
-          // account for 4-byte selector when calculting suffix length
-          const suffix = ethers.randomBytes(
-            Number(
-              (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
-            ),
-          );
+        // account for 4-byte selector when calculting suffix length
+        const suffix = ethers.randomBytes(
+          Number(
+            (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
+          ),
+        );
 
-          expect(
-            await callMetaTransaction(forwarder, instance.$_msgSender, suffix),
-          ).to.deep.equal([await forwarder.getAddress()]);
-        });
+        expect(
+          await callMetaTransaction(forwarder, instance.$_msgSender, suffix),
+        ).to.deep.equal([await forwarder.getAddress()]);
       });
     });
 
