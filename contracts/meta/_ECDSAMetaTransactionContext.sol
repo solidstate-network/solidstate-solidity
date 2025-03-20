@@ -14,7 +14,9 @@ abstract contract _ECDSAMetaTransactionContext is
     using ECDSA for bytes32;
 
     bytes32 internal constant EIP_712_TYPE_HASH =
-        keccak256('ECDSAMetaTransaction(bytes msgData,uint256 nonce)');
+        keccak256(
+            'ECDSAMetaTransaction(bytes msgData,uint256 msgValue,uint256 nonce)'
+        );
 
     bytes32
         internal constant ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT =
@@ -139,11 +141,16 @@ abstract contract _ECDSAMetaTransactionContext is
         unchecked {
             bytes calldata msgData = msg.data[:split];
             uint256 nonce = uint256(bytes32(msg.data[split:split + 32]));
+            bytes calldata signature = msg.data[split + 32:];
 
-            // TODO: include msg.sender in hash to restrict forwarder
-            // TODO: include msg.value
+            // TODO: include msg.sender in hash to restrict forwarder?
             bytes32 structHash = keccak256(
-                abi.encode(EIP_712_TYPE_HASH, keccak256(msgData), nonce)
+                abi.encode(
+                    EIP_712_TYPE_HASH,
+                    keccak256(msgData),
+                    msg.value,
+                    nonce
+                )
             );
 
             bytes32 domainSeparator = EIP712.calculateDomainSeparator_01100();
@@ -175,8 +182,6 @@ abstract contract _ECDSAMetaTransactionContext is
 
                 signedHash := keccak256(pointer, 66)
             }
-
-            bytes calldata signature = msg.data[split + 32:];
 
             // TODO: see what happens if split calldata v r s
             address signer = signedHash.tryRecover(signature);

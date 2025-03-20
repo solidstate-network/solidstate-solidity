@@ -107,6 +107,7 @@ const signECDSAMetaTransaction = async (
   instance: IERC5267,
   signer: SignerWithAddress,
   msgData: BytesLike,
+  msgValue: bigint,
   nonce: bigint,
 ): Promise<Signature> => {
   const domain = await getDomain(instance);
@@ -114,12 +115,14 @@ const signECDSAMetaTransaction = async (
   const types = {
     ECDSAMetaTransaction: [
       { name: 'msgData', type: 'bytes' },
+      { name: 'msgValue', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
     ],
   };
 
   const values = {
     msgData,
+    msgValue,
     nonce,
   };
 

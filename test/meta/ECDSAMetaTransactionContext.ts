@@ -43,16 +43,20 @@ describe('ECDSAMetaTransactionContext', () => {
 
   // TODO: test multiple calls in same tx to validate that transient storage is used correctly
 
+  // TODO: test msg.value revert cases
+
   describe('__internal', () => {
     describe('#_msgSender()', () => {
       it('returns signer if signature is valid', async () => {
         const data = instance.$_msgSender.fragment.selector;
         const nonce = 1n;
+        const value = 0n;
 
         const signature = await signECDSAMetaTransaction(
           instance,
           signer,
           data,
+          value,
           nonce,
         );
 
@@ -94,11 +98,13 @@ describe('ECDSAMetaTransactionContext', () => {
       it('returns message data without suffix if signature is valid', async () => {
         const nonSuffixedData = instance.$_msgData.fragment.selector;
         const nonce = 1n;
+        const value = 0n;
 
         const signature = await signECDSAMetaTransaction(
           instance,
           signer,
           nonSuffixedData,
+          value,
           nonce,
         );
 
