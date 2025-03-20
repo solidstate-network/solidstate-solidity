@@ -148,15 +148,30 @@ library ECDSA {
 
     /**
      * @notice generate an "Ethereum Signed Message" in the format returned by the eth_sign JSON-RPC method
-     * @param hash hashed data payload
-     * @return signedMessage signed message hash
+     * @param payloadHash hashed data payload
+     * @return recoverableHash hash to validate against signature via ECDSA function
      */
-    function toEthSignedMessageHash(
-        bytes32 hash
-    ) internal pure returns (bytes32 signedMessage) {
-        signedMessage = keccak256(
-            abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)
-        );
+    function toEthSignRecoverableHash(
+        bytes32 payloadHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // recoverableHash = keccak256(
+            //   abi.encodePacked(
+            //     '\x19Ethereum Signed Message:\n32',
+            //     payloadHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            mstore(pointer, '\x19Ethereum Signed Message:\n32')
+            mstore(add(pointer, 28), payloadHash)
+
+            recoverableHash := keccak256(pointer, 60)
+        }
     }
 
     /**
@@ -172,7 +187,7 @@ library ECDSA {
         assembly {
             // assembly block equivalent to:
             //
-            // signedHash = keccak256(
+            // recoverableHash = keccak256(
             //   abi.encodePacked(
             //     uint16(0x1901),
             //     domainSeparator,

@@ -294,12 +294,12 @@ describe('ECDSA', () => {
       });
     });
 
-    describe('#toEthSignedMessageHash(bytes32)', () => {
-      it('returns hash of signed message prefix and message', async () => {
+    describe('#toEthSignRecoverableHash(bytes32)', () => {
+      it('returns recoverable hash of signed message prefix and message', async () => {
         const hash = ethers.keccak256(ethers.toUtf8Bytes('test'));
 
         expect(
-          await instance.$toEthSignedMessageHash.staticCall(hash),
+          await instance.$toEthSignRecoverableHash.staticCall(hash),
         ).to.equal(
           ethers.solidityPackedKeccak256(
             ['string', 'bytes32'],
