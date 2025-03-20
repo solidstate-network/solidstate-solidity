@@ -1,6 +1,6 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { IERC2612, IERC5267 } from '@solidstate/typechain-types';
-import { Signature } from 'ethers';
+import { BytesLike, Signature } from 'ethers';
 import { ethers } from 'hardhat';
 
 interface Domain {
@@ -99,9 +99,33 @@ const signERC2612Permit = async (
 
   const signature = await owner.signTypedData(domain, types, values);
 
-  const permit = ethers.Signature.from(signature);
-
-  return permit;
+  return ethers.Signature.from(signature);
 };
 
-export { signERC2612Permit };
+// TODO: rename file or move to new file
+const signECDSAMetaTransaction = async (
+  instance: IERC5267,
+  signer: SignerWithAddress,
+  msgData: BytesLike,
+  nonce: bigint,
+): Promise<Signature> => {
+  const domain = await getDomain(instance);
+
+  const types = {
+    ECDSAMetaTransaction: [
+      { name: 'msgData', type: 'bytes' },
+      { name: 'nonce', type: 'uint256' },
+    ],
+  };
+
+  const values = {
+    msgData,
+    nonce,
+  };
+
+  const signature = await signer.signTypedData(domain, types, values);
+
+  return ethers.Signature.from(signature);
+};
+
+export { signERC2612Permit, signECDSAMetaTransaction };
