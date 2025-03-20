@@ -295,15 +295,36 @@ describe('ECDSA', () => {
     });
 
     describe('#toEthSignRecoverableHash(bytes32)', () => {
-      it('returns recoverable hash of signed message prefix and message', async () => {
-        const hash = ethers.keccak256(ethers.toUtf8Bytes('test'));
+      it('returns recoverable hash of eth_sign message prefix and message', async () => {
+        const payloadHash = ethers.keccak256(ethers.toUtf8Bytes('message'));
 
         expect(
-          await instance.$toEthSignRecoverableHash.staticCall(hash),
+          await instance.$toEthSignRecoverableHash.staticCall(payloadHash),
         ).to.equal(
           ethers.solidityPackedKeccak256(
             ['string', 'bytes32'],
-            ['\x19Ethereum Signed Message:\n32', hash],
+            ['\x19Ethereum Signed Message:\n32', payloadHash],
+          ),
+        );
+      });
+    });
+
+    describe('#toEIP712RecoverableHash(bytes32,bytes32)', () => {
+      it('returns recoverable hash of data in EIP712 format', async () => {
+        const domainSeparator = ethers.keccak256(
+          ethers.toUtf8Bytes('domain separator'),
+        );
+        const structHash = ethers.keccak256(ethers.toUtf8Bytes('struct'));
+
+        expect(
+          await instance.$toEIP712RecoverableHash.staticCall(
+            domainSeparator,
+            structHash,
+          ),
+        ).to.equal(
+          ethers.solidityPackedKeccak256(
+            ['bytes2', 'bytes32', 'bytes32'],
+            ['0x1901', domainSeparator, structHash],
           ),
         );
       });
