@@ -28,7 +28,7 @@ library ECDSA {
         bytes32 s;
         uint8 v;
 
-        assembly {
+        assembly ('memory-safe') {
             r := mload(add(signature, 0x20))
             s := mload(add(signature, 0x40))
             v := byte(0, mload(add(signature, 0x60)))
