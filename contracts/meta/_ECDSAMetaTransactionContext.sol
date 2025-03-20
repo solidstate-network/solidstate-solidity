@@ -160,38 +160,13 @@ abstract contract _ECDSAMetaTransactionContext is
                 )
             );
 
-            bytes32 domainSeparator = EIP712.calculateDomainSeparator_01100();
-
-            bytes32 signedHash;
-
-            assembly {
-                // assembly block equivalent to:
-                //
-                // signedHash = keccak256(
-                //   abi.encodePacked(
-                //     uint16(0x1901),
-                //     domainSeparator,
-                //     structHash
-                //   )
-                // );
-
-                // load free memory pointer
-                let pointer := mload(64)
-
-                // this magic value is the EIP-191 signed data header, consisting of
-                // the hardcoded 0x19 and the one-byte version 0x01
-                mstore(
-                    pointer,
-                    0x1901000000000000000000000000000000000000000000000000000000000000
-                )
-                mstore(add(pointer, 2), domainSeparator)
-                mstore(add(pointer, 34), structHash)
-
-                signedHash := keccak256(pointer, 66)
-            }
+            bytes32 recoverableHash = ECDSA.toEIP712RecoverableHash(
+                EIP712.calculateDomainSeparator_01100(),
+                structHash
+            );
 
             // TODO: see what happens if split calldata v r s
-            address signer = signedHash.tryRecover(signature);
+            address signer = recoverableHash.tryRecover(signature);
 
             if (signer == msgSender) {
                 msgDataIndex = split;
