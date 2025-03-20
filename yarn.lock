@@ -1513,6 +1513,11 @@
   resolved "https://registry.yarnpkg.com/@types/delete-empty/-/delete-empty-3.0.5.tgz#03ae6a38f9c805d8f31ef5e5210c65e040bf56eb"
   integrity sha512-/7fn2o9NpN6GhAfa2enr17kgcO7Bi49j8vj08eSJ4vCh9RgSUPyQft45XLHSCBhlselWl21p7Kl5a0y79qWzqw==
 
+"@types/ejs@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.1.5.tgz#49d738257cc73bafe45c13cb8ff240683b4d5117"
+  integrity sha512-nv+GSx77ZtXiJzwKdsASqi+YQ5Z7vwHsTP0JY2SiQgjGckkBRKZnk8nIM+7oUZ1VCtuTz0+By4qVR7fqzp/Dfg==
+
 "@types/git-diff@^2.0.7":
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@types/git-diff/-/git-diff-2.0.7.tgz#533b2fc74c4739440900808e8960124de87feb24"
@@ -2784,7 +2789,7 @@ eastasianwidth@^0.2.0:
   resolved "https://registry.yarnpkg.com/eastasianwidth/-/eastasianwidth-0.2.0.tgz#696ce2ec0aa0e6ea93a397ffcf24aa7840c827cb"
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
-ejs@^3.1.7:
+ejs@^3.1.10, ejs@^3.1.7:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.1.10.tgz#69ab8358b14e896f80cc39e62087b88500c3ac3b"
   integrity sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==

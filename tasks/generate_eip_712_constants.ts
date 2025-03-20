@@ -1,13 +1,104 @@
+import { timeStamp } from 'console';
+import ejs from 'ejs';
 import fs from 'fs';
-import { task, types } from 'hardhat/config';
+import { task } from 'hardhat/config';
 import path from 'path';
 
 const name = 'EIP712Constants';
 const filepath = 'cryptography';
 
+const TEMPLATE_SOL = `
+pragma solidity ^0.8.20;
+
+/**
+ * @title Procedurally generated EIP-712 typed structured data hashing and signing library
+ * @dev see https://eips.ethereum.org/EIPS/eip-712
+ **/
+library <%- name %> {
+    <% for (const c of constantDefinitions) { %>
+      /**
+       * @dev EIP712Domain hash corresponding to ERC5267 fields value <%- c.binString %> (<%- c.fields.join(', ') %>)
+       * @dev evaluates to <%- c.keccak %>
+       */
+      bytes32 internal constant <%- c.name %> = keccak256('<%- c.domainString %>');
+
+    <% } %>
+
+    <% for (const fn of functionDefinitions) { %>
+        /**
+         * @notice calculate unique EIP-712 domain separator
+        <% for (const f of fn.fields.filter((f) => data[f].description)) { %>
+          * @param <%- data[f].packedName ?? f %> <%- data[f].description %>
+        <% } %>
+         * @return domainSeparator domain separator
+         */
+        function <%- fn.name %>(<%- fn.parameters %>) internal <%- fn.visibility %> returns (bytes32 domainSeparator) {
+          assembly {
+            let pointer := mload(64)
+
+            mstore(pointer, <%- fn.keccak %>)
+            <% for (let i = 0; i < fn.assemblyReferences.length; i++) { %>
+              mstore(add(pointer, <%- (i + 1) * 32 %>), <%- fn.assemblyReferences[i] %>)
+            <% } %>
+
+            domainSeparator := keccak256(pointer, <%- (fn.fields.length + 1) * 32 %>)
+          }
+        }
+
+  <% } %>
+    
+}
+`;
+
+const TEMPLATE_TS = `
+import { $<%- name %>, $<%- name %>__factory } from '@solidstate/typechain-types';
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+
+describe('<%- name %>', () => {
+  let instance: $<%- name %>;
+  const nameHash = ethers.solidityPackedKeccak256(['string'], ['NAME']);
+  const versionHash = ethers.solidityPackedKeccak256(['string'], ['VERSION']);
+  let verifyingContract: string;
+  let chainId: string;
+  let salt = ethers.solidityPackedKeccak256(['string'], ['SALT']);
+
+  before(async () => {
+    const [deployer] = await ethers.getSigners();
+    instance = await new $<%- name %>__factory(deployer).deploy();
+    verifyingContract = await instance.getAddress();
+    chainId = await ethers.provider.send('eth_chainId');
+  });
+
+  <% for (const c of constantDefinitions) { %>
+    describe('#<%- c.name %>()', () => {
+      it('resolves to expected value', async () => {
+        expect(await instance.$<%- c.name %>.staticCall()).to.equal('<%- c.keccak %>');
+      });
+    });
+  <% } %>
+
+  <% for (const fn of functionDefinitions) { %>
+    describe('#<%- fn.name %>(<%- fn.sigTypes %>)', () => {
+      it('returns domain separator', async () => {
+        const typeHash = await instance.$<%- fn.hashName %>.staticCall();
+
+        const types: string[] = ['bytes32', <%- fn.hashTypes %>];
+        const values: string[] = [typeHash, <%- fn.hashFields %>];
+
+        const domainSeparator = ethers.keccak256(
+          ethers.AbiCoder.defaultAbiCoder().encode(types,values));
+
+        expect(await instance.$<%- fn.name %>.staticCall(<%- fn.callNames %>)).to.equal(domainSeparator)
+      });
+    });
+  <% } %>
+});
+`;
+
 task('generate-eip-712-constants', `Generate ${name}`).setAction(
   async (args, hre) => {
-    const fields = [
+    const validFields = [
       'name',
       'version',
       'chainId',
@@ -15,195 +106,128 @@ task('generate-eip-712-constants', `Generate ${name}`).setAction(
       'salt',
     ] as const;
 
-    const domainStringParametersMap = {
-      name: 'string name',
-      version: 'string version',
-      chainId: 'uint256 chainId',
-      verifyingContract: 'address verifyingContract',
-      salt: 'bytes32 salt',
+    const data: {
+      [field: string]: {
+        type: string;
+        packedType?: string;
+        packedName?: string;
+        description?: string;
+        assemblyReference?: string;
+      };
+    } = {
+      name: {
+        packedName: 'nameHash',
+        type: 'string',
+        packedType: 'bytes32',
+        description: 'hash of human-readable signing domain name',
+      },
+      version: {
+        packedName: 'versionHash',
+        type: 'string',
+        packedType: 'bytes32',
+        description: 'hash of signing domain version',
+      },
+      chainId: {
+        type: 'uint256',
+        assemblyReference: 'chainid()',
+      },
+      verifyingContract: {
+        type: 'address',
+        assemblyReference: 'address()',
+      },
+      salt: {
+        type: 'bytes32',
+        description: 'disambiguating salt',
+      },
     };
 
-    const calculatorParametersMap = {
-      name: 'bytes32 nameHash',
-      version: 'bytes32 versionHash',
-      chainId: 'uint256 chainId',
-      verifyingContract: 'address verifyingContract',
-      salt: 'bytes32 salt',
-    };
+    const constantDefinitions = [];
+    const functionDefinitions = [];
 
-    const calculatorCommentsMap = {
-      name: '* @param nameHash hash of human-readable signing domain name',
-      version: '* @param versionHash hash of signing domain version',
-      chainId: null,
-      verifyingContract: null,
-      salt: '* @param salt disambiguating salt',
-    };
+    for (let i = 0; i < 2 ** validFields.length; i++) {
+      const binString = i.toString(2).padStart(5, '0');
+      const fields = validFields.filter((f, j) => i & (2 ** j));
 
-    const assemblyReferencesMap = {
-      name: 'nameHash',
-      version: 'versionHash',
-      chainId: 'chainid()',
-      verifyingContract: 'address()',
-      salt: 'salt',
-    };
+      const constantName = `EIP_712_DOMAIN_HASH_${binString}`;
+      const functionName = `calculateDomainSeparator_${binString}`;
 
-    const constants = [];
-    const calculators = [];
-
-    const describeHashes = [];
-    const describeCalculators = [];
-
-    for (let i = 0; i < 2 ** fields.length; i++) {
-      const fieldsBinString = i.toString(2).padStart(5, '0');
-      const includedFields = fields.filter((f, j) => i & (2 ** j));
-
-      const hashName = `EIP_712_DOMAIN_HASH_${fieldsBinString}`;
-      const calculatorName = `calculateDomainSeparator_${fieldsBinString}`;
-
-      const domainStringParameters = includedFields.map(
-        (f) => domainStringParametersMap[f],
-      );
-
-      const calculatorParameters = includedFields
-        .filter((c) => !['chainId', 'verifyingContract'].includes(c))
-        .map((c) => calculatorParametersMap[c]);
-
-      const calculatorComments = includedFields
-        .map((c) => calculatorCommentsMap[c])
-        .filter((c) => c);
-
-      const assemblyComponents = includedFields.map(
-        (c, j) =>
-          `mstore(add(pointer, ${(j + 1) * 32}), ${assemblyReferencesMap[c]})`,
-      );
-
-      const calculatorTestTypes = includedFields.map((c) =>
-        calculatorParametersMap[c].split(' ').shift(),
-      );
-
-      const domainString = `EIP712Domain(${domainStringParameters.join(',')})`;
+      const domainString = `EIP712Domain(${fields.map((f) => `${data[f].type} ${f}`).join(',')})`;
       const keccak = hre.ethers.solidityPackedKeccak256(
         ['string'],
         [domainString],
       );
 
-      const calculatorVisibility =
-        includedFields.includes('chainId') ||
-        includedFields.includes('verifyingContract')
-          ? 'view'
-          : 'pure';
+      constantDefinitions.push({
+        fields,
+        name: constantName,
+        binString,
+        keccak,
+        domainString,
+      });
 
-      constants.push(
-        `
-        /**
-         * @dev EIP712Domain hash corresponding to ERC5267 fields value ${fieldsBinString} (${domainStringParameters.map((c) => c.split(' ').pop()).join(', ')})
-         * @dev evaluates to ${keccak}
-         */
-        bytes32 internal constant ${hashName} = keccak256('${domainString}');
-        `,
-      );
-
-      calculators.push(
-        `
-        /**
-         * @notice calculate unique EIP-712 domain separator${calculatorComments.map((c) => `\n${c}`).join('')}
-         * @return domainSeparator domain separator
-         */
-        function ${calculatorName}(${calculatorParameters.join(', ')}) internal ${calculatorVisibility} returns (bytes32 domainSeparator) {
-          assembly {
-            let pointer := mload(64)
-
-            mstore(pointer, ${keccak})
-            ${assemblyComponents.join('\n')}
-
-            domainSeparator := keccak256(pointer, ${(assemblyComponents.length + 1) * 32})
-
-          }
-        }
-        `,
-      );
-
-      describeHashes.push(
-        `
-        describe('#${hashName}()', () => {
-          it('resolves to expected value', async () => {
-            expect(await instance.$${hashName}.staticCall()).to.equal('${keccak}');
-          });
-        });
-        `,
-      );
-
-      describeCalculators.push(
-        `
-        describe('#${calculatorName}(${calculatorTestTypes.join(',')})', () => {
-          it('returns domain separator', async () => {
-            const typeHash = await instance.$${hashName}.staticCall();
-
-            const types: string[] = ['bytes32', ${calculatorTestTypes.map((c) => `'${c}'`).join(', ')}]
-            const values: string[] = [typeHash, ${includedFields.join(', ')}]
-
-            const domainSeparator = ethers.keccak256(
-              ethers.AbiCoder.defaultAbiCoder().encode(types,values));
-
-            expect(await instance.$${calculatorName}.staticCall(${includedFields.filter((c) => !['chainId', 'verifyingContract'].includes(c))})).to.equal(domainSeparator)
-          });
-        });
-        `,
-      );
+      functionDefinitions.push({
+        fields,
+        name: functionName,
+        hashName: constantName,
+        parameters: fields
+          .filter((f) => data[f].description)
+          .map(
+            (f) =>
+              `${data[f].packedType ?? data[f].type} ${data[f].packedName ?? f}`,
+          )
+          .join(', '),
+        visibility:
+          fields.includes('chainId') || fields.includes('verifyingContract')
+            ? 'view'
+            : 'pure',
+        assemblyReferences: fields.map(
+          (f) => data[f].assemblyReference ?? data[f].packedName ?? f,
+        ),
+        keccak,
+        sigTypes: fields
+          .filter((f) => data[f].description)
+          .map((f) => data[f].packedType ?? data[f].type),
+        hashTypes: fields
+          .map((f) => data[f].packedType ?? data[f].type)
+          .map((t) => `"${t}"`)
+          .join(', '),
+        hashFields: fields.map((f) => data[f].packedName ?? f).join(', '),
+        callNames: fields
+          .filter((f) => data[f].description)
+          .map((f) => data[f].packedName ?? f),
+      });
     }
 
-    const contractContent = `
-      pragma solidity ^0.8.20;
+    const templateData = {
+      data,
+      name,
+      constantDefinitions,
+      functionDefinitions,
+    };
 
-      library ${name} {
-        ${constants.join('\n')}
+    const contractContent = ejs.render(TEMPLATE_SOL, templateData);
+    const testContent = ejs.render(TEMPLATE_TS, templateData);
 
-        ${calculators.join('\n')}
-      }
-`;
+    const contractPath = path.resolve(
+      hre.config.paths.sources,
+      filepath,
+      `${name}.sol`,
+    );
+    const testPath = path.resolve(
+      hre.config.paths.tests,
+      filepath,
+      `${name}.ts`,
+    );
 
-    const testContent = `
-import { $${name}, $${name}__factory } from '@solidstate/typechain-types';
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-
-describe('${name}', () => {
-  let instance: $${name};
-  const name = ethers.solidityPackedKeccak256(['string'], ['NAME']);
-  const version = ethers.solidityPackedKeccak256(['string'], ['VERSION']);
-  let verifyingContract: string;
-  let chainId: string;
-  let salt = ethers.solidityPackedKeccak256(['string'], ['SALT']);
-
-  before(async () => {
-    const [deployer] = await ethers.getSigners();
-    instance = await new $${name}__factory(deployer).deploy();
-    verifyingContract = await instance.getAddress();
-    chainId = await ethers.provider.send('eth_chainId');
-  });
-
-  ${describeHashes.join('\n')}
-
-  ${describeCalculators.join('\n')}
-});
-`;
-
-    await fs.promises.mkdir(path.resolve(hre.config.paths.sources, filepath), {
+    await fs.promises.mkdir(path.dirname(contractPath), {
       recursive: true,
     });
 
-    await fs.promises.mkdir(path.resolve(hre.config.paths.tests, filepath), {
+    await fs.promises.mkdir(path.dirname(testPath), {
       recursive: true,
     });
 
-    await fs.promises.writeFile(
-      path.resolve(hre.config.paths.sources, filepath, `${name}.sol`),
-      contractContent,
-    );
-
-    await fs.promises.writeFile(
-      path.resolve(hre.config.paths.tests, filepath, `${name}.ts`),
-      testContent,
-    );
+    await fs.promises.writeFile(contractPath, contractContent);
+    await fs.promises.writeFile(testPath, testContent);
   },
 );
