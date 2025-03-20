@@ -1,4 +1,4 @@
-import './tasks/generate_eip_712_constants';
+import './tasks/generate_eip_712';
 import './tasks/rename_entity';
 import './tasks/scaffold_contract';
 import '@nomicfoundation/hardhat-chai-matchers';
