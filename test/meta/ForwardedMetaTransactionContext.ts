@@ -5,16 +5,16 @@ import {
 } from '@solidstate/typechain-types';
 import { TypedContractMethod } from '@solidstate/typechain-types/common';
 import { expect } from 'chai';
-import { BytesLike } from 'ethers';
+import { BytesLike, ContractMethodArgs } from 'ethers';
 import { ethers } from 'hardhat';
 
 const callMetaTransaction = async (
   signer: SignerWithAddress,
   fn: TypedContractMethod<[], [string], 'view'>,
   data: BytesLike,
-  args: any[] = [],
+  args: ContractMethodArgs<[]> = [],
 ) => {
-  const tx = await fn.populateTransaction();
+  const tx = await fn.populateTransaction(...args);
   tx.data = ethers.concat([tx.data, data]);
 
   const result = await signer.call(tx);
