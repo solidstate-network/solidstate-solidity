@@ -73,7 +73,7 @@ describe('ECDSAMetaTransactionContext', () => {
         );
 
         const suffix = ethers.concat([
-          ethers.toBeHex(nonce, 32),
+          await signer.getAddress(),
           signature.serialized,
         ]);
 
@@ -119,7 +119,7 @@ describe('ECDSAMetaTransactionContext', () => {
         );
 
         const suffix = ethers.concat([
-          ethers.toBeHex(nonce, 32),
+          await signer.getAddress(),
           signature.serialized,
         ]);
 
@@ -145,7 +145,7 @@ describe('ECDSAMetaTransactionContext', () => {
           );
 
           const suffix = ethers.concat([
-            ethers.toBeHex(nonce, 32),
+            await signer.getAddress(),
             signature.serialized,
           ]);
 
@@ -173,7 +173,7 @@ describe('ECDSAMetaTransactionContext', () => {
         );
 
         const suffix = ethers.concat([
-          ethers.toBeHex(nonce, 32),
+          await signer.getAddress(),
           signature.serialized,
         ]);
 
@@ -226,7 +226,7 @@ describe('ECDSAMetaTransactionContext', () => {
           );
 
           const suffix = ethers.concat([
-            ethers.toBeHex(nonce, 32),
+            await signer.getAddress(),
             signature.serialized,
           ]);
 
@@ -240,9 +240,9 @@ describe('ECDSAMetaTransactionContext', () => {
     });
 
     describe('#_calldataSuffixLength()', () => {
-      it('returns 97', async () => {
+      it('returns 85', async () => {
         expect(await instance.$_calldataSuffixLength.staticCall()).to.equal(
-          97n,
+          85n,
         );
       });
     });

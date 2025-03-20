@@ -123,7 +123,7 @@ abstract contract _ECDSAMetaTransactionContext is
 
     /**
      * @inheritdoc _Context
-     * @dev this Context extension defines an address suffix with a length of 97
+     * @dev this Context extension defines an address suffix with a length of 85
      */
     function _calldataSuffixLength()
         internal
@@ -132,7 +132,7 @@ abstract contract _ECDSAMetaTransactionContext is
         override
         returns (uint256 length)
     {
-        length = 97;
+        length = 85;
     }
 
     function _processCalldata(
@@ -140,8 +140,11 @@ abstract contract _ECDSAMetaTransactionContext is
     ) private returns (address msgSender, uint256 msgDataIndex) {
         unchecked {
             bytes calldata msgData = msg.data[:split];
-            uint256 nonce = uint256(bytes32(msg.data[split:split + 32]));
-            bytes calldata signature = msg.data[split + 32:];
+            msgSender = address(bytes20(msg.data[split:split + 20]));
+            bytes calldata signature = msg.data[split + 20:];
+
+            // TODO: lookup nonce
+            uint256 nonce = 1;
 
             // TODO: include msg.sender in hash to restrict forwarder?
             bytes32 structHash = keccak256(
@@ -188,12 +191,11 @@ abstract contract _ECDSAMetaTransactionContext is
 
             // TODO: invalidate nonce
 
-            if (signer == address(0)) {
+            if (signer == msgSender) {
+                msgDataIndex = split;
+            } else {
                 msgSender = super._msgSender();
                 msgDataIndex = super._msgData().length;
-            } else {
-                msgSender = signer;
-                msgDataIndex = split;
             }
         }
 
