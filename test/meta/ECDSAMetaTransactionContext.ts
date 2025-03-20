@@ -26,6 +26,8 @@ const callMetaTransaction = async (
   );
 };
 
+// TODO: support msg.value in helper functions
+
 const sendMetaTransaction = async (
   signer: SignerWithAddress,
   fn: TypedContractMethod<[], [string], 'nonpayable' | 'payable' | 'view'>,
@@ -54,8 +56,6 @@ describe('ECDSAMetaTransactionContext', () => {
   // TODO: spec
 
   // TODO: test multiple calls in same tx to validate that transient storage is used correctly
-
-  // TODO: test msg.value revert cases
 
   describe('__internal', () => {
     describe('#_msgSender()', () => {
@@ -103,6 +103,31 @@ describe('ECDSAMetaTransactionContext', () => {
         expect(
           await callMetaTransaction(forwarder, instance.$_msgSender, suffix),
         ).to.deep.equal([await forwarder.getAddress()]);
+      });
+
+      it('returns incorrect signer if message value is incorrect', async () => {
+        const data = instance.$_msgSender.fragment.selector;
+        const nonce = 1n;
+        const value = 1n;
+
+        const signature = await signECDSAMetaTransaction(
+          instance,
+          signer,
+          data,
+          value,
+          nonce,
+        );
+
+        const suffix = ethers.concat([
+          ethers.toBeHex(nonce, 32),
+          signature.serialized,
+        ]);
+
+        // a valid address is returned, but it is not the correct signer
+
+        expect(
+          await callMetaTransaction(forwarder, instance.$_msgSender, suffix),
+        ).not.to.deep.equal([await signer.getAddress()]);
       });
 
       describe('reverts if', () => {
