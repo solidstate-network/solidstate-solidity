@@ -26,6 +26,18 @@ const callMetaTransaction = async (
   );
 };
 
+const sendMetaTransaction = async (
+  signer: SignerWithAddress,
+  fn: TypedContractMethod<[], [string], 'nonpayable' | 'payable' | 'view'>,
+  data: BytesLike,
+  args: ContractMethodArgs<[]> = [],
+) => {
+  const tx = await fn.populateTransaction(...args);
+  tx.data = ethers.concat([tx.data, data]);
+
+  return await signer.sendTransaction(tx);
+};
+
 describe('ECDSAMetaTransactionContext', () => {
   let instance: $ECDSAMetaTransactionContext;
   let deployer: SignerWithAddress;
@@ -92,6 +104,33 @@ describe('ECDSAMetaTransactionContext', () => {
           await callMetaTransaction(forwarder, instance.$_msgSender, suffix),
         ).to.deep.equal([await forwarder.getAddress()]);
       });
+
+      describe('reverts if', () => {
+        it('nonce has been used', async () => {
+          const data = instance.$_msgSender.fragment.selector;
+          const nonce = 1n;
+          const value = 0n;
+
+          const signature = await signECDSAMetaTransaction(
+            instance,
+            signer,
+            data,
+            value,
+            nonce,
+          );
+
+          const suffix = ethers.concat([
+            ethers.toBeHex(nonce, 32),
+            signature.serialized,
+          ]);
+
+          await sendMetaTransaction(forwarder, instance.$_msgSender, suffix);
+
+          await expect(
+            callMetaTransaction(forwarder, instance.$_msgSender, suffix),
+          ).to.be.revertedWith('TODO');
+        });
+      });
     });
 
     describe('#_msgData()', () => {
@@ -145,6 +184,33 @@ describe('ECDSAMetaTransactionContext', () => {
         expect(
           await callMetaTransaction(forwarder, instance.$_msgData, suffix),
         ).to.deep.equal([ethers.concat([nonSuffixedData, suffix])]);
+      });
+
+      describe('reverts if', () => {
+        it('nonce has been used', async () => {
+          const data = instance.$_msgData.fragment.selector;
+          const nonce = 1n;
+          const value = 0n;
+
+          const signature = await signECDSAMetaTransaction(
+            instance,
+            signer,
+            data,
+            value,
+            nonce,
+          );
+
+          const suffix = ethers.concat([
+            ethers.toBeHex(nonce, 32),
+            signature.serialized,
+          ]);
+
+          await sendMetaTransaction(forwarder, instance.$_msgData, suffix);
+
+          await expect(
+            callMetaTransaction(forwarder, instance.$_msgData, suffix),
+          ).to.be.revertedWith('TODO');
+        });
       });
     });
 
