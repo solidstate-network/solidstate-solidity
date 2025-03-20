@@ -138,7 +138,7 @@ abstract contract _ECDSAMetaTransactionContext is
             bytes calldata signature = msg.data[split + 32:];
 
             // TODO: see what happens if split calldata v r s
-            address signer = hash.recover(signature);
+            address signer = hash.tryRecover(signature);
 
             // TODO: invalidate nonce
 
