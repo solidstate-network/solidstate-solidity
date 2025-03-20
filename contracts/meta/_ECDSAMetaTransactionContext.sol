@@ -16,6 +16,11 @@ abstract contract _ECDSAMetaTransactionContext is
     bytes32 internal constant EIP_712_TYPE_HASH =
         keccak256('ECDSAMetaTransaction(bytes msgData,uint256 nonce)');
 
+    bytes32
+        internal constant ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT =
+        keccak256(abi.encode(uint256(EIP_712_TYPE_HASH) - 1)) &
+            ~bytes32(uint256(0xff));
+
     function _eip712Domain()
         internal
         view
@@ -58,8 +63,10 @@ abstract contract _ECDSAMetaTransactionContext is
             // calldata is long enough that it might have a suffix
             // check transient storage to see if sender has been derived already
 
+            bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
+
             assembly {
-                msgSender := tload(9000)
+                msgSender := tload(slot)
             }
 
             if (msgSender == address(0)) {
@@ -92,8 +99,10 @@ abstract contract _ECDSAMetaTransactionContext is
 
             uint256 split;
 
+            bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
+
             assembly {
-                split := tload(9001)
+                split := tload(add(slot, 1))
             }
 
             if (split == 0) {
@@ -183,12 +192,13 @@ abstract contract _ECDSAMetaTransactionContext is
             }
         }
 
+        bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
+
         assembly {
             // TODO: suppress warning
-            // TODO: standardize location
             // TODO: pack (msgDataIndex as bytes12)
-            tstore(9000, msgSender)
-            tstore(9001, msgDataIndex)
+            tstore(slot, msgSender)
+            tstore(add(slot, 1), msgDataIndex)
         }
     }
 }
