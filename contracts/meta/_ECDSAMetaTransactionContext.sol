@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { ECDSA } from '../cryptography/ECDSA.sol';
+import { EIP712 } from '../cryptography/EIP712.sol';
 import { _Context } from './_Context.sol';
 import { _IECDSAMetaTransactionContext } from './_IECDSAMetaTransactionContext.sol';
 
@@ -30,7 +31,7 @@ abstract contract _ECDSAMetaTransactionContext is
         )
     {
         return (
-            hex'0c', // 01100
+            EIP712.ERC5267_FIELDS_01100,
             '',
             '',
             block.chainid,
