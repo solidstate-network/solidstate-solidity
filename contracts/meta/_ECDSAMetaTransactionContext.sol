@@ -132,14 +132,45 @@ abstract contract _ECDSAMetaTransactionContext is
             uint256 nonce = uint256(bytes32(msg.data[split:split + 32]));
 
             // TODO: include msg.sender in hash to restrict forwarder
-            bytes32 hash = keccak256(
+            // TODO: include msg.value
+            bytes32 structHash = keccak256(
                 abi.encode(EIP_712_TYPE_HASH, keccak256(msgData), nonce)
             );
+
+            bytes32 domainSeparator = EIP712.calculateDomainSeparator_01100();
+
+            bytes32 signedHash;
+
+            assembly {
+                // assembly block equivalent to:
+                //
+                // signedHash = keccak256(
+                //   abi.encodePacked(
+                //     uint16(0x1901),
+                //     domainSeparator,
+                //     structHash
+                //   )
+                // );
+
+                // load free memory pointer
+                let pointer := mload(64)
+
+                // this magic value is the EIP-191 signed data header, consisting of
+                // the hardcoded 0x19 and the one-byte version 0x01
+                mstore(
+                    pointer,
+                    0x1901000000000000000000000000000000000000000000000000000000000000
+                )
+                mstore(add(pointer, 2), domainSeparator)
+                mstore(add(pointer, 34), structHash)
+
+                signedHash := keccak256(pointer, 66)
+            }
 
             bytes calldata signature = msg.data[split + 32:];
 
             // TODO: see what happens if split calldata v r s
-            address signer = hash.tryRecover(signature);
+            address signer = signedHash.tryRecover(signature);
 
             // TODO: invalidate nonce
 
