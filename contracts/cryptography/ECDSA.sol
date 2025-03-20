@@ -148,15 +148,67 @@ library ECDSA {
 
     /**
      * @notice generate an "Ethereum Signed Message" in the format returned by the eth_sign JSON-RPC method
-     * @param hash hashed data payload
-     * @return signedMessage signed message hash
+     * @param payloadHash hashed data payload
+     * @return recoverableHash hash to validate against signature via ECDSA function
      */
-    function toEthSignedMessageHash(
-        bytes32 hash
-    ) internal pure returns (bytes32 signedMessage) {
-        signedMessage = keccak256(
-            abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)
-        );
+    function toEthSignRecoverableHash(
+        bytes32 payloadHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // recoverableHash = keccak256(
+            //   abi.encodePacked(
+            //     '\x19Ethereum Signed Message:\n32',
+            //     payloadHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            mstore(pointer, '\x19Ethereum Signed Message:\n32')
+            mstore(add(pointer, 28), payloadHash)
+
+            recoverableHash := keccak256(pointer, 60)
+        }
+    }
+
+    /**
+     * @notice generate an EIP712 signable hash of typed structured data
+     * @param domainSeparator EIP712 domain separator
+     * @param structHash hash of underlying signed data generated through the EIP712 "hashStruct" process
+     * @return recoverableHash hash to validate against signature via ECDSA function
+     */
+    function toEIP712RecoverableHash(
+        bytes32 domainSeparator,
+        bytes32 structHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // recoverableHash = keccak256(
+            //   abi.encodePacked(
+            //     uint16(0x1901),
+            //     domainSeparator,
+            //     structHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            // this magic value is the EIP-191 signed data header, consisting of
+            // the hardcoded 0x19 and the one-byte version 0x01
+            mstore(
+                pointer,
+                0x1901000000000000000000000000000000000000000000000000000000000000
+            )
+            mstore(add(pointer, 2), domainSeparator)
+            mstore(add(pointer, 34), structHash)
+
+            recoverableHash := keccak256(pointer, 66)
+        }
     }
 
     /**
