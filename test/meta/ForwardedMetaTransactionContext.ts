@@ -10,7 +10,7 @@ import { ethers } from 'hardhat';
 
 const callMetaTransaction = async (
   signer: SignerWithAddress,
-  fn: TypedContractMethod<[], [string], 'view'>,
+  fn: TypedContractMethod<[], [string], 'nonpayable' | 'payable' | 'view'>,
   data: BytesLike,
   args: ContractMethodArgs<[]> = [],
 ) => {
@@ -40,16 +40,6 @@ describe('ForwardedMetaTransactionContext', () => {
 
   describe('__internal', () => {
     describe('#_msgSender()', () => {
-      it('returns message sender if sender is not trusted forwarder', async () => {
-        expect(
-          await callMetaTransaction(
-            deployer,
-            instance.$_msgSender,
-            ethers.randomBytes(20),
-          ),
-        ).to.deep.equal([await deployer.getAddress()]);
-      });
-
       it('returns forwarded sender if sender is trusted forwarder', async () => {
         const trustedForwarder = await ethers.getImpersonatedSigner(
           await instance.getAddress(),
@@ -68,20 +58,43 @@ describe('ForwardedMetaTransactionContext', () => {
           ),
         ).to.deep.equal([forwardedAddress]);
       });
+
+      it('returns message sender if sender is not trusted forwarder', async () => {
+        expect(
+          await callMetaTransaction(
+            deployer,
+            instance.$_msgSender,
+            ethers.randomBytes(20),
+          ),
+        ).to.deep.equal([await deployer.getAddress()]);
+      });
+
+      it('returns message sender if message data length is less than suffix length', async () => {
+        const trustedForwarder = await ethers.getImpersonatedSigner(
+          await instance.getAddress(),
+        );
+        await instance.$_addTrustedForwarder(
+          await trustedForwarder.getAddress(),
+        );
+
+        // account for 4-byte selector when calculting suffix length
+        const suffix = ethers.randomBytes(
+          Number(
+            (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
+          ),
+        );
+
+        expect(
+          await callMetaTransaction(
+            trustedForwarder,
+            instance.$_msgSender,
+            suffix,
+          ),
+        ).to.deep.equal([await trustedForwarder.getAddress()]);
+      });
     });
 
     describe('#_msgData()', () => {
-      it('returns complete message data if sender is not trusted forwarder', async () => {
-        const nonSuffixedData = instance.$_msgData.fragment.selector;
-        const data = ethers.randomBytes(20);
-
-        // message data is returned as received, demonstrating the malleability of msg.data
-
-        expect(
-          await callMetaTransaction(deployer, instance.$_msgData, data),
-        ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
-      });
-
       it('returns message data without suffix if sender is trusted forwarder', async () => {
         const trustedForwarder = await ethers.getImpersonatedSigner(
           await instance.getAddress(),
@@ -99,6 +112,44 @@ describe('ForwardedMetaTransactionContext', () => {
             ethers.randomBytes(20),
           ),
         ).to.deep.equal([nonSuffixedData]);
+      });
+
+      it('returns complete message data if sender is not trusted forwarder', async () => {
+        const nonSuffixedData = instance.$_msgData.fragment.selector;
+        const data = ethers.randomBytes(20);
+
+        // message data is returned as received, demonstrating the malleability of msg.data
+
+        expect(
+          await callMetaTransaction(deployer, instance.$_msgData, data),
+        ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
+      });
+
+      it('returns complete message data if message data length is less than suffix length', async () => {
+        const trustedForwarder = await ethers.getImpersonatedSigner(
+          await instance.getAddress(),
+        );
+        await instance.$_addTrustedForwarder(
+          await trustedForwarder.getAddress(),
+        );
+
+        const nonSuffixedData = instance.$_msgData.fragment.selector;
+        // account for 4-byte selector when calculting suffix length
+        const suffix = ethers.randomBytes(
+          Number(
+            (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
+          ),
+        );
+
+        // message data is returned as received, demonstrating the malleability of msg.data
+
+        expect(
+          await callMetaTransaction(
+            trustedForwarder,
+            instance.$_msgData,
+            suffix,
+          ),
+        ).to.deep.equal([ethers.concat([nonSuffixedData, suffix])]);
       });
     });
 
