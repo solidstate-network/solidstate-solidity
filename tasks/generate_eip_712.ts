@@ -31,10 +31,12 @@ library <%- name %> {
      * @return domainSeparator domain separator
      */
     function <%- fn.name %>(<%- fn.parameters %>) internal <%- fn.visibility %> returns (bytes32 domainSeparator) {
+        bytes32 typeHash = <%- fn.hashName %>;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(pointer, <%- fn.keccak %>)
+            mstore(pointer, typeHash)
             <%_ for (let i = 0; i < fn.assemblyReferences.length; i++) { _%>
             mstore(add(pointer, <%- (i + 1) * 32 %>), <%- fn.assemblyReferences[i] %>)
             <%_ } _%>

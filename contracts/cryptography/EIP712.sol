@@ -264,13 +264,12 @@ library EIP712 {
         pure
         returns (bytes32 domainSeparator)
     {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00000;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x20bcc3f8105eea47d067386e42e60246e89393cd61c512edd1e87688890fb914
-            )
+            mstore(pointer, typeHash)
 
             domainSeparator := keccak256(pointer, 32)
         }
@@ -284,13 +283,12 @@ library EIP712 {
     function calculateDomainSeparator_00001(
         bytes32 nameHash
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00001;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xb2178a58fb1eefb359ecfdd57bb19c0bdd0f4e6eed8547f46600e500ed111af3
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
 
             domainSeparator := keccak256(pointer, 64)
@@ -305,13 +303,12 @@ library EIP712 {
     function calculateDomainSeparator_00010(
         bytes32 versionHash
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00010;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xbc027d3dfda1ddd4b660dee53f985a2f3b5ea30d0c0708b67f569aa0e361f302
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
 
             domainSeparator := keccak256(pointer, 64)
@@ -328,13 +325,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 versionHash
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00011;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xb03948446334eb9b2196d5eb166f69b9d49403eb4a12f36de8d3f9f3cb8e15c3
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
 
@@ -351,13 +347,12 @@ library EIP712 {
         view
         returns (bytes32 domainSeparator)
     {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00100;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xc49a8e302e3e5d6753b2bb3dbc3c28deba5e16e2572a92aef568063c963e3465
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), chainid())
 
             domainSeparator := keccak256(pointer, 64)
@@ -372,13 +367,12 @@ library EIP712 {
     function calculateDomainSeparator_00101(
         bytes32 nameHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00101;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xcc85e4a69ca54da41cc4383bb845cbd1e15ef8a13557a6bed09b8bea2a0d92ff
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), chainid())
 
@@ -394,13 +388,12 @@ library EIP712 {
     function calculateDomainSeparator_00110(
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00110;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x95166bc3984a70c39067c848833f87eaf6f7ff10e67fbe819f683dfcefb080e2
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), chainid())
 
@@ -418,13 +411,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_00111;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xc2f8787176b8ac6bf7215b4adcc1e069bf4ab82d9ab1df05a57a91d425935b6e
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), chainid())
@@ -442,13 +434,12 @@ library EIP712 {
         view
         returns (bytes32 domainSeparator)
     {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01000;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x035aff83d86937d35b32e04f0ddc6ff469290eef2f1b692d8a815c89404d4749
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), address())
 
             domainSeparator := keccak256(pointer, 64)
@@ -463,13 +454,12 @@ library EIP712 {
     function calculateDomainSeparator_01001(
         bytes32 nameHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01001;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xee552a4f357a6d8ecee15fed74927d873616e6da31fd672327acf0916acc174a
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), address())
 
@@ -485,13 +475,12 @@ library EIP712 {
     function calculateDomainSeparator_01010(
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01010;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xe7cfb1b0c6cc1826928f8134ec4aaff653c53c61279b10ee7b6a1c59f3c76dd2
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), address())
 
@@ -509,13 +498,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01011;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x91ab3d17e3a50a9d89e63fd30b92be7f5336b03b287bb946787a83a9d62a2766
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), address())
@@ -533,13 +521,12 @@ library EIP712 {
         view
         returns (bytes32 domainSeparator)
     {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01100;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x47e79534a245952e8b16893a336b85a3d9ea9fa8c573f3d803afb92a79469218
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), chainid())
             mstore(add(pointer, 64), address())
 
@@ -555,13 +542,12 @@ library EIP712 {
     function calculateDomainSeparator_01101(
         bytes32 nameHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01101;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x8cad95687ba82c2ce50e74f7b754645e5117c3a5bec8151c0726d5857980a866
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), address())
@@ -578,13 +564,12 @@ library EIP712 {
     function calculateDomainSeparator_01110(
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01110;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x2aef22f9d7df5f9d21c56d14029233f3fdaa91917727e1eb68e504d27072d6cd
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), address())
@@ -603,13 +588,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 versionHash
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_01111;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), chainid())
@@ -627,13 +611,12 @@ library EIP712 {
     function calculateDomainSeparator_10000(
         bytes32 salt
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10000;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xed46087c30783a9d27be533e9e6a1f834cec6daf2cfb016c9ab60d791039f983
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), salt)
 
             domainSeparator := keccak256(pointer, 64)
@@ -650,13 +633,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 salt
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10001;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xd1e3f5cf1a3ce7d7b6d652f790cb44165f3cdf0f3002d42f9f1d3e6a808e04b2
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), salt)
 
@@ -674,13 +656,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10010;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x9f81c44ff68aaf167190e696336e29da4c6f2ad153d3de14f4f266b70f7cb8d0
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), salt)
 
@@ -700,13 +681,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal pure returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10011;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x599a80fcaa47b95e2323ab4d34d34e0cc9feda4b843edafcc30c7bdf60ea15bf
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), salt)
@@ -723,13 +703,12 @@ library EIP712 {
     function calculateDomainSeparator_10100(
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10100;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x564d3aac36678e91beb9d11156d0a35dcedd025eea11212d2b4c45436e4a71ba
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), chainid())
             mstore(add(pointer, 64), salt)
 
@@ -747,13 +726,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10101;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x362651b35ace4088abd8ab4d0d426e15fe608272f8a9e51785f58e6621412710
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), salt)
@@ -772,13 +750,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10110;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xc514ad1a6ba6faad885aeab076fe6d1d4f0040791a4e8130fb9c163991fcf25d
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), salt)
@@ -799,13 +776,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_10111;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xa604fff5a27d5951f334ccda7abff3286a8af29caeeb196a6f2b40a1dce7612b
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), chainid())
@@ -823,13 +799,12 @@ library EIP712 {
     function calculateDomainSeparator_11000(
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11000;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x6268546d6d3d3a16ed8cfd22f4fe09a1d17f9af43838183ba533d41e284cf326
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), address())
             mstore(add(pointer, 64), salt)
 
@@ -847,13 +822,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11001;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xe00d3e753977caaa77095a287e170b7e5fae131a2e1b3af70a3835665255081f
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), address())
             mstore(add(pointer, 96), salt)
@@ -872,13 +846,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11010;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x082f63b4da7f252440ff2be2cdc878665c088a48be3d79095973b727c93fbaec
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), address())
             mstore(add(pointer, 96), salt)
@@ -899,13 +872,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11011;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x36c25de3e541d5d970f66e4210d728721220fff5c077cc6cd008b3a0c62adab7
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), address())
@@ -923,13 +895,12 @@ library EIP712 {
     function calculateDomainSeparator_11100(
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11100;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0x71062c282d40422f744945d587dbf4ecfd4f9cfad1d35d62c944373009d96162
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), chainid())
             mstore(add(pointer, 64), address())
             mstore(add(pointer, 96), salt)
@@ -948,13 +919,12 @@ library EIP712 {
         bytes32 nameHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11101;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xba3bbab4b37e6e20d315843d8bced25060386a557eeb60eefdbb4096f6ad6923
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), address())
@@ -974,13 +944,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11110;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xb90aaffa4b0fc25d6056f438f2c06198968eaf6723d182f5f928441117424b8e
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), versionHash)
             mstore(add(pointer, 64), chainid())
             mstore(add(pointer, 96), address())
@@ -1002,13 +971,12 @@ library EIP712 {
         bytes32 versionHash,
         bytes32 salt
     ) internal view returns (bytes32 domainSeparator) {
+        bytes32 typeHash = EIP_712_DOMAIN_HASH_11111;
+
         assembly {
             let pointer := mload(64)
 
-            mstore(
-                pointer,
-                0xd87cd6ef79d4e2b95e15ce8abf732db51ec771f1ca2edccf22a46c729ac56472
-            )
+            mstore(pointer, typeHash)
             mstore(add(pointer, 32), nameHash)
             mstore(add(pointer, 64), versionHash)
             mstore(add(pointer, 96), chainid())
