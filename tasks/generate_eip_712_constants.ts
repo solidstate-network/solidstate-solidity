@@ -15,37 +15,34 @@ pragma solidity ^0.8.20;
  **/
 library <%- name %> {
     <% for (const c of constantDefinitions) { %>
-      /**
-       * @dev EIP712Domain hash corresponding to ERC5267 fields value <%- c.binString %> (<%- c.fields.join(', ') %>)
-       * @dev evaluates to <%- c.keccak %>
-       */
-      bytes32 internal constant <%- c.name %> = keccak256('<%- c.domainString %>');
-
+    /**
+     * @dev EIP712Domain hash corresponding to ERC5267 fields value <%- c.binString %> (<%- c.fields.join(', ') %>)
+     * @dev evaluates to <%- c.keccak %>
+     */
+    bytes32 internal constant <%- c.name %> = keccak256('<%- c.domainString %>');
     <% } %>
 
     <% for (const fn of functionDefinitions) { %>
-        /**
-         * @notice calculate unique EIP-712 domain separator
-        <% for (const f of fn.fields.filter((f) => data[f].description)) { %>
-          * @param <%- data[f].packedName ?? f %> <%- data[f].description %>
-        <% } %>
-         * @return domainSeparator domain separator
-         */
-        function <%- fn.name %>(<%- fn.parameters %>) internal <%- fn.visibility %> returns (bytes32 domainSeparator) {
-          assembly {
+    /**
+     * @notice calculate unique EIP-712 domain separator
+    <%_ for (const f of fn.fields.filter((f) => data[f].description)) { _%>
+     * @param <%- data[f].packedName ?? f %> <%- data[f].description %>
+    <%_ } _%>
+     * @return domainSeparator domain separator
+     */
+    function <%- fn.name %>(<%- fn.parameters %>) internal <%- fn.visibility %> returns (bytes32 domainSeparator) {
+        assembly {
             let pointer := mload(64)
 
             mstore(pointer, <%- fn.keccak %>)
-            <% for (let i = 0; i < fn.assemblyReferences.length; i++) { %>
-              mstore(add(pointer, <%- (i + 1) * 32 %>), <%- fn.assemblyReferences[i] %>)
-            <% } %>
+            <%_ for (let i = 0; i < fn.assemblyReferences.length; i++) { _%>
+            mstore(add(pointer, <%- (i + 1) * 32 %>), <%- fn.assemblyReferences[i] %>)
+            <%_ } _%>
 
             domainSeparator := keccak256(pointer, <%- (fn.fields.length + 1) * 32 %>)
-          }
         }
-
-  <% } %>
-    
+    }
+    <% } %>
 }
 `;
 
@@ -70,27 +67,27 @@ describe('<%- name %>', () => {
   });
 
   <% for (const c of constantDefinitions) { %>
-    describe('#<%- c.name %>()', () => {
-      it('resolves to expected value', async () => {
-        expect(await instance.$<%- c.name %>.staticCall()).to.equal('<%- c.keccak %>');
-      });
+  describe('#<%- c.name %>()', () => {
+    it('resolves to expected value', async () => {
+      expect(await instance.$<%- c.name %>.staticCall()).to.equal('<%- c.keccak %>');
     });
+  });
   <% } %>
 
   <% for (const fn of functionDefinitions) { %>
-    describe('#<%- fn.name %>(<%- fn.sigTypes %>)', () => {
-      it('returns domain separator', async () => {
-        const typeHash = await instance.$<%- fn.hashName %>.staticCall();
+  describe('#<%- fn.name %>(<%- fn.sigTypes %>)', () => {
+    it('returns domain separator', async () => {
+      const typeHash = await instance.$<%- fn.hashName %>.staticCall();
 
-        const types: string[] = ['bytes32', <%- fn.hashTypes %>];
-        const values: string[] = [typeHash, <%- fn.hashFields %>];
+      const types: string[] = ['bytes32', <%- fn.hashTypes %>];
+      const values: string[] = [typeHash, <%- fn.hashFields %>];
 
-        const domainSeparator = ethers.keccak256(
-          ethers.AbiCoder.defaultAbiCoder().encode(types,values));
+      const domainSeparator = ethers.keccak256(
+        ethers.AbiCoder.defaultAbiCoder().encode(types,values));
 
-        expect(await instance.$<%- fn.name %>.staticCall(<%- fn.callNames %>)).to.equal(domainSeparator)
-      });
+      expect(await instance.$<%- fn.name %>.staticCall(<%- fn.callNames %>)).to.equal(domainSeparator)
     });
+  });
   <% } %>
 });
 `;
@@ -204,12 +201,8 @@ task('generate-eip-712-constants', `Generate ${name}`).setAction(
       functionDefinitions,
     };
 
-    const contractContent = ejs.render(TEMPLATE_SOL, templateData, {
-      rmWhitespace: true,
-    });
-    const testContent = ejs.render(TEMPLATE_TS, templateData, {
-      rmWhitespace: true,
-    });
+    const contractContent = ejs.render(TEMPLATE_SOL, templateData);
+    const testContent = ejs.render(TEMPLATE_TS, templateData);
 
     const contractPath = path.resolve(
       hre.config.paths.sources,
