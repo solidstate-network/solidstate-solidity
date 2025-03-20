@@ -1,4 +1,3 @@
-import { timeStamp } from 'console';
 import ejs from 'ejs';
 import fs from 'fs';
 import { task } from 'hardhat/config';
@@ -205,8 +204,12 @@ task('generate-eip-712-constants', `Generate ${name}`).setAction(
       functionDefinitions,
     };
 
-    const contractContent = ejs.render(TEMPLATE_SOL, templateData);
-    const testContent = ejs.render(TEMPLATE_TS, templateData);
+    const contractContent = ejs.render(TEMPLATE_SOL, templateData, {
+      rmWhitespace: true,
+    });
+    const testContent = ejs.render(TEMPLATE_TS, templateData, {
+      rmWhitespace: true,
+    });
 
     const contractPath = path.resolve(
       hre.config.paths.sources,
