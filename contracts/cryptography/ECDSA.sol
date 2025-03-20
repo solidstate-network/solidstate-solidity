@@ -24,11 +24,9 @@ library ECDSA {
     ) internal pure returns (address signer) {
         function() pure errorFn;
 
-        (signer, errorFn) = tryRecover(hash, signature);
+        (signer, errorFn) = _tryRecover(hash, signature);
 
-        if (signer == address(0)) {
-            errorFn();
-        }
+        if (signer == address(0)) errorFn();
     }
 
     /**
@@ -47,11 +45,39 @@ library ECDSA {
     ) internal pure returns (address signer) {
         function() pure errorFn;
 
-        (signer, errorFn) = tryRecover(hash, v, r, s);
+        (signer, errorFn) = _tryRecover(hash, v, r, s);
 
-        if (signer == address(0)) {
-            errorFn();
-        }
+        if (signer == address(0)) errorFn();
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature
+     * @param hash hashed data payload
+     * @param signature signed data payload
+     * @return signer recovered message signer (zero address on recovery failure)
+     */
+    function tryRecover(
+        bytes32 hash,
+        bytes memory signature
+    ) internal pure returns (address signer) {
+        (signer, ) = _tryRecover(hash, signature);
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature v, r, and s values
+     * @param hash hashed data payload
+     * @param v signature "v" value
+     * @param r signature "r" value
+     * @param s signature "s" value
+     * @return signer recovered message signer (zero address on recovery failure)
+     */
+    function tryRecover(
+        bytes32 hash,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal pure returns (address signer) {
+        (signer, ) = _tryRecover(hash, v, r, s);
     }
 
     /**
@@ -61,10 +87,10 @@ library ECDSA {
      * @return signer recovered message signer (zero address on recovery failure)
      * @return errorFn wrapper function around custom error revert
      */
-    function tryRecover(
+    function _tryRecover(
         bytes32 hash,
         bytes memory signature
-    ) internal pure returns (address signer, function() pure errorFn) {
+    ) private pure returns (address signer, function() pure errorFn) {
         if (signature.length != 65) {
             return (address(0), _revert_ECDSA__InvalidSignatureLength);
         }
@@ -79,7 +105,7 @@ library ECDSA {
             v := byte(0, mload(add(signature, 0x60)))
         }
 
-        (signer, errorFn) = tryRecover(hash, v, r, s);
+        (signer, errorFn) = _tryRecover(hash, v, r, s);
     }
 
     /**
@@ -91,12 +117,12 @@ library ECDSA {
      * @return signer recovered message signer (zero address on recovery failure)
      * @return errorFn wrapper function around custom error revert
      */
-    function tryRecover(
+    function _tryRecover(
         bytes32 hash,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) internal pure returns (address signer, function() pure errorFn) {
+    ) private pure returns (address signer, function() pure errorFn) {
         // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
         // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
         // the valid range for s in (281): 0 < s < secp256k1n ÷ 2 + 1, and for v in (282): v ∈ {27, 28}. Most
