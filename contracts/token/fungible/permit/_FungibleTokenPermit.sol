@@ -35,7 +35,7 @@ abstract contract _FungibleTokenPermit is
         virtual
         returns (bytes32 domainSeparator)
     {
-        domainSeparator = EIP712.calculateDomainSeparator(
+        domainSeparator = EIP712.calculateDomainSeparator_01111(
             keccak256(bytes(_name())),
             keccak256(bytes(_version()))
         );
