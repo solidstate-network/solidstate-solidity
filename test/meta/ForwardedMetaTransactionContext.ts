@@ -6,7 +6,7 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ForwardedMe$ForwardedMetaTransactionContext', () => {
+describe('ForwardedMetaTransactionContext', () => {
   let instance: $ForwardedMetaTransactionContext;
   let deployer: SignerWithAddress;
 
