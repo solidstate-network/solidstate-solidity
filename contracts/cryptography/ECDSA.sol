@@ -136,10 +136,12 @@ library ECDSA {
             uint256(s) >
             0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0
         ) return (address(0), _revert_ECDSA__InvalidS);
+
         if (v != 27 && v != 28) return (address(0), _revert_ECDSA__InvalidV);
 
         // If the signature is valid (and not malleable), return the signer address
         signer = ecrecover(hash, v, r, s);
+
         if (signer == address(0))
             return (address(0), _revert_ECDSA__InvalidSignature);
     }
@@ -157,18 +159,30 @@ library ECDSA {
         );
     }
 
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
     function _revert_ECDSA__InvalidS() private pure {
         revert ECDSA__InvalidS();
     }
 
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
     function _revert_ECDSA__InvalidSignature() private pure {
         revert ECDSA__InvalidSignature();
     }
 
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
     function _revert_ECDSA__InvalidSignatureLength() private pure {
         revert ECDSA__InvalidSignatureLength();
     }
 
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
     function _revert_ECDSA__InvalidV() private pure {
         revert ECDSA__InvalidV();
     }
