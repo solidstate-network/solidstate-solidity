@@ -1,17 +1,17 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
+import { describeBehaviorOfTransparentProxy } from '@solidstate/spec';
 import {
   $Ownable__factory,
-  $UpgradeableProxy,
-  $UpgradeableProxy__factory,
+  $TransparentProxy,
+  $TransparentProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UpgradeableProxy', () => {
+describe('TransparentProxy', () => {
   let owner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
-  let instance: $UpgradeableProxy;
+  let instance: $TransparentProxy;
 
   before(async () => {
     [owner, nonOwner] = await ethers.getSigners();
@@ -24,7 +24,7 @@ describe('UpgradeableProxy', () => {
       deployer,
     ).deploy();
 
-    instance = await new $UpgradeableProxy__factory(deployer).deploy();
+    instance = await new $TransparentProxy__factory(deployer).deploy();
 
     await instance.$_setImplementation(
       await implementationInstance.getAddress(),
@@ -32,7 +32,7 @@ describe('UpgradeableProxy', () => {
     await instance.$_setAdmin(await owner.getAddress());
   });
 
-  describeBehaviorOfUpgradeableProxy(async () => instance, {
+  describeBehaviorOfTransparentProxy(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
     implementationFunction: 'owner()',

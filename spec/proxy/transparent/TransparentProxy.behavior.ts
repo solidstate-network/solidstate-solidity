@@ -2,24 +2,24 @@ import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { IUpgradeableProxy } from '@solidstate/typechain-types';
+import { ITransparentProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface UpgradeableProxyArgs extends ProxyBehaviorArgs {
+interface TransparentProxyArgs extends ProxyBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
 
-export function describeBehaviorOfUpgradeableProxy(
-  deploy: () => Promise<IUpgradeableProxy>,
-  args: UpgradeableProxyArgs,
+export function describeBehaviorOfTransparentProxy(
+  deploy: () => Promise<ITransparentProxy>,
+  args: TransparentProxyArgs,
   skips?: string[],
 ) {
   const describe = describeFilter(skips);
 
-  describe('::UpgradeableProxy', () => {
-    let instance: IUpgradeableProxy;
+  describe('::TransparentProxy', () => {
+    let instance: ITransparentProxy;
     let owner: SignerWithAddress;
     let nonOwner: SignerWithAddress;
 

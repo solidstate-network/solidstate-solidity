@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IProxy } from '../IProxy.sol';
-import { _IUpgradeableProxy } from './_IUpgradeableProxy.sol';
+import { _ITransparentProxy } from './_ITransparentProxy.sol';
 
-interface IUpgradeableProxy is _IUpgradeableProxy, IProxy {
+interface ITransparentProxy is _ITransparentProxy, IProxy {
     /**
      * @notice update the EIP-1967 proxy admin
      * @param admin address of admin account

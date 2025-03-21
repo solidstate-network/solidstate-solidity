@@ -3,26 +3,26 @@
 pragma solidity ^0.8.20;
 
 import { Proxy } from '../Proxy.sol';
-import { IUpgradeableProxy } from './IUpgradeableProxy.sol';
-import { _UpgradeableProxy } from './_UpgradeableProxy.sol';
+import { ITransparentProxy } from './ITransparentProxy.sol';
+import { _TransparentProxy } from './_TransparentProxy.sol';
 
 /**
  * @title Proxy with upgradeable implementation controlled by ERC171 owner
  */
-abstract contract UpgradeableProxy is
-    IUpgradeableProxy,
-    _UpgradeableProxy,
+abstract contract TransparentProxy is
+    ITransparentProxy,
+    _TransparentProxy,
     Proxy
 {
     /**
-     * @inheritdoc IUpgradeableProxy
+     * @inheritdoc ITransparentProxy
      */
     function setAdmin(address admin) external {
         _setAdminExternal(admin);
     }
 
     /**
-     * @inheritdoc IUpgradeableProxy
+     * @inheritdoc ITransparentProxy
      */
     function setImplementation(address implementation) external {
         _setImplementationExternal(implementation);

@@ -3,9 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { _Proxy } from '../_Proxy.sol';
-import { _IUpgradeableProxy } from './_IUpgradeableProxy.sol';
+import { _ITransparentProxy } from './_ITransparentProxy.sol';
 
-abstract contract _UpgradeableProxy is _IUpgradeableProxy, _Proxy {
+abstract contract _TransparentProxy is _ITransparentProxy, _Proxy {
     /**
      * TODO: standardize use of externally accessible functions with "External" suffix
      */
