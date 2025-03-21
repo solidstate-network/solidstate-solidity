@@ -180,8 +180,7 @@ abstract contract _ECDSAMetaTransactionContext is
 
         assembly {
             // it is necessary to store metadata in transient storage because
-            // subsequent derivation will fail due to none invalidation
-            // TODO: suppress warning
+            // subsequent derivation will fail due to nonce invalidation
             // TODO: pack (msgDataIndex as bytes12)
             tstore(slot, msgSender)
             tstore(add(slot, 1), msgDataIndex)
