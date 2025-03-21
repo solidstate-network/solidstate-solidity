@@ -18,7 +18,7 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
         override
         returns (address implementation)
     {
-        implementation = IBeacon(_getBeacon()).getImplementation();
+        implementation = IBeacon(_getBeacon()).implementation();
     }
 
     /**

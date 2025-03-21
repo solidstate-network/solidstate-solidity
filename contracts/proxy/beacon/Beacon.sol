@@ -3,25 +3,26 @@
 pragma solidity ^0.8.20;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
+import { IERC1967Beacon } from '../../interfaces/IERC1967Beacon.sol';
 import { IBeacon } from './IBeacon.sol';
 import { _Beacon } from './_Beacon.sol';
 
 contract Beacon is IBeacon, _Beacon, Ownable {
     /**
-     * @inheritdoc IBeacon
+     * @inheritdoc IERC1967Beacon
      */
-    function getImplementation()
+    function implementation()
         external
         view
-        returns (address implementation)
+        returns (address implementationContract)
     {
-        implementation = _getImplementation();
+        implementationContract = _getImplementation();
     }
 
     /**
      * @inheritdoc IBeacon
      */
-    function setImplementation(address implementation) external {
-        _setImplementation(implementation);
+    function setImplementation(address implementationContract) external {
+        _setImplementation(implementationContract);
     }
 }
