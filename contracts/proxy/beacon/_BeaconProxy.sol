@@ -22,7 +22,7 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
     }
 
     /**
-     * @notice get beacon of proxy implementation
+     * @notice query the EIP-1967 beacon address
      * @return beacon beacon contract address
      */
     function _getBeacon() internal view virtual returns (address beacon) {
@@ -32,7 +32,7 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
     }
 
     /**
-     * @notice set beacon of proxy implementation
+     * @notice update the EIP-1967 beacon address
      * @param beacon beacon contract address
      */
     function _setBeacon(address beacon) internal virtual {

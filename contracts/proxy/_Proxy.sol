@@ -7,7 +7,17 @@ import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
     /**
-     * @notice get logic implementation address
+     * @notice query the EIP-1967 proxy admin
+     * @return admin address of admin account
+     */
+    function _getAdmin() internal view virtual returns (address admin) {
+        admin = ERC1967Storage
+            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
+            .admin;
+    }
+
+    /**
+     * @notice query the EIP-1967 logic implementation address
      * @return implementation address of implementation contract
      */
     function _getImplementation()
@@ -22,7 +32,21 @@ abstract contract _Proxy is _IProxy {
     }
 
     /**
-     * @notice set logic implementation address
+     * @notice update the EIP-1967 proxy admin
+     * @param admin address of admin account
+     */
+    function _setAdmin(address admin) internal virtual {
+        ERC1967Storage.Layout storage $ = ERC1967Storage.layout(
+            ERC1967Storage.DEFAULT_STORAGE_SLOT
+        );
+
+        emit AdminChanged($.admin, admin);
+
+        $.admin = admin;
+    }
+
+    /**
+     * @notice update the EIP-1967 logic implementation address
      * @param implementation address of implementation contract
      */
     function _setImplementation(address implementation) internal virtual {
