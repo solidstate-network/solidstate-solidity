@@ -30,16 +30,15 @@ export function describeBehaviorOfBeacon(
 
     describeBehaviorOfOwnable(deploy, args, skips);
 
-    describe('#getImplementation()', () => {
+    describe('#implementation()', () => {
       it('returns implementation address', async () => {
-        expect(await instance.getImplementation.staticCall()).to.be
-          .properAddress;
+        expect(await instance.implementation.staticCall()).to.be.properAddress;
       });
     });
 
     describe('#setImplementation(address)', () => {
       it('updates implementation address', async () => {
-        expect(await instance.getImplementation.staticCall()).to.eq(
+        expect(await instance.implementation.staticCall()).to.eq(
           ethers.ZeroAddress,
         );
 
@@ -49,7 +48,7 @@ export function describeBehaviorOfBeacon(
 
         await instance.connect(owner).setImplementation(address);
 
-        expect(await instance.getImplementation.staticCall()).to.eq(address);
+        expect(await instance.implementation.staticCall()).to.eq(address);
       });
 
       describe('reverts if', () => {
