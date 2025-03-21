@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { Proxy } from '../Proxy.sol';
+import { _Proxy } from '../_Proxy.sol';
 import { ITransparentProxy } from './ITransparentProxy.sol';
 import { _TransparentProxy } from './_TransparentProxy.sol';
 
@@ -14,17 +15,7 @@ abstract contract TransparentProxy is
     _TransparentProxy,
     Proxy
 {
-    /**
-     * @inheritdoc ITransparentProxy
-     */
-    function setAdmin(address admin) external {
-        _setAdminExternal(admin);
-    }
-
-    /**
-     * @inheritdoc ITransparentProxy
-     */
-    function setImplementation(address implementation) external {
-        _setImplementationExternal(implementation);
+    function _fallback() internal virtual override(_Proxy, _TransparentProxy) {
+        super._fallback();
     }
 }
