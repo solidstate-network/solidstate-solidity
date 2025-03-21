@@ -20,6 +20,15 @@ export function describeBehaviorOfMultiTokenMetadata(
       instance = await deploy();
     });
 
+    // TODO: enable for compositions that include ERC165
+    // describeBehaviorOfIntrospectable(
+    //   deploy,
+    //   {
+    //     interfaceIds: ['0x0e89341c'],
+    //   },
+    //   skips,
+    // );
+
     describe('#uri(uint256)', () => {
       it('todo');
     });

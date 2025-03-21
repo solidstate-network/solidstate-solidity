@@ -11,6 +11,11 @@ import { IERC5313 } from './IERC5313.sol';
  */
 interface IERC173 is _IERC173, IERC5313 {
     /**
+     * @inheritdoc IERC5313
+     */
+    function owner() external view returns (address owner);
+
+    /**
      * @notice transfer contract ownership to new account
      * @param account address of new owner
      */

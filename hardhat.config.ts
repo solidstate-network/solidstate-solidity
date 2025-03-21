@@ -1,4 +1,5 @@
 import './tasks/rename_entity';
+import './tasks/scaffold_contract';
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';

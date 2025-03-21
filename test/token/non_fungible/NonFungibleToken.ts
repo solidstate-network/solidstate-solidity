@@ -245,8 +245,9 @@ describe('NonFungibleToken', () => {
               await instance.getAddress(),
               2,
             ),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
 
@@ -368,8 +369,9 @@ describe('NonFungibleToken', () => {
               2,
               '0x',
             ),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
 
@@ -594,8 +596,9 @@ describe('NonFungibleToken', () => {
               tokenId,
               '0x',
             ),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
 
@@ -685,8 +688,9 @@ describe('NonFungibleToken', () => {
               0,
               '0x',
             ),
-          ).to.be.revertedWith(
-            'NonFungibleToken: transfer to non ERC721Receiver implementer',
+          ).to.be.revertedWithCustomError(
+            instance,
+            'NonFungibleToken__ERC721ReceiverNotImplemented',
           );
         });
       });

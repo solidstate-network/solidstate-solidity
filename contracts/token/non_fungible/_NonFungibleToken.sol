@@ -240,7 +240,7 @@ abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
                 tokenId,
                 data
             ),
-            'NonFungibleToken: transfer to non ERC721Receiver implementer'
+            NonFungibleToken__ERC721ReceiverNotImplemented.selector
         );
 
         bytes4 returnValue = abi.decode(returnData, (bytes4));

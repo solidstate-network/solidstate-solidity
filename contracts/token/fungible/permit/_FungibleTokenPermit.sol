@@ -117,33 +117,35 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        ERC20Storage.Layout storage $ = ERC20Storage.layout(
-            ERC20Storage.DEFAULT_STORAGE_SLOT
-        );
+        // execute EIP-712 hashStruct procedure
 
-        // execute EIP-712 hashStruct procedure using assembly, equavalent to:
-        //
-        // bytes32 structHash = keccak256(
-        //   abi.encode(
-        //     EIP712_TYPE_HASH,
-        //     owner,
-        //     spender,
-        //     amount,
-        //     nonce,
-        //     deadline
-        //   )
-        // );
+        uint256 nonce = ERC20Storage
+            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .erc2612Nonces[owner]++;
 
         bytes32 structHash;
-        uint256 nonce = $.erc2612Nonces[owner];
-
-        bytes32 typeHash = EIP712_TYPE_HASH;
 
         assembly {
+            // assembly block equavalent to:
+            //
+            // structHash = keccak256(
+            //   abi.encode(
+            //     EIP712_TYPE_HASH,
+            //     owner,
+            //     spender,
+            //     amount,
+            //     nonce,
+            //     deadline
+            //   )
+            // );
+
             // load free memory pointer
             let pointer := mload(64)
 
-            mstore(pointer, typeHash)
+            mstore(
+                pointer,
+                0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
+            )
             mstore(add(pointer, 32), owner)
             mstore(add(pointer, 64), spender)
             mstore(add(pointer, 96), amount)
@@ -153,21 +155,23 @@ abstract contract _FungibleTokenPermit is
             structHash := keccak256(pointer, 192)
         }
 
+        // recreate and hash data payload
+
         bytes32 domainSeparator = _DOMAIN_SEPARATOR();
 
-        // recreate and hash data payload using assembly, equivalent to:
-        //
-        // bytes32 hash = keccak256(
-        //   abi.encodePacked(
-        //     uint16(0x1901),
-        //     domainSeparator,
-        //     structHash
-        //   )
-        // );
-
-        bytes32 hash;
+        bytes32 signedHash;
 
         assembly {
+            // assembly block equivalent to:
+            //
+            // signedHash = keccak256(
+            //   abi.encodePacked(
+            //     uint16(0x1901),
+            //     domainSeparator,
+            //     structHash
+            //   )
+            // );
+
             // load free memory pointer
             let pointer := mload(64)
 
@@ -180,16 +184,14 @@ abstract contract _FungibleTokenPermit is
             mstore(add(pointer, 2), domainSeparator)
             mstore(add(pointer, 34), structHash)
 
-            hash := keccak256(pointer, 66)
+            signedHash := keccak256(pointer, 66)
         }
 
         // validate signature
 
-        address signer = hash.recover(v, r, s);
+        if (signedHash.recover(v, r, s) != owner)
+            revert FungibleTokenPermit__InvalidSignature();
 
-        if (signer != owner) revert FungibleTokenPermit__InvalidSignature();
-
-        $.erc2612Nonces[owner]++;
         _approve(owner, spender, amount);
     }
 }

@@ -16,14 +16,9 @@ abstract contract _Proxy is _IProxy {
         virtual
         returns (address implementation)
     {
-        // inline storage layout retrieval uses less gas
-        ProxyStorage.Layout storage $;
-        bytes32 slot = ProxyStorage.DEFAULT_STORAGE_SLOT;
-        assembly {
-            $.slot := slot
-        }
-
-        implementation = $.implementation;
+        implementation = ProxyStorage
+            .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
+            .implementation;
     }
 
     /**
@@ -34,5 +29,43 @@ abstract contract _Proxy is _IProxy {
         ProxyStorage
             .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
             .implementation = implementation;
+    }
+
+    /**
+     * @notice delegate all calls to implementation contract
+     * @dev memory location in use by assembly may be unsafe in other contexts
+     * @dev function declares no return value, but data is returned via assembly
+     */
+    function _fallback() internal virtual {
+        address implementation = _getImplementation();
+
+        assembly {
+            calldatacopy(0, 0, calldatasize())
+
+            let result := delegatecall(
+                gas(),
+                implementation,
+                0,
+                calldatasize(),
+                0,
+                0
+            )
+
+            returndatacopy(0, 0, returndatasize())
+
+            if iszero(result) {
+                revert(0, returndatasize())
+            }
+
+            if returndatasize() {
+                return(0, returndatasize())
+            }
+
+            if extcodesize(implementation) {
+                return(0, returndatasize())
+            }
+        }
+
+        revert Proxy__ImplementationIsNotContract();
     }
 }

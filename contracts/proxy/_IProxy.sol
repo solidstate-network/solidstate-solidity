@@ -2,4 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-interface _IProxy {}
+interface _IProxy {
+    error Proxy__ImplementationIsNotContract();
+}
