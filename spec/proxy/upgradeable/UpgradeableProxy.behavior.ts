@@ -1,4 +1,3 @@
-import { describeBehaviorOfOwnable, OwnableBehaviorArgs } from '../../access';
 import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
@@ -7,7 +6,7 @@ import { IUpgradeableProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface UpgradeableProxyArgs extends ProxyBehaviorArgs, OwnableBehaviorArgs {
+interface UpgradeableProxyArgs extends ProxyBehaviorArgs {
   getOwner: () => Promise<SignerWithAddress>;
   getNonOwner: () => Promise<SignerWithAddress>;
 }
@@ -32,7 +31,13 @@ export function describeBehaviorOfUpgradeableProxy(
 
     describeBehaviorOfProxy(deploy, args, skips);
 
-    describeBehaviorOfOwnable(deploy, args, skips);
+    describe('#setAdmin(address', () => {
+      it('updates the admin address');
+
+      it('emits');
+
+      it('falls back to implementation if sender is not admin');
+    });
 
     describe('#setImplementation(address)', () => {
       it('updates implementation address', async () => {
@@ -61,13 +66,9 @@ export function describeBehaviorOfUpgradeableProxy(
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
 
-      describe('reverts if', () => {
-        it('sender is not owner', async () => {
-          await expect(
-            instance.connect(nonOwner).setImplementation(ethers.ZeroAddress),
-          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
-        });
-      });
+      it('emits');
+
+      it('falls back to implementation if sender is not admin');
     });
   });
 }

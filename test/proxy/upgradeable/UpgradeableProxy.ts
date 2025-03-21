@@ -29,7 +29,7 @@ describe('UpgradeableProxy', () => {
     await instance.$_setImplementation(
       await implementationInstance.getAddress(),
     );
-    await instance.$_setOwner(await owner.getAddress());
+    await instance.$_setAdmin(await owner.getAddress());
   });
 
   describeBehaviorOfUpgradeableProxy(async () => instance, {

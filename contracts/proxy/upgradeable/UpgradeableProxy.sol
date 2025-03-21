@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { Ownable } from '../../access/ownable/Ownable.sol';
 import { Proxy } from '../Proxy.sol';
 import { IUpgradeableProxy } from './IUpgradeableProxy.sol';
 import { _UpgradeableProxy } from './_UpgradeableProxy.sol';
@@ -13,12 +12,17 @@ import { _UpgradeableProxy } from './_UpgradeableProxy.sol';
 abstract contract UpgradeableProxy is
     IUpgradeableProxy,
     _UpgradeableProxy,
-    Proxy,
-    Ownable
+    Proxy
 {
     /**
-     * @notice set logic implementation address
-     * @param implementation implementation address
+     * @inheritdoc IUpgradeableProxy
+     */
+    function setAdmin(address admin) external {
+        _setAdminExternal(admin);
+    }
+
+    /**
+     * @inheritdoc IUpgradeableProxy
      */
     function setImplementation(address implementation) external {
         _setImplementationExternal(implementation);
