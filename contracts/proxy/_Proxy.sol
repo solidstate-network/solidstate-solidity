@@ -29,6 +29,8 @@ abstract contract _Proxy is _IProxy {
         ERC1967Storage
             .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
             .implementation = implementation;
+
+        emit Upgraded(implementation);
     }
 
     /**
