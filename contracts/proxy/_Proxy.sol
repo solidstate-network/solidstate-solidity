@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { ProxyStorage } from '../storage/ProxyStorage.sol';
+import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
@@ -16,8 +16,8 @@ abstract contract _Proxy is _IProxy {
         virtual
         returns (address implementation)
     {
-        implementation = ProxyStorage
-            .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
+        implementation = ERC1967Storage
+            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
             .implementation;
     }
 
@@ -26,8 +26,8 @@ abstract contract _Proxy is _IProxy {
      * @param implementation address of implementation contract
      */
     function _setImplementation(address implementation) internal virtual {
-        ProxyStorage
-            .layout(ProxyStorage.DEFAULT_STORAGE_SLOT)
+        ERC1967Storage
+            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
             .implementation = implementation;
     }
 
