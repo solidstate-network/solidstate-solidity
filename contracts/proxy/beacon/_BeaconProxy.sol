@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { ProxyStorage } from '../../storage/ProxyStorage.sol';
+import { ERC1967Storage } from '../../storage/ERC1967Storage.sol';
 import { _Proxy } from '../_Proxy.sol';
 import { IBeacon } from './IBeacon.sol';
 import { _IBeaconProxy } from './_IBeaconProxy.sol';
@@ -26,7 +26,9 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
      * @return beacon beacon contract address
      */
     function _getBeacon() internal view virtual returns (address beacon) {
-        beacon = ProxyStorage.layout(ProxyStorage.DEFAULT_STORAGE_SLOT).beacon;
+        beacon = ERC1967Storage
+            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
+            .beacon;
     }
 
     /**
@@ -34,6 +36,10 @@ abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
      * @param beacon beacon contract address
      */
     function _setBeacon(address beacon) internal virtual {
-        ProxyStorage.layout(ProxyStorage.DEFAULT_STORAGE_SLOT).beacon = beacon;
+        ERC1967Storage
+            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
+            .beacon = beacon;
+
+        emit BeaconUpgraded(beacon);
     }
 }
