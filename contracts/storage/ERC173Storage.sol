@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 library ERC173Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC173
+     * @custom:storage-location erc7201:solidstate.layout.ERC173
      */
     struct Layout {
         address owner;
@@ -14,9 +14,7 @@ library ERC173Storage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC173'))
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.ERC173'))) - 1
             )
         ) & ~bytes32(uint256(0xff));
 

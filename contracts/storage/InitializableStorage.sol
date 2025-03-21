@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 library InitializableStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.Initializable
+     * @custom:storage-location erc7201:solidstate.layout.Initializable
      */
     struct Layout {
         uint8 initialized;
@@ -13,11 +13,7 @@ library InitializableStorage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.Initializable')
-                    )
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.Initializable'))) - 1
             )
         ) & ~bytes32(uint256(0xff));
 

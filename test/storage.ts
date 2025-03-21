@@ -20,7 +20,7 @@ describe('Storage Libraries', () => {
       const instance = await hre.ethers.deployContract(`${prefix}${name}`);
 
       const slot = seedToStorageSlot(
-        `solidstate.contracts.storage.${name.replace('Storage', '')}`,
+        `solidstate.layout.${name.replace('Storage', '')}`,
       );
 
       expect(

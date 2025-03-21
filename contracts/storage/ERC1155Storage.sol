@@ -6,7 +6,7 @@ import { EnumerableSet } from '../data/EnumerableSet.sol';
 
 library ERC1155Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC1155
+     * @custom:storage-location erc7201:solidstate.layout.ERC1155
      */
     struct Layout {
         mapping(uint256 tokenId => mapping(address account => uint256 balance)) balances;
@@ -21,9 +21,7 @@ library ERC1155Storage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC1155'))
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.ERC1155'))) - 1
             )
         ) & ~bytes32(uint256(0xff));
 

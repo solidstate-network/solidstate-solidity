@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 library BeaconStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.Beacon
+     * @custom:storage-location erc7201:solidstate.layout.Beacon
      */
     struct Layout {
         address implementation;
@@ -13,9 +13,7 @@ library BeaconStorage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(bytes('solidstate.contracts.storage.Beacon'))
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.Beacon'))) - 1
             )
         ) & ~bytes32(uint256(0xff));
 
