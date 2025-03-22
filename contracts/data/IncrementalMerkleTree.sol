@@ -66,8 +66,11 @@ library IncrementalMerkleTree {
         uint256 index
     ) internal view returns (bytes32 hash) {
         if (index >= t.size()) {
-            // force a panic of the same type as array out-of-bounds access
-            new bytes32[](0)[1];
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
         }
 
         assembly {
@@ -117,8 +120,11 @@ library IncrementalMerkleTree {
         uint256 treeSize = t.size();
 
         if (treeSize == 0) {
-            // force a panic of the same type as array out-of-bounds access
-            new bytes32[](0)[1];
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
         }
 
         unchecked {
@@ -158,8 +164,11 @@ library IncrementalMerkleTree {
         uint256 treeSize = t.size();
 
         if (index >= treeSize) {
-            // force a panic of the same type as array out-of-bounds access
-            new bytes32[](0)[1];
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
         }
 
         _set(t, 0, index, treeSize, hash);
