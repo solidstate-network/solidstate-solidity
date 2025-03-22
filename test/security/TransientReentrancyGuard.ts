@@ -26,7 +26,7 @@ describe('TransientReentrancyGuard', () => {
 
         await expect(instance.reentrancyTest()).to.be.revertedWithCustomError(
           instance,
-          'TransientReentrancyGuard__ReentrantCall',
+          'ReentrancyGuard__ReentrantCall',
         );
       });
 
@@ -34,7 +34,7 @@ describe('TransientReentrancyGuard', () => {
         it('call is reentrant', async () => {
           await expect(instance.reentrancyTest()).to.be.revertedWithCustomError(
             instance,
-            'TransientReentrancyGuard__ReentrantCall',
+            'ReentrancyGuard__ReentrantCall',
           );
         });
 
@@ -43,7 +43,7 @@ describe('TransientReentrancyGuard', () => {
             instance.crossFunctionReentrancyTest(),
           ).to.be.revertedWithCustomError(
             instance,
-            'TransientReentrancyGuard__ReentrantCall',
+            'ReentrancyGuard__ReentrantCall',
           );
 
           // call function again with different contract state to avoid false-negative test coverage
@@ -59,7 +59,7 @@ describe('TransientReentrancyGuard', () => {
           instance.lockReentrancyGuardTest(),
         ).to.be.revertedWithCustomError(
           instance,
-          'TransientReentrancyGuard__ReentrantCall',
+          'ReentrancyGuard__ReentrantCall',
         );
       });
     });
