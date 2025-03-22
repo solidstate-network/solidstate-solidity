@@ -11,12 +11,12 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('TransparentBeaconProxy', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let admin: SignerWithAddress;
+  let nonAdmin: SignerWithAddress;
   let instance: $TransparentBeaconProxy;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [admin, nonAdmin] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -39,12 +39,12 @@ describe('TransparentBeaconProxy', () => {
     ).deploy()) as unknown as $TransparentBeaconProxy & ITransparentBeaconProxy;
 
     await instance.$_setBeacon(await beaconInstance.getAddress());
-    await instance.$_setAdmin(await owner.getAddress());
+    await instance.$_setAdmin(await admin.getAddress());
   });
 
   describeBehaviorOfTransparentBeaconProxy(async () => instance, {
-    getOwner: async () => owner,
-    getNonOwner: async () => nonOwner,
+    getAdmin: async () => admin,
+    getNonAdmin: async () => nonAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

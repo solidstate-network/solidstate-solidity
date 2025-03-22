@@ -9,12 +9,12 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('TransparentProxy', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let admin: SignerWithAddress;
+  let nonAdmin: SignerWithAddress;
   let instance: $TransparentProxy;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [admin, nonAdmin] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -29,12 +29,12 @@ describe('TransparentProxy', () => {
     await instance.$_setImplementation(
       await implementationInstance.getAddress(),
     );
-    await instance.$_setAdmin(await owner.getAddress());
+    await instance.$_setAdmin(await admin.getAddress());
   });
 
   describeBehaviorOfTransparentProxy(async () => instance, {
-    getOwner: async () => owner,
-    getNonOwner: async () => nonOwner,
+    getAdmin: async () => admin,
+    getNonAdmin: async () => nonAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
