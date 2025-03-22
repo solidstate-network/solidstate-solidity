@@ -5,7 +5,6 @@ import {
   $DiamondBeacon,
   $DiamondBeacon__factory,
 } from '@solidstate/typechain-types';
-import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('DiamondBeacon', () => {

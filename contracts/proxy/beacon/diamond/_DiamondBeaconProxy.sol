@@ -20,6 +20,6 @@ abstract contract _DiamondBeaconProxy is _IDiamondBeaconProxy, _BeaconProxy {
     function _getImplementation(
         bytes4 sig
     ) internal view virtual returns (address implementation) {
-        implementation = IDiamondBeacon(_getBeacon()).facetAddress(sig);
+        implementation = IDiamondBeacon(_getBeacon()).implementation(sig);
     }
 }

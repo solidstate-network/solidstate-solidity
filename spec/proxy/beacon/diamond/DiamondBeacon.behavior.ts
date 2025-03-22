@@ -3,7 +3,6 @@ import {
   OwnableBehaviorArgs,
 } from '../../../access/ownable/Ownable.behavior';
 import {
-  describeBehaviorOfDiamondProxyReadable,
   describeBehaviorOfDiamondProxyWritable,
   DiamondProxyReadableBehaviorArgs,
   DiamondProxyWritableBehaviorArgs,
@@ -36,11 +35,6 @@ export function describeBehaviorOfDiamondBeacon(
     });
 
     describeBehaviorOfOwnable(deploy, args, skips);
-
-    describeBehaviorOfDiamondProxyReadable(deploy, args, [
-      '::Introspectable',
-      ...(skips ?? []),
-    ]);
 
     // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on external DiamondProxy contract
     // describeBehaviorOfDiamondProxyWritable(deploy, args, skips);

@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 
 import { _Ownable } from '../../../access/ownable/Ownable.sol';
 import { Ownable } from '../../../access/ownable/Ownable.sol';
-import { DiamondProxyReadable } from '../../diamond/readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from '../../diamond/writable/DiamondProxyWritable.sol';
 import { _DiamondProxyWritable } from '../../diamond/writable/_DiamondProxyWritable.sol';
 import { _DiamondProxy } from '../../diamond/_DiamondProxy.sol';
@@ -13,15 +12,23 @@ import { _DiamondBeacon } from './_DiamondBeacon.sol';
 
 /**
  * @title Beacon contract which imitates the upgrade mechanism of an EIP-2535 diamond proxy.
- * @dev Configure this beacon using diamondCut as if it were a diamond proxy.  Proxies can fetch their implementations by calling facetAddress.
+ * @dev Configure this beacon using diamondCut as if it were a diamond proxy.
  */
 contract DiamondBeacon is
     IDiamondBeacon,
     _DiamondBeacon,
-    DiamondProxyReadable,
     DiamondProxyWritable,
     Ownable
 {
+    /**
+     * @inheritdoc IDiamondBeacon
+     */
+    function implementation(
+        bytes4 selector
+    ) external view returns (address implementationContract) {
+        implementationContract = _implementation(selector);
+    }
+
     /**
      * @inheritdoc _DiamondBeacon
      */
