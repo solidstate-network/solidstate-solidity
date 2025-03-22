@@ -34,7 +34,7 @@ abstract contract _DiamondBeacon is
         bytes memory data
     ) internal virtual override {
         if (target != address(0) || data.length != 0)
-            revert DiamondBeacon__InvalidInput();
+            revert DiamondProxyWritable__InvalidInitializationParameters();
         super._diamondCut(facetCuts, target, data);
     }
 }

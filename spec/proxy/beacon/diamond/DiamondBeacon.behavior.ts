@@ -48,7 +48,7 @@ export function describeBehaviorOfDiamondBeacon(
               .diamondCut([], await instance.getAddress(), '0x'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBeacon__InvalidInput',
+            'DiamondProxyWritable__InvalidInitializationParameters',
           );
         });
 
@@ -57,7 +57,7 @@ export function describeBehaviorOfDiamondBeacon(
             instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
-            'DiamondBeacon__InvalidInput',
+            'DiamondProxyWritable__InvalidInitializationParameters',
           );
         });
       });

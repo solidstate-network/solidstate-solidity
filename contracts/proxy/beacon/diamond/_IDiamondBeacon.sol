@@ -5,6 +5,4 @@ pragma solidity ^0.8.20;
 import { _IOwnable } from '../../../access/ownable/_IOwnable.sol';
 import { _IDiamondProxyWritable } from '../../diamond/writable/_IDiamondProxyWritable.sol';
 
-interface _IDiamondBeacon is _IOwnable, _IDiamondProxyWritable {
-    error DiamondBeacon__InvalidInput();
-}
+interface _IDiamondBeacon is _IOwnable, _IDiamondProxyWritable {}
