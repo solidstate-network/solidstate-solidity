@@ -11,7 +11,7 @@ abstract contract _Beacon is _IBeacon, _Ownable {
      * @notice query the address of the implementation that should be used by BeaconProxy instances
      * @return implementation address of the implementation contract
      */
-    function _getImplementation()
+    function _implementation()
         internal
         view
         virtual

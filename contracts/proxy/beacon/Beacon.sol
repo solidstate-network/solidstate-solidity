@@ -16,7 +16,7 @@ contract Beacon is IBeacon, _Beacon, Ownable {
         view
         returns (address implementationContract)
     {
-        implementationContract = _getImplementation();
+        implementationContract = _implementation();
     }
 
     /**
