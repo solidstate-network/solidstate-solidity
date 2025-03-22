@@ -8,8 +8,8 @@ import { _BeaconProxy } from '../_BeaconProxy.sol';
 import { ITransparentBeaconProxy } from './ITransparentBeaconProxy.sol';
 import { _TransparentBeaconProxy } from './_TransparentBeaconProxy.sol';
 
-// ITransparentBeaconProxy,
 abstract contract TransparentBeaconProxy is
+    ITransparentBeaconProxy,
     _TransparentBeaconProxy,
     BeaconProxy
 {
