@@ -37,4 +37,16 @@ abstract contract _DiamondBeacon is
             revert DiamondProxyWritable__InvalidInitializationParameters();
         super._diamondCut(facetCuts, target, data);
     }
+
+    /**
+     * TODO: standardize use of externally accessible functions with "External" suffix
+     * @notice callable by EIP-173 owner rather than EIP-1967 proxy admin
+     */
+    function _diamondCutExternal(
+        FacetCut[] memory facetCuts,
+        address target,
+        bytes memory data
+    ) internal virtual override onlyOwner {
+        _diamondCut(facetCuts, target, data);
+    }
 }

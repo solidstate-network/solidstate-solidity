@@ -14,8 +14,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface TransparentBeaconProxyArgs extends BeaconProxyBehaviorArgs {
-  getAdmin: () => Promise<SignerWithAddress>;
-  getNonAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<SignerWithAddress>;
+  getNonProxyAdmin: () => Promise<SignerWithAddress>;
 }
 
 export function describeBehaviorOfTransparentBeaconProxy(
@@ -28,8 +28,8 @@ export function describeBehaviorOfTransparentBeaconProxy(
   describe('::TransparentBeaconProxy', () => {
     let instance: ITransparentBeaconProxy;
     let instanceWithAdminFunctions: ITransparentBeaconProxyWithAdminFunctions;
-    let admin: SignerWithAddress;
-    let nonAdmin: SignerWithAddress;
+    let proxyAdmin: SignerWithAddress;
+    let nonProxyAdmin: SignerWithAddress;
 
     beforeEach(async () => {
       instance = await deploy();
@@ -39,8 +39,8 @@ export function describeBehaviorOfTransparentBeaconProxy(
           instance.runner,
         );
 
-      admin = await args.getAdmin();
-      nonAdmin = await args.getNonAdmin();
+      proxyAdmin = await args.getProxyAdmin();
+      nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
     describeBehaviorOfBeaconProxy(deploy, args, skips);
@@ -48,8 +48,8 @@ export function describeBehaviorOfTransparentBeaconProxy(
     describe('#setAdmin(address', () => {
       it('updates the admin address', async () => {
         await instanceWithAdminFunctions
-          .connect(admin)
-          .setAdmin(await nonAdmin.getAddress());
+          .connect(proxyAdmin)
+          .setAdmin(await nonProxyAdmin.getAddress());
 
         const adminSlotContents = await ethers.provider.send(
           'eth_getStorageAt',
@@ -59,33 +59,36 @@ export function describeBehaviorOfTransparentBeaconProxy(
           ],
         );
 
-        expect(adminSlotContents).to.hexEqual(await nonAdmin.getAddress());
+        expect(adminSlotContents).to.hexEqual(await nonProxyAdmin.getAddress());
       });
 
       it('emits AdminChanged event', async () => {
         await expect(
           instanceWithAdminFunctions
-            .connect(admin)
-            .setAdmin(await nonAdmin.getAddress()),
+            .connect(proxyAdmin)
+            .setAdmin(await nonProxyAdmin.getAddress()),
         )
           .to.emit(instanceWithAdminFunctions, 'AdminChanged')
-          .withArgs(await admin.getAddress(), await nonAdmin.getAddress());
+          .withArgs(
+            await proxyAdmin.getAddress(),
+            await nonProxyAdmin.getAddress(),
+          );
       });
 
       it('falls back to implementation if sender is not admin', async () => {
-        const mock = await deployMockContract(admin, [
+        const mock = await deployMockContract(proxyAdmin, [
           'function implementation() external returns (address)',
         ]);
 
         await mock.mock.implementation.returns(ethers.ZeroAddress);
 
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setBeacon(await mock.getAddress());
 
         await expect(
           instanceWithAdminFunctions
-            .connect(nonAdmin)
+            .connect(nonProxyAdmin)
             .setAdmin(ethers.ZeroAddress),
         ).to.be.revertedWithCustomError(
           instance,
@@ -101,8 +104,8 @@ export function describeBehaviorOfTransparentBeaconProxy(
           `function ${implementationFunction} () external view returns (bool)`,
         ];
 
-        const implementation = await deployMockContract(admin, abi);
-        const beacon = await deployMockContract(admin, [
+        const implementation = await deployMockContract(proxyAdmin, abi);
+        const beacon = await deployMockContract(proxyAdmin, [
           'function implementation() external returns (address)',
         ]);
 
@@ -113,7 +116,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
         const contract = new ethers.Contract(
           await instance.getAddress(),
           abi,
-          admin,
+          proxyAdmin,
         );
 
         await expect(
@@ -121,7 +124,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
         ).not.to.be.revertedWith('Mock on the method is not initialized');
 
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setBeacon(await beacon.getAddress());
 
         // call reverts, but with mock-specific message
@@ -133,7 +136,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
       it('emits BeaconUpgraded event', async () => {
         await expect(
           instanceWithAdminFunctions
-            .connect(admin)
+            .connect(proxyAdmin)
             .setBeacon(ethers.ZeroAddress),
         )
           .to.emit(instanceWithAdminFunctions, 'BeaconUpgraded')
@@ -141,19 +144,19 @@ export function describeBehaviorOfTransparentBeaconProxy(
       });
 
       it('falls back to implementation if sender is not admin', async () => {
-        const mock = await deployMockContract(admin, [
+        const mock = await deployMockContract(proxyAdmin, [
           'function implementation() external returns (address)',
         ]);
 
         await mock.mock.implementation.returns(ethers.ZeroAddress);
 
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setBeacon(await mock.getAddress());
 
         await expect(
           instanceWithAdminFunctions
-            .connect(nonAdmin)
+            .connect(nonProxyAdmin)
             .setBeacon(ethers.ZeroAddress),
         ).to.be.revertedWithCustomError(
           instance,

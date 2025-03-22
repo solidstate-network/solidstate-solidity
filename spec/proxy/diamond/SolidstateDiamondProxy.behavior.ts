@@ -1,9 +1,4 @@
 import {
-  describeBehaviorOfSafeOwnable,
-  SafeOwnableBehaviorArgs,
-} from '../../access';
-import { describeBehaviorOfIntrospectable } from '../../introspection';
-import {
   describeBehaviorOfDiamondProxy,
   DiamondProxyBehaviorArgs,
 } from './DiamondProxy.behavior';
@@ -30,8 +25,7 @@ export interface SolidstateDiamondProxyBehaviorArgs
   extends DiamondProxyBehaviorArgs,
     DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
-    DiamondProxyWritableBehaviorArgs,
-    SafeOwnableBehaviorArgs {}
+    DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateDiamondProxy(
   deploy: () => Promise<ISolidstateDiamondProxy>,
@@ -41,14 +35,14 @@ export function describeBehaviorOfSolidstateDiamondProxy(
   const describe = describeFilter(skips);
 
   describe('::SolidstateDiamondProxy', () => {
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let proxyAdmin: SignerWithAddress;
+    let nonProxyAdmin: SignerWithAddress;
 
     let instance: ISolidstateDiamondProxy;
 
     before(async () => {
-      owner = await args.getOwner();
-      nonOwner = await args.getNonOwner();
+      proxyAdmin = await args.getProxyAdmin();
+      nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
     beforeEach(async () => {
@@ -66,17 +60,6 @@ export function describeBehaviorOfSolidstateDiamondProxy(
     describeBehaviorOfDiamondProxyReadable(deploy, args, skips);
 
     describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
-
-    // TODO: nonstandard usage
-    describeBehaviorOfIntrospectable(
-      deploy as any,
-      {
-        interfaceIds: ['0x7f5828d0'],
-      },
-      skips,
-    );
-
-    describeBehaviorOfSafeOwnable(deploy, args, skips);
 
     describe('receive()', () => {
       it('accepts ether transfer', async () => {
@@ -108,7 +91,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
           );
         }
 
-        facet = await deployMockContract(owner, abi);
+        facet = await deployMockContract(proxyAdmin, abi);
       });
 
       it('adds selectors one-by-one', async () => {
@@ -116,7 +99,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
         for (let selector of selectors) {
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors: [selector] }],
               ethers.ZeroAddress,
@@ -127,7 +110,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
           // call reverts, but with mock-specific message
           await expect(
-            owner.sendTransaction({
+            proxyAdmin.sendTransaction({
               to: await instance.getAddress(),
               data: selector,
             }),
@@ -154,7 +137,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
       it('removes selectors one-by-one in ascending order of addition', async () => {
         await instance
-          .connect(owner)
+          .connect(proxyAdmin)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.ZeroAddress,
@@ -164,7 +147,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
         const expectedSelectors = [...selectors];
 
         for (let selector of selectors) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(proxyAdmin).diamondCut(
             [
               {
                 target: ethers.ZeroAddress,
@@ -187,7 +170,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({
+              proxyAdmin.sendTransaction({
                 to: await instance.getAddress(),
                 data: last,
               }),
@@ -195,7 +178,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
           }
 
           await expect(
-            owner.sendTransaction({
+            proxyAdmin.sendTransaction({
               to: await instance.getAddress(),
               data: selector,
             }),
@@ -227,7 +210,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
       it('removes selectors one-by-one in descending order of addition', async () => {
         await instance
-          .connect(owner)
+          .connect(proxyAdmin)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.ZeroAddress,
@@ -237,7 +220,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].reverse()) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(proxyAdmin).diamondCut(
             [
               {
                 target: ethers.ZeroAddress,
@@ -260,7 +243,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({
+              proxyAdmin.sendTransaction({
                 to: await instance.getAddress(),
                 data: last,
               }),
@@ -268,7 +251,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
           }
 
           await expect(
-            owner.sendTransaction({
+            proxyAdmin.sendTransaction({
               to: await instance.getAddress(),
               data: selector,
             }),
@@ -300,7 +283,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
       it('removes selectors one-by-one in random order', async () => {
         await instance
-          .connect(owner)
+          .connect(proxyAdmin)
           .diamondCut(
             [{ target: facet.address, action: 0, selectors }],
             ethers.ZeroAddress,
@@ -310,7 +293,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
         const expectedSelectors = [...selectors];
 
         for (let selector of [...selectors].sort(() => 0.5 - Math.random())) {
-          await instance.connect(owner).diamondCut(
+          await instance.connect(proxyAdmin).diamondCut(
             [
               {
                 target: ethers.ZeroAddress,
@@ -333,7 +316,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
             // call reverts, but with mock-specific message
             await expect(
-              owner.sendTransaction({
+              proxyAdmin.sendTransaction({
                 to: await instance.getAddress(),
                 data: last,
               }),
@@ -341,7 +324,7 @@ export function describeBehaviorOfSolidstateDiamondProxy(
           }
 
           await expect(
-            owner.sendTransaction({
+            proxyAdmin.sendTransaction({
               to: await instance.getAddress(),
               data: selector,
             }),

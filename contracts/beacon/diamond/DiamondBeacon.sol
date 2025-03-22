@@ -39,4 +39,15 @@ contract DiamondBeacon is
     ) internal virtual override(_DiamondProxy, _DiamondBeacon) {
         super._diamondCut(facetCuts, target, data);
     }
+
+    /**
+     * TODO: standardize use of externally accessible functions with "External" suffix
+     */
+    function _diamondCutExternal(
+        FacetCut[] memory facetCuts,
+        address target,
+        bytes memory data
+    ) internal virtual override(_DiamondProxyWritable, _DiamondBeacon) {
+        super._diamondCutExternal(facetCuts, target, data);
+    }
 }

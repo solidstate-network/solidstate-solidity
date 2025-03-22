@@ -10,10 +10,7 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-interface TransparentProxyArgs extends ProxyBehaviorArgs {
-  getAdmin: () => Promise<SignerWithAddress>;
-  getNonAdmin: () => Promise<SignerWithAddress>;
-}
+interface TransparentProxyArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfTransparentProxy(
   deploy: () => Promise<ITransparentProxy>,
@@ -25,8 +22,8 @@ export function describeBehaviorOfTransparentProxy(
   describe('::TransparentProxy', () => {
     let instance: ITransparentProxy;
     let instanceWithAdminFunctions: ITransparentProxyWithAdminFunctions;
-    let admin: SignerWithAddress;
-    let nonAdmin: SignerWithAddress;
+    let proxyAdmin: SignerWithAddress;
+    let nonProxyAdmin: SignerWithAddress;
 
     beforeEach(async () => {
       instance = await deploy();
@@ -36,8 +33,8 @@ export function describeBehaviorOfTransparentProxy(
           instance.runner,
         );
 
-      admin = await args.getAdmin();
-      nonAdmin = await args.getNonAdmin();
+      proxyAdmin = await args.getProxyAdmin();
+      nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
     describeBehaviorOfProxy(deploy, args, skips);
@@ -45,8 +42,8 @@ export function describeBehaviorOfTransparentProxy(
     describe('#setAdmin(address', () => {
       it('updates the admin address', async () => {
         await instanceWithAdminFunctions
-          .connect(admin)
-          .setAdmin(await nonAdmin.getAddress());
+          .connect(proxyAdmin)
+          .setAdmin(await nonProxyAdmin.getAddress());
 
         const adminSlotContents = await ethers.provider.send(
           'eth_getStorageAt',
@@ -56,27 +53,30 @@ export function describeBehaviorOfTransparentProxy(
           ],
         );
 
-        expect(adminSlotContents).to.hexEqual(await nonAdmin.getAddress());
+        expect(adminSlotContents).to.hexEqual(await nonProxyAdmin.getAddress());
       });
 
       it('emits AdminChanged event', async () => {
         await expect(
           instanceWithAdminFunctions
-            .connect(admin)
-            .setAdmin(await nonAdmin.getAddress()),
+            .connect(proxyAdmin)
+            .setAdmin(await nonProxyAdmin.getAddress()),
         )
           .to.emit(instanceWithAdminFunctions, 'AdminChanged')
-          .withArgs(await admin.getAddress(), await nonAdmin.getAddress());
+          .withArgs(
+            await proxyAdmin.getAddress(),
+            await nonProxyAdmin.getAddress(),
+          );
       });
 
       it('falls back to implementation if sender is not admin', async () => {
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setImplementation(ethers.ZeroAddress);
 
         await expect(
           instanceWithAdminFunctions
-            .connect(nonAdmin)
+            .connect(nonProxyAdmin)
             .setAdmin(ethers.ZeroAddress),
         ).to.be.revertedWithCustomError(
           instance,
@@ -92,12 +92,12 @@ export function describeBehaviorOfTransparentProxy(
           `function ${implementationFunction} () external view returns (bool)`,
         ];
 
-        const implementation = await deployMockContract(admin, abi);
+        const implementation = await deployMockContract(proxyAdmin, abi);
 
         const contract = new ethers.Contract(
           await instance.getAddress(),
           abi,
-          admin,
+          proxyAdmin,
         );
 
         await expect(
@@ -105,7 +105,7 @@ export function describeBehaviorOfTransparentProxy(
         ).not.to.be.revertedWith('Mock on the method is not initialized');
 
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setImplementation(implementation.address);
 
         // call reverts, but with mock-specific message
@@ -117,7 +117,7 @@ export function describeBehaviorOfTransparentProxy(
       it('emits Upgraded event', async () => {
         await expect(
           instanceWithAdminFunctions
-            .connect(admin)
+            .connect(proxyAdmin)
             .setImplementation(ethers.ZeroAddress),
         )
           .to.emit(instanceWithAdminFunctions, 'Upgraded')
@@ -126,12 +126,12 @@ export function describeBehaviorOfTransparentProxy(
 
       it('falls back to implementation if sender is not admin', async () => {
         await instanceWithAdminFunctions
-          .connect(admin)
+          .connect(proxyAdmin)
           .setImplementation(ethers.ZeroAddress);
 
         await expect(
           instanceWithAdminFunctions
-            .connect(nonAdmin)
+            .connect(nonProxyAdmin)
             .setImplementation(ethers.ZeroAddress),
         ).to.be.revertedWithCustomError(
           instance,
