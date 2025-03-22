@@ -24,13 +24,13 @@ abstract contract _FungibleTokenExtended is
         address spender,
         uint256 amount
     ) internal virtual returns (bool) {
-        uint256 allowance = _allowance(msg.sender, spender);
+        uint256 allowance = _allowance(_msgSender(), spender);
 
         unchecked {
             if (allowance > allowance + amount)
                 revert FungibleTokenExtended__ExcessiveAllowance();
 
-            return _approve(msg.sender, spender, allowance + amount);
+            return _approve(_msgSender(), spender, allowance + amount);
         }
     }
 
@@ -44,7 +44,7 @@ abstract contract _FungibleTokenExtended is
         address spender,
         uint256 amount
     ) internal virtual returns (bool) {
-        _decreaseAllowance(msg.sender, spender, amount);
+        _decreaseAllowance(_msgSender(), spender, amount);
 
         return true;
     }
