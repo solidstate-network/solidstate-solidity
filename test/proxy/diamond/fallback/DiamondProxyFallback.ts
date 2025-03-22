@@ -8,12 +8,12 @@ import {
 import { ethers } from 'hardhat';
 
 describe('DiamondProxyFallback', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let proxyAdmin: SignerWithAddress;
+  let nonProxyAdmin: SignerWithAddress;
   let instance: $DiamondProxyFallback;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe('DiamondProxyFallback', () => {
 
     instance = await new $DiamondProxyFallback__factory(deployer).deploy();
 
-    await instance.$_setOwner(await deployer.getAddress());
+    await instance.$_setAdmin(await deployer.getAddress());
 
     await instance.$_diamondCut(
       [
@@ -40,8 +40,8 @@ describe('DiamondProxyFallback', () => {
   });
 
   describeBehaviorOfDiamondProxyFallback(async () => instance, {
-    getOwner: async () => owner,
-    getNonOwner: async () => nonOwner,
+    getProxyAdmin: async () => proxyAdmin,
+    getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'nomineeOwner()',
     implementationFunctionArgs: [],
     fallbackAddress: ethers.ZeroAddress,

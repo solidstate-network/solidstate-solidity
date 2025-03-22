@@ -1,5 +1,5 @@
 export * from './diamond';
 export * from './beacon';
-export * from './upgradeable';
+export * from './transparent';
 
 export * from './Proxy.behavior';

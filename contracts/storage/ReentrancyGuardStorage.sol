@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 library ReentrancyGuardStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ReentrancyGuard
+     * @custom:storage-location erc7201:solidstate.layout.ReentrancyGuard
      */
     struct Layout {
         uint256 status;
@@ -13,11 +13,8 @@ library ReentrancyGuardStorage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(
-                        bytes('solidstate.contracts.storage.ReentrancyGuard')
-                    )
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.ReentrancyGuard'))) -
+                    1
             )
         ) & ~bytes32(uint256(0xff));
 

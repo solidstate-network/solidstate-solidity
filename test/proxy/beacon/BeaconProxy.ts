@@ -19,12 +19,10 @@ describe('BeaconProxy', () => {
     implementation = await new $Ownable__factory(deployer).deploy();
 
     beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function getImplementation () external view returns (address)',
+      'function implementation () external view returns (address)',
     ]);
 
-    await beacon.mock.getImplementation.returns(
-      await implementation.getAddress(),
-    );
+    await beacon.mock.implementation.returns(await implementation.getAddress());
 
     instance = await new $BeaconProxy__factory(deployer).deploy();
 

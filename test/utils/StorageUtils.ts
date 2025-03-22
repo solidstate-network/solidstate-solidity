@@ -35,7 +35,7 @@ describe('StorageUtils', () => {
 
   describe('#write(uint256,bytes32)', () => {
     it('updates arbitrary storage data', async () => {
-      const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+      const slot = seedToStorageSlot('solidstate.layout.Ownable');
       const data = ethers.zeroPadValue(deployer.address, 32);
 
       expect(await instance.$read.staticCall(slot)).to.equal(ethers.ZeroHash);

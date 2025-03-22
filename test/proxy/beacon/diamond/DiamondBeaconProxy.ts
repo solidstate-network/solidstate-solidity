@@ -19,10 +19,10 @@ describe('DiamondBeaconProxy', () => {
     implementation = await new $Ownable__factory(deployer).deploy();
 
     beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function facetAddress (bytes4) external view returns (address)',
+      'function implementation (bytes4) external view returns (address)',
     ]);
 
-    await beacon.mock.facetAddress.returns(await implementation.getAddress());
+    await beacon.mock.implementation.returns(await implementation.getAddress());
 
     instance = await new $DiamondBeaconProxy__factory(deployer).deploy();
 

@@ -10,7 +10,7 @@ import { _Proxy } from './_Proxy.sol';
  */
 abstract contract Proxy is IProxy, _Proxy {
     /**
-     * @notice delegate all calls to implementation contract
+     * @inheritdoc IProxy
      * @dev reverts if implementation address contains no code
      */
     fallback() external payable {

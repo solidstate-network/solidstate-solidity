@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 library ERC2981Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2981
+     * @custom:storage-location erc7201:solidstate.layout.ERC2981
      */
     struct Layout {
         mapping(uint256 tokenId => uint16 royaltyBPS) royaltiesBPS;
@@ -16,9 +16,7 @@ library ERC2981Storage {
     bytes32 internal constant DEFAULT_STORAGE_SLOT =
         keccak256(
             abi.encode(
-                uint256(
-                    keccak256(bytes('solidstate.contracts.storage.ERC2981'))
-                ) - 1
+                uint256(keccak256(bytes('solidstate.layout.ERC2981'))) - 1
             )
         ) & ~bytes32(uint256(0xff));
 
