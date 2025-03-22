@@ -1,16 +1,16 @@
 import {
-  MinimalProxyFactoryMock,
-  MinimalProxyFactoryMock__factory,
+  $MinimalProxyFactory,
+  $MinimalProxyFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('MinimalProxyFactory', () => {
-  let instance: MinimalProxyFactoryMock;
+  let instance: $MinimalProxyFactory;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new MinimalProxyFactoryMock__factory(deployer).deploy();
+    instance = await new $MinimalProxyFactory__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -19,10 +19,10 @@ describe('MinimalProxyFactory', () => {
         const target = await instance.getAddress();
 
         const address =
-          await instance['deployMinimalProxy(address)'].staticCall(target);
+          await instance['$deployMinimalProxy(address)'].staticCall(target);
         expect(address).to.be.properAddress;
 
-        await instance['deployMinimalProxy(address)'](target);
+        await instance['$deployMinimalProxy(address)'](target);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -32,10 +32,6 @@ describe('MinimalProxyFactory', () => {
               '5af43d82803e903d91602b57fd5bf3',
             ].join(''),
         );
-      });
-
-      describe('reverts if', () => {
-        it('contract creation fails');
       });
     });
 
@@ -45,11 +41,11 @@ describe('MinimalProxyFactory', () => {
         const salt = ethers.randomBytes(32);
 
         const address = await instance[
-          'deployMinimalProxy(address,bytes32)'
+          '$deployMinimalProxy(address,bytes32)'
         ].staticCall(target, salt);
         expect(address).to.be.properAddress;
 
-        await instance['deployMinimalProxy(address,bytes32)'](target, salt);
+        await instance['$deployMinimalProxy(address,bytes32)'](target, salt);
 
         expect(await ethers.provider.getCode(address)).to.equal(
           '0x' +
@@ -62,16 +58,14 @@ describe('MinimalProxyFactory', () => {
       });
 
       describe('reverts if', () => {
-        it('contract creation fails');
-
         it('salt has already been used', async () => {
           const target = await instance.getAddress();
           const salt = ethers.randomBytes(32);
 
-          await instance['deployMinimalProxy(address,bytes32)'](target, salt);
+          await instance['$deployMinimalProxy(address,bytes32)'](target, salt);
 
           await expect(
-            instance['deployMinimalProxy(address,bytes32)'](target, salt),
+            instance['$deployMinimalProxy(address,bytes32)'](target, salt),
           ).to.be.revertedWithCustomError(
             instance,
             'Factory__FailedDeployment',
@@ -84,12 +78,12 @@ describe('MinimalProxyFactory', () => {
       it('returns address of not-yet-deployed contract', async () => {
         const target = await instance.getAddress();
         const initCode =
-          await instance.generateMinimalProxyInitCode.staticCall(target);
+          await instance.$generateMinimalProxyInitCode.staticCall(target);
         const initCodeHash = ethers.keccak256(initCode);
         const salt = ethers.randomBytes(32);
 
         expect(
-          await instance.calculateMinimalProxyDeploymentAddress.staticCall(
+          await instance.$calculateMinimalProxyDeploymentAddress.staticCall(
             target,
             salt,
           ),
@@ -101,7 +95,7 @@ describe('MinimalProxyFactory', () => {
       it('returns packed encoding of initialization code prefix, target address, and initialization code suffix', async () => {
         const target = await instance.getAddress();
         const initCode =
-          await instance.generateMinimalProxyInitCode.staticCall(target);
+          await instance.$generateMinimalProxyInitCode.staticCall(target);
 
         expect(initCode).to.equal(
           '0x' +

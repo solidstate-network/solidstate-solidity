@@ -1,1 +1,1 @@
-export * from './DiamondReadable.behavior';
+export * from './DiamondProxyReadable.behavior';

@@ -1,43 +1,47 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import {
-  IncrementalMerkleTreeMock,
-  IncrementalMerkleTreeMock__factory,
+  $IncrementalMerkleTree,
+  $IncrementalMerkleTree__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
+// data structures can be defined at any storage slot
+// it doesn't matter which slot is used as long as it's consistent
+const STORAGE_SLOT = 0n;
+
 const randomHash = () => ethers.hexlify(ethers.randomBytes(32));
 
 describe('IncrementalMerkleTree', () => {
-  let instance: IncrementalMerkleTreeMock;
+  let instance: $IncrementalMerkleTree;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new IncrementalMerkleTreeMock__factory(deployer).deploy();
+    instance = await new $IncrementalMerkleTree__factory(deployer).deploy();
   });
 
   describe('#size', () => {
     it('returns number of elements in tree', async () => {
-      expect(await instance.size.staticCall()).to.equal(0);
+      expect(await instance.$size.staticCall(STORAGE_SLOT)).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
-        await instance.push(randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
 
-        expect(await instance.size.staticCall()).to.equal(i);
+        expect(await instance.$size.staticCall(STORAGE_SLOT)).to.equal(i);
       }
     });
   });
 
   describe('#height', () => {
     it('returns one-indexed height of tree', async () => {
-      expect(await instance.height.staticCall()).to.equal(0);
+      expect(await instance.$height.staticCall(STORAGE_SLOT)).to.equal(0);
 
       for (let i = 1; i < 10; i++) {
-        await instance.push(randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
 
-        expect(await instance.height.staticCall()).to.equal(
+        expect(await instance.$height.staticCall(STORAGE_SLOT)).to.equal(
           Math.ceil(Math.log2(i) + 1),
         );
       }
@@ -46,15 +50,17 @@ describe('IncrementalMerkleTree', () => {
 
   describe('#root', () => {
     it('returns zero bytes for tree of size zero', async () => {
-      expect(await instance.root.staticCall()).to.equal(ethers.ZeroHash);
+      expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(
+        ethers.ZeroHash,
+      );
     });
 
     it('returns contained element for tree of size one', async () => {
       const hash = randomHash();
 
-      await instance.push(hash);
+      await instance.$push(STORAGE_SLOT, hash);
 
-      expect(await instance.root.staticCall()).to.equal(hash);
+      expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in balanced tree', async () => {
@@ -66,10 +72,10 @@ describe('IncrementalMerkleTree', () => {
         [hash_a, hash_b],
       );
 
-      await instance.push(hash_a);
-      await instance.push(hash_b);
+      await instance.$push(STORAGE_SLOT, hash_a);
+      await instance.$push(STORAGE_SLOT, hash_b);
 
-      expect(await instance.root.staticCall()).to.equal(hash);
+      expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(hash);
     });
 
     it('returns Merkle root derived from elements contained in unbalanced tree', async () => {
@@ -87,37 +93,39 @@ describe('IncrementalMerkleTree', () => {
         [hash_ab, hash_c],
       );
 
-      await instance.push(hash_a);
-      await instance.push(hash_b);
-      await instance.push(hash_c);
+      await instance.$push(STORAGE_SLOT, hash_a);
+      await instance.$push(STORAGE_SLOT, hash_b);
+      await instance.$push(STORAGE_SLOT, hash_c);
 
-      expect(await instance.root.staticCall()).to.equal(hash);
+      expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(hash);
     });
 
     it('returns result matching reference implementation regardless of previous operations', async () => {
       const count = 5;
-      const hashes = [];
+      const hashes: string[] = [];
 
       for (let i = 0; i < count; i++) {
         hashes.push(randomHash());
-        await instance.push(hashes[i]);
+        await instance.$push(STORAGE_SLOT, hashes[i]);
       }
 
       for (let i = 0; i < count; i++) {
-        await instance.push(randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
       }
 
       for (let i = 0; i < count; i++) {
-        await instance.pop();
+        await instance.$pop(STORAGE_SLOT);
       }
 
       for (let i = 0; i < count; i++) {
         hashes.push(randomHash());
-        await instance.push(hashes[count + i]);
+        await instance.$push(STORAGE_SLOT, hashes[count + i]);
 
         const tree = new MerkleTree(hashes, keccak256);
 
-        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
+        expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(
+          tree.getHexRoot(),
+        );
       }
     });
   });
@@ -126,57 +134,59 @@ describe('IncrementalMerkleTree', () => {
     it('returns element at given index', async () => {
       const hash = randomHash();
 
-      await instance.push(hash);
+      await instance.$push(STORAGE_SLOT, hash);
 
-      expect(await instance.at.staticCall(0)).to.equal(hash);
+      expect(await instance.$at.staticCall(STORAGE_SLOT, 0)).to.equal(hash);
     });
 
     describe('reverts if', () => {
       it('tree is size zero', async () => {
-        await expect(instance.at.staticCall(0)).to.be.revertedWithPanic(
-          PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-        );
+        await expect(
+          instance.$at.staticCall(STORAGE_SLOT, 0),
+        ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
 
       it('index is out of bounds', async () => {
-        await instance.push(randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
 
-        await expect(instance.at.staticCall(1)).to.be.revertedWithPanic(
-          PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
-        );
+        await expect(
+          instance.$at.staticCall(STORAGE_SLOT, 1),
+        ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });
   });
 
   describe('#push', () => {
     it('updates Merkle root', async () => {
-      const hashes = [];
+      const hashes: string[] = [];
 
       for (let i = 0; i < 10; i++) {
         hashes.push(randomHash());
       }
 
       for (let i = 0; i < hashes.length; i++) {
-        await instance.push(hashes[i]);
+        await instance.$push(STORAGE_SLOT, hashes[i]);
 
         const tree = new MerkleTree(hashes.slice(0, i + 1), keccak256);
 
-        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
+        expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(
+          tree.getHexRoot(),
+        );
       }
     });
   });
 
   describe('#pop', () => {
     it('updates Merkle root', async () => {
-      const hashes = [];
+      const hashes: string[] = [];
 
       for (let i = 0; i < 10; i++) {
         hashes.push(randomHash());
-        await instance.push(hashes[i]);
+        await instance.$push(STORAGE_SLOT, hashes[i]);
       }
 
       for (let i = 0; i < hashes.length; i++) {
-        await instance.pop();
+        await instance.$pop(STORAGE_SLOT);
 
         const tree = new MerkleTree(
           hashes.slice(0, hashes.length - 1 - i),
@@ -185,13 +195,15 @@ describe('IncrementalMerkleTree', () => {
 
         // MerkleTree library returns truncated zero hash, so must use hexEqual matcher
 
-        expect(await instance.root.staticCall()).to.hexEqual(tree.getHexRoot());
+        expect(await instance.$root.staticCall(STORAGE_SLOT)).to.hexEqual(
+          tree.getHexRoot(),
+        );
       }
     });
 
     describe('reverts if', () => {
       it('tree is size zero', async () => {
-        await expect(instance.pop()).to.be.revertedWithPanic(
+        await expect(instance.$pop(STORAGE_SLOT)).to.be.revertedWithPanic(
           PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
         );
       });
@@ -200,30 +212,32 @@ describe('IncrementalMerkleTree', () => {
 
   describe('#set', () => {
     it('updates Merkle root', async () => {
-      const hashes = [];
+      const hashes: string[] = [];
 
       for (let i = 0; i < 10; i++) {
         const hash = randomHash();
         hashes.push(hash);
-        await instance.push(hash);
+        await instance.$push(STORAGE_SLOT, hash);
       }
 
       for (let i = 0; i < hashes.length; i++) {
         const hash = randomHash();
 
         hashes[i] = hash;
-        await instance.set(i, hash);
+        await instance.$set(STORAGE_SLOT, i, hash);
 
         const tree = new MerkleTree(hashes, keccak256);
 
-        expect(await instance.root.staticCall()).to.equal(tree.getHexRoot());
+        expect(await instance.$root.staticCall(STORAGE_SLOT)).to.equal(
+          tree.getHexRoot(),
+        );
       }
     });
 
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
         await expect(
-          instance.set.staticCall(0, ethers.ZeroHash),
+          instance.$set.staticCall(STORAGE_SLOT, 0, ethers.ZeroHash),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });

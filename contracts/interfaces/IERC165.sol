@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC165Internal } from './IERC165Internal.sol';
+import { _IERC165 } from './_IERC165.sol';
 
 /**
  * @title ERC165 interface registration interface
  * @dev see https://eips.ethereum.org/EIPS/eip-165
  */
-interface IERC165 is IERC165Internal {
+interface IERC165 is _IERC165 {
     /**
      * @notice query whether contract has registered support for given interface
      * @param interfaceId interface id

@@ -10,6 +10,9 @@ library AddressUtils {
     error AddressUtils__InsufficientBalance();
     error AddressUtils__NotContract();
     error AddressUtils__SendValueFailed();
+    error AddressUtils__FailedCall();
+    error AddressUtils__FailedCallWithValue();
+    error AddressUtils__FailedDelegatecall();
 
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
@@ -32,14 +35,13 @@ library AddressUtils {
         address target,
         bytes memory data
     ) internal returns (bytes memory) {
-        return
-            functionCall(target, data, 'AddressUtils: failed low-level call');
+        return functionCall(target, data, AddressUtils__FailedCall.selector);
     }
 
     function functionCall(
         address target,
         bytes memory data,
-        string memory error
+        bytes4 error
     ) internal returns (bytes memory) {
         return _functionCallWithValue(target, data, 0, error);
     }
@@ -54,7 +56,7 @@ library AddressUtils {
                 target,
                 data,
                 value,
-                'AddressUtils: failed low-level call with value'
+                AddressUtils__FailedCallWithValue.selector
             );
     }
 
@@ -62,11 +64,33 @@ library AddressUtils {
         address target,
         bytes memory data,
         uint256 value,
-        string memory error
+        bytes4 error
     ) internal returns (bytes memory) {
         if (value > address(this).balance)
             revert AddressUtils__InsufficientBalance();
         return _functionCallWithValue(target, data, value, error);
+    }
+
+    function functionDelegateCall(
+        address target,
+        bytes memory data
+    ) internal returns (bytes memory) {
+        return
+            functionDelegateCall(
+                target,
+                data,
+                AddressUtils__FailedDelegatecall.selector
+            );
+    }
+
+    function functionDelegateCall(
+        address target,
+        bytes memory data,
+        bytes4 error
+    ) internal returns (bytes memory) {
+        (bool success, bytes memory returnData) = target.delegatecall(data);
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
     }
 
     /**
@@ -120,23 +144,37 @@ library AddressUtils {
         address target,
         bytes memory data,
         uint256 value,
-        string memory error
+        bytes4 error
     ) private returns (bytes memory) {
-        if (!isContract(target)) revert AddressUtils__NotContract();
-
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data
         );
+        _verifyCallResultFromTarget(target, success, returnData, error);
+        return returnData;
+    }
 
-        if (success) {
-            return returnData;
-        } else if (returnData.length > 0) {
-            assembly {
-                let returnData_size := mload(returnData)
-                revert(add(32, returnData), returnData_size)
+    function _verifyCallResultFromTarget(
+        address target,
+        bool success,
+        bytes memory returnData,
+        bytes4 error
+    ) private view {
+        if (!success) {
+            if (returnData.length == 0) {
+                assembly {
+                    mstore(0, error)
+                    revert(0, 4)
+                }
+            } else {
+                assembly {
+                    let returnData_size := mload(returnData)
+                    revert(add(32, returnData), returnData_size)
+                }
             }
-        } else {
-            revert(error);
         }
+
+        // code check is only required if call is successful and without return data
+        if (returnData.length == 0 && !isContract(target))
+            revert AddressUtils__NotContract();
     }
 }

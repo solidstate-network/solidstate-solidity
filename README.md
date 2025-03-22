@@ -1,6 +1,20 @@
-# SolidState Solidity
+<div align="center">
+  <h1>Solidstate Solidity</h1>
+  <br/>
+  <img width=240 src="./assets/solidstate_mark.png" alt="asdf"/>
+  <h5 align="center">The Solidstate smart contract development library.</h5>
+  <br/>
+  <img src="https://img.shields.io/npm/v/@solidstate/contracts?color=FDF685&style=flat-square" alt="style" />
+  <img src="https://img.shields.io/github/stars/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" alt="style" />
+  <img src="https://img.shields.io/github/contributors/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" alt="style" />
+  <img src="https://img.shields.io/npm/dy/@solidstate/contracts?color=FDF685&style=flat-square" alt="style" />
+  <br/>
+  <br/>
+</div>
 
-SolidState is an upgradeable-first Solidity smart contract development library.
+## Packages
+
+Solidstate is an upgradeable-first Solidity smart contract development library.
 
 It consists of the following packages:
 
@@ -10,63 +24,6 @@ It consists of the following packages:
 | `@solidstate/contracts` | core contracts                                                                        | [📖](./contracts/README.md) |
 | `@solidstate/library`   | functions for interacting with and validating contracts                               | [📖](./lib/README.md)       |
 | `@solidstate/spec`      | portable tests which may be run against third-party implementations of core contracts | [📖](./spec/README.md)      |
-
-### Contracts
-
-All contracts are designed to either be deployed through the standard `constructor` method, or referenced by a proxy. To this end, the [diamond storage](https://medium.com/1milliondevs/new-storage-layout-for-proxy-contracts-and-diamonds-98d01d0eadb) pattern is employed exclusively.
-
-### Spec
-
-Where possible, automated tests are designed to be imported by repositories which make use of the SolidState contracts and run against any derived contracts. This is to help prevent unintended changes to the base contract behavior.
-
-For example, consider a custom `ERC20Base` implementation:
-
-```solidity
-import '@solidstate/contracts/token/ERC20/base/ERC20Base.sol';
-
-contract CustomToken is ERC20Base {
-  // custom code...
-}
-```
-
-Rather than rewrite the `ERC20Base` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
-
-```javascript
-describe('CustomToken', () => {
-  let instance;
-
-  beforeEach(async () => {
-    const factory = await ethers.getContractFactory('CustomToken');
-    instance = await factory.deploy();
-    await instance.deployed();
-  });
-
-  describeBehaviorOfERC20Base(
-    async () => instance,
-    {
-      args: ...,
-    }
-  );
-
-  // custom tests...
-});
-```
-
-If parts of the base implementation are changed intentionally, tests can be selectively skipped:
-
-```javascript
-describeBehaviorOfERC20Base(
-  async () => instance,
-  {
-    args: ...
-  },
-  ['#balanceOf'],
-);
-
-describe('#balanceOf', () => {
-  // custom tests
-});
-```
 
 ## Development
 

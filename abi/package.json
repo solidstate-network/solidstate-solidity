@@ -3,7 +3,7 @@
   "version": "0.0.61",
   "author": "Nick Barry",
   "license": "MIT",
-  "description": "ABIs for SolidState contracts",
+  "description": "ABIs for Solidstate contracts",
   "keywords": [
     "solidity",
     "smart-contracts",

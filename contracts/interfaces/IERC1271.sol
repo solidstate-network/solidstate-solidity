@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IERC1271Internal } from './IERC1271Internal.sol';
+import { _IERC1271 } from './_IERC1271.sol';
 
-interface IERC1271 is IERC1271Internal {
+interface IERC1271 is _IERC1271 {
     /**
      * @notice return ERC1271 magic value if given signature is valid for contract
      * @param hash hashed data

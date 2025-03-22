@@ -116,4 +116,30 @@ library ArrayUtils {
 
         return maxValue;
     }
+
+    /**
+     * @notice cast bytes32[] storage pointer to address[] storage pointer
+     * @param array bytes32 array to cast
+     * @return addressArray address array
+     */
+    function toAddressArray(
+        bytes32[] storage array
+    ) internal pure returns (address[] storage addressArray) {
+        assembly {
+            addressArray.slot := array.slot
+        }
+    }
+
+    /**
+     * @notice cast bytes32[] storage pointer to uint256[] storage pointer
+     * @param array bytes32 array to cast
+     * @return uint256Array uint256 array
+     */
+    function toUint256Array(
+        bytes32[] storage array
+    ) internal pure returns (uint256[] storage uint256Array) {
+        assembly {
+            uint256Array.slot := array.slot
+        }
+    }
 }
