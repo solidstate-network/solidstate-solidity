@@ -16,4 +16,8 @@ abstract contract Proxy is IProxy, _Proxy {
     fallback() external payable {
         _fallback();
     }
+
+    receive() external payable {
+        _receive();
+    }
 }

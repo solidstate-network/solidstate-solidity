@@ -1,7 +1,7 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfUpgradeableProxy } from '@solidstate/spec';
 import {
-  $Ownable__factory,
+  $SafeOwnable__factory,
   $UpgradeableProxy,
   $UpgradeableProxy__factory,
 } from '@solidstate/typechain-types';
@@ -20,7 +20,7 @@ describe('UpgradeableProxy', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    const implementationInstance = await new $Ownable__factory(
+    const implementationInstance = await new $SafeOwnable__factory(
       deployer,
     ).deploy();
 
@@ -35,7 +35,7 @@ describe('UpgradeableProxy', () => {
   describeBehaviorOfUpgradeableProxy(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
-    implementationFunction: 'owner()',
+    implementationFunction: 'nomineeOwner()',
     implementationFunctionArgs: [],
   });
 

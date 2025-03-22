@@ -54,6 +54,6 @@ describe('SolidstateDiamondProxy', () => {
       fallbackAddress: ethers.ZeroAddress,
       immutableSelectors,
     },
-    ['fallback()'],
+    ['fallback()', 'receive()'],
   );
 });

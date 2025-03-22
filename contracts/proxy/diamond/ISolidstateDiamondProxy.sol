@@ -16,6 +16,4 @@ interface ISolidstateDiamondProxy is
     IDiamondProxyReadable,
     IDiamondProxyWritable,
     ISafeOwnable
-{
-    receive() external payable;
-}
+{}

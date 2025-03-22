@@ -99,8 +99,6 @@ abstract contract SolidstateDiamondProxy is
         _setOwner(msg.sender);
     }
 
-    receive() external payable {}
-
     function _transferOwnership(
         address account
     )
