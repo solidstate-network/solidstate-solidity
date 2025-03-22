@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { ProxyBehaviorArgs } from '@solidstate/spec';
+import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
 import { IDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -19,6 +19,8 @@ export function describeBehaviorOfDiamondProxy(
     beforeEach(async () => {
       instance = await deploy();
     });
+
+    describeBehaviorOfProxy(deploy, args, skips);
 
     describe('fallback()', () => {
       it('forwards data with matching selector call to facet', async () => {
