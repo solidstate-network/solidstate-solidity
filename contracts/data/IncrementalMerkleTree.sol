@@ -16,6 +16,10 @@ library IncrementalMerkleTree {
      */
     function size(Tree storage t) internal view returns (uint256 treeSize) {
         assembly {
+            // assembly block equivalent to:
+            //
+            // if (t.height() > 0) treeSize = t.__nodes[0].length;
+
             mstore(0x00, t.slot)
             treeSize := sload(keccak256(0x00, 0x20))
         }
@@ -29,6 +33,10 @@ library IncrementalMerkleTree {
      */
     function height(Tree storage t) internal view returns (uint256 treeHeight) {
         assembly {
+            // assembly block equivalent to:
+            //
+            // treeHeight = t.__nodes.length;
+
             treeHeight := sload(t.slot)
         }
     }
@@ -40,6 +48,10 @@ library IncrementalMerkleTree {
      */
     function root(Tree storage t) internal view returns (bytes32 hash) {
         assembly {
+            // assembly block equivalent to:
+            //
+            // if (t.height() > 0) hash = t.__nodes[t.height() - 1][0];
+
             let treeHeight := sload(t.slot)
             if gt(treeHeight, 0) {
                 mstore(0x00, t.slot)
@@ -54,10 +66,15 @@ library IncrementalMerkleTree {
         uint256 index
     ) internal view returns (bytes32 hash) {
         if (index >= t.size()) {
+            // force a panic of the same type as array out-of-bounds access
             new bytes32[](0)[1];
         }
 
         assembly {
+            // assembly block equivalent to:
+            //
+            // hash = t.__nodes[0][index];
+
             mstore(0x00, t.slot)
             mstore(0x00, keccak256(0x00, 0x20))
             hash := sload(add(keccak256(0x00, 0x20), index))
@@ -100,6 +117,7 @@ library IncrementalMerkleTree {
         uint256 treeSize = t.size();
 
         if (treeSize == 0) {
+            // force a panic of the same type as array out-of-bounds access
             new bytes32[](0)[1];
         }
 
@@ -140,6 +158,7 @@ library IncrementalMerkleTree {
         uint256 treeSize = t.size();
 
         if (index >= treeSize) {
+            // force a panic of the same type as array out-of-bounds access
             new bytes32[](0)[1];
         }
 
@@ -164,6 +183,10 @@ library IncrementalMerkleTree {
         bytes32[] storage row;
 
         assembly {
+            // assembly block equivalent to:
+            //
+            // row = nodes[rowIndex];
+
             mstore(0x00, t.slot)
             row.slot := add(keccak256(0x00, 0x20), rowIndex)
         }
@@ -171,6 +194,10 @@ library IncrementalMerkleTree {
         // store hash in array via assembly to avoid array length sload
 
         assembly {
+            // assembly block equivalent to:
+            //
+            // row[colIndex] = hash;
+
             mstore(0x00, row.slot)
             sstore(add(keccak256(0x00, 0x20), colIndex), hash)
         }
