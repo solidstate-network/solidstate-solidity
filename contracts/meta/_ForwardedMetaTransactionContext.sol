@@ -82,7 +82,6 @@ abstract contract _ForwardedMetaTransactionContext is
 
     /**
      * @notice query whether account is a trusted ERC2771 forwarder
-     * @dev only contracts can be considered trusted forwarders
      * @param account address to query
      * @return trustedStatus whether account is a trusted forwarder
      */
