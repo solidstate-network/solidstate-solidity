@@ -2,10 +2,7 @@ import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
 } from '../../access/ownable/Ownable.behavior';
-import {
-  DiamondProxyReadableBehaviorArgs,
-  DiamondProxyWritableBehaviorArgs,
-} from '../../proxy/diamond';
+import { DiamondProxyWritableBehaviorArgs } from '../../proxy/diamond';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IDiamondBeacon } from '@solidstate/typechain-types';
@@ -14,7 +11,6 @@ import { ethers } from 'ethers';
 
 export interface DiamondBeaconBehaviorArgs
   extends OwnableBehaviorArgs,
-    DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(

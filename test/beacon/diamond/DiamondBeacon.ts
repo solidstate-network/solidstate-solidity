@@ -55,7 +55,7 @@ describe('DiamondBeacon', () => {
   describeBehaviorOfDiamondBeacon(async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
-    facetCuts,
+    // facetCuts,
     immutableSelectors: [],
   });
 });
