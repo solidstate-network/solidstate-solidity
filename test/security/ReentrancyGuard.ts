@@ -1,17 +1,17 @@
 import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
 import {
-  ReentrancyGuardMock,
-  ReentrancyGuardMock__factory,
+  $ReentrancyGuardTest,
+  $ReentrancyGuardTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ReentrancyGuard', () => {
-  let instance: ReentrancyGuardMock;
+  let instance: $ReentrancyGuardTest;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new ReentrancyGuardMock__factory(deployer).deploy();
+    instance = await new $ReentrancyGuardTest__factory(deployer).deploy();
   });
 
   describeBehaviorOfReentrancyGuard(async () => instance, {});
@@ -48,7 +48,7 @@ describe('ReentrancyGuard', () => {
           );
 
           // call function again with different contract state to avoid false-negative test coverage
-          await instance.__lockReentrancyGuard();
+          await instance.$_lockReentrancyGuard();
           await expect(instance.crossFunctionReentrancyTest()).to.be.reverted;
         });
       });
@@ -56,7 +56,7 @@ describe('ReentrancyGuard', () => {
 
     describe('#_lockReentrancyGuard()', () => {
       it('causes nonReentrant functions to revert', async () => {
-        await instance.__lockReentrancyGuard();
+        await instance.$_lockReentrancyGuard();
 
         await expect(
           instance.modifier_nonReentrant(),
@@ -69,9 +69,9 @@ describe('ReentrancyGuard', () => {
 
     describe('#_unlockReentrancyGuard()', () => {
       it('causes nonReentrant functions to pass', async () => {
-        await instance.__lockReentrancyGuard();
+        await instance.$_lockReentrancyGuard();
 
-        await instance.__unlockReentrancyGuard();
+        await instance.$_unlockReentrancyGuard();
 
         await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
       });

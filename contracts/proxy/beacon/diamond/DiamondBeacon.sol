@@ -2,13 +2,14 @@
 
 pragma solidity ^0.8.20;
 
-import { OwnableInternal } from '../../../access/ownable/Ownable.sol';
+import { _Ownable } from '../../../access/ownable/Ownable.sol';
 import { Ownable } from '../../../access/ownable/Ownable.sol';
-import { DiamondReadable } from '../../diamond/readable/DiamondReadable.sol';
-import { DiamondWritable } from '../../diamond/writable/DiamondWritable.sol';
-import { DiamondWritableInternal } from '../../diamond/writable/DiamondWritableInternal.sol';
+import { DiamondProxyReadable } from '../../diamond/readable/DiamondProxyReadable.sol';
+import { DiamondProxyWritable } from '../../diamond/writable/DiamondProxyWritable.sol';
+import { _DiamondProxyWritable } from '../../diamond/writable/_DiamondProxyWritable.sol';
+import { _DiamondProxy } from '../../diamond/_DiamondProxy.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
-import { DiamondBeaconInternal } from './DiamondBeaconInternal.sol';
+import { _DiamondBeacon } from './_DiamondBeacon.sol';
 
 /**
  * @title Beacon contract which imitates the upgrade mechanism of an EIP-2535 diamond proxy.
@@ -16,23 +17,19 @@ import { DiamondBeaconInternal } from './DiamondBeaconInternal.sol';
  */
 contract DiamondBeacon is
     IDiamondBeacon,
-    DiamondBeaconInternal,
-    DiamondReadable,
-    DiamondWritable,
+    _DiamondBeacon,
+    DiamondProxyReadable,
+    DiamondProxyWritable,
     Ownable
 {
     /**
-     * @inheritdoc DiamondBeaconInternal
+     * @inheritdoc _DiamondBeacon
      */
     function _diamondCut(
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
-    )
-        internal
-        virtual
-        override(DiamondWritableInternal, DiamondBeaconInternal)
-    {
+    ) internal virtual override(_DiamondProxy, _DiamondBeacon) {
         super._diamondCut(facetCuts, target, data);
     }
 }

@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import { IProxyInternal } from './IProxyInternal.sol';
+import { _IProxy } from './_IProxy.sol';
 
-interface IProxy is IProxyInternal {
-    error Proxy__ImplementationIsNotContract();
-
+interface IProxy is _IProxy {
     fallback() external payable;
+
+    receive() external payable;
 }

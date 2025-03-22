@@ -3,6 +3,6 @@
 pragma solidity ^0.8.20;
 
 import { IProxy } from '../IProxy.sol';
-import { IBeaconProxyInternal } from './IBeaconProxyInternal.sol';
+import { _IBeaconProxy } from './_IBeaconProxy.sol';
 
-interface IBeaconProxy is IBeaconProxyInternal, IProxy {}
+interface IBeaconProxy is _IBeaconProxy, IProxy {}

@@ -3,36 +3,18 @@
 pragma solidity ^0.8.20;
 
 import { IMulticall } from './IMulticall.sol';
-import { MulticallInternal } from './MulticallInternal.sol';
+import { _Multicall } from './_Multicall.sol';
 
 /**
  * @title Utility contract for supporting processing of multiple function calls in a single transaction
  */
-abstract contract Multicall is IMulticall, MulticallInternal {
+abstract contract Multicall is IMulticall, _Multicall {
     /**
      * @inheritdoc IMulticall
      */
     function multicall(
         bytes[] calldata data
     ) external returns (bytes[] memory results) {
-        results = new bytes[](data.length);
-
-        unchecked {
-            for (uint256 i; i < data.length; i++) {
-                (bool success, bytes memory returndata) = address(this)
-                    .delegatecall(data[i]);
-
-                if (success) {
-                    results[i] = returndata;
-                } else {
-                    assembly {
-                        returndatacopy(0, 0, returndatasize())
-                        revert(0, returndatasize())
-                    }
-                }
-            }
-        }
-
-        return results;
+        results = _multicall(data);
     }
 }

@@ -3,10 +3,9 @@
 pragma solidity ^0.8.20;
 
 import { IOwnable } from '../../access/ownable/IOwnable.sol';
-import { IBeaconInternal } from './IBeaconInternal.sol';
-import { BeaconStorage } from './BeaconStorage.sol';
+import { _IBeacon } from './_IBeacon.sol';
 
-interface IBeacon is IBeaconInternal, IOwnable {
+interface IBeacon is _IBeacon, IOwnable {
     /**
      * @notice query the address of the implementation that should be used by BeaconProxy instances
      * @return implementation address of the implementation contract

@@ -4,9 +4,9 @@ pragma solidity ^0.8.20;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
 import { IBeacon } from './IBeacon.sol';
-import { BeaconInternal } from './BeaconInternal.sol';
+import { _Beacon } from './_Beacon.sol';
 
-contract Beacon is IBeacon, BeaconInternal, Ownable {
+contract Beacon is IBeacon, _Beacon, Ownable {
     /**
      * @inheritdoc IBeacon
      */

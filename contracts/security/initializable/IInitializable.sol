@@ -2,6 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-import { IInitializableInternal } from './IInitializableInternal.sol';
+import { _IInitializable } from './_IInitializable.sol';
 
-interface IInitializable is IInitializableInternal {}
+interface IInitializable is _IInitializable {}
