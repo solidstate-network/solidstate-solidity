@@ -6,6 +6,13 @@ import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
+    modifier onlyProxyAdmin() {
+        if (msg.sender != _getAdmin()) {
+            revert Proxy__SenderIsNotAdmin();
+        }
+        _;
+    }
+
     /**
      * @notice query the EIP-1967 proxy admin
      * @return admin address of admin account
