@@ -13,8 +13,6 @@ abstract contract _ForwardedMetaTransactionContext is
 {
     using AddressUtils for address;
 
-    error ForwardedMetaTransactionContext__TrustedForwarderMustBeContract();
-
     /**
      * @inheritdoc _Context
      * @dev sender is read from the calldata context suffix
@@ -91,11 +89,9 @@ abstract contract _ForwardedMetaTransactionContext is
     function _isTrustedForwarder(
         address account
     ) internal view virtual returns (bool trustedStatus) {
-        trustedStatus =
-            account.isContract() &&
-            ERC2771Storage
-                .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
-                .trustedForwarders[account];
+        trustedStatus = ERC2771Storage
+            .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
+            .trustedForwarders[account];
     }
 
     /**
@@ -103,10 +99,6 @@ abstract contract _ForwardedMetaTransactionContext is
      * @param account account whose trusted forwarder status to grant
      */
     function _addTrustedForwarder(address account) internal virtual {
-        // exception for address(this) allows a contract to set itself as a trusted forwarder in its constructor
-        if (!account.isContract() && account != address(this))
-            revert ForwardedMetaTransactionContext__TrustedForwarderMustBeContract();
-
         ERC2771Storage
             .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
             .trustedForwarders[account] = true;

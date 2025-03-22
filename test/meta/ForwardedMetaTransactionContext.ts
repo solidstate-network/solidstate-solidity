@@ -27,13 +27,18 @@ const callMetaTransaction = async (
 
 describe('ForwardedMetaTransactionContext', () => {
   let instance: $ForwardedMetaTransactionContext;
-  let deployer: SignerWithAddress;
+  let trustedForwarder: SignerWithAddress;
+  let nonTrustedForwarder: SignerWithAddress;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    let deployer;
+    [deployer, trustedForwarder, nonTrustedForwarder] =
+      await ethers.getSigners();
     instance = await new $ForwardedMetaTransactionContext__factory(
       deployer,
     ).deploy();
+
+    await instance.$_addTrustedForwarder(await trustedForwarder.getAddress());
   });
 
   // TODO: spec
@@ -41,13 +46,6 @@ describe('ForwardedMetaTransactionContext', () => {
   describe('__internal', () => {
     describe('#_msgSender()', () => {
       it('returns forwarded sender if sender is trusted forwarder', async () => {
-        const trustedForwarder = await ethers.getImpersonatedSigner(
-          await instance.getAddress(),
-        );
-        await instance.$_addTrustedForwarder(
-          await trustedForwarder.getAddress(),
-        );
-
         const forwardedAddress = ethers.hexlify(ethers.randomBytes(20));
 
         expect(
@@ -62,21 +60,14 @@ describe('ForwardedMetaTransactionContext', () => {
       it('returns message sender if sender is not trusted forwarder', async () => {
         expect(
           await callMetaTransaction(
-            deployer,
+            nonTrustedForwarder,
             instance.$_msgSender,
             ethers.randomBytes(20),
           ),
-        ).to.deep.equal([await deployer.getAddress()]);
+        ).to.deep.equal([await nonTrustedForwarder.getAddress()]);
       });
 
       it('returns message sender if message data length is less than suffix length', async () => {
-        const trustedForwarder = await ethers.getImpersonatedSigner(
-          await instance.getAddress(),
-        );
-        await instance.$_addTrustedForwarder(
-          await trustedForwarder.getAddress(),
-        );
-
         // account for 4-byte selector when calculting suffix length
         const suffix = ethers.randomBytes(
           Number(
@@ -96,13 +87,6 @@ describe('ForwardedMetaTransactionContext', () => {
 
     describe('#_msgData()', () => {
       it('returns message data without suffix if sender is trusted forwarder', async () => {
-        const trustedForwarder = await ethers.getImpersonatedSigner(
-          await instance.getAddress(),
-        );
-        await instance.$_addTrustedForwarder(
-          await trustedForwarder.getAddress(),
-        );
-
         const nonSuffixedData = instance.$_msgData.fragment.selector;
 
         expect(
@@ -121,18 +105,15 @@ describe('ForwardedMetaTransactionContext', () => {
         // message data is returned as received, demonstrating the malleability of msg.data
 
         expect(
-          await callMetaTransaction(deployer, instance.$_msgData, data),
+          await callMetaTransaction(
+            nonTrustedForwarder,
+            instance.$_msgData,
+            data,
+          ),
         ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
       });
 
       it('returns complete message data if message data length is less than suffix length', async () => {
-        const trustedForwarder = await ethers.getImpersonatedSigner(
-          await instance.getAddress(),
-        );
-        await instance.$_addTrustedForwarder(
-          await trustedForwarder.getAddress(),
-        );
-
         const nonSuffixedData = instance.$_msgData.fragment.selector;
         // account for 4-byte selector when calculting suffix length
         const suffix = ethers.randomBytes(
@@ -163,15 +144,17 @@ describe('ForwardedMetaTransactionContext', () => {
 
     describe('#_isTrustedForwarder(address)', () => {
       it('returns trusted forwarder status of account', async () => {
-        expect(await instance.$_isTrustedForwarder(await deployer.getAddress()))
-          .to.be.false;
-        expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
-          .to.be.false;
+        expect(
+          await instance.$_isTrustedForwarder(
+            await nonTrustedForwarder.getAddress(),
+          ),
+        ).to.be.false;
 
-        await instance.$_addTrustedForwarder(await instance.getAddress());
-
-        expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
-          .to.be.true;
+        expect(
+          await instance.$_isTrustedForwarder(
+            await trustedForwarder.getAddress(),
+          ),
+        ).to.be.true;
       });
     });
 
@@ -181,19 +164,6 @@ describe('ForwardedMetaTransactionContext', () => {
 
         expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
           .to.be.true;
-      });
-
-      describe('reverts if', () => {
-        it('account is not a contract', async () => {
-          // this is enforced via a code check
-          // there's an exception for address(this), but this is difficult to test here
-          await expect(
-            instance.$_addTrustedForwarder(ethers.ZeroAddress),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'ForwardedMetaTransactionContext__TrustedForwarderMustBeContract',
-          );
-        });
       });
     });
 
