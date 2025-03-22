@@ -10,4 +10,6 @@ interface IProxy is _IProxy, IERC1967Proxy {
      * @notice delegate calls to EIP-1967 implementation contract
      */
     fallback() external payable;
+
+    receive() external payable;
 }

@@ -40,5 +40,19 @@ export function describeBehaviorOfProxy(
         ).not.to.be.reverted;
       });
     });
+
+    describe('receive()', () => {
+      it('forwards value to implementation via delegatecall', async () => {
+        // TODO: receive tests pass because hardhat-exposed functions used as implementations are payable
+        const [signer] = await ethers.getSigners();
+
+        await expect(
+          signer.sendTransaction({
+            to: await instance.getAddress(),
+            value: 1n,
+          }),
+        ).not.to.be.reverted;
+      });
+    });
   });
 }

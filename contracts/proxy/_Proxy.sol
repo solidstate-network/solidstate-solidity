@@ -101,4 +101,11 @@ abstract contract _Proxy is _IProxy {
 
         revert Proxy__ImplementationIsNotContract();
     }
+
+    /**
+     * @notice received ether is forwarded to the fallback function
+     */
+    function _receive() internal virtual {
+        _fallback();
+    }
 }

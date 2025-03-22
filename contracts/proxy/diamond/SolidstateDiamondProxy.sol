@@ -86,8 +86,6 @@ abstract contract SolidstateDiamondProxy is
         _setAdmin(msg.sender);
     }
 
-    receive() external payable {}
-
     /**
      * @inheritdoc _DiamondProxyFallback
      */

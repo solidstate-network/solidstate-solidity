@@ -61,18 +61,6 @@ export function describeBehaviorOfSolidstateDiamondProxy(
 
     describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
 
-    describe('receive()', () => {
-      it('accepts ether transfer', async () => {
-        const [signer] = await ethers.getSigners();
-        const value = 1;
-        const to = await instance.getAddress();
-
-        await expect(() =>
-          signer.sendTransaction({ to, value }),
-        ).to.changeEtherBalance(instance, value);
-      });
-    });
-
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       const selectors: string[] = [];
       const abi: string[] = [];

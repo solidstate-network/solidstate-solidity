@@ -1,7 +1,7 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfTransparentProxy } from '@solidstate/spec';
 import {
-  $Ownable__factory,
+  $SafeOwnable__factory,
   $TransparentProxy,
   $TransparentProxy__factory,
 } from '@solidstate/typechain-types';
@@ -20,7 +20,7 @@ describe('TransparentProxy', () => {
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
 
-    const implementationInstance = await new $Ownable__factory(
+    const implementationInstance = await new $SafeOwnable__factory(
       deployer,
     ).deploy();
 
@@ -35,7 +35,7 @@ describe('TransparentProxy', () => {
   describeBehaviorOfTransparentProxy(async () => instance, {
     getProxyAdmin: async () => proxyAdmin,
     getNonProxyAdmin: async () => nonProxyAdmin,
-    implementationFunction: 'owner()',
+    implementationFunction: 'nomineeOwner()',
     implementationFunctionArgs: [],
   });
 
