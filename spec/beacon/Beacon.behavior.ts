@@ -1,7 +1,7 @@
 import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
-} from '../../access/ownable/Ownable.behavior';
+} from '../access/ownable/Ownable.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IBeacon } from '@solidstate/typechain-types';

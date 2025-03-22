@@ -1,12 +1,11 @@
 import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
-} from '../../../access/ownable/Ownable.behavior';
+} from '../../access/ownable/Ownable.behavior';
 import {
-  describeBehaviorOfDiamondProxyWritable,
   DiamondProxyReadableBehaviorArgs,
   DiamondProxyWritableBehaviorArgs,
-} from '../../diamond';
+} from '../../proxy/diamond';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
 import { IDiamondBeacon } from '@solidstate/typechain-types';

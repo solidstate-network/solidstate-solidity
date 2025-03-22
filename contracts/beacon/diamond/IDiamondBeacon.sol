@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
-import { IOwnable } from '../../../access/ownable/IOwnable.sol';
-import { IDiamondProxyWritable } from '../../diamond/writable/IDiamondProxyWritable.sol';
+import { IOwnable } from '../../access/ownable/IOwnable.sol';
+import { IDiamondProxyWritable } from '../../proxy/diamond/writable/IDiamondProxyWritable.sol';
 import { _IDiamondBeacon } from './_IDiamondBeacon.sol';
 
 interface IDiamondBeacon is _IDiamondBeacon, IDiamondProxyWritable, IOwnable {
