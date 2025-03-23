@@ -24,7 +24,7 @@ describe('Proxy', () => {
   beforeEach(async () => {
     instance = await new $Proxy__factory(deployer).deploy();
     await instance.$_setImplementation(await implementation.getAddress());
-    await instance.$_setAdmin(await admin.getAddress());
+    await instance.$_setProxyAdmin(await admin.getAddress());
   });
 
   describeBehaviorOfProxy(async () => instance, {

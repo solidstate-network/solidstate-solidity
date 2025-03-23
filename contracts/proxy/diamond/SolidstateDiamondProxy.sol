@@ -83,7 +83,7 @@ abstract contract SolidstateDiamondProxy is
 
         // TODO: add an external proxy admin transfer function
 
-        _setAdmin(msg.sender);
+        _setProxyAdmin(msg.sender);
     }
 
     /**

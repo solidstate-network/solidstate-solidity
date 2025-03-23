@@ -18,13 +18,13 @@ abstract contract _TransparentBeaconProxy is
     function _fallback() internal virtual override {
         if (
             msg.sig ==
-            ITransparentBeaconProxyWithAdminFunctions.setAdmin.selector &&
-            msg.sender == _getAdmin()
-        ) return _setAdmin(address(bytes20(msg.data[16:])));
+            ITransparentBeaconProxyWithAdminFunctions.setProxyAdmin.selector &&
+            msg.sender == _getProxyAdmin()
+        ) return _setProxyAdmin(address(bytes20(msg.data[16:])));
         if (
             msg.sig ==
             ITransparentBeaconProxyWithAdminFunctions.setBeacon.selector &&
-            msg.sender == _getAdmin()
+            msg.sender == _getProxyAdmin()
         ) return _setBeacon(address(bytes20(msg.data[16:])));
         super._fallback();
     }

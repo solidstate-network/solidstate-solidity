@@ -19,7 +19,7 @@ describe('DiamondProxyWritable', () => {
     const [deployer] = await ethers.getSigners();
     instance = await new $DiamondProxyWritable__factory(deployer).deploy();
 
-    await instance.$_setAdmin(await deployer.getAddress());
+    await instance.$_setProxyAdmin(await deployer.getAddress());
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0x1f931c1c', true);

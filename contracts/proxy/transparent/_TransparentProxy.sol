@@ -13,13 +13,14 @@ abstract contract _TransparentProxy is _ITransparentProxy, _Proxy {
      */
     function _fallback() internal virtual override {
         if (
-            msg.sig == ITransparentProxyWithAdminFunctions.setAdmin.selector &&
-            msg.sender == _getAdmin()
-        ) return _setAdmin(address(bytes20(msg.data[16:])));
+            msg.sig ==
+            ITransparentProxyWithAdminFunctions.setProxyAdmin.selector &&
+            msg.sender == _getProxyAdmin()
+        ) return _setProxyAdmin(address(bytes20(msg.data[16:])));
         if (
             msg.sig ==
             ITransparentProxyWithAdminFunctions.setImplementation.selector &&
-            msg.sender == _getAdmin()
+            msg.sender == _getProxyAdmin()
         ) return _setImplementation(address(bytes20(msg.data[16:])));
         super._fallback();
     }

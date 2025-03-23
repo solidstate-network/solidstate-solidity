@@ -39,11 +39,11 @@ export function describeBehaviorOfTransparentProxy(
 
     describeBehaviorOfProxy(deploy, args, skips);
 
-    describe('#setAdmin(address', () => {
+    describe('#setProxyAdmin(address', () => {
       it('updates the admin address', async () => {
         await instanceWithAdminFunctions
           .connect(proxyAdmin)
-          .setAdmin(await nonProxyAdmin.getAddress());
+          .setProxyAdmin(await nonProxyAdmin.getAddress());
 
         const adminSlotContents = await ethers.provider.send(
           'eth_getStorageAt',
@@ -60,7 +60,7 @@ export function describeBehaviorOfTransparentProxy(
         await expect(
           instanceWithAdminFunctions
             .connect(proxyAdmin)
-            .setAdmin(await nonProxyAdmin.getAddress()),
+            .setProxyAdmin(await nonProxyAdmin.getAddress()),
         )
           .to.emit(instanceWithAdminFunctions, 'AdminChanged')
           .withArgs(
@@ -77,7 +77,7 @@ export function describeBehaviorOfTransparentProxy(
         await expect(
           instanceWithAdminFunctions
             .connect(nonProxyAdmin)
-            .setAdmin(ethers.ZeroAddress),
+            .setProxyAdmin(ethers.ZeroAddress),
         ).to.be.revertedWithCustomError(
           instance,
           'Proxy__ImplementationIsNotContract',

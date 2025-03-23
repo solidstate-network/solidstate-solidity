@@ -39,7 +39,7 @@ describe('TransparentBeaconProxy', () => {
     ).deploy()) as unknown as $TransparentBeaconProxy & ITransparentBeaconProxy;
 
     await instance.$_setBeacon(await beaconInstance.getAddress());
-    await instance.$_setAdmin(await proxyAdmin.getAddress());
+    await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
   });
 
   describeBehaviorOfTransparentBeaconProxy(async () => instance, {

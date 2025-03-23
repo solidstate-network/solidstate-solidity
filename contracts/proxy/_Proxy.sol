@@ -7,7 +7,7 @@ import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
     modifier onlyProxyAdmin() {
-        if (msg.sender != _getAdmin()) {
+        if (msg.sender != _getProxyAdmin()) {
             revert Proxy__SenderIsNotAdmin();
         }
         _;
@@ -17,7 +17,7 @@ abstract contract _Proxy is _IProxy {
      * @notice query the EIP-1967 proxy admin
      * @return admin address of admin account
      */
-    function _getAdmin() internal view virtual returns (address admin) {
+    function _getProxyAdmin() internal view virtual returns (address admin) {
         admin = ERC1967Storage
             .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
             .admin;
@@ -42,7 +42,7 @@ abstract contract _Proxy is _IProxy {
      * @notice update the EIP-1967 proxy admin
      * @param admin address of admin account
      */
-    function _setAdmin(address admin) internal virtual {
+    function _setProxyAdmin(address admin) internal virtual {
         ERC1967Storage.Layout storage $ = ERC1967Storage.layout(
             ERC1967Storage.DEFAULT_STORAGE_SLOT
         );

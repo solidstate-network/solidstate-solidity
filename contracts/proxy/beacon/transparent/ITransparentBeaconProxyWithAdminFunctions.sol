@@ -16,7 +16,7 @@ interface ITransparentBeaconProxyWithAdminFunctions is
      * @notice update the EIP-1967 proxy admin
      * @param admin address of admin account
      */
-    function setAdmin(address admin) external;
+    function setProxyAdmin(address admin) external;
 
     /**
      * @notice update the EIP-1967 beacon address

@@ -22,7 +22,7 @@ describe('DiamondProxyFallback', () => {
 
     instance = await new $DiamondProxyFallback__factory(deployer).deploy();
 
-    await instance.$_setAdmin(await deployer.getAddress());
+    await instance.$_setProxyAdmin(await deployer.getAddress());
 
     await instance.$_diamondCut(
       [

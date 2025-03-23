@@ -29,7 +29,7 @@ describe('TransparentProxy', () => {
     await instance.$_setImplementation(
       await implementationInstance.getAddress(),
     );
-    await instance.$_setAdmin(await proxyAdmin.getAddress());
+    await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
   });
 
   describeBehaviorOfTransparentProxy(async () => instance, {
