@@ -1,7 +1,5 @@
 # Proxy Contracts
 
-Proxy contracts are the core component of upgradeability on the EVM, and their intricacies heavily inform Solidstate's design considerations.
-
 ## Variants
 
 ### Base Proxy
@@ -56,3 +54,15 @@ EIP-1167 minimal proxies can be deployed by the `MinimalProxyFactory` library. T
 
 - Constructors are not supported, so any initialization must be done through a dedicated external function (see `Initializable`).
 - Upgrades are not possible.
+
+### Summary
+
+| proxy type                 | upgradeable | multi-instance | multi-implementation | notes                                                                                             |
+| -------------------------- | ----------- | -------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
+| `Proxy`                    |             |                |                      | Extensible for advanced use-cases. Base contract for most other proxies.                          |
+| `TransparentProxy`         | ✔️          |                |                      | Simple and safely upgradeable.                                                                    |
+| `BeaconProxy`              | ✔️          | ✔️             |                      | Multiple deployments can be upgraded at once via a `Beacon`.                                      |
+| `DiamondProxy`             | ✔️          |                | ✔️                   | Most flexible upgradeability. Workaround for the contract size limit.                             |
+| `TransparentBeaconProxy`   | ✔️          | ✔️             |                      | Same as `BeaconProxy`, but the beacon can be updated.                                             |
+| `DiamondBeaconProxy`       | ✔️          | ✔️             | ✔️                   | Same as `BeaconProxy`, but the beacon is a `DiamondBeacon` and supports multiple implementations. |
+| **EIP-1167 minimal proxy** |             | ✔️             |                      | Most gas-efficient multi-instance solution.                                                       |
