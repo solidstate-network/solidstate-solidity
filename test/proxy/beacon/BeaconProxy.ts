@@ -51,5 +51,17 @@ describe('BeaconProxy', () => {
         });
       });
     });
+
+    describe('#_setBeacon(address)', () => {
+      it('updates implementation address', async () => {
+        const address = await instance.getAddress();
+
+        expect(await instance.$_getBeacon.staticCall()).not.to.equal(address);
+
+        await instance.$_setBeacon(address);
+
+        expect(await instance.$_getBeacon.staticCall()).to.equal(address);
+      });
+    });
   });
 });
