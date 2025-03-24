@@ -22,7 +22,7 @@ library StorageUtils {
      * @param slot storage slot to query
      * @return data contents of storage slot
      */
-    function read(uint256 slot) internal view returns (bytes32 data) {
+    function read(bytes32 slot) internal view returns (bytes32 data) {
         assembly {
             data := sload(slot)
         }
@@ -33,7 +33,7 @@ library StorageUtils {
      * @param slot storage slot to write to
      * @param data data to write
      */
-    function write(uint256 slot, bytes32 data) internal {
+    function write(bytes32 slot, bytes32 data) internal {
         assembly {
             sstore(slot, data)
         }
