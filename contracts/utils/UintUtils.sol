@@ -128,7 +128,9 @@ library UintUtils {
         uint256 length
     ) internal pure returns (string memory output) {
         // add two to length for the leading "0b"
-        length += 2;
+        unchecked {
+            length += 2;
+        }
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';
@@ -139,7 +141,7 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 1];
+            buffer[length] = (value & 1 == 0) ? bytes1(0x30) : bytes1(0x31);
             value >>= 1;
         }
 
@@ -180,7 +182,9 @@ library UintUtils {
         uint256 length
     ) internal pure returns (string memory output) {
         // add two to length for the leading "0o"
-        length += 2;
+        unchecked {
+            length += 2;
+        }
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';
@@ -191,7 +195,9 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 7];
+            // for numeral characters, shift 48 places through ASCII character set
+            // 48 can be added using bitwise-or because its binary is 00110000
+            buffer[length] = bytes1(uint8(((value & 7) | 48)));
             value >>= 3;
         }
 
@@ -271,7 +277,7 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 15];
+            buffer[length] = bytes1(HEX_SYMBOLS << ((value & 15) << 3));
             value >>= 4;
         }
 
