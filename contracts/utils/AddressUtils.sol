@@ -14,6 +14,12 @@ library AddressUtils {
     error AddressUtils__FailedCallWithValue();
     error AddressUtils__FailedDelegatecall();
 
+    function toBytes32(address account) internal pure returns (bytes32 result) {
+        assembly {
+            result := and(account, shr(96, not(0)))
+        }
+    }
+
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
     }
