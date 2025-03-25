@@ -27,6 +27,14 @@ describe('UintUtils', () => {
   });
 
   describe('__internal', () => {
+    describe('#toBytes32(uint256)', () => {
+      it('returns a bytes32 representation of uint256', async () => {
+        expect(
+          await instance.$toBytes32.staticCall(ethers.MaxUint256),
+        ).to.equal(`0x${ethers.MaxUint256.toString(16)}`);
+      });
+    });
+
     describe('#add(uint256,int256)', () => {
       it('adds unsigned and signed integers', async () => {
         expect(await instance.$add.staticCall(1, 1)).to.equal(2);

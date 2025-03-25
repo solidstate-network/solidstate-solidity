@@ -3,9 +3,14 @@
 pragma solidity ^0.8.20;
 
 library BoolUtils {
+    /**
+     * @notice sanitize higher-order bits of bool and convert to bytes32
+     * @param value bool to convert to bytes32
+     * @return result bytes32 representation of bool
+     */
     function toBytes32(bool value) internal pure returns (bytes32 result) {
         assembly {
-            result := not(not(value))
+            result := and(value, 1)
         }
     }
 

@@ -4,6 +4,7 @@ import { deployMockContract } from '@solidstate/library';
 import {
   $Ownable__factory,
   AddressUtils__factory,
+  AddressUtilsTest__factory,
   $AddressUtils,
   $AddressUtils__factory,
 } from '@solidstate/typechain-types';
@@ -32,6 +33,26 @@ describe('AddressUtils', async () => {
   });
 
   describe('__internal', () => {
+    describe('#toBytes32(address)', () => {
+      it('returns a bytes32 representation of address', async () => {
+        const input = await instance.getAddress();
+
+        expect(await instance.$toBytes32.staticCall(input)).to.eq(
+          ethers.zeroPadValue(input, 32),
+        );
+      });
+
+      it('sanitizes higher-order bits', async () => {
+        const testInstance = await new AddressUtilsTest__factory(
+          deployer,
+        ).deploy();
+
+        expect(
+          await testInstance.sanitizeBytes32Test.staticCall(ethers.ZeroAddress),
+        ).to.hexEqual(ethers.ZeroAddress);
+      });
+    });
+
     describe('#toString(address)', () => {
       it('returns a string from an address', async () => {
         expect(

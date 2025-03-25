@@ -14,7 +14,13 @@ library AddressUtils {
     error AddressUtils__FailedCallWithValue();
     error AddressUtils__FailedDelegatecall();
 
+    /**
+     * @notice sanitize higher-order bits of address and convert to bytes32
+     * @param account address to convert to bytes32
+     * @return result bytes32 representation of address
+     */
     function toBytes32(address account) internal pure returns (bytes32 result) {
+        // sanitization is required because address(uint160([uint256 value])) cast does not sanitize
         assembly {
             result := and(account, shr(96, not(0)))
         }

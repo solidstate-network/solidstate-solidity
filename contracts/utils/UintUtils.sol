@@ -12,6 +12,15 @@ library UintUtils {
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
+    /**
+     * @notice convert uint256 to bytes32
+     * @param value address to convert to bytes32
+     * @return result bytes32 representation of uint256
+     */
+    function toBytes32(uint256 value) internal pure returns (bytes32 result) {
+        result = bytes32(value);
+    }
+
     function add(uint256 a, int256 b) internal pure returns (uint256) {
         return b < 0 ? sub(a, -b) : a + uint256(b);
     }
