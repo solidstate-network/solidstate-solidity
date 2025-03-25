@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 import { ERC2535Storage } from '../../storage/ERC2535Storage.sol';
 import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { BoolUtils } from '../../utils/BoolUtils.sol';
 import { _Proxy } from '../_Proxy.sol';
 import { _IDiamondProxy } from './_IDiamondProxy.sol';
 
@@ -307,7 +308,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
      * @param data encoded delegatecall transaction data
      */
     function _initialize(address target, bytes memory data) private {
-        if ((target == address(0)) != (data.length == 0))
+        if (BoolUtils.xor(target == address(0), data.length == 0))
             revert DiamondProxyWritable__InvalidInitializationParameters();
 
         if (target != address(0)) {

@@ -8,4 +8,10 @@ library BoolUtils {
             result := not(not(value))
         }
     }
+
+    function xor(bool value0, bool value1) internal pure returns (bool result) {
+        assembly {
+            result := xor(value0, value1)
+        }
+    }
 }
