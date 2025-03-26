@@ -21,14 +21,6 @@ library Uint256 {
         result = bytes32(value);
     }
 
-    function add(uint256 a, int256 b) internal pure returns (uint256) {
-        return b < 0 ? sub(a, -b) : a + uint256(b);
-    }
-
-    function sub(uint256 a, int256 b) internal pure returns (uint256) {
-        return b < 0 ? add(a, -b) : a - uint256(b);
-    }
-
     /**
      * @notice output the string representation of a number in a given radix
      * @dev radix must be between 2 and 36 (inclusive)

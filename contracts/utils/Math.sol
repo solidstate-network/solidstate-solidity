@@ -3,6 +3,14 @@
 pragma solidity ^0.8.24;
 
 library Math {
+    function add(uint256 a, int256 b) internal pure returns (uint256) {
+        return b < 0 ? sub(a, -b) : a + uint256(b);
+    }
+
+    function sub(uint256 a, int256 b) internal pure returns (uint256) {
+        return b < 0 ? add(a, -b) : a - uint256(b);
+    }
+
     /**
      * @notice calculate the absolute value of a number
      * @param a number whose absolute value to calculate
