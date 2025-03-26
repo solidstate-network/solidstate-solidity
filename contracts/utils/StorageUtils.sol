@@ -18,28 +18,6 @@ library StorageUtils {
     }
 
     /**
-     * @notice read contents of arbitrary storage slot
-     * @param slot storage slot to query
-     * @return data contents of storage slot
-     */
-    function readStorage(bytes32 slot) internal view returns (bytes32 data) {
-        assembly {
-            data := sload(slot)
-        }
-    }
-
-    /**
-     * @notice read contents of arbitrary transient storage slot
-     * @param slot transient storage slot to query
-     * @return data contents of transient storage slot
-     */
-    function readTransient(bytes32 slot) internal view returns (bytes32 data) {
-        assembly {
-            data := tload(slot)
-        }
-    }
-
-    /**
      * @notice calculate thes lot of a bytes32 index of a mapping
      * @param slot mapping declaration slot
      * @param key index of mapping whose slot to calculate
@@ -66,6 +44,28 @@ library StorageUtils {
         }
 
         return slot;
+    }
+
+    /**
+     * @notice read contents of arbitrary storage slot
+     * @param slot storage slot to query
+     * @return data contents of storage slot
+     */
+    function readStorage(bytes32 slot) internal view returns (bytes32 data) {
+        assembly {
+            data := sload(slot)
+        }
+    }
+
+    /**
+     * @notice read contents of arbitrary transient storage slot
+     * @param slot transient storage slot to query
+     * @return data contents of transient storage slot
+     */
+    function readTransient(bytes32 slot) internal view returns (bytes32 data) {
+        assembly {
+            data := tload(slot)
+        }
     }
 
     /**
