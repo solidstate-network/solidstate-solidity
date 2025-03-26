@@ -3,8 +3,8 @@
 pragma solidity ^0.8.20;
 
 library StorageUtils {
-    type TransientSlot is bytes32;
     type StorageSlot is bytes32;
+    type TransientSlot is bytes32;
 
     /**
      * @notice calculate the EIP-7201 storage slot for a given string id
@@ -21,18 +21,15 @@ library StorageUtils {
     }
 
     /**
-     * @notice calculate thes lot of a bytes32 index of a mapping
-     * @param slot mapping declaration slot
-     * @param key index of mapping whose slot to calculate
+     * @notice calculate the slot of an index of an array
+     * @param slot array declaration slot where its length is stored
+     * @param idx index of array whose slot to calculate
      */
-    function map(bytes32 slot, bytes32 key) internal pure returns (bytes32) {
-        assembly {
-            mstore(0, key)
-            mstore(32, slot)
-            slot := keccak256(0, 64)
-        }
-
-        return slot;
+    function index(
+        StorageSlot slot,
+        uint256 idx
+    ) internal pure returns (StorageSlot) {
+        return StorageSlot.wrap(_index(StorageSlot.unwrap(slot), idx));
     }
 
     /**
@@ -40,13 +37,35 @@ library StorageUtils {
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate
      */
-    function index(bytes32 slot, uint256 idx) internal pure returns (bytes32) {
-        assembly {
-            mstore(0, slot)
-            slot := add(keccak256(0, 32), idx)
-        }
+    function index(
+        TransientSlot slot,
+        uint256 idx
+    ) internal pure returns (TransientSlot) {
+        return TransientSlot.wrap(_index(TransientSlot.unwrap(slot), idx));
+    }
 
-        return slot;
+    /**
+     * @notice calculate the slot of a bytes32 index of a mapping in storage
+     * @param slot mapping declaration slot
+     * @param key index of mapping whose slot to calculate
+     */
+    function map(
+        StorageSlot slot,
+        bytes32 key
+    ) internal pure returns (StorageSlot) {
+        return StorageSlot.wrap(_map(StorageSlot.unwrap(slot), key));
+    }
+
+    /**
+     * @notice calculate the slot of a bytes32 index of a mapping in transient storage
+     * @param slot mapping declaration slot
+     * @param key index of mapping whose slot to calculate
+     */
+    function map(
+        TransientSlot slot,
+        bytes32 key
+    ) internal pure returns (TransientSlot) {
+        return TransientSlot.wrap(_map(TransientSlot.unwrap(slot), key));
     }
 
     /**
@@ -91,5 +110,34 @@ library StorageUtils {
         assembly {
             tstore(slot, data)
         }
+    }
+
+    /**
+     * @notice calculate the slot of an index of an array
+     * @param slot array declaration slot where its length is stored
+     * @param idx index of array whose slot to calculate
+     */
+    function _index(bytes32 slot, uint256 idx) private pure returns (bytes32) {
+        assembly {
+            mstore(0, slot)
+            slot := add(keccak256(0, 32), idx)
+        }
+
+        return slot;
+    }
+
+    /**
+     * @notice calculate the slot of a bytes32 index of a mapping
+     * @param slot mapping declaration slot
+     * @param key index of mapping whose slot to calculate
+     */
+    function _map(bytes32 slot, bytes32 key) private pure returns (bytes32) {
+        assembly {
+            mstore(0, key)
+            mstore(32, slot)
+            slot := keccak256(0, 64)
+        }
+
+        return slot;
     }
 }
