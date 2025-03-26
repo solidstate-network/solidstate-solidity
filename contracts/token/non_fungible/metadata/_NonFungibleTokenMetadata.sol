@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { UintUtils } from '../../../utils/UintUtils.sol';
+import { Uint256Utils } from '../../../utils/Uint256Utils.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { _NonFungibleToken } from '../_NonFungibleToken.sol';
@@ -15,7 +15,7 @@ abstract contract _NonFungibleTokenMetadata is
     _INonFungibleTokenMetadata,
     _NonFungibleToken
 {
-    using UintUtils for uint256;
+    using Uint256Utils for uint256;
 
     /**
      * @notice get token name

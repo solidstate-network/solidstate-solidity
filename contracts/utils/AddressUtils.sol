@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { UintUtils } from './UintUtils.sol';
+import { Uint256Utils } from './Uint256Utils.sol';
 
 library AddressUtils {
-    using UintUtils for uint256;
+    using Uint256Utils for uint256;
 
     error AddressUtils__InsufficientBalance();
     error AddressUtils__NotContract();

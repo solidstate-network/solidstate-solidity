@@ -341,7 +341,7 @@ describe('Inheritance Graph', () => {
             'SafeCast',
             'SafeERC20',
             'StorageUtils',
-            'UintUtils',
+            'Uint256Utils',
           ].includes(name),
       );
     });
