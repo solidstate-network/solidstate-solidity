@@ -30,7 +30,11 @@ abstract contract _TransientReentrancyGuard is
     {
         status = Slot
             .TransientSlot
-            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .wrap(
+                Slot.StorageSlot.unwrap(
+                    ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT
+                )
+            )
             .read()
             .toBool();
     }
@@ -41,7 +45,11 @@ abstract contract _TransientReentrancyGuard is
     function _lockReentrancyGuard() internal virtual override {
         Slot
             .TransientSlot
-            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .wrap(
+                Slot.StorageSlot.unwrap(
+                    ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT
+                )
+            )
             .write(true.toBytes32());
     }
 
@@ -51,7 +59,11 @@ abstract contract _TransientReentrancyGuard is
     function _unlockReentrancyGuard() internal virtual override {
         Slot
             .TransientSlot
-            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .wrap(
+                Slot.StorageSlot.unwrap(
+                    ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT
+                )
+            )
             .write(false.toBytes32());
     }
 }
