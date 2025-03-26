@@ -47,7 +47,17 @@ describe('Bytes32', async () => {
         ).to.be.false;
         expect(
           await instance.$toBool.staticCall(
+            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00',
+          ),
+        ).to.be.false;
+        expect(
+          await instance.$toBool.staticCall(
             '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+          ),
+        ).to.be.true;
+        expect(
+          await instance.$toBool.staticCall(
+            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01',
           ),
         ).to.be.true;
       });
