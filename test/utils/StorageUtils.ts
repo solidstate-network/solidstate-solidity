@@ -24,25 +24,27 @@ describe('StorageUtils', () => {
     });
   });
 
-  describe('#read(uint256)', () => {
-    it('reads data from arbitrary storage slot', async () => {
+  describe('#readStorage(uint256)', () => {
+    it('reads bytes32 data from arbitrary storage slot', async () => {
       const slot = ethers.hexlify(ethers.randomBytes(32));
       const data = ethers.ZeroHash;
 
-      expect(await instance.$read.staticCall(slot)).to.equal(data);
+      expect(await instance.$readStorage.staticCall(slot)).to.equal(data);
     });
   });
 
   describe('#write(uint256,bytes32)', () => {
-    it('updates arbitrary storage data', async () => {
+    it('writes bytes32 data to arbitrary storage slot', async () => {
       const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
       const data = ethers.zeroPadValue(deployer.address, 32);
 
-      expect(await instance.$read.staticCall(slot)).to.equal(ethers.ZeroHash);
+      expect(await instance.$readStorage.staticCall(slot)).to.equal(
+        ethers.ZeroHash,
+      );
 
-      await instance.$write(slot, data);
+      await instance['$writeStorage(bytes32,bytes32)'](slot, data);
 
-      expect(await instance.$read.staticCall(slot)).to.equal(data);
+      expect(await instance.$readStorage.staticCall(slot)).to.equal(data);
     });
   });
 });
