@@ -19,7 +19,7 @@ library StorageUtils {
      * @dev see https://eips.ethereum.org/EIPS/eip-7201
      * @param id namespace id
      */
-    function calculateStorageSlot(
+    function calculateErc7201StorageSlot(
         string memory id
     ) internal pure returns (bytes32 slot) {
         slot =
