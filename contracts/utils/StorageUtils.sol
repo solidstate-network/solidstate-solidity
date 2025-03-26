@@ -3,6 +3,9 @@
 pragma solidity ^0.8.20;
 
 library StorageUtils {
+    type TransientSlot is bytes32;
+    type StorageSlot is bytes32;
+
     /**
      * @notice calculate the EIP-7201 storage slot for a given string id
      * @dev id parameter should not contain whitespace
@@ -51,7 +54,7 @@ library StorageUtils {
      * @param slot storage slot to query
      * @return data contents of storage slot
      */
-    function readStorage(bytes32 slot) internal view returns (bytes32 data) {
+    function read(StorageSlot slot) internal view returns (bytes32 data) {
         assembly {
             data := sload(slot)
         }
@@ -62,7 +65,7 @@ library StorageUtils {
      * @param slot transient storage slot to query
      * @return data contents of transient storage slot
      */
-    function readTransient(bytes32 slot) internal view returns (bytes32 data) {
+    function read(TransientSlot slot) internal view returns (bytes32 data) {
         assembly {
             data := tload(slot)
         }
@@ -73,7 +76,7 @@ library StorageUtils {
      * @param slot storage slot to write to
      * @param data data to write
      */
-    function writeStorage(bytes32 slot, bytes32 data) internal {
+    function write(StorageSlot slot, bytes32 data) internal {
         assembly {
             sstore(slot, data)
         }
@@ -84,7 +87,7 @@ library StorageUtils {
      * @param slot transient storage slot to write to
      * @param data data to write
      */
-    function writeTransient(bytes32 slot, bytes32 data) internal {
+    function write(TransientSlot slot, bytes32 data) internal {
         assembly {
             tstore(slot, data)
         }

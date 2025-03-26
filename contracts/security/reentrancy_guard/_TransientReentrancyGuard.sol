@@ -15,7 +15,7 @@ abstract contract _TransientReentrancyGuard is
 {
     using BoolUtils for bool;
     using Bytes32Utils for bytes32;
-    using StorageUtils for bytes32;
+    using StorageUtils for StorageUtils.TransientSlot;
 
     /**
      * @notice returns true if the reentrancy guard is locked, false otherwise
@@ -28,9 +28,10 @@ abstract contract _TransientReentrancyGuard is
         override
         returns (bool status)
     {
-        status = ReentrancyGuardStorage
-            .DEFAULT_STORAGE_SLOT
-            .readTransient()
+        status = StorageUtils
+            .TransientSlot
+            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .read()
             .toBool();
     }
 
@@ -38,17 +39,19 @@ abstract contract _TransientReentrancyGuard is
      * @notice lock functions that use the nonReentrant modifier
      */
     function _lockReentrancyGuard() internal virtual override {
-        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(
-            true.toBytes32()
-        );
+        StorageUtils
+            .TransientSlot
+            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .write(true.toBytes32());
     }
 
     /**
      * @notice unlock functions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual override {
-        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(
-            false.toBytes32()
-        );
+        StorageUtils
+            .TransientSlot
+            .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .write(false.toBytes32());
     }
 }
