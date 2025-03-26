@@ -4,7 +4,6 @@ import {
   $PackedDoublyLinkedList,
   $PackedDoublyLinkedList__factory,
 } from '@solidstate/typechain-types';
-import { storageUtilsSol } from '@solidstate/typechain-types/exposed/utils';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

@@ -31,10 +31,36 @@ export function describeBehaviorOfDiamondProxyFallback(
       nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfDiamondProxy(async () => instance, args, skips);
+    describeBehaviorOfDiamondProxy(async () => instance, args, [
+      'receive()',
+      ...(skips ?? []),
+    ]);
 
     describe('fallback()', () => {
-      it('forwards data without matching selector to fallback contract');
+      it('forwards data without matching selector to fallback contract', async () => {
+        await expect(
+          owner.sendTransaction({
+            to: await instance.getAddress(),
+          }),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Proxy__ImplementationIsNotContract',
+        );
+      });
+    });
+
+    describe('receive()', () => {
+      it('forwards value to fallback contract', async () => {
+        await expect(
+          owner.sendTransaction({
+            to: await instance.getAddress(),
+            value: 1n,
+          }),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Proxy__ImplementationIsNotContract',
+        );
+      });
     });
 
     describe('#getFallbackAddress()', () => {

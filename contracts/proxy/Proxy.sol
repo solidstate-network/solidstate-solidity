@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { IProxy } from './IProxy.sol';
 import { _Proxy } from './_Proxy.sol';
@@ -15,5 +15,9 @@ abstract contract Proxy is IProxy, _Proxy {
      */
     fallback() external payable {
         _fallback();
+    }
+
+    receive() external payable {
+        _receive();
     }
 }

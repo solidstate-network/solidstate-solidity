@@ -1,10 +1,10 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { $UintUtils, $UintUtils__factory } from '@solidstate/typechain-types';
+import { $Uint256, $Uint256__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('UintUtils', () => {
-  let instance: $UintUtils;
+describe('Uint256', () => {
+  let instance: $Uint256;
   const values = [
     0n,
     1n,
@@ -23,10 +23,18 @@ describe('UintUtils', () => {
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $UintUtils__factory(deployer).deploy();
+    instance = await new $Uint256__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
+    describe('#toBytes32(uint256)', () => {
+      it('returns a bytes32 representation of uint256', async () => {
+        expect(
+          await instance.$toBytes32.staticCall(ethers.MaxUint256),
+        ).to.equal(`0x${ethers.MaxUint256.toString(16)}`);
+      });
+    });
+
     describe('#add(uint256,int256)', () => {
       it('adds unsigned and signed integers', async () => {
         expect(await instance.$add.staticCall(1, 1)).to.equal(2);
@@ -93,31 +101,31 @@ describe('UintUtils', () => {
         it('radix is 0', async () => {
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(0n, 0n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(1n, 0n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
 
         it('radix is 1', async () => {
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(0n, 1n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(1n, 1n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
 
         it('radix is greater than 36', async () => {
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(0n, 37n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256)'].staticCall(1n, 37n),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
       });
     });
@@ -171,7 +179,7 @@ describe('UintUtils', () => {
               0n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256,uint256)'].staticCall(
@@ -179,7 +187,7 @@ describe('UintUtils', () => {
               0n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
 
         it('radix is 1', async () => {
@@ -189,7 +197,7 @@ describe('UintUtils', () => {
               1n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256,uint256)'].staticCall(
@@ -197,7 +205,7 @@ describe('UintUtils', () => {
               1n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
 
         it('radix is greater than 36', async () => {
@@ -207,7 +215,7 @@ describe('UintUtils', () => {
               37n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
           await expect(
             instance['$toString(uint256,uint256,uint256)'].staticCall(
@@ -215,7 +223,7 @@ describe('UintUtils', () => {
               37n,
               0n,
             ),
-          ).to.be.revertedWithCustomError(instance, 'UintUtils__InvalidBase');
+          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
         });
       });
 
@@ -229,7 +237,7 @@ describe('UintUtils', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
 
           await expect(
@@ -240,7 +248,7 @@ describe('UintUtils', () => {
             ),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
         }
       });
@@ -299,14 +307,14 @@ describe('UintUtils', () => {
             instance['$toBinString(uint256,uint256)'].staticCall(0b1, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
 
           await expect(
             instance['$toBinString(uint256,uint256)'].staticCall(0b10, 1n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
         });
       });
@@ -365,14 +373,14 @@ describe('UintUtils', () => {
             instance['$toOctString(uint256,uint256)'].staticCall(0o1, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
 
           await expect(
             instance['$toOctString(uint256,uint256)'].staticCall(0o10, 1n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
         });
       });
@@ -440,14 +448,14 @@ describe('UintUtils', () => {
             instance['$toDecString(uint256,uint256)'].staticCall(1n, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
 
           await expect(
             instance['$toDecString(uint256,uint256)'].staticCall(10n, 1n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
         });
       });
@@ -506,14 +514,14 @@ describe('UintUtils', () => {
             instance['$toHexString(uint256,uint256)'].staticCall(1n, 0n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
 
           await expect(
             instance['$toHexString(uint256,uint256)'].staticCall(256n, 1n),
           ).to.be.revertedWithCustomError(
             instance,
-            'UintUtils__InsufficientPadding',
+            'Uint256__InsufficientPadding',
           );
         });
       });

@@ -16,7 +16,7 @@ import 'solidity-coverage';
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: '0.8.28',
+    version: '0.8.29',
     settings: {
       evmVersion: 'cancun',
       optimizer: {
