@@ -39,17 +39,17 @@ describe('Bytes32', async () => {
     });
 
     describe('#toBool(bytes32)', () => {
-      it('returns the lowest-order bit as bool', async () => {
+      it('returns the bool representation of bytes', async () => {
         expect(
           await instance.$toBool.staticCall(
             '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe',
           ),
-        ).to.be.false;
+        ).to.be.true;
         expect(
           await instance.$toBool.staticCall(
             '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00',
           ),
-        ).to.be.false;
+        ).to.be.true;
         expect(
           await instance.$toBool.staticCall(
             '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
@@ -62,10 +62,10 @@ describe('Bytes32', async () => {
         ).to.be.true;
       });
 
-      it('sanitizes higher-order bits', async () => {
+      it('sanitizes higher-order bits as true', async () => {
         const testInstance = await new Bytes32Test__factory(deployer).deploy();
 
-        expect(await testInstance.sanitizeBoolTest(false)).to.hexEqual('0x00');
+        expect(await testInstance.sanitizeBoolTest(false)).to.hexEqual('0x01');
         expect(await testInstance.sanitizeBoolTest(true)).to.hexEqual('0x01');
       });
     });

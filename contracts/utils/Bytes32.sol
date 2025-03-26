@@ -27,7 +27,7 @@ library Bytes32 {
      */
     function toBool(bytes32 data) internal pure returns (bool result) {
         assembly {
-            result := and(data, 1)
+            result := iszero(iszero(data))
         }
     }
 
