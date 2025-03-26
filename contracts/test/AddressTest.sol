@@ -2,17 +2,17 @@
 
 pragma solidity ^0.8.24;
 
-import { BoolUtils } from '../utils/BoolUtils.sol';
+import { Address } from '../utils/Address.sol';
 
-contract BoolUtilsTest {
+contract AddressTest {
     function sanitizeBytes32Test(
-        bool input
+        address input
     ) external pure returns (bytes32 output) {
         // contaminate the higher-order bits
         assembly {
-            input := or(input, shl(1, not(1)))
+            input := or(input, shl(160, not(1)))
         }
 
-        output = BoolUtils.toBytes32(input);
+        output = Address.toBytes32(input);
     }
 }

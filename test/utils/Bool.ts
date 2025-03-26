@@ -1,19 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  $BoolUtils,
-  $BoolUtils__factory,
-  BoolUtilsTest__factory,
+  $Bool,
+  $Bool__factory,
+  BoolTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('BoolUtils', async () => {
-  let instance: $BoolUtils;
+describe('Bool', async () => {
+  let instance: $Bool;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new $BoolUtils__factory(deployer).deploy();
+    instance = await new $Bool__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -29,9 +29,7 @@ describe('BoolUtils', async () => {
       });
 
       it('sanitizes higher-order bits', async () => {
-        const testInstance = await new BoolUtilsTest__factory(
-          deployer,
-        ).deploy();
+        const testInstance = await new BoolTest__factory(deployer).deploy();
 
         expect(
           await testInstance.sanitizeBytes32Test.staticCall(false),

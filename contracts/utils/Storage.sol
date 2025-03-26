@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-library StorageUtils {
+library Storage {
     /**
      * @notice calculate the EIP-7201 storage slot for a given string id
      * @dev id parameter should not contain whitespace

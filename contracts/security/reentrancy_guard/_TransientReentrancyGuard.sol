@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 
 import { Slot } from '../../data/Slot.sol';
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
-import { BoolUtils } from '../../utils/BoolUtils.sol';
-import { Bytes32Utils } from '../../utils/Bytes32Utils.sol';
+import { Bool } from '../../utils/Bool.sol';
+import { Bytes32 } from '../../utils/Bytes32.sol';
 import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
 import { _ITransientReentrancyGuard } from './_ITransientReentrancyGuard.sol';
 
@@ -13,8 +13,8 @@ abstract contract _TransientReentrancyGuard is
     _ITransientReentrancyGuard,
     _ReentrancyGuard
 {
-    using BoolUtils for bool;
-    using Bytes32Utils for bytes32;
+    using Bool for bool;
+    using Bytes32 for bytes32;
     using Slot for Slot.TransientSlot;
 
     Slot.TransientSlot private constant TRANSIENT_SLOT =

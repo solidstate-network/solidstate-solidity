@@ -3,14 +3,14 @@
 pragma solidity ^0.8.24;
 
 import { IERC20 } from '../interfaces/IERC20.sol';
-import { AddressUtils } from './AddressUtils.sol';
+import { Address } from './Address.sol';
 
 /**
  * @title Safe ERC20 interaction library
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
 library SafeERC20 {
-    using AddressUtils for address;
+    using Address for address;
 
     error SafeERC20__ApproveFromNonZeroToNonZero();
     error SafeERC20__DecreaseAllowanceBelowZero();

@@ -1,19 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  Bytes32UtilsTest__factory,
-  $Bytes32Utils,
-  $Bytes32Utils__factory,
+  Bytes32Test__factory,
+  $Bytes32,
+  $Bytes32__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('Bytes32Utils', async () => {
-  let instance: $Bytes32Utils;
+describe('Bytes32', async () => {
+  let instance: $Bytes32;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new $Bytes32Utils__factory(deployer).deploy();
+    instance = await new $Bytes32__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -30,9 +30,7 @@ describe('Bytes32Utils', async () => {
       });
 
       it('sanitizes higher-order bits', async () => {
-        const testInstance = await new Bytes32UtilsTest__factory(
-          deployer,
-        ).deploy();
+        const testInstance = await new Bytes32Test__factory(deployer).deploy();
 
         expect(
           await testInstance.sanitizeAddressTest(ethers.ZeroAddress),
@@ -55,9 +53,7 @@ describe('Bytes32Utils', async () => {
       });
 
       it('sanitizes higher-order bits', async () => {
-        const testInstance = await new Bytes32UtilsTest__factory(
-          deployer,
-        ).deploy();
+        const testInstance = await new Bytes32Test__factory(deployer).deploy();
 
         expect(await testInstance.sanitizeBoolTest(false)).to.hexEqual('0x00');
         expect(await testInstance.sanitizeBoolTest(true)).to.hexEqual('0x01');

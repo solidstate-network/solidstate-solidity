@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-library BoolUtils {
+library Bool {
     /**
      * @notice sanitize higher-order bits of bool and convert to bytes32
      * @param value bool to convert to bytes32

@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.24;
 
-import { Uint256Utils } from './Uint256Utils.sol';
+import { Uint256 } from './Uint256.sol';
 
 /**
  * @title utility functions for bytes32 operations
  */
-library Bytes32Utils {
+library Bytes32 {
     /**
      * @notice convert 20 lower-order bytes of bytes32 data payload to sanitized address
      * @param data bytes32 value to convert
@@ -59,6 +59,6 @@ library Bytes32Utils {
     function toString(
         bytes32 value
     ) internal pure returns (string memory output) {
-        output = Uint256Utils.toHexString(uint256(value), 32);
+        output = Uint256.toHexString(uint256(value), 32);
     }
 }

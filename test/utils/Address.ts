@@ -3,33 +3,33 @@ import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
 import { deployMockContract } from '@solidstate/library';
 import {
   $Ownable__factory,
-  AddressUtils__factory,
-  AddressUtilsTest__factory,
-  $AddressUtils,
-  $AddressUtils__factory,
+  Address__factory,
+  AddressTest__factory,
+  $Address,
+  $Address__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
-describe('AddressUtils', async () => {
-  let instance: $AddressUtils;
+describe('Address', async () => {
+  let instance: $Address;
   let deployer: SignerWithAddress;
 
-  // the custom errors are not available on the $AddressUtils ABI
+  // the custom errors are not available on the $Address ABI
   // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
   const placeholder = {
     interface: new ethers.Interface([
       'error TestError()',
-      'error AddressUtils__FailedCall()',
-      'error AddressUtils__FailedCallWithValue()',
-      'error AddressUtils__FailedDelegatecall()',
+      'error Address__FailedCall()',
+      'error Address__FailedCallWithValue()',
+      'error Address__FailedDelegatecall()',
     ]),
   };
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new $AddressUtils__factory(deployer).deploy();
+    instance = await new $Address__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
@@ -43,9 +43,7 @@ describe('AddressUtils', async () => {
       });
 
       it('sanitizes higher-order bits', async () => {
-        const testInstance = await new AddressUtilsTest__factory(
-          deployer,
-        ).deploy();
+        const testInstance = await new AddressTest__factory(deployer).deploy();
 
         expect(
           await testInstance.sanitizeBytes32Test.staticCall(ethers.ZeroAddress),
@@ -99,10 +97,7 @@ describe('AddressUtils', async () => {
 
           await expect(
             instance.connect(deployer).$sendValue(mock.address, value),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__SendValueFailed',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__SendValueFailed');
         });
       });
     });
@@ -131,10 +126,7 @@ describe('AddressUtils', async () => {
         it('target is not a contract', async () => {
           await expect(
             instance['$functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -159,9 +151,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target contract reverts, with default error message', async () => {
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance
@@ -169,10 +159,7 @@ describe('AddressUtils', async () => {
               [
                 '$functionCall(address,bytes)'
               ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWithCustomError(
-            placeholder,
-            'AddressUtils__FailedCall',
-          );
+          ).to.be.revertedWithCustomError(placeholder, 'Address__FailedCall');
         });
       });
     });
@@ -206,10 +193,7 @@ describe('AddressUtils', async () => {
               '0x',
               ethers.randomBytes(4),
             ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -241,9 +225,7 @@ describe('AddressUtils', async () => {
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance
@@ -310,10 +292,7 @@ describe('AddressUtils', async () => {
               '0x',
               0,
             ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('contract balance is insufficient', async () => {
@@ -325,7 +304,7 @@ describe('AddressUtils', async () => {
               ](await instance.getAddress(), '0x', 1),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__InsufficientBalance',
+            'Address__InsufficientBalance',
           );
         });
 
@@ -353,7 +332,7 @@ describe('AddressUtils', async () => {
               ](await targetContract.getAddress(), data, value),
           ).to.be.revertedWithCustomError(
             placeholder,
-            'AddressUtils__FailedCallWithValue',
+            'Address__FailedCallWithValue',
           );
         });
 
@@ -381,9 +360,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target contract reverts, with default error message', async () => {
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance
@@ -393,7 +370,7 @@ describe('AddressUtils', async () => {
               ](await targetContract.getAddress(), '0x', 0),
           ).to.be.revertedWithCustomError(
             placeholder,
-            'AddressUtils__FailedCallWithValue',
+            'Address__FailedCallWithValue',
           );
         });
       });
@@ -455,10 +432,7 @@ describe('AddressUtils', async () => {
               0,
               ethers.randomBytes(4),
             ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('contract balance is insufficient', async () => {
@@ -470,7 +444,7 @@ describe('AddressUtils', async () => {
               ](await instance.getAddress(), '0x', 1, ethers.randomBytes(4)),
           ).to.be.revertedWithCustomError(
             instance,
-            'AddressUtils__InsufficientBalance',
+            'Address__InsufficientBalance',
           );
         });
 
@@ -532,9 +506,7 @@ describe('AddressUtils', async () => {
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance
@@ -584,10 +556,7 @@ describe('AddressUtils', async () => {
               ethers.ZeroAddress,
               '0x',
             ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -608,9 +577,7 @@ describe('AddressUtils', async () => {
         });
 
         it('target contract reverts, with default error message', async () => {
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance
@@ -620,7 +587,7 @@ describe('AddressUtils', async () => {
               ](await targetContract.getAddress(), '0x'),
           ).to.be.revertedWithCustomError(
             placeholder,
-            'AddressUtils__FailedDelegatecall',
+            'Address__FailedDelegatecall',
           );
         });
       });
@@ -664,10 +631,7 @@ describe('AddressUtils', async () => {
               '0x',
               ethers.randomBytes(4),
             ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'AddressUtils__NotContract',
-          );
+          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
         });
 
         it('target contract reverts, with target contract error message', async () => {
@@ -693,9 +657,7 @@ describe('AddressUtils', async () => {
           const revertReason =
             placeholder.interface.getError(customError)?.selector!;
 
-          const targetContract = await new AddressUtils__factory(
-            deployer,
-          ).deploy();
+          const targetContract = await new Address__factory(deployer).deploy();
 
           await expect(
             instance

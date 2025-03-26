@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-library Int256Utils {
+library Int256 {
     /**
      * @notice convert int256 to bytes32
      * @param value int256 to convert to bytes32

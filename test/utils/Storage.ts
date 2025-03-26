@@ -1,19 +1,16 @@
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { seedToStorageSlot } from '@solidstate/library/storage_layout';
-import {
-  $StorageUtils,
-  $StorageUtils__factory,
-} from '@solidstate/typechain-types';
+import { $Storage, $Storage__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('StorageUtils', () => {
+describe('Storage', () => {
   let deployer: HardhatEthersSigner;
-  let instance: $StorageUtils;
+  let instance: $Storage;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new $StorageUtils__factory(deployer).deploy();
+    instance = await new $Storage__factory(deployer).deploy();
   });
 
   describe('#calculateErc7201StorageSlot(string)', () => {

@@ -6,9 +6,9 @@ pragma solidity ^0.8.24;
  * @title utility functions for uint256 operations
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-library Uint256Utils {
-    error Uint256Utils__InsufficientPadding();
-    error Uint256Utils__InvalidBase();
+library Uint256 {
+    error Uint256__InsufficientPadding();
+    error Uint256__InvalidBase();
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
@@ -43,7 +43,7 @@ library Uint256Utils {
         // this check is repeated in the internal call to #toString(uint256,uint256,uint256)
         // but is still needed here to avoid zero division (radix = 0) or infinite loop (radix = 1)
         if (radix < 2) {
-            revert Uint256Utils__InvalidBase();
+            revert Uint256__InvalidBase();
         }
 
         uint256 length;
@@ -73,7 +73,7 @@ library Uint256Utils {
         uint256 length
     ) internal pure returns (string memory output) {
         if (radix < 2 || radix > 36) {
-            revert Uint256Utils__InvalidBase();
+            revert Uint256__InvalidBase();
         }
 
         bytes memory buffer = new bytes(length);
@@ -100,7 +100,7 @@ library Uint256Utils {
             value /= radix;
         }
 
-        if (value != 0) revert Uint256Utils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -154,7 +154,7 @@ library Uint256Utils {
             value >>= 1;
         }
 
-        if (value != 0) revert Uint256Utils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -210,7 +210,7 @@ library Uint256Utils {
             value >>= 3;
         }
 
-        if (value != 0) revert Uint256Utils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -290,7 +290,7 @@ library Uint256Utils {
             value >>= 4;
         }
 
-        if (value != 0) revert Uint256Utils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
