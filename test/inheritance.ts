@@ -340,6 +340,7 @@ describe('Inheritance Graph', () => {
             'Math',
             'SafeCast',
             'SafeERC20',
+            'Slot',
             'Storage',
             'Uint256',
           ].includes(name),
