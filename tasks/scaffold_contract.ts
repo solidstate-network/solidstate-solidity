@@ -27,7 +27,7 @@ task('scaffold-contract', 'Batch replace text in local filenames and contents')
     await fs.promises.mkdir(fullpath, { recursive: true });
 
     const { name } = args;
-    const pragma = args.pragma ?? '^0.8.20';
+    const pragma = args.pragma ?? '^0.8.24';
 
     const externalContract = `
         pragma solidity ${pragma};

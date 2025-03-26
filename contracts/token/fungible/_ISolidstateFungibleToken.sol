@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { _IFungibleTokenExtended } from './extended/_IFungibleTokenExtended.sol';
 import { _IFungibleTokenMetadata } from './metadata/_IFungibleTokenMetadata.sol';
