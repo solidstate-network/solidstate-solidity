@@ -21,6 +21,7 @@ library Bytes32Utils {
 
     /**
      * @notice convert lowest-order bit of bytes32 data payload to sanitized bool
+     * @dev TODO: disambiguate a possible function that returns "truthiness" of bytes32
      * @param data bytes32 value to convert
      * @return result bool result
      */
