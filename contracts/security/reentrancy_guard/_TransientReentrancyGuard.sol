@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
+import { BoolUtils } from '../../utils/BoolUtils.sol';
 import { Bytes32Utils } from '../../utils/Bytes32Utils.sol';
 import { StorageUtils } from '../../utils/StorageUtils.sol';
 import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
@@ -12,6 +13,7 @@ abstract contract _TransientReentrancyGuard is
     _ITransientReentrancyGuard,
     _ReentrancyGuard
 {
+    using BoolUtils for bool;
     using Bytes32Utils for bytes32;
     using StorageUtils for bytes32;
 
@@ -36,13 +38,17 @@ abstract contract _TransientReentrancyGuard is
      * @notice lock functions that use the nonReentrant modifier
      */
     function _lockReentrancyGuard() internal virtual override {
-        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(true);
+        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(
+            true.toBytes32()
+        );
     }
 
     /**
      * @notice unlock functions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual override {
-        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(false);
+        ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT.writeTransient(
+            false.toBytes32()
+        );
     }
 }

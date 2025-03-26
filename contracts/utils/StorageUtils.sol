@@ -2,17 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { AddressUtils } from './AddressUtils.sol';
-import { BoolUtils } from './BoolUtils.sol';
-import { Int256Utils } from './Int256Utils.sol';
-import { UintUtils } from './UintUtils.sol';
-
 library StorageUtils {
-    using AddressUtils for address;
-    using BoolUtils for bool;
-    using Int256Utils for int256;
-    using UintUtils for uint256;
-
     /**
      * @notice calculate the EIP-7201 storage slot for a given string id
      * @dev id parameter should not contain whitespace
@@ -50,24 +40,6 @@ library StorageUtils {
     }
 
     /**
-     * @notice calculate thes lot of an address index of a mapping
-     * @param slot mapping declaration slot
-     * @param key index of mapping whose slot to calculate
-     */
-    function map(bytes32 slot, address key) internal pure returns (bytes32) {
-        return map(slot, key.toBytes32());
-    }
-
-    /**
-     * @notice calculate thes lot of a bool index of a mapping
-     * @param slot mapping declaration slot
-     * @param key index of mapping whose slot to calculate
-     */
-    function map(bytes32 slot, bool key) internal pure returns (bytes32) {
-        return map(slot, key.toBytes32());
-    }
-
-    /**
      * @notice calculate thes lot of a bytes32 index of a mapping
      * @param slot mapping declaration slot
      * @param key index of mapping whose slot to calculate
@@ -80,24 +52,6 @@ library StorageUtils {
         }
 
         return slot;
-    }
-
-    /**
-     * @notice calculate thes lot of an int256 index of a mapping
-     * @param slot mapping declaration slot
-     * @param key index of mapping whose slot to calculate
-     */
-    function map(bytes32 slot, int256 key) internal pure returns (bytes32) {
-        return map(slot, key.toBytes32());
-    }
-
-    /**
-     * @notice calculate thes lot of a uint256 index of a mapping
-     * @param slot mapping declaration slot
-     * @param key index of mapping whose slot to calculate
-     */
-    function map(bytes32 slot, uint256 key) internal pure returns (bytes32) {
-        return map(slot, key.toBytes32());
     }
 
     /**
@@ -115,24 +69,6 @@ library StorageUtils {
     }
 
     /**
-     * @notice write address to storage slot
-     * @param slot storage slot to write to
-     * @param data data to write
-     */
-    function writeStorage(bytes32 slot, address data) internal {
-        writeStorage(slot, data.toBytes32());
-    }
-
-    /**
-     * @notice write bool to storage slot
-     * @param slot storage slot to write to
-     * @param data data to write
-     */
-    function writeStorage(bytes32 slot, bool data) internal {
-        writeStorage(slot, data.toBytes32());
-    }
-
-    /**
      * @notice write bytes32 to storage slot
      * @param slot storage slot to write to
      * @param data data to write
@@ -144,42 +80,6 @@ library StorageUtils {
     }
 
     /**
-     * @notice write int256 to storage slot
-     * @param slot storage slot to write to
-     * @param data data to write
-     */
-    function writeStorage(bytes32 slot, int256 data) internal {
-        writeStorage(slot, data.toBytes32());
-    }
-
-    /**
-     * @notice write uint256 to storage slot
-     * @param slot storage slot to write to
-     * @param data data to write
-     */
-    function writeStorage(bytes32 slot, uint256 data) internal {
-        writeStorage(slot, data.toBytes32());
-    }
-
-    /**
-     * @notice write address to transient storage slot
-     * @param slot transient storage slot to write to
-     * @param value data to write
-     */
-    function writeTransient(bytes32 slot, address value) internal {
-        writeTransient(slot, value.toBytes32());
-    }
-
-    /**
-     * @notice write bool to transient storage slot
-     * @param slot transient storage slot to write to
-     * @param value data to write
-     */
-    function writeTransient(bytes32 slot, bool value) internal {
-        writeTransient(slot, value.toBytes32());
-    }
-
-    /**
      * @notice write bytes32 to transient storage slot
      * @param slot transient storage slot to write to
      * @param data data to write
@@ -188,23 +88,5 @@ library StorageUtils {
         assembly {
             tstore(slot, data)
         }
-    }
-
-    /**
-     * @notice write int256 to transient storage slot
-     * @param slot transient storage slot to write to
-     * @param value data to write
-     */
-    function writeTransient(bytes32 slot, int256 value) internal {
-        writeTransient(slot, value.toBytes32());
-    }
-
-    /**
-     * @notice write uint256 to transient storage slot
-     * @param slot transient storage slot to write to
-     * @param value data to write
-     */
-    function writeTransient(bytes32 slot, uint256 value) internal {
-        writeTransient(slot, value.toBytes32());
     }
 }
