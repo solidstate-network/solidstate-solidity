@@ -4,6 +4,8 @@ pragma solidity ^0.8.24;
 
 import { ECDSA } from '../cryptography/ECDSA.sol';
 import { EIP712 } from '../cryptography/EIP712.sol';
+import { Slot } from '../data/Slot.sol';
+import { Bytes32 } from '../utils/Bytes32.sol';
 import { _Context } from './_Context.sol';
 import { _IECDSAMetaTransactionContext } from './_IECDSAMetaTransactionContext.sol';
 
@@ -11,17 +13,20 @@ abstract contract _ECDSAMetaTransactionContext is
     _IECDSAMetaTransactionContext,
     _Context
 {
+    using Bytes32 for bytes32;
     using ECDSA for bytes32;
+    using Slot for Slot.TransientSlot;
 
     bytes32 internal constant EIP_712_TYPE_HASH =
         keccak256(
             'ECDSAMetaTransaction(bytes msgData,uint256 msgValue,uint256 nonce)'
         );
 
-    bytes32
-        internal constant ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT =
-        keccak256(abi.encode(uint256(EIP_712_TYPE_HASH) - 1)) &
-            ~bytes32(uint256(0xff));
+    Slot.TransientSlot private constant TRANSIENT_SLOT =
+        Slot.TransientSlot.wrap(
+            keccak256(abi.encode(uint256(EIP_712_TYPE_HASH) - 1)) &
+                ~bytes32(uint256(0xff))
+        );
 
     function _eip712Domain()
         internal
@@ -65,11 +70,8 @@ abstract contract _ECDSAMetaTransactionContext is
             // calldata is long enough that it might have a suffix
             // check transient storage to see if sender has been derived already
 
-            bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
-
-            assembly {
-                msgSender := tload(slot)
-            }
+            // toAddress function strips the packed msgDataIndex data and returns a clean address
+            msgSender = TRANSIENT_SLOT.read().toAddress();
 
             if (msgSender == address(0)) {
                 // no sender found in transient storage, so attempt to derive it from signature
@@ -103,11 +105,8 @@ abstract contract _ECDSAMetaTransactionContext is
 
             uint256 split;
 
-            bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
-
-            assembly {
-                split := tload(add(slot, 1))
-            }
+            // unpack the msgDataIndex which is stored alongside msgSender
+            split = (TRANSIENT_SLOT.read() >> 160).toUint256();
 
             if (split == 0) {
                 // no msgData split index found in transient storage, so attempt to derive it from signature
@@ -176,14 +175,15 @@ abstract contract _ECDSAMetaTransactionContext is
             }
         }
 
-        bytes32 slot = ECDSA_META_TRANSACTION_CONTEXT_TRANSIENT_STORAGE_SLOT;
+        bytes32 data;
 
         assembly {
-            // it is necessary to store metadata in transient storage because
-            // subsequent derivation will fail due to nonce invalidation
-            // TODO: pack (msgDataIndex as bytes12)
-            tstore(slot, msgSender)
-            tstore(add(slot, 1), msgDataIndex)
+            // pack msgDataIndex into the 12 bytes available alongside msgSender
+            data := and(msgSender, shl(160, msgDataIndex))
         }
+
+        // it is necessary to store metadata in transient storage because
+        // subsequent derivation will fail due to nonce invalidation
+        TRANSIENT_SLOT.write(data);
     }
 }
