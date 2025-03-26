@@ -25,28 +25,4 @@ describe('StorageUtils', () => {
       );
     });
   });
-
-  describe('#readStorage(uint256)', () => {
-    it('reads bytes32 data from arbitrary storage slot', async () => {
-      const slot = ethers.hexlify(ethers.randomBytes(32));
-      const data = ethers.ZeroHash;
-
-      expect(await instance.$readStorage.staticCall(slot)).to.equal(data);
-    });
-  });
-
-  describe('#write(uint256,bytes32)', () => {
-    it('writes bytes32 data to arbitrary storage slot', async () => {
-      const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
-      const data = ethers.zeroPadValue(deployer.address, 32);
-
-      expect(await instance.$readStorage.staticCall(slot)).to.equal(
-        ethers.ZeroHash,
-      );
-
-      await instance['$writeStorage(bytes32,bytes32)'](slot, data);
-
-      expect(await instance.$readStorage.staticCall(slot)).to.equal(data);
-    });
-  });
 });

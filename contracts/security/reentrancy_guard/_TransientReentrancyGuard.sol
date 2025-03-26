@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.20;
 
+import { Slot } from '../../data/Slot.sol';
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
 import { BoolUtils } from '../../utils/BoolUtils.sol';
 import { Bytes32Utils } from '../../utils/Bytes32Utils.sol';
-import { StorageUtils } from '../../utils/StorageUtils.sol';
 import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
 import { _ITransientReentrancyGuard } from './_ITransientReentrancyGuard.sol';
 
@@ -15,7 +15,7 @@ abstract contract _TransientReentrancyGuard is
 {
     using BoolUtils for bool;
     using Bytes32Utils for bytes32;
-    using StorageUtils for StorageUtils.TransientSlot;
+    using Slot for Slot.TransientSlot;
 
     /**
      * @notice returns true if the reentrancy guard is locked, false otherwise
@@ -28,7 +28,7 @@ abstract contract _TransientReentrancyGuard is
         override
         returns (bool status)
     {
-        status = StorageUtils
+        status = Slot
             .TransientSlot
             .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
             .read()
@@ -39,7 +39,7 @@ abstract contract _TransientReentrancyGuard is
      * @notice lock functions that use the nonReentrant modifier
      */
     function _lockReentrancyGuard() internal virtual override {
-        StorageUtils
+        Slot
             .TransientSlot
             .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
             .write(true.toBytes32());
@@ -49,7 +49,7 @@ abstract contract _TransientReentrancyGuard is
      * @notice unlock functions that use the nonReentrant modifier
      */
     function _unlockReentrancyGuard() internal virtual override {
-        StorageUtils
+        Slot
             .TransientSlot
             .wrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
             .write(false.toBytes32());
