@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { _SafeOwnable } from '../../access/ownable/_SafeOwnable.sol';
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
