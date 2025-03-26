@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
 import { _ReentrancyGuard } from './_ReentrancyGuard.sol';

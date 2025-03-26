@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { UintUtils } from '../../../utils/UintUtils.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
