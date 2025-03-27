@@ -1,6 +1,10 @@
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { seedToStorageSlot } from '@solidstate/library/storage_layout';
-import { $Slot, $Slot__factory } from '@solidstate/typechain-types';
+import {
+  $Slot,
+  $Slot__factory,
+  SlotTest__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -217,6 +221,12 @@ describe('Slot', () => {
           ethers.hexlify(ethers.randomBytes(32)),
         );
 
+        // transient slot writes in previous transactions have no effect
+        await instance.$write_Slot_TransientSlot(
+          slot,
+          ethers.hexlify(ethers.randomBytes(32)),
+        );
+
         expect(
           await instance.$read_Slot_TransientSlot.staticCall(slot),
         ).to.equal(data);
@@ -224,7 +234,16 @@ describe('Slot', () => {
     });
 
     describe('#write(uint256,bytes32)', () => {
-      it('writes bytes32 data to arbitrary transient slot');
+      it('writes bytes32 data to arbitrary transient slot', async () => {
+        const testInstance = await new SlotTest__factory(deployer).deploy();
+
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        expect(await testInstance.writeAndRead.staticCall(slot, data)).to.eq(
+          data,
+        );
+      });
     });
   });
 });
