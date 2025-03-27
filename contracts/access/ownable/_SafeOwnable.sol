@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ERC173Storage } from '../../storage/ERC173Storage.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
-import { AddressUtils } from '../../utils/AddressUtils.sol';
-import { UintUtils } from '../../utils/UintUtils.sol';
+import { Address } from '../../utils/Address.sol';
+import { Uint256 } from '../../utils/Uint256.sol';
 import { _IAccessControl } from './_IAccessControl.sol';
 
 /**
@@ -13,9 +13,9 @@ import { _IAccessControl } from './_IAccessControl.sol';
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 abstract contract _AccessControl is _IAccessControl {
-    using AddressUtils for address;
+    using Address for address;
     using EnumerableSet for EnumerableSet.AddressSet;
-    using UintUtils for uint256;
+    using Uint256 for uint256;
 
     modifier onlyRole(bytes32 role) {
         _checkRole(role);

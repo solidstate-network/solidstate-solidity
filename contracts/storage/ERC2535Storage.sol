@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
+
+import { Slot } from '../data/Slot.sol';
 
 /**
  * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
@@ -19,18 +21,22 @@ library ERC2535Storage {
         address fallbackAddress;
     }
 
-    bytes32 internal constant DEFAULT_STORAGE_SLOT =
-        keccak256(
-            abi.encode(
-                uint256(keccak256(bytes('solidstate.layout.ERC2535'))) - 1
-            )
-        ) & ~bytes32(uint256(0xff));
+    Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
+        Slot.StorageSlot.wrap(
+            keccak256(
+                abi.encode(
+                    uint256(keccak256(bytes('solidstate.layout.ERC2535'))) - 1
+                )
+            ) & ~bytes32(uint256(0xff))
+        );
 
     function layout() internal pure returns (Layout storage $) {
         $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(bytes32 slot) internal pure returns (Layout storage $) {
+    function layout(
+        Slot.StorageSlot slot
+    ) internal pure returns (Layout storage $) {
         assembly {
             $.slot := slot
         }

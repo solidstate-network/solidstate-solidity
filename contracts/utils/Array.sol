@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
-library ArrayUtils {
+library Array {
     /**
      * @notice get minimum value in given array
      * @param array array to search
