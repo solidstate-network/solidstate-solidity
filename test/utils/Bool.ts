@@ -28,12 +28,12 @@ describe('Bool', async () => {
         );
       });
 
-      it('sanitizes higher-order bits', async () => {
+      it('sanitizes higher-order bits as true', async () => {
         const testInstance = await new BoolTest__factory(deployer).deploy();
 
         expect(
           await testInstance.sanitizeBytes32Test.staticCall(false),
-        ).to.hexEqual('0x00');
+        ).to.hexEqual('0x01');
         expect(
           await testInstance.sanitizeBytes32Test.staticCall(true),
         ).to.hexEqual('0x01');

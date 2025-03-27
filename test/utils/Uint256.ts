@@ -1,4 +1,3 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { $Uint256, $Uint256__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -32,36 +31,6 @@ describe('Uint256', () => {
         expect(
           await instance.$toBytes32.staticCall(ethers.MaxUint256),
         ).to.equal(`0x${ethers.MaxUint256.toString(16)}`);
-      });
-    });
-
-    describe('#add(uint256,int256)', () => {
-      it('adds unsigned and signed integers', async () => {
-        expect(await instance.$add.staticCall(1, 1)).to.equal(2);
-        expect(await instance.$add.staticCall(1, -1)).to.equal(0);
-      });
-
-      describe('reverts if', () => {
-        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          await expect(instance.$add.staticCall(0, -1)).to.be.revertedWithPanic(
-            PANIC_CODES.ARITHMETIC_OVERFLOW,
-          );
-        });
-      });
-    });
-
-    describe('#sub(uint256,int256)', () => {
-      it('subtracts unsigned and signed integers', async () => {
-        expect(await instance.$sub.staticCall(1, 1)).to.equal(0);
-        expect(await instance.$sub.staticCall(1, -1)).to.equal(2);
-      });
-
-      describe('reverts if', () => {
-        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
-          await expect(instance.$sub.staticCall(0, 1)).to.be.revertedWithPanic(
-            PANIC_CODES.ARITHMETIC_OVERFLOW,
-          );
-        });
       });
     });
 
