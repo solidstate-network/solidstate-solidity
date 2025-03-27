@@ -2,17 +2,29 @@
 
 pragma solidity ^0.8.24;
 
-import { UintUtils } from './UintUtils.sol';
+import { Uint256 } from './Uint256.sol';
 
-library AddressUtils {
-    using UintUtils for uint256;
+library Address {
+    using Uint256 for uint256;
 
-    error AddressUtils__InsufficientBalance();
-    error AddressUtils__NotContract();
-    error AddressUtils__SendValueFailed();
-    error AddressUtils__FailedCall();
-    error AddressUtils__FailedCallWithValue();
-    error AddressUtils__FailedDelegatecall();
+    error Address__InsufficientBalance();
+    error Address__NotContract();
+    error Address__SendValueFailed();
+    error Address__FailedCall();
+    error Address__FailedCallWithValue();
+    error Address__FailedDelegatecall();
+
+    /**
+     * @notice sanitize higher-order bits of address and convert to bytes32
+     * @param account address to convert to bytes32
+     * @return result bytes32 representation of address
+     */
+    function toBytes32(address account) internal pure returns (bytes32 result) {
+        // sanitization is required because address(uint160([uint256 value])) cast does not sanitize
+        assembly {
+            result := and(account, shr(96, not(0)))
+        }
+    }
 
     function toString(address account) internal pure returns (string memory) {
         return uint256(uint160(account)).toHexString(20);
@@ -28,14 +40,14 @@ library AddressUtils {
 
     function sendValue(address payable account, uint256 amount) internal {
         (bool success, ) = account.call{ value: amount }('');
-        if (!success) revert AddressUtils__SendValueFailed();
+        if (!success) revert Address__SendValueFailed();
     }
 
     function functionCall(
         address target,
         bytes memory data
     ) internal returns (bytes memory) {
-        return functionCall(target, data, AddressUtils__FailedCall.selector);
+        return functionCall(target, data, Address__FailedCall.selector);
     }
 
     function functionCall(
@@ -56,7 +68,7 @@ library AddressUtils {
                 target,
                 data,
                 value,
-                AddressUtils__FailedCallWithValue.selector
+                Address__FailedCallWithValue.selector
             );
     }
 
@@ -67,7 +79,7 @@ library AddressUtils {
         bytes4 error
     ) internal returns (bytes memory) {
         if (value > address(this).balance)
-            revert AddressUtils__InsufficientBalance();
+            revert Address__InsufficientBalance();
         return _functionCallWithValue(target, data, value, error);
     }
 
@@ -79,7 +91,7 @@ library AddressUtils {
             functionDelegateCall(
                 target,
                 data,
-                AddressUtils__FailedDelegatecall.selector
+                Address__FailedDelegatecall.selector
             );
     }
 
@@ -175,6 +187,6 @@ library AddressUtils {
 
         // code check is only required if call is successful and without return data
         if (returnData.length == 0 && !isContract(target))
-            revert AddressUtils__NotContract();
+            revert Address__NotContract();
     }
 }

@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import { IERC1155Receiver } from '../../interfaces/IERC1155Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC1155Storage } from '../../storage/ERC1155Storage.sol';
-import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { Address } from '../../utils/Address.sol';
 import { _IMultiToken } from './_IMultiToken.sol';
 
 /**
@@ -13,7 +13,7 @@ import { _IMultiToken } from './_IMultiToken.sol';
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
 abstract contract _MultiToken is _IMultiToken, _Introspectable {
-    using AddressUtils for address;
+    using Address for address;
 
     /**
      * @notice query the balance of given token held by given address

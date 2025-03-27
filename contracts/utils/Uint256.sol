@@ -6,18 +6,19 @@ pragma solidity ^0.8.24;
  * @title utility functions for uint256 operations
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-library UintUtils {
-    error UintUtils__InsufficientPadding();
-    error UintUtils__InvalidBase();
+library Uint256 {
+    error Uint256__InsufficientPadding();
+    error Uint256__InvalidBase();
 
     bytes16 private constant HEX_SYMBOLS = '0123456789abcdef';
 
-    function add(uint256 a, int256 b) internal pure returns (uint256) {
-        return b < 0 ? sub(a, -b) : a + uint256(b);
-    }
-
-    function sub(uint256 a, int256 b) internal pure returns (uint256) {
-        return b < 0 ? add(a, -b) : a - uint256(b);
+    /**
+     * @notice convert uint256 to bytes32
+     * @param value address to convert to bytes32
+     * @return result bytes32 representation of uint256
+     */
+    function toBytes32(uint256 value) internal pure returns (bytes32 result) {
+        result = bytes32(value);
     }
 
     /**
@@ -34,7 +35,7 @@ library UintUtils {
         // this check is repeated in the internal call to #toString(uint256,uint256,uint256)
         // but is still needed here to avoid zero division (radix = 0) or infinite loop (radix = 1)
         if (radix < 2) {
-            revert UintUtils__InvalidBase();
+            revert Uint256__InvalidBase();
         }
 
         uint256 length;
@@ -64,7 +65,7 @@ library UintUtils {
         uint256 length
     ) internal pure returns (string memory output) {
         if (radix < 2 || radix > 36) {
-            revert UintUtils__InvalidBase();
+            revert Uint256__InvalidBase();
         }
 
         bytes memory buffer = new bytes(length);
@@ -91,7 +92,7 @@ library UintUtils {
             value /= radix;
         }
 
-        if (value != 0) revert UintUtils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -128,7 +129,9 @@ library UintUtils {
         uint256 length
     ) internal pure returns (string memory output) {
         // add two to length for the leading "0b"
-        length += 2;
+        unchecked {
+            length += 2;
+        }
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';
@@ -139,11 +142,11 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 1];
+            buffer[length] = (value & 1 == 0) ? bytes1(0x30) : bytes1(0x31);
             value >>= 1;
         }
 
-        if (value != 0) revert UintUtils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -180,7 +183,9 @@ library UintUtils {
         uint256 length
     ) internal pure returns (string memory output) {
         // add two to length for the leading "0o"
-        length += 2;
+        unchecked {
+            length += 2;
+        }
 
         bytes memory buffer = new bytes(length);
         buffer[0] = '0';
@@ -191,11 +196,13 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 7];
+            // for numeral characters, shift 48 places through ASCII character set
+            // 48 can be added using bitwise-or because its binary is 00110000
+            buffer[length] = bytes1(uint8(((value & 7) | 48)));
             value >>= 3;
         }
 
-        if (value != 0) revert UintUtils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }
@@ -271,11 +278,11 @@ library UintUtils {
                 length--;
             }
 
-            buffer[length] = HEX_SYMBOLS[value & 15];
+            buffer[length] = bytes1(HEX_SYMBOLS << ((value & 15) << 3));
             value >>= 4;
         }
 
-        if (value != 0) revert UintUtils__InsufficientPadding();
+        if (value != 0) revert Uint256__InsufficientPadding();
 
         output = string(buffer);
     }

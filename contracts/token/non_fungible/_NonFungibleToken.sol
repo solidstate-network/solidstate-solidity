@@ -7,14 +7,14 @@ import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
 import { ERC721Storage } from '../../storage/ERC721Storage.sol';
-import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { Address } from '../../utils/Address.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 /**
  * @title Base NonFungibleToken internal functions
  */
 abstract contract _NonFungibleToken is _INonFungibleToken, _Introspectable {
-    using AddressUtils for address;
+    using Address for address;
     using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.UintSet;
 
