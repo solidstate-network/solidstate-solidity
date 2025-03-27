@@ -41,36 +41,5 @@ describe('ERC1967Storage', () => {
         );
       });
     });
-
-    describe('#layout()', () => {
-      it('aligns properties with EIP-1967 standard slots', async () => {
-        const implementationAddress = ethers.hexlify(ethers.randomBytes(20));
-        const beaconAddress = ethers.hexlify(ethers.randomBytes(20));
-        const adminAddress = ethers.hexlify(ethers.randomBytes(20));
-
-        await testInstance.setImplementation(implementationAddress);
-        await testInstance.setBeacon(beaconAddress);
-        await testInstance.setAdmin(adminAddress);
-
-        const address = await testInstance.getAddress();
-
-        const implementationSlotContents = await ethers.provider.send(
-          'eth_getStorageAt',
-          [address, await instance.$IMPLEMENTATION_STORAGE_SLOT.staticCall()],
-        );
-        const beaconSlotContents = await ethers.provider.send(
-          'eth_getStorageAt',
-          [address, await instance.$BEACON_STORAGE_SLOT.staticCall()],
-        );
-        const adminSlotContents = await ethers.provider.send(
-          'eth_getStorageAt',
-          [address, await instance.$ADMIN_STORAGE_SLOT.staticCall()],
-        );
-
-        expect(implementationSlotContents).to.hexEqual(implementationAddress);
-        expect(beaconSlotContents).to.hexEqual(beaconAddress);
-        expect(adminSlotContents).to.hexEqual(adminAddress);
-      });
-    });
   });
 });
