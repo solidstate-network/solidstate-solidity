@@ -33,7 +33,7 @@ library <%- libraryName %> {
      */
     function push<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
-            self._data |= <%- type.castTo %> << self._size;
+            self._data |= (<%- type.castTo %> & (~bytes32(0) >> <%- 256 - type.size %>)) << self._size;
             self._size += <%- type.size %>;
         }
     }
@@ -92,20 +92,24 @@ contract <%- libraryName %>Test {
     using <%- libraryName %> for <%- libraryName %>.<%- structName %>;
 
     <%_ for (const type of types) { _%>
-    function push<%- type.nameUpcase %>(<%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory output) {
-        output.push<%- type.nameUpcase %>(element);
+    function push<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+        self.push<%- type.nameUpcase %>(element);
+        return self;
     }
 
-    function pop<%- type.nameUpcase %>() external pure returns (<%- libraryName %>.<%- structName %> memory output, <%- type.name %> element) {
-        element = output.pop<%- type.nameUpcase %>();
+    function pop<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self) external pure returns (<%- libraryName %>.<%- structName %> memory, <%- type.name %> element) {
+        element = self.pop<%- type.nameUpcase %>();
+        return (self, element);
     }
 
-    function shift<%- type.nameUpcase %>() external pure returns (<%- libraryName %>.<%- structName %> memory output, <%- type.name %> element) {
-        element = output.shift<%- type.nameUpcase %>();
+    function shift<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self) external pure returns (<%- libraryName %>.<%- structName %> memory, <%- type.name %> element) {
+        element = self.shift<%- type.nameUpcase %>();
+        return (self, element);
     }
 
-    function unshift<%- type.nameUpcase %>(<%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory output) {
-        output.unshift<%- type.nameUpcase %>(element);
+    function unshift<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+        self.unshift<%- type.nameUpcase %>(element);
+        return self;
     }
     <%_ } _%>
 }
@@ -126,8 +130,42 @@ describe('<%- libraryName %>', () => {
 
   <%_ for (const type of types) { _%>
   describe('#push<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it.skip('inserts <%- type.name %> at end of bytes', async () => {
-      expect(await instance.push<%- type.nameUpcase %>)
+    it('inserts <%- type.name %> at end of bytes', async () => {
+      const size = <%- type.size / 8 %>;
+      <%_ if (type.name === 'bool') { _%>
+      const data = '0x01';
+      const input = true;
+      <%_ } else if (type.name.startsWith('int')) { _%>
+      const data = ethers.hexlify(ethers.randomBytes(size));
+      const negative = BigInt(data) >> BigInt(size * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(size * 8) - BigInt(data))
+      } else {
+        input = BigInt(data);
+      }
+      <%_ } else { _%>
+      const data = ethers.hexlify(ethers.randomBytes(size));
+      const input = data;
+      <%_ } _%>
+
+      for (let i = 0; i <= 32 - size; i++) {
+        const state = {
+          _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+          _size: i * 8,
+        }
+
+        const expectedData = ethers.zeroPadValue(ethers.concat([data, ethers.dataSlice(state._data, 32 - state._size / 8, 32)]), 32);
+        const expectedLength = state._size + size * 8;
+
+        const output = await instance.push<%- type.nameUpcase %>(state, input);
+
+        expect(
+          output
+        ).to.deep.equal(
+          [expectedData, expectedLength]
+        );
+      }
     });
   });
   <%_ } _%>
