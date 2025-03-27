@@ -33,7 +33,7 @@ library <%- libraryName %> {
      */
     function push<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
-            self._data |= (<%- type.castTo %> & (~bytes32(0) >> <%- 256 - type.size %>)) << self._size;
+            self._data |= <%- type.castTo %> << self._size;
             self._size += <%- type.size %>;
         }
     }
@@ -71,7 +71,7 @@ library <%- libraryName %> {
      */
     function unshift<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
-            self._data = (self._data << <%- type.size %>) | (<%- type.castTo %> & (~bytes32(0) >> <%- 256 - type.size %>));
+            self._data = (self._data << <%- type.size %>) | <%- type.castTo %>;
             self._size += <%- type.size %>;
         }
     }
@@ -181,7 +181,7 @@ describe('<%- libraryName %>', () => {
   <%_ for (const type of types) { _%>
   describe('#shift<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
     it.skip('removes <%- type.name %> from beginning of bytes', async () => {
-      expect(!await instance.shift<%- type.nameUpcase %>)
+      expect(await instance.shift<%- type.nameUpcase %>)
     });
   });
   <%_ } _%>
@@ -262,7 +262,7 @@ task('generate-bytes32-builder', `Generate ${libraryName}`).setAction(
           castTo = `bytes32(element) >> ${256 - size}`;
           castFrom = '';
         } else if (name.startsWith('int')) {
-          castTo = 'Int256.toBytes32(element)';
+          castTo = `(Int256.toBytes32(element) & (~bytes32(0) >> ${256 - size}))`;
           castFrom = 'Bytes32.toInt256';
         } else if (name.startsWith('uint')) {
           castTo = 'Uint256.toBytes32(element)';
