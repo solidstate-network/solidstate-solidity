@@ -2,10 +2,17 @@
 
 pragma solidity ^0.8.24;
 
+import { Slot } from '../data/Slot.sol';
+import { Address } from '../utils/Address.sol';
+import { Bytes32 } from '../utils/Bytes32.sol';
 import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy {
+    using Address for address;
+    using Bytes32 for bytes32;
+    using Slot for Slot.StorageSlot;
+
     modifier onlyProxyAdmin() {
         if (msg.sender != _getProxyAdmin()) {
             revert Proxy__SenderIsNotAdmin();
@@ -18,9 +25,7 @@ abstract contract _Proxy is _IProxy {
      * @return admin address of admin account
      */
     function _getProxyAdmin() internal view virtual returns (address admin) {
-        admin = ERC1967Storage
-            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
-            .admin;
+        admin = (ERC1967Storage.ADMIN_STORAGE_SLOT).read().toAddress();
     }
 
     /**
@@ -34,8 +39,9 @@ abstract contract _Proxy is _IProxy {
         returns (address implementation)
     {
         implementation = ERC1967Storage
-            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
-            .implementation;
+            .IMPLEMENTATION_STORAGE_SLOT
+            .read()
+            .toAddress();
     }
 
     /**
@@ -43,13 +49,12 @@ abstract contract _Proxy is _IProxy {
      * @param admin address of admin account
      */
     function _setProxyAdmin(address admin) internal virtual {
-        ERC1967Storage.Layout storage $ = ERC1967Storage.layout(
-            ERC1967Storage.DEFAULT_STORAGE_SLOT
+        emit AdminChanged(
+            ERC1967Storage.ADMIN_STORAGE_SLOT.read().toAddress(),
+            admin
         );
 
-        emit AdminChanged($.admin, admin);
-
-        $.admin = admin;
+        ERC1967Storage.ADMIN_STORAGE_SLOT.write(admin.toBytes32());
     }
 
     /**
@@ -57,9 +62,9 @@ abstract contract _Proxy is _IProxy {
      * @param implementation address of implementation contract
      */
     function _setImplementation(address implementation) internal virtual {
-        ERC1967Storage
-            .layout(ERC1967Storage.DEFAULT_STORAGE_SLOT)
-            .implementation = implementation;
+        ERC1967Storage.IMPLEMENTATION_STORAGE_SLOT.write(
+            implementation.toBytes32()
+        );
 
         emit Upgraded(implementation);
     }
