@@ -71,7 +71,7 @@ library <%- libraryName %> {
      */
     function unshift<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
-            self._data = (self._data << <%- type.size %>) | <%- type.castTo %>;
+            self._data = (self._data << <%- type.size %>) | (<%- type.castTo %> & (~bytes32(0) >> <%- 256 - type.size %>));
             self._size += <%- type.size %>;
         }
     }
@@ -181,15 +181,49 @@ describe('<%- libraryName %>', () => {
   <%_ for (const type of types) { _%>
   describe('#shift<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
     it.skip('removes <%- type.name %> from beginning of bytes', async () => {
-      expect(await instance.shift<%- type.nameUpcase %>)
+      expect(!await instance.shift<%- type.nameUpcase %>)
     });
   });
   <%_ } _%>
 
   <%_ for (const type of types) { _%>
   describe('#unshift<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it.skip('inserts <%- type.name %> at beginning of bytes', async () => {
-      expect(await instance.unshift<%- type.nameUpcase %>);
+    it('inserts <%- type.name %> at beginning of bytes', async () => {
+      const size = <%- type.size / 8 %>;
+      <%_ if (type.name === 'bool') { _%>
+      const data = '0x01';
+      const input = true;
+      <%_ } else if (type.name.startsWith('int')) { _%>
+      const data = ethers.hexlify(ethers.randomBytes(size));
+      const negative = BigInt(data) >> BigInt(size * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(size * 8) - BigInt(data))
+      } else {
+        input = BigInt(data);
+      }
+      <%_ } else { _%>
+      const data = ethers.hexlify(ethers.randomBytes(size));
+      const input = data;
+      <%_ } _%>
+
+      for (let i = 0; i <= 32 - size; i++) {
+        const state = {
+          _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+          _size: i * 8,
+        }
+
+        const expectedData = ethers.zeroPadValue(ethers.concat([ethers.dataSlice(state._data, 32 - state._size / 8, 32), data]), 32);
+        const expectedLength = state._size + size * 8;
+
+        const output = await instance.unshift<%- type.nameUpcase %>(state, input);
+
+        expect(
+          output
+        ).to.deep.equal(
+          [expectedData, expectedLength]
+        );
+      }
     });
   });
   <%_ } _%>
