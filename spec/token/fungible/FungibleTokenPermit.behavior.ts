@@ -32,11 +32,15 @@ export function describeBehaviorOfFungibleTokenPermit(
     });
 
     describe('#nonces(address)', () => {
-      it('todo');
+      it('returns current nonce for given account', async () => {
+        expect(
+          await instance.nonces.staticCall(await holder.getAddress()),
+        ).to.eq(0n);
+      });
     });
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', () => {
-      it('should increase allowance using permit', async () => {
+      it('increases allowance using permit', async () => {
         const timestamp = BigInt(await time.latest());
 
         const amount = 2n;
@@ -67,6 +71,36 @@ export function describeBehaviorOfFungibleTokenPermit(
         expect(await args.allowance(holder.address, spender.address)).to.eq(
           amount,
         );
+      });
+
+      it('increments nonce', async () => {
+        const nonce = await instance.nonces.staticCall(
+          await holder.getAddress(),
+        );
+
+        const permit = await signERC2612Permit(
+          instance,
+          holder,
+          spender,
+          0n,
+          ethers.MaxUint256,
+        );
+
+        await instance
+          .connect(thirdParty)
+          .permit(
+            holder.address,
+            spender.address,
+            0n,
+            ethers.MaxUint256,
+            permit.v,
+            permit.r,
+            permit.s,
+          );
+
+        expect(
+          await instance.nonces.staticCall(await holder.getAddress()),
+        ).to.eq(nonce + 1n);
       });
 
       describe('reverts if', () => {

@@ -1,4 +1,6 @@
+import './tasks/generate_eip_712';
 import './tasks/rename_entity';
+import './tasks/scaffold_contract';
 import '@nomicfoundation/hardhat-chai-matchers';
 import '@nomicfoundation/hardhat-ethers';
 import '@solidstate/hardhat-4byte-uploader';
@@ -14,8 +16,9 @@ import 'solidity-coverage';
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: '0.8.28',
+    version: '0.8.29',
     settings: {
+      evmVersion: 'cancun',
       optimizer: {
         enabled: true,
         runs: 200,

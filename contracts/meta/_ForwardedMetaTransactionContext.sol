@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 import { ERC2771Storage } from '../storage/ERC2771Storage.sol';
-import { AddressUtils } from '../utils/AddressUtils.sol';
+import { Address } from '../utils/Address.sol';
 import { _Context } from './_Context.sol';
 import { _IForwardedMetaTransactionContext } from './_IForwardedMetaTransactionContext.sol';
 
@@ -11,7 +11,7 @@ abstract contract _ForwardedMetaTransactionContext is
     _IForwardedMetaTransactionContext,
     _Context
 {
-    using AddressUtils for address;
+    using Address for address;
 
     /**
      * @inheritdoc _Context

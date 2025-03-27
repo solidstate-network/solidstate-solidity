@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { IERC1271 } from '../../interfaces/IERC1271.sol';
 import { _IContractSigner } from './_IContractSigner.sol';

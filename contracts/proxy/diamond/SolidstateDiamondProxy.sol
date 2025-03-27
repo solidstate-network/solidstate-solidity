@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
 import { _Ownable } from '../../access/ownable/_Ownable.sol';
@@ -98,8 +98,6 @@ abstract contract SolidstateDiamondProxy is
 
         _setOwner(_msgSender());
     }
-
-    receive() external payable {}
 
     function _transferOwnership(
         address account

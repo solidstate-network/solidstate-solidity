@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
-import { ArrayUtils } from '../utils/ArrayUtils.sol';
+import { Array } from '../utils/Array.sol';
 import { Math } from '../utils/Math.sol';
 
 /**
@@ -10,7 +10,7 @@ import { Math } from '../utils/Math.sol';
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 library EnumerableSet {
-    using ArrayUtils for bytes32[];
+    using Array for bytes32[];
 
     error EnumerableSet__IndexOutOfBounds();
 
