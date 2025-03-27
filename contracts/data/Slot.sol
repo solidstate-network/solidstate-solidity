@@ -54,6 +54,66 @@ library Slot {
         return TransientSlot.wrap(_map(TransientSlot.unwrap(slot), key));
     }
 
+    function next(StorageSlot slot) internal pure returns (StorageSlot) {
+        return next(slot, 1);
+    }
+
+    function next(TransientSlot slot) internal pure returns (TransientSlot) {
+        return next(slot, 1);
+    }
+
+    function next(
+        StorageSlot slot,
+        uint256 amount
+    ) internal pure returns (StorageSlot) {
+        assembly {
+            slot := add(slot, amount)
+        }
+
+        return slot;
+    }
+
+    function next(
+        TransientSlot slot,
+        uint256 amount
+    ) internal pure returns (TransientSlot) {
+        assembly {
+            slot := add(slot, amount)
+        }
+
+        return slot;
+    }
+
+    function prev(StorageSlot slot) internal pure returns (StorageSlot) {
+        return prev(slot, 1);
+    }
+
+    function prev(TransientSlot slot) internal pure returns (TransientSlot) {
+        return prev(slot, 1);
+    }
+
+    function prev(
+        StorageSlot slot,
+        uint256 amount
+    ) internal pure returns (StorageSlot) {
+        assembly {
+            slot := sub(slot, amount)
+        }
+
+        return slot;
+    }
+
+    function prev(
+        TransientSlot slot,
+        uint256 amount
+    ) internal pure returns (TransientSlot) {
+        assembly {
+            slot := sub(slot, amount)
+        }
+
+        return slot;
+    }
+
     /**
      * @notice read contents of arbitrary storage slot
      * @param slot storage slot to query

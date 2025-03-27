@@ -13,34 +13,218 @@ describe('Slot', () => {
     instance = await new $Slot__factory(deployer).deploy();
   });
 
-  // TODO: test transient functions
-  // TODO: how to disambiguate internal types in test headers?
+  describe('StorageSlot', () => {
+    describe('#index(uint256)', () => {
+      it('returns the slot of an index of an array declared at the current slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
 
-  describe('#read(uint256)', () => {
-    it('reads bytes32 data from arbitrary storage slot', async () => {
-      const slot = ethers.hexlify(ethers.randomBytes(32));
-      const data = ethers.ZeroHash;
+        const indexZero = await instance.$index_Slot_StorageSlot.staticCall(
+          slot,
+          0n,
+        );
 
-      expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
-        data,
-      );
+        expect(indexZero).to.eq(ethers.keccak256(slot));
+
+        for (let i = 1n; i < 3n; i++) {
+          expect(
+            await instance.$index_Slot_StorageSlot.staticCall(slot, i),
+          ).to.eq(BigInt(indexZero) + i);
+        }
+      });
+    });
+
+    describe('#map(uint256)', () => {
+      it('returns the slot of a value of a mapping declared at the current slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+        const key = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance.$map_Slot_StorageSlot.staticCall(slot, key),
+        ).to.eq(ethers.keccak256(ethers.concat([key, slot])));
+      });
+    });
+
+    describe('#next()', () => {
+      it('returns next slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance['$next_Slot_StorageSlot(bytes32)'].staticCall(slot),
+        ).to.eq(BigInt(slot) + 1n);
+      });
+    });
+
+    describe('#next(uint256)', () => {
+      it('returns slot incremented by input amount', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        for (let i = 0n; i < 3n; i++) {
+          expect(
+            await instance[
+              '$next_Slot_StorageSlot(bytes32,uint256)'
+            ].staticCall(slot, i),
+          ).to.eq(BigInt(slot) + i);
+        }
+      });
+    });
+
+    describe('#prev()', () => {
+      it('returns previous slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance['$prev_Slot_StorageSlot(bytes32)'].staticCall(slot),
+        ).to.eq(BigInt(slot) - 1n);
+      });
+    });
+
+    describe('#prev(uint256)', () => {
+      it('returns slot decremented by input amount', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        for (let i = 0n; i < 3n; i++) {
+          expect(
+            await instance[
+              '$prev_Slot_StorageSlot(bytes32,uint256)'
+            ].staticCall(slot, i),
+          ).to.eq(BigInt(slot) - i);
+        }
+      });
+    });
+
+    describe('#read(uint256)', () => {
+      it('reads bytes32 data from arbitrary storage slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+        const data = ethers.ZeroHash;
+
+        // transient slot writes have no effect
+        await instance.$write_Slot_TransientSlot(
+          slot,
+          ethers.hexlify(ethers.randomBytes(32)),
+        );
+
+        expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
+          data,
+        );
+      });
+    });
+
+    describe('#write(uint256,bytes32)', () => {
+      it('writes bytes32 data to arbitrary storage slot', async () => {
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
+          ethers.ZeroHash,
+        );
+
+        await instance.$write_Slot_StorageSlot(slot, data);
+
+        expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
+          data,
+        );
+      });
     });
   });
 
-  describe('#write(uint256,bytes32)', () => {
-    it('writes bytes32 data to arbitrary storage slot', async () => {
-      const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
-      const data = ethers.zeroPadValue(deployer.address, 32);
+  describe('TransientSlot', () => {
+    describe('#index(uint256)', () => {
+      it('returns the slot of an index of an array declared at the current slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
 
-      expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
-        ethers.ZeroHash,
-      );
+        const indexZero = await instance.$index_Slot_TransientSlot.staticCall(
+          slot,
+          0n,
+        );
 
-      await instance.$write_Slot_StorageSlot(slot, data);
+        expect(indexZero).to.eq(ethers.keccak256(slot));
 
-      expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
-        data,
-      );
+        for (let i = 1n; i < 3n; i++) {
+          expect(
+            await instance.$index_Slot_TransientSlot.staticCall(slot, i),
+          ).to.eq(BigInt(indexZero) + i);
+        }
+      });
+    });
+
+    describe('#map(uint256)', () => {
+      it('returns the slot of a value of a mapping declared at the current slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+        const key = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance.$map_Slot_TransientSlot.staticCall(slot, key),
+        ).to.eq(ethers.keccak256(ethers.concat([key, slot])));
+      });
+    });
+
+    describe('#next()', () => {
+      it('returns next slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance['$next_Slot_TransientSlot(bytes32)'].staticCall(slot),
+        ).to.eq(BigInt(slot) + 1n);
+      });
+    });
+
+    describe('#next(uint256)', () => {
+      it('returns slot incremented by input amount', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        for (let i = 0n; i < 3n; i++) {
+          expect(
+            await instance[
+              '$next_Slot_TransientSlot(bytes32,uint256)'
+            ].staticCall(slot, i),
+          ).to.eq(BigInt(slot) + i);
+        }
+      });
+    });
+
+    describe('#prev()', () => {
+      it('returns previous slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(
+          await instance['$prev_Slot_TransientSlot(bytes32)'].staticCall(slot),
+        ).to.eq(BigInt(slot) - 1n);
+      });
+    });
+
+    describe('#prev(uint256)', () => {
+      it('returns slot decremented by input amount', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+
+        for (let i = 0n; i < 3n; i++) {
+          expect(
+            await instance[
+              '$prev_Slot_TransientSlot(bytes32,uint256)'
+            ].staticCall(slot, i),
+          ).to.eq(BigInt(slot) - i);
+        }
+      });
+    });
+
+    describe('#read(uint256)', () => {
+      it('reads bytes32 data from arbitrary transient slot', async () => {
+        const slot = ethers.hexlify(ethers.randomBytes(32));
+        const data = ethers.ZeroHash;
+
+        // storage slot writes have no effect
+        await instance.$write_Slot_StorageSlot(
+          slot,
+          ethers.hexlify(ethers.randomBytes(32)),
+        );
+
+        expect(
+          await instance.$read_Slot_TransientSlot.staticCall(slot),
+        ).to.equal(data);
+      });
+    });
+
+    describe('#write(uint256,bytes32)', () => {
+      it('writes bytes32 data to arbitrary transient slot');
     });
   });
 });
