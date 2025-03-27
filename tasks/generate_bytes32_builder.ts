@@ -167,7 +167,7 @@ describe('<%- libraryName %>', () => {
         const expectedLength = state._size + sizeBytes * 8;
 
         expect(
-          await instance.push<%- type.nameUpcase %>(state, input)
+          await instance.push<%- type.nameUpcase %>.staticCall(state, input)
         ).to.deep.equal(
           [expectedData, expectedLength]
         );
@@ -178,7 +178,7 @@ describe('<%- libraryName %>', () => {
 
   <%_ for (const type of types) { _%>
   describe('#pop<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it('removes <%- type.name %> from end of bytes and returns it', async () => {
+    it('removes <%- type.sizeBytes %>-byte segment from end of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -191,7 +191,7 @@ describe('<%- libraryName %>', () => {
         const expectedData = ethers.zeroPadValue(ethers.dataSlice(state._data, 32 - expectedLength / 8, 32), 32)
         const expectedValue = ethers.dataSlice(state._data, 32 - expectedLength / 8 - sizeBytes, 32 - expectedLength / 8);
 
-        const result = await instance.pop<%- type.nameUpcase %>(state);
+        const result = await instance.pop<%- type.nameUpcase %>.staticCall(state);
 
         expect(
           result[0]
@@ -223,7 +223,7 @@ describe('<%- libraryName %>', () => {
 
   <%_ for (const type of types) { _%>
   describe('#shift<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it('removes <%- type.name %> from beginning of bytes and returns it', async () => {
+    it('removes <%- type.sizeBytes %>-byte segment from beginning of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -236,7 +236,7 @@ describe('<%- libraryName %>', () => {
         const expectedData = ethers.zeroPadValue(ethers.dataSlice(state._data, 0, 32 - sizeBytes), 32)
         const expectedValue = ethers.dataSlice(state._data, 32 - sizeBytes, 32);
 
-        const result = await instance.shift<%- type.nameUpcase %>(state);
+        const result = await instance.shift<%- type.nameUpcase %>.staticCall(state);
 
         expect(
           result[0]
@@ -297,7 +297,7 @@ describe('<%- libraryName %>', () => {
         const expectedLength = state._size + sizeBytes * 8;
 
         expect(
-          await instance.unshift<%- type.nameUpcase %>(state, input)
+          await instance.unshift<%- type.nameUpcase %>.staticCall(state, input)
         ).to.deep.equal(
           [expectedData, expectedLength]
         );
