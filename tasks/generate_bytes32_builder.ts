@@ -25,6 +25,10 @@ library <%- libraryName %> {
         uint256 _size;
     }
 
+    <%_ for (let i = 1; i <= 32; i++ ) { _%>
+    bytes32 private constant MASK_<%- i.toString().padStart(2, '0') %> = 0x<%- '00'.repeat(32 - i) + 'ff'.repeat(i) %>;
+    <%_ } _%>
+
     <%_ for (const type of types) { _%>
     /**
      * @notice insert <%- type.name %> value to <%- type.size / 8 %>-byte position at end of bytes
@@ -46,8 +50,9 @@ library <%- libraryName %> {
     function pop<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
             self._size -= <%- type.size %>;
-            element = <%- type.name %>(<%= type.castFrom %>(self._data & (bytes32(hex'<%- 'ff'.repeat(type.size / 8) %>') << self._size)));
-            self._data &= ~(bytes32(0x<%- '00'.repeat((256 - type.size) / 8) + 'ff'.repeat(type.size / 8) %>) << self._size);
+            bytes32 mask = MASK_<%- (type.size / 8).toString().padStart(2, '0') %>;
+            element = <%- type.name %>(<%= type.castFrom %>((self._data >> self._size) & mask));
+            self._data &= ~(mask << self._size);
         }
     }
 
@@ -58,7 +63,8 @@ library <%- libraryName %> {
      */
     function shift<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
-            element = <%- type.name %>(<%- type.castFrom %>(self._data & bytes32(0x<%- '00'.repeat((256 - type.size) / 8) + 'ff'.repeat(type.size / 8) %>)));
+            bytes32 mask = MASK_<%- (type.size / 8).toString().padStart(2, '0') %>;
+            element = <%- type.name %>(<%- type.castFrom %>(self._data & mask));
             self._data >>= <%- type.size %>;
             self._size -= <%- type.size %>;
         }
