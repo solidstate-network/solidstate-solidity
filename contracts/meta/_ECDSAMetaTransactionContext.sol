@@ -6,6 +6,7 @@ import { ECDSA } from '../cryptography/ECDSA.sol';
 import { EIP712 } from '../cryptography/EIP712.sol';
 import { Slot } from '../data/Slot.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
+import { Bytes32Builder } from '../data/Bytes32Builder.sol';
 import { _Context } from './_Context.sol';
 import { _IECDSAMetaTransactionContext } from './_IECDSAMetaTransactionContext.sol';
 
@@ -14,6 +15,7 @@ abstract contract _ECDSAMetaTransactionContext is
     _Context
 {
     using Bytes32 for bytes32;
+    using Bytes32Builder for Bytes32Builder.Builder;
     using ECDSA for bytes32;
     using Slot for Slot.TransientSlot;
 
@@ -71,7 +73,7 @@ abstract contract _ECDSAMetaTransactionContext is
             // check transient storage to see if sender has been derived already
 
             // toAddress function strips the packed msgDataIndex data and returns a clean address
-            msgSender = TRANSIENT_SLOT.read().toAddress();
+            msgSender = TRANSIENT_SLOT.read().toBuilder().shiftAddress();
 
             if (msgSender == address(0)) {
                 // no sender found in transient storage, so attempt to derive it from signature
@@ -106,7 +108,7 @@ abstract contract _ECDSAMetaTransactionContext is
             uint256 split;
 
             // unpack the msgDataIndex which is stored alongside msgSender
-            split = (TRANSIENT_SLOT.read() >> 160).toUint256();
+            split = TRANSIENT_SLOT.read().toBuilder().popUint96();
 
             if (split == 0) {
                 // no msgData split index found in transient storage, so attempt to derive it from signature
@@ -175,15 +177,14 @@ abstract contract _ECDSAMetaTransactionContext is
             }
         }
 
-        bytes32 data;
-
-        assembly {
-            // pack msgDataIndex into the 12 bytes available alongside msgSender
-            data := and(msgSender, shl(160, msgDataIndex))
-        }
-
         // it is necessary to store metadata in transient storage because
         // subsequent derivation will fail due to nonce invalidation
-        TRANSIENT_SLOT.write(data);
+
+        Bytes32Builder.Builder memory builder;
+
+        builder.pushAddress(msgSender);
+        builder.pushUint96(uint96(msgDataIndex));
+
+        TRANSIENT_SLOT.write(builder._data);
     }
 }
