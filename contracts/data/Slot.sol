@@ -54,14 +54,30 @@ library Slot {
         return TransientSlot.wrap(_map(TransientSlot.unwrap(slot), key));
     }
 
+    /**
+     * @notice return the next storage slot
+     * @param slot current slot
+     * @return next slot
+     */
     function next(StorageSlot slot) internal pure returns (StorageSlot) {
         return next(slot, 1);
     }
 
+    /**
+     * @notice return the next transient slot
+     * @param slot current slot
+     * @return next slot
+     */
     function next(TransientSlot slot) internal pure returns (TransientSlot) {
         return next(slot, 1);
     }
 
+    /**
+     * @notice return the nth next storage slot
+     * @param slot current slot
+     * @param amount number of slots to shift
+     * @return nth next slot
+     */
     function next(
         StorageSlot slot,
         uint256 amount
@@ -73,6 +89,12 @@ library Slot {
         return slot;
     }
 
+    /**
+     * @notice return the nth next transient slot
+     * @param slot current slot
+     * @param amount number of slots to shift
+     * @return nth next slot
+     */
     function next(
         TransientSlot slot,
         uint256 amount
@@ -84,14 +106,30 @@ library Slot {
         return slot;
     }
 
+    /**
+     * @notice return the previous storage slot
+     * @param slot current slot
+     * @return previous slot
+     */
     function prev(StorageSlot slot) internal pure returns (StorageSlot) {
         return prev(slot, 1);
     }
 
+    /**
+     * @notice return the previous transient slot
+     * @param slot current slot
+     * @return previous slot
+     */
     function prev(TransientSlot slot) internal pure returns (TransientSlot) {
         return prev(slot, 1);
     }
 
+    /**
+     * @notice return the nth previous storage slot
+     * @param slot current slot
+     * @param amount number of slots to shift
+     * @return nth previous slot
+     */
     function prev(
         StorageSlot slot,
         uint256 amount
@@ -103,6 +141,12 @@ library Slot {
         return slot;
     }
 
+    /**
+     * @notice return the nth previous transient slot
+     * @param slot current slot
+     * @param amount number of slots to shift
+     * @return nth previous slot
+     */
     function prev(
         TransientSlot slot,
         uint256 amount
