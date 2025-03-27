@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ITransparentProxy } from './ITransparentProxy.sol';
 import { _ITransparentProxyWithAdminFunctions } from './_ITransparentProxyWithAdminFunctions.sol';

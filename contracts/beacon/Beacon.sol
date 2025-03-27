@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { Ownable } from '../access/ownable/Ownable.sol';
 import { IERC1967Beacon } from '../interfaces/IERC1967Beacon.sol';

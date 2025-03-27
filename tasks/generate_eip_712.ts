@@ -7,7 +7,7 @@ const name = 'EIP712';
 const filepath = 'cryptography';
 
 const TEMPLATE_SOL = `
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 /**
  * @title Procedurally generated EIP-712 typed structured data hashing and signing library
