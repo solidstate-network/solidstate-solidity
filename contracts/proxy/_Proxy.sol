@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ProxyStorage } from '../storage/ProxyStorage.sol';
 import { _IProxy } from './_IProxy.sol';
@@ -67,5 +67,12 @@ abstract contract _Proxy is _IProxy {
         }
 
         revert Proxy__ImplementationIsNotContract();
+    }
+
+    /**
+     * @notice received ether is forwarded to the fallback function
+     */
+    function _receive() internal virtual {
+        _fallback();
     }
 }

@@ -1,16 +1,16 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
-import { $ArrayUtils, $ArrayUtils__factory } from '@solidstate/typechain-types';
+import { $Array, $Array__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ArrayUtils', async () => {
-  let instance: $ArrayUtils;
+describe('Array', async () => {
+  let instance: $Array;
   let deployer: SignerWithAddress;
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
-    instance = await new $ArrayUtils__factory(deployer).deploy();
+    instance = await new $Array__factory(deployer).deploy();
   });
 
   describe('__internal', () => {

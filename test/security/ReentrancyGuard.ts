@@ -1,4 +1,3 @@
-import { describeBehaviorOfReentrancyGuard } from '@solidstate/spec';
 import {
   $ReentrancyGuardTest,
   $ReentrancyGuardTest__factory,
@@ -13,8 +12,6 @@ describe('ReentrancyGuard', () => {
     const [deployer] = await ethers.getSigners();
     instance = await new $ReentrancyGuardTest__factory(deployer).deploy();
   });
-
-  describeBehaviorOfReentrancyGuard(async () => instance, {});
 
   describe('__internal', () => {
     describe('nonReentrant() modifier', () => {
