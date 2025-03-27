@@ -257,7 +257,7 @@ task('generate-bytes32-builder', `Generate ${libraryName}`).setAction(
     const types: Type[] = typesBySize.reduce((acc, typesOfSize, i) => {
       return typesOfSize.reduce((acc, type) => {
         const name = type;
-        const sizeBytes = (i = 1);
+        const sizeBytes = i + 1;
         const sizeBits = sizeBytes * 8;
         let castTo;
         let castFrom;
