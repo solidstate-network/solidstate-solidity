@@ -17,27 +17,6 @@ library ERC1967Storage {
         address admin;
     }
 
-    /**
-     * @custom:storage-location erc1967:eip1967.proxy.implementation
-     */
-    struct ImplementationLayout {
-        address implementation;
-    }
-
-    /**
-     * @custom:storage-location erc1967:eip1967.proxy.beacon
-     */
-    struct BeaconLayout {
-        address beacon;
-    }
-
-    /**
-     * @custom:storage-location erc1967:eip1967.proxy.admin
-     */
-    struct AdminLayout {
-        address admin;
-    }
-
     Slot.StorageSlot internal constant IMPLEMENTATION_STORAGE_SLOT =
         Slot.StorageSlot.wrap(
             bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
@@ -67,34 +46,6 @@ library ERC1967Storage {
     function layout(
         Slot.StorageSlot slot
     ) internal pure returns (Layout storage $) {
-        assembly {
-            $.slot := slot
-        }
-    }
-
-    function implementationLayout()
-        internal
-        pure
-        returns (ImplementationLayout storage $)
-    {
-        Slot.StorageSlot slot = IMPLEMENTATION_STORAGE_SLOT;
-
-        assembly {
-            $.slot := slot
-        }
-    }
-
-    function beaconLayout() internal pure returns (BeaconLayout storage $) {
-        Slot.StorageSlot slot = BEACON_STORAGE_SLOT;
-
-        assembly {
-            $.slot := slot
-        }
-    }
-
-    function adminLayout() internal pure returns (AdminLayout storage $) {
-        Slot.StorageSlot slot = ADMIN_STORAGE_SLOT;
-
         assembly {
             $.slot := slot
         }
