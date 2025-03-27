@@ -1,20 +1,18 @@
 import {
   $ERC1967Storage,
   $ERC1967Storage__factory,
-  $ERC1967StorageTest,
-  $ERC1967StorageTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('ERC1967Storage', () => {
   let instance: $ERC1967Storage;
-  let testInstance: $ERC1967StorageTest;
+  let testInstance: $ERC1967Storage;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
     instance = await new $ERC1967Storage__factory(deployer).deploy();
-    testInstance = await new $ERC1967StorageTest__factory(deployer).deploy();
+    testInstance = await new $ERC1967Storage__factory(deployer).deploy();
   });
 
   describe('__internal', () => {
