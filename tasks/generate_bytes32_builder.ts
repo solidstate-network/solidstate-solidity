@@ -51,7 +51,8 @@ library <%- libraryName %> {
         unchecked {
             self._size -= <%- type.sizeBits %>;
             bytes32 mask = MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
-            element = <%- type.name %>(<%= type.castFrom %>((self._data >> self._size) & mask));
+            bytes32 elementBytes = (self._data >> self._size) & mask;
+            element = <%- type.castFrom %>;
             self._data &= ~(mask << self._size);
         }
     }
@@ -64,7 +65,8 @@ library <%- libraryName %> {
     function shift<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
             bytes32 mask = MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
-            element = <%- type.name %>(<%- type.castFrom %>(self._data & mask));
+            bytes32 elementBytes = self._data & mask;
+            element = <%- type.castFrom %>;
             self._data >>= <%- type.sizeBits %>;
             self._size -= <%- type.sizeBits %>;
         }
@@ -176,16 +178,90 @@ describe('<%- libraryName %>', () => {
 
   <%_ for (const type of types) { _%>
   describe('#pop<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it.skip('removes <%- type.name %> from end of bytes', async () => {
-      expect(await instance.pop<%- type.nameUpcase %>)
+    it('removes <%- type.name %> from end of bytes and returns it', async () => {
+      const sizeBytes = <%- type.sizeBytes %>;
+
+      for (let i = sizeBytes; i <= 32; i++) {
+        const state = {
+          _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+          _size: i * 8,
+        }
+
+        const expectedLength = state._size - sizeBytes * 8;
+        const expectedData = ethers.zeroPadValue(ethers.dataSlice(state._data, 32 - expectedLength / 8, 32), 32)
+        const expectedValue = ethers.dataSlice(state._data, 32 - expectedLength / 8 - sizeBytes, 32 - expectedLength / 8);
+
+        const result = await instance.pop<%- type.nameUpcase %>(state);
+
+        expect(
+          result[0]
+        ).to.deep.equal(
+          [expectedData, expectedLength]
+        );
+
+        <%_ if (type.name === 'address') { _%>
+        expect(result[1]).to.eq(ethers.getAddress(expectedValue))
+        <%_ } else if (type.name === 'bool') { _%>
+        expect(result[1]).to.eq(!!BigInt(expectedValue));
+        <%_ } else if (type.name.startsWith('int')) { _%>
+        const negative = BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue))
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result[1]).to.eq(output)
+        <%_ } else { _%>
+        expect(result[1]).to.eq(expectedValue);
+        <%_ } _%>
+      }
     });
   });
   <%_ } _%>
 
   <%_ for (const type of types) { _%>
   describe('#shift<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
-    it.skip('removes <%- type.name %> from beginning of bytes', async () => {
-      expect(await instance.shift<%- type.nameUpcase %>)
+    it('removes <%- type.name %> from beginning of bytes and returns it', async () => {
+      const sizeBytes = <%- type.sizeBytes %>;
+
+      for (let i = sizeBytes; i <= 32; i++) {
+        const state = {
+          _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+          _size: i * 8,
+        }
+
+        const expectedLength = state._size - sizeBytes * 8;
+        const expectedData = ethers.zeroPadValue(ethers.dataSlice(state._data, 0, 32 - sizeBytes), 32)
+        const expectedValue = ethers.dataSlice(state._data, 32 - sizeBytes, 32);
+
+        const result = await instance.shift<%- type.nameUpcase %>(state);
+
+        expect(
+          result[0]
+        ).to.deep.equal(
+          [expectedData, expectedLength]
+        );
+
+        <%_ if (type.name === 'address') { _%>
+        expect(result[1]).to.eq(ethers.getAddress(expectedValue))
+        <%_ } else if (type.name === 'bool') { _%>
+        expect(result[1]).to.eq(!!BigInt(expectedValue));
+        <%_ } else if (type.name.startsWith('int')) { _%>
+        const negative = BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue))
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result[1]).to.eq(output)
+        <%_ } else { _%>
+        expect(result[1]).to.eq(expectedValue);
+        <%_ } _%>
+      }
     });
   });
   <%_ } _%>
@@ -264,19 +340,19 @@ task('generate-bytes32-builder', `Generate ${libraryName}`).setAction(
 
         if (name.startsWith('bytes')) {
           castTo = `bytes32(element) >> ${256 - sizeBits}`;
-          castFrom = '';
+          castFrom = `${name}(elementBytes << ${256 - sizeBits})`;
         } else if (name.startsWith('int')) {
           castTo = `(Int256.toBytes32(element) & (~bytes32(0) >> ${256 - sizeBits}))`;
-          castFrom = 'Bytes32.toInt256';
+          castFrom = `${name}(Bytes32.toInt256(elementBytes))`;
         } else if (name.startsWith('uint')) {
           castTo = 'Uint256.toBytes32(element)';
-          castFrom = 'Bytes32.toUint256';
+          castFrom = `${name}(Bytes32.toUint256(elementBytes))`;
         } else if (name === 'address') {
           castTo = 'Address.toBytes32(element)';
-          castFrom = 'Bytes32.toAddress';
+          castFrom = 'Bytes32.toAddress(elementBytes)';
         } else if (name === 'bool') {
           castTo = 'Bool.toBytes32(element)';
-          castFrom = 'Bytes32.toBool';
+          castFrom = 'Bytes32.toBool(elementBytes)';
         } else {
           throw 'invalid type';
         }
