@@ -26,7 +26,7 @@ abstract contract _ContractSignerOwnable is
         bytes memory signature
     ) internal view virtual override returns (bytes4 magicValue) {
         return
-            hash.toEthSignedMessageHash().recover(signature) == _owner()
+            hash.toEthSignRecoverableHash().recover(signature) == _owner()
                 ? MAGIC_VALUE
                 : bytes4(0);
     }

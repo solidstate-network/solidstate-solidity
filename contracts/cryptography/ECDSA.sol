@@ -13,7 +13,7 @@ library ECDSA {
     error ECDSA__InvalidV();
 
     /**
-     * @notice recover signer of hashed message from signature
+     * @notice recover signer of hashed message from signature, reverting on failure
      * @param hash hashed data payload
      * @param signature signed data payload
      * @return signer recovered message signer
@@ -22,23 +22,15 @@ library ECDSA {
         bytes32 hash,
         bytes memory signature
     ) internal pure returns (address signer) {
-        if (signature.length != 65) revert ECDSA__InvalidSignatureLength();
+        function() pure errorFn;
 
-        bytes32 r;
-        bytes32 s;
-        uint8 v;
+        (signer, errorFn) = _tryRecover(hash, signature);
 
-        assembly {
-            r := mload(add(signature, 0x20))
-            s := mload(add(signature, 0x40))
-            v := byte(0, mload(add(signature, 0x60)))
-        }
-
-        signer = recover(hash, v, r, s);
+        if (signer == address(0)) errorFn();
     }
 
     /**
-     * @notice recover signer of hashed message from signature v, r, and s values
+     * @notice recover signer of hashed message from signature v, r, and s values, reverting on failure
      * @param hash hashed data payload
      * @param v signature "v" value
      * @param r signature "r" value
@@ -51,6 +43,86 @@ library ECDSA {
         bytes32 r,
         bytes32 s
     ) internal pure returns (address signer) {
+        function() pure errorFn;
+
+        (signer, errorFn) = _tryRecover(hash, v, r, s);
+
+        if (signer == address(0)) errorFn();
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature
+     * @param hash hashed data payload
+     * @param signature signed data payload
+     * @return signer recovered message signer (zero address on recovery failure)
+     */
+    function tryRecover(
+        bytes32 hash,
+        bytes memory signature
+    ) internal pure returns (address signer) {
+        (signer, ) = _tryRecover(hash, signature);
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature v, r, and s values
+     * @param hash hashed data payload
+     * @param v signature "v" value
+     * @param r signature "r" value
+     * @param s signature "s" value
+     * @return signer recovered message signer (zero address on recovery failure)
+     */
+    function tryRecover(
+        bytes32 hash,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal pure returns (address signer) {
+        (signer, ) = _tryRecover(hash, v, r, s);
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature
+     * @param hash hashed data payload
+     * @param signature signed data payload
+     * @return signer recovered message signer (zero address on recovery failure)
+     * @return errorFn wrapper function around custom error revert
+     */
+    function _tryRecover(
+        bytes32 hash,
+        bytes memory signature
+    ) private pure returns (address signer, function() pure errorFn) {
+        if (signature.length != 65) {
+            return (address(0), _revert_ECDSA__InvalidSignatureLength);
+        }
+
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+
+        assembly ('memory-safe') {
+            r := mload(add(signature, 0x20))
+            s := mload(add(signature, 0x40))
+            v := byte(0, mload(add(signature, 0x60)))
+        }
+
+        (signer, errorFn) = _tryRecover(hash, v, r, s);
+    }
+
+    /**
+     * @notice attempt to recover signer of hashed message from signature v, r, and s values
+     * @param hash hashed data payload
+     * @param v signature "v" value
+     * @param r signature "r" value
+     * @param s signature "s" value
+     * @return signer recovered message signer (zero address on recovery failure)
+     * @return errorFn wrapper function around custom error revert
+     */
+    function _tryRecover(
+        bytes32 hash,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) private pure returns (address signer, function() pure errorFn) {
         // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
         // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
         // the valid range for s in (281): 0 < s < secp256k1n ÷ 2 + 1, and for v in (282): v ∈ {27, 28}. Most
@@ -63,24 +135,107 @@ library ECDSA {
         if (
             uint256(s) >
             0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0
-        ) revert ECDSA__InvalidS();
-        if (v != 27 && v != 28) revert ECDSA__InvalidV();
+        ) return (address(0), _revert_ECDSA__InvalidS);
+
+        if (v != 27 && v != 28) return (address(0), _revert_ECDSA__InvalidV);
 
         // If the signature is valid (and not malleable), return the signer address
         signer = ecrecover(hash, v, r, s);
-        if (signer == address(0)) revert ECDSA__InvalidSignature();
+
+        if (signer == address(0))
+            return (address(0), _revert_ECDSA__InvalidSignature);
     }
 
     /**
      * @notice generate an "Ethereum Signed Message" in the format returned by the eth_sign JSON-RPC method
-     * @param hash hashed data payload
-     * @return signedMessage signed message hash
+     * @param payloadHash hashed data payload
+     * @return recoverableHash hash to validate against signature via ECDSA function
      */
-    function toEthSignedMessageHash(
-        bytes32 hash
-    ) internal pure returns (bytes32 signedMessage) {
-        signedMessage = keccak256(
-            abi.encodePacked('\x19Ethereum Signed Message:\n32', hash)
-        );
+    function toEthSignRecoverableHash(
+        bytes32 payloadHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // recoverableHash = keccak256(
+            //   abi.encodePacked(
+            //     '\x19Ethereum Signed Message:\n32',
+            //     payloadHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            mstore(pointer, '\x19Ethereum Signed Message:\n32')
+            mstore(add(pointer, 28), payloadHash)
+
+            recoverableHash := keccak256(pointer, 60)
+        }
+    }
+
+    /**
+     * @notice generate an EIP712 signable hash of typed structured data
+     * @param domainSeparator EIP712 domain separator
+     * @param structHash hash of underlying signed data generated through the EIP712 "hashStruct" process
+     * @return recoverableHash hash to validate against signature via ECDSA function
+     */
+    function toEIP712RecoverableHash(
+        bytes32 domainSeparator,
+        bytes32 structHash
+    ) internal pure returns (bytes32 recoverableHash) {
+        assembly {
+            // assembly block equivalent to:
+            //
+            // recoverableHash = keccak256(
+            //   abi.encodePacked(
+            //     uint16(0x1901),
+            //     domainSeparator,
+            //     structHash
+            //   )
+            // );
+
+            // load free memory pointer
+            let pointer := mload(64)
+
+            // this magic value is the EIP-191 signed data header, consisting of
+            // the hardcoded 0x19 and the one-byte version 0x01
+            mstore(
+                pointer,
+                0x1901000000000000000000000000000000000000000000000000000000000000
+            )
+            mstore(add(pointer, 2), domainSeparator)
+            mstore(add(pointer, 34), structHash)
+
+            recoverableHash := keccak256(pointer, 66)
+        }
+    }
+
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
+    function _revert_ECDSA__InvalidS() private pure {
+        revert ECDSA__InvalidS();
+    }
+
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
+    function _revert_ECDSA__InvalidSignature() private pure {
+        revert ECDSA__InvalidSignature();
+    }
+
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
+    function _revert_ECDSA__InvalidSignatureLength() private pure {
+        revert ECDSA__InvalidSignatureLength();
+    }
+
+    /**
+     * @notice wrapper function for passing custom errors internally
+     */
+    function _revert_ECDSA__InvalidV() private pure {
+        revert ECDSA__InvalidV();
     }
 }
