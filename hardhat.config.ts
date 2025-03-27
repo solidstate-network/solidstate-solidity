@@ -15,6 +15,12 @@ import { HardhatUserConfig } from 'hardhat/types';
 import 'solidity-coverage';
 
 const config: HardhatUserConfig = {
+  networks: {
+    hardhat: {
+      allowUnlimitedContractSize: true,
+    },
+  },
+
   solidity: {
     version: '0.8.29',
     settings: {
