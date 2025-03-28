@@ -136,8 +136,8 @@ library IncrementalMerkleTree {
         uint256 mask = 2 << depth;
 
         if (mask < len) {
-            uint256 indexLeft = index & ~mask;
             uint256 indexRight = index | mask;
+            uint256 indexLeft = indexRight ^ mask;
 
             if (index == indexRight) {
                 assembly {
