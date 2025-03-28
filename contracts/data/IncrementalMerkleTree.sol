@@ -147,8 +147,8 @@ library IncrementalMerkleTree {
                 }
             } else if (indexRight < len) {
                 assembly {
-                    mstore(32, sload(add(arraySlot, indexRight)))
                     mstore(0, element)
+                    mstore(32, sload(add(arraySlot, indexRight)))
                     element := keccak256(0, 64)
                 }
             }
