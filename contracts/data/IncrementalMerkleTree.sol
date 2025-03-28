@@ -110,7 +110,7 @@ library IncrementalMerkleTree {
         uint256 index,
         bytes32 element,
         uint256 len
-    ) internal {
+    ) private {
         if (index < len) {
             // write element to storage if
             self._elements[index] = element;
