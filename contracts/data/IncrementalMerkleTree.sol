@@ -28,12 +28,14 @@ library IncrementalMerkleTree {
     function height(
         Tree storage self
     ) internal view returns (uint256 treeHeight) {
-        uint256 treeSize = self.size();
+        uint256 length = self._elements.length;
 
-        if (treeSize == 0) revert();
+        if (length == 0) revert();
 
-        while (1 << treeHeight < treeSize) {
-            treeHeight++;
+        while (2 << treeHeight < length) {
+            unchecked {
+                treeHeight++;
+            }
         }
     }
 
