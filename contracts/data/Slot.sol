@@ -203,23 +203,19 @@ library Slot {
     }
 
     /**
-     * @notice clearn contents of storage slot
+     * @notice clear contents of storage slot
      * @param slot storage slot to clear
      */
     function clear(StorageSlot slot) internal {
-        assembly {
-            sstore(slot, 0)
-        }
+        write(slot, bytes32(0));
     }
 
     /**
-     * @notice clearn contents of transient storage slot
+     * @notice clear contents of transient storage slot
      * @param slot transient storage slot to clear
      */
     function clear(TransientSlot slot) internal {
-        assembly {
-            tstore(slot, 0)
-        }
+        write(slot, bytes32(0));
     }
 
     /**
