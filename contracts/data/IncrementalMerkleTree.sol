@@ -123,27 +123,23 @@ library IncrementalMerkleTree {
             uint256 indexLeft = index & ~mask;
             uint256 indexRight = index | mask;
 
-            bytes32 nextElement;
-
             if (index == indexRight) {
                 assembly {
                     mstore(0, self.slot)
                     mstore(0, sload(add(keccak256(0, 32), indexLeft)))
                     mstore(32, element)
-                    nextElement := keccak256(0, 64)
+                    element := keccak256(0, 64)
                 }
             } else if (indexRight < len) {
                 assembly {
                     mstore(0, self.slot)
                     mstore(32, sload(add(keccak256(0, 32), indexRight)))
                     mstore(0, element)
-                    nextElement := keccak256(0, 64)
+                    element := keccak256(0, 64)
                 }
-            } else {
-                nextElement = element;
             }
 
-            _set(self, depth + 1, indexRight ^ (3 << depth), nextElement, len);
+            _set(self, depth + 1, indexRight ^ (3 << depth), element, len);
         }
     }
 }
