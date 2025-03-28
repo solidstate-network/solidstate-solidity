@@ -201,8 +201,7 @@ abstract contract _ECDSAMetaTransactionContext is
      * @dev clear the cached context to prevent replay attacks
      */
     function _lockReentrancyGuard() internal virtual override {
-        TRANSIENT_SLOT.write(bytes32(0));
-        TRANSIENT_SLOT.next().write(bytes32(0));
+        TRANSIENT_SLOT.clear();
         super._lockReentrancyGuard();
     }
 }
