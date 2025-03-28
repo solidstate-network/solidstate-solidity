@@ -189,20 +189,16 @@ library IncrementalMerkleTree {
         uint256 rowLength,
         bytes32 hash
     ) private {
-        bytes32[] storage row;
-
         // store hash in array via assembly to avoid array length sload
 
         assembly {
             // assembly block equivalent to:
             //
-            // row = nodes[rowIndex];
+            // bytes32[] storage row = nodes[rowIndex];
             // row[colIndex] = hash;
 
             mstore(0x00, t.slot)
-            row.slot := add(keccak256(0x00, 0x20), rowIndex)
-
-            mstore(0x00, row.slot)
+            mstore(0x00, add(keccak256(0x00, 0x20), rowIndex))
             sstore(add(keccak256(0x00, 0x20), colIndex), hash)
         }
 
