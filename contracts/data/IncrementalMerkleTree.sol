@@ -6,8 +6,6 @@ library IncrementalMerkleTree {
     using IncrementalMerkleTree for Tree;
 
     struct Tree {
-        // array always has odd length
-        // elements are stored at even indexes
         bytes32[] _elements;
     }
 
@@ -17,6 +15,8 @@ library IncrementalMerkleTree {
      * @return treeSize size of tree
      */
     function size(Tree storage self) internal view returns (uint256 treeSize) {
+        // underlying array always has odd length
+        // elements are stored at even indexes, and their hashes in between
         treeSize = (self._elements.length + 1) >> 1;
     }
 
@@ -91,7 +91,10 @@ library IncrementalMerkleTree {
             sstore(self.slot, len)
         }
 
+        // TODO: do nothing if tree is balanced
         if (treeSize == 0) return;
+
+        // TODO: don't start at depth 0
 
         _set(
             _arraySlot(self),
@@ -112,6 +115,11 @@ library IncrementalMerkleTree {
         _set(_arraySlot(self), 0, index << 1, element, self._elements.length);
     }
 
+    /**
+     * @notice calculate the storage slot of the underlying bytes32 array
+     * @param self Tree struct storage reference
+     * @return slot storage slot
+     */
     function _arraySlot(Tree storage self) private pure returns (bytes32 slot) {
         assembly {
             mstore(0, self.slot)
@@ -127,30 +135,43 @@ library IncrementalMerkleTree {
         uint256 len
     ) private {
         if (index < len) {
+            // current index is within bounds of data, so write it to storage
             assembly {
                 sstore(add(arraySlot, index), element)
             }
         }
 
-        // flip bit of depth to get sibling, continue until 2^depth exceeds size
+        // lowest n bits will always be (1) for elements at depth n
+        // flip bit n+1 of an element's index to get it sibling
         uint256 mask = 2 << depth;
 
         if (mask < len) {
             uint256 indexRight = index | mask;
 
+            // if current element is on the left and right element does not exist
+            // pass element along to next depth unhashed
+
             if (index == indexRight) {
+                // current element is on the right
+                // left element is guaranteed to exist
                 assembly {
                     mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
             } else if (indexRight < len) {
+                // current element is on the left
+                // right element exists
                 assembly {
                     mstore(0, element)
                     mstore(32, sload(add(arraySlot, indexRight)))
                     element := keccak256(0, 64)
                 }
             }
+
+            // calculate the index of next element at depth n+1
+            // midpoint between current left and right index
+            // index = indexRight ^ (3 << depth)
 
             _set(arraySlot, depth + 1, indexRight ^ (3 << depth), element, len);
         }
