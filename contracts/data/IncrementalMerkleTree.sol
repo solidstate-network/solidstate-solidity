@@ -70,13 +70,13 @@ library IncrementalMerkleTree {
      */
     function push(Tree storage self, bytes32 element) internal {
         uint256 treeSize = self.size() + 1;
-        uint256 len = (treeSize << 1) - 1;
+        uint256 length = (treeSize << 1) - 1;
 
         assembly {
-            sstore(self.slot, len)
+            sstore(self.slot, length)
         }
 
-        _set(_arraySlot(self), 0, (treeSize - 1) << 1, element, len);
+        _set(_arraySlot(self), 0, (treeSize - 1) << 1, element, length);
     }
 
     /**
@@ -85,10 +85,10 @@ library IncrementalMerkleTree {
      */
     function pop(Tree storage self) internal {
         uint256 treeSize = self.size() - 1;
-        uint256 len = treeSize == 0 ? 0 : (treeSize << 1) - 1;
+        uint256 length = treeSize == 0 ? 0 : (treeSize << 1) - 1;
 
         assembly {
-            sstore(self.slot, len)
+            sstore(self.slot, length)
         }
 
         // TODO: do nothing if tree is balanced
@@ -101,7 +101,7 @@ library IncrementalMerkleTree {
             0,
             (treeSize - 1) << 1,
             self.at(treeSize - 1),
-            len
+            length
         );
     }
 
@@ -132,9 +132,9 @@ library IncrementalMerkleTree {
         uint256 depth,
         uint256 index,
         bytes32 element,
-        uint256 len
+        uint256 length
     ) private {
-        if (index < len) {
+        if (index < length) {
             // current index is within bounds of data, so write it to storage
             assembly {
                 sstore(add(arraySlot, index), element)
@@ -145,7 +145,7 @@ library IncrementalMerkleTree {
         // flip bit n+1 of an element's index to get it sibling
         uint256 mask = 2 << depth;
 
-        if (mask < len) {
+        if (mask < length) {
             uint256 indexRight = index | mask;
 
             // if current element is on the left and right element does not exist
@@ -159,7 +159,7 @@ library IncrementalMerkleTree {
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
-            } else if (indexRight < len) {
+            } else if (indexRight < length) {
                 // current element is on the left
                 // right element exists
                 assembly {
@@ -173,7 +173,13 @@ library IncrementalMerkleTree {
             // midpoint between current left and right index
             // index = indexRight ^ (3 << depth)
 
-            _set(arraySlot, depth + 1, indexRight ^ (3 << depth), element, len);
+            _set(
+                arraySlot,
+                depth + 1,
+                indexRight ^ (3 << depth),
+                element,
+                length
+            );
         }
     }
 }
