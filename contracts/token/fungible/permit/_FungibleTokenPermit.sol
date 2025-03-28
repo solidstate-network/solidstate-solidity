@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
@@ -35,7 +35,7 @@ abstract contract _FungibleTokenPermit is
         virtual
         returns (bytes32 domainSeparator)
     {
-        domainSeparator = EIP712.calculateDomainSeparator(
+        domainSeparator = EIP712.calculateDomainSeparator_01111(
             keccak256(bytes(_name())),
             keccak256(bytes(_version()))
         );
@@ -85,7 +85,7 @@ abstract contract _FungibleTokenPermit is
         )
     {
         return (
-            hex'0f', // 01111
+            EIP712.ERC5267_FIELDS_01111,
             _name(),
             _version(),
             block.chainid,
@@ -117,11 +117,11 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        // execute EIP-712 hashStruct procedure
-
         uint256 nonce = ERC20Storage
             .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc2612Nonces[owner]++;
+
+        // execute EIP-712 hashStruct procedure
 
         bytes32 structHash;
 
@@ -155,41 +155,16 @@ abstract contract _FungibleTokenPermit is
             structHash := keccak256(pointer, 192)
         }
 
-        // recreate and hash data payload
+        // recreate final data payload hash which was signed by token owner
 
-        bytes32 domainSeparator = _DOMAIN_SEPARATOR();
-
-        bytes32 signedHash;
-
-        assembly {
-            // assembly block equivalent to:
-            //
-            // signedHash = keccak256(
-            //   abi.encodePacked(
-            //     uint16(0x1901),
-            //     domainSeparator,
-            //     structHash
-            //   )
-            // );
-
-            // load free memory pointer
-            let pointer := mload(64)
-
-            // this magic value is the EIP-191 signed data header, consisting of
-            // the hardcoded 0x19 and the one-byte version 0x01
-            mstore(
-                pointer,
-                0x1901000000000000000000000000000000000000000000000000000000000000
-            )
-            mstore(add(pointer, 2), domainSeparator)
-            mstore(add(pointer, 34), structHash)
-
-            signedHash := keccak256(pointer, 66)
-        }
+        bytes32 recoverableHash = ECDSA.toEIP712RecoverableHash(
+            _DOMAIN_SEPARATOR(),
+            structHash
+        );
 
         // validate signature
 
-        if (signedHash.recover(v, r, s) != owner)
+        if (recoverableHash.recover(v, r, s) != owner)
             revert FungibleTokenPermit__InvalidSignature();
 
         _approve(owner, spender, amount);
