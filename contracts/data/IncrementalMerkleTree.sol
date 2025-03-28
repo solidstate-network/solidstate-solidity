@@ -126,20 +126,24 @@ library IncrementalMerkleTree {
             bytes32 nextElement;
 
             if (index == indexRight) {
-                nextElement = keccak256(
-                    abi.encodePacked(self._elements[indexLeft], element)
-                );
+                assembly {
+                    mstore(0, self.slot)
+                    mstore(0, sload(add(keccak256(0, 32), indexLeft)))
+                    mstore(32, element)
+                    nextElement := keccak256(0, 64)
+                }
             } else if (indexRight < len) {
-                nextElement = keccak256(
-                    abi.encodePacked(element, self._elements[indexRight])
-                );
+                assembly {
+                    mstore(0, self.slot)
+                    mstore(32, sload(add(keccak256(0, 32), indexRight)))
+                    mstore(0, element)
+                    nextElement := keccak256(0, 64)
+                }
             } else {
                 nextElement = element;
             }
 
-            uint256 nextIndex = indexRight ^ (3 << depth);
-
-            _set(self, depth + 1, nextIndex, nextElement, len);
+            _set(self, depth + 1, indexRight ^ (3 << depth), nextElement, len);
         }
     }
 }
