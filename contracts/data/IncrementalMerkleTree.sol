@@ -76,7 +76,7 @@ library IncrementalMerkleTree {
             sstore(self.slot, len)
         }
 
-        _set(self, 0, (treeSize - 1) << 1, element, len);
+        _set(_arraySlot(self), 0, (treeSize - 1) << 1, element, len);
     }
 
     /**
@@ -93,7 +93,13 @@ library IncrementalMerkleTree {
 
         if (treeSize == 0) return;
 
-        _set(self, 0, (treeSize - 1) << 1, self.at(treeSize - 1), len);
+        _set(
+            _arraySlot(self),
+            0,
+            (treeSize - 1) << 1,
+            self.at(treeSize - 1),
+            len
+        );
     }
 
     /**
@@ -103,11 +109,18 @@ library IncrementalMerkleTree {
      * @param element element to add
      */
     function set(Tree storage self, uint256 index, bytes32 element) internal {
-        _set(self, 0, index << 1, element, self._elements.length);
+        _set(_arraySlot(self), 0, index << 1, element, self._elements.length);
+    }
+
+    function _arraySlot(Tree storage self) private pure returns (bytes32 slot) {
+        assembly {
+            mstore(0, self.slot)
+            slot := keccak256(0, 32)
+        }
     }
 
     function _set(
-        Tree storage self,
+        bytes32 arraySlot,
         uint256 depth,
         uint256 index,
         bytes32 element,
@@ -115,8 +128,7 @@ library IncrementalMerkleTree {
     ) private {
         if (index < len) {
             assembly {
-                mstore(0, self.slot)
-                sstore(add(keccak256(0, 32), index), element)
+                sstore(add(arraySlot, index), element)
             }
         }
 
@@ -129,21 +141,19 @@ library IncrementalMerkleTree {
 
             if (index == indexRight) {
                 assembly {
-                    mstore(0, self.slot)
-                    mstore(0, sload(add(keccak256(0, 32), indexLeft)))
+                    mstore(0, sload(add(arraySlot, indexLeft)))
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
             } else if (indexRight < len) {
                 assembly {
-                    mstore(0, self.slot)
-                    mstore(32, sload(add(keccak256(0, 32), indexRight)))
+                    mstore(32, sload(add(arraySlot, indexRight)))
                     mstore(0, element)
                     element := keccak256(0, 64)
                 }
             }
 
-            _set(self, depth + 1, indexRight ^ (3 << depth), element, len);
+            _set(arraySlot, depth + 1, indexRight ^ (3 << depth), element, len);
         }
     }
 }
