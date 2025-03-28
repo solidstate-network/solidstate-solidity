@@ -114,8 +114,10 @@ library IncrementalMerkleTree {
         uint256 len
     ) private {
         if (index < len) {
-            // write element to storage if
-            self._elements[index] = element;
+            assembly {
+                mstore(0, self.slot)
+                sstore(add(keccak256(0, 32), index), element)
+            }
         }
 
         // flip bit of depth to get sibling, continue until 2^depth exceeds size
