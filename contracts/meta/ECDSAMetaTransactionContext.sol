@@ -3,6 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC5267 } from '../interfaces/IERC5267.sol';
+import { TransientReentrancyGuard } from '../security/reentrancy_guard/TransientReentrancyGuard.sol';
+import { _TransientReentrancyGuard } from '../security/reentrancy_guard/_TransientReentrancyGuard.sol';
 import { Context } from './Context.sol';
 import { _Context } from './_Context.sol';
 import { IECDSAMetaTransactionContext } from './IECDSAMetaTransactionContext.sol';
@@ -11,7 +13,8 @@ import { _ECDSAMetaTransactionContext } from './_ECDSAMetaTransactionContext.sol
 abstract contract ECDSAMetaTransactionContext is
     IECDSAMetaTransactionContext,
     _ECDSAMetaTransactionContext,
-    Context
+    Context,
+    TransientReentrancyGuard
 {
     /**
      * @inheritdoc IERC5267
@@ -55,5 +58,31 @@ abstract contract ECDSAMetaTransactionContext is
         returns (uint256 length)
     {
         length = super._calldataSuffixLength();
+    }
+
+    function _isReentrancyGuardLocked()
+        internal
+        view
+        virtual
+        override(_TransientReentrancyGuard, TransientReentrancyGuard)
+        returns (bool status)
+    {
+        status = super._isReentrancyGuardLocked();
+    }
+
+    function _lockReentrancyGuard()
+        internal
+        virtual
+        override(TransientReentrancyGuard, _ECDSAMetaTransactionContext)
+    {
+        super._lockReentrancyGuard();
+    }
+
+    function _unlockReentrancyGuard()
+        internal
+        virtual
+        override(_TransientReentrancyGuard, TransientReentrancyGuard)
+    {
+        super._unlockReentrancyGuard();
     }
 }

@@ -5,6 +5,7 @@ pragma solidity ^0.8.24;
 import { ECDSA } from '../cryptography/ECDSA.sol';
 import { EIP712 } from '../cryptography/EIP712.sol';
 import { Slot } from '../data/Slot.sol';
+import { _TransientReentrancyGuard } from '../security/reentrancy_guard/_TransientReentrancyGuard.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
 import { Bytes32Builder } from '../data/Bytes32Builder.sol';
 import { _Context } from './_Context.sol';
@@ -12,7 +13,8 @@ import { _IECDSAMetaTransactionContext } from './_IECDSAMetaTransactionContext.s
 
 abstract contract _ECDSAMetaTransactionContext is
     _IECDSAMetaTransactionContext,
-    _Context
+    _Context,
+    _TransientReentrancyGuard
 {
     using Bytes32 for bytes32;
     using Bytes32Builder for Bytes32Builder.Builder;
@@ -68,7 +70,11 @@ abstract contract _ECDSAMetaTransactionContext is
         uint256 dataLength = msg.data.length;
         uint256 suffixLength = _calldataSuffixLength();
 
-        if (dataLength >= suffixLength) {
+        // context is cached in transient storage, which is not cleared until the end of the transaction
+        // this enables the possibility of replay attacks within a single transaction which calls this contract multiple times
+        // therefore, all functions which use context must be nonReentrant, and the lock must be set before context is accessed
+
+        if (dataLength >= suffixLength && _isReentrancyGuardLocked()) {
             // calldata is long enough that it might have a suffix
             // check transient storage to see if sender has been derived already
 
@@ -101,14 +107,16 @@ abstract contract _ECDSAMetaTransactionContext is
         uint256 dataLength = msg.data.length;
         uint256 suffixLength = _calldataSuffixLength();
 
-        if (dataLength >= suffixLength) {
+        // context is cached in transient storage, which is not cleared until the end of the transaction
+        // this enables the possibility of replay attacks within a single transaction which calls this contract multiple times
+        // therefore, all functions which use context must be nonReentrant, and the lock must be set before context is accessed
+
+        if (dataLength >= suffixLength && _isReentrancyGuardLocked()) {
             // calldata is long enough that it might have a suffix
             // check transient storage to see if msgData split index has been derived already
 
-            uint256 split;
-
             // unpack the msgDataIndex which is stored alongside msgSender
-            split = TRANSIENT_SLOT.read().toBuilder().popUint96();
+            uint256 split = TRANSIENT_SLOT.read().toBuilder().popUint96();
 
             if (split == 0) {
                 // no msgData split index found in transient storage, so attempt to derive it from signature
@@ -128,7 +136,7 @@ abstract contract _ECDSAMetaTransactionContext is
 
     /**
      * @inheritdoc _Context
-     * @dev this Context extension defines an address suffix with a length of 85
+     * @dev this Context extension defines a suffix with a length of 85
      */
     function _calldataSuffixLength()
         internal
@@ -186,5 +194,15 @@ abstract contract _ECDSAMetaTransactionContext is
         builder.pushUint96(uint96(msgDataIndex));
 
         TRANSIENT_SLOT.write(builder._data);
+    }
+
+    /**
+     * @inheritdoc _TransientReentrancyGuard
+     * @dev clear the cached context to prevent replay attacks
+     */
+    function _lockReentrancyGuard() internal virtual override {
+        TRANSIENT_SLOT.write(bytes32(0));
+        TRANSIENT_SLOT.next().write(bytes32(0));
+        super._lockReentrancyGuard();
     }
 }
