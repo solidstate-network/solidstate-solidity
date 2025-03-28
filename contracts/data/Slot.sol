@@ -203,6 +203,26 @@ library Slot {
     }
 
     /**
+     * @notice clearn contents of storage slot
+     * @param slot storage slot to clear
+     */
+    function clear(StorageSlot slot) internal {
+        assembly {
+            sstore(slot, 0)
+        }
+    }
+
+    /**
+     * @notice clearn contents of transient storage slot
+     * @param slot transient storage slot to clear
+     */
+    function clear(TransientSlot slot) internal {
+        assembly {
+            tstore(slot, 0)
+        }
+    }
+
+    /**
      * @notice calculate the slot of an index of an array
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate

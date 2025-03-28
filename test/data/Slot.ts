@@ -129,6 +129,21 @@ describe('Slot', () => {
         );
       });
     });
+
+    describe('#clear(uint256)', () => {
+      it('clears data from arbitrary storage slot', async () => {
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        await instance.$write_Slot_StorageSlot(slot, data);
+
+        await instance.$clear_Slot_StorageSlot(slot);
+
+        expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
+          ethers.ZeroHash,
+        );
+      });
+    });
   });
 
   describe('TransientSlot', () => {
@@ -240,9 +255,22 @@ describe('Slot', () => {
         const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
 
-        expect(await testInstance.writeAndRead.staticCall(slot, data)).to.eq(
-          data,
-        );
+        expect(
+          await testInstance.transientWriteTest.staticCall(slot, data),
+        ).to.eq(data);
+      });
+    });
+
+    describe('#clear(uint256)', () => {
+      it('clears data from arbitrary transient slot', async () => {
+        const testInstance = await new SlotTest__factory(deployer).deploy();
+
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        expect(
+          await testInstance.transientClearTest.staticCall(slot, data),
+        ).to.eq(ethers.ZeroHash);
       });
     });
   });
