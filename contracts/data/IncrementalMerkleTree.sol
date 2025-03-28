@@ -11,16 +11,16 @@ library IncrementalMerkleTree {
 
     /**
      * @notice query number of elements contained in tree
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @return treeSize size of tree
      */
-    function size(Tree storage t) internal view returns (uint256 treeSize) {
+    function size(Tree storage self) internal view returns (uint256 treeSize) {
         assembly {
             // assembly block equivalent to:
             //
-            // if (t.height() > 0) treeSize = t.__nodes[0].length;
+            // if (self.height() > 0) treeSize = self.__nodes[0].length;
 
-            mstore(0x00, t.slot)
+            mstore(0x00, self.slot)
             treeSize := sload(keccak256(0x00, 0x20))
         }
     }
@@ -28,33 +28,35 @@ library IncrementalMerkleTree {
     /**
      * @notice query one-indexed height of tree
      * @dev conventional zero-indexed height would require the use of signed integers, so height is one-indexed instead
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @return treeHeight one-indexed height of tree
      */
-    function height(Tree storage t) internal view returns (uint256 treeHeight) {
+    function height(
+        Tree storage self
+    ) internal view returns (uint256 treeHeight) {
         assembly {
             // assembly block equivalent to:
             //
-            // treeHeight = t.__nodes.length;
+            // treeHeight = self.__nodes.length;
 
-            treeHeight := sload(t.slot)
+            treeHeight := sload(self.slot)
         }
     }
 
     /**
      * @notice query Merkle root
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @return hash root hash
      */
-    function root(Tree storage t) internal view returns (bytes32 hash) {
+    function root(Tree storage self) internal view returns (bytes32 hash) {
         assembly {
             // assembly block equivalent to:
             //
-            // if (t.height() > 0) hash = t.__nodes[t.height() - 1][0];
+            // if (self.height() > 0) hash = self.__nodes[self.height() - 1][0];
 
-            let treeHeight := sload(t.slot)
+            let treeHeight := sload(self.slot)
             if gt(treeHeight, 0) {
-                mstore(0x00, t.slot)
+                mstore(0x00, self.slot)
                 mstore(0x00, add(keccak256(0x00, 0x20), sub(treeHeight, 1)))
                 hash := sload(keccak256(0x00, 0x20))
             }
@@ -62,10 +64,10 @@ library IncrementalMerkleTree {
     }
 
     function at(
-        Tree storage t,
+        Tree storage self,
         uint256 index
     ) internal view returns (bytes32 hash) {
-        if (index >= t.size()) {
+        if (index >= self.size()) {
             assembly {
                 mstore(0x00, 0x4e487b71)
                 mstore(0x20, 0x32)
@@ -76,9 +78,9 @@ library IncrementalMerkleTree {
         assembly {
             // assembly block equivalent to:
             //
-            // hash = t.__nodes[0][index];
+            // hash = self.__nodes[0][index];
 
-            mstore(0x00, t.slot)
+            mstore(0x00, self.slot)
             mstore(0x00, keccak256(0x00, 0x20))
             hash := sload(add(keccak256(0x00, 0x20), index))
         }
@@ -86,38 +88,38 @@ library IncrementalMerkleTree {
 
     /**
      * @notice add new element to tree
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @param hash to add
      */
-    function push(Tree storage t, bytes32 hash) internal {
+    function push(Tree storage self, bytes32 hash) internal {
         // index to add to tree
-        uint256 updateIndex = t.size();
+        uint256 updateIndex = self.size();
 
         // update stored tree size
 
         assembly {
-            mstore(0x00, t.slot)
+            mstore(0x00, self.slot)
             sstore(keccak256(0x00, 0x20), add(updateIndex, 1))
         }
 
         // add new layer if tree is at capacity
 
-        uint256 treeHeight = t.height();
+        uint256 treeHeight = self.height();
 
         if (updateIndex == (1 << treeHeight) >> 1) {
             // increment tree height in storage
             assembly {
-                sstore(t.slot, add(treeHeight, 1))
+                sstore(self.slot, add(treeHeight, 1))
             }
         }
 
         // add hash to tree
 
-        t.set(updateIndex, hash);
+        self.set(updateIndex, hash);
     }
 
-    function pop(Tree storage t) internal {
-        uint256 treeSize = t.size();
+    function pop(Tree storage self) internal {
+        uint256 treeSize = self.size();
 
         if (treeSize == 0) {
             assembly {
@@ -134,34 +136,34 @@ library IncrementalMerkleTree {
             // update stored tree size
 
             assembly {
-                mstore(0x00, t.slot)
+                mstore(0x00, self.slot)
                 sstore(keccak256(0x00, 0x20), updateIndex)
             }
 
             // if new tree is full, remove excess layer
             // if no layer is removed, recalculate hashes
 
-            uint256 treeHeight = t.height();
+            uint256 treeHeight = self.height();
 
             if (updateIndex == (1 << treeHeight) >> 2) {
                 // decrement tree height in storage
                 assembly {
-                    sstore(t.slot, sub(treeHeight, 1))
+                    sstore(self.slot, sub(treeHeight, 1))
                 }
             } else {
-                t.set(updateIndex - 1, t.at(updateIndex - 1));
+                self.set(updateIndex - 1, self.at(updateIndex - 1));
             }
         }
     }
 
     /**
      * @notice update existing element in tree
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @param index index to update
      * @param hash new hash to add
      */
-    function set(Tree storage t, uint256 index, bytes32 hash) internal {
-        uint256 treeSize = t.size();
+    function set(Tree storage self, uint256 index, bytes32 hash) internal {
+        uint256 treeSize = self.size();
 
         if (index >= treeSize) {
             assembly {
@@ -171,19 +173,19 @@ library IncrementalMerkleTree {
             }
         }
 
-        _set(t, 0, index, treeSize, hash);
+        _set(self, 0, index, treeSize, hash);
     }
 
     /**
      * @notice update element in tree and recursively recalculate hashes
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @param rowIndex index of current row to update
      * @param colIndex index of current column to update
      * @param rowLength length of row at rowIndex
      * @param hash hash to store at current position
      */
     function _set(
-        Tree storage t,
+        Tree storage self,
         uint256 rowIndex,
         uint256 colIndex,
         uint256 rowLength,
@@ -197,7 +199,7 @@ library IncrementalMerkleTree {
             // bytes32[] storage row = nodes[rowIndex];
             // row[colIndex] = hash;
 
-            mstore(0x00, t.slot)
+            mstore(0x00, self.slot)
             mstore(0x00, add(keccak256(0x00, 0x20), rowIndex))
             sstore(add(keccak256(0x00, 0x20), colIndex), hash)
         }
@@ -228,6 +230,6 @@ library IncrementalMerkleTree {
             }
         }
 
-        _set(t, rowIndex + 1, colIndex >> 1, (rowLength + 1) >> 1, hash);
+        _set(self, rowIndex + 1, colIndex >> 1, (rowLength + 1) >> 1, hash);
     }
 }
