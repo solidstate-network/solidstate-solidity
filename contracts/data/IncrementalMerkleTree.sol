@@ -137,11 +137,10 @@ library IncrementalMerkleTree {
 
         if (mask < len) {
             uint256 indexRight = index | mask;
-            uint256 indexLeft = indexRight ^ mask;
 
             if (index == indexRight) {
                 assembly {
-                    mstore(0, sload(add(arraySlot, indexLeft)))
+                    mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
