@@ -96,7 +96,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#read(uint256)', () => {
+    describe('#read()', () => {
       it('reads bytes32 data from arbitrary storage slot', async () => {
         const slot = ethers.hexlify(ethers.randomBytes(32));
         const data = ethers.ZeroHash;
@@ -113,7 +113,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#write(uint256,bytes32)', () => {
+    describe('#write(bytes32)', () => {
       it('writes bytes32 data to arbitrary storage slot', async () => {
         const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
@@ -130,7 +130,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#clear(uint256)', () => {
+    describe('#clear()', () => {
       it('clears data from arbitrary storage slot', async () => {
         const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
@@ -225,7 +225,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#read(uint256)', () => {
+    describe('#read()', () => {
       it('reads bytes32 data from arbitrary transient slot', async () => {
         const slot = ethers.hexlify(ethers.randomBytes(32));
         const data = ethers.ZeroHash;
@@ -248,7 +248,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#write(uint256,bytes32)', () => {
+    describe('#write(bytes32)', () => {
       it('writes bytes32 data to arbitrary transient slot', async () => {
         const testInstance = await new SlotTest__factory(deployer).deploy();
 
@@ -261,7 +261,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#clear(uint256)', () => {
+    describe('#clear()', () => {
       it('clears data from arbitrary transient slot', async () => {
         const testInstance = await new SlotTest__factory(deployer).deploy();
 
