@@ -11,12 +11,6 @@ library IncrementalMerkleTree {
         bytes32[] _elements;
     }
 
-    function elements(
-        Tree storage self
-    ) internal view returns (bytes32[] memory els) {
-        return self._elements;
-    }
-
     function size(Tree storage self) internal view returns (uint256 treeSize) {
         treeSize = (self._elements.length + 1) >> 1;
     }
