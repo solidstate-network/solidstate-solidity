@@ -199,7 +199,7 @@ abstract contract _FungibleVaultToken is
 
         shareAmount = _previewDeposit(assetAmount);
 
-        _deposit(msg.sender, receiver, assetAmount, shareAmount, 0, 0);
+        _deposit(_msgSender(), receiver, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -217,7 +217,7 @@ abstract contract _FungibleVaultToken is
 
         assetAmount = _previewMint(shareAmount);
 
-        _deposit(msg.sender, receiver, assetAmount, shareAmount, 0, 0);
+        _deposit(_msgSender(), receiver, assetAmount, shareAmount, 0, 0);
     }
 
     /**
@@ -237,7 +237,15 @@ abstract contract _FungibleVaultToken is
 
         shareAmount = _previewWithdraw(assetAmount);
 
-        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount, 0, 0);
+        _withdraw(
+            _msgSender(),
+            receiver,
+            owner,
+            assetAmount,
+            shareAmount,
+            0,
+            0
+        );
     }
 
     /**
@@ -257,7 +265,15 @@ abstract contract _FungibleVaultToken is
 
         assetAmount = _previewRedeem(shareAmount);
 
-        _withdraw(msg.sender, receiver, owner, assetAmount, shareAmount, 0, 0);
+        _withdraw(
+            _msgSender(),
+            receiver,
+            owner,
+            assetAmount,
+            shareAmount,
+            0,
+            0
+        );
     }
 
     /**

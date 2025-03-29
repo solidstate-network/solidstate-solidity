@@ -203,6 +203,22 @@ library Slot {
     }
 
     /**
+     * @notice clear contents of storage slot
+     * @param slot storage slot to clear
+     */
+    function clear(StorageSlot slot) internal {
+        write(slot, bytes32(0));
+    }
+
+    /**
+     * @notice clear contents of transient storage slot
+     * @param slot transient storage slot to clear
+     */
+    function clear(TransientSlot slot) internal {
+        write(slot, bytes32(0));
+    }
+
+    /**
      * @notice calculate the slot of an index of an array
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate
