@@ -6,7 +6,11 @@ library IncrementalMerkleTree {
     using IncrementalMerkleTree for Tree;
 
     struct Tree {
-        bytes32[][] __nodes;
+        // underlying array always has even length
+        // elements are stored at even indexes, and their hashes in between
+        // last index is empty
+
+        bytes32[] _elements;
     }
 
     /**
@@ -15,58 +19,50 @@ library IncrementalMerkleTree {
      * @return treeSize size of tree
      */
     function size(Tree storage self) internal view returns (uint256 treeSize) {
-        assembly {
-            // assembly block equivalent to:
-            //
-            // if (self.height() > 0) treeSize = self.__nodes[0].length;
-
-            mstore(0x00, self.slot)
-            treeSize := sload(keccak256(0x00, 0x20))
-        }
+        // underlying array is exactly twice the size of the set of leaf nodes
+        treeSize = self._elements.length >> 1;
     }
 
     /**
-     * @notice query one-indexed height of tree
-     * @dev conventional zero-indexed height would require the use of signed integers, so height is one-indexed instead
+     * @notice query height of tree
      * @param self Tree struct storage reference
-     * @return treeHeight one-indexed height of tree
+     * @return treeHeight height of tree
      */
     function height(
         Tree storage self
     ) internal view returns (uint256 treeHeight) {
-        assembly {
-            // assembly block equivalent to:
-            //
-            // treeHeight = self.__nodes.length;
+        uint256 length = self._elements.length;
 
-            treeHeight := sload(self.slot)
+        if (length == 0) revert();
+
+        while (2 << treeHeight < length) {
+            unchecked {
+                treeHeight++;
+            }
         }
     }
 
     /**
      * @notice query Merkle root
      * @param self Tree struct storage reference
-     * @return hash root hash
+     * @return rootHash root hash
      */
-    function root(Tree storage self) internal view returns (bytes32 hash) {
-        assembly {
-            // assembly block equivalent to:
-            //
-            // if (self.height() > 0) hash = self.__nodes[self.height() - 1][0];
-
-            let treeHeight := sload(self.slot)
-            if gt(treeHeight, 0) {
-                mstore(0x00, self.slot)
-                mstore(0x00, add(keccak256(0x00, 0x20), sub(treeHeight, 1)))
-                hash := sload(keccak256(0x00, 0x20))
-            }
+    function root(Tree storage self) internal view returns (bytes32 rootHash) {
+        unchecked {
+            rootHash = _at(_arraySlot(self), (1 << self.height()) - 1);
         }
     }
 
+    /**
+     * @notice retrieve element at given index
+     * @param self Tree struct storage reference
+     * @param index index to query
+     * @return element element stored at index
+     */
     function at(
         Tree storage self,
         uint256 index
-    ) internal view returns (bytes32 hash) {
+    ) internal view returns (bytes32 element) {
         if (index >= self.size()) {
             assembly {
                 mstore(0x00, 0x4e487b71)
@@ -75,53 +71,39 @@ library IncrementalMerkleTree {
             }
         }
 
-        assembly {
-            // assembly block equivalent to:
-            //
-            // hash = self.__nodes[0][index];
-
-            mstore(0x00, self.slot)
-            mstore(0x00, keccak256(0x00, 0x20))
-            hash := sload(add(keccak256(0x00, 0x20), index))
-        }
+        element = _at(_arraySlot(self), index << 1);
     }
 
     /**
      * @notice add new element to tree
      * @param self Tree struct storage reference
-     * @param hash to add
+     * @param element element to add
      */
-    function push(Tree storage self, bytes32 hash) internal {
-        // index to add to tree
-        uint256 updateIndex = self.size();
-
-        // update stored tree size
+    function push(Tree storage self, bytes32 element) internal {
+        // index of element being added
+        uint256 index;
 
         assembly {
-            mstore(0x00, self.slot)
-            sstore(keccak256(0x00, 0x20), add(updateIndex, 1))
+            index := sload(self.slot)
+            sstore(self.slot, add(index, 2))
         }
 
-        // add new layer if tree is at capacity
-
-        uint256 treeHeight = self.height();
-
-        if (updateIndex == (1 << treeHeight) >> 1) {
-            // increment tree height in storage
-            assembly {
-                sstore(self.slot, add(treeHeight, 1))
-            }
-        }
-
-        // add hash to tree
-
-        self.set(updateIndex, hash);
+        _set(_arraySlot(self), 0, index, index, element);
     }
 
+    /**
+     * @notice remove last element from tree
+     * @param self Tree struct storage reference
+     */
     function pop(Tree storage self) internal {
-        uint256 treeSize = self.size();
+        // index of next available position in array
+        uint256 index;
 
-        if (treeSize == 0) {
+        assembly {
+            index := sload(self.slot)
+        }
+
+        if (index == 0) {
             assembly {
                 mstore(0x00, 0x4e487b71)
                 mstore(0x20, 0x32)
@@ -129,43 +111,34 @@ library IncrementalMerkleTree {
             }
         }
 
-        unchecked {
-            // index to remove from tree
-            uint256 updateIndex = treeSize - 1;
-
-            // update stored tree size
-
-            assembly {
-                mstore(0x00, self.slot)
-                sstore(keccak256(0x00, 0x20), updateIndex)
-            }
-
-            // if new tree is full, remove excess layer
-            // if no layer is removed, recalculate hashes
-
-            uint256 treeHeight = self.height();
-
-            if (updateIndex == (1 << treeHeight) >> 2) {
-                // decrement tree height in storage
-                assembly {
-                    sstore(self.slot, sub(treeHeight, 1))
-                }
-            } else {
-                self.set(updateIndex - 1, self.at(updateIndex - 1));
-            }
+        assembly {
+            // index of element being removed
+            index := sub(index, 2)
+            sstore(self.slot, index)
         }
+
+        unchecked {
+            // if tree is now empty or is balanced, do nothing more
+            if (index == 0 || (index & (index - 1) == 0)) return;
+
+            // index of last element after removal, which may need to be reset
+            index -= 2;
+        }
+
+        bytes32 slot = _arraySlot(self);
+
+        // TODO: don't start at depth 0
+        _set(slot, 0, index, index, _at(slot, index));
     }
 
     /**
-     * @notice update existing element in tree
+     * @notice overwrite element in tree at given index
      * @param self Tree struct storage reference
      * @param index index to update
-     * @param hash new hash to add
+     * @param element element to add
      */
-    function set(Tree storage self, uint256 index, bytes32 hash) internal {
-        uint256 treeSize = self.size();
-
-        if (index >= treeSize) {
+    function set(Tree storage self, uint256 index, bytes32 element) internal {
+        if (index >= self.size()) {
             assembly {
                 mstore(0x00, 0x4e487b71)
                 mstore(0x20, 0x32)
@@ -173,63 +146,99 @@ library IncrementalMerkleTree {
             }
         }
 
-        _set(self, 0, index, treeSize, hash);
+        unchecked {
+            _set(
+                _arraySlot(self),
+                0,
+                self._elements.length - 2,
+                index << 1,
+                element
+            );
+        }
     }
 
     /**
-     * @notice update element in tree and recursively recalculate hashes
+     * @notice calculate the storage slot of the underlying bytes32 array
      * @param self Tree struct storage reference
-     * @param rowIndex index of current row to update
-     * @param colIndex index of current column to update
-     * @param rowLength length of row at rowIndex
-     * @param hash hash to store at current position
+     * @return slot storage slot
      */
-    function _set(
-        Tree storage self,
-        uint256 rowIndex,
-        uint256 colIndex,
-        uint256 rowLength,
-        bytes32 hash
-    ) private {
-        // store hash in array via assembly to avoid array length sload
-
+    function _arraySlot(Tree storage self) private pure returns (bytes32 slot) {
         assembly {
-            // assembly block equivalent to:
-            //
-            // bytes32[] storage row = nodes[rowIndex];
-            // row[colIndex] = hash;
-
-            mstore(0x00, self.slot)
-            mstore(0x00, add(keccak256(0x00, 0x20), rowIndex))
-            sstore(add(keccak256(0x00, 0x20), colIndex), hash)
+            mstore(0, self.slot)
+            slot := keccak256(0, 32)
         }
+    }
 
-        if (rowLength == 1) return;
+    /**
+     * @notice retreive element at given internal index
+     * @param arraySlot cached slot of underlying array
+     * @param index index to query
+     * @return element element stored at index
+     */
+    function _at(
+        bytes32 arraySlot,
+        uint256 index
+    ) private view returns (bytes32 element) {
+        assembly {
+            element := sload(add(arraySlot, index))
+        }
+    }
 
-        unchecked {
-            if (colIndex & 1 == 1) {
-                // sibling is on the left
-                assembly {
-                    let sibling := sload(
-                        add(keccak256(0x00, 0x20), sub(colIndex, 1))
-                    )
-                    mstore(0x00, sibling)
-                    mstore(0x20, hash)
-                    hash := keccak256(0x00, 0x40)
-                }
-            } else if (colIndex < rowLength - 1) {
-                // sibling is on the right (and sibling exists)
-                assembly {
-                    let sibling := sload(
-                        add(keccak256(0x00, 0x20), add(colIndex, 1))
-                    )
-                    mstore(0x00, hash)
-                    mstore(0x20, sibling)
-                    hash := keccak256(0x00, 0x40)
-                }
+    function _set(
+        bytes32 arraySlot,
+        uint256 depth,
+        uint256 maxIndex,
+        uint256 index,
+        bytes32 element
+    ) private {
+        if (index <= maxIndex) {
+            // current index is within bounds of data, so write it to storage
+            assembly {
+                sstore(add(arraySlot, index), element)
             }
         }
 
-        _set(self, rowIndex + 1, colIndex >> 1, (rowLength + 1) >> 1, hash);
+        // lowest n bits will always be (1) for elements at depth n
+        // flip bit n+1 of an element's index to get it sibling
+        uint256 mask = 2 << depth;
+
+        if (mask <= maxIndex) {
+            uint256 indexRight = index | mask;
+
+            // if current element is on the left and right element does not exist
+            // pass element along to next depth unhashed
+
+            if (index == indexRight) {
+                // current element is on the right
+                // left element is guaranteed to exist
+                assembly {
+                    mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
+                    mstore(32, element)
+                    element := keccak256(0, 64)
+                }
+            } else if (indexRight <= maxIndex) {
+                // current element is on the left
+                // right element exists
+                assembly {
+                    mstore(0, element)
+                    mstore(32, sload(add(arraySlot, indexRight)))
+                    element := keccak256(0, 64)
+                }
+            }
+
+            unchecked {
+                // calculate the index of next element at depth n+1
+                // midpoint between current left and right index
+                // index = indexRight ^ (3 << depth)
+
+                _set(
+                    arraySlot,
+                    depth + 1,
+                    maxIndex,
+                    indexRight ^ (3 << depth),
+                    element
+                );
+            }
+        }
     }
 }
