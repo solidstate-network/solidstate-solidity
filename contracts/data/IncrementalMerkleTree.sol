@@ -111,7 +111,9 @@ library IncrementalMerkleTree {
         bytes32 slot = _arraySlot(self);
 
         // index of last element after removal, which may need to be reset
-        index -= 2;
+        unchecked {
+            index -= 2;
+        }
 
         _set(slot, 0, index, _at(slot, index), index);
     }
