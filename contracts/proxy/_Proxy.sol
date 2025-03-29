@@ -3,18 +3,19 @@
 pragma solidity ^0.8.24;
 
 import { Slot } from '../data/Slot.sol';
+import { _Context } from '../meta/_Context.sol';
 import { Address } from '../utils/Address.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
 import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { _IProxy } from './_IProxy.sol';
 
-abstract contract _Proxy is _IProxy {
+abstract contract _Proxy is _IProxy, _Context {
     using Address for address;
     using Bytes32 for bytes32;
     using Slot for Slot.StorageSlot;
 
     modifier onlyProxyAdmin() {
-        if (msg.sender != _getProxyAdmin()) {
+        if (_msgSender() != _getProxyAdmin()) {
             revert Proxy__SenderIsNotAdmin();
         }
         _;

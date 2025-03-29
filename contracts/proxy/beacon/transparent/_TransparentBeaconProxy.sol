@@ -19,13 +19,13 @@ abstract contract _TransparentBeaconProxy is
         if (
             msg.sig ==
             ITransparentBeaconProxyWithAdminFunctions.setProxyAdmin.selector &&
-            msg.sender == _getProxyAdmin()
-        ) return _setProxyAdmin(address(bytes20(msg.data[16:])));
+            _msgSender() == _getProxyAdmin()
+        ) return _setProxyAdmin(address(bytes20(_msgData()[16:])));
         if (
             msg.sig ==
             ITransparentBeaconProxyWithAdminFunctions.setBeacon.selector &&
-            msg.sender == _getProxyAdmin()
-        ) return _setBeacon(address(bytes20(msg.data[16:])));
+            _msgSender() == _getProxyAdmin()
+        ) return _setBeacon(address(bytes20(_msgData()[16:])));
         super._fallback();
     }
 }
