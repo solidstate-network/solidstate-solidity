@@ -96,11 +96,24 @@ library IncrementalMerkleTree {
      * @param self Tree struct storage reference
      */
     function pop(Tree storage self) internal {
-        // index of element being removed
+        // index of next available position in array
         uint256 index;
 
         assembly {
-            index := sub(sload(self.slot), 2)
+            index := sload(self.slot)
+        }
+
+        if (index == 0) {
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
+        }
+
+        assembly {
+            // index of element being removed
+            index := sub(index, 2)
             sstore(self.slot, index)
         }
 
