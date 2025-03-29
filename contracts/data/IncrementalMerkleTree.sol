@@ -2,178 +2,233 @@
 
 pragma solidity ^0.8.24;
 
+import { Panic } from '../utils/Panic.sol';
+
 library IncrementalMerkleTree {
     using IncrementalMerkleTree for Tree;
 
     struct Tree {
-        bytes32[][] nodes;
+        // underlying array always has even length
+        // elements are stored at even indexes, and their hashes in between
+        // last index is empty
+
+        bytes32[] _elements;
     }
 
     /**
      * @notice query number of elements contained in tree
-     * @param t Tree struct storage reference
+     * @param self Tree struct storage reference
      * @return treeSize size of tree
      */
-    function size(Tree storage t) internal view returns (uint256 treeSize) {
-        if (t.height() > 0) {
-            treeSize = t.nodes[0].length;
-        }
+    function size(Tree storage self) internal view returns (uint256 treeSize) {
+        // underlying array is exactly twice the size of the set of leaf nodes
+        treeSize = self._elements.length >> 1;
     }
 
     /**
-     * @notice query one-indexed height of tree
-     * @dev conventional zero-indexed height would require the use of signed integers, so height is one-indexed instead
-     * @param t Tree struct storage reference
-     * @return one-indexed height of tree
+     * @notice query height of tree
+     * @param self Tree struct storage reference
+     * @return treeHeight height of tree
      */
-    function height(Tree storage t) internal view returns (uint256) {
-        return t.nodes.length;
+    function height(
+        Tree storage self
+    ) internal view returns (uint256 treeHeight) {
+        uint256 length = self._elements.length;
+
+        if (length == 0) revert();
+
+        while (2 << treeHeight < length) {
+            unchecked {
+                treeHeight++;
+            }
+        }
     }
 
     /**
      * @notice query Merkle root
-     * @param t Tree struct storage reference
-     * @return hash root hash
+     * @param self Tree struct storage reference
+     * @return rootHash root hash
      */
-    function root(Tree storage t) internal view returns (bytes32 hash) {
-        uint256 treeHeight = t.height();
-
-        if (treeHeight > 0) {
-            unchecked {
-                hash = t.nodes[treeHeight - 1][0];
-            }
+    function root(Tree storage self) internal view returns (bytes32 rootHash) {
+        unchecked {
+            rootHash = _at(_arraySlot(self), (1 << self.height()) - 1);
         }
     }
 
+    /**
+     * @notice retrieve element at given index
+     * @param self Tree struct storage reference
+     * @param index index to query
+     * @return element element stored at index
+     */
     function at(
-        Tree storage t,
+        Tree storage self,
         uint256 index
-    ) internal view returns (bytes32 hash) {
-        hash = t.nodes[0][index];
+    ) internal view returns (bytes32 element) {
+        if (index >= self.size()) {
+            Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
+        }
+
+        element = _at(_arraySlot(self), index << 1);
     }
 
     /**
      * @notice add new element to tree
-     * @param t Tree struct storage reference
-     * @param hash to add
+     * @param self Tree struct storage reference
+     * @param element element to add
      */
-    function push(Tree storage t, bytes32 hash) internal {
-        unchecked {
-            uint256 treeHeight = t.height();
-            uint256 treeSize = t.size();
+    function push(Tree storage self, bytes32 element) internal {
+        // index of element being added
+        uint256 index;
 
-            // add new layer if tree is at capacity
-
-            if (treeSize == (1 << treeHeight) >> 1) {
-                t.nodes.push();
-                treeHeight++;
-            }
-
-            // add new columns if rows are full
-
-            uint256 row;
-            uint256 col = treeSize;
-
-            while (row < treeHeight && t.nodes[row].length <= col) {
-                t.nodes[row].push();
-                row++;
-                col >>= 1;
-            }
-
-            // add hash to tree
-
-            t.set(treeSize, hash);
-        }
-    }
-
-    function pop(Tree storage t) internal {
-        uint256 treeHeight = t.height();
-        uint256 treeSize = t.size() - 1;
-
-        // remove layer if tree has excess capacity
-
-        if (treeSize == (1 << treeHeight) >> 2) {
-            treeHeight--;
-            t.nodes.pop();
+        assembly {
+            index := sload(self.slot)
+            sstore(self.slot, add(index, 2))
         }
 
-        // remove columns if rows are too long
-
-        uint256 row;
-        uint256 col = treeSize;
-
-        while (row < treeHeight && t.nodes[row].length > col) {
-            t.nodes[row].pop();
-            row++;
-            col = (col + 1) >> 1;
-        }
-
-        // recalculate hashes
-
-        if (treeSize > 0) {
-            t.set(treeSize - 1, t.at(treeSize - 1));
-        }
+        _set(_arraySlot(self), 0, index, index, element);
     }
 
     /**
-     * @notice update existing element in tree
-     * @param t Tree struct storage reference
+     * @notice remove last element from tree
+     * @param self Tree struct storage reference
+     */
+    function pop(Tree storage self) internal {
+        // index of next available position in array
+        uint256 index;
+
+        assembly {
+            index := sload(self.slot)
+        }
+
+        if (index == 0) {
+            Panic.panic(Panic.POP_ON_EMPTY_ARRAY);
+        }
+
+        assembly {
+            // index of element being removed
+            index := sub(index, 2)
+            sstore(self.slot, index)
+        }
+
+        unchecked {
+            // if tree is now empty or is balanced, do nothing more
+            if (index == 0 || (index & (index - 1) == 0)) return;
+
+            // index of last element after removal, which may need to be reset
+            index -= 2;
+        }
+
+        bytes32 slot = _arraySlot(self);
+
+        // TODO: don't start at depth 0
+        _set(slot, 0, index, index, _at(slot, index));
+    }
+
+    /**
+     * @notice overwrite element in tree at given index
+     * @param self Tree struct storage reference
      * @param index index to update
-     * @param hash new hash to add
+     * @param element element to add
      */
-    function set(Tree storage t, uint256 index, bytes32 hash) internal {
+    function set(Tree storage self, uint256 index, bytes32 element) internal {
+        if (index >= self.size()) {
+            Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
+        }
+
         unchecked {
-            _set(t.nodes, 0, index, t.height() - 1, hash);
+            _set(
+                _arraySlot(self),
+                0,
+                self._elements.length - 2,
+                index << 1,
+                element
+            );
         }
     }
 
     /**
-     * @notice update element in tree and recursively recalculate hashes
-     * @param nodes internal tree structure storage reference
-     * @param rowIndex index of current row to update
-     * @param colIndex index of current column to update
-     * @param rootIndex index of root row
-     * @param hash hash to store at current position
+     * @notice calculate the storage slot of the underlying bytes32 array
+     * @param self Tree struct storage reference
+     * @return slot storage slot
      */
+    function _arraySlot(Tree storage self) private pure returns (bytes32 slot) {
+        assembly {
+            mstore(0, self.slot)
+            slot := keccak256(0, 32)
+        }
+    }
+
+    /**
+     * @notice retreive element at given internal index
+     * @param arraySlot cached slot of underlying array
+     * @param index index to query
+     * @return element element stored at index
+     */
+    function _at(
+        bytes32 arraySlot,
+        uint256 index
+    ) private view returns (bytes32 element) {
+        assembly {
+            element := sload(add(arraySlot, index))
+        }
+    }
+
     function _set(
-        bytes32[][] storage nodes,
-        uint256 rowIndex,
-        uint256 colIndex,
-        uint256 rootIndex,
-        bytes32 hash
+        bytes32 arraySlot,
+        uint256 depth,
+        uint256 maxIndex,
+        uint256 index,
+        bytes32 element
     ) private {
-        bytes32[] storage row = nodes[rowIndex];
+        if (index <= maxIndex) {
+            // current index is within bounds of data, so write it to storage
+            assembly {
+                sstore(add(arraySlot, index), element)
+            }
+        }
 
-        row[colIndex] = hash;
+        // lowest n bits will always be (1) for elements at depth n
+        // flip bit n+1 of an element's index to get it sibling
+        uint256 mask = 2 << depth;
 
-        if (rowIndex == rootIndex) return;
+        if (mask <= maxIndex) {
+            uint256 indexRight = index | mask;
 
-        unchecked {
-            if (colIndex & 1 == 1) {
-                // sibling is on the left
+            // if current element is on the left and right element does not exist
+            // pass element along to next depth unhashed
+
+            if (index == indexRight) {
+                // current element is on the right
+                // left element is guaranteed to exist
                 assembly {
-                    mstore(0x00, row.slot)
-                    let sibling := sload(
-                        add(keccak256(0x00, 0x20), sub(colIndex, 1))
-                    )
-                    mstore(0x00, sibling)
-                    mstore(0x20, hash)
-                    hash := keccak256(0x00, 0x40)
+                    mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
+                    mstore(32, element)
+                    element := keccak256(0, 64)
                 }
-            } else if (colIndex + 1 < row.length) {
-                // sibling is on the right (and sibling exists)
+            } else if (indexRight <= maxIndex) {
+                // current element is on the left
+                // right element exists
                 assembly {
-                    mstore(0x00, row.slot)
-                    let sibling := sload(
-                        add(keccak256(0x00, 0x20), add(colIndex, 1))
-                    )
-                    mstore(0x00, hash)
-                    mstore(0x20, sibling)
-                    hash := keccak256(0x00, 0x40)
+                    mstore(0, element)
+                    mstore(32, sload(add(arraySlot, indexRight)))
+                    element := keccak256(0, 64)
                 }
             }
 
-            _set(nodes, rowIndex + 1, colIndex >> 1, rootIndex, hash);
+            unchecked {
+                // calculate the index of next element at depth n+1
+                // midpoint between current left and right index
+                // index = indexRight ^ (3 << depth)
+
+                _set(
+                    arraySlot,
+                    depth + 1,
+                    maxIndex,
+                    indexRight ^ (3 << depth),
+                    element
+                );
+            }
         }
     }
 }
