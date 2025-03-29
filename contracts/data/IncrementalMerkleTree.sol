@@ -104,18 +104,20 @@ library IncrementalMerkleTree {
             sstore(self.slot, index)
         }
 
-        // TODO: do nothing if tree is balanced
-        if (index == 0) return;
-
-        // TODO: don't start at depth 0
-
-        bytes32 slot = _arraySlot(self);
-
-        // index of last element after removal, which may need to be reset
         unchecked {
+            // if tree is now empty, do nothing more
+            if (index == 0) return;
+
+            // if tree is balanced, do nothing more
+            if (index & (index - 1) == 0) return;
+
+            // index of last element after removal, which may need to be reset
             index -= 2;
         }
 
+        bytes32 slot = _arraySlot(self);
+
+        // TODO: don't start at depth 0
         _set(slot, 0, index, index, _at(slot, index));
     }
 
