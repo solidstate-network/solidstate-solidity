@@ -6,6 +6,10 @@ library IncrementalMerkleTree {
     using IncrementalMerkleTree for Tree;
 
     struct Tree {
+        // underlying array always has even length
+        // elements are stored at even indexes, and their hashes in between
+        // last index is empty
+
         bytes32[] _elements;
     }
 
@@ -15,9 +19,8 @@ library IncrementalMerkleTree {
      * @return treeSize size of tree
      */
     function size(Tree storage self) internal view returns (uint256 treeSize) {
-        // underlying array always has odd length
-        // elements are stored at even indexes, and their hashes in between
-        treeSize = (self._elements.length + 1) >> 1;
+        // underlying array is exactly twice the size of the set of leaf nodes
+        treeSize = self._elements.length >> 1;
     }
 
     /**
@@ -76,14 +79,14 @@ library IncrementalMerkleTree {
      * @param element element to add
      */
     function push(Tree storage self, bytes32 element) internal {
-        uint256 treeSize = self.size() + 1;
-        uint256 length = (treeSize << 1) - 1;
+        uint256 length;
 
         assembly {
+            length := add(sload(self.slot), 2)
             sstore(self.slot, length)
         }
 
-        _set(_arraySlot(self), 0, (treeSize - 1) << 1, element, length);
+        _set(_arraySlot(self), 0, length - 2, element, length - 2);
     }
 
     /**
@@ -91,27 +94,21 @@ library IncrementalMerkleTree {
      * @param self Tree struct storage reference
      */
     function pop(Tree storage self) internal {
-        uint256 treeSize = self.size() - 1;
-        uint256 length = treeSize == 0 ? 0 : (treeSize << 1) - 1;
+        uint256 length;
 
         assembly {
+            length := sub(sload(self.slot), 2)
             sstore(self.slot, length)
         }
 
         // TODO: do nothing if tree is balanced
-        if (treeSize == 0) return;
+        if (length == 0) return;
 
         // TODO: don't start at depth 0
 
         bytes32 slot = _arraySlot(self);
 
-        _set(
-            slot,
-            0,
-            (treeSize - 1) << 1,
-            _at(slot, (treeSize - 1) << 1),
-            length
-        );
+        _set(slot, 0, length - 2, _at(slot, length - 2), length - 2);
     }
 
     /**
@@ -121,7 +118,13 @@ library IncrementalMerkleTree {
      * @param element element to add
      */
     function set(Tree storage self, uint256 index, bytes32 element) internal {
-        _set(_arraySlot(self), 0, index << 1, element, self._elements.length);
+        _set(
+            _arraySlot(self),
+            0,
+            index << 1,
+            element,
+            self._elements.length - 2
+        );
     }
 
     /**
@@ -158,7 +161,7 @@ library IncrementalMerkleTree {
         bytes32 element,
         uint256 length
     ) private {
-        if (index < length) {
+        if (index <= length) {
             // current index is within bounds of data, so write it to storage
             assembly {
                 sstore(add(arraySlot, index), element)
@@ -169,7 +172,7 @@ library IncrementalMerkleTree {
         // flip bit n+1 of an element's index to get it sibling
         uint256 mask = 2 << depth;
 
-        if (mask < length) {
+        if (mask <= length) {
             uint256 indexRight = index | mask;
 
             // if current element is on the left and right element does not exist
@@ -183,7 +186,7 @@ library IncrementalMerkleTree {
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
-            } else if (indexRight < length) {
+            } else if (indexRight <= length) {
                 // current element is on the left
                 // right element exists
                 assembly {
