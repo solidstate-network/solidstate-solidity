@@ -111,5 +111,28 @@ describe('Bytes32', async () => {
         expect(await instance.$toString.staticCall(value)).to.eq(value);
       });
     });
+
+    describe('#toBuilder(bytes32)', () => {
+      it('returns Bytes32Builder struct with max length', async () => {
+        const data = ethers.hexlify(ethers.randomBytes(32));
+
+        expect(await instance['$toBuilder(bytes32)'](data)).to.deep.eq([
+          data,
+          256,
+        ]);
+      });
+    });
+
+    describe('#toBuilder(bytes32,uint256)', () => {
+      it('returns Bytes32Builder struct with specified length', async () => {
+        const data = ethers.hexlify(ethers.randomBytes(32));
+
+        for (let i = 0n; i <= 256n; i += 8n) {
+          expect(
+            await instance['$toBuilder(bytes32,uint256)'](data, i),
+          ).to.deep.eq([data, i]);
+        }
+      });
+    });
   });
 });

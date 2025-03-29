@@ -1,3 +1,4 @@
+import './tasks/generate_bytes32_builder';
 import './tasks/generate_eip_712';
 import './tasks/rename_entity';
 import './tasks/scaffold_contract';
@@ -15,6 +16,12 @@ import { HardhatUserConfig } from 'hardhat/types';
 import 'solidity-coverage';
 
 const config: HardhatUserConfig = {
+  networks: {
+    hardhat: {
+      allowUnlimitedContractSize: true,
+    },
+  },
+
   solidity: {
     version: '0.8.29',
     settings: {
