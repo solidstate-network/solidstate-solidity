@@ -188,8 +188,12 @@ library IncrementalMerkleTree {
             }
         }
 
-        // lowest n bits will always be (1) for elements at depth n
-        // flip bit n+1 of an element's index to get it sibling
+        // all elements at depth n will share the lowest n bits
+        // these bits also match value of the depth itself
+
+        // create mask of bit n+1 for depth n
+        // flipping this bit of element's index yields the index of its sibling
+        // the mask is equal to 2 ** (n + 1) and is also used to determine end of loop
         uint256 mask = 2 << depth;
 
         if (mask <= maxIndex) {
