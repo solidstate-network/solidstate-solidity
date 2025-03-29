@@ -70,6 +70,7 @@ library IncrementalMerkleTree {
                 revert(0x1c, 0x24)
             }
         }
+
         element = _at(_arraySlot(self), index << 1);
     }
 
@@ -125,6 +126,14 @@ library IncrementalMerkleTree {
      * @param element element to add
      */
     function set(Tree storage self, uint256 index, bytes32 element) internal {
+        if (index >= self.size()) {
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
+        }
+
         _set(
             _arraySlot(self),
             0,
