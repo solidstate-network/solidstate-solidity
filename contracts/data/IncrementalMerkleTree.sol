@@ -164,11 +164,11 @@ library IncrementalMerkleTree {
     function _set(
         bytes32 arraySlot,
         uint256 depth,
-        uint256 length,
+        uint256 maxIndex,
         uint256 index,
         bytes32 element
     ) private {
-        if (index <= length) {
+        if (index <= maxIndex) {
             // current index is within bounds of data, so write it to storage
             assembly {
                 sstore(add(arraySlot, index), element)
@@ -179,7 +179,7 @@ library IncrementalMerkleTree {
         // flip bit n+1 of an element's index to get it sibling
         uint256 mask = 2 << depth;
 
-        if (mask <= length) {
+        if (mask <= maxIndex) {
             uint256 indexRight = index | mask;
 
             // if current element is on the left and right element does not exist
@@ -193,7 +193,7 @@ library IncrementalMerkleTree {
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
-            } else if (indexRight <= length) {
+            } else if (indexRight <= maxIndex) {
                 // current element is on the left
                 // right element exists
                 assembly {
@@ -211,7 +211,7 @@ library IncrementalMerkleTree {
                 _set(
                     arraySlot,
                     depth + 1,
-                    length,
+                    maxIndex,
                     indexRight ^ (3 << depth),
                     element
                 );
