@@ -203,17 +203,19 @@ library IncrementalMerkleTree {
                 }
             }
 
-            // calculate the index of next element at depth n+1
-            // midpoint between current left and right index
-            // index = indexRight ^ (3 << depth)
+            unchecked {
+                // calculate the index of next element at depth n+1
+                // midpoint between current left and right index
+                // index = indexRight ^ (3 << depth)
 
-            _set(
-                arraySlot,
-                depth + 1,
-                length,
-                indexRight ^ (3 << depth),
-                element
-            );
+                _set(
+                    arraySlot,
+                    depth + 1,
+                    length,
+                    indexRight ^ (3 << depth),
+                    element
+                );
+            }
         }
     }
 }
