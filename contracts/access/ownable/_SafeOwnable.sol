@@ -8,7 +8,7 @@ import { _Ownable } from './_Ownable.sol';
 
 abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     modifier onlyNomineeOwner() {
-        if (msg.sender != _nomineeOwner())
+        if (_msgSender() != _nomineeOwner())
             revert SafeOwnable__NotNomineeOwner();
         _;
     }
@@ -27,7 +27,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      * @notice accept transfer of contract ownership
      */
     function _acceptOwnership() internal virtual onlyNomineeOwner {
-        _setOwner(msg.sender);
+        _setOwner(_msgSender());
         delete ERC173Storage
             .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .nomineeOwner;

@@ -3,12 +3,13 @@
 pragma solidity ^0.8.24;
 
 import { ERC20Storage } from '../../storage/ERC20Storage.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IFungibleToken } from './_IFungibleToken.sol';
 
 /**
  * @title Base FungibleToken internal functions, excluding optional extensions
  */
-abstract contract _FungibleToken is _IFungibleToken {
+abstract contract _FungibleToken is _IFungibleToken, _Context {
     /**
      * @notice query the total minted token supply
      * @return token supply
@@ -49,7 +50,7 @@ abstract contract _FungibleToken is _IFungibleToken {
     }
 
     function _approve(address spender, uint256 amount) internal returns (bool) {
-        return _approve(msg.sender, spender, amount);
+        return _approve(_msgSender(), spender, amount);
     }
 
     /**
@@ -143,7 +144,7 @@ abstract contract _FungibleToken is _IFungibleToken {
         address recipient,
         uint256 amount
     ) internal returns (bool) {
-        return _transfer(msg.sender, recipient, amount);
+        return _transfer(_msgSender(), recipient, amount);
     }
 
     /**
@@ -193,7 +194,7 @@ abstract contract _FungibleToken is _IFungibleToken {
         address recipient,
         uint256 amount
     ) internal virtual returns (bool) {
-        _decreaseAllowance(holder, msg.sender, amount);
+        _decreaseAllowance(holder, _msgSender(), amount);
 
         _transfer(holder, recipient, amount);
 
