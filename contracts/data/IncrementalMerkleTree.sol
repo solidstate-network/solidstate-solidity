@@ -87,7 +87,7 @@ library IncrementalMerkleTree {
             sstore(self.slot, add(index, 2))
         }
 
-        _set(_arraySlot(self), 0, index, element, index);
+        _set(_arraySlot(self), 0, index, index, element);
     }
 
     /**
@@ -115,7 +115,7 @@ library IncrementalMerkleTree {
             index -= 2;
         }
 
-        _set(slot, 0, index, _at(slot, index), index);
+        _set(slot, 0, index, index, _at(slot, index));
     }
 
     /**
@@ -128,9 +128,9 @@ library IncrementalMerkleTree {
         _set(
             _arraySlot(self),
             0,
+            self._elements.length - 2,
             index << 1,
-            element,
-            self._elements.length - 2
+            element
         );
     }
 
@@ -164,9 +164,9 @@ library IncrementalMerkleTree {
     function _set(
         bytes32 arraySlot,
         uint256 depth,
+        uint256 length,
         uint256 index,
-        bytes32 element,
-        uint256 length
+        bytes32 element
     ) private {
         if (index <= length) {
             // current index is within bounds of data, so write it to storage
@@ -210,9 +210,9 @@ library IncrementalMerkleTree {
             _set(
                 arraySlot,
                 depth + 1,
+                length,
                 indexRight ^ (3 << depth),
-                element,
-                length
+                element
             );
         }
     }
