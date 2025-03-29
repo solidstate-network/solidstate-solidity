@@ -79,14 +79,15 @@ library IncrementalMerkleTree {
      * @param element element to add
      */
     function push(Tree storage self, bytes32 element) internal {
-        uint256 length;
+        // index of element being added
+        uint256 index;
 
         assembly {
-            length := add(sload(self.slot), 2)
-            sstore(self.slot, length)
+            index := sload(self.slot)
+            sstore(self.slot, add(index, 2))
         }
 
-        _set(_arraySlot(self), 0, length - 2, element, length - 2);
+        _set(_arraySlot(self), 0, index, element, index);
     }
 
     /**
@@ -94,21 +95,25 @@ library IncrementalMerkleTree {
      * @param self Tree struct storage reference
      */
     function pop(Tree storage self) internal {
-        uint256 length;
+        // index of element being removed
+        uint256 index;
 
         assembly {
-            length := sub(sload(self.slot), 2)
-            sstore(self.slot, length)
+            index := sub(sload(self.slot), 2)
+            sstore(self.slot, index)
         }
 
         // TODO: do nothing if tree is balanced
-        if (length == 0) return;
+        if (index == 0) return;
 
         // TODO: don't start at depth 0
 
         bytes32 slot = _arraySlot(self);
 
-        _set(slot, 0, length - 2, _at(slot, length - 2), length - 2);
+        // index of last element after removal, which may need to be reset
+        index -= 2;
+
+        _set(slot, 0, index, _at(slot, index), index);
     }
 
     /**
