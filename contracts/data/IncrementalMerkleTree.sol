@@ -46,7 +46,7 @@ library IncrementalMerkleTree {
      */
     function root(Tree storage self) internal view returns (bytes32 rootHash) {
         unchecked {
-            return self._elements[(1 << self.height()) - 1];
+            rootHash = _at(_arraySlot(self), (1 << self.height()) - 1);
         }
     }
 
@@ -60,7 +60,14 @@ library IncrementalMerkleTree {
         Tree storage self,
         uint256 index
     ) internal view returns (bytes32 element) {
-        element = self._elements[index << 1];
+        if (index >= self.size()) {
+            assembly {
+                mstore(0x00, 0x4e487b71)
+                mstore(0x20, 0x32)
+                revert(0x1c, 0x24)
+            }
+        }
+        element = _at(_arraySlot(self), index << 1);
     }
 
     /**
@@ -96,11 +103,13 @@ library IncrementalMerkleTree {
 
         // TODO: don't start at depth 0
 
+        bytes32 slot = _arraySlot(self);
+
         _set(
-            _arraySlot(self),
+            slot,
             0,
             (treeSize - 1) << 1,
-            self.at(treeSize - 1),
+            _at(slot, (treeSize - 1) << 1),
             length
         );
     }
@@ -124,6 +133,21 @@ library IncrementalMerkleTree {
         assembly {
             mstore(0, self.slot)
             slot := keccak256(0, 32)
+        }
+    }
+
+    /**
+     * @notice retreive element at given internal index
+     * @param arraySlot cached slot of underlying array
+     * @param index index to query
+     * @return element element stored at index
+     */
+    function _at(
+        bytes32 arraySlot,
+        uint256 index
+    ) private view returns (bytes32 element) {
+        assembly {
+            element := sload(add(arraySlot, index))
         }
     }
 
