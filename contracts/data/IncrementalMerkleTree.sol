@@ -118,11 +118,8 @@ library IncrementalMerkleTree {
         }
 
         unchecked {
-            // if tree is now empty, do nothing more
-            if (index == 0) return;
-
-            // if tree is balanced, do nothing more
-            if (index & (index - 1) == 0) return;
+            // if tree is now empty or is balanced, do nothing more
+            if (index == 0 || (index & (index - 1) == 0)) return;
 
             // index of last element after removal, which may need to be reset
             index -= 2;
