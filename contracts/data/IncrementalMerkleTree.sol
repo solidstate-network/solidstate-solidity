@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+import { Panic } from '../utils/Panic.sol';
+
 library IncrementalMerkleTree {
     using IncrementalMerkleTree for Tree;
 
@@ -64,11 +66,7 @@ library IncrementalMerkleTree {
         uint256 index
     ) internal view returns (bytes32 element) {
         if (index >= self.size()) {
-            assembly {
-                mstore(0x00, 0x4e487b71)
-                mstore(0x20, 0x32)
-                revert(0x1c, 0x24)
-            }
+            Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
 
         element = _at(_arraySlot(self), index << 1);
@@ -104,11 +102,7 @@ library IncrementalMerkleTree {
         }
 
         if (index == 0) {
-            assembly {
-                mstore(0x00, 0x4e487b71)
-                mstore(0x20, 0x32)
-                revert(0x1c, 0x24)
-            }
+            Panic.panic(Panic.POP_ON_EMPTY_ARRAY);
         }
 
         assembly {
@@ -139,11 +133,7 @@ library IncrementalMerkleTree {
      */
     function set(Tree storage self, uint256 index, bytes32 element) internal {
         if (index >= self.size()) {
-            assembly {
-                mstore(0x00, 0x4e487b71)
-                mstore(0x20, 0x32)
-                revert(0x1c, 0x24)
-            }
+            Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
 
         unchecked {

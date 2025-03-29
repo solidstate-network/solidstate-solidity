@@ -210,7 +210,7 @@ describe('IncrementalMerkleTree', () => {
     describe('reverts if', () => {
       it('tree is size zero', async () => {
         await expect(instance.$pop(STORAGE_SLOT)).to.be.revertedWithPanic(
-          PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS,
+          PANIC_CODES.POP_ON_EMPTY_ARRAY,
         );
       });
     });
