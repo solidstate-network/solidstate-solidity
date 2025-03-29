@@ -134,13 +134,15 @@ library IncrementalMerkleTree {
             }
         }
 
-        _set(
-            _arraySlot(self),
-            0,
-            self._elements.length - 2,
-            index << 1,
-            element
-        );
+        unchecked {
+            _set(
+                _arraySlot(self),
+                0,
+                self._elements.length - 2,
+                index << 1,
+                element
+            );
+        }
     }
 
     /**
