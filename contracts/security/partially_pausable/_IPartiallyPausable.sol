@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-interface _IPartiallyPausable {
+import { _IContext } from '../../meta/_IContext.sol';
+
+interface _IPartiallyPausable is _IContext {
     error PartiallyPausable__PartiallyPaused();
     error PartiallyPausable__NotPartiallyPaused();
 

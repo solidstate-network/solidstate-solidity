@@ -6,13 +6,14 @@ import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { Address } from '../../utils/Address.sol';
 import { Uint256 } from '../../utils/Uint256.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IAccessControl } from './_IAccessControl.sol';
 
 /**
  * @title Role-based access control system
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract _AccessControl is _IAccessControl {
+abstract contract _AccessControl is _IAccessControl, _Context {
     using Address for address;
     using EnumerableSet for EnumerableSet.AddressSet;
     using Uint256 for uint256;
@@ -45,7 +46,7 @@ abstract contract _AccessControl is _IAccessControl {
      * @param role role to query
      */
     function _checkRole(bytes32 role) internal view virtual {
-        _checkRole(role, msg.sender);
+        _checkRole(role, _msgSender());
     }
 
     /**
@@ -117,7 +118,7 @@ abstract contract _AccessControl is _IAccessControl {
      * @param role role to relinquish
      */
     function _renounceRole(bytes32 role) internal virtual {
-        _setRole(role, msg.sender, false);
+        _setRole(role, _msgSender(), false);
     }
 
     function _setRole(
@@ -131,14 +132,14 @@ abstract contract _AccessControl is _IAccessControl {
                 .roles[role]
                 .members
                 .add(account);
-            emit RoleGranted(role, account, msg.sender);
+            emit RoleGranted(role, account, _msgSender());
         } else {
             AccessControlStorage
                 .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
                 .remove(account);
-            emit RoleRevoked(role, account, msg.sender);
+            emit RoleRevoked(role, account, _msgSender());
         }
     }
 

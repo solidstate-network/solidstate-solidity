@@ -96,7 +96,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#read(uint256)', () => {
+    describe('#read()', () => {
       it('reads bytes32 data from arbitrary storage slot', async () => {
         const slot = ethers.hexlify(ethers.randomBytes(32));
         const data = ethers.ZeroHash;
@@ -113,7 +113,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#write(uint256,bytes32)', () => {
+    describe('#write(bytes32)', () => {
       it('writes bytes32 data to arbitrary storage slot', async () => {
         const slot = seedToStorageSlot('solidstate.layout.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
@@ -126,6 +126,21 @@ describe('Slot', () => {
 
         expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
           data,
+        );
+      });
+    });
+
+    describe('#clear()', () => {
+      it('clears data from arbitrary storage slot', async () => {
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        await instance.$write_Slot_StorageSlot(slot, data);
+
+        await instance.$clear_Slot_StorageSlot(slot);
+
+        expect(await instance.$read_Slot_StorageSlot.staticCall(slot)).to.equal(
+          ethers.ZeroHash,
         );
       });
     });
@@ -210,7 +225,7 @@ describe('Slot', () => {
       });
     });
 
-    describe('#read(uint256)', () => {
+    describe('#read()', () => {
       it('reads bytes32 data from arbitrary transient slot', async () => {
         const slot = ethers.hexlify(ethers.randomBytes(32));
         const data = ethers.ZeroHash;
@@ -233,16 +248,29 @@ describe('Slot', () => {
       });
     });
 
-    describe('#write(uint256,bytes32)', () => {
+    describe('#write(bytes32)', () => {
       it('writes bytes32 data to arbitrary transient slot', async () => {
         const testInstance = await new SlotTest__factory(deployer).deploy();
 
         const slot = seedToStorageSlot('solidstate.layout.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
 
-        expect(await testInstance.writeAndRead.staticCall(slot, data)).to.eq(
-          data,
-        );
+        expect(
+          await testInstance.transientWriteTest.staticCall(slot, data),
+        ).to.eq(data);
+      });
+    });
+
+    describe('#clear()', () => {
+      it('clears data from arbitrary transient slot', async () => {
+        const testInstance = await new SlotTest__factory(deployer).deploy();
+
+        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const data = ethers.zeroPadValue(deployer.address, 32);
+
+        expect(
+          await testInstance.transientClearTest.staticCall(slot, data),
+        ).to.eq(ethers.ZeroHash);
       });
     });
   });
