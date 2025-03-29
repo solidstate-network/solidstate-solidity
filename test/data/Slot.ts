@@ -132,7 +132,7 @@ describe('Slot', () => {
 
     describe('#clear()', () => {
       it('clears data from arbitrary storage slot', async () => {
-        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const slot = seedToStorageSlot('solidstate.layout.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
 
         await instance.$write_Slot_StorageSlot(slot, data);
@@ -265,7 +265,7 @@ describe('Slot', () => {
       it('clears data from arbitrary transient slot', async () => {
         const testInstance = await new SlotTest__factory(deployer).deploy();
 
-        const slot = seedToStorageSlot('solidstate.contracts.storage.Ownable');
+        const slot = seedToStorageSlot('solidstate.layout.Ownable');
         const data = ethers.zeroPadValue(deployer.address, 32);
 
         expect(
