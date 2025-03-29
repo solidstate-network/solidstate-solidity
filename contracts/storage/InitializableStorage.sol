@@ -6,7 +6,7 @@ import { Slot } from '../data/Slot.sol';
 
 library InitializableStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.Initializable
+     * @custom:storage-location erc7201:solidstate.layout.Initializable
      */
     struct Layout {
         uint8 initialized;
@@ -17,9 +17,7 @@ library InitializableStorage {
             keccak256(
                 abi.encode(
                     uint256(
-                        keccak256(
-                            bytes('solidstate.contracts.storage.Initializable')
-                        )
+                        keccak256(bytes('solidstate.layout.Initializable'))
                     ) - 1
                 )
             ) & ~bytes32(uint256(0xff))

@@ -6,7 +6,7 @@ import { Slot } from '../data/Slot.sol';
 
 library ERC165Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC165
+     * @custom:storage-location erc7201:solidstate.layout.ERC165
      */
     struct Layout {
         mapping(bytes4 interfaceId => bool supportStatus) supportedInterfaces;
@@ -16,9 +16,7 @@ library ERC165Storage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.contracts.storage.ERC165'))
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.ERC165'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );

@@ -19,12 +19,10 @@ describe('BeaconProxy', () => {
     implementation = await new $Ownable__factory(deployer).deploy();
 
     beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function getImplementation () external view returns (address)',
+      'function implementation () external view returns (address)',
     ]);
 
-    await beacon.mock.getImplementation.returns(
-      await implementation.getAddress(),
-    );
+    await beacon.mock.implementation.returns(await implementation.getAddress());
 
     instance = await new $BeaconProxy__factory(deployer).deploy();
 
@@ -51,6 +49,18 @@ describe('BeaconProxy', () => {
           await expect(instance.$_getImplementation.staticCall()).to.be
             .reverted;
         });
+      });
+    });
+
+    describe('#_setBeacon(address)', () => {
+      it('updates implementation address', async () => {
+        const address = await instance.getAddress();
+
+        expect(await instance.$_getBeacon.staticCall()).not.to.equal(address);
+
+        await instance.$_setBeacon(address);
+
+        expect(await instance.$_getBeacon.staticCall()).to.equal(address);
       });
     });
   });

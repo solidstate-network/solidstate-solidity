@@ -1,5 +1,4 @@
 import { DiamondProxyBehaviorArgs, describeBehaviorOfDiamondProxy } from '..';
-import { OwnableBehaviorArgs } from '../../../access';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
@@ -8,8 +7,7 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondProxyFallbackBehaviorArgs
-  extends DiamondProxyBehaviorArgs,
-    OwnableBehaviorArgs {
+  extends DiamondProxyBehaviorArgs {
   fallbackAddress: string;
 }
 
@@ -22,13 +20,13 @@ export function describeBehaviorOfDiamondProxyFallback(
 
   describe('::DiamondProxyFallback', () => {
     let instance: IDiamondProxyFallback;
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let proxyAdmin: SignerWithAddress;
+    let nonProxyAdmin: SignerWithAddress;
 
     beforeEach(async () => {
       instance = await deploy();
-      owner = await args.getOwner();
-      nonOwner = await args.getNonOwner();
+      proxyAdmin = await args.getProxyAdmin();
+      nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
     describeBehaviorOfDiamondProxy(async () => instance, args, [
@@ -39,7 +37,7 @@ export function describeBehaviorOfDiamondProxyFallback(
     describe('fallback()', () => {
       it('forwards data without matching selector to fallback contract', async () => {
         await expect(
-          owner.sendTransaction({
+          proxyAdmin.sendTransaction({
             to: await instance.getAddress(),
           }),
         ).to.be.revertedWithCustomError(
@@ -52,7 +50,7 @@ export function describeBehaviorOfDiamondProxyFallback(
     describe('receive()', () => {
       it('forwards value to fallback contract', async () => {
         await expect(
-          owner.sendTransaction({
+          proxyAdmin.sendTransaction({
             to: await instance.getAddress(),
             value: 1n,
           }),
@@ -73,9 +71,9 @@ export function describeBehaviorOfDiamondProxyFallback(
 
     describe('#setFallbackAddress(address)', () => {
       it('updates the fallback address', async () => {
-        const fallback = await deployMockContract(owner, []);
+        const fallback = await deployMockContract(proxyAdmin, []);
 
-        await instance.connect(owner).setFallbackAddress(fallback.address);
+        await instance.connect(proxyAdmin).setFallbackAddress(fallback.address);
 
         expect(await instance.getFallbackAddress.staticCall()).to.equal(
           fallback.address,
@@ -83,7 +81,7 @@ export function describeBehaviorOfDiamondProxyFallback(
 
         // call reverts, but with mock-specific message
         await expect(
-          owner.sendTransaction({
+          proxyAdmin.sendTransaction({
             to: await instance.getAddress(),
             data: ethers.hexlify(ethers.randomBytes(4)),
           }),
@@ -91,10 +89,12 @@ export function describeBehaviorOfDiamondProxyFallback(
       });
 
       describe('reverts if', () => {
-        it('sender is not owner', async () => {
+        it('sender is not proxy admin', async () => {
           await expect(
-            instance.connect(nonOwner).setFallbackAddress(ethers.ZeroAddress),
-          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
+            instance
+              .connect(nonProxyAdmin)
+              .setFallbackAddress(ethers.ZeroAddress),
+          ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
         });
       });
     });

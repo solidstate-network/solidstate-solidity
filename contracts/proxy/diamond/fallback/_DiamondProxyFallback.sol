@@ -2,15 +2,13 @@
 
 pragma solidity ^0.8.24;
 
-import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
 abstract contract _DiamondProxyFallback is
     _IDiamondProxyFallback,
-    _DiamondProxy,
-    _Ownable
+    _DiamondProxy
 {
     /**
      * @inheritdoc _DiamondProxy
@@ -50,7 +48,7 @@ abstract contract _DiamondProxyFallback is
      */
     function _setFallbackAddressExternal(
         address fallbackAddress
-    ) internal virtual onlyOwner {
+    ) internal virtual onlyProxyAdmin {
         _setFallbackAddress(fallbackAddress);
     }
 
