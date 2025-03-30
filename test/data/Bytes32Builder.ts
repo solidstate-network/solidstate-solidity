@@ -5,6 +5,10 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const randomIndexNonInclusive = (start, end) => {
+  return Math.ceil(Math.random() * (end - start - 1)) + start;
+};
+
 describe('Bytes32Builder', () => {
   let instance: Bytes32BuilderTest;
 
@@ -17,7 +21,11 @@ describe('Bytes32Builder', () => {
     it('parses 1-byte segment from bytes at given offset and returns it as bytes1', async () => {
       const sizeBytes = 1;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -42,7 +50,11 @@ describe('Bytes32Builder', () => {
     it('parses 1-byte segment from bytes at given offset and returns it as int8', async () => {
       const sizeBytes = 1;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -76,7 +88,11 @@ describe('Bytes32Builder', () => {
     it('parses 1-byte segment from bytes at given offset and returns it as uint8', async () => {
       const sizeBytes = 1;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -101,7 +117,11 @@ describe('Bytes32Builder', () => {
     it('parses 1-byte segment from bytes at given offset and returns it as bool', async () => {
       const sizeBytes = 1;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -126,7 +146,11 @@ describe('Bytes32Builder', () => {
     it('parses 2-byte segment from bytes at given offset and returns it as bytes2', async () => {
       const sizeBytes = 2;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -151,7 +175,11 @@ describe('Bytes32Builder', () => {
     it('parses 2-byte segment from bytes at given offset and returns it as int16', async () => {
       const sizeBytes = 2;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -185,7 +213,11 @@ describe('Bytes32Builder', () => {
     it('parses 2-byte segment from bytes at given offset and returns it as uint16', async () => {
       const sizeBytes = 2;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -210,7 +242,11 @@ describe('Bytes32Builder', () => {
     it('parses 3-byte segment from bytes at given offset and returns it as bytes3', async () => {
       const sizeBytes = 3;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -235,7 +271,11 @@ describe('Bytes32Builder', () => {
     it('parses 3-byte segment from bytes at given offset and returns it as int24', async () => {
       const sizeBytes = 3;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -269,7 +309,11 @@ describe('Bytes32Builder', () => {
     it('parses 3-byte segment from bytes at given offset and returns it as uint24', async () => {
       const sizeBytes = 3;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -294,7 +338,11 @@ describe('Bytes32Builder', () => {
     it('parses 4-byte segment from bytes at given offset and returns it as bytes4', async () => {
       const sizeBytes = 4;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -319,7 +367,11 @@ describe('Bytes32Builder', () => {
     it('parses 4-byte segment from bytes at given offset and returns it as int32', async () => {
       const sizeBytes = 4;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -353,7 +405,11 @@ describe('Bytes32Builder', () => {
     it('parses 4-byte segment from bytes at given offset and returns it as uint32', async () => {
       const sizeBytes = 4;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -378,7 +434,11 @@ describe('Bytes32Builder', () => {
     it('parses 5-byte segment from bytes at given offset and returns it as bytes5', async () => {
       const sizeBytes = 5;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -403,7 +463,11 @@ describe('Bytes32Builder', () => {
     it('parses 5-byte segment from bytes at given offset and returns it as int40', async () => {
       const sizeBytes = 5;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -437,7 +501,11 @@ describe('Bytes32Builder', () => {
     it('parses 5-byte segment from bytes at given offset and returns it as uint40', async () => {
       const sizeBytes = 5;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -462,7 +530,11 @@ describe('Bytes32Builder', () => {
     it('parses 6-byte segment from bytes at given offset and returns it as bytes6', async () => {
       const sizeBytes = 6;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -487,7 +559,11 @@ describe('Bytes32Builder', () => {
     it('parses 6-byte segment from bytes at given offset and returns it as int48', async () => {
       const sizeBytes = 6;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -521,7 +597,11 @@ describe('Bytes32Builder', () => {
     it('parses 6-byte segment from bytes at given offset and returns it as uint48', async () => {
       const sizeBytes = 6;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -546,7 +626,11 @@ describe('Bytes32Builder', () => {
     it('parses 7-byte segment from bytes at given offset and returns it as bytes7', async () => {
       const sizeBytes = 7;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -571,7 +655,11 @@ describe('Bytes32Builder', () => {
     it('parses 7-byte segment from bytes at given offset and returns it as int56', async () => {
       const sizeBytes = 7;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -605,7 +693,11 @@ describe('Bytes32Builder', () => {
     it('parses 7-byte segment from bytes at given offset and returns it as uint56', async () => {
       const sizeBytes = 7;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -630,7 +722,11 @@ describe('Bytes32Builder', () => {
     it('parses 8-byte segment from bytes at given offset and returns it as bytes8', async () => {
       const sizeBytes = 8;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -655,7 +751,11 @@ describe('Bytes32Builder', () => {
     it('parses 8-byte segment from bytes at given offset and returns it as int64', async () => {
       const sizeBytes = 8;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -689,7 +789,11 @@ describe('Bytes32Builder', () => {
     it('parses 8-byte segment from bytes at given offset and returns it as uint64', async () => {
       const sizeBytes = 8;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -714,7 +818,11 @@ describe('Bytes32Builder', () => {
     it('parses 9-byte segment from bytes at given offset and returns it as bytes9', async () => {
       const sizeBytes = 9;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -739,7 +847,11 @@ describe('Bytes32Builder', () => {
     it('parses 9-byte segment from bytes at given offset and returns it as int72', async () => {
       const sizeBytes = 9;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -773,7 +885,11 @@ describe('Bytes32Builder', () => {
     it('parses 9-byte segment from bytes at given offset and returns it as uint72', async () => {
       const sizeBytes = 9;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -798,7 +914,11 @@ describe('Bytes32Builder', () => {
     it('parses 10-byte segment from bytes at given offset and returns it as bytes10', async () => {
       const sizeBytes = 10;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -823,7 +943,11 @@ describe('Bytes32Builder', () => {
     it('parses 10-byte segment from bytes at given offset and returns it as int80', async () => {
       const sizeBytes = 10;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -857,7 +981,11 @@ describe('Bytes32Builder', () => {
     it('parses 10-byte segment from bytes at given offset and returns it as uint80', async () => {
       const sizeBytes = 10;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -882,7 +1010,11 @@ describe('Bytes32Builder', () => {
     it('parses 11-byte segment from bytes at given offset and returns it as bytes11', async () => {
       const sizeBytes = 11;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -907,7 +1039,11 @@ describe('Bytes32Builder', () => {
     it('parses 11-byte segment from bytes at given offset and returns it as int88', async () => {
       const sizeBytes = 11;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -941,7 +1077,11 @@ describe('Bytes32Builder', () => {
     it('parses 11-byte segment from bytes at given offset and returns it as uint88', async () => {
       const sizeBytes = 11;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -966,7 +1106,11 @@ describe('Bytes32Builder', () => {
     it('parses 12-byte segment from bytes at given offset and returns it as bytes12', async () => {
       const sizeBytes = 12;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -991,7 +1135,11 @@ describe('Bytes32Builder', () => {
     it('parses 12-byte segment from bytes at given offset and returns it as int96', async () => {
       const sizeBytes = 12;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1025,7 +1173,11 @@ describe('Bytes32Builder', () => {
     it('parses 12-byte segment from bytes at given offset and returns it as uint96', async () => {
       const sizeBytes = 12;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1050,7 +1202,11 @@ describe('Bytes32Builder', () => {
     it('parses 13-byte segment from bytes at given offset and returns it as bytes13', async () => {
       const sizeBytes = 13;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1075,7 +1231,11 @@ describe('Bytes32Builder', () => {
     it('parses 13-byte segment from bytes at given offset and returns it as int104', async () => {
       const sizeBytes = 13;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1109,7 +1269,11 @@ describe('Bytes32Builder', () => {
     it('parses 13-byte segment from bytes at given offset and returns it as uint104', async () => {
       const sizeBytes = 13;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1134,7 +1298,11 @@ describe('Bytes32Builder', () => {
     it('parses 14-byte segment from bytes at given offset and returns it as bytes14', async () => {
       const sizeBytes = 14;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1159,7 +1327,11 @@ describe('Bytes32Builder', () => {
     it('parses 14-byte segment from bytes at given offset and returns it as int112', async () => {
       const sizeBytes = 14;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1193,7 +1365,11 @@ describe('Bytes32Builder', () => {
     it('parses 14-byte segment from bytes at given offset and returns it as uint112', async () => {
       const sizeBytes = 14;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1218,7 +1394,11 @@ describe('Bytes32Builder', () => {
     it('parses 15-byte segment from bytes at given offset and returns it as bytes15', async () => {
       const sizeBytes = 15;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1243,7 +1423,11 @@ describe('Bytes32Builder', () => {
     it('parses 15-byte segment from bytes at given offset and returns it as int120', async () => {
       const sizeBytes = 15;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1277,7 +1461,11 @@ describe('Bytes32Builder', () => {
     it('parses 15-byte segment from bytes at given offset and returns it as uint120', async () => {
       const sizeBytes = 15;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1302,7 +1490,11 @@ describe('Bytes32Builder', () => {
     it('parses 16-byte segment from bytes at given offset and returns it as bytes16', async () => {
       const sizeBytes = 16;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1327,7 +1519,11 @@ describe('Bytes32Builder', () => {
     it('parses 16-byte segment from bytes at given offset and returns it as int128', async () => {
       const sizeBytes = 16;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1361,7 +1557,11 @@ describe('Bytes32Builder', () => {
     it('parses 16-byte segment from bytes at given offset and returns it as uint128', async () => {
       const sizeBytes = 16;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1386,7 +1586,11 @@ describe('Bytes32Builder', () => {
     it('parses 17-byte segment from bytes at given offset and returns it as bytes17', async () => {
       const sizeBytes = 17;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1411,7 +1615,11 @@ describe('Bytes32Builder', () => {
     it('parses 17-byte segment from bytes at given offset and returns it as int136', async () => {
       const sizeBytes = 17;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1445,7 +1653,11 @@ describe('Bytes32Builder', () => {
     it('parses 17-byte segment from bytes at given offset and returns it as uint136', async () => {
       const sizeBytes = 17;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1470,7 +1682,11 @@ describe('Bytes32Builder', () => {
     it('parses 18-byte segment from bytes at given offset and returns it as bytes18', async () => {
       const sizeBytes = 18;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1495,7 +1711,11 @@ describe('Bytes32Builder', () => {
     it('parses 18-byte segment from bytes at given offset and returns it as int144', async () => {
       const sizeBytes = 18;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1529,7 +1749,11 @@ describe('Bytes32Builder', () => {
     it('parses 18-byte segment from bytes at given offset and returns it as uint144', async () => {
       const sizeBytes = 18;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1554,7 +1778,11 @@ describe('Bytes32Builder', () => {
     it('parses 19-byte segment from bytes at given offset and returns it as bytes19', async () => {
       const sizeBytes = 19;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1579,7 +1807,11 @@ describe('Bytes32Builder', () => {
     it('parses 19-byte segment from bytes at given offset and returns it as int152', async () => {
       const sizeBytes = 19;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1613,7 +1845,11 @@ describe('Bytes32Builder', () => {
     it('parses 19-byte segment from bytes at given offset and returns it as uint152', async () => {
       const sizeBytes = 19;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1638,7 +1874,11 @@ describe('Bytes32Builder', () => {
     it('parses 20-byte segment from bytes at given offset and returns it as bytes20', async () => {
       const sizeBytes = 20;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1663,7 +1903,11 @@ describe('Bytes32Builder', () => {
     it('parses 20-byte segment from bytes at given offset and returns it as int160', async () => {
       const sizeBytes = 20;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1697,7 +1941,11 @@ describe('Bytes32Builder', () => {
     it('parses 20-byte segment from bytes at given offset and returns it as uint160', async () => {
       const sizeBytes = 20;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1722,7 +1970,11 @@ describe('Bytes32Builder', () => {
     it('parses 20-byte segment from bytes at given offset and returns it as address', async () => {
       const sizeBytes = 20;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1747,7 +1999,11 @@ describe('Bytes32Builder', () => {
     it('parses 21-byte segment from bytes at given offset and returns it as bytes21', async () => {
       const sizeBytes = 21;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1772,7 +2028,11 @@ describe('Bytes32Builder', () => {
     it('parses 21-byte segment from bytes at given offset and returns it as int168', async () => {
       const sizeBytes = 21;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1806,7 +2066,11 @@ describe('Bytes32Builder', () => {
     it('parses 21-byte segment from bytes at given offset and returns it as uint168', async () => {
       const sizeBytes = 21;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1831,7 +2095,11 @@ describe('Bytes32Builder', () => {
     it('parses 22-byte segment from bytes at given offset and returns it as bytes22', async () => {
       const sizeBytes = 22;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1856,7 +2124,11 @@ describe('Bytes32Builder', () => {
     it('parses 22-byte segment from bytes at given offset and returns it as int176', async () => {
       const sizeBytes = 22;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1890,7 +2162,11 @@ describe('Bytes32Builder', () => {
     it('parses 22-byte segment from bytes at given offset and returns it as uint176', async () => {
       const sizeBytes = 22;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1915,7 +2191,11 @@ describe('Bytes32Builder', () => {
     it('parses 23-byte segment from bytes at given offset and returns it as bytes23', async () => {
       const sizeBytes = 23;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1940,7 +2220,11 @@ describe('Bytes32Builder', () => {
     it('parses 23-byte segment from bytes at given offset and returns it as int184', async () => {
       const sizeBytes = 23;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1974,7 +2258,11 @@ describe('Bytes32Builder', () => {
     it('parses 23-byte segment from bytes at given offset and returns it as uint184', async () => {
       const sizeBytes = 23;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -1999,7 +2287,11 @@ describe('Bytes32Builder', () => {
     it('parses 24-byte segment from bytes at given offset and returns it as bytes24', async () => {
       const sizeBytes = 24;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2024,7 +2316,11 @@ describe('Bytes32Builder', () => {
     it('parses 24-byte segment from bytes at given offset and returns it as int192', async () => {
       const sizeBytes = 24;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2058,7 +2354,11 @@ describe('Bytes32Builder', () => {
     it('parses 24-byte segment from bytes at given offset and returns it as uint192', async () => {
       const sizeBytes = 24;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2083,7 +2383,11 @@ describe('Bytes32Builder', () => {
     it('parses 25-byte segment from bytes at given offset and returns it as bytes25', async () => {
       const sizeBytes = 25;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2108,7 +2412,11 @@ describe('Bytes32Builder', () => {
     it('parses 25-byte segment from bytes at given offset and returns it as int200', async () => {
       const sizeBytes = 25;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2142,7 +2450,11 @@ describe('Bytes32Builder', () => {
     it('parses 25-byte segment from bytes at given offset and returns it as uint200', async () => {
       const sizeBytes = 25;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2167,7 +2479,11 @@ describe('Bytes32Builder', () => {
     it('parses 26-byte segment from bytes at given offset and returns it as bytes26', async () => {
       const sizeBytes = 26;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2192,7 +2508,11 @@ describe('Bytes32Builder', () => {
     it('parses 26-byte segment from bytes at given offset and returns it as int208', async () => {
       const sizeBytes = 26;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2226,7 +2546,11 @@ describe('Bytes32Builder', () => {
     it('parses 26-byte segment from bytes at given offset and returns it as uint208', async () => {
       const sizeBytes = 26;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2251,7 +2575,11 @@ describe('Bytes32Builder', () => {
     it('parses 27-byte segment from bytes at given offset and returns it as bytes27', async () => {
       const sizeBytes = 27;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2276,7 +2604,11 @@ describe('Bytes32Builder', () => {
     it('parses 27-byte segment from bytes at given offset and returns it as int216', async () => {
       const sizeBytes = 27;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2310,7 +2642,11 @@ describe('Bytes32Builder', () => {
     it('parses 27-byte segment from bytes at given offset and returns it as uint216', async () => {
       const sizeBytes = 27;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2335,7 +2671,11 @@ describe('Bytes32Builder', () => {
     it('parses 28-byte segment from bytes at given offset and returns it as bytes28', async () => {
       const sizeBytes = 28;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2360,7 +2700,11 @@ describe('Bytes32Builder', () => {
     it('parses 28-byte segment from bytes at given offset and returns it as int224', async () => {
       const sizeBytes = 28;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2394,7 +2738,11 @@ describe('Bytes32Builder', () => {
     it('parses 28-byte segment from bytes at given offset and returns it as uint224', async () => {
       const sizeBytes = 28;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2419,7 +2767,11 @@ describe('Bytes32Builder', () => {
     it('parses 29-byte segment from bytes at given offset and returns it as bytes29', async () => {
       const sizeBytes = 29;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2444,7 +2796,11 @@ describe('Bytes32Builder', () => {
     it('parses 29-byte segment from bytes at given offset and returns it as int232', async () => {
       const sizeBytes = 29;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2478,7 +2834,11 @@ describe('Bytes32Builder', () => {
     it('parses 29-byte segment from bytes at given offset and returns it as uint232', async () => {
       const sizeBytes = 29;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2503,7 +2863,11 @@ describe('Bytes32Builder', () => {
     it('parses 30-byte segment from bytes at given offset and returns it as bytes30', async () => {
       const sizeBytes = 30;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2528,7 +2892,11 @@ describe('Bytes32Builder', () => {
     it('parses 30-byte segment from bytes at given offset and returns it as int240', async () => {
       const sizeBytes = 30;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2562,7 +2930,11 @@ describe('Bytes32Builder', () => {
     it('parses 30-byte segment from bytes at given offset and returns it as uint240', async () => {
       const sizeBytes = 30;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2587,7 +2959,11 @@ describe('Bytes32Builder', () => {
     it('parses 31-byte segment from bytes at given offset and returns it as bytes31', async () => {
       const sizeBytes = 31;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2612,7 +2988,11 @@ describe('Bytes32Builder', () => {
     it('parses 31-byte segment from bytes at given offset and returns it as int248', async () => {
       const sizeBytes = 31;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2646,7 +3026,11 @@ describe('Bytes32Builder', () => {
     it('parses 31-byte segment from bytes at given offset and returns it as uint248', async () => {
       const sizeBytes = 31;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2671,7 +3055,11 @@ describe('Bytes32Builder', () => {
     it('parses 32-byte segment from bytes at given offset and returns it as bytes32', async () => {
       const sizeBytes = 32;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2696,7 +3084,11 @@ describe('Bytes32Builder', () => {
     it('parses 32-byte segment from bytes at given offset and returns it as int256', async () => {
       const sizeBytes = 32;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2730,7 +3122,11 @@ describe('Bytes32Builder', () => {
     it('parses 32-byte segment from bytes at given offset and returns it as uint256', async () => {
       const sizeBytes = 32;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -2752,13 +3148,3738 @@ describe('Bytes32Builder', () => {
     });
   });
 
+  describe('#insertBytes1(bytes32,bytes1)', () => {
+    it('inserts bytes1 at given offset', async () => {
+      const sizeBytes = 1;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes1.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt8(bytes32,int8)', () => {
+    it('inserts int8 at given offset', async () => {
+      const sizeBytes = 1;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt8.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint8(bytes32,uint8)', () => {
+    it('inserts uint8 at given offset', async () => {
+      const sizeBytes = 1;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint8.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBool(bytes32,bool)', () => {
+    it('inserts bool at given offset', async () => {
+      const sizeBytes = 1;
+      const data = '0x01';
+      const input = true;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBool.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes2(bytes32,bytes2)', () => {
+    it('inserts bytes2 at given offset', async () => {
+      const sizeBytes = 2;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes2.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt16(bytes32,int16)', () => {
+    it('inserts int16 at given offset', async () => {
+      const sizeBytes = 2;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt16.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint16(bytes32,uint16)', () => {
+    it('inserts uint16 at given offset', async () => {
+      const sizeBytes = 2;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint16.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes3(bytes32,bytes3)', () => {
+    it('inserts bytes3 at given offset', async () => {
+      const sizeBytes = 3;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes3.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt24(bytes32,int24)', () => {
+    it('inserts int24 at given offset', async () => {
+      const sizeBytes = 3;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt24.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint24(bytes32,uint24)', () => {
+    it('inserts uint24 at given offset', async () => {
+      const sizeBytes = 3;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint24.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes4(bytes32,bytes4)', () => {
+    it('inserts bytes4 at given offset', async () => {
+      const sizeBytes = 4;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes4.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt32(bytes32,int32)', () => {
+    it('inserts int32 at given offset', async () => {
+      const sizeBytes = 4;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt32.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint32(bytes32,uint32)', () => {
+    it('inserts uint32 at given offset', async () => {
+      const sizeBytes = 4;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint32.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes5(bytes32,bytes5)', () => {
+    it('inserts bytes5 at given offset', async () => {
+      const sizeBytes = 5;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes5.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt40(bytes32,int40)', () => {
+    it('inserts int40 at given offset', async () => {
+      const sizeBytes = 5;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt40.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint40(bytes32,uint40)', () => {
+    it('inserts uint40 at given offset', async () => {
+      const sizeBytes = 5;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint40.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes6(bytes32,bytes6)', () => {
+    it('inserts bytes6 at given offset', async () => {
+      const sizeBytes = 6;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes6.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt48(bytes32,int48)', () => {
+    it('inserts int48 at given offset', async () => {
+      const sizeBytes = 6;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt48.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint48(bytes32,uint48)', () => {
+    it('inserts uint48 at given offset', async () => {
+      const sizeBytes = 6;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint48.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes7(bytes32,bytes7)', () => {
+    it('inserts bytes7 at given offset', async () => {
+      const sizeBytes = 7;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes7.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt56(bytes32,int56)', () => {
+    it('inserts int56 at given offset', async () => {
+      const sizeBytes = 7;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt56.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint56(bytes32,uint56)', () => {
+    it('inserts uint56 at given offset', async () => {
+      const sizeBytes = 7;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint56.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes8(bytes32,bytes8)', () => {
+    it('inserts bytes8 at given offset', async () => {
+      const sizeBytes = 8;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes8.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt64(bytes32,int64)', () => {
+    it('inserts int64 at given offset', async () => {
+      const sizeBytes = 8;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt64.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint64(bytes32,uint64)', () => {
+    it('inserts uint64 at given offset', async () => {
+      const sizeBytes = 8;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint64.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes9(bytes32,bytes9)', () => {
+    it('inserts bytes9 at given offset', async () => {
+      const sizeBytes = 9;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes9.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt72(bytes32,int72)', () => {
+    it('inserts int72 at given offset', async () => {
+      const sizeBytes = 9;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt72.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint72(bytes32,uint72)', () => {
+    it('inserts uint72 at given offset', async () => {
+      const sizeBytes = 9;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint72.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes10(bytes32,bytes10)', () => {
+    it('inserts bytes10 at given offset', async () => {
+      const sizeBytes = 10;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes10.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt80(bytes32,int80)', () => {
+    it('inserts int80 at given offset', async () => {
+      const sizeBytes = 10;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt80.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint80(bytes32,uint80)', () => {
+    it('inserts uint80 at given offset', async () => {
+      const sizeBytes = 10;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint80.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes11(bytes32,bytes11)', () => {
+    it('inserts bytes11 at given offset', async () => {
+      const sizeBytes = 11;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes11.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt88(bytes32,int88)', () => {
+    it('inserts int88 at given offset', async () => {
+      const sizeBytes = 11;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt88.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint88(bytes32,uint88)', () => {
+    it('inserts uint88 at given offset', async () => {
+      const sizeBytes = 11;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint88.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes12(bytes32,bytes12)', () => {
+    it('inserts bytes12 at given offset', async () => {
+      const sizeBytes = 12;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes12.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt96(bytes32,int96)', () => {
+    it('inserts int96 at given offset', async () => {
+      const sizeBytes = 12;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt96.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint96(bytes32,uint96)', () => {
+    it('inserts uint96 at given offset', async () => {
+      const sizeBytes = 12;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint96.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes13(bytes32,bytes13)', () => {
+    it('inserts bytes13 at given offset', async () => {
+      const sizeBytes = 13;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes13.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt104(bytes32,int104)', () => {
+    it('inserts int104 at given offset', async () => {
+      const sizeBytes = 13;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt104.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint104(bytes32,uint104)', () => {
+    it('inserts uint104 at given offset', async () => {
+      const sizeBytes = 13;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint104.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes14(bytes32,bytes14)', () => {
+    it('inserts bytes14 at given offset', async () => {
+      const sizeBytes = 14;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes14.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt112(bytes32,int112)', () => {
+    it('inserts int112 at given offset', async () => {
+      const sizeBytes = 14;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt112.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint112(bytes32,uint112)', () => {
+    it('inserts uint112 at given offset', async () => {
+      const sizeBytes = 14;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint112.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes15(bytes32,bytes15)', () => {
+    it('inserts bytes15 at given offset', async () => {
+      const sizeBytes = 15;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes15.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt120(bytes32,int120)', () => {
+    it('inserts int120 at given offset', async () => {
+      const sizeBytes = 15;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt120.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint120(bytes32,uint120)', () => {
+    it('inserts uint120 at given offset', async () => {
+      const sizeBytes = 15;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint120.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes16(bytes32,bytes16)', () => {
+    it('inserts bytes16 at given offset', async () => {
+      const sizeBytes = 16;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes16.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt128(bytes32,int128)', () => {
+    it('inserts int128 at given offset', async () => {
+      const sizeBytes = 16;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt128.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint128(bytes32,uint128)', () => {
+    it('inserts uint128 at given offset', async () => {
+      const sizeBytes = 16;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint128.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes17(bytes32,bytes17)', () => {
+    it('inserts bytes17 at given offset', async () => {
+      const sizeBytes = 17;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes17.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt136(bytes32,int136)', () => {
+    it('inserts int136 at given offset', async () => {
+      const sizeBytes = 17;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt136.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint136(bytes32,uint136)', () => {
+    it('inserts uint136 at given offset', async () => {
+      const sizeBytes = 17;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint136.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes18(bytes32,bytes18)', () => {
+    it('inserts bytes18 at given offset', async () => {
+      const sizeBytes = 18;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes18.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt144(bytes32,int144)', () => {
+    it('inserts int144 at given offset', async () => {
+      const sizeBytes = 18;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt144.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint144(bytes32,uint144)', () => {
+    it('inserts uint144 at given offset', async () => {
+      const sizeBytes = 18;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint144.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes19(bytes32,bytes19)', () => {
+    it('inserts bytes19 at given offset', async () => {
+      const sizeBytes = 19;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes19.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt152(bytes32,int152)', () => {
+    it('inserts int152 at given offset', async () => {
+      const sizeBytes = 19;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt152.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint152(bytes32,uint152)', () => {
+    it('inserts uint152 at given offset', async () => {
+      const sizeBytes = 19;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint152.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes20(bytes32,bytes20)', () => {
+    it('inserts bytes20 at given offset', async () => {
+      const sizeBytes = 20;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes20.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt160(bytes32,int160)', () => {
+    it('inserts int160 at given offset', async () => {
+      const sizeBytes = 20;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt160.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint160(bytes32,uint160)', () => {
+    it('inserts uint160 at given offset', async () => {
+      const sizeBytes = 20;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint160.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertAddress(bytes32,address)', () => {
+    it('inserts address at given offset', async () => {
+      const sizeBytes = 20;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertAddress.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes21(bytes32,bytes21)', () => {
+    it('inserts bytes21 at given offset', async () => {
+      const sizeBytes = 21;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes21.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt168(bytes32,int168)', () => {
+    it('inserts int168 at given offset', async () => {
+      const sizeBytes = 21;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt168.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint168(bytes32,uint168)', () => {
+    it('inserts uint168 at given offset', async () => {
+      const sizeBytes = 21;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint168.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes22(bytes32,bytes22)', () => {
+    it('inserts bytes22 at given offset', async () => {
+      const sizeBytes = 22;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes22.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt176(bytes32,int176)', () => {
+    it('inserts int176 at given offset', async () => {
+      const sizeBytes = 22;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt176.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint176(bytes32,uint176)', () => {
+    it('inserts uint176 at given offset', async () => {
+      const sizeBytes = 22;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint176.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes23(bytes32,bytes23)', () => {
+    it('inserts bytes23 at given offset', async () => {
+      const sizeBytes = 23;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes23.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt184(bytes32,int184)', () => {
+    it('inserts int184 at given offset', async () => {
+      const sizeBytes = 23;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt184.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint184(bytes32,uint184)', () => {
+    it('inserts uint184 at given offset', async () => {
+      const sizeBytes = 23;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint184.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes24(bytes32,bytes24)', () => {
+    it('inserts bytes24 at given offset', async () => {
+      const sizeBytes = 24;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes24.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt192(bytes32,int192)', () => {
+    it('inserts int192 at given offset', async () => {
+      const sizeBytes = 24;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt192.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint192(bytes32,uint192)', () => {
+    it('inserts uint192 at given offset', async () => {
+      const sizeBytes = 24;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint192.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes25(bytes32,bytes25)', () => {
+    it('inserts bytes25 at given offset', async () => {
+      const sizeBytes = 25;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes25.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt200(bytes32,int200)', () => {
+    it('inserts int200 at given offset', async () => {
+      const sizeBytes = 25;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt200.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint200(bytes32,uint200)', () => {
+    it('inserts uint200 at given offset', async () => {
+      const sizeBytes = 25;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint200.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes26(bytes32,bytes26)', () => {
+    it('inserts bytes26 at given offset', async () => {
+      const sizeBytes = 26;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes26.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt208(bytes32,int208)', () => {
+    it('inserts int208 at given offset', async () => {
+      const sizeBytes = 26;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt208.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint208(bytes32,uint208)', () => {
+    it('inserts uint208 at given offset', async () => {
+      const sizeBytes = 26;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint208.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes27(bytes32,bytes27)', () => {
+    it('inserts bytes27 at given offset', async () => {
+      const sizeBytes = 27;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes27.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt216(bytes32,int216)', () => {
+    it('inserts int216 at given offset', async () => {
+      const sizeBytes = 27;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt216.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint216(bytes32,uint216)', () => {
+    it('inserts uint216 at given offset', async () => {
+      const sizeBytes = 27;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint216.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes28(bytes32,bytes28)', () => {
+    it('inserts bytes28 at given offset', async () => {
+      const sizeBytes = 28;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes28.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt224(bytes32,int224)', () => {
+    it('inserts int224 at given offset', async () => {
+      const sizeBytes = 28;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt224.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint224(bytes32,uint224)', () => {
+    it('inserts uint224 at given offset', async () => {
+      const sizeBytes = 28;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint224.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes29(bytes32,bytes29)', () => {
+    it('inserts bytes29 at given offset', async () => {
+      const sizeBytes = 29;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes29.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt232(bytes32,int232)', () => {
+    it('inserts int232 at given offset', async () => {
+      const sizeBytes = 29;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt232.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint232(bytes32,uint232)', () => {
+    it('inserts uint232 at given offset', async () => {
+      const sizeBytes = 29;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint232.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes30(bytes32,bytes30)', () => {
+    it('inserts bytes30 at given offset', async () => {
+      const sizeBytes = 30;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes30.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt240(bytes32,int240)', () => {
+    it('inserts int240 at given offset', async () => {
+      const sizeBytes = 30;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt240.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint240(bytes32,uint240)', () => {
+    it('inserts uint240 at given offset', async () => {
+      const sizeBytes = 30;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint240.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes31(bytes32,bytes31)', () => {
+    it('inserts bytes31 at given offset', async () => {
+      const sizeBytes = 31;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes31.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt248(bytes32,int248)', () => {
+    it('inserts int248 at given offset', async () => {
+      const sizeBytes = 31;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt248.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint248(bytes32,uint248)', () => {
+    it('inserts uint248 at given offset', async () => {
+      const sizeBytes = 31;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint248.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertBytes32(bytes32,bytes32)', () => {
+    it('inserts bytes32 at given offset', async () => {
+      const sizeBytes = 32;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertBytes32.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertInt256(bytes32,int256)', () => {
+    it('inserts int256 at given offset', async () => {
+      const sizeBytes = 32;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data));
+      } else {
+        input = BigInt(data);
+      }
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertInt256.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+  describe('#insertUint256(bytes32,uint256)', () => {
+    it('inserts uint256 at given offset', async () => {
+      const sizeBytes = 32;
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [
+          0,
+          32 - sizeBytes,
+          randomIndexNonInclusive(0, 32 - sizeBytes),
+        ]) {
+          const state = {
+            _data: ethers.zeroPadValue(
+              ethers.hexlify(ethers.randomBytes(i)),
+              32,
+            ),
+            _size: i * 8,
+          };
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([
+            ethers.dataSlice(state._data, 0, 32 - j - sizeBytes),
+            data,
+            ethers.dataSlice(state._data, 32 - j, 32),
+          ]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insertUint256.staticCall(state, input, offset),
+          ).to.deep.equal([expectedData, expectedLength]);
+        }
+      }
+    });
+  });
+
   describe('#pushBytes1(bytes32,bytes1)', () => {
     it('inserts bytes1 at end of bytes', async () => {
       const sizeBytes = 1;
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2791,7 +6912,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2819,7 +6944,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2846,7 +6975,11 @@ describe('Bytes32Builder', () => {
       const data = '0x01';
       const input = true;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2874,7 +7007,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2907,7 +7044,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2934,7 +7075,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2961,7 +7106,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -2994,7 +7143,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3021,7 +7174,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3048,7 +7205,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3081,7 +7242,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3108,7 +7273,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3135,7 +7304,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3168,7 +7341,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3195,7 +7372,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3222,7 +7403,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3255,7 +7440,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3282,7 +7471,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3309,7 +7502,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3342,7 +7539,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3369,7 +7570,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3396,7 +7601,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3429,7 +7638,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3456,7 +7669,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3483,7 +7700,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3516,7 +7737,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3543,7 +7768,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3570,7 +7799,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3603,7 +7836,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3630,7 +7867,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3657,7 +7898,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3690,7 +7935,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3717,7 +7966,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3744,7 +7997,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3777,7 +8034,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3804,7 +8065,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3831,7 +8096,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3864,7 +8133,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3891,7 +8164,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3918,7 +8195,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3951,7 +8232,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -3978,7 +8263,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4005,7 +8294,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4038,7 +8331,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4065,7 +8362,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4092,7 +8393,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4125,7 +8430,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4152,7 +8461,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4179,7 +8492,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4212,7 +8529,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4239,7 +8560,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4266,7 +8591,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4299,7 +8628,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4326,7 +8659,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4353,7 +8690,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4386,7 +8727,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4413,7 +8758,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4440,7 +8789,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4473,7 +8826,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4500,7 +8857,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4527,7 +8888,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4554,7 +8919,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4587,7 +8956,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4614,7 +8987,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4641,7 +9018,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4674,7 +9055,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4701,7 +9086,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4728,7 +9117,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4761,7 +9154,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4788,7 +9185,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4815,7 +9216,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4848,7 +9253,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4875,7 +9284,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4902,7 +9315,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4935,7 +9352,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4962,7 +9383,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -4989,7 +9414,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5022,7 +9451,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5049,7 +9482,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5076,7 +9513,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5109,7 +9550,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5136,7 +9581,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5163,7 +9612,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5196,7 +9649,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5223,7 +9680,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5250,7 +9711,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5283,7 +9748,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5310,7 +9779,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5337,7 +9810,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5370,7 +9847,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5397,7 +9878,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5424,7 +9909,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5457,7 +9946,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5484,7 +9977,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5511,7 +10008,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5544,7 +10045,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5571,7 +10076,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5597,7 +10106,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from end of bytes and returns it as bytes1', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5626,7 +10135,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from end of bytes and returns it as int8', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5664,7 +10173,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from end of bytes and returns it as uint8', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5693,7 +10202,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from end of bytes and returns it as bool', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5722,7 +10231,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from end of bytes and returns it as bytes2', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5751,7 +10260,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from end of bytes and returns it as int16', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5789,7 +10298,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from end of bytes and returns it as uint16', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5818,7 +10327,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from end of bytes and returns it as bytes3', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5847,7 +10356,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from end of bytes and returns it as int24', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5885,7 +10394,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from end of bytes and returns it as uint24', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5914,7 +10423,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from end of bytes and returns it as bytes4', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5943,7 +10452,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from end of bytes and returns it as int32', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -5981,7 +10490,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from end of bytes and returns it as uint32', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6010,7 +10519,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from end of bytes and returns it as bytes5', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6039,7 +10548,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from end of bytes and returns it as int40', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6077,7 +10586,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from end of bytes and returns it as uint40', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6106,7 +10615,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from end of bytes and returns it as bytes6', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6135,7 +10644,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from end of bytes and returns it as int48', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6173,7 +10682,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from end of bytes and returns it as uint48', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6202,7 +10711,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from end of bytes and returns it as bytes7', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6231,7 +10740,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from end of bytes and returns it as int56', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6269,7 +10778,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from end of bytes and returns it as uint56', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6298,7 +10807,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from end of bytes and returns it as bytes8', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6327,7 +10836,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from end of bytes and returns it as int64', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6365,7 +10874,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from end of bytes and returns it as uint64', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6394,7 +10903,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from end of bytes and returns it as bytes9', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6423,7 +10932,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from end of bytes and returns it as int72', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6461,7 +10970,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from end of bytes and returns it as uint72', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6490,7 +10999,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from end of bytes and returns it as bytes10', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6519,7 +11028,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from end of bytes and returns it as int80', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6557,7 +11066,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from end of bytes and returns it as uint80', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6586,7 +11095,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from end of bytes and returns it as bytes11', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6615,7 +11124,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from end of bytes and returns it as int88', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6653,7 +11162,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from end of bytes and returns it as uint88', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6682,7 +11191,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from end of bytes and returns it as bytes12', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6711,7 +11220,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from end of bytes and returns it as int96', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6749,7 +11258,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from end of bytes and returns it as uint96', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6778,7 +11287,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from end of bytes and returns it as bytes13', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6807,7 +11316,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from end of bytes and returns it as int104', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6845,7 +11354,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from end of bytes and returns it as uint104', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6874,7 +11383,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from end of bytes and returns it as bytes14', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6903,7 +11412,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from end of bytes and returns it as int112', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6941,7 +11450,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from end of bytes and returns it as uint112', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6970,7 +11479,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from end of bytes and returns it as bytes15', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -6999,7 +11508,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from end of bytes and returns it as int120', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7037,7 +11546,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from end of bytes and returns it as uint120', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7066,7 +11575,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from end of bytes and returns it as bytes16', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7095,7 +11604,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from end of bytes and returns it as int128', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7133,7 +11642,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from end of bytes and returns it as uint128', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7162,7 +11671,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from end of bytes and returns it as bytes17', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7191,7 +11700,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from end of bytes and returns it as int136', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7229,7 +11738,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from end of bytes and returns it as uint136', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7258,7 +11767,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from end of bytes and returns it as bytes18', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7287,7 +11796,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from end of bytes and returns it as int144', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7325,7 +11834,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from end of bytes and returns it as uint144', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7354,7 +11863,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from end of bytes and returns it as bytes19', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7383,7 +11892,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from end of bytes and returns it as int152', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7421,7 +11930,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from end of bytes and returns it as uint152', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7450,7 +11959,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from end of bytes and returns it as bytes20', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7479,7 +11988,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from end of bytes and returns it as int160', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7517,7 +12026,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from end of bytes and returns it as uint160', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7546,7 +12055,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from end of bytes and returns it as address', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7575,7 +12084,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from end of bytes and returns it as bytes21', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7604,7 +12113,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from end of bytes and returns it as int168', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7642,7 +12151,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from end of bytes and returns it as uint168', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7671,7 +12180,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from end of bytes and returns it as bytes22', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7700,7 +12209,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from end of bytes and returns it as int176', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7738,7 +12247,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from end of bytes and returns it as uint176', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7767,7 +12276,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from end of bytes and returns it as bytes23', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7796,7 +12305,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from end of bytes and returns it as int184', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7834,7 +12343,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from end of bytes and returns it as uint184', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7863,7 +12372,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from end of bytes and returns it as bytes24', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7892,7 +12401,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from end of bytes and returns it as int192', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7930,7 +12439,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from end of bytes and returns it as uint192', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7959,7 +12468,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from end of bytes and returns it as bytes25', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -7988,7 +12497,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from end of bytes and returns it as int200', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8026,7 +12535,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from end of bytes and returns it as uint200', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8055,7 +12564,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from end of bytes and returns it as bytes26', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8084,7 +12593,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from end of bytes and returns it as int208', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8122,7 +12631,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from end of bytes and returns it as uint208', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8151,7 +12660,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from end of bytes and returns it as bytes27', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8180,7 +12689,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from end of bytes and returns it as int216', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8218,7 +12727,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from end of bytes and returns it as uint216', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8247,7 +12756,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from end of bytes and returns it as bytes28', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8276,7 +12785,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from end of bytes and returns it as int224', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8314,7 +12823,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from end of bytes and returns it as uint224', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8343,7 +12852,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from end of bytes and returns it as bytes29', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8372,7 +12881,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from end of bytes and returns it as int232', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8410,7 +12919,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from end of bytes and returns it as uint232', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8439,7 +12948,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from end of bytes and returns it as bytes30', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8468,7 +12977,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from end of bytes and returns it as int240', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8506,7 +13015,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from end of bytes and returns it as uint240', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8535,7 +13044,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from end of bytes and returns it as bytes31', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8564,7 +13073,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from end of bytes and returns it as int248', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8602,7 +13111,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from end of bytes and returns it as uint248', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8631,7 +13140,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from end of bytes and returns it as bytes32', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8660,7 +13169,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from end of bytes and returns it as int256', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8698,7 +13207,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from end of bytes and returns it as uint256', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8728,7 +13237,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from beginning of bytes and returns it as bytes1', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8753,7 +13262,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from beginning of bytes and returns it as int8', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8787,7 +13296,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from beginning of bytes and returns it as uint8', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8812,7 +13321,7 @@ describe('Bytes32Builder', () => {
     it('removes 1-byte segment from beginning of bytes and returns it as bool', async () => {
       const sizeBytes = 1;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8837,7 +13346,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from beginning of bytes and returns it as bytes2', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8862,7 +13371,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from beginning of bytes and returns it as int16', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8896,7 +13405,7 @@ describe('Bytes32Builder', () => {
     it('removes 2-byte segment from beginning of bytes and returns it as uint16', async () => {
       const sizeBytes = 2;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8921,7 +13430,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from beginning of bytes and returns it as bytes3', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8946,7 +13455,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from beginning of bytes and returns it as int24', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -8980,7 +13489,7 @@ describe('Bytes32Builder', () => {
     it('removes 3-byte segment from beginning of bytes and returns it as uint24', async () => {
       const sizeBytes = 3;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9005,7 +13514,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from beginning of bytes and returns it as bytes4', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9030,7 +13539,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from beginning of bytes and returns it as int32', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9064,7 +13573,7 @@ describe('Bytes32Builder', () => {
     it('removes 4-byte segment from beginning of bytes and returns it as uint32', async () => {
       const sizeBytes = 4;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9089,7 +13598,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from beginning of bytes and returns it as bytes5', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9114,7 +13623,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from beginning of bytes and returns it as int40', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9148,7 +13657,7 @@ describe('Bytes32Builder', () => {
     it('removes 5-byte segment from beginning of bytes and returns it as uint40', async () => {
       const sizeBytes = 5;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9173,7 +13682,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from beginning of bytes and returns it as bytes6', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9198,7 +13707,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from beginning of bytes and returns it as int48', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9232,7 +13741,7 @@ describe('Bytes32Builder', () => {
     it('removes 6-byte segment from beginning of bytes and returns it as uint48', async () => {
       const sizeBytes = 6;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9257,7 +13766,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from beginning of bytes and returns it as bytes7', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9282,7 +13791,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from beginning of bytes and returns it as int56', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9316,7 +13825,7 @@ describe('Bytes32Builder', () => {
     it('removes 7-byte segment from beginning of bytes and returns it as uint56', async () => {
       const sizeBytes = 7;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9341,7 +13850,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from beginning of bytes and returns it as bytes8', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9366,7 +13875,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from beginning of bytes and returns it as int64', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9400,7 +13909,7 @@ describe('Bytes32Builder', () => {
     it('removes 8-byte segment from beginning of bytes and returns it as uint64', async () => {
       const sizeBytes = 8;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9425,7 +13934,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from beginning of bytes and returns it as bytes9', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9450,7 +13959,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from beginning of bytes and returns it as int72', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9484,7 +13993,7 @@ describe('Bytes32Builder', () => {
     it('removes 9-byte segment from beginning of bytes and returns it as uint72', async () => {
       const sizeBytes = 9;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9509,7 +14018,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from beginning of bytes and returns it as bytes10', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9534,7 +14043,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from beginning of bytes and returns it as int80', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9568,7 +14077,7 @@ describe('Bytes32Builder', () => {
     it('removes 10-byte segment from beginning of bytes and returns it as uint80', async () => {
       const sizeBytes = 10;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9593,7 +14102,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from beginning of bytes and returns it as bytes11', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9618,7 +14127,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from beginning of bytes and returns it as int88', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9652,7 +14161,7 @@ describe('Bytes32Builder', () => {
     it('removes 11-byte segment from beginning of bytes and returns it as uint88', async () => {
       const sizeBytes = 11;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9677,7 +14186,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from beginning of bytes and returns it as bytes12', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9702,7 +14211,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from beginning of bytes and returns it as int96', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9736,7 +14245,7 @@ describe('Bytes32Builder', () => {
     it('removes 12-byte segment from beginning of bytes and returns it as uint96', async () => {
       const sizeBytes = 12;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9761,7 +14270,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from beginning of bytes and returns it as bytes13', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9786,7 +14295,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from beginning of bytes and returns it as int104', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9820,7 +14329,7 @@ describe('Bytes32Builder', () => {
     it('removes 13-byte segment from beginning of bytes and returns it as uint104', async () => {
       const sizeBytes = 13;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9845,7 +14354,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from beginning of bytes and returns it as bytes14', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9870,7 +14379,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from beginning of bytes and returns it as int112', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9904,7 +14413,7 @@ describe('Bytes32Builder', () => {
     it('removes 14-byte segment from beginning of bytes and returns it as uint112', async () => {
       const sizeBytes = 14;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9929,7 +14438,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from beginning of bytes and returns it as bytes15', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9954,7 +14463,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from beginning of bytes and returns it as int120', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -9988,7 +14497,7 @@ describe('Bytes32Builder', () => {
     it('removes 15-byte segment from beginning of bytes and returns it as uint120', async () => {
       const sizeBytes = 15;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10013,7 +14522,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from beginning of bytes and returns it as bytes16', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10038,7 +14547,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from beginning of bytes and returns it as int128', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10072,7 +14581,7 @@ describe('Bytes32Builder', () => {
     it('removes 16-byte segment from beginning of bytes and returns it as uint128', async () => {
       const sizeBytes = 16;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10097,7 +14606,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from beginning of bytes and returns it as bytes17', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10122,7 +14631,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from beginning of bytes and returns it as int136', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10156,7 +14665,7 @@ describe('Bytes32Builder', () => {
     it('removes 17-byte segment from beginning of bytes and returns it as uint136', async () => {
       const sizeBytes = 17;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10181,7 +14690,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from beginning of bytes and returns it as bytes18', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10206,7 +14715,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from beginning of bytes and returns it as int144', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10240,7 +14749,7 @@ describe('Bytes32Builder', () => {
     it('removes 18-byte segment from beginning of bytes and returns it as uint144', async () => {
       const sizeBytes = 18;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10265,7 +14774,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from beginning of bytes and returns it as bytes19', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10290,7 +14799,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from beginning of bytes and returns it as int152', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10324,7 +14833,7 @@ describe('Bytes32Builder', () => {
     it('removes 19-byte segment from beginning of bytes and returns it as uint152', async () => {
       const sizeBytes = 19;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10349,7 +14858,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from beginning of bytes and returns it as bytes20', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10374,7 +14883,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from beginning of bytes and returns it as int160', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10408,7 +14917,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from beginning of bytes and returns it as uint160', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10433,7 +14942,7 @@ describe('Bytes32Builder', () => {
     it('removes 20-byte segment from beginning of bytes and returns it as address', async () => {
       const sizeBytes = 20;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10458,7 +14967,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from beginning of bytes and returns it as bytes21', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10483,7 +14992,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from beginning of bytes and returns it as int168', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10517,7 +15026,7 @@ describe('Bytes32Builder', () => {
     it('removes 21-byte segment from beginning of bytes and returns it as uint168', async () => {
       const sizeBytes = 21;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10542,7 +15051,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from beginning of bytes and returns it as bytes22', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10567,7 +15076,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from beginning of bytes and returns it as int176', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10601,7 +15110,7 @@ describe('Bytes32Builder', () => {
     it('removes 22-byte segment from beginning of bytes and returns it as uint176', async () => {
       const sizeBytes = 22;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10626,7 +15135,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from beginning of bytes and returns it as bytes23', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10651,7 +15160,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from beginning of bytes and returns it as int184', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10685,7 +15194,7 @@ describe('Bytes32Builder', () => {
     it('removes 23-byte segment from beginning of bytes and returns it as uint184', async () => {
       const sizeBytes = 23;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10710,7 +15219,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from beginning of bytes and returns it as bytes24', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10735,7 +15244,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from beginning of bytes and returns it as int192', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10769,7 +15278,7 @@ describe('Bytes32Builder', () => {
     it('removes 24-byte segment from beginning of bytes and returns it as uint192', async () => {
       const sizeBytes = 24;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10794,7 +15303,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from beginning of bytes and returns it as bytes25', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10819,7 +15328,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from beginning of bytes and returns it as int200', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10853,7 +15362,7 @@ describe('Bytes32Builder', () => {
     it('removes 25-byte segment from beginning of bytes and returns it as uint200', async () => {
       const sizeBytes = 25;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10878,7 +15387,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from beginning of bytes and returns it as bytes26', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10903,7 +15412,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from beginning of bytes and returns it as int208', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10937,7 +15446,7 @@ describe('Bytes32Builder', () => {
     it('removes 26-byte segment from beginning of bytes and returns it as uint208', async () => {
       const sizeBytes = 26;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10962,7 +15471,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from beginning of bytes and returns it as bytes27', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -10987,7 +15496,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from beginning of bytes and returns it as int216', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11021,7 +15530,7 @@ describe('Bytes32Builder', () => {
     it('removes 27-byte segment from beginning of bytes and returns it as uint216', async () => {
       const sizeBytes = 27;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11046,7 +15555,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from beginning of bytes and returns it as bytes28', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11071,7 +15580,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from beginning of bytes and returns it as int224', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11105,7 +15614,7 @@ describe('Bytes32Builder', () => {
     it('removes 28-byte segment from beginning of bytes and returns it as uint224', async () => {
       const sizeBytes = 28;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11130,7 +15639,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from beginning of bytes and returns it as bytes29', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11155,7 +15664,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from beginning of bytes and returns it as int232', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11189,7 +15698,7 @@ describe('Bytes32Builder', () => {
     it('removes 29-byte segment from beginning of bytes and returns it as uint232', async () => {
       const sizeBytes = 29;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11214,7 +15723,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from beginning of bytes and returns it as bytes30', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11239,7 +15748,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from beginning of bytes and returns it as int240', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11273,7 +15782,7 @@ describe('Bytes32Builder', () => {
     it('removes 30-byte segment from beginning of bytes and returns it as uint240', async () => {
       const sizeBytes = 30;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11298,7 +15807,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from beginning of bytes and returns it as bytes31', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11323,7 +15832,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from beginning of bytes and returns it as int248', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11357,7 +15866,7 @@ describe('Bytes32Builder', () => {
     it('removes 31-byte segment from beginning of bytes and returns it as uint248', async () => {
       const sizeBytes = 31;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11382,7 +15891,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from beginning of bytes and returns it as bytes32', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11407,7 +15916,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from beginning of bytes and returns it as int256', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11441,7 +15950,7 @@ describe('Bytes32Builder', () => {
     it('removes 32-byte segment from beginning of bytes and returns it as uint256', async () => {
       const sizeBytes = 32;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11469,7 +15978,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11502,7 +16015,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11529,7 +16046,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11556,7 +16077,11 @@ describe('Bytes32Builder', () => {
       const data = '0x01';
       const input = true;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11583,7 +16108,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11616,7 +16145,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11643,7 +16176,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11670,7 +16207,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11703,7 +16244,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11730,7 +16275,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11757,7 +16306,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11790,7 +16343,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11817,7 +16374,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11844,7 +16405,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11877,7 +16442,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11904,7 +16473,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11931,7 +16504,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11964,7 +16541,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -11991,7 +16572,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12018,7 +16603,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12051,7 +16640,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12078,7 +16671,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12105,7 +16702,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12138,7 +16739,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12165,7 +16770,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12192,7 +16801,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12225,7 +16838,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12252,7 +16869,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12279,7 +16900,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12312,7 +16937,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12339,7 +16968,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12366,7 +16999,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12399,7 +17036,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12426,7 +17067,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12453,7 +17098,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12486,7 +17135,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12513,7 +17166,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12540,7 +17197,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12573,7 +17234,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12600,7 +17265,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12627,7 +17296,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12660,7 +17333,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12687,7 +17364,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12714,7 +17395,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12747,7 +17432,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12774,7 +17463,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12801,7 +17494,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12834,7 +17531,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12861,7 +17562,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12888,7 +17593,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12921,7 +17630,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12948,7 +17661,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -12975,7 +17692,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13008,7 +17729,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13035,7 +17760,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13062,7 +17791,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13095,7 +17828,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13122,7 +17859,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13149,7 +17890,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13182,7 +17927,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13209,7 +17958,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13236,7 +17989,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13263,7 +18020,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13296,7 +18057,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13323,7 +18088,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13350,7 +18119,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13383,7 +18156,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13410,7 +18187,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13437,7 +18218,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13470,7 +18255,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13497,7 +18286,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13524,7 +18317,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13557,7 +18354,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13584,7 +18385,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13611,7 +18416,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13644,7 +18453,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13671,7 +18484,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13698,7 +18515,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13731,7 +18552,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13758,7 +18583,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13785,7 +18614,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13818,7 +18651,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13845,7 +18682,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13872,7 +18713,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13905,7 +18750,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13932,7 +18781,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13959,7 +18812,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -13992,7 +18849,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14019,7 +18880,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14046,7 +18911,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14079,7 +18948,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14106,7 +18979,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14133,7 +19010,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14166,7 +19047,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14193,7 +19078,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14220,7 +19109,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14253,7 +19146,11 @@ describe('Bytes32Builder', () => {
         input = BigInt(data);
       }
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -14280,7 +19177,11 @@ describe('Bytes32Builder', () => {
       const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
       const input = data;
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [
+        0,
+        32 - sizeBytes,
+        randomIndexNonInclusive(0, 32 - sizeBytes),
+      ]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,

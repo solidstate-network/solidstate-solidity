@@ -96,6 +96,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes1 value to 1-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes1 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes1(
+        Builder memory self,
+        bytes1 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_01 << offset)) |
+                ((bytes32(element) >> 248) << offset);
+            if (self._size < 8 + offset) self._size = 8 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes1 value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes1 to add
@@ -161,6 +180,25 @@ library Bytes32Builder {
     ) internal pure returns (int8 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
         element = int8(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int8 value to 1-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int8 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt8(
+        Builder memory self,
+        int8 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_01 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 248)) << offset);
+            if (self._size < 8 + offset) self._size = 8 + offset;
+        }
     }
 
     /**
@@ -234,6 +272,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint8 value to 1-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint8 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint8(
+        Builder memory self,
+        uint8 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_01 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 8 + offset) self._size = 8 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint8 value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint8 to add
@@ -299,6 +356,25 @@ library Bytes32Builder {
     ) internal pure returns (bool element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
         element = Bytes32.toBool(elementBytes);
+    }
+
+    /**
+     * @notice insert bool value to 1-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bool to insert
+     * @param offset slot offset in bits
+     */
+    function insertBool(
+        Builder memory self,
+        bool element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_01 << offset)) |
+                (Bool.toBytes32(element) << offset);
+            if (self._size < 8 + offset) self._size = 8 + offset;
+        }
     }
 
     /**
@@ -368,6 +444,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes2 value to 2-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes2 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes2(
+        Builder memory self,
+        bytes2 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_02 << offset)) |
+                ((bytes32(element) >> 240) << offset);
+            if (self._size < 16 + offset) self._size = 16 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes2 value to 2-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes2 to add
@@ -433,6 +528,25 @@ library Bytes32Builder {
     ) internal pure returns (int16 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_02;
         element = int16(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int16 value to 2-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int16 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt16(
+        Builder memory self,
+        int16 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_02 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 240)) << offset);
+            if (self._size < 16 + offset) self._size = 16 + offset;
+        }
     }
 
     /**
@@ -508,6 +622,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint16 value to 2-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint16 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint16(
+        Builder memory self,
+        uint16 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_02 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 16 + offset) self._size = 16 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint16 value to 2-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint16 to add
@@ -576,6 +709,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes3 value to 3-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes3 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes3(
+        Builder memory self,
+        bytes3 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_03 << offset)) |
+                ((bytes32(element) >> 232) << offset);
+            if (self._size < 24 + offset) self._size = 24 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes3 value to 3-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes3 to add
@@ -641,6 +793,25 @@ library Bytes32Builder {
     ) internal pure returns (int24 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_03;
         element = int24(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int24 value to 3-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int24 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt24(
+        Builder memory self,
+        int24 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_03 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 232)) << offset);
+            if (self._size < 24 + offset) self._size = 24 + offset;
+        }
     }
 
     /**
@@ -716,6 +887,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint24 value to 3-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint24 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint24(
+        Builder memory self,
+        uint24 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_03 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 24 + offset) self._size = 24 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint24 value to 3-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint24 to add
@@ -784,6 +974,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes4 value to 4-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes4 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes4(
+        Builder memory self,
+        bytes4 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_04 << offset)) |
+                ((bytes32(element) >> 224) << offset);
+            if (self._size < 32 + offset) self._size = 32 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes4 value to 4-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes4 to add
@@ -849,6 +1058,25 @@ library Bytes32Builder {
     ) internal pure returns (int32 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_04;
         element = int32(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int32 value to 4-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int32 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt32(
+        Builder memory self,
+        int32 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_04 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 224)) << offset);
+            if (self._size < 32 + offset) self._size = 32 + offset;
+        }
     }
 
     /**
@@ -924,6 +1152,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint32 value to 4-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint32 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint32(
+        Builder memory self,
+        uint32 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_04 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 32 + offset) self._size = 32 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint32 value to 4-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint32 to add
@@ -992,6 +1239,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes5 value to 5-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes5 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes5(
+        Builder memory self,
+        bytes5 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_05 << offset)) |
+                ((bytes32(element) >> 216) << offset);
+            if (self._size < 40 + offset) self._size = 40 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes5 value to 5-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes5 to add
@@ -1057,6 +1323,25 @@ library Bytes32Builder {
     ) internal pure returns (int40 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_05;
         element = int40(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int40 value to 5-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int40 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt40(
+        Builder memory self,
+        int40 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_05 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 216)) << offset);
+            if (self._size < 40 + offset) self._size = 40 + offset;
+        }
     }
 
     /**
@@ -1132,6 +1417,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint40 value to 5-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint40 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint40(
+        Builder memory self,
+        uint40 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_05 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 40 + offset) self._size = 40 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint40 value to 5-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint40 to add
@@ -1200,6 +1504,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes6 value to 6-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes6 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes6(
+        Builder memory self,
+        bytes6 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_06 << offset)) |
+                ((bytes32(element) >> 208) << offset);
+            if (self._size < 48 + offset) self._size = 48 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes6 value to 6-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes6 to add
@@ -1265,6 +1588,25 @@ library Bytes32Builder {
     ) internal pure returns (int48 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_06;
         element = int48(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int48 value to 6-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int48 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt48(
+        Builder memory self,
+        int48 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_06 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 208)) << offset);
+            if (self._size < 48 + offset) self._size = 48 + offset;
+        }
     }
 
     /**
@@ -1340,6 +1682,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint48 value to 6-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint48 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint48(
+        Builder memory self,
+        uint48 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_06 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 48 + offset) self._size = 48 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint48 value to 6-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint48 to add
@@ -1408,6 +1769,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes7 value to 7-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes7 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes7(
+        Builder memory self,
+        bytes7 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_07 << offset)) |
+                ((bytes32(element) >> 200) << offset);
+            if (self._size < 56 + offset) self._size = 56 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes7 value to 7-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes7 to add
@@ -1473,6 +1853,25 @@ library Bytes32Builder {
     ) internal pure returns (int56 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_07;
         element = int56(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int56 value to 7-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int56 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt56(
+        Builder memory self,
+        int56 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_07 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 200)) << offset);
+            if (self._size < 56 + offset) self._size = 56 + offset;
+        }
     }
 
     /**
@@ -1548,6 +1947,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint56 value to 7-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint56 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint56(
+        Builder memory self,
+        uint56 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_07 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 56 + offset) self._size = 56 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint56 value to 7-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint56 to add
@@ -1616,6 +2034,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes8 value to 8-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes8 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes8(
+        Builder memory self,
+        bytes8 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_08 << offset)) |
+                ((bytes32(element) >> 192) << offset);
+            if (self._size < 64 + offset) self._size = 64 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes8 value to 8-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes8 to add
@@ -1681,6 +2118,25 @@ library Bytes32Builder {
     ) internal pure returns (int64 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_08;
         element = int64(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int64 value to 8-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int64 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt64(
+        Builder memory self,
+        int64 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_08 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 192)) << offset);
+            if (self._size < 64 + offset) self._size = 64 + offset;
+        }
     }
 
     /**
@@ -1756,6 +2212,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint64 value to 8-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint64 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint64(
+        Builder memory self,
+        uint64 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_08 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 64 + offset) self._size = 64 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint64 value to 8-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint64 to add
@@ -1824,6 +2299,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes9 value to 9-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes9 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes9(
+        Builder memory self,
+        bytes9 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_09 << offset)) |
+                ((bytes32(element) >> 184) << offset);
+            if (self._size < 72 + offset) self._size = 72 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes9 value to 9-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes9 to add
@@ -1889,6 +2383,25 @@ library Bytes32Builder {
     ) internal pure returns (int72 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_09;
         element = int72(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int72 value to 9-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int72 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt72(
+        Builder memory self,
+        int72 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_09 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 184)) << offset);
+            if (self._size < 72 + offset) self._size = 72 + offset;
+        }
     }
 
     /**
@@ -1964,6 +2477,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint72 value to 9-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint72 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint72(
+        Builder memory self,
+        uint72 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_09 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 72 + offset) self._size = 72 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint72 value to 9-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint72 to add
@@ -2029,6 +2561,25 @@ library Bytes32Builder {
     ) internal pure returns (bytes10 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_10;
         element = bytes10(elementBytes << 176);
+    }
+
+    /**
+     * @notice insert bytes10 value to 10-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes10 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes10(
+        Builder memory self,
+        bytes10 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_10 << offset)) |
+                ((bytes32(element) >> 176) << offset);
+            if (self._size < 80 + offset) self._size = 80 + offset;
+        }
     }
 
     /**
@@ -2100,6 +2651,25 @@ library Bytes32Builder {
     ) internal pure returns (int80 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_10;
         element = int80(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int80 value to 10-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int80 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt80(
+        Builder memory self,
+        int80 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_10 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 176)) << offset);
+            if (self._size < 80 + offset) self._size = 80 + offset;
+        }
     }
 
     /**
@@ -2175,6 +2745,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint80 value to 10-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint80 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint80(
+        Builder memory self,
+        uint80 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_10 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 80 + offset) self._size = 80 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint80 value to 10-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint80 to add
@@ -2240,6 +2829,25 @@ library Bytes32Builder {
     ) internal pure returns (bytes11 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_11;
         element = bytes11(elementBytes << 168);
+    }
+
+    /**
+     * @notice insert bytes11 value to 11-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes11 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes11(
+        Builder memory self,
+        bytes11 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_11 << offset)) |
+                ((bytes32(element) >> 168) << offset);
+            if (self._size < 88 + offset) self._size = 88 + offset;
+        }
     }
 
     /**
@@ -2311,6 +2919,25 @@ library Bytes32Builder {
     ) internal pure returns (int88 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_11;
         element = int88(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int88 value to 11-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int88 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt88(
+        Builder memory self,
+        int88 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_11 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 168)) << offset);
+            if (self._size < 88 + offset) self._size = 88 + offset;
+        }
     }
 
     /**
@@ -2386,6 +3013,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint88 value to 11-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint88 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint88(
+        Builder memory self,
+        uint88 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_11 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 88 + offset) self._size = 88 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint88 value to 11-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint88 to add
@@ -2451,6 +3097,25 @@ library Bytes32Builder {
     ) internal pure returns (bytes12 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_12;
         element = bytes12(elementBytes << 160);
+    }
+
+    /**
+     * @notice insert bytes12 value to 12-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes12 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes12(
+        Builder memory self,
+        bytes12 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_12 << offset)) |
+                ((bytes32(element) >> 160) << offset);
+            if (self._size < 96 + offset) self._size = 96 + offset;
+        }
     }
 
     /**
@@ -2522,6 +3187,25 @@ library Bytes32Builder {
     ) internal pure returns (int96 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_12;
         element = int96(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int96 value to 12-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int96 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt96(
+        Builder memory self,
+        int96 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_12 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 160)) << offset);
+            if (self._size < 96 + offset) self._size = 96 + offset;
+        }
     }
 
     /**
@@ -2597,6 +3281,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint96 value to 12-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint96 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint96(
+        Builder memory self,
+        uint96 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_12 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 96 + offset) self._size = 96 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint96 value to 12-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint96 to add
@@ -2662,6 +3365,25 @@ library Bytes32Builder {
     ) internal pure returns (bytes13 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_13;
         element = bytes13(elementBytes << 152);
+    }
+
+    /**
+     * @notice insert bytes13 value to 13-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes13 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes13(
+        Builder memory self,
+        bytes13 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_13 << offset)) |
+                ((bytes32(element) >> 152) << offset);
+            if (self._size < 104 + offset) self._size = 104 + offset;
+        }
     }
 
     /**
@@ -2733,6 +3455,25 @@ library Bytes32Builder {
     ) internal pure returns (int104 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_13;
         element = int104(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int104 value to 13-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int104 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt104(
+        Builder memory self,
+        int104 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_13 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 152)) << offset);
+            if (self._size < 104 + offset) self._size = 104 + offset;
+        }
     }
 
     /**
@@ -2808,6 +3549,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint104 value to 13-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint104 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint104(
+        Builder memory self,
+        uint104 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_13 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 104 + offset) self._size = 104 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint104 value to 13-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint104 to add
@@ -2879,6 +3639,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes14 value to 14-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes14 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes14(
+        Builder memory self,
+        bytes14 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_14 << offset)) |
+                ((bytes32(element) >> 144) << offset);
+            if (self._size < 112 + offset) self._size = 112 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes14 value to 14-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes14 to add
@@ -2947,6 +3726,25 @@ library Bytes32Builder {
     ) internal pure returns (int112 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_14;
         element = int112(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int112 value to 14-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int112 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt112(
+        Builder memory self,
+        int112 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_14 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 144)) << offset);
+            if (self._size < 112 + offset) self._size = 112 + offset;
+        }
     }
 
     /**
@@ -3022,6 +3820,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint112 value to 14-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint112 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint112(
+        Builder memory self,
+        uint112 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_14 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 112 + offset) self._size = 112 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint112 value to 14-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint112 to add
@@ -3093,6 +3910,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes15 value to 15-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes15 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes15(
+        Builder memory self,
+        bytes15 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_15 << offset)) |
+                ((bytes32(element) >> 136) << offset);
+            if (self._size < 120 + offset) self._size = 120 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes15 value to 15-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes15 to add
@@ -3161,6 +3997,25 @@ library Bytes32Builder {
     ) internal pure returns (int120 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_15;
         element = int120(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int120 value to 15-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int120 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt120(
+        Builder memory self,
+        int120 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_15 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 136)) << offset);
+            if (self._size < 120 + offset) self._size = 120 + offset;
+        }
     }
 
     /**
@@ -3236,6 +4091,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint120 value to 15-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint120 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint120(
+        Builder memory self,
+        uint120 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_15 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 120 + offset) self._size = 120 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint120 value to 15-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint120 to add
@@ -3307,6 +4181,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes16 value to 16-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes16 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes16(
+        Builder memory self,
+        bytes16 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_16 << offset)) |
+                ((bytes32(element) >> 128) << offset);
+            if (self._size < 128 + offset) self._size = 128 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes16 value to 16-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes16 to add
@@ -3375,6 +4268,25 @@ library Bytes32Builder {
     ) internal pure returns (int128 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_16;
         element = int128(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int128 value to 16-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int128 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt128(
+        Builder memory self,
+        int128 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_16 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 128)) << offset);
+            if (self._size < 128 + offset) self._size = 128 + offset;
+        }
     }
 
     /**
@@ -3450,6 +4362,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint128 value to 16-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint128 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint128(
+        Builder memory self,
+        uint128 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_16 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 128 + offset) self._size = 128 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint128 value to 16-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint128 to add
@@ -3521,6 +4452,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes17 value to 17-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes17 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes17(
+        Builder memory self,
+        bytes17 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_17 << offset)) |
+                ((bytes32(element) >> 120) << offset);
+            if (self._size < 136 + offset) self._size = 136 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes17 value to 17-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes17 to add
@@ -3589,6 +4539,25 @@ library Bytes32Builder {
     ) internal pure returns (int136 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_17;
         element = int136(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int136 value to 17-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int136 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt136(
+        Builder memory self,
+        int136 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_17 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 120)) << offset);
+            if (self._size < 136 + offset) self._size = 136 + offset;
+        }
     }
 
     /**
@@ -3664,6 +4633,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint136 value to 17-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint136 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint136(
+        Builder memory self,
+        uint136 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_17 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 136 + offset) self._size = 136 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint136 value to 17-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint136 to add
@@ -3735,6 +4723,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes18 value to 18-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes18 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes18(
+        Builder memory self,
+        bytes18 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_18 << offset)) |
+                ((bytes32(element) >> 112) << offset);
+            if (self._size < 144 + offset) self._size = 144 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes18 value to 18-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes18 to add
@@ -3803,6 +4810,25 @@ library Bytes32Builder {
     ) internal pure returns (int144 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_18;
         element = int144(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int144 value to 18-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int144 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt144(
+        Builder memory self,
+        int144 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_18 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 112)) << offset);
+            if (self._size < 144 + offset) self._size = 144 + offset;
+        }
     }
 
     /**
@@ -3878,6 +4904,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint144 value to 18-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint144 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint144(
+        Builder memory self,
+        uint144 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_18 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 144 + offset) self._size = 144 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint144 value to 18-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint144 to add
@@ -3949,6 +4994,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes19 value to 19-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes19 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes19(
+        Builder memory self,
+        bytes19 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_19 << offset)) |
+                ((bytes32(element) >> 104) << offset);
+            if (self._size < 152 + offset) self._size = 152 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes19 value to 19-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes19 to add
@@ -4017,6 +5081,25 @@ library Bytes32Builder {
     ) internal pure returns (int152 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_19;
         element = int152(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int152 value to 19-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int152 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt152(
+        Builder memory self,
+        int152 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_19 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 104)) << offset);
+            if (self._size < 152 + offset) self._size = 152 + offset;
+        }
     }
 
     /**
@@ -4092,6 +5175,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint152 value to 19-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint152 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint152(
+        Builder memory self,
+        uint152 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_19 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 152 + offset) self._size = 152 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint152 value to 19-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint152 to add
@@ -4163,6 +5265,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes20 value to 20-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes20 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes20(
+        Builder memory self,
+        bytes20 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_20 << offset)) |
+                ((bytes32(element) >> 96) << offset);
+            if (self._size < 160 + offset) self._size = 160 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes20 value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes20 to add
@@ -4231,6 +5352,25 @@ library Bytes32Builder {
     ) internal pure returns (int160 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
         element = int160(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int160 value to 20-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int160 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt160(
+        Builder memory self,
+        int160 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_20 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 96)) << offset);
+            if (self._size < 160 + offset) self._size = 160 + offset;
+        }
     }
 
     /**
@@ -4306,6 +5446,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint160 value to 20-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint160 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint160(
+        Builder memory self,
+        uint160 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_20 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 160 + offset) self._size = 160 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint160 value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint160 to add
@@ -4374,6 +5533,25 @@ library Bytes32Builder {
     ) internal pure returns (address element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
         element = Bytes32.toAddress(elementBytes);
+    }
+
+    /**
+     * @notice insert address value to 20-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element address to insert
+     * @param offset slot offset in bits
+     */
+    function insertAddress(
+        Builder memory self,
+        address element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_20 << offset)) |
+                (Address.toBytes32(element) << offset);
+            if (self._size < 160 + offset) self._size = 160 + offset;
+        }
     }
 
     /**
@@ -4448,6 +5626,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes21 value to 21-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes21 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes21(
+        Builder memory self,
+        bytes21 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_21 << offset)) |
+                ((bytes32(element) >> 88) << offset);
+            if (self._size < 168 + offset) self._size = 168 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes21 value to 21-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes21 to add
@@ -4516,6 +5713,25 @@ library Bytes32Builder {
     ) internal pure returns (int168 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_21;
         element = int168(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int168 value to 21-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int168 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt168(
+        Builder memory self,
+        int168 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_21 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 88)) << offset);
+            if (self._size < 168 + offset) self._size = 168 + offset;
+        }
     }
 
     /**
@@ -4591,6 +5807,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint168 value to 21-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint168 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint168(
+        Builder memory self,
+        uint168 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_21 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 168 + offset) self._size = 168 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint168 value to 21-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint168 to add
@@ -4662,6 +5897,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes22 value to 22-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes22 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes22(
+        Builder memory self,
+        bytes22 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_22 << offset)) |
+                ((bytes32(element) >> 80) << offset);
+            if (self._size < 176 + offset) self._size = 176 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes22 value to 22-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes22 to add
@@ -4730,6 +5984,25 @@ library Bytes32Builder {
     ) internal pure returns (int176 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_22;
         element = int176(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int176 value to 22-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int176 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt176(
+        Builder memory self,
+        int176 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_22 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 80)) << offset);
+            if (self._size < 176 + offset) self._size = 176 + offset;
+        }
     }
 
     /**
@@ -4805,6 +6078,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint176 value to 22-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint176 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint176(
+        Builder memory self,
+        uint176 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_22 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 176 + offset) self._size = 176 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint176 value to 22-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint176 to add
@@ -4876,6 +6168,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes23 value to 23-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes23 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes23(
+        Builder memory self,
+        bytes23 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_23 << offset)) |
+                ((bytes32(element) >> 72) << offset);
+            if (self._size < 184 + offset) self._size = 184 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes23 value to 23-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes23 to add
@@ -4944,6 +6255,25 @@ library Bytes32Builder {
     ) internal pure returns (int184 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_23;
         element = int184(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int184 value to 23-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int184 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt184(
+        Builder memory self,
+        int184 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_23 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 72)) << offset);
+            if (self._size < 184 + offset) self._size = 184 + offset;
+        }
     }
 
     /**
@@ -5019,6 +6349,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint184 value to 23-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint184 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint184(
+        Builder memory self,
+        uint184 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_23 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 184 + offset) self._size = 184 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint184 value to 23-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint184 to add
@@ -5090,6 +6439,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes24 value to 24-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes24 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes24(
+        Builder memory self,
+        bytes24 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_24 << offset)) |
+                ((bytes32(element) >> 64) << offset);
+            if (self._size < 192 + offset) self._size = 192 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes24 value to 24-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes24 to add
@@ -5158,6 +6526,25 @@ library Bytes32Builder {
     ) internal pure returns (int192 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_24;
         element = int192(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int192 value to 24-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int192 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt192(
+        Builder memory self,
+        int192 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_24 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 64)) << offset);
+            if (self._size < 192 + offset) self._size = 192 + offset;
+        }
     }
 
     /**
@@ -5233,6 +6620,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint192 value to 24-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint192 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint192(
+        Builder memory self,
+        uint192 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_24 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 192 + offset) self._size = 192 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint192 value to 24-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint192 to add
@@ -5304,6 +6710,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes25 value to 25-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes25 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes25(
+        Builder memory self,
+        bytes25 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_25 << offset)) |
+                ((bytes32(element) >> 56) << offset);
+            if (self._size < 200 + offset) self._size = 200 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes25 value to 25-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes25 to add
@@ -5372,6 +6797,25 @@ library Bytes32Builder {
     ) internal pure returns (int200 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_25;
         element = int200(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int200 value to 25-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int200 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt200(
+        Builder memory self,
+        int200 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_25 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 56)) << offset);
+            if (self._size < 200 + offset) self._size = 200 + offset;
+        }
     }
 
     /**
@@ -5447,6 +6891,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint200 value to 25-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint200 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint200(
+        Builder memory self,
+        uint200 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_25 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 200 + offset) self._size = 200 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint200 value to 25-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint200 to add
@@ -5518,6 +6981,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes26 value to 26-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes26 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes26(
+        Builder memory self,
+        bytes26 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_26 << offset)) |
+                ((bytes32(element) >> 48) << offset);
+            if (self._size < 208 + offset) self._size = 208 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes26 value to 26-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes26 to add
@@ -5586,6 +7068,25 @@ library Bytes32Builder {
     ) internal pure returns (int208 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_26;
         element = int208(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int208 value to 26-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int208 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt208(
+        Builder memory self,
+        int208 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_26 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 48)) << offset);
+            if (self._size < 208 + offset) self._size = 208 + offset;
+        }
     }
 
     /**
@@ -5661,6 +7162,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint208 value to 26-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint208 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint208(
+        Builder memory self,
+        uint208 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_26 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 208 + offset) self._size = 208 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint208 value to 26-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint208 to add
@@ -5732,6 +7252,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes27 value to 27-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes27 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes27(
+        Builder memory self,
+        bytes27 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_27 << offset)) |
+                ((bytes32(element) >> 40) << offset);
+            if (self._size < 216 + offset) self._size = 216 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes27 value to 27-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes27 to add
@@ -5800,6 +7339,25 @@ library Bytes32Builder {
     ) internal pure returns (int216 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_27;
         element = int216(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int216 value to 27-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int216 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt216(
+        Builder memory self,
+        int216 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_27 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 40)) << offset);
+            if (self._size < 216 + offset) self._size = 216 + offset;
+        }
     }
 
     /**
@@ -5875,6 +7433,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint216 value to 27-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint216 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint216(
+        Builder memory self,
+        uint216 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_27 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 216 + offset) self._size = 216 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint216 value to 27-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint216 to add
@@ -5946,6 +7523,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes28 value to 28-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes28 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes28(
+        Builder memory self,
+        bytes28 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_28 << offset)) |
+                ((bytes32(element) >> 32) << offset);
+            if (self._size < 224 + offset) self._size = 224 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes28 value to 28-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes28 to add
@@ -6014,6 +7610,25 @@ library Bytes32Builder {
     ) internal pure returns (int224 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_28;
         element = int224(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int224 value to 28-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int224 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt224(
+        Builder memory self,
+        int224 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_28 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 32)) << offset);
+            if (self._size < 224 + offset) self._size = 224 + offset;
+        }
     }
 
     /**
@@ -6089,6 +7704,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint224 value to 28-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint224 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint224(
+        Builder memory self,
+        uint224 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_28 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 224 + offset) self._size = 224 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint224 value to 28-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint224 to add
@@ -6160,6 +7794,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes29 value to 29-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes29 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes29(
+        Builder memory self,
+        bytes29 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_29 << offset)) |
+                ((bytes32(element) >> 24) << offset);
+            if (self._size < 232 + offset) self._size = 232 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes29 value to 29-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes29 to add
@@ -6228,6 +7881,25 @@ library Bytes32Builder {
     ) internal pure returns (int232 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_29;
         element = int232(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int232 value to 29-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int232 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt232(
+        Builder memory self,
+        int232 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_29 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 24)) << offset);
+            if (self._size < 232 + offset) self._size = 232 + offset;
+        }
     }
 
     /**
@@ -6303,6 +7975,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint232 value to 29-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint232 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint232(
+        Builder memory self,
+        uint232 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_29 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 232 + offset) self._size = 232 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint232 value to 29-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint232 to add
@@ -6374,6 +8065,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes30 value to 30-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes30 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes30(
+        Builder memory self,
+        bytes30 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_30 << offset)) |
+                ((bytes32(element) >> 16) << offset);
+            if (self._size < 240 + offset) self._size = 240 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes30 value to 30-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes30 to add
@@ -6442,6 +8152,25 @@ library Bytes32Builder {
     ) internal pure returns (int240 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_30;
         element = int240(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int240 value to 30-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int240 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt240(
+        Builder memory self,
+        int240 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_30 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 16)) << offset);
+            if (self._size < 240 + offset) self._size = 240 + offset;
+        }
     }
 
     /**
@@ -6517,6 +8246,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint240 value to 30-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint240 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint240(
+        Builder memory self,
+        uint240 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_30 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 240 + offset) self._size = 240 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint240 value to 30-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint240 to add
@@ -6588,6 +8336,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert bytes31 value to 31-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes31 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes31(
+        Builder memory self,
+        bytes31 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_31 << offset)) |
+                ((bytes32(element) >> 8) << offset);
+            if (self._size < 248 + offset) self._size = 248 + offset;
+        }
+    }
+
+    /**
      * @notice insert bytes31 value to 31-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes31 to add
@@ -6656,6 +8423,25 @@ library Bytes32Builder {
     ) internal pure returns (int248 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_31;
         element = int248(Bytes32.toInt256(elementBytes));
+    }
+
+    /**
+     * @notice insert int248 value to 31-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int248 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt248(
+        Builder memory self,
+        int248 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_31 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 8)) << offset);
+            if (self._size < 248 + offset) self._size = 248 + offset;
+        }
     }
 
     /**
@@ -6731,6 +8517,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert uint248 value to 31-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint248 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint248(
+        Builder memory self,
+        uint248 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_31 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 248 + offset) self._size = 248 + offset;
+        }
+    }
+
+    /**
      * @notice insert uint248 value to 31-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element uint248 to add
@@ -6799,6 +8604,25 @@ library Bytes32Builder {
     ) internal pure returns (bytes32 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_32;
         element = bytes32(elementBytes << 0);
+    }
+
+    /**
+     * @notice insert bytes32 value to 32-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element bytes32 to insert
+     * @param offset slot offset in bits
+     */
+    function insertBytes32(
+        Builder memory self,
+        bytes32 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_32 << offset)) |
+                ((bytes32(element) >> 0) << offset);
+            if (self._size < 256 + offset) self._size = 256 + offset;
+        }
     }
 
     /**
@@ -6873,6 +8697,25 @@ library Bytes32Builder {
     }
 
     /**
+     * @notice insert int256 value to 32-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element int256 to insert
+     * @param offset slot offset in bits
+     */
+    function insertInt256(
+        Builder memory self,
+        int256 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_32 << offset)) |
+                ((Int256.toBytes32(element) & (~bytes32(0) >> 0)) << offset);
+            if (self._size < 256 + offset) self._size = 256 + offset;
+        }
+    }
+
+    /**
      * @notice insert int256 value to 32-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element int256 to add
@@ -6942,6 +8785,25 @@ library Bytes32Builder {
     ) internal pure returns (uint256 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_32;
         element = uint256(Bytes32.toUint256(elementBytes));
+    }
+
+    /**
+     * @notice insert uint256 value to 32-byte position at given offset
+     * @param self Bytes32Builder Builder struct on which to operate
+     * @param element uint256 to insert
+     * @param offset slot offset in bits
+     */
+    function insertUint256(
+        Builder memory self,
+        uint256 element,
+        uint256 offset
+    ) internal pure {
+        unchecked {
+            self._data =
+                (self._data & ~(MASK_32 << offset)) |
+                (Uint256.toBytes32(element) << offset);
+            if (self._size < 256 + offset) self._size = 256 + offset;
+        }
     }
 
     /**

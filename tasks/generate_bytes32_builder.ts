@@ -41,6 +41,19 @@ library <%- libraryName %> {
     }
 
     /**
+     * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at given offset
+     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param element <%- type.name %> to insert
+     * @param offset slot offset in bits
+     */
+    function insert<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element, uint256 offset) internal pure {
+        unchecked {
+            self._data = self._data & ~(MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %> << offset) | (<%- type.castTo %> << offset);
+            if (self._size < <%- type.sizeBits %> + offset) self._size = <%- type.sizeBits %> + offset;
+        }
+    }
+
+    /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at end of bytes
      * @param self <%- libraryName %> <%- structName %> struct on which to operate
      * @param element <%- type.name %> to add
@@ -110,6 +123,11 @@ contract <%- libraryName %>Test {
     <%_ for (const type of types) { _%>
     function parse<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, uint256 offset) external pure returns(<%- type.name %> element) {
         return self.parse<%- type.nameUpcase %>(offset);
+    }
+
+    function insert<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+        self.insert<%- type.nameUpcase %>(element, offset);
+        return self;
     }
 
     function push<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
@@ -185,6 +203,50 @@ describe('<%- libraryName %>', () => {
         <%_ } else { _%>
         expect(result).to.eq(expectedValue);
         <%_ } _%>
+      }
+    });
+  });
+  <%_ } _%>
+
+  <%_ for (const type of types) { _%>
+  describe('#insert<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
+    it('inserts <%- type.name %> at given offset', async () => {
+      const sizeBytes = <%- type.sizeBytes %>;
+      <%_ if (type.name === 'bool') { _%>
+      const data = '0x01';
+      const input = true;
+      <%_ } else if (type.name.startsWith('int')) { _%>
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data))
+      } else {
+        input = BigInt(data);
+      }
+      <%_ } else { _%>
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+      <%_ } _%>
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
+          const state = {
+            _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+            _size: i * 8,
+          }
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([ethers.dataSlice(state._data, 0, 32 - j - sizeBytes), data, ethers.dataSlice(state._data, 32 - j, 32)]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insert<%- type.nameUpcase %>.staticCall(state, input, offset)
+          ).to.deep.equal(
+            [expectedData, expectedLength]
+          );
+        }
       }
     });
   });
