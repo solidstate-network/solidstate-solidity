@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.24;
 
+import { Bytes32Builder } from '../data/Bytes32Builder.sol';
 import { Uint256 } from './Uint256.sol';
 
 /**
@@ -60,5 +61,30 @@ library Bytes32 {
         bytes32 value
     ) internal pure returns (string memory output) {
         output = Uint256.toHexString(uint256(value), 32);
+    }
+
+    /**
+     * @notice create a Bytes32Builder object from data payload
+     * @dev if length is not specified, it is assumed to be 256 bits
+     * @param data underlying data payload
+     * @return builder builder struct
+     */
+    function toBuilder(
+        bytes32 data
+    ) internal pure returns (Bytes32Builder.Builder memory builder) {
+        builder = toBuilder(data, 256);
+    }
+
+    /**
+     * @notice create a Bytes32Builder object from data payload
+     * @param data underlying data payload
+     * @param length bit length of usable data
+     * @return builder builder struct
+     */
+    function toBuilder(
+        bytes32 data,
+        uint256 length
+    ) internal pure returns (Bytes32Builder.Builder memory builder) {
+        builder = Bytes32Builder.Builder(data, length);
     }
 }
