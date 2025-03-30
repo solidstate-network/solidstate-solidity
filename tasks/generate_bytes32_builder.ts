@@ -41,6 +41,19 @@ library <%- libraryName %> {
     }
 
     /**
+     * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at given offset
+     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param element <%- type.name %> to insert
+     * @param offset slot offset in bits
+     */
+    function insert<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element, uint256 offset) internal pure {
+        unchecked {
+            self._data = self._data & ~(MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %> << offset) | (<%- type.castTo %> << offset);
+            if (self._size < <%- type.sizeBits %> + offset) self._size = <%- type.sizeBits %> + offset;
+        }
+    }
+
+    /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at end of bytes
      * @param self <%- libraryName %> <%- structName %> struct on which to operate
      * @param element <%- type.name %> to add
@@ -112,6 +125,11 @@ contract <%- libraryName %>Test {
         return self.parse<%- type.nameUpcase %>(offset);
     }
 
+    function insert<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+        self.insert<%- type.nameUpcase %>(element, offset);
+        return self;
+    }
+
     function push<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
         self.push<%- type.nameUpcase %>(element);
         return self;
@@ -140,6 +158,10 @@ import { <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solids
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const randomIndexNonInclusive = (start, end) => {
+  return Math.ceil(Math.random() * (end - start - 1)) + start;
+};
+
 describe('<%- libraryName %>', () => {
   let instance: <%- libraryName %>Test;
 
@@ -153,7 +175,7 @@ describe('<%- libraryName %>', () => {
     it('parses <%- type.sizeBytes %>-byte segment from bytes at given offset and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -187,6 +209,50 @@ describe('<%- libraryName %>', () => {
   <%_ } _%>
 
   <%_ for (const type of types) { _%>
+  describe('#insert<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
+    it('inserts <%- type.name %> at given offset', async () => {
+      const sizeBytes = <%- type.sizeBytes %>;
+      <%_ if (type.name === 'bool') { _%>
+      const data = '0x01';
+      const input = true;
+      <%_ } else if (type.name.startsWith('int')) { _%>
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const negative = BigInt(data) >> BigInt(sizeBytes * 8 - 1) === 1n;
+      let input;
+      if (negative) {
+        input = -(2n ** BigInt(sizeBytes * 8) - BigInt(data))
+      } else {
+        input = BigInt(data);
+      }
+      <%_ } else { _%>
+      const data = ethers.hexlify(ethers.randomBytes(sizeBytes));
+      const input = data;
+      <%_ } _%>
+
+      for (let i of [0, 32, randomIndexNonInclusive(0, 32)]) {
+        for (let j of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
+          const state = {
+            _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
+            _size: i * 8,
+          }
+
+          const offset = j * 8;
+
+          const expectedData = ethers.concat([ethers.dataSlice(state._data, 0, 32 - j - sizeBytes), data, ethers.dataSlice(state._data, 32 - j, 32)]);
+          const expectedLength = Math.max(state._size, offset + sizeBytes * 8);
+
+          expect(
+            await instance.insert<%- type.nameUpcase %>.staticCall(state, input, offset)
+          ).to.deep.equal(
+            [expectedData, expectedLength]
+          );
+        }
+      }
+    });
+  });
+  <%_ } _%>
+
+  <%_ for (const type of types) { _%>
   describe('#push<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
     it('inserts <%- type.name %> at end of bytes', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
@@ -207,7 +273,7 @@ describe('<%- libraryName %>', () => {
       const input = data;
       <%_ } _%>
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -231,7 +297,7 @@ describe('<%- libraryName %>', () => {
     it('removes <%- type.sizeBytes %>-byte segment from end of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -276,7 +342,7 @@ describe('<%- libraryName %>', () => {
     it('removes <%- type.sizeBytes %>-byte segment from beginning of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -337,7 +403,7 @@ describe('<%- libraryName %>', () => {
       const input = data;
       <%_ } _%>
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,

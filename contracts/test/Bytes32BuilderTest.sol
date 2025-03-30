@@ -18,6 +18,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes1(offset);
     }
 
+    function insertBytes1(
+        Bytes32Builder.Builder memory self,
+        bytes1 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes1(element, offset);
+        return self;
+    }
+
     function pushBytes1(
         Bytes32Builder.Builder memory self,
         bytes1 element
@@ -52,6 +61,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int8 element) {
         return self.parseInt8(offset);
+    }
+
+    function insertInt8(
+        Bytes32Builder.Builder memory self,
+        int8 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt8(element, offset);
+        return self;
     }
 
     function pushInt8(
@@ -90,6 +108,15 @@ contract Bytes32BuilderTest {
         return self.parseUint8(offset);
     }
 
+    function insertUint8(
+        Bytes32Builder.Builder memory self,
+        uint8 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint8(element, offset);
+        return self;
+    }
+
     function pushUint8(
         Bytes32Builder.Builder memory self,
         uint8 element
@@ -124,6 +151,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bool element) {
         return self.parseBool(offset);
+    }
+
+    function insertBool(
+        Bytes32Builder.Builder memory self,
+        bool element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBool(element, offset);
+        return self;
     }
 
     function pushBool(
@@ -162,6 +198,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes2(offset);
     }
 
+    function insertBytes2(
+        Bytes32Builder.Builder memory self,
+        bytes2 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes2(element, offset);
+        return self;
+    }
+
     function pushBytes2(
         Bytes32Builder.Builder memory self,
         bytes2 element
@@ -196,6 +241,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int16 element) {
         return self.parseInt16(offset);
+    }
+
+    function insertInt16(
+        Bytes32Builder.Builder memory self,
+        int16 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt16(element, offset);
+        return self;
     }
 
     function pushInt16(
@@ -234,6 +288,15 @@ contract Bytes32BuilderTest {
         return self.parseUint16(offset);
     }
 
+    function insertUint16(
+        Bytes32Builder.Builder memory self,
+        uint16 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint16(element, offset);
+        return self;
+    }
+
     function pushUint16(
         Bytes32Builder.Builder memory self,
         uint16 element
@@ -268,6 +331,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes3 element) {
         return self.parseBytes3(offset);
+    }
+
+    function insertBytes3(
+        Bytes32Builder.Builder memory self,
+        bytes3 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes3(element, offset);
+        return self;
     }
 
     function pushBytes3(
@@ -306,6 +378,15 @@ contract Bytes32BuilderTest {
         return self.parseInt24(offset);
     }
 
+    function insertInt24(
+        Bytes32Builder.Builder memory self,
+        int24 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt24(element, offset);
+        return self;
+    }
+
     function pushInt24(
         Bytes32Builder.Builder memory self,
         int24 element
@@ -340,6 +421,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint24 element) {
         return self.parseUint24(offset);
+    }
+
+    function insertUint24(
+        Bytes32Builder.Builder memory self,
+        uint24 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint24(element, offset);
+        return self;
     }
 
     function pushUint24(
@@ -378,6 +468,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes4(offset);
     }
 
+    function insertBytes4(
+        Bytes32Builder.Builder memory self,
+        bytes4 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes4(element, offset);
+        return self;
+    }
+
     function pushBytes4(
         Bytes32Builder.Builder memory self,
         bytes4 element
@@ -412,6 +511,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int32 element) {
         return self.parseInt32(offset);
+    }
+
+    function insertInt32(
+        Bytes32Builder.Builder memory self,
+        int32 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt32(element, offset);
+        return self;
     }
 
     function pushInt32(
@@ -450,6 +558,15 @@ contract Bytes32BuilderTest {
         return self.parseUint32(offset);
     }
 
+    function insertUint32(
+        Bytes32Builder.Builder memory self,
+        uint32 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint32(element, offset);
+        return self;
+    }
+
     function pushUint32(
         Bytes32Builder.Builder memory self,
         uint32 element
@@ -484,6 +601,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes5 element) {
         return self.parseBytes5(offset);
+    }
+
+    function insertBytes5(
+        Bytes32Builder.Builder memory self,
+        bytes5 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes5(element, offset);
+        return self;
     }
 
     function pushBytes5(
@@ -522,6 +648,15 @@ contract Bytes32BuilderTest {
         return self.parseInt40(offset);
     }
 
+    function insertInt40(
+        Bytes32Builder.Builder memory self,
+        int40 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt40(element, offset);
+        return self;
+    }
+
     function pushInt40(
         Bytes32Builder.Builder memory self,
         int40 element
@@ -556,6 +691,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint40 element) {
         return self.parseUint40(offset);
+    }
+
+    function insertUint40(
+        Bytes32Builder.Builder memory self,
+        uint40 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint40(element, offset);
+        return self;
     }
 
     function pushUint40(
@@ -594,6 +738,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes6(offset);
     }
 
+    function insertBytes6(
+        Bytes32Builder.Builder memory self,
+        bytes6 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes6(element, offset);
+        return self;
+    }
+
     function pushBytes6(
         Bytes32Builder.Builder memory self,
         bytes6 element
@@ -628,6 +781,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int48 element) {
         return self.parseInt48(offset);
+    }
+
+    function insertInt48(
+        Bytes32Builder.Builder memory self,
+        int48 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt48(element, offset);
+        return self;
     }
 
     function pushInt48(
@@ -666,6 +828,15 @@ contract Bytes32BuilderTest {
         return self.parseUint48(offset);
     }
 
+    function insertUint48(
+        Bytes32Builder.Builder memory self,
+        uint48 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint48(element, offset);
+        return self;
+    }
+
     function pushUint48(
         Bytes32Builder.Builder memory self,
         uint48 element
@@ -700,6 +871,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes7 element) {
         return self.parseBytes7(offset);
+    }
+
+    function insertBytes7(
+        Bytes32Builder.Builder memory self,
+        bytes7 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes7(element, offset);
+        return self;
     }
 
     function pushBytes7(
@@ -738,6 +918,15 @@ contract Bytes32BuilderTest {
         return self.parseInt56(offset);
     }
 
+    function insertInt56(
+        Bytes32Builder.Builder memory self,
+        int56 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt56(element, offset);
+        return self;
+    }
+
     function pushInt56(
         Bytes32Builder.Builder memory self,
         int56 element
@@ -772,6 +961,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint56 element) {
         return self.parseUint56(offset);
+    }
+
+    function insertUint56(
+        Bytes32Builder.Builder memory self,
+        uint56 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint56(element, offset);
+        return self;
     }
 
     function pushUint56(
@@ -810,6 +1008,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes8(offset);
     }
 
+    function insertBytes8(
+        Bytes32Builder.Builder memory self,
+        bytes8 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes8(element, offset);
+        return self;
+    }
+
     function pushBytes8(
         Bytes32Builder.Builder memory self,
         bytes8 element
@@ -844,6 +1051,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int64 element) {
         return self.parseInt64(offset);
+    }
+
+    function insertInt64(
+        Bytes32Builder.Builder memory self,
+        int64 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt64(element, offset);
+        return self;
     }
 
     function pushInt64(
@@ -882,6 +1098,15 @@ contract Bytes32BuilderTest {
         return self.parseUint64(offset);
     }
 
+    function insertUint64(
+        Bytes32Builder.Builder memory self,
+        uint64 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint64(element, offset);
+        return self;
+    }
+
     function pushUint64(
         Bytes32Builder.Builder memory self,
         uint64 element
@@ -916,6 +1141,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes9 element) {
         return self.parseBytes9(offset);
+    }
+
+    function insertBytes9(
+        Bytes32Builder.Builder memory self,
+        bytes9 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes9(element, offset);
+        return self;
     }
 
     function pushBytes9(
@@ -954,6 +1188,15 @@ contract Bytes32BuilderTest {
         return self.parseInt72(offset);
     }
 
+    function insertInt72(
+        Bytes32Builder.Builder memory self,
+        int72 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt72(element, offset);
+        return self;
+    }
+
     function pushInt72(
         Bytes32Builder.Builder memory self,
         int72 element
@@ -988,6 +1231,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint72 element) {
         return self.parseUint72(offset);
+    }
+
+    function insertUint72(
+        Bytes32Builder.Builder memory self,
+        uint72 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint72(element, offset);
+        return self;
     }
 
     function pushUint72(
@@ -1026,6 +1278,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes10(offset);
     }
 
+    function insertBytes10(
+        Bytes32Builder.Builder memory self,
+        bytes10 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes10(element, offset);
+        return self;
+    }
+
     function pushBytes10(
         Bytes32Builder.Builder memory self,
         bytes10 element
@@ -1060,6 +1321,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int80 element) {
         return self.parseInt80(offset);
+    }
+
+    function insertInt80(
+        Bytes32Builder.Builder memory self,
+        int80 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt80(element, offset);
+        return self;
     }
 
     function pushInt80(
@@ -1098,6 +1368,15 @@ contract Bytes32BuilderTest {
         return self.parseUint80(offset);
     }
 
+    function insertUint80(
+        Bytes32Builder.Builder memory self,
+        uint80 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint80(element, offset);
+        return self;
+    }
+
     function pushUint80(
         Bytes32Builder.Builder memory self,
         uint80 element
@@ -1132,6 +1411,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes11 element) {
         return self.parseBytes11(offset);
+    }
+
+    function insertBytes11(
+        Bytes32Builder.Builder memory self,
+        bytes11 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes11(element, offset);
+        return self;
     }
 
     function pushBytes11(
@@ -1170,6 +1458,15 @@ contract Bytes32BuilderTest {
         return self.parseInt88(offset);
     }
 
+    function insertInt88(
+        Bytes32Builder.Builder memory self,
+        int88 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt88(element, offset);
+        return self;
+    }
+
     function pushInt88(
         Bytes32Builder.Builder memory self,
         int88 element
@@ -1204,6 +1501,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint88 element) {
         return self.parseUint88(offset);
+    }
+
+    function insertUint88(
+        Bytes32Builder.Builder memory self,
+        uint88 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint88(element, offset);
+        return self;
     }
 
     function pushUint88(
@@ -1242,6 +1548,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes12(offset);
     }
 
+    function insertBytes12(
+        Bytes32Builder.Builder memory self,
+        bytes12 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes12(element, offset);
+        return self;
+    }
+
     function pushBytes12(
         Bytes32Builder.Builder memory self,
         bytes12 element
@@ -1276,6 +1591,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int96 element) {
         return self.parseInt96(offset);
+    }
+
+    function insertInt96(
+        Bytes32Builder.Builder memory self,
+        int96 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt96(element, offset);
+        return self;
     }
 
     function pushInt96(
@@ -1314,6 +1638,15 @@ contract Bytes32BuilderTest {
         return self.parseUint96(offset);
     }
 
+    function insertUint96(
+        Bytes32Builder.Builder memory self,
+        uint96 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint96(element, offset);
+        return self;
+    }
+
     function pushUint96(
         Bytes32Builder.Builder memory self,
         uint96 element
@@ -1348,6 +1681,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes13 element) {
         return self.parseBytes13(offset);
+    }
+
+    function insertBytes13(
+        Bytes32Builder.Builder memory self,
+        bytes13 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes13(element, offset);
+        return self;
     }
 
     function pushBytes13(
@@ -1386,6 +1728,15 @@ contract Bytes32BuilderTest {
         return self.parseInt104(offset);
     }
 
+    function insertInt104(
+        Bytes32Builder.Builder memory self,
+        int104 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt104(element, offset);
+        return self;
+    }
+
     function pushInt104(
         Bytes32Builder.Builder memory self,
         int104 element
@@ -1420,6 +1771,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint104 element) {
         return self.parseUint104(offset);
+    }
+
+    function insertUint104(
+        Bytes32Builder.Builder memory self,
+        uint104 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint104(element, offset);
+        return self;
     }
 
     function pushUint104(
@@ -1458,6 +1818,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes14(offset);
     }
 
+    function insertBytes14(
+        Bytes32Builder.Builder memory self,
+        bytes14 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes14(element, offset);
+        return self;
+    }
+
     function pushBytes14(
         Bytes32Builder.Builder memory self,
         bytes14 element
@@ -1492,6 +1861,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int112 element) {
         return self.parseInt112(offset);
+    }
+
+    function insertInt112(
+        Bytes32Builder.Builder memory self,
+        int112 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt112(element, offset);
+        return self;
     }
 
     function pushInt112(
@@ -1530,6 +1908,15 @@ contract Bytes32BuilderTest {
         return self.parseUint112(offset);
     }
 
+    function insertUint112(
+        Bytes32Builder.Builder memory self,
+        uint112 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint112(element, offset);
+        return self;
+    }
+
     function pushUint112(
         Bytes32Builder.Builder memory self,
         uint112 element
@@ -1564,6 +1951,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes15 element) {
         return self.parseBytes15(offset);
+    }
+
+    function insertBytes15(
+        Bytes32Builder.Builder memory self,
+        bytes15 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes15(element, offset);
+        return self;
     }
 
     function pushBytes15(
@@ -1602,6 +1998,15 @@ contract Bytes32BuilderTest {
         return self.parseInt120(offset);
     }
 
+    function insertInt120(
+        Bytes32Builder.Builder memory self,
+        int120 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt120(element, offset);
+        return self;
+    }
+
     function pushInt120(
         Bytes32Builder.Builder memory self,
         int120 element
@@ -1636,6 +2041,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint120 element) {
         return self.parseUint120(offset);
+    }
+
+    function insertUint120(
+        Bytes32Builder.Builder memory self,
+        uint120 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint120(element, offset);
+        return self;
     }
 
     function pushUint120(
@@ -1674,6 +2088,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes16(offset);
     }
 
+    function insertBytes16(
+        Bytes32Builder.Builder memory self,
+        bytes16 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes16(element, offset);
+        return self;
+    }
+
     function pushBytes16(
         Bytes32Builder.Builder memory self,
         bytes16 element
@@ -1708,6 +2131,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int128 element) {
         return self.parseInt128(offset);
+    }
+
+    function insertInt128(
+        Bytes32Builder.Builder memory self,
+        int128 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt128(element, offset);
+        return self;
     }
 
     function pushInt128(
@@ -1746,6 +2178,15 @@ contract Bytes32BuilderTest {
         return self.parseUint128(offset);
     }
 
+    function insertUint128(
+        Bytes32Builder.Builder memory self,
+        uint128 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint128(element, offset);
+        return self;
+    }
+
     function pushUint128(
         Bytes32Builder.Builder memory self,
         uint128 element
@@ -1780,6 +2221,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes17 element) {
         return self.parseBytes17(offset);
+    }
+
+    function insertBytes17(
+        Bytes32Builder.Builder memory self,
+        bytes17 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes17(element, offset);
+        return self;
     }
 
     function pushBytes17(
@@ -1818,6 +2268,15 @@ contract Bytes32BuilderTest {
         return self.parseInt136(offset);
     }
 
+    function insertInt136(
+        Bytes32Builder.Builder memory self,
+        int136 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt136(element, offset);
+        return self;
+    }
+
     function pushInt136(
         Bytes32Builder.Builder memory self,
         int136 element
@@ -1852,6 +2311,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint136 element) {
         return self.parseUint136(offset);
+    }
+
+    function insertUint136(
+        Bytes32Builder.Builder memory self,
+        uint136 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint136(element, offset);
+        return self;
     }
 
     function pushUint136(
@@ -1890,6 +2358,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes18(offset);
     }
 
+    function insertBytes18(
+        Bytes32Builder.Builder memory self,
+        bytes18 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes18(element, offset);
+        return self;
+    }
+
     function pushBytes18(
         Bytes32Builder.Builder memory self,
         bytes18 element
@@ -1924,6 +2401,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int144 element) {
         return self.parseInt144(offset);
+    }
+
+    function insertInt144(
+        Bytes32Builder.Builder memory self,
+        int144 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt144(element, offset);
+        return self;
     }
 
     function pushInt144(
@@ -1962,6 +2448,15 @@ contract Bytes32BuilderTest {
         return self.parseUint144(offset);
     }
 
+    function insertUint144(
+        Bytes32Builder.Builder memory self,
+        uint144 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint144(element, offset);
+        return self;
+    }
+
     function pushUint144(
         Bytes32Builder.Builder memory self,
         uint144 element
@@ -1996,6 +2491,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes19 element) {
         return self.parseBytes19(offset);
+    }
+
+    function insertBytes19(
+        Bytes32Builder.Builder memory self,
+        bytes19 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes19(element, offset);
+        return self;
     }
 
     function pushBytes19(
@@ -2034,6 +2538,15 @@ contract Bytes32BuilderTest {
         return self.parseInt152(offset);
     }
 
+    function insertInt152(
+        Bytes32Builder.Builder memory self,
+        int152 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt152(element, offset);
+        return self;
+    }
+
     function pushInt152(
         Bytes32Builder.Builder memory self,
         int152 element
@@ -2068,6 +2581,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint152 element) {
         return self.parseUint152(offset);
+    }
+
+    function insertUint152(
+        Bytes32Builder.Builder memory self,
+        uint152 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint152(element, offset);
+        return self;
     }
 
     function pushUint152(
@@ -2106,6 +2628,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes20(offset);
     }
 
+    function insertBytes20(
+        Bytes32Builder.Builder memory self,
+        bytes20 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes20(element, offset);
+        return self;
+    }
+
     function pushBytes20(
         Bytes32Builder.Builder memory self,
         bytes20 element
@@ -2140,6 +2671,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int160 element) {
         return self.parseInt160(offset);
+    }
+
+    function insertInt160(
+        Bytes32Builder.Builder memory self,
+        int160 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt160(element, offset);
+        return self;
     }
 
     function pushInt160(
@@ -2178,6 +2718,15 @@ contract Bytes32BuilderTest {
         return self.parseUint160(offset);
     }
 
+    function insertUint160(
+        Bytes32Builder.Builder memory self,
+        uint160 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint160(element, offset);
+        return self;
+    }
+
     function pushUint160(
         Bytes32Builder.Builder memory self,
         uint160 element
@@ -2212,6 +2761,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (address element) {
         return self.parseAddress(offset);
+    }
+
+    function insertAddress(
+        Bytes32Builder.Builder memory self,
+        address element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertAddress(element, offset);
+        return self;
     }
 
     function pushAddress(
@@ -2250,6 +2808,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes21(offset);
     }
 
+    function insertBytes21(
+        Bytes32Builder.Builder memory self,
+        bytes21 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes21(element, offset);
+        return self;
+    }
+
     function pushBytes21(
         Bytes32Builder.Builder memory self,
         bytes21 element
@@ -2284,6 +2851,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int168 element) {
         return self.parseInt168(offset);
+    }
+
+    function insertInt168(
+        Bytes32Builder.Builder memory self,
+        int168 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt168(element, offset);
+        return self;
     }
 
     function pushInt168(
@@ -2322,6 +2898,15 @@ contract Bytes32BuilderTest {
         return self.parseUint168(offset);
     }
 
+    function insertUint168(
+        Bytes32Builder.Builder memory self,
+        uint168 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint168(element, offset);
+        return self;
+    }
+
     function pushUint168(
         Bytes32Builder.Builder memory self,
         uint168 element
@@ -2356,6 +2941,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes22 element) {
         return self.parseBytes22(offset);
+    }
+
+    function insertBytes22(
+        Bytes32Builder.Builder memory self,
+        bytes22 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes22(element, offset);
+        return self;
     }
 
     function pushBytes22(
@@ -2394,6 +2988,15 @@ contract Bytes32BuilderTest {
         return self.parseInt176(offset);
     }
 
+    function insertInt176(
+        Bytes32Builder.Builder memory self,
+        int176 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt176(element, offset);
+        return self;
+    }
+
     function pushInt176(
         Bytes32Builder.Builder memory self,
         int176 element
@@ -2428,6 +3031,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint176 element) {
         return self.parseUint176(offset);
+    }
+
+    function insertUint176(
+        Bytes32Builder.Builder memory self,
+        uint176 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint176(element, offset);
+        return self;
     }
 
     function pushUint176(
@@ -2466,6 +3078,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes23(offset);
     }
 
+    function insertBytes23(
+        Bytes32Builder.Builder memory self,
+        bytes23 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes23(element, offset);
+        return self;
+    }
+
     function pushBytes23(
         Bytes32Builder.Builder memory self,
         bytes23 element
@@ -2500,6 +3121,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int184 element) {
         return self.parseInt184(offset);
+    }
+
+    function insertInt184(
+        Bytes32Builder.Builder memory self,
+        int184 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt184(element, offset);
+        return self;
     }
 
     function pushInt184(
@@ -2538,6 +3168,15 @@ contract Bytes32BuilderTest {
         return self.parseUint184(offset);
     }
 
+    function insertUint184(
+        Bytes32Builder.Builder memory self,
+        uint184 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint184(element, offset);
+        return self;
+    }
+
     function pushUint184(
         Bytes32Builder.Builder memory self,
         uint184 element
@@ -2572,6 +3211,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes24 element) {
         return self.parseBytes24(offset);
+    }
+
+    function insertBytes24(
+        Bytes32Builder.Builder memory self,
+        bytes24 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes24(element, offset);
+        return self;
     }
 
     function pushBytes24(
@@ -2610,6 +3258,15 @@ contract Bytes32BuilderTest {
         return self.parseInt192(offset);
     }
 
+    function insertInt192(
+        Bytes32Builder.Builder memory self,
+        int192 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt192(element, offset);
+        return self;
+    }
+
     function pushInt192(
         Bytes32Builder.Builder memory self,
         int192 element
@@ -2644,6 +3301,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint192 element) {
         return self.parseUint192(offset);
+    }
+
+    function insertUint192(
+        Bytes32Builder.Builder memory self,
+        uint192 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint192(element, offset);
+        return self;
     }
 
     function pushUint192(
@@ -2682,6 +3348,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes25(offset);
     }
 
+    function insertBytes25(
+        Bytes32Builder.Builder memory self,
+        bytes25 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes25(element, offset);
+        return self;
+    }
+
     function pushBytes25(
         Bytes32Builder.Builder memory self,
         bytes25 element
@@ -2716,6 +3391,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int200 element) {
         return self.parseInt200(offset);
+    }
+
+    function insertInt200(
+        Bytes32Builder.Builder memory self,
+        int200 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt200(element, offset);
+        return self;
     }
 
     function pushInt200(
@@ -2754,6 +3438,15 @@ contract Bytes32BuilderTest {
         return self.parseUint200(offset);
     }
 
+    function insertUint200(
+        Bytes32Builder.Builder memory self,
+        uint200 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint200(element, offset);
+        return self;
+    }
+
     function pushUint200(
         Bytes32Builder.Builder memory self,
         uint200 element
@@ -2788,6 +3481,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes26 element) {
         return self.parseBytes26(offset);
+    }
+
+    function insertBytes26(
+        Bytes32Builder.Builder memory self,
+        bytes26 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes26(element, offset);
+        return self;
     }
 
     function pushBytes26(
@@ -2826,6 +3528,15 @@ contract Bytes32BuilderTest {
         return self.parseInt208(offset);
     }
 
+    function insertInt208(
+        Bytes32Builder.Builder memory self,
+        int208 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt208(element, offset);
+        return self;
+    }
+
     function pushInt208(
         Bytes32Builder.Builder memory self,
         int208 element
@@ -2860,6 +3571,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint208 element) {
         return self.parseUint208(offset);
+    }
+
+    function insertUint208(
+        Bytes32Builder.Builder memory self,
+        uint208 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint208(element, offset);
+        return self;
     }
 
     function pushUint208(
@@ -2898,6 +3618,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes27(offset);
     }
 
+    function insertBytes27(
+        Bytes32Builder.Builder memory self,
+        bytes27 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes27(element, offset);
+        return self;
+    }
+
     function pushBytes27(
         Bytes32Builder.Builder memory self,
         bytes27 element
@@ -2932,6 +3661,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int216 element) {
         return self.parseInt216(offset);
+    }
+
+    function insertInt216(
+        Bytes32Builder.Builder memory self,
+        int216 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt216(element, offset);
+        return self;
     }
 
     function pushInt216(
@@ -2970,6 +3708,15 @@ contract Bytes32BuilderTest {
         return self.parseUint216(offset);
     }
 
+    function insertUint216(
+        Bytes32Builder.Builder memory self,
+        uint216 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint216(element, offset);
+        return self;
+    }
+
     function pushUint216(
         Bytes32Builder.Builder memory self,
         uint216 element
@@ -3004,6 +3751,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes28 element) {
         return self.parseBytes28(offset);
+    }
+
+    function insertBytes28(
+        Bytes32Builder.Builder memory self,
+        bytes28 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes28(element, offset);
+        return self;
     }
 
     function pushBytes28(
@@ -3042,6 +3798,15 @@ contract Bytes32BuilderTest {
         return self.parseInt224(offset);
     }
 
+    function insertInt224(
+        Bytes32Builder.Builder memory self,
+        int224 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt224(element, offset);
+        return self;
+    }
+
     function pushInt224(
         Bytes32Builder.Builder memory self,
         int224 element
@@ -3076,6 +3841,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint224 element) {
         return self.parseUint224(offset);
+    }
+
+    function insertUint224(
+        Bytes32Builder.Builder memory self,
+        uint224 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint224(element, offset);
+        return self;
     }
 
     function pushUint224(
@@ -3114,6 +3888,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes29(offset);
     }
 
+    function insertBytes29(
+        Bytes32Builder.Builder memory self,
+        bytes29 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes29(element, offset);
+        return self;
+    }
+
     function pushBytes29(
         Bytes32Builder.Builder memory self,
         bytes29 element
@@ -3148,6 +3931,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int232 element) {
         return self.parseInt232(offset);
+    }
+
+    function insertInt232(
+        Bytes32Builder.Builder memory self,
+        int232 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt232(element, offset);
+        return self;
     }
 
     function pushInt232(
@@ -3186,6 +3978,15 @@ contract Bytes32BuilderTest {
         return self.parseUint232(offset);
     }
 
+    function insertUint232(
+        Bytes32Builder.Builder memory self,
+        uint232 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint232(element, offset);
+        return self;
+    }
+
     function pushUint232(
         Bytes32Builder.Builder memory self,
         uint232 element
@@ -3220,6 +4021,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes30 element) {
         return self.parseBytes30(offset);
+    }
+
+    function insertBytes30(
+        Bytes32Builder.Builder memory self,
+        bytes30 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes30(element, offset);
+        return self;
     }
 
     function pushBytes30(
@@ -3258,6 +4068,15 @@ contract Bytes32BuilderTest {
         return self.parseInt240(offset);
     }
 
+    function insertInt240(
+        Bytes32Builder.Builder memory self,
+        int240 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt240(element, offset);
+        return self;
+    }
+
     function pushInt240(
         Bytes32Builder.Builder memory self,
         int240 element
@@ -3292,6 +4111,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint240 element) {
         return self.parseUint240(offset);
+    }
+
+    function insertUint240(
+        Bytes32Builder.Builder memory self,
+        uint240 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint240(element, offset);
+        return self;
     }
 
     function pushUint240(
@@ -3330,6 +4158,15 @@ contract Bytes32BuilderTest {
         return self.parseBytes31(offset);
     }
 
+    function insertBytes31(
+        Bytes32Builder.Builder memory self,
+        bytes31 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes31(element, offset);
+        return self;
+    }
+
     function pushBytes31(
         Bytes32Builder.Builder memory self,
         bytes31 element
@@ -3364,6 +4201,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (int248 element) {
         return self.parseInt248(offset);
+    }
+
+    function insertInt248(
+        Bytes32Builder.Builder memory self,
+        int248 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt248(element, offset);
+        return self;
     }
 
     function pushInt248(
@@ -3402,6 +4248,15 @@ contract Bytes32BuilderTest {
         return self.parseUint248(offset);
     }
 
+    function insertUint248(
+        Bytes32Builder.Builder memory self,
+        uint248 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint248(element, offset);
+        return self;
+    }
+
     function pushUint248(
         Bytes32Builder.Builder memory self,
         uint248 element
@@ -3436,6 +4291,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (bytes32 element) {
         return self.parseBytes32(offset);
+    }
+
+    function insertBytes32(
+        Bytes32Builder.Builder memory self,
+        bytes32 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertBytes32(element, offset);
+        return self;
     }
 
     function pushBytes32(
@@ -3474,6 +4338,15 @@ contract Bytes32BuilderTest {
         return self.parseInt256(offset);
     }
 
+    function insertInt256(
+        Bytes32Builder.Builder memory self,
+        int256 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertInt256(element, offset);
+        return self;
+    }
+
     function pushInt256(
         Bytes32Builder.Builder memory self,
         int256 element
@@ -3508,6 +4381,15 @@ contract Bytes32BuilderTest {
         uint256 offset
     ) external pure returns (uint256 element) {
         return self.parseUint256(offset);
+    }
+
+    function insertUint256(
+        Bytes32Builder.Builder memory self,
+        uint256 element,
+        uint256 offset
+    ) external pure returns (Bytes32Builder.Builder memory) {
+        self.insertUint256(element, offset);
+        return self;
     }
 
     function pushUint256(

@@ -8,7 +8,7 @@ import { Slot } from '../data/Slot.sol';
 
 library ERC721Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC721
+     * @custom:storage-location erc7201:solidstate.layout.ERC721
      */
     struct Layout {
         EnumerableMap.UintToAddressMap tokenOwners;
@@ -25,9 +25,7 @@ library ERC721Storage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.contracts.storage.ERC721'))
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.ERC721'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );
