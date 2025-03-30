@@ -79,7 +79,7 @@ abstract contract _ECDSAMetaTransactionContext is
             // check transient storage to see if sender has been derived already
 
             // toAddress function strips the packed msgDataIndex data and returns a clean address
-            msgSender = TRANSIENT_SLOT.read().toBuilder().shiftAddress();
+            msgSender = TRANSIENT_SLOT.read().toBuilder().parseAddress(0);
 
             if (msgSender == address(0)) {
                 // no sender found in transient storage, so attempt to derive it from signature
@@ -116,7 +116,7 @@ abstract contract _ECDSAMetaTransactionContext is
             // check transient storage to see if msgData split index has been derived already
 
             // unpack the msgDataIndex which is stored alongside msgSender
-            uint256 split = TRANSIENT_SLOT.read().toBuilder().popUint96();
+            uint256 split = TRANSIENT_SLOT.read().toBuilder().parseUint96(160);
 
             if (split == 0) {
                 // no msgData split index found in transient storage, so attempt to derive it from signature
