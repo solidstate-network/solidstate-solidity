@@ -31,6 +31,16 @@ library <%- libraryName %> {
 
     <%_ for (const type of types) { _%>
     /**
+     * @notice parse <%- type.name %> from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element <%- type.name %> derived from bytes
+     */
+    function parse<%- type.nameUpcase %>(<%- structName %> memory self, uint256 offset) internal pure returns (<%- type.name %> element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
+        element = <%- type.castFrom %>;
+    }
+
+    /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at end of bytes
      * @param self <%- libraryName %> <%- structName %> struct on which to operate
      * @param element <%- type.name %> to add
@@ -50,10 +60,9 @@ library <%- libraryName %> {
     function pop<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
             self._size -= <%- type.sizeBits %>;
-            bytes32 mask = MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
             element = <%- type.castFrom %>;
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %> << self._size);
         }
     }
 
@@ -64,8 +73,7 @@ library <%- libraryName %> {
      */
     function shift<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
-            bytes32 mask = MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
             element = <%- type.castFrom %>;
             self._data >>= <%- type.sizeBits %>;
             self._size -= <%- type.sizeBits %>;
@@ -100,6 +108,10 @@ contract <%- libraryName %>Test {
     using <%- libraryName %> for <%- libraryName %>.<%- structName %>;
 
     <%_ for (const type of types) { _%>
+    function parse<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, uint256 offset) external pure returns(<%- type.name %> element) {
+        return self.parse<%- type.nameUpcase %>(offset);
+    }
+
     function push<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
         self.push<%- type.nameUpcase %>(element);
         return self;
@@ -135,6 +147,44 @@ describe('<%- libraryName %>', () => {
     const [deployer] = await ethers.getSigners();
     instance = await new <%- libraryName %>Test__factory(deployer).deploy();
   });
+
+  <%_ for (const type of types) { _%>
+  describe('#parse<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {
+    it('parses <%- type.sizeBytes %>-byte segment from bytes at given offset and returns it as <%- type.name %>', async () => {
+      const sizeBytes = <%- type.sizeBytes %>;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(ethers.concat([expectedValue, ethers.hexlify(ethers.randomBytes(i))]), 32),
+          _size: 256,
+        }
+
+        const result = await instance.parse<%- type.nameUpcase %>.staticCall(state, offset);
+
+        <%_ if (type.name === 'address') { _%>
+        expect(result).to.eq(ethers.getAddress(expectedValue))
+        <%_ } else if (type.name === 'bool') { _%>
+        expect(result).to.eq(!!BigInt(expectedValue));
+        <%_ } else if (type.name.startsWith('int')) { _%>
+        const negative = BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue))
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output)
+        <%_ } else { _%>
+        expect(result).to.eq(expectedValue);
+        <%_ } _%>
+      }
+    });
+  });
+  <%_ } _%>
 
   <%_ for (const type of types) { _%>
   describe('#push<%- type.nameUpcase %>(bytes32,<%- type.name %>)', () => {

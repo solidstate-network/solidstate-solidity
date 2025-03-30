@@ -13,6 +13,2745 @@ describe('Bytes32Builder', () => {
     instance = await new Bytes32BuilderTest__factory(deployer).deploy();
   });
 
+  describe('#parseBytes1(bytes32,bytes1)', () => {
+    it('parses 1-byte segment from bytes at given offset and returns it as bytes1', async () => {
+      const sizeBytes = 1;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes1.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt8(bytes32,int8)', () => {
+    it('parses 1-byte segment from bytes at given offset and returns it as int8', async () => {
+      const sizeBytes = 1;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt8.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint8(bytes32,uint8)', () => {
+    it('parses 1-byte segment from bytes at given offset and returns it as uint8', async () => {
+      const sizeBytes = 1;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint8.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBool(bytes32,bool)', () => {
+    it('parses 1-byte segment from bytes at given offset and returns it as bool', async () => {
+      const sizeBytes = 1;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBool.staticCall(state, offset);
+
+        expect(result).to.eq(!!BigInt(expectedValue));
+      }
+    });
+  });
+  describe('#parseBytes2(bytes32,bytes2)', () => {
+    it('parses 2-byte segment from bytes at given offset and returns it as bytes2', async () => {
+      const sizeBytes = 2;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes2.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt16(bytes32,int16)', () => {
+    it('parses 2-byte segment from bytes at given offset and returns it as int16', async () => {
+      const sizeBytes = 2;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt16.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint16(bytes32,uint16)', () => {
+    it('parses 2-byte segment from bytes at given offset and returns it as uint16', async () => {
+      const sizeBytes = 2;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint16.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes3(bytes32,bytes3)', () => {
+    it('parses 3-byte segment from bytes at given offset and returns it as bytes3', async () => {
+      const sizeBytes = 3;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes3.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt24(bytes32,int24)', () => {
+    it('parses 3-byte segment from bytes at given offset and returns it as int24', async () => {
+      const sizeBytes = 3;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt24.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint24(bytes32,uint24)', () => {
+    it('parses 3-byte segment from bytes at given offset and returns it as uint24', async () => {
+      const sizeBytes = 3;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint24.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes4(bytes32,bytes4)', () => {
+    it('parses 4-byte segment from bytes at given offset and returns it as bytes4', async () => {
+      const sizeBytes = 4;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes4.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt32(bytes32,int32)', () => {
+    it('parses 4-byte segment from bytes at given offset and returns it as int32', async () => {
+      const sizeBytes = 4;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt32.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint32(bytes32,uint32)', () => {
+    it('parses 4-byte segment from bytes at given offset and returns it as uint32', async () => {
+      const sizeBytes = 4;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint32.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes5(bytes32,bytes5)', () => {
+    it('parses 5-byte segment from bytes at given offset and returns it as bytes5', async () => {
+      const sizeBytes = 5;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes5.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt40(bytes32,int40)', () => {
+    it('parses 5-byte segment from bytes at given offset and returns it as int40', async () => {
+      const sizeBytes = 5;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt40.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint40(bytes32,uint40)', () => {
+    it('parses 5-byte segment from bytes at given offset and returns it as uint40', async () => {
+      const sizeBytes = 5;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint40.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes6(bytes32,bytes6)', () => {
+    it('parses 6-byte segment from bytes at given offset and returns it as bytes6', async () => {
+      const sizeBytes = 6;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes6.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt48(bytes32,int48)', () => {
+    it('parses 6-byte segment from bytes at given offset and returns it as int48', async () => {
+      const sizeBytes = 6;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt48.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint48(bytes32,uint48)', () => {
+    it('parses 6-byte segment from bytes at given offset and returns it as uint48', async () => {
+      const sizeBytes = 6;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint48.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes7(bytes32,bytes7)', () => {
+    it('parses 7-byte segment from bytes at given offset and returns it as bytes7', async () => {
+      const sizeBytes = 7;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes7.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt56(bytes32,int56)', () => {
+    it('parses 7-byte segment from bytes at given offset and returns it as int56', async () => {
+      const sizeBytes = 7;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt56.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint56(bytes32,uint56)', () => {
+    it('parses 7-byte segment from bytes at given offset and returns it as uint56', async () => {
+      const sizeBytes = 7;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint56.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes8(bytes32,bytes8)', () => {
+    it('parses 8-byte segment from bytes at given offset and returns it as bytes8', async () => {
+      const sizeBytes = 8;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes8.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt64(bytes32,int64)', () => {
+    it('parses 8-byte segment from bytes at given offset and returns it as int64', async () => {
+      const sizeBytes = 8;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt64.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint64(bytes32,uint64)', () => {
+    it('parses 8-byte segment from bytes at given offset and returns it as uint64', async () => {
+      const sizeBytes = 8;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint64.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes9(bytes32,bytes9)', () => {
+    it('parses 9-byte segment from bytes at given offset and returns it as bytes9', async () => {
+      const sizeBytes = 9;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes9.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt72(bytes32,int72)', () => {
+    it('parses 9-byte segment from bytes at given offset and returns it as int72', async () => {
+      const sizeBytes = 9;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt72.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint72(bytes32,uint72)', () => {
+    it('parses 9-byte segment from bytes at given offset and returns it as uint72', async () => {
+      const sizeBytes = 9;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint72.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes10(bytes32,bytes10)', () => {
+    it('parses 10-byte segment from bytes at given offset and returns it as bytes10', async () => {
+      const sizeBytes = 10;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes10.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt80(bytes32,int80)', () => {
+    it('parses 10-byte segment from bytes at given offset and returns it as int80', async () => {
+      const sizeBytes = 10;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt80.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint80(bytes32,uint80)', () => {
+    it('parses 10-byte segment from bytes at given offset and returns it as uint80', async () => {
+      const sizeBytes = 10;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint80.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes11(bytes32,bytes11)', () => {
+    it('parses 11-byte segment from bytes at given offset and returns it as bytes11', async () => {
+      const sizeBytes = 11;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes11.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt88(bytes32,int88)', () => {
+    it('parses 11-byte segment from bytes at given offset and returns it as int88', async () => {
+      const sizeBytes = 11;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt88.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint88(bytes32,uint88)', () => {
+    it('parses 11-byte segment from bytes at given offset and returns it as uint88', async () => {
+      const sizeBytes = 11;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint88.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes12(bytes32,bytes12)', () => {
+    it('parses 12-byte segment from bytes at given offset and returns it as bytes12', async () => {
+      const sizeBytes = 12;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes12.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt96(bytes32,int96)', () => {
+    it('parses 12-byte segment from bytes at given offset and returns it as int96', async () => {
+      const sizeBytes = 12;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt96.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint96(bytes32,uint96)', () => {
+    it('parses 12-byte segment from bytes at given offset and returns it as uint96', async () => {
+      const sizeBytes = 12;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint96.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes13(bytes32,bytes13)', () => {
+    it('parses 13-byte segment from bytes at given offset and returns it as bytes13', async () => {
+      const sizeBytes = 13;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes13.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt104(bytes32,int104)', () => {
+    it('parses 13-byte segment from bytes at given offset and returns it as int104', async () => {
+      const sizeBytes = 13;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt104.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint104(bytes32,uint104)', () => {
+    it('parses 13-byte segment from bytes at given offset and returns it as uint104', async () => {
+      const sizeBytes = 13;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint104.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes14(bytes32,bytes14)', () => {
+    it('parses 14-byte segment from bytes at given offset and returns it as bytes14', async () => {
+      const sizeBytes = 14;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes14.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt112(bytes32,int112)', () => {
+    it('parses 14-byte segment from bytes at given offset and returns it as int112', async () => {
+      const sizeBytes = 14;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt112.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint112(bytes32,uint112)', () => {
+    it('parses 14-byte segment from bytes at given offset and returns it as uint112', async () => {
+      const sizeBytes = 14;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint112.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes15(bytes32,bytes15)', () => {
+    it('parses 15-byte segment from bytes at given offset and returns it as bytes15', async () => {
+      const sizeBytes = 15;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes15.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt120(bytes32,int120)', () => {
+    it('parses 15-byte segment from bytes at given offset and returns it as int120', async () => {
+      const sizeBytes = 15;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt120.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint120(bytes32,uint120)', () => {
+    it('parses 15-byte segment from bytes at given offset and returns it as uint120', async () => {
+      const sizeBytes = 15;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint120.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes16(bytes32,bytes16)', () => {
+    it('parses 16-byte segment from bytes at given offset and returns it as bytes16', async () => {
+      const sizeBytes = 16;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes16.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt128(bytes32,int128)', () => {
+    it('parses 16-byte segment from bytes at given offset and returns it as int128', async () => {
+      const sizeBytes = 16;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt128.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint128(bytes32,uint128)', () => {
+    it('parses 16-byte segment from bytes at given offset and returns it as uint128', async () => {
+      const sizeBytes = 16;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint128.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes17(bytes32,bytes17)', () => {
+    it('parses 17-byte segment from bytes at given offset and returns it as bytes17', async () => {
+      const sizeBytes = 17;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes17.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt136(bytes32,int136)', () => {
+    it('parses 17-byte segment from bytes at given offset and returns it as int136', async () => {
+      const sizeBytes = 17;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt136.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint136(bytes32,uint136)', () => {
+    it('parses 17-byte segment from bytes at given offset and returns it as uint136', async () => {
+      const sizeBytes = 17;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint136.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes18(bytes32,bytes18)', () => {
+    it('parses 18-byte segment from bytes at given offset and returns it as bytes18', async () => {
+      const sizeBytes = 18;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes18.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt144(bytes32,int144)', () => {
+    it('parses 18-byte segment from bytes at given offset and returns it as int144', async () => {
+      const sizeBytes = 18;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt144.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint144(bytes32,uint144)', () => {
+    it('parses 18-byte segment from bytes at given offset and returns it as uint144', async () => {
+      const sizeBytes = 18;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint144.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes19(bytes32,bytes19)', () => {
+    it('parses 19-byte segment from bytes at given offset and returns it as bytes19', async () => {
+      const sizeBytes = 19;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes19.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt152(bytes32,int152)', () => {
+    it('parses 19-byte segment from bytes at given offset and returns it as int152', async () => {
+      const sizeBytes = 19;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt152.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint152(bytes32,uint152)', () => {
+    it('parses 19-byte segment from bytes at given offset and returns it as uint152', async () => {
+      const sizeBytes = 19;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint152.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes20(bytes32,bytes20)', () => {
+    it('parses 20-byte segment from bytes at given offset and returns it as bytes20', async () => {
+      const sizeBytes = 20;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes20.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt160(bytes32,int160)', () => {
+    it('parses 20-byte segment from bytes at given offset and returns it as int160', async () => {
+      const sizeBytes = 20;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt160.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint160(bytes32,uint160)', () => {
+    it('parses 20-byte segment from bytes at given offset and returns it as uint160', async () => {
+      const sizeBytes = 20;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint160.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseAddress(bytes32,address)', () => {
+    it('parses 20-byte segment from bytes at given offset and returns it as address', async () => {
+      const sizeBytes = 20;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseAddress.staticCall(state, offset);
+
+        expect(result).to.eq(ethers.getAddress(expectedValue));
+      }
+    });
+  });
+  describe('#parseBytes21(bytes32,bytes21)', () => {
+    it('parses 21-byte segment from bytes at given offset and returns it as bytes21', async () => {
+      const sizeBytes = 21;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes21.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt168(bytes32,int168)', () => {
+    it('parses 21-byte segment from bytes at given offset and returns it as int168', async () => {
+      const sizeBytes = 21;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt168.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint168(bytes32,uint168)', () => {
+    it('parses 21-byte segment from bytes at given offset and returns it as uint168', async () => {
+      const sizeBytes = 21;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint168.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes22(bytes32,bytes22)', () => {
+    it('parses 22-byte segment from bytes at given offset and returns it as bytes22', async () => {
+      const sizeBytes = 22;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes22.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt176(bytes32,int176)', () => {
+    it('parses 22-byte segment from bytes at given offset and returns it as int176', async () => {
+      const sizeBytes = 22;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt176.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint176(bytes32,uint176)', () => {
+    it('parses 22-byte segment from bytes at given offset and returns it as uint176', async () => {
+      const sizeBytes = 22;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint176.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes23(bytes32,bytes23)', () => {
+    it('parses 23-byte segment from bytes at given offset and returns it as bytes23', async () => {
+      const sizeBytes = 23;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes23.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt184(bytes32,int184)', () => {
+    it('parses 23-byte segment from bytes at given offset and returns it as int184', async () => {
+      const sizeBytes = 23;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt184.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint184(bytes32,uint184)', () => {
+    it('parses 23-byte segment from bytes at given offset and returns it as uint184', async () => {
+      const sizeBytes = 23;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint184.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes24(bytes32,bytes24)', () => {
+    it('parses 24-byte segment from bytes at given offset and returns it as bytes24', async () => {
+      const sizeBytes = 24;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes24.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt192(bytes32,int192)', () => {
+    it('parses 24-byte segment from bytes at given offset and returns it as int192', async () => {
+      const sizeBytes = 24;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt192.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint192(bytes32,uint192)', () => {
+    it('parses 24-byte segment from bytes at given offset and returns it as uint192', async () => {
+      const sizeBytes = 24;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint192.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes25(bytes32,bytes25)', () => {
+    it('parses 25-byte segment from bytes at given offset and returns it as bytes25', async () => {
+      const sizeBytes = 25;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes25.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt200(bytes32,int200)', () => {
+    it('parses 25-byte segment from bytes at given offset and returns it as int200', async () => {
+      const sizeBytes = 25;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt200.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint200(bytes32,uint200)', () => {
+    it('parses 25-byte segment from bytes at given offset and returns it as uint200', async () => {
+      const sizeBytes = 25;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint200.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes26(bytes32,bytes26)', () => {
+    it('parses 26-byte segment from bytes at given offset and returns it as bytes26', async () => {
+      const sizeBytes = 26;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes26.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt208(bytes32,int208)', () => {
+    it('parses 26-byte segment from bytes at given offset and returns it as int208', async () => {
+      const sizeBytes = 26;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt208.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint208(bytes32,uint208)', () => {
+    it('parses 26-byte segment from bytes at given offset and returns it as uint208', async () => {
+      const sizeBytes = 26;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint208.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes27(bytes32,bytes27)', () => {
+    it('parses 27-byte segment from bytes at given offset and returns it as bytes27', async () => {
+      const sizeBytes = 27;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes27.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt216(bytes32,int216)', () => {
+    it('parses 27-byte segment from bytes at given offset and returns it as int216', async () => {
+      const sizeBytes = 27;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt216.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint216(bytes32,uint216)', () => {
+    it('parses 27-byte segment from bytes at given offset and returns it as uint216', async () => {
+      const sizeBytes = 27;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint216.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes28(bytes32,bytes28)', () => {
+    it('parses 28-byte segment from bytes at given offset and returns it as bytes28', async () => {
+      const sizeBytes = 28;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes28.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt224(bytes32,int224)', () => {
+    it('parses 28-byte segment from bytes at given offset and returns it as int224', async () => {
+      const sizeBytes = 28;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt224.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint224(bytes32,uint224)', () => {
+    it('parses 28-byte segment from bytes at given offset and returns it as uint224', async () => {
+      const sizeBytes = 28;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint224.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes29(bytes32,bytes29)', () => {
+    it('parses 29-byte segment from bytes at given offset and returns it as bytes29', async () => {
+      const sizeBytes = 29;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes29.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt232(bytes32,int232)', () => {
+    it('parses 29-byte segment from bytes at given offset and returns it as int232', async () => {
+      const sizeBytes = 29;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt232.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint232(bytes32,uint232)', () => {
+    it('parses 29-byte segment from bytes at given offset and returns it as uint232', async () => {
+      const sizeBytes = 29;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint232.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes30(bytes32,bytes30)', () => {
+    it('parses 30-byte segment from bytes at given offset and returns it as bytes30', async () => {
+      const sizeBytes = 30;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes30.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt240(bytes32,int240)', () => {
+    it('parses 30-byte segment from bytes at given offset and returns it as int240', async () => {
+      const sizeBytes = 30;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt240.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint240(bytes32,uint240)', () => {
+    it('parses 30-byte segment from bytes at given offset and returns it as uint240', async () => {
+      const sizeBytes = 30;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint240.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes31(bytes32,bytes31)', () => {
+    it('parses 31-byte segment from bytes at given offset and returns it as bytes31', async () => {
+      const sizeBytes = 31;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes31.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt248(bytes32,int248)', () => {
+    it('parses 31-byte segment from bytes at given offset and returns it as int248', async () => {
+      const sizeBytes = 31;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt248.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint248(bytes32,uint248)', () => {
+    it('parses 31-byte segment from bytes at given offset and returns it as uint248', async () => {
+      const sizeBytes = 31;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint248.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseBytes32(bytes32,bytes32)', () => {
+    it('parses 32-byte segment from bytes at given offset and returns it as bytes32', async () => {
+      const sizeBytes = 32;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseBytes32.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+  describe('#parseInt256(bytes32,int256)', () => {
+    it('parses 32-byte segment from bytes at given offset and returns it as int256', async () => {
+      const sizeBytes = 32;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseInt256.staticCall(state, offset);
+
+        const negative =
+          BigInt(expectedValue) >> BigInt(sizeBytes * 8 - 1) === 1n;
+        let output;
+        if (negative) {
+          output = -(2n ** BigInt(sizeBytes * 8) - BigInt(expectedValue));
+        } else {
+          output = BigInt(expectedValue);
+        }
+
+        expect(result).to.eq(output);
+      }
+    });
+  });
+  describe('#parseUint256(bytes32,uint256)', () => {
+    it('parses 32-byte segment from bytes at given offset and returns it as uint256', async () => {
+      const sizeBytes = 32;
+
+      for (let i = 0; i < 32 - sizeBytes; i++) {
+        const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
+        const offset = i * 8;
+
+        const state = {
+          _data: ethers.zeroPadValue(
+            ethers.concat([
+              expectedValue,
+              ethers.hexlify(ethers.randomBytes(i)),
+            ]),
+            32,
+          ),
+          _size: 256,
+        };
+
+        const result = await instance.parseUint256.staticCall(state, offset);
+
+        expect(result).to.eq(expectedValue);
+      }
+    });
+  });
+
   describe('#pushBytes1(bytes32,bytes1)', () => {
     it('inserts bytes1 at end of bytes', async () => {
       const sizeBytes = 1;
@@ -2855,7 +5594,7 @@ describe('Bytes32Builder', () => {
   });
 
   describe('#popBytes1(bytes32,bytes1)', () => {
-    it('removes bytes1 from end of bytes and returns it', async () => {
+    it('removes 1-byte segment from end of bytes and returns it as bytes1', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -2884,7 +5623,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt8(bytes32,int8)', () => {
-    it('removes int8 from end of bytes and returns it', async () => {
+    it('removes 1-byte segment from end of bytes and returns it as int8', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -2922,7 +5661,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint8(bytes32,uint8)', () => {
-    it('removes uint8 from end of bytes and returns it', async () => {
+    it('removes 1-byte segment from end of bytes and returns it as uint8', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -2951,7 +5690,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBool(bytes32,bool)', () => {
-    it('removes bool from end of bytes and returns it', async () => {
+    it('removes 1-byte segment from end of bytes and returns it as bool', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -2980,7 +5719,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes2(bytes32,bytes2)', () => {
-    it('removes bytes2 from end of bytes and returns it', async () => {
+    it('removes 2-byte segment from end of bytes and returns it as bytes2', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3009,7 +5748,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt16(bytes32,int16)', () => {
-    it('removes int16 from end of bytes and returns it', async () => {
+    it('removes 2-byte segment from end of bytes and returns it as int16', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3047,7 +5786,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint16(bytes32,uint16)', () => {
-    it('removes uint16 from end of bytes and returns it', async () => {
+    it('removes 2-byte segment from end of bytes and returns it as uint16', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3076,7 +5815,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes3(bytes32,bytes3)', () => {
-    it('removes bytes3 from end of bytes and returns it', async () => {
+    it('removes 3-byte segment from end of bytes and returns it as bytes3', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3105,7 +5844,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt24(bytes32,int24)', () => {
-    it('removes int24 from end of bytes and returns it', async () => {
+    it('removes 3-byte segment from end of bytes and returns it as int24', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3143,7 +5882,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint24(bytes32,uint24)', () => {
-    it('removes uint24 from end of bytes and returns it', async () => {
+    it('removes 3-byte segment from end of bytes and returns it as uint24', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3172,7 +5911,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes4(bytes32,bytes4)', () => {
-    it('removes bytes4 from end of bytes and returns it', async () => {
+    it('removes 4-byte segment from end of bytes and returns it as bytes4', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3201,7 +5940,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt32(bytes32,int32)', () => {
-    it('removes int32 from end of bytes and returns it', async () => {
+    it('removes 4-byte segment from end of bytes and returns it as int32', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3239,7 +5978,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint32(bytes32,uint32)', () => {
-    it('removes uint32 from end of bytes and returns it', async () => {
+    it('removes 4-byte segment from end of bytes and returns it as uint32', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3268,7 +6007,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes5(bytes32,bytes5)', () => {
-    it('removes bytes5 from end of bytes and returns it', async () => {
+    it('removes 5-byte segment from end of bytes and returns it as bytes5', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3297,7 +6036,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt40(bytes32,int40)', () => {
-    it('removes int40 from end of bytes and returns it', async () => {
+    it('removes 5-byte segment from end of bytes and returns it as int40', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3335,7 +6074,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint40(bytes32,uint40)', () => {
-    it('removes uint40 from end of bytes and returns it', async () => {
+    it('removes 5-byte segment from end of bytes and returns it as uint40', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3364,7 +6103,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes6(bytes32,bytes6)', () => {
-    it('removes bytes6 from end of bytes and returns it', async () => {
+    it('removes 6-byte segment from end of bytes and returns it as bytes6', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3393,7 +6132,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt48(bytes32,int48)', () => {
-    it('removes int48 from end of bytes and returns it', async () => {
+    it('removes 6-byte segment from end of bytes and returns it as int48', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3431,7 +6170,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint48(bytes32,uint48)', () => {
-    it('removes uint48 from end of bytes and returns it', async () => {
+    it('removes 6-byte segment from end of bytes and returns it as uint48', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3460,7 +6199,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes7(bytes32,bytes7)', () => {
-    it('removes bytes7 from end of bytes and returns it', async () => {
+    it('removes 7-byte segment from end of bytes and returns it as bytes7', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3489,7 +6228,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt56(bytes32,int56)', () => {
-    it('removes int56 from end of bytes and returns it', async () => {
+    it('removes 7-byte segment from end of bytes and returns it as int56', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3527,7 +6266,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint56(bytes32,uint56)', () => {
-    it('removes uint56 from end of bytes and returns it', async () => {
+    it('removes 7-byte segment from end of bytes and returns it as uint56', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3556,7 +6295,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes8(bytes32,bytes8)', () => {
-    it('removes bytes8 from end of bytes and returns it', async () => {
+    it('removes 8-byte segment from end of bytes and returns it as bytes8', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3585,7 +6324,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt64(bytes32,int64)', () => {
-    it('removes int64 from end of bytes and returns it', async () => {
+    it('removes 8-byte segment from end of bytes and returns it as int64', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3623,7 +6362,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint64(bytes32,uint64)', () => {
-    it('removes uint64 from end of bytes and returns it', async () => {
+    it('removes 8-byte segment from end of bytes and returns it as uint64', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3652,7 +6391,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes9(bytes32,bytes9)', () => {
-    it('removes bytes9 from end of bytes and returns it', async () => {
+    it('removes 9-byte segment from end of bytes and returns it as bytes9', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3681,7 +6420,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt72(bytes32,int72)', () => {
-    it('removes int72 from end of bytes and returns it', async () => {
+    it('removes 9-byte segment from end of bytes and returns it as int72', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3719,7 +6458,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint72(bytes32,uint72)', () => {
-    it('removes uint72 from end of bytes and returns it', async () => {
+    it('removes 9-byte segment from end of bytes and returns it as uint72', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3748,7 +6487,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes10(bytes32,bytes10)', () => {
-    it('removes bytes10 from end of bytes and returns it', async () => {
+    it('removes 10-byte segment from end of bytes and returns it as bytes10', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3777,7 +6516,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt80(bytes32,int80)', () => {
-    it('removes int80 from end of bytes and returns it', async () => {
+    it('removes 10-byte segment from end of bytes and returns it as int80', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3815,7 +6554,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint80(bytes32,uint80)', () => {
-    it('removes uint80 from end of bytes and returns it', async () => {
+    it('removes 10-byte segment from end of bytes and returns it as uint80', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3844,7 +6583,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes11(bytes32,bytes11)', () => {
-    it('removes bytes11 from end of bytes and returns it', async () => {
+    it('removes 11-byte segment from end of bytes and returns it as bytes11', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3873,7 +6612,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt88(bytes32,int88)', () => {
-    it('removes int88 from end of bytes and returns it', async () => {
+    it('removes 11-byte segment from end of bytes and returns it as int88', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3911,7 +6650,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint88(bytes32,uint88)', () => {
-    it('removes uint88 from end of bytes and returns it', async () => {
+    it('removes 11-byte segment from end of bytes and returns it as uint88', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3940,7 +6679,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes12(bytes32,bytes12)', () => {
-    it('removes bytes12 from end of bytes and returns it', async () => {
+    it('removes 12-byte segment from end of bytes and returns it as bytes12', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -3969,7 +6708,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt96(bytes32,int96)', () => {
-    it('removes int96 from end of bytes and returns it', async () => {
+    it('removes 12-byte segment from end of bytes and returns it as int96', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4007,7 +6746,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint96(bytes32,uint96)', () => {
-    it('removes uint96 from end of bytes and returns it', async () => {
+    it('removes 12-byte segment from end of bytes and returns it as uint96', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4036,7 +6775,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes13(bytes32,bytes13)', () => {
-    it('removes bytes13 from end of bytes and returns it', async () => {
+    it('removes 13-byte segment from end of bytes and returns it as bytes13', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4065,7 +6804,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt104(bytes32,int104)', () => {
-    it('removes int104 from end of bytes and returns it', async () => {
+    it('removes 13-byte segment from end of bytes and returns it as int104', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4103,7 +6842,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint104(bytes32,uint104)', () => {
-    it('removes uint104 from end of bytes and returns it', async () => {
+    it('removes 13-byte segment from end of bytes and returns it as uint104', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4132,7 +6871,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes14(bytes32,bytes14)', () => {
-    it('removes bytes14 from end of bytes and returns it', async () => {
+    it('removes 14-byte segment from end of bytes and returns it as bytes14', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4161,7 +6900,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt112(bytes32,int112)', () => {
-    it('removes int112 from end of bytes and returns it', async () => {
+    it('removes 14-byte segment from end of bytes and returns it as int112', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4199,7 +6938,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint112(bytes32,uint112)', () => {
-    it('removes uint112 from end of bytes and returns it', async () => {
+    it('removes 14-byte segment from end of bytes and returns it as uint112', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4228,7 +6967,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes15(bytes32,bytes15)', () => {
-    it('removes bytes15 from end of bytes and returns it', async () => {
+    it('removes 15-byte segment from end of bytes and returns it as bytes15', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4257,7 +6996,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt120(bytes32,int120)', () => {
-    it('removes int120 from end of bytes and returns it', async () => {
+    it('removes 15-byte segment from end of bytes and returns it as int120', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4295,7 +7034,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint120(bytes32,uint120)', () => {
-    it('removes uint120 from end of bytes and returns it', async () => {
+    it('removes 15-byte segment from end of bytes and returns it as uint120', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4324,7 +7063,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes16(bytes32,bytes16)', () => {
-    it('removes bytes16 from end of bytes and returns it', async () => {
+    it('removes 16-byte segment from end of bytes and returns it as bytes16', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4353,7 +7092,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt128(bytes32,int128)', () => {
-    it('removes int128 from end of bytes and returns it', async () => {
+    it('removes 16-byte segment from end of bytes and returns it as int128', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4391,7 +7130,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint128(bytes32,uint128)', () => {
-    it('removes uint128 from end of bytes and returns it', async () => {
+    it('removes 16-byte segment from end of bytes and returns it as uint128', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4420,7 +7159,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes17(bytes32,bytes17)', () => {
-    it('removes bytes17 from end of bytes and returns it', async () => {
+    it('removes 17-byte segment from end of bytes and returns it as bytes17', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4449,7 +7188,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt136(bytes32,int136)', () => {
-    it('removes int136 from end of bytes and returns it', async () => {
+    it('removes 17-byte segment from end of bytes and returns it as int136', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4487,7 +7226,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint136(bytes32,uint136)', () => {
-    it('removes uint136 from end of bytes and returns it', async () => {
+    it('removes 17-byte segment from end of bytes and returns it as uint136', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4516,7 +7255,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes18(bytes32,bytes18)', () => {
-    it('removes bytes18 from end of bytes and returns it', async () => {
+    it('removes 18-byte segment from end of bytes and returns it as bytes18', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4545,7 +7284,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt144(bytes32,int144)', () => {
-    it('removes int144 from end of bytes and returns it', async () => {
+    it('removes 18-byte segment from end of bytes and returns it as int144', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4583,7 +7322,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint144(bytes32,uint144)', () => {
-    it('removes uint144 from end of bytes and returns it', async () => {
+    it('removes 18-byte segment from end of bytes and returns it as uint144', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4612,7 +7351,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes19(bytes32,bytes19)', () => {
-    it('removes bytes19 from end of bytes and returns it', async () => {
+    it('removes 19-byte segment from end of bytes and returns it as bytes19', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4641,7 +7380,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt152(bytes32,int152)', () => {
-    it('removes int152 from end of bytes and returns it', async () => {
+    it('removes 19-byte segment from end of bytes and returns it as int152', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4679,7 +7418,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint152(bytes32,uint152)', () => {
-    it('removes uint152 from end of bytes and returns it', async () => {
+    it('removes 19-byte segment from end of bytes and returns it as uint152', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4708,7 +7447,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes20(bytes32,bytes20)', () => {
-    it('removes bytes20 from end of bytes and returns it', async () => {
+    it('removes 20-byte segment from end of bytes and returns it as bytes20', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4737,7 +7476,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt160(bytes32,int160)', () => {
-    it('removes int160 from end of bytes and returns it', async () => {
+    it('removes 20-byte segment from end of bytes and returns it as int160', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4775,7 +7514,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint160(bytes32,uint160)', () => {
-    it('removes uint160 from end of bytes and returns it', async () => {
+    it('removes 20-byte segment from end of bytes and returns it as uint160', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4804,7 +7543,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popAddress(bytes32,address)', () => {
-    it('removes address from end of bytes and returns it', async () => {
+    it('removes 20-byte segment from end of bytes and returns it as address', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4833,7 +7572,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes21(bytes32,bytes21)', () => {
-    it('removes bytes21 from end of bytes and returns it', async () => {
+    it('removes 21-byte segment from end of bytes and returns it as bytes21', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4862,7 +7601,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt168(bytes32,int168)', () => {
-    it('removes int168 from end of bytes and returns it', async () => {
+    it('removes 21-byte segment from end of bytes and returns it as int168', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4900,7 +7639,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint168(bytes32,uint168)', () => {
-    it('removes uint168 from end of bytes and returns it', async () => {
+    it('removes 21-byte segment from end of bytes and returns it as uint168', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4929,7 +7668,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes22(bytes32,bytes22)', () => {
-    it('removes bytes22 from end of bytes and returns it', async () => {
+    it('removes 22-byte segment from end of bytes and returns it as bytes22', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4958,7 +7697,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt176(bytes32,int176)', () => {
-    it('removes int176 from end of bytes and returns it', async () => {
+    it('removes 22-byte segment from end of bytes and returns it as int176', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -4996,7 +7735,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint176(bytes32,uint176)', () => {
-    it('removes uint176 from end of bytes and returns it', async () => {
+    it('removes 22-byte segment from end of bytes and returns it as uint176', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5025,7 +7764,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes23(bytes32,bytes23)', () => {
-    it('removes bytes23 from end of bytes and returns it', async () => {
+    it('removes 23-byte segment from end of bytes and returns it as bytes23', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5054,7 +7793,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt184(bytes32,int184)', () => {
-    it('removes int184 from end of bytes and returns it', async () => {
+    it('removes 23-byte segment from end of bytes and returns it as int184', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5092,7 +7831,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint184(bytes32,uint184)', () => {
-    it('removes uint184 from end of bytes and returns it', async () => {
+    it('removes 23-byte segment from end of bytes and returns it as uint184', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5121,7 +7860,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes24(bytes32,bytes24)', () => {
-    it('removes bytes24 from end of bytes and returns it', async () => {
+    it('removes 24-byte segment from end of bytes and returns it as bytes24', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5150,7 +7889,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt192(bytes32,int192)', () => {
-    it('removes int192 from end of bytes and returns it', async () => {
+    it('removes 24-byte segment from end of bytes and returns it as int192', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5188,7 +7927,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint192(bytes32,uint192)', () => {
-    it('removes uint192 from end of bytes and returns it', async () => {
+    it('removes 24-byte segment from end of bytes and returns it as uint192', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5217,7 +7956,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes25(bytes32,bytes25)', () => {
-    it('removes bytes25 from end of bytes and returns it', async () => {
+    it('removes 25-byte segment from end of bytes and returns it as bytes25', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5246,7 +7985,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt200(bytes32,int200)', () => {
-    it('removes int200 from end of bytes and returns it', async () => {
+    it('removes 25-byte segment from end of bytes and returns it as int200', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5284,7 +8023,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint200(bytes32,uint200)', () => {
-    it('removes uint200 from end of bytes and returns it', async () => {
+    it('removes 25-byte segment from end of bytes and returns it as uint200', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5313,7 +8052,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes26(bytes32,bytes26)', () => {
-    it('removes bytes26 from end of bytes and returns it', async () => {
+    it('removes 26-byte segment from end of bytes and returns it as bytes26', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5342,7 +8081,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt208(bytes32,int208)', () => {
-    it('removes int208 from end of bytes and returns it', async () => {
+    it('removes 26-byte segment from end of bytes and returns it as int208', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5380,7 +8119,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint208(bytes32,uint208)', () => {
-    it('removes uint208 from end of bytes and returns it', async () => {
+    it('removes 26-byte segment from end of bytes and returns it as uint208', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5409,7 +8148,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes27(bytes32,bytes27)', () => {
-    it('removes bytes27 from end of bytes and returns it', async () => {
+    it('removes 27-byte segment from end of bytes and returns it as bytes27', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5438,7 +8177,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt216(bytes32,int216)', () => {
-    it('removes int216 from end of bytes and returns it', async () => {
+    it('removes 27-byte segment from end of bytes and returns it as int216', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5476,7 +8215,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint216(bytes32,uint216)', () => {
-    it('removes uint216 from end of bytes and returns it', async () => {
+    it('removes 27-byte segment from end of bytes and returns it as uint216', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5505,7 +8244,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes28(bytes32,bytes28)', () => {
-    it('removes bytes28 from end of bytes and returns it', async () => {
+    it('removes 28-byte segment from end of bytes and returns it as bytes28', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5534,7 +8273,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt224(bytes32,int224)', () => {
-    it('removes int224 from end of bytes and returns it', async () => {
+    it('removes 28-byte segment from end of bytes and returns it as int224', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5572,7 +8311,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint224(bytes32,uint224)', () => {
-    it('removes uint224 from end of bytes and returns it', async () => {
+    it('removes 28-byte segment from end of bytes and returns it as uint224', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5601,7 +8340,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes29(bytes32,bytes29)', () => {
-    it('removes bytes29 from end of bytes and returns it', async () => {
+    it('removes 29-byte segment from end of bytes and returns it as bytes29', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5630,7 +8369,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt232(bytes32,int232)', () => {
-    it('removes int232 from end of bytes and returns it', async () => {
+    it('removes 29-byte segment from end of bytes and returns it as int232', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5668,7 +8407,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint232(bytes32,uint232)', () => {
-    it('removes uint232 from end of bytes and returns it', async () => {
+    it('removes 29-byte segment from end of bytes and returns it as uint232', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5697,7 +8436,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes30(bytes32,bytes30)', () => {
-    it('removes bytes30 from end of bytes and returns it', async () => {
+    it('removes 30-byte segment from end of bytes and returns it as bytes30', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5726,7 +8465,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt240(bytes32,int240)', () => {
-    it('removes int240 from end of bytes and returns it', async () => {
+    it('removes 30-byte segment from end of bytes and returns it as int240', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5764,7 +8503,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint240(bytes32,uint240)', () => {
-    it('removes uint240 from end of bytes and returns it', async () => {
+    it('removes 30-byte segment from end of bytes and returns it as uint240', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5793,7 +8532,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes31(bytes32,bytes31)', () => {
-    it('removes bytes31 from end of bytes and returns it', async () => {
+    it('removes 31-byte segment from end of bytes and returns it as bytes31', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5822,7 +8561,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt248(bytes32,int248)', () => {
-    it('removes int248 from end of bytes and returns it', async () => {
+    it('removes 31-byte segment from end of bytes and returns it as int248', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5860,7 +8599,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint248(bytes32,uint248)', () => {
-    it('removes uint248 from end of bytes and returns it', async () => {
+    it('removes 31-byte segment from end of bytes and returns it as uint248', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5889,7 +8628,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popBytes32(bytes32,bytes32)', () => {
-    it('removes bytes32 from end of bytes and returns it', async () => {
+    it('removes 32-byte segment from end of bytes and returns it as bytes32', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5918,7 +8657,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popInt256(bytes32,int256)', () => {
-    it('removes int256 from end of bytes and returns it', async () => {
+    it('removes 32-byte segment from end of bytes and returns it as int256', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5956,7 +8695,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#popUint256(bytes32,uint256)', () => {
-    it('removes uint256 from end of bytes and returns it', async () => {
+    it('removes 32-byte segment from end of bytes and returns it as uint256', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -5986,7 +8725,7 @@ describe('Bytes32Builder', () => {
   });
 
   describe('#shiftBytes1(bytes32,bytes1)', () => {
-    it('removes bytes1 from beginning of bytes and returns it', async () => {
+    it('removes 1-byte segment from beginning of bytes and returns it as bytes1', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6011,7 +8750,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt8(bytes32,int8)', () => {
-    it('removes int8 from beginning of bytes and returns it', async () => {
+    it('removes 1-byte segment from beginning of bytes and returns it as int8', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6045,7 +8784,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint8(bytes32,uint8)', () => {
-    it('removes uint8 from beginning of bytes and returns it', async () => {
+    it('removes 1-byte segment from beginning of bytes and returns it as uint8', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6070,7 +8809,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBool(bytes32,bool)', () => {
-    it('removes bool from beginning of bytes and returns it', async () => {
+    it('removes 1-byte segment from beginning of bytes and returns it as bool', async () => {
       const sizeBytes = 1;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6095,7 +8834,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes2(bytes32,bytes2)', () => {
-    it('removes bytes2 from beginning of bytes and returns it', async () => {
+    it('removes 2-byte segment from beginning of bytes and returns it as bytes2', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6120,7 +8859,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt16(bytes32,int16)', () => {
-    it('removes int16 from beginning of bytes and returns it', async () => {
+    it('removes 2-byte segment from beginning of bytes and returns it as int16', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6154,7 +8893,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint16(bytes32,uint16)', () => {
-    it('removes uint16 from beginning of bytes and returns it', async () => {
+    it('removes 2-byte segment from beginning of bytes and returns it as uint16', async () => {
       const sizeBytes = 2;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6179,7 +8918,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes3(bytes32,bytes3)', () => {
-    it('removes bytes3 from beginning of bytes and returns it', async () => {
+    it('removes 3-byte segment from beginning of bytes and returns it as bytes3', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6204,7 +8943,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt24(bytes32,int24)', () => {
-    it('removes int24 from beginning of bytes and returns it', async () => {
+    it('removes 3-byte segment from beginning of bytes and returns it as int24', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6238,7 +8977,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint24(bytes32,uint24)', () => {
-    it('removes uint24 from beginning of bytes and returns it', async () => {
+    it('removes 3-byte segment from beginning of bytes and returns it as uint24', async () => {
       const sizeBytes = 3;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6263,7 +9002,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes4(bytes32,bytes4)', () => {
-    it('removes bytes4 from beginning of bytes and returns it', async () => {
+    it('removes 4-byte segment from beginning of bytes and returns it as bytes4', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6288,7 +9027,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt32(bytes32,int32)', () => {
-    it('removes int32 from beginning of bytes and returns it', async () => {
+    it('removes 4-byte segment from beginning of bytes and returns it as int32', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6322,7 +9061,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint32(bytes32,uint32)', () => {
-    it('removes uint32 from beginning of bytes and returns it', async () => {
+    it('removes 4-byte segment from beginning of bytes and returns it as uint32', async () => {
       const sizeBytes = 4;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6347,7 +9086,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes5(bytes32,bytes5)', () => {
-    it('removes bytes5 from beginning of bytes and returns it', async () => {
+    it('removes 5-byte segment from beginning of bytes and returns it as bytes5', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6372,7 +9111,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt40(bytes32,int40)', () => {
-    it('removes int40 from beginning of bytes and returns it', async () => {
+    it('removes 5-byte segment from beginning of bytes and returns it as int40', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6406,7 +9145,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint40(bytes32,uint40)', () => {
-    it('removes uint40 from beginning of bytes and returns it', async () => {
+    it('removes 5-byte segment from beginning of bytes and returns it as uint40', async () => {
       const sizeBytes = 5;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6431,7 +9170,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes6(bytes32,bytes6)', () => {
-    it('removes bytes6 from beginning of bytes and returns it', async () => {
+    it('removes 6-byte segment from beginning of bytes and returns it as bytes6', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6456,7 +9195,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt48(bytes32,int48)', () => {
-    it('removes int48 from beginning of bytes and returns it', async () => {
+    it('removes 6-byte segment from beginning of bytes and returns it as int48', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6490,7 +9229,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint48(bytes32,uint48)', () => {
-    it('removes uint48 from beginning of bytes and returns it', async () => {
+    it('removes 6-byte segment from beginning of bytes and returns it as uint48', async () => {
       const sizeBytes = 6;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6515,7 +9254,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes7(bytes32,bytes7)', () => {
-    it('removes bytes7 from beginning of bytes and returns it', async () => {
+    it('removes 7-byte segment from beginning of bytes and returns it as bytes7', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6540,7 +9279,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt56(bytes32,int56)', () => {
-    it('removes int56 from beginning of bytes and returns it', async () => {
+    it('removes 7-byte segment from beginning of bytes and returns it as int56', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6574,7 +9313,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint56(bytes32,uint56)', () => {
-    it('removes uint56 from beginning of bytes and returns it', async () => {
+    it('removes 7-byte segment from beginning of bytes and returns it as uint56', async () => {
       const sizeBytes = 7;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6599,7 +9338,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes8(bytes32,bytes8)', () => {
-    it('removes bytes8 from beginning of bytes and returns it', async () => {
+    it('removes 8-byte segment from beginning of bytes and returns it as bytes8', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6624,7 +9363,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt64(bytes32,int64)', () => {
-    it('removes int64 from beginning of bytes and returns it', async () => {
+    it('removes 8-byte segment from beginning of bytes and returns it as int64', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6658,7 +9397,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint64(bytes32,uint64)', () => {
-    it('removes uint64 from beginning of bytes and returns it', async () => {
+    it('removes 8-byte segment from beginning of bytes and returns it as uint64', async () => {
       const sizeBytes = 8;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6683,7 +9422,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes9(bytes32,bytes9)', () => {
-    it('removes bytes9 from beginning of bytes and returns it', async () => {
+    it('removes 9-byte segment from beginning of bytes and returns it as bytes9', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6708,7 +9447,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt72(bytes32,int72)', () => {
-    it('removes int72 from beginning of bytes and returns it', async () => {
+    it('removes 9-byte segment from beginning of bytes and returns it as int72', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6742,7 +9481,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint72(bytes32,uint72)', () => {
-    it('removes uint72 from beginning of bytes and returns it', async () => {
+    it('removes 9-byte segment from beginning of bytes and returns it as uint72', async () => {
       const sizeBytes = 9;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6767,7 +9506,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes10(bytes32,bytes10)', () => {
-    it('removes bytes10 from beginning of bytes and returns it', async () => {
+    it('removes 10-byte segment from beginning of bytes and returns it as bytes10', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6792,7 +9531,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt80(bytes32,int80)', () => {
-    it('removes int80 from beginning of bytes and returns it', async () => {
+    it('removes 10-byte segment from beginning of bytes and returns it as int80', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6826,7 +9565,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint80(bytes32,uint80)', () => {
-    it('removes uint80 from beginning of bytes and returns it', async () => {
+    it('removes 10-byte segment from beginning of bytes and returns it as uint80', async () => {
       const sizeBytes = 10;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6851,7 +9590,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes11(bytes32,bytes11)', () => {
-    it('removes bytes11 from beginning of bytes and returns it', async () => {
+    it('removes 11-byte segment from beginning of bytes and returns it as bytes11', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6876,7 +9615,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt88(bytes32,int88)', () => {
-    it('removes int88 from beginning of bytes and returns it', async () => {
+    it('removes 11-byte segment from beginning of bytes and returns it as int88', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6910,7 +9649,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint88(bytes32,uint88)', () => {
-    it('removes uint88 from beginning of bytes and returns it', async () => {
+    it('removes 11-byte segment from beginning of bytes and returns it as uint88', async () => {
       const sizeBytes = 11;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6935,7 +9674,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes12(bytes32,bytes12)', () => {
-    it('removes bytes12 from beginning of bytes and returns it', async () => {
+    it('removes 12-byte segment from beginning of bytes and returns it as bytes12', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6960,7 +9699,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt96(bytes32,int96)', () => {
-    it('removes int96 from beginning of bytes and returns it', async () => {
+    it('removes 12-byte segment from beginning of bytes and returns it as int96', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -6994,7 +9733,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint96(bytes32,uint96)', () => {
-    it('removes uint96 from beginning of bytes and returns it', async () => {
+    it('removes 12-byte segment from beginning of bytes and returns it as uint96', async () => {
       const sizeBytes = 12;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7019,7 +9758,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes13(bytes32,bytes13)', () => {
-    it('removes bytes13 from beginning of bytes and returns it', async () => {
+    it('removes 13-byte segment from beginning of bytes and returns it as bytes13', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7044,7 +9783,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt104(bytes32,int104)', () => {
-    it('removes int104 from beginning of bytes and returns it', async () => {
+    it('removes 13-byte segment from beginning of bytes and returns it as int104', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7078,7 +9817,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint104(bytes32,uint104)', () => {
-    it('removes uint104 from beginning of bytes and returns it', async () => {
+    it('removes 13-byte segment from beginning of bytes and returns it as uint104', async () => {
       const sizeBytes = 13;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7103,7 +9842,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes14(bytes32,bytes14)', () => {
-    it('removes bytes14 from beginning of bytes and returns it', async () => {
+    it('removes 14-byte segment from beginning of bytes and returns it as bytes14', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7128,7 +9867,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt112(bytes32,int112)', () => {
-    it('removes int112 from beginning of bytes and returns it', async () => {
+    it('removes 14-byte segment from beginning of bytes and returns it as int112', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7162,7 +9901,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint112(bytes32,uint112)', () => {
-    it('removes uint112 from beginning of bytes and returns it', async () => {
+    it('removes 14-byte segment from beginning of bytes and returns it as uint112', async () => {
       const sizeBytes = 14;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7187,7 +9926,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes15(bytes32,bytes15)', () => {
-    it('removes bytes15 from beginning of bytes and returns it', async () => {
+    it('removes 15-byte segment from beginning of bytes and returns it as bytes15', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7212,7 +9951,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt120(bytes32,int120)', () => {
-    it('removes int120 from beginning of bytes and returns it', async () => {
+    it('removes 15-byte segment from beginning of bytes and returns it as int120', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7246,7 +9985,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint120(bytes32,uint120)', () => {
-    it('removes uint120 from beginning of bytes and returns it', async () => {
+    it('removes 15-byte segment from beginning of bytes and returns it as uint120', async () => {
       const sizeBytes = 15;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7271,7 +10010,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes16(bytes32,bytes16)', () => {
-    it('removes bytes16 from beginning of bytes and returns it', async () => {
+    it('removes 16-byte segment from beginning of bytes and returns it as bytes16', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7296,7 +10035,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt128(bytes32,int128)', () => {
-    it('removes int128 from beginning of bytes and returns it', async () => {
+    it('removes 16-byte segment from beginning of bytes and returns it as int128', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7330,7 +10069,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint128(bytes32,uint128)', () => {
-    it('removes uint128 from beginning of bytes and returns it', async () => {
+    it('removes 16-byte segment from beginning of bytes and returns it as uint128', async () => {
       const sizeBytes = 16;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7355,7 +10094,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes17(bytes32,bytes17)', () => {
-    it('removes bytes17 from beginning of bytes and returns it', async () => {
+    it('removes 17-byte segment from beginning of bytes and returns it as bytes17', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7380,7 +10119,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt136(bytes32,int136)', () => {
-    it('removes int136 from beginning of bytes and returns it', async () => {
+    it('removes 17-byte segment from beginning of bytes and returns it as int136', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7414,7 +10153,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint136(bytes32,uint136)', () => {
-    it('removes uint136 from beginning of bytes and returns it', async () => {
+    it('removes 17-byte segment from beginning of bytes and returns it as uint136', async () => {
       const sizeBytes = 17;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7439,7 +10178,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes18(bytes32,bytes18)', () => {
-    it('removes bytes18 from beginning of bytes and returns it', async () => {
+    it('removes 18-byte segment from beginning of bytes and returns it as bytes18', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7464,7 +10203,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt144(bytes32,int144)', () => {
-    it('removes int144 from beginning of bytes and returns it', async () => {
+    it('removes 18-byte segment from beginning of bytes and returns it as int144', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7498,7 +10237,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint144(bytes32,uint144)', () => {
-    it('removes uint144 from beginning of bytes and returns it', async () => {
+    it('removes 18-byte segment from beginning of bytes and returns it as uint144', async () => {
       const sizeBytes = 18;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7523,7 +10262,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes19(bytes32,bytes19)', () => {
-    it('removes bytes19 from beginning of bytes and returns it', async () => {
+    it('removes 19-byte segment from beginning of bytes and returns it as bytes19', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7548,7 +10287,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt152(bytes32,int152)', () => {
-    it('removes int152 from beginning of bytes and returns it', async () => {
+    it('removes 19-byte segment from beginning of bytes and returns it as int152', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7582,7 +10321,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint152(bytes32,uint152)', () => {
-    it('removes uint152 from beginning of bytes and returns it', async () => {
+    it('removes 19-byte segment from beginning of bytes and returns it as uint152', async () => {
       const sizeBytes = 19;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7607,7 +10346,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes20(bytes32,bytes20)', () => {
-    it('removes bytes20 from beginning of bytes and returns it', async () => {
+    it('removes 20-byte segment from beginning of bytes and returns it as bytes20', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7632,7 +10371,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt160(bytes32,int160)', () => {
-    it('removes int160 from beginning of bytes and returns it', async () => {
+    it('removes 20-byte segment from beginning of bytes and returns it as int160', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7666,7 +10405,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint160(bytes32,uint160)', () => {
-    it('removes uint160 from beginning of bytes and returns it', async () => {
+    it('removes 20-byte segment from beginning of bytes and returns it as uint160', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7691,7 +10430,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftAddress(bytes32,address)', () => {
-    it('removes address from beginning of bytes and returns it', async () => {
+    it('removes 20-byte segment from beginning of bytes and returns it as address', async () => {
       const sizeBytes = 20;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7716,7 +10455,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes21(bytes32,bytes21)', () => {
-    it('removes bytes21 from beginning of bytes and returns it', async () => {
+    it('removes 21-byte segment from beginning of bytes and returns it as bytes21', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7741,7 +10480,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt168(bytes32,int168)', () => {
-    it('removes int168 from beginning of bytes and returns it', async () => {
+    it('removes 21-byte segment from beginning of bytes and returns it as int168', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7775,7 +10514,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint168(bytes32,uint168)', () => {
-    it('removes uint168 from beginning of bytes and returns it', async () => {
+    it('removes 21-byte segment from beginning of bytes and returns it as uint168', async () => {
       const sizeBytes = 21;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7800,7 +10539,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes22(bytes32,bytes22)', () => {
-    it('removes bytes22 from beginning of bytes and returns it', async () => {
+    it('removes 22-byte segment from beginning of bytes and returns it as bytes22', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7825,7 +10564,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt176(bytes32,int176)', () => {
-    it('removes int176 from beginning of bytes and returns it', async () => {
+    it('removes 22-byte segment from beginning of bytes and returns it as int176', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7859,7 +10598,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint176(bytes32,uint176)', () => {
-    it('removes uint176 from beginning of bytes and returns it', async () => {
+    it('removes 22-byte segment from beginning of bytes and returns it as uint176', async () => {
       const sizeBytes = 22;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7884,7 +10623,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes23(bytes32,bytes23)', () => {
-    it('removes bytes23 from beginning of bytes and returns it', async () => {
+    it('removes 23-byte segment from beginning of bytes and returns it as bytes23', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7909,7 +10648,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt184(bytes32,int184)', () => {
-    it('removes int184 from beginning of bytes and returns it', async () => {
+    it('removes 23-byte segment from beginning of bytes and returns it as int184', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7943,7 +10682,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint184(bytes32,uint184)', () => {
-    it('removes uint184 from beginning of bytes and returns it', async () => {
+    it('removes 23-byte segment from beginning of bytes and returns it as uint184', async () => {
       const sizeBytes = 23;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7968,7 +10707,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes24(bytes32,bytes24)', () => {
-    it('removes bytes24 from beginning of bytes and returns it', async () => {
+    it('removes 24-byte segment from beginning of bytes and returns it as bytes24', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -7993,7 +10732,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt192(bytes32,int192)', () => {
-    it('removes int192 from beginning of bytes and returns it', async () => {
+    it('removes 24-byte segment from beginning of bytes and returns it as int192', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8027,7 +10766,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint192(bytes32,uint192)', () => {
-    it('removes uint192 from beginning of bytes and returns it', async () => {
+    it('removes 24-byte segment from beginning of bytes and returns it as uint192', async () => {
       const sizeBytes = 24;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8052,7 +10791,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes25(bytes32,bytes25)', () => {
-    it('removes bytes25 from beginning of bytes and returns it', async () => {
+    it('removes 25-byte segment from beginning of bytes and returns it as bytes25', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8077,7 +10816,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt200(bytes32,int200)', () => {
-    it('removes int200 from beginning of bytes and returns it', async () => {
+    it('removes 25-byte segment from beginning of bytes and returns it as int200', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8111,7 +10850,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint200(bytes32,uint200)', () => {
-    it('removes uint200 from beginning of bytes and returns it', async () => {
+    it('removes 25-byte segment from beginning of bytes and returns it as uint200', async () => {
       const sizeBytes = 25;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8136,7 +10875,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes26(bytes32,bytes26)', () => {
-    it('removes bytes26 from beginning of bytes and returns it', async () => {
+    it('removes 26-byte segment from beginning of bytes and returns it as bytes26', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8161,7 +10900,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt208(bytes32,int208)', () => {
-    it('removes int208 from beginning of bytes and returns it', async () => {
+    it('removes 26-byte segment from beginning of bytes and returns it as int208', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8195,7 +10934,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint208(bytes32,uint208)', () => {
-    it('removes uint208 from beginning of bytes and returns it', async () => {
+    it('removes 26-byte segment from beginning of bytes and returns it as uint208', async () => {
       const sizeBytes = 26;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8220,7 +10959,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes27(bytes32,bytes27)', () => {
-    it('removes bytes27 from beginning of bytes and returns it', async () => {
+    it('removes 27-byte segment from beginning of bytes and returns it as bytes27', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8245,7 +10984,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt216(bytes32,int216)', () => {
-    it('removes int216 from beginning of bytes and returns it', async () => {
+    it('removes 27-byte segment from beginning of bytes and returns it as int216', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8279,7 +11018,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint216(bytes32,uint216)', () => {
-    it('removes uint216 from beginning of bytes and returns it', async () => {
+    it('removes 27-byte segment from beginning of bytes and returns it as uint216', async () => {
       const sizeBytes = 27;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8304,7 +11043,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes28(bytes32,bytes28)', () => {
-    it('removes bytes28 from beginning of bytes and returns it', async () => {
+    it('removes 28-byte segment from beginning of bytes and returns it as bytes28', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8329,7 +11068,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt224(bytes32,int224)', () => {
-    it('removes int224 from beginning of bytes and returns it', async () => {
+    it('removes 28-byte segment from beginning of bytes and returns it as int224', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8363,7 +11102,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint224(bytes32,uint224)', () => {
-    it('removes uint224 from beginning of bytes and returns it', async () => {
+    it('removes 28-byte segment from beginning of bytes and returns it as uint224', async () => {
       const sizeBytes = 28;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8388,7 +11127,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes29(bytes32,bytes29)', () => {
-    it('removes bytes29 from beginning of bytes and returns it', async () => {
+    it('removes 29-byte segment from beginning of bytes and returns it as bytes29', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8413,7 +11152,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt232(bytes32,int232)', () => {
-    it('removes int232 from beginning of bytes and returns it', async () => {
+    it('removes 29-byte segment from beginning of bytes and returns it as int232', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8447,7 +11186,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint232(bytes32,uint232)', () => {
-    it('removes uint232 from beginning of bytes and returns it', async () => {
+    it('removes 29-byte segment from beginning of bytes and returns it as uint232', async () => {
       const sizeBytes = 29;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8472,7 +11211,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes30(bytes32,bytes30)', () => {
-    it('removes bytes30 from beginning of bytes and returns it', async () => {
+    it('removes 30-byte segment from beginning of bytes and returns it as bytes30', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8497,7 +11236,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt240(bytes32,int240)', () => {
-    it('removes int240 from beginning of bytes and returns it', async () => {
+    it('removes 30-byte segment from beginning of bytes and returns it as int240', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8531,7 +11270,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint240(bytes32,uint240)', () => {
-    it('removes uint240 from beginning of bytes and returns it', async () => {
+    it('removes 30-byte segment from beginning of bytes and returns it as uint240', async () => {
       const sizeBytes = 30;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8556,7 +11295,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes31(bytes32,bytes31)', () => {
-    it('removes bytes31 from beginning of bytes and returns it', async () => {
+    it('removes 31-byte segment from beginning of bytes and returns it as bytes31', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8581,7 +11320,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt248(bytes32,int248)', () => {
-    it('removes int248 from beginning of bytes and returns it', async () => {
+    it('removes 31-byte segment from beginning of bytes and returns it as int248', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8615,7 +11354,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint248(bytes32,uint248)', () => {
-    it('removes uint248 from beginning of bytes and returns it', async () => {
+    it('removes 31-byte segment from beginning of bytes and returns it as uint248', async () => {
       const sizeBytes = 31;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8640,7 +11379,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftBytes32(bytes32,bytes32)', () => {
-    it('removes bytes32 from beginning of bytes and returns it', async () => {
+    it('removes 32-byte segment from beginning of bytes and returns it as bytes32', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8665,7 +11404,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftInt256(bytes32,int256)', () => {
-    it('removes int256 from beginning of bytes and returns it', async () => {
+    it('removes 32-byte segment from beginning of bytes and returns it as int256', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {
@@ -8699,7 +11438,7 @@ describe('Bytes32Builder', () => {
     });
   });
   describe('#shiftUint256(bytes32,uint256)', () => {
-    it('removes uint256 from beginning of bytes and returns it', async () => {
+    it('removes 32-byte segment from beginning of bytes and returns it as uint256', async () => {
       const sizeBytes = 32;
 
       for (let i = sizeBytes; i <= 32; i++) {

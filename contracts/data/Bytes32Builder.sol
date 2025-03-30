@@ -83,6 +83,19 @@ library Bytes32Builder {
         0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
 
     /**
+     * @notice parse bytes1 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes1 derived from bytes
+     */
+    function parseBytes1(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes1 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_01;
+        element = bytes1(elementBytes << 248);
+    }
+
+    /**
      * @notice insert bytes1 value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
      * @param element bytes1 to add
@@ -104,10 +117,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes1 element) {
         unchecked {
             self._size -= 8;
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_01;
             element = bytes1(elementBytes << 248);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_01 << self._size);
         }
     }
 
@@ -120,8 +132,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes1 element) {
         unchecked {
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_01;
             element = bytes1(elementBytes << 248);
             self._data >>= 8;
             self._size -= 8;
@@ -139,6 +150,19 @@ library Bytes32Builder {
             self._size += 8;
         }
     }
+    /**
+     * @notice parse int8 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int8 derived from bytes
+     */
+    function parseInt8(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int8 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_01;
+        element = int8(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int8 value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -161,10 +185,9 @@ library Bytes32Builder {
     function popInt8(Builder memory self) internal pure returns (int8 element) {
         unchecked {
             self._size -= 8;
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_01;
             element = int8(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_01 << self._size);
         }
     }
 
@@ -177,8 +200,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int8 element) {
         unchecked {
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_01;
             element = int8(Bytes32.toInt256(elementBytes));
             self._data >>= 8;
             self._size -= 8;
@@ -198,6 +220,19 @@ library Bytes32Builder {
             self._size += 8;
         }
     }
+    /**
+     * @notice parse uint8 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint8 derived from bytes
+     */
+    function parseUint8(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint8 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_01;
+        element = uint8(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint8 value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -220,10 +255,9 @@ library Bytes32Builder {
     ) internal pure returns (uint8 element) {
         unchecked {
             self._size -= 8;
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_01;
             element = uint8(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_01 << self._size);
         }
     }
 
@@ -236,8 +270,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint8 element) {
         unchecked {
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_01;
             element = uint8(Bytes32.toUint256(elementBytes));
             self._data >>= 8;
             self._size -= 8;
@@ -255,6 +288,19 @@ library Bytes32Builder {
             self._size += 8;
         }
     }
+    /**
+     * @notice parse bool from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bool derived from bytes
+     */
+    function parseBool(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bool element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_01;
+        element = Bytes32.toBool(elementBytes);
+    }
+
     /**
      * @notice insert bool value to 1-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -275,10 +321,9 @@ library Bytes32Builder {
     function popBool(Builder memory self) internal pure returns (bool element) {
         unchecked {
             self._size -= 8;
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_01;
             element = Bytes32.toBool(elementBytes);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_01 << self._size);
         }
     }
 
@@ -291,8 +336,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bool element) {
         unchecked {
-            bytes32 mask = MASK_01;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_01;
             element = Bytes32.toBool(elementBytes);
             self._data >>= 8;
             self._size -= 8;
@@ -310,6 +354,19 @@ library Bytes32Builder {
             self._size += 8;
         }
     }
+    /**
+     * @notice parse bytes2 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes2 derived from bytes
+     */
+    function parseBytes2(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes2 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_02;
+        element = bytes2(elementBytes << 240);
+    }
+
     /**
      * @notice insert bytes2 value to 2-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -332,10 +389,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes2 element) {
         unchecked {
             self._size -= 16;
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_02;
             element = bytes2(elementBytes << 240);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_02 << self._size);
         }
     }
 
@@ -348,8 +404,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes2 element) {
         unchecked {
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_02;
             element = bytes2(elementBytes << 240);
             self._data >>= 16;
             self._size -= 16;
@@ -367,6 +422,19 @@ library Bytes32Builder {
             self._size += 16;
         }
     }
+    /**
+     * @notice parse int16 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int16 derived from bytes
+     */
+    function parseInt16(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int16 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_02;
+        element = int16(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int16 value to 2-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -391,10 +459,9 @@ library Bytes32Builder {
     ) internal pure returns (int16 element) {
         unchecked {
             self._size -= 16;
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_02;
             element = int16(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_02 << self._size);
         }
     }
 
@@ -407,8 +474,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int16 element) {
         unchecked {
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_02;
             element = int16(Bytes32.toInt256(elementBytes));
             self._data >>= 16;
             self._size -= 16;
@@ -428,6 +494,19 @@ library Bytes32Builder {
             self._size += 16;
         }
     }
+    /**
+     * @notice parse uint16 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint16 derived from bytes
+     */
+    function parseUint16(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint16 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_02;
+        element = uint16(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint16 value to 2-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -450,10 +529,9 @@ library Bytes32Builder {
     ) internal pure returns (uint16 element) {
         unchecked {
             self._size -= 16;
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_02;
             element = uint16(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_02 << self._size);
         }
     }
 
@@ -466,8 +544,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint16 element) {
         unchecked {
-            bytes32 mask = MASK_02;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_02;
             element = uint16(Bytes32.toUint256(elementBytes));
             self._data >>= 16;
             self._size -= 16;
@@ -485,6 +562,19 @@ library Bytes32Builder {
             self._size += 16;
         }
     }
+    /**
+     * @notice parse bytes3 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes3 derived from bytes
+     */
+    function parseBytes3(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes3 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_03;
+        element = bytes3(elementBytes << 232);
+    }
+
     /**
      * @notice insert bytes3 value to 3-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -507,10 +597,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes3 element) {
         unchecked {
             self._size -= 24;
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_03;
             element = bytes3(elementBytes << 232);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_03 << self._size);
         }
     }
 
@@ -523,8 +612,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes3 element) {
         unchecked {
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_03;
             element = bytes3(elementBytes << 232);
             self._data >>= 24;
             self._size -= 24;
@@ -542,6 +630,19 @@ library Bytes32Builder {
             self._size += 24;
         }
     }
+    /**
+     * @notice parse int24 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int24 derived from bytes
+     */
+    function parseInt24(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int24 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_03;
+        element = int24(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int24 value to 3-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -566,10 +667,9 @@ library Bytes32Builder {
     ) internal pure returns (int24 element) {
         unchecked {
             self._size -= 24;
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_03;
             element = int24(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_03 << self._size);
         }
     }
 
@@ -582,8 +682,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int24 element) {
         unchecked {
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_03;
             element = int24(Bytes32.toInt256(elementBytes));
             self._data >>= 24;
             self._size -= 24;
@@ -603,6 +702,19 @@ library Bytes32Builder {
             self._size += 24;
         }
     }
+    /**
+     * @notice parse uint24 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint24 derived from bytes
+     */
+    function parseUint24(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint24 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_03;
+        element = uint24(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint24 value to 3-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -625,10 +737,9 @@ library Bytes32Builder {
     ) internal pure returns (uint24 element) {
         unchecked {
             self._size -= 24;
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_03;
             element = uint24(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_03 << self._size);
         }
     }
 
@@ -641,8 +752,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint24 element) {
         unchecked {
-            bytes32 mask = MASK_03;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_03;
             element = uint24(Bytes32.toUint256(elementBytes));
             self._data >>= 24;
             self._size -= 24;
@@ -660,6 +770,19 @@ library Bytes32Builder {
             self._size += 24;
         }
     }
+    /**
+     * @notice parse bytes4 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes4 derived from bytes
+     */
+    function parseBytes4(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes4 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_04;
+        element = bytes4(elementBytes << 224);
+    }
+
     /**
      * @notice insert bytes4 value to 4-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -682,10 +805,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes4 element) {
         unchecked {
             self._size -= 32;
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_04;
             element = bytes4(elementBytes << 224);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_04 << self._size);
         }
     }
 
@@ -698,8 +820,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes4 element) {
         unchecked {
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_04;
             element = bytes4(elementBytes << 224);
             self._data >>= 32;
             self._size -= 32;
@@ -717,6 +838,19 @@ library Bytes32Builder {
             self._size += 32;
         }
     }
+    /**
+     * @notice parse int32 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int32 derived from bytes
+     */
+    function parseInt32(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int32 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_04;
+        element = int32(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int32 value to 4-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -741,10 +875,9 @@ library Bytes32Builder {
     ) internal pure returns (int32 element) {
         unchecked {
             self._size -= 32;
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_04;
             element = int32(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_04 << self._size);
         }
     }
 
@@ -757,8 +890,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int32 element) {
         unchecked {
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_04;
             element = int32(Bytes32.toInt256(elementBytes));
             self._data >>= 32;
             self._size -= 32;
@@ -778,6 +910,19 @@ library Bytes32Builder {
             self._size += 32;
         }
     }
+    /**
+     * @notice parse uint32 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint32 derived from bytes
+     */
+    function parseUint32(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint32 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_04;
+        element = uint32(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint32 value to 4-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -800,10 +945,9 @@ library Bytes32Builder {
     ) internal pure returns (uint32 element) {
         unchecked {
             self._size -= 32;
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_04;
             element = uint32(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_04 << self._size);
         }
     }
 
@@ -816,8 +960,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint32 element) {
         unchecked {
-            bytes32 mask = MASK_04;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_04;
             element = uint32(Bytes32.toUint256(elementBytes));
             self._data >>= 32;
             self._size -= 32;
@@ -835,6 +978,19 @@ library Bytes32Builder {
             self._size += 32;
         }
     }
+    /**
+     * @notice parse bytes5 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes5 derived from bytes
+     */
+    function parseBytes5(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes5 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_05;
+        element = bytes5(elementBytes << 216);
+    }
+
     /**
      * @notice insert bytes5 value to 5-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -857,10 +1013,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes5 element) {
         unchecked {
             self._size -= 40;
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_05;
             element = bytes5(elementBytes << 216);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_05 << self._size);
         }
     }
 
@@ -873,8 +1028,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes5 element) {
         unchecked {
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_05;
             element = bytes5(elementBytes << 216);
             self._data >>= 40;
             self._size -= 40;
@@ -892,6 +1046,19 @@ library Bytes32Builder {
             self._size += 40;
         }
     }
+    /**
+     * @notice parse int40 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int40 derived from bytes
+     */
+    function parseInt40(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int40 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_05;
+        element = int40(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int40 value to 5-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -916,10 +1083,9 @@ library Bytes32Builder {
     ) internal pure returns (int40 element) {
         unchecked {
             self._size -= 40;
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_05;
             element = int40(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_05 << self._size);
         }
     }
 
@@ -932,8 +1098,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int40 element) {
         unchecked {
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_05;
             element = int40(Bytes32.toInt256(elementBytes));
             self._data >>= 40;
             self._size -= 40;
@@ -953,6 +1118,19 @@ library Bytes32Builder {
             self._size += 40;
         }
     }
+    /**
+     * @notice parse uint40 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint40 derived from bytes
+     */
+    function parseUint40(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint40 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_05;
+        element = uint40(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint40 value to 5-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -975,10 +1153,9 @@ library Bytes32Builder {
     ) internal pure returns (uint40 element) {
         unchecked {
             self._size -= 40;
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_05;
             element = uint40(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_05 << self._size);
         }
     }
 
@@ -991,8 +1168,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint40 element) {
         unchecked {
-            bytes32 mask = MASK_05;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_05;
             element = uint40(Bytes32.toUint256(elementBytes));
             self._data >>= 40;
             self._size -= 40;
@@ -1010,6 +1186,19 @@ library Bytes32Builder {
             self._size += 40;
         }
     }
+    /**
+     * @notice parse bytes6 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes6 derived from bytes
+     */
+    function parseBytes6(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes6 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_06;
+        element = bytes6(elementBytes << 208);
+    }
+
     /**
      * @notice insert bytes6 value to 6-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1032,10 +1221,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes6 element) {
         unchecked {
             self._size -= 48;
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_06;
             element = bytes6(elementBytes << 208);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_06 << self._size);
         }
     }
 
@@ -1048,8 +1236,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes6 element) {
         unchecked {
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_06;
             element = bytes6(elementBytes << 208);
             self._data >>= 48;
             self._size -= 48;
@@ -1067,6 +1254,19 @@ library Bytes32Builder {
             self._size += 48;
         }
     }
+    /**
+     * @notice parse int48 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int48 derived from bytes
+     */
+    function parseInt48(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int48 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_06;
+        element = int48(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int48 value to 6-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1091,10 +1291,9 @@ library Bytes32Builder {
     ) internal pure returns (int48 element) {
         unchecked {
             self._size -= 48;
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_06;
             element = int48(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_06 << self._size);
         }
     }
 
@@ -1107,8 +1306,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int48 element) {
         unchecked {
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_06;
             element = int48(Bytes32.toInt256(elementBytes));
             self._data >>= 48;
             self._size -= 48;
@@ -1128,6 +1326,19 @@ library Bytes32Builder {
             self._size += 48;
         }
     }
+    /**
+     * @notice parse uint48 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint48 derived from bytes
+     */
+    function parseUint48(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint48 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_06;
+        element = uint48(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint48 value to 6-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1150,10 +1361,9 @@ library Bytes32Builder {
     ) internal pure returns (uint48 element) {
         unchecked {
             self._size -= 48;
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_06;
             element = uint48(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_06 << self._size);
         }
     }
 
@@ -1166,8 +1376,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint48 element) {
         unchecked {
-            bytes32 mask = MASK_06;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_06;
             element = uint48(Bytes32.toUint256(elementBytes));
             self._data >>= 48;
             self._size -= 48;
@@ -1185,6 +1394,19 @@ library Bytes32Builder {
             self._size += 48;
         }
     }
+    /**
+     * @notice parse bytes7 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes7 derived from bytes
+     */
+    function parseBytes7(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes7 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_07;
+        element = bytes7(elementBytes << 200);
+    }
+
     /**
      * @notice insert bytes7 value to 7-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1207,10 +1429,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes7 element) {
         unchecked {
             self._size -= 56;
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_07;
             element = bytes7(elementBytes << 200);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_07 << self._size);
         }
     }
 
@@ -1223,8 +1444,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes7 element) {
         unchecked {
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_07;
             element = bytes7(elementBytes << 200);
             self._data >>= 56;
             self._size -= 56;
@@ -1242,6 +1462,19 @@ library Bytes32Builder {
             self._size += 56;
         }
     }
+    /**
+     * @notice parse int56 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int56 derived from bytes
+     */
+    function parseInt56(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int56 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_07;
+        element = int56(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int56 value to 7-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1266,10 +1499,9 @@ library Bytes32Builder {
     ) internal pure returns (int56 element) {
         unchecked {
             self._size -= 56;
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_07;
             element = int56(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_07 << self._size);
         }
     }
 
@@ -1282,8 +1514,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int56 element) {
         unchecked {
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_07;
             element = int56(Bytes32.toInt256(elementBytes));
             self._data >>= 56;
             self._size -= 56;
@@ -1303,6 +1534,19 @@ library Bytes32Builder {
             self._size += 56;
         }
     }
+    /**
+     * @notice parse uint56 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint56 derived from bytes
+     */
+    function parseUint56(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint56 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_07;
+        element = uint56(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint56 value to 7-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1325,10 +1569,9 @@ library Bytes32Builder {
     ) internal pure returns (uint56 element) {
         unchecked {
             self._size -= 56;
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_07;
             element = uint56(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_07 << self._size);
         }
     }
 
@@ -1341,8 +1584,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint56 element) {
         unchecked {
-            bytes32 mask = MASK_07;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_07;
             element = uint56(Bytes32.toUint256(elementBytes));
             self._data >>= 56;
             self._size -= 56;
@@ -1360,6 +1602,19 @@ library Bytes32Builder {
             self._size += 56;
         }
     }
+    /**
+     * @notice parse bytes8 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes8 derived from bytes
+     */
+    function parseBytes8(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes8 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_08;
+        element = bytes8(elementBytes << 192);
+    }
+
     /**
      * @notice insert bytes8 value to 8-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1382,10 +1637,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes8 element) {
         unchecked {
             self._size -= 64;
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_08;
             element = bytes8(elementBytes << 192);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_08 << self._size);
         }
     }
 
@@ -1398,8 +1652,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes8 element) {
         unchecked {
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_08;
             element = bytes8(elementBytes << 192);
             self._data >>= 64;
             self._size -= 64;
@@ -1417,6 +1670,19 @@ library Bytes32Builder {
             self._size += 64;
         }
     }
+    /**
+     * @notice parse int64 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int64 derived from bytes
+     */
+    function parseInt64(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int64 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_08;
+        element = int64(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int64 value to 8-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1441,10 +1707,9 @@ library Bytes32Builder {
     ) internal pure returns (int64 element) {
         unchecked {
             self._size -= 64;
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_08;
             element = int64(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_08 << self._size);
         }
     }
 
@@ -1457,8 +1722,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int64 element) {
         unchecked {
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_08;
             element = int64(Bytes32.toInt256(elementBytes));
             self._data >>= 64;
             self._size -= 64;
@@ -1478,6 +1742,19 @@ library Bytes32Builder {
             self._size += 64;
         }
     }
+    /**
+     * @notice parse uint64 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint64 derived from bytes
+     */
+    function parseUint64(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint64 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_08;
+        element = uint64(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint64 value to 8-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1500,10 +1777,9 @@ library Bytes32Builder {
     ) internal pure returns (uint64 element) {
         unchecked {
             self._size -= 64;
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_08;
             element = uint64(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_08 << self._size);
         }
     }
 
@@ -1516,8 +1792,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint64 element) {
         unchecked {
-            bytes32 mask = MASK_08;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_08;
             element = uint64(Bytes32.toUint256(elementBytes));
             self._data >>= 64;
             self._size -= 64;
@@ -1535,6 +1810,19 @@ library Bytes32Builder {
             self._size += 64;
         }
     }
+    /**
+     * @notice parse bytes9 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes9 derived from bytes
+     */
+    function parseBytes9(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes9 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_09;
+        element = bytes9(elementBytes << 184);
+    }
+
     /**
      * @notice insert bytes9 value to 9-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1557,10 +1845,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes9 element) {
         unchecked {
             self._size -= 72;
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_09;
             element = bytes9(elementBytes << 184);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_09 << self._size);
         }
     }
 
@@ -1573,8 +1860,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes9 element) {
         unchecked {
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_09;
             element = bytes9(elementBytes << 184);
             self._data >>= 72;
             self._size -= 72;
@@ -1592,6 +1878,19 @@ library Bytes32Builder {
             self._size += 72;
         }
     }
+    /**
+     * @notice parse int72 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int72 derived from bytes
+     */
+    function parseInt72(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int72 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_09;
+        element = int72(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int72 value to 9-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1616,10 +1915,9 @@ library Bytes32Builder {
     ) internal pure returns (int72 element) {
         unchecked {
             self._size -= 72;
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_09;
             element = int72(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_09 << self._size);
         }
     }
 
@@ -1632,8 +1930,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int72 element) {
         unchecked {
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_09;
             element = int72(Bytes32.toInt256(elementBytes));
             self._data >>= 72;
             self._size -= 72;
@@ -1653,6 +1950,19 @@ library Bytes32Builder {
             self._size += 72;
         }
     }
+    /**
+     * @notice parse uint72 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint72 derived from bytes
+     */
+    function parseUint72(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint72 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_09;
+        element = uint72(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint72 value to 9-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1675,10 +1985,9 @@ library Bytes32Builder {
     ) internal pure returns (uint72 element) {
         unchecked {
             self._size -= 72;
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_09;
             element = uint72(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_09 << self._size);
         }
     }
 
@@ -1691,8 +2000,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint72 element) {
         unchecked {
-            bytes32 mask = MASK_09;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_09;
             element = uint72(Bytes32.toUint256(elementBytes));
             self._data >>= 72;
             self._size -= 72;
@@ -1710,6 +2018,19 @@ library Bytes32Builder {
             self._size += 72;
         }
     }
+    /**
+     * @notice parse bytes10 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes10 derived from bytes
+     */
+    function parseBytes10(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes10 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_10;
+        element = bytes10(elementBytes << 176);
+    }
+
     /**
      * @notice insert bytes10 value to 10-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1732,10 +2053,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes10 element) {
         unchecked {
             self._size -= 80;
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_10;
             element = bytes10(elementBytes << 176);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_10 << self._size);
         }
     }
 
@@ -1748,8 +2068,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes10 element) {
         unchecked {
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_10;
             element = bytes10(elementBytes << 176);
             self._data >>= 80;
             self._size -= 80;
@@ -1770,6 +2089,19 @@ library Bytes32Builder {
             self._size += 80;
         }
     }
+    /**
+     * @notice parse int80 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int80 derived from bytes
+     */
+    function parseInt80(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int80 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_10;
+        element = int80(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int80 value to 10-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1794,10 +2126,9 @@ library Bytes32Builder {
     ) internal pure returns (int80 element) {
         unchecked {
             self._size -= 80;
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_10;
             element = int80(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_10 << self._size);
         }
     }
 
@@ -1810,8 +2141,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int80 element) {
         unchecked {
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_10;
             element = int80(Bytes32.toInt256(elementBytes));
             self._data >>= 80;
             self._size -= 80;
@@ -1831,6 +2161,19 @@ library Bytes32Builder {
             self._size += 80;
         }
     }
+    /**
+     * @notice parse uint80 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint80 derived from bytes
+     */
+    function parseUint80(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint80 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_10;
+        element = uint80(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint80 value to 10-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1853,10 +2196,9 @@ library Bytes32Builder {
     ) internal pure returns (uint80 element) {
         unchecked {
             self._size -= 80;
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_10;
             element = uint80(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_10 << self._size);
         }
     }
 
@@ -1869,8 +2211,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint80 element) {
         unchecked {
-            bytes32 mask = MASK_10;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_10;
             element = uint80(Bytes32.toUint256(elementBytes));
             self._data >>= 80;
             self._size -= 80;
@@ -1888,6 +2229,19 @@ library Bytes32Builder {
             self._size += 80;
         }
     }
+    /**
+     * @notice parse bytes11 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes11 derived from bytes
+     */
+    function parseBytes11(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes11 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_11;
+        element = bytes11(elementBytes << 168);
+    }
+
     /**
      * @notice insert bytes11 value to 11-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1910,10 +2264,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes11 element) {
         unchecked {
             self._size -= 88;
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_11;
             element = bytes11(elementBytes << 168);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_11 << self._size);
         }
     }
 
@@ -1926,8 +2279,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes11 element) {
         unchecked {
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_11;
             element = bytes11(elementBytes << 168);
             self._data >>= 88;
             self._size -= 88;
@@ -1948,6 +2300,19 @@ library Bytes32Builder {
             self._size += 88;
         }
     }
+    /**
+     * @notice parse int88 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int88 derived from bytes
+     */
+    function parseInt88(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int88 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_11;
+        element = int88(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int88 value to 11-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -1972,10 +2337,9 @@ library Bytes32Builder {
     ) internal pure returns (int88 element) {
         unchecked {
             self._size -= 88;
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_11;
             element = int88(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_11 << self._size);
         }
     }
 
@@ -1988,8 +2352,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int88 element) {
         unchecked {
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_11;
             element = int88(Bytes32.toInt256(elementBytes));
             self._data >>= 88;
             self._size -= 88;
@@ -2009,6 +2372,19 @@ library Bytes32Builder {
             self._size += 88;
         }
     }
+    /**
+     * @notice parse uint88 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint88 derived from bytes
+     */
+    function parseUint88(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint88 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_11;
+        element = uint88(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint88 value to 11-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2031,10 +2407,9 @@ library Bytes32Builder {
     ) internal pure returns (uint88 element) {
         unchecked {
             self._size -= 88;
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_11;
             element = uint88(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_11 << self._size);
         }
     }
 
@@ -2047,8 +2422,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint88 element) {
         unchecked {
-            bytes32 mask = MASK_11;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_11;
             element = uint88(Bytes32.toUint256(elementBytes));
             self._data >>= 88;
             self._size -= 88;
@@ -2066,6 +2440,19 @@ library Bytes32Builder {
             self._size += 88;
         }
     }
+    /**
+     * @notice parse bytes12 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes12 derived from bytes
+     */
+    function parseBytes12(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes12 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_12;
+        element = bytes12(elementBytes << 160);
+    }
+
     /**
      * @notice insert bytes12 value to 12-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2088,10 +2475,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes12 element) {
         unchecked {
             self._size -= 96;
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_12;
             element = bytes12(elementBytes << 160);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_12 << self._size);
         }
     }
 
@@ -2104,8 +2490,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes12 element) {
         unchecked {
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_12;
             element = bytes12(elementBytes << 160);
             self._data >>= 96;
             self._size -= 96;
@@ -2126,6 +2511,19 @@ library Bytes32Builder {
             self._size += 96;
         }
     }
+    /**
+     * @notice parse int96 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int96 derived from bytes
+     */
+    function parseInt96(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int96 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_12;
+        element = int96(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int96 value to 12-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2150,10 +2548,9 @@ library Bytes32Builder {
     ) internal pure returns (int96 element) {
         unchecked {
             self._size -= 96;
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_12;
             element = int96(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_12 << self._size);
         }
     }
 
@@ -2166,8 +2563,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int96 element) {
         unchecked {
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_12;
             element = int96(Bytes32.toInt256(elementBytes));
             self._data >>= 96;
             self._size -= 96;
@@ -2187,6 +2583,19 @@ library Bytes32Builder {
             self._size += 96;
         }
     }
+    /**
+     * @notice parse uint96 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint96 derived from bytes
+     */
+    function parseUint96(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint96 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_12;
+        element = uint96(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint96 value to 12-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2209,10 +2618,9 @@ library Bytes32Builder {
     ) internal pure returns (uint96 element) {
         unchecked {
             self._size -= 96;
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_12;
             element = uint96(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_12 << self._size);
         }
     }
 
@@ -2225,8 +2633,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint96 element) {
         unchecked {
-            bytes32 mask = MASK_12;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_12;
             element = uint96(Bytes32.toUint256(elementBytes));
             self._data >>= 96;
             self._size -= 96;
@@ -2244,6 +2651,19 @@ library Bytes32Builder {
             self._size += 96;
         }
     }
+    /**
+     * @notice parse bytes13 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes13 derived from bytes
+     */
+    function parseBytes13(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes13 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_13;
+        element = bytes13(elementBytes << 152);
+    }
+
     /**
      * @notice insert bytes13 value to 13-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2266,10 +2686,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes13 element) {
         unchecked {
             self._size -= 104;
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_13;
             element = bytes13(elementBytes << 152);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_13 << self._size);
         }
     }
 
@@ -2282,8 +2701,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes13 element) {
         unchecked {
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_13;
             element = bytes13(elementBytes << 152);
             self._data >>= 104;
             self._size -= 104;
@@ -2304,6 +2722,19 @@ library Bytes32Builder {
             self._size += 104;
         }
     }
+    /**
+     * @notice parse int104 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int104 derived from bytes
+     */
+    function parseInt104(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int104 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_13;
+        element = int104(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int104 value to 13-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2328,10 +2759,9 @@ library Bytes32Builder {
     ) internal pure returns (int104 element) {
         unchecked {
             self._size -= 104;
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_13;
             element = int104(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_13 << self._size);
         }
     }
 
@@ -2344,8 +2774,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int104 element) {
         unchecked {
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_13;
             element = int104(Bytes32.toInt256(elementBytes));
             self._data >>= 104;
             self._size -= 104;
@@ -2365,6 +2794,19 @@ library Bytes32Builder {
             self._size += 104;
         }
     }
+    /**
+     * @notice parse uint104 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint104 derived from bytes
+     */
+    function parseUint104(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint104 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_13;
+        element = uint104(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint104 value to 13-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2387,10 +2829,9 @@ library Bytes32Builder {
     ) internal pure returns (uint104 element) {
         unchecked {
             self._size -= 104;
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_13;
             element = uint104(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_13 << self._size);
         }
     }
 
@@ -2403,8 +2844,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint104 element) {
         unchecked {
-            bytes32 mask = MASK_13;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_13;
             element = uint104(Bytes32.toUint256(elementBytes));
             self._data >>= 104;
             self._size -= 104;
@@ -2425,6 +2865,19 @@ library Bytes32Builder {
             self._size += 104;
         }
     }
+    /**
+     * @notice parse bytes14 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes14 derived from bytes
+     */
+    function parseBytes14(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes14 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_14;
+        element = bytes14(elementBytes << 144);
+    }
+
     /**
      * @notice insert bytes14 value to 14-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2447,10 +2900,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes14 element) {
         unchecked {
             self._size -= 112;
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_14;
             element = bytes14(elementBytes << 144);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_14 << self._size);
         }
     }
 
@@ -2463,8 +2915,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes14 element) {
         unchecked {
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_14;
             element = bytes14(elementBytes << 144);
             self._data >>= 112;
             self._size -= 112;
@@ -2485,6 +2936,19 @@ library Bytes32Builder {
             self._size += 112;
         }
     }
+    /**
+     * @notice parse int112 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int112 derived from bytes
+     */
+    function parseInt112(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int112 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_14;
+        element = int112(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int112 value to 14-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2509,10 +2973,9 @@ library Bytes32Builder {
     ) internal pure returns (int112 element) {
         unchecked {
             self._size -= 112;
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_14;
             element = int112(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_14 << self._size);
         }
     }
 
@@ -2525,8 +2988,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int112 element) {
         unchecked {
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_14;
             element = int112(Bytes32.toInt256(elementBytes));
             self._data >>= 112;
             self._size -= 112;
@@ -2546,6 +3008,19 @@ library Bytes32Builder {
             self._size += 112;
         }
     }
+    /**
+     * @notice parse uint112 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint112 derived from bytes
+     */
+    function parseUint112(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint112 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_14;
+        element = uint112(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint112 value to 14-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2568,10 +3043,9 @@ library Bytes32Builder {
     ) internal pure returns (uint112 element) {
         unchecked {
             self._size -= 112;
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_14;
             element = uint112(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_14 << self._size);
         }
     }
 
@@ -2584,8 +3058,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint112 element) {
         unchecked {
-            bytes32 mask = MASK_14;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_14;
             element = uint112(Bytes32.toUint256(elementBytes));
             self._data >>= 112;
             self._size -= 112;
@@ -2606,6 +3079,19 @@ library Bytes32Builder {
             self._size += 112;
         }
     }
+    /**
+     * @notice parse bytes15 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes15 derived from bytes
+     */
+    function parseBytes15(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes15 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_15;
+        element = bytes15(elementBytes << 136);
+    }
+
     /**
      * @notice insert bytes15 value to 15-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2628,10 +3114,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes15 element) {
         unchecked {
             self._size -= 120;
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_15;
             element = bytes15(elementBytes << 136);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_15 << self._size);
         }
     }
 
@@ -2644,8 +3129,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes15 element) {
         unchecked {
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_15;
             element = bytes15(elementBytes << 136);
             self._data >>= 120;
             self._size -= 120;
@@ -2666,6 +3150,19 @@ library Bytes32Builder {
             self._size += 120;
         }
     }
+    /**
+     * @notice parse int120 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int120 derived from bytes
+     */
+    function parseInt120(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int120 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_15;
+        element = int120(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int120 value to 15-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2690,10 +3187,9 @@ library Bytes32Builder {
     ) internal pure returns (int120 element) {
         unchecked {
             self._size -= 120;
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_15;
             element = int120(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_15 << self._size);
         }
     }
 
@@ -2706,8 +3202,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int120 element) {
         unchecked {
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_15;
             element = int120(Bytes32.toInt256(elementBytes));
             self._data >>= 120;
             self._size -= 120;
@@ -2727,6 +3222,19 @@ library Bytes32Builder {
             self._size += 120;
         }
     }
+    /**
+     * @notice parse uint120 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint120 derived from bytes
+     */
+    function parseUint120(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint120 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_15;
+        element = uint120(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint120 value to 15-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2749,10 +3257,9 @@ library Bytes32Builder {
     ) internal pure returns (uint120 element) {
         unchecked {
             self._size -= 120;
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_15;
             element = uint120(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_15 << self._size);
         }
     }
 
@@ -2765,8 +3272,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint120 element) {
         unchecked {
-            bytes32 mask = MASK_15;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_15;
             element = uint120(Bytes32.toUint256(elementBytes));
             self._data >>= 120;
             self._size -= 120;
@@ -2787,6 +3293,19 @@ library Bytes32Builder {
             self._size += 120;
         }
     }
+    /**
+     * @notice parse bytes16 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes16 derived from bytes
+     */
+    function parseBytes16(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes16 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_16;
+        element = bytes16(elementBytes << 128);
+    }
+
     /**
      * @notice insert bytes16 value to 16-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2809,10 +3328,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes16 element) {
         unchecked {
             self._size -= 128;
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_16;
             element = bytes16(elementBytes << 128);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_16 << self._size);
         }
     }
 
@@ -2825,8 +3343,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes16 element) {
         unchecked {
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_16;
             element = bytes16(elementBytes << 128);
             self._data >>= 128;
             self._size -= 128;
@@ -2847,6 +3364,19 @@ library Bytes32Builder {
             self._size += 128;
         }
     }
+    /**
+     * @notice parse int128 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int128 derived from bytes
+     */
+    function parseInt128(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int128 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_16;
+        element = int128(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int128 value to 16-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2871,10 +3401,9 @@ library Bytes32Builder {
     ) internal pure returns (int128 element) {
         unchecked {
             self._size -= 128;
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_16;
             element = int128(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_16 << self._size);
         }
     }
 
@@ -2887,8 +3416,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int128 element) {
         unchecked {
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_16;
             element = int128(Bytes32.toInt256(elementBytes));
             self._data >>= 128;
             self._size -= 128;
@@ -2908,6 +3436,19 @@ library Bytes32Builder {
             self._size += 128;
         }
     }
+    /**
+     * @notice parse uint128 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint128 derived from bytes
+     */
+    function parseUint128(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint128 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_16;
+        element = uint128(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint128 value to 16-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2930,10 +3471,9 @@ library Bytes32Builder {
     ) internal pure returns (uint128 element) {
         unchecked {
             self._size -= 128;
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_16;
             element = uint128(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_16 << self._size);
         }
     }
 
@@ -2946,8 +3486,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint128 element) {
         unchecked {
-            bytes32 mask = MASK_16;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_16;
             element = uint128(Bytes32.toUint256(elementBytes));
             self._data >>= 128;
             self._size -= 128;
@@ -2968,6 +3507,19 @@ library Bytes32Builder {
             self._size += 128;
         }
     }
+    /**
+     * @notice parse bytes17 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes17 derived from bytes
+     */
+    function parseBytes17(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes17 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_17;
+        element = bytes17(elementBytes << 120);
+    }
+
     /**
      * @notice insert bytes17 value to 17-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -2990,10 +3542,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes17 element) {
         unchecked {
             self._size -= 136;
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_17;
             element = bytes17(elementBytes << 120);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_17 << self._size);
         }
     }
 
@@ -3006,8 +3557,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes17 element) {
         unchecked {
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_17;
             element = bytes17(elementBytes << 120);
             self._data >>= 136;
             self._size -= 136;
@@ -3028,6 +3578,19 @@ library Bytes32Builder {
             self._size += 136;
         }
     }
+    /**
+     * @notice parse int136 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int136 derived from bytes
+     */
+    function parseInt136(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int136 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_17;
+        element = int136(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int136 value to 17-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3052,10 +3615,9 @@ library Bytes32Builder {
     ) internal pure returns (int136 element) {
         unchecked {
             self._size -= 136;
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_17;
             element = int136(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_17 << self._size);
         }
     }
 
@@ -3068,8 +3630,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int136 element) {
         unchecked {
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_17;
             element = int136(Bytes32.toInt256(elementBytes));
             self._data >>= 136;
             self._size -= 136;
@@ -3089,6 +3650,19 @@ library Bytes32Builder {
             self._size += 136;
         }
     }
+    /**
+     * @notice parse uint136 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint136 derived from bytes
+     */
+    function parseUint136(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint136 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_17;
+        element = uint136(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint136 value to 17-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3111,10 +3685,9 @@ library Bytes32Builder {
     ) internal pure returns (uint136 element) {
         unchecked {
             self._size -= 136;
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_17;
             element = uint136(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_17 << self._size);
         }
     }
 
@@ -3127,8 +3700,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint136 element) {
         unchecked {
-            bytes32 mask = MASK_17;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_17;
             element = uint136(Bytes32.toUint256(elementBytes));
             self._data >>= 136;
             self._size -= 136;
@@ -3149,6 +3721,19 @@ library Bytes32Builder {
             self._size += 136;
         }
     }
+    /**
+     * @notice parse bytes18 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes18 derived from bytes
+     */
+    function parseBytes18(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes18 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_18;
+        element = bytes18(elementBytes << 112);
+    }
+
     /**
      * @notice insert bytes18 value to 18-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3171,10 +3756,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes18 element) {
         unchecked {
             self._size -= 144;
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_18;
             element = bytes18(elementBytes << 112);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_18 << self._size);
         }
     }
 
@@ -3187,8 +3771,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes18 element) {
         unchecked {
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_18;
             element = bytes18(elementBytes << 112);
             self._data >>= 144;
             self._size -= 144;
@@ -3209,6 +3792,19 @@ library Bytes32Builder {
             self._size += 144;
         }
     }
+    /**
+     * @notice parse int144 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int144 derived from bytes
+     */
+    function parseInt144(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int144 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_18;
+        element = int144(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int144 value to 18-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3233,10 +3829,9 @@ library Bytes32Builder {
     ) internal pure returns (int144 element) {
         unchecked {
             self._size -= 144;
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_18;
             element = int144(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_18 << self._size);
         }
     }
 
@@ -3249,8 +3844,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int144 element) {
         unchecked {
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_18;
             element = int144(Bytes32.toInt256(elementBytes));
             self._data >>= 144;
             self._size -= 144;
@@ -3270,6 +3864,19 @@ library Bytes32Builder {
             self._size += 144;
         }
     }
+    /**
+     * @notice parse uint144 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint144 derived from bytes
+     */
+    function parseUint144(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint144 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_18;
+        element = uint144(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint144 value to 18-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3292,10 +3899,9 @@ library Bytes32Builder {
     ) internal pure returns (uint144 element) {
         unchecked {
             self._size -= 144;
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_18;
             element = uint144(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_18 << self._size);
         }
     }
 
@@ -3308,8 +3914,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint144 element) {
         unchecked {
-            bytes32 mask = MASK_18;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_18;
             element = uint144(Bytes32.toUint256(elementBytes));
             self._data >>= 144;
             self._size -= 144;
@@ -3330,6 +3935,19 @@ library Bytes32Builder {
             self._size += 144;
         }
     }
+    /**
+     * @notice parse bytes19 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes19 derived from bytes
+     */
+    function parseBytes19(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes19 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_19;
+        element = bytes19(elementBytes << 104);
+    }
+
     /**
      * @notice insert bytes19 value to 19-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3352,10 +3970,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes19 element) {
         unchecked {
             self._size -= 152;
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_19;
             element = bytes19(elementBytes << 104);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_19 << self._size);
         }
     }
 
@@ -3368,8 +3985,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes19 element) {
         unchecked {
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_19;
             element = bytes19(elementBytes << 104);
             self._data >>= 152;
             self._size -= 152;
@@ -3390,6 +4006,19 @@ library Bytes32Builder {
             self._size += 152;
         }
     }
+    /**
+     * @notice parse int152 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int152 derived from bytes
+     */
+    function parseInt152(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int152 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_19;
+        element = int152(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int152 value to 19-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3414,10 +4043,9 @@ library Bytes32Builder {
     ) internal pure returns (int152 element) {
         unchecked {
             self._size -= 152;
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_19;
             element = int152(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_19 << self._size);
         }
     }
 
@@ -3430,8 +4058,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int152 element) {
         unchecked {
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_19;
             element = int152(Bytes32.toInt256(elementBytes));
             self._data >>= 152;
             self._size -= 152;
@@ -3451,6 +4078,19 @@ library Bytes32Builder {
             self._size += 152;
         }
     }
+    /**
+     * @notice parse uint152 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint152 derived from bytes
+     */
+    function parseUint152(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint152 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_19;
+        element = uint152(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint152 value to 19-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3473,10 +4113,9 @@ library Bytes32Builder {
     ) internal pure returns (uint152 element) {
         unchecked {
             self._size -= 152;
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_19;
             element = uint152(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_19 << self._size);
         }
     }
 
@@ -3489,8 +4128,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint152 element) {
         unchecked {
-            bytes32 mask = MASK_19;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_19;
             element = uint152(Bytes32.toUint256(elementBytes));
             self._data >>= 152;
             self._size -= 152;
@@ -3511,6 +4149,19 @@ library Bytes32Builder {
             self._size += 152;
         }
     }
+    /**
+     * @notice parse bytes20 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes20 derived from bytes
+     */
+    function parseBytes20(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes20 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_20;
+        element = bytes20(elementBytes << 96);
+    }
+
     /**
      * @notice insert bytes20 value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3533,10 +4184,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes20 element) {
         unchecked {
             self._size -= 160;
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_20;
             element = bytes20(elementBytes << 96);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_20 << self._size);
         }
     }
 
@@ -3549,8 +4199,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes20 element) {
         unchecked {
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_20;
             element = bytes20(elementBytes << 96);
             self._data >>= 160;
             self._size -= 160;
@@ -3571,6 +4220,19 @@ library Bytes32Builder {
             self._size += 160;
         }
     }
+    /**
+     * @notice parse int160 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int160 derived from bytes
+     */
+    function parseInt160(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int160 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_20;
+        element = int160(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int160 value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3595,10 +4257,9 @@ library Bytes32Builder {
     ) internal pure returns (int160 element) {
         unchecked {
             self._size -= 160;
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_20;
             element = int160(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_20 << self._size);
         }
     }
 
@@ -3611,8 +4272,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int160 element) {
         unchecked {
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_20;
             element = int160(Bytes32.toInt256(elementBytes));
             self._data >>= 160;
             self._size -= 160;
@@ -3632,6 +4292,19 @@ library Bytes32Builder {
             self._size += 160;
         }
     }
+    /**
+     * @notice parse uint160 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint160 derived from bytes
+     */
+    function parseUint160(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint160 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_20;
+        element = uint160(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint160 value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3654,10 +4327,9 @@ library Bytes32Builder {
     ) internal pure returns (uint160 element) {
         unchecked {
             self._size -= 160;
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_20;
             element = uint160(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_20 << self._size);
         }
     }
 
@@ -3670,8 +4342,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint160 element) {
         unchecked {
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_20;
             element = uint160(Bytes32.toUint256(elementBytes));
             self._data >>= 160;
             self._size -= 160;
@@ -3692,6 +4363,19 @@ library Bytes32Builder {
             self._size += 160;
         }
     }
+    /**
+     * @notice parse address from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element address derived from bytes
+     */
+    function parseAddress(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (address element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_20;
+        element = Bytes32.toAddress(elementBytes);
+    }
+
     /**
      * @notice insert address value to 20-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3714,10 +4398,9 @@ library Bytes32Builder {
     ) internal pure returns (address element) {
         unchecked {
             self._size -= 160;
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_20;
             element = Bytes32.toAddress(elementBytes);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_20 << self._size);
         }
     }
 
@@ -3730,8 +4413,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (address element) {
         unchecked {
-            bytes32 mask = MASK_20;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_20;
             element = Bytes32.toAddress(elementBytes);
             self._data >>= 160;
             self._size -= 160;
@@ -3752,6 +4434,19 @@ library Bytes32Builder {
             self._size += 160;
         }
     }
+    /**
+     * @notice parse bytes21 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes21 derived from bytes
+     */
+    function parseBytes21(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes21 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_21;
+        element = bytes21(elementBytes << 88);
+    }
+
     /**
      * @notice insert bytes21 value to 21-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3774,10 +4469,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes21 element) {
         unchecked {
             self._size -= 168;
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_21;
             element = bytes21(elementBytes << 88);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_21 << self._size);
         }
     }
 
@@ -3790,8 +4484,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes21 element) {
         unchecked {
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_21;
             element = bytes21(elementBytes << 88);
             self._data >>= 168;
             self._size -= 168;
@@ -3812,6 +4505,19 @@ library Bytes32Builder {
             self._size += 168;
         }
     }
+    /**
+     * @notice parse int168 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int168 derived from bytes
+     */
+    function parseInt168(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int168 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_21;
+        element = int168(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int168 value to 21-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3836,10 +4542,9 @@ library Bytes32Builder {
     ) internal pure returns (int168 element) {
         unchecked {
             self._size -= 168;
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_21;
             element = int168(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_21 << self._size);
         }
     }
 
@@ -3852,8 +4557,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int168 element) {
         unchecked {
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_21;
             element = int168(Bytes32.toInt256(elementBytes));
             self._data >>= 168;
             self._size -= 168;
@@ -3873,6 +4577,19 @@ library Bytes32Builder {
             self._size += 168;
         }
     }
+    /**
+     * @notice parse uint168 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint168 derived from bytes
+     */
+    function parseUint168(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint168 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_21;
+        element = uint168(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint168 value to 21-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3895,10 +4612,9 @@ library Bytes32Builder {
     ) internal pure returns (uint168 element) {
         unchecked {
             self._size -= 168;
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_21;
             element = uint168(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_21 << self._size);
         }
     }
 
@@ -3911,8 +4627,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint168 element) {
         unchecked {
-            bytes32 mask = MASK_21;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_21;
             element = uint168(Bytes32.toUint256(elementBytes));
             self._data >>= 168;
             self._size -= 168;
@@ -3933,6 +4648,19 @@ library Bytes32Builder {
             self._size += 168;
         }
     }
+    /**
+     * @notice parse bytes22 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes22 derived from bytes
+     */
+    function parseBytes22(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes22 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_22;
+        element = bytes22(elementBytes << 80);
+    }
+
     /**
      * @notice insert bytes22 value to 22-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -3955,10 +4683,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes22 element) {
         unchecked {
             self._size -= 176;
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_22;
             element = bytes22(elementBytes << 80);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_22 << self._size);
         }
     }
 
@@ -3971,8 +4698,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes22 element) {
         unchecked {
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_22;
             element = bytes22(elementBytes << 80);
             self._data >>= 176;
             self._size -= 176;
@@ -3993,6 +4719,19 @@ library Bytes32Builder {
             self._size += 176;
         }
     }
+    /**
+     * @notice parse int176 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int176 derived from bytes
+     */
+    function parseInt176(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int176 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_22;
+        element = int176(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int176 value to 22-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4017,10 +4756,9 @@ library Bytes32Builder {
     ) internal pure returns (int176 element) {
         unchecked {
             self._size -= 176;
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_22;
             element = int176(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_22 << self._size);
         }
     }
 
@@ -4033,8 +4771,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int176 element) {
         unchecked {
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_22;
             element = int176(Bytes32.toInt256(elementBytes));
             self._data >>= 176;
             self._size -= 176;
@@ -4054,6 +4791,19 @@ library Bytes32Builder {
             self._size += 176;
         }
     }
+    /**
+     * @notice parse uint176 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint176 derived from bytes
+     */
+    function parseUint176(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint176 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_22;
+        element = uint176(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint176 value to 22-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4076,10 +4826,9 @@ library Bytes32Builder {
     ) internal pure returns (uint176 element) {
         unchecked {
             self._size -= 176;
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_22;
             element = uint176(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_22 << self._size);
         }
     }
 
@@ -4092,8 +4841,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint176 element) {
         unchecked {
-            bytes32 mask = MASK_22;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_22;
             element = uint176(Bytes32.toUint256(elementBytes));
             self._data >>= 176;
             self._size -= 176;
@@ -4114,6 +4862,19 @@ library Bytes32Builder {
             self._size += 176;
         }
     }
+    /**
+     * @notice parse bytes23 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes23 derived from bytes
+     */
+    function parseBytes23(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes23 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_23;
+        element = bytes23(elementBytes << 72);
+    }
+
     /**
      * @notice insert bytes23 value to 23-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4136,10 +4897,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes23 element) {
         unchecked {
             self._size -= 184;
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_23;
             element = bytes23(elementBytes << 72);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_23 << self._size);
         }
     }
 
@@ -4152,8 +4912,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes23 element) {
         unchecked {
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_23;
             element = bytes23(elementBytes << 72);
             self._data >>= 184;
             self._size -= 184;
@@ -4174,6 +4933,19 @@ library Bytes32Builder {
             self._size += 184;
         }
     }
+    /**
+     * @notice parse int184 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int184 derived from bytes
+     */
+    function parseInt184(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int184 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_23;
+        element = int184(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int184 value to 23-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4198,10 +4970,9 @@ library Bytes32Builder {
     ) internal pure returns (int184 element) {
         unchecked {
             self._size -= 184;
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_23;
             element = int184(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_23 << self._size);
         }
     }
 
@@ -4214,8 +4985,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int184 element) {
         unchecked {
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_23;
             element = int184(Bytes32.toInt256(elementBytes));
             self._data >>= 184;
             self._size -= 184;
@@ -4235,6 +5005,19 @@ library Bytes32Builder {
             self._size += 184;
         }
     }
+    /**
+     * @notice parse uint184 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint184 derived from bytes
+     */
+    function parseUint184(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint184 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_23;
+        element = uint184(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint184 value to 23-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4257,10 +5040,9 @@ library Bytes32Builder {
     ) internal pure returns (uint184 element) {
         unchecked {
             self._size -= 184;
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_23;
             element = uint184(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_23 << self._size);
         }
     }
 
@@ -4273,8 +5055,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint184 element) {
         unchecked {
-            bytes32 mask = MASK_23;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_23;
             element = uint184(Bytes32.toUint256(elementBytes));
             self._data >>= 184;
             self._size -= 184;
@@ -4295,6 +5076,19 @@ library Bytes32Builder {
             self._size += 184;
         }
     }
+    /**
+     * @notice parse bytes24 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes24 derived from bytes
+     */
+    function parseBytes24(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes24 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_24;
+        element = bytes24(elementBytes << 64);
+    }
+
     /**
      * @notice insert bytes24 value to 24-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4317,10 +5111,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes24 element) {
         unchecked {
             self._size -= 192;
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_24;
             element = bytes24(elementBytes << 64);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_24 << self._size);
         }
     }
 
@@ -4333,8 +5126,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes24 element) {
         unchecked {
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_24;
             element = bytes24(elementBytes << 64);
             self._data >>= 192;
             self._size -= 192;
@@ -4355,6 +5147,19 @@ library Bytes32Builder {
             self._size += 192;
         }
     }
+    /**
+     * @notice parse int192 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int192 derived from bytes
+     */
+    function parseInt192(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int192 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_24;
+        element = int192(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int192 value to 24-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4379,10 +5184,9 @@ library Bytes32Builder {
     ) internal pure returns (int192 element) {
         unchecked {
             self._size -= 192;
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_24;
             element = int192(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_24 << self._size);
         }
     }
 
@@ -4395,8 +5199,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int192 element) {
         unchecked {
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_24;
             element = int192(Bytes32.toInt256(elementBytes));
             self._data >>= 192;
             self._size -= 192;
@@ -4416,6 +5219,19 @@ library Bytes32Builder {
             self._size += 192;
         }
     }
+    /**
+     * @notice parse uint192 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint192 derived from bytes
+     */
+    function parseUint192(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint192 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_24;
+        element = uint192(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint192 value to 24-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4438,10 +5254,9 @@ library Bytes32Builder {
     ) internal pure returns (uint192 element) {
         unchecked {
             self._size -= 192;
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_24;
             element = uint192(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_24 << self._size);
         }
     }
 
@@ -4454,8 +5269,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint192 element) {
         unchecked {
-            bytes32 mask = MASK_24;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_24;
             element = uint192(Bytes32.toUint256(elementBytes));
             self._data >>= 192;
             self._size -= 192;
@@ -4476,6 +5290,19 @@ library Bytes32Builder {
             self._size += 192;
         }
     }
+    /**
+     * @notice parse bytes25 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes25 derived from bytes
+     */
+    function parseBytes25(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes25 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_25;
+        element = bytes25(elementBytes << 56);
+    }
+
     /**
      * @notice insert bytes25 value to 25-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4498,10 +5325,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes25 element) {
         unchecked {
             self._size -= 200;
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_25;
             element = bytes25(elementBytes << 56);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_25 << self._size);
         }
     }
 
@@ -4514,8 +5340,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes25 element) {
         unchecked {
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_25;
             element = bytes25(elementBytes << 56);
             self._data >>= 200;
             self._size -= 200;
@@ -4536,6 +5361,19 @@ library Bytes32Builder {
             self._size += 200;
         }
     }
+    /**
+     * @notice parse int200 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int200 derived from bytes
+     */
+    function parseInt200(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int200 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_25;
+        element = int200(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int200 value to 25-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4560,10 +5398,9 @@ library Bytes32Builder {
     ) internal pure returns (int200 element) {
         unchecked {
             self._size -= 200;
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_25;
             element = int200(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_25 << self._size);
         }
     }
 
@@ -4576,8 +5413,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int200 element) {
         unchecked {
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_25;
             element = int200(Bytes32.toInt256(elementBytes));
             self._data >>= 200;
             self._size -= 200;
@@ -4597,6 +5433,19 @@ library Bytes32Builder {
             self._size += 200;
         }
     }
+    /**
+     * @notice parse uint200 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint200 derived from bytes
+     */
+    function parseUint200(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint200 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_25;
+        element = uint200(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint200 value to 25-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4619,10 +5468,9 @@ library Bytes32Builder {
     ) internal pure returns (uint200 element) {
         unchecked {
             self._size -= 200;
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_25;
             element = uint200(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_25 << self._size);
         }
     }
 
@@ -4635,8 +5483,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint200 element) {
         unchecked {
-            bytes32 mask = MASK_25;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_25;
             element = uint200(Bytes32.toUint256(elementBytes));
             self._data >>= 200;
             self._size -= 200;
@@ -4657,6 +5504,19 @@ library Bytes32Builder {
             self._size += 200;
         }
     }
+    /**
+     * @notice parse bytes26 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes26 derived from bytes
+     */
+    function parseBytes26(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes26 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_26;
+        element = bytes26(elementBytes << 48);
+    }
+
     /**
      * @notice insert bytes26 value to 26-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4679,10 +5539,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes26 element) {
         unchecked {
             self._size -= 208;
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_26;
             element = bytes26(elementBytes << 48);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_26 << self._size);
         }
     }
 
@@ -4695,8 +5554,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes26 element) {
         unchecked {
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_26;
             element = bytes26(elementBytes << 48);
             self._data >>= 208;
             self._size -= 208;
@@ -4717,6 +5575,19 @@ library Bytes32Builder {
             self._size += 208;
         }
     }
+    /**
+     * @notice parse int208 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int208 derived from bytes
+     */
+    function parseInt208(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int208 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_26;
+        element = int208(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int208 value to 26-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4741,10 +5612,9 @@ library Bytes32Builder {
     ) internal pure returns (int208 element) {
         unchecked {
             self._size -= 208;
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_26;
             element = int208(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_26 << self._size);
         }
     }
 
@@ -4757,8 +5627,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int208 element) {
         unchecked {
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_26;
             element = int208(Bytes32.toInt256(elementBytes));
             self._data >>= 208;
             self._size -= 208;
@@ -4778,6 +5647,19 @@ library Bytes32Builder {
             self._size += 208;
         }
     }
+    /**
+     * @notice parse uint208 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint208 derived from bytes
+     */
+    function parseUint208(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint208 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_26;
+        element = uint208(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint208 value to 26-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4800,10 +5682,9 @@ library Bytes32Builder {
     ) internal pure returns (uint208 element) {
         unchecked {
             self._size -= 208;
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_26;
             element = uint208(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_26 << self._size);
         }
     }
 
@@ -4816,8 +5697,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint208 element) {
         unchecked {
-            bytes32 mask = MASK_26;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_26;
             element = uint208(Bytes32.toUint256(elementBytes));
             self._data >>= 208;
             self._size -= 208;
@@ -4838,6 +5718,19 @@ library Bytes32Builder {
             self._size += 208;
         }
     }
+    /**
+     * @notice parse bytes27 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes27 derived from bytes
+     */
+    function parseBytes27(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes27 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_27;
+        element = bytes27(elementBytes << 40);
+    }
+
     /**
      * @notice insert bytes27 value to 27-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4860,10 +5753,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes27 element) {
         unchecked {
             self._size -= 216;
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_27;
             element = bytes27(elementBytes << 40);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_27 << self._size);
         }
     }
 
@@ -4876,8 +5768,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes27 element) {
         unchecked {
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_27;
             element = bytes27(elementBytes << 40);
             self._data >>= 216;
             self._size -= 216;
@@ -4898,6 +5789,19 @@ library Bytes32Builder {
             self._size += 216;
         }
     }
+    /**
+     * @notice parse int216 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int216 derived from bytes
+     */
+    function parseInt216(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int216 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_27;
+        element = int216(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int216 value to 27-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4922,10 +5826,9 @@ library Bytes32Builder {
     ) internal pure returns (int216 element) {
         unchecked {
             self._size -= 216;
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_27;
             element = int216(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_27 << self._size);
         }
     }
 
@@ -4938,8 +5841,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int216 element) {
         unchecked {
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_27;
             element = int216(Bytes32.toInt256(elementBytes));
             self._data >>= 216;
             self._size -= 216;
@@ -4959,6 +5861,19 @@ library Bytes32Builder {
             self._size += 216;
         }
     }
+    /**
+     * @notice parse uint216 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint216 derived from bytes
+     */
+    function parseUint216(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint216 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_27;
+        element = uint216(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint216 value to 27-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -4981,10 +5896,9 @@ library Bytes32Builder {
     ) internal pure returns (uint216 element) {
         unchecked {
             self._size -= 216;
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_27;
             element = uint216(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_27 << self._size);
         }
     }
 
@@ -4997,8 +5911,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint216 element) {
         unchecked {
-            bytes32 mask = MASK_27;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_27;
             element = uint216(Bytes32.toUint256(elementBytes));
             self._data >>= 216;
             self._size -= 216;
@@ -5019,6 +5932,19 @@ library Bytes32Builder {
             self._size += 216;
         }
     }
+    /**
+     * @notice parse bytes28 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes28 derived from bytes
+     */
+    function parseBytes28(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes28 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_28;
+        element = bytes28(elementBytes << 32);
+    }
+
     /**
      * @notice insert bytes28 value to 28-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5041,10 +5967,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes28 element) {
         unchecked {
             self._size -= 224;
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_28;
             element = bytes28(elementBytes << 32);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_28 << self._size);
         }
     }
 
@@ -5057,8 +5982,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes28 element) {
         unchecked {
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_28;
             element = bytes28(elementBytes << 32);
             self._data >>= 224;
             self._size -= 224;
@@ -5079,6 +6003,19 @@ library Bytes32Builder {
             self._size += 224;
         }
     }
+    /**
+     * @notice parse int224 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int224 derived from bytes
+     */
+    function parseInt224(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int224 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_28;
+        element = int224(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int224 value to 28-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5103,10 +6040,9 @@ library Bytes32Builder {
     ) internal pure returns (int224 element) {
         unchecked {
             self._size -= 224;
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_28;
             element = int224(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_28 << self._size);
         }
     }
 
@@ -5119,8 +6055,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int224 element) {
         unchecked {
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_28;
             element = int224(Bytes32.toInt256(elementBytes));
             self._data >>= 224;
             self._size -= 224;
@@ -5140,6 +6075,19 @@ library Bytes32Builder {
             self._size += 224;
         }
     }
+    /**
+     * @notice parse uint224 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint224 derived from bytes
+     */
+    function parseUint224(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint224 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_28;
+        element = uint224(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint224 value to 28-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5162,10 +6110,9 @@ library Bytes32Builder {
     ) internal pure returns (uint224 element) {
         unchecked {
             self._size -= 224;
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_28;
             element = uint224(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_28 << self._size);
         }
     }
 
@@ -5178,8 +6125,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint224 element) {
         unchecked {
-            bytes32 mask = MASK_28;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_28;
             element = uint224(Bytes32.toUint256(elementBytes));
             self._data >>= 224;
             self._size -= 224;
@@ -5200,6 +6146,19 @@ library Bytes32Builder {
             self._size += 224;
         }
     }
+    /**
+     * @notice parse bytes29 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes29 derived from bytes
+     */
+    function parseBytes29(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes29 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_29;
+        element = bytes29(elementBytes << 24);
+    }
+
     /**
      * @notice insert bytes29 value to 29-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5222,10 +6181,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes29 element) {
         unchecked {
             self._size -= 232;
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_29;
             element = bytes29(elementBytes << 24);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_29 << self._size);
         }
     }
 
@@ -5238,8 +6196,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes29 element) {
         unchecked {
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_29;
             element = bytes29(elementBytes << 24);
             self._data >>= 232;
             self._size -= 232;
@@ -5260,6 +6217,19 @@ library Bytes32Builder {
             self._size += 232;
         }
     }
+    /**
+     * @notice parse int232 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int232 derived from bytes
+     */
+    function parseInt232(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int232 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_29;
+        element = int232(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int232 value to 29-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5284,10 +6254,9 @@ library Bytes32Builder {
     ) internal pure returns (int232 element) {
         unchecked {
             self._size -= 232;
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_29;
             element = int232(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_29 << self._size);
         }
     }
 
@@ -5300,8 +6269,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int232 element) {
         unchecked {
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_29;
             element = int232(Bytes32.toInt256(elementBytes));
             self._data >>= 232;
             self._size -= 232;
@@ -5321,6 +6289,19 @@ library Bytes32Builder {
             self._size += 232;
         }
     }
+    /**
+     * @notice parse uint232 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint232 derived from bytes
+     */
+    function parseUint232(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint232 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_29;
+        element = uint232(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint232 value to 29-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5343,10 +6324,9 @@ library Bytes32Builder {
     ) internal pure returns (uint232 element) {
         unchecked {
             self._size -= 232;
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_29;
             element = uint232(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_29 << self._size);
         }
     }
 
@@ -5359,8 +6339,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint232 element) {
         unchecked {
-            bytes32 mask = MASK_29;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_29;
             element = uint232(Bytes32.toUint256(elementBytes));
             self._data >>= 232;
             self._size -= 232;
@@ -5381,6 +6360,19 @@ library Bytes32Builder {
             self._size += 232;
         }
     }
+    /**
+     * @notice parse bytes30 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes30 derived from bytes
+     */
+    function parseBytes30(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes30 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_30;
+        element = bytes30(elementBytes << 16);
+    }
+
     /**
      * @notice insert bytes30 value to 30-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5403,10 +6395,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes30 element) {
         unchecked {
             self._size -= 240;
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_30;
             element = bytes30(elementBytes << 16);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_30 << self._size);
         }
     }
 
@@ -5419,8 +6410,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes30 element) {
         unchecked {
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_30;
             element = bytes30(elementBytes << 16);
             self._data >>= 240;
             self._size -= 240;
@@ -5441,6 +6431,19 @@ library Bytes32Builder {
             self._size += 240;
         }
     }
+    /**
+     * @notice parse int240 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int240 derived from bytes
+     */
+    function parseInt240(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int240 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_30;
+        element = int240(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int240 value to 30-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5465,10 +6468,9 @@ library Bytes32Builder {
     ) internal pure returns (int240 element) {
         unchecked {
             self._size -= 240;
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_30;
             element = int240(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_30 << self._size);
         }
     }
 
@@ -5481,8 +6483,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int240 element) {
         unchecked {
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_30;
             element = int240(Bytes32.toInt256(elementBytes));
             self._data >>= 240;
             self._size -= 240;
@@ -5502,6 +6503,19 @@ library Bytes32Builder {
             self._size += 240;
         }
     }
+    /**
+     * @notice parse uint240 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint240 derived from bytes
+     */
+    function parseUint240(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint240 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_30;
+        element = uint240(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint240 value to 30-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5524,10 +6538,9 @@ library Bytes32Builder {
     ) internal pure returns (uint240 element) {
         unchecked {
             self._size -= 240;
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_30;
             element = uint240(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_30 << self._size);
         }
     }
 
@@ -5540,8 +6553,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint240 element) {
         unchecked {
-            bytes32 mask = MASK_30;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_30;
             element = uint240(Bytes32.toUint256(elementBytes));
             self._data >>= 240;
             self._size -= 240;
@@ -5562,6 +6574,19 @@ library Bytes32Builder {
             self._size += 240;
         }
     }
+    /**
+     * @notice parse bytes31 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes31 derived from bytes
+     */
+    function parseBytes31(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes31 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_31;
+        element = bytes31(elementBytes << 8);
+    }
+
     /**
      * @notice insert bytes31 value to 31-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5584,10 +6609,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes31 element) {
         unchecked {
             self._size -= 248;
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_31;
             element = bytes31(elementBytes << 8);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_31 << self._size);
         }
     }
 
@@ -5600,8 +6624,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes31 element) {
         unchecked {
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_31;
             element = bytes31(elementBytes << 8);
             self._data >>= 248;
             self._size -= 248;
@@ -5622,6 +6645,19 @@ library Bytes32Builder {
             self._size += 248;
         }
     }
+    /**
+     * @notice parse int248 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int248 derived from bytes
+     */
+    function parseInt248(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int248 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_31;
+        element = int248(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int248 value to 31-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5646,10 +6682,9 @@ library Bytes32Builder {
     ) internal pure returns (int248 element) {
         unchecked {
             self._size -= 248;
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_31;
             element = int248(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_31 << self._size);
         }
     }
 
@@ -5662,8 +6697,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int248 element) {
         unchecked {
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_31;
             element = int248(Bytes32.toInt256(elementBytes));
             self._data >>= 248;
             self._size -= 248;
@@ -5683,6 +6717,19 @@ library Bytes32Builder {
             self._size += 248;
         }
     }
+    /**
+     * @notice parse uint248 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint248 derived from bytes
+     */
+    function parseUint248(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint248 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_31;
+        element = uint248(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint248 value to 31-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5705,10 +6752,9 @@ library Bytes32Builder {
     ) internal pure returns (uint248 element) {
         unchecked {
             self._size -= 248;
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_31;
             element = uint248(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_31 << self._size);
         }
     }
 
@@ -5721,8 +6767,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint248 element) {
         unchecked {
-            bytes32 mask = MASK_31;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_31;
             element = uint248(Bytes32.toUint256(elementBytes));
             self._data >>= 248;
             self._size -= 248;
@@ -5743,6 +6788,19 @@ library Bytes32Builder {
             self._size += 248;
         }
     }
+    /**
+     * @notice parse bytes32 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element bytes32 derived from bytes
+     */
+    function parseBytes32(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (bytes32 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_32;
+        element = bytes32(elementBytes << 0);
+    }
+
     /**
      * @notice insert bytes32 value to 32-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5765,10 +6823,9 @@ library Bytes32Builder {
     ) internal pure returns (bytes32 element) {
         unchecked {
             self._size -= 256;
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_32;
             element = bytes32(elementBytes << 0);
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_32 << self._size);
         }
     }
 
@@ -5781,8 +6838,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (bytes32 element) {
         unchecked {
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_32;
             element = bytes32(elementBytes << 0);
             self._data >>= 256;
             self._size -= 256;
@@ -5803,6 +6859,19 @@ library Bytes32Builder {
             self._size += 256;
         }
     }
+    /**
+     * @notice parse int256 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element int256 derived from bytes
+     */
+    function parseInt256(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (int256 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_32;
+        element = int256(Bytes32.toInt256(elementBytes));
+    }
+
     /**
      * @notice insert int256 value to 32-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5827,10 +6896,9 @@ library Bytes32Builder {
     ) internal pure returns (int256 element) {
         unchecked {
             self._size -= 256;
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_32;
             element = int256(Bytes32.toInt256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_32 << self._size);
         }
     }
 
@@ -5843,8 +6911,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (int256 element) {
         unchecked {
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_32;
             element = int256(Bytes32.toInt256(elementBytes));
             self._data >>= 256;
             self._size -= 256;
@@ -5864,6 +6931,19 @@ library Bytes32Builder {
             self._size += 256;
         }
     }
+    /**
+     * @notice parse uint256 from bytes at given offset
+     * @param offset slot offset in bits
+     * @return element uint256 derived from bytes
+     */
+    function parseUint256(
+        Builder memory self,
+        uint256 offset
+    ) internal pure returns (uint256 element) {
+        bytes32 elementBytes = (self._data >> offset) & MASK_32;
+        element = uint256(Bytes32.toUint256(elementBytes));
+    }
+
     /**
      * @notice insert uint256 value to 32-byte position at end of bytes
      * @param self Bytes32Builder Builder struct on which to operate
@@ -5886,10 +6966,9 @@ library Bytes32Builder {
     ) internal pure returns (uint256 element) {
         unchecked {
             self._size -= 256;
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = (self._data >> self._size) & mask;
+            bytes32 elementBytes = (self._data >> self._size) & MASK_32;
             element = uint256(Bytes32.toUint256(elementBytes));
-            self._data &= ~(mask << self._size);
+            self._data &= ~(MASK_32 << self._size);
         }
     }
 
@@ -5902,8 +6981,7 @@ library Bytes32Builder {
         Builder memory self
     ) internal pure returns (uint256 element) {
         unchecked {
-            bytes32 mask = MASK_32;
-            bytes32 elementBytes = self._data & mask;
+            bytes32 elementBytes = self._data & MASK_32;
             element = uint256(Bytes32.toUint256(elementBytes));
             self._data >>= 256;
             self._size -= 256;
