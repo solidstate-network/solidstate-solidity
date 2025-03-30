@@ -1,5 +1,5 @@
-import { describeBehaviorOfIntrospectable } from '../../../introspection';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { IDiamondProxyReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

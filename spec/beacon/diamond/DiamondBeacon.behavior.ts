@@ -1,10 +1,10 @@
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
-} from '../../access/ownable/Ownable.behavior';
-import { DiamondProxyWritableBehaviorArgs } from '../../proxy/diamond';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeFilter } from '@solidstate/library';
+} from '@solidstate/spec';
+import { DiamondProxyWritableBehaviorArgs } from '@solidstate/spec';
 import { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';

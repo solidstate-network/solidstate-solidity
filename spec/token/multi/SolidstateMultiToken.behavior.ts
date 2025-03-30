@@ -1,16 +1,16 @@
+import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfMultiToken,
   MultiTokenBehaviorArgs,
-} from './MultiToken.behavior';
+} from '@solidstate/spec';
 import {
   describeBehaviorOfMultiTokenEnumerable,
   MultiTokenEnumerableBehaviorArgs,
-} from './MultiTokenEnumerable.behavior';
+} from '@solidstate/spec';
 import {
   describeBehaviorOfMultiTokenMetadata,
   MultiTokenMetadataBehaviorArgs,
-} from './MultiTokenMetadata.behavior';
-import { describeFilter } from '@solidstate/library';
+} from '@solidstate/spec';
 import { ISolidstateMultiToken } from '@solidstate/typechain-types';
 
 export interface SolidstateMultiTokenBehaviorArgs

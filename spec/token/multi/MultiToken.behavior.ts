@@ -1,7 +1,7 @@
-import { describeBehaviorOfIntrospectable } from '../../introspection';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { IMultiToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';

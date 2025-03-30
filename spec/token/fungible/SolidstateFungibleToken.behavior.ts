@@ -1,22 +1,15 @@
+import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
   FungibleTokenBehaviorArgs,
-} from './FungibleToken.behavior';
-import {
   describeBehaviorOfFungibleTokenExtended,
   FungibleTokenExtendedBehaviorArgs,
-} from './FungibleTokenExtended.behavior';
-import {
   describeBehaviorOfFungibleTokenMetadata,
   FungibleTokenMetadataBehaviorArgs,
-} from './FungibleTokenMetadata.behavior';
-import {
   describeBehaviorOfFungibleTokenPermit,
   FungibleTokenPermitBehaviorArgs,
-} from './FungibleTokenPermit.behavior';
-import { describeFilter } from '@solidstate/library';
+} from '@solidstate/spec';
 import { ISolidstateFungibleToken } from '@solidstate/typechain-types';
-import { ContractTransaction } from 'ethers';
 
 export interface SolidstateFungibleTokenBehaviorArgs
   extends FungibleTokenBehaviorArgs,

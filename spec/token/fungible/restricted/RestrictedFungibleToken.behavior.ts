@@ -1,5 +1,8 @@
-import { describeBehaviorOfFungibleToken, FungibleTokenBehaviorArgs } from '.';
 import { describeFilter } from '@solidstate/library';
+import {
+  describeBehaviorOfFungibleToken,
+  FungibleTokenBehaviorArgs,
+} from '@solidstate/spec';
 import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

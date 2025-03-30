@@ -1,6 +1,6 @@
-import { describeBehaviorOfContractSigner } from './ContractSigner.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import { IContractSignerOwnable } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';
 
