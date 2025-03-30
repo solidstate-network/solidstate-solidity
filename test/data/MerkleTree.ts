@@ -46,8 +46,9 @@ describe('MerkleTree', () => {
 
     describe('reverts if', () => {
       it('tree size is zero', async () => {
-        // TODO: reason
-        await expect(instance.$height.staticCall(STORAGE_SLOT)).to.be.reverted;
+        await expect(
+          instance.$height.staticCall(STORAGE_SLOT),
+        ).to.be.revertedWithPanic(PANIC_CODES.ASSERTION_ERROR);
       });
     });
   });
@@ -129,8 +130,9 @@ describe('MerkleTree', () => {
 
     describe('reverts if', () => {
       it('tree size is zero', async () => {
-        // TODO: reason
-        await expect(instance.$root.staticCall(STORAGE_SLOT)).to.be.reverted;
+        await expect(
+          instance.$root.staticCall(STORAGE_SLOT),
+        ).to.be.revertedWithPanic(PANIC_CODES.ASSERTION_ERROR);
       });
     });
   });
