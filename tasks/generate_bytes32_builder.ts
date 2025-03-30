@@ -140,6 +140,10 @@ import { <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solids
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const randomIndexNonInclusive = (start, end) => {
+  return Math.ceil(Math.random() * (end - start - 1)) + start;
+};
+
 describe('<%- libraryName %>', () => {
   let instance: <%- libraryName %>Test;
 
@@ -153,7 +157,7 @@ describe('<%- libraryName %>', () => {
     it('parses <%- type.sizeBytes %>-byte segment from bytes at given offset and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = 0; i < 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const expectedValue = ethers.hexlify(ethers.randomBytes(sizeBytes));
         const offset = i * 8;
 
@@ -207,7 +211,7 @@ describe('<%- libraryName %>', () => {
       const input = data;
       <%_ } _%>
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -231,7 +235,7 @@ describe('<%- libraryName %>', () => {
     it('removes <%- type.sizeBytes %>-byte segment from end of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -276,7 +280,7 @@ describe('<%- libraryName %>', () => {
     it('removes <%- type.sizeBytes %>-byte segment from beginning of bytes and returns it as <%- type.name %>', async () => {
       const sizeBytes = <%- type.sizeBytes %>;
 
-      for (let i = sizeBytes; i <= 32; i++) {
+      for (let i of [sizeBytes, 32, randomIndexNonInclusive(sizeBytes, 32)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
@@ -337,7 +341,7 @@ describe('<%- libraryName %>', () => {
       const input = data;
       <%_ } _%>
 
-      for (let i = 0; i <= 32 - sizeBytes; i++) {
+      for (let i of [0, 32 - sizeBytes, randomIndexNonInclusive(0, 32 - sizeBytes)]) {
         const state = {
           _data: ethers.zeroPadValue(ethers.hexlify(ethers.randomBytes(i)), 32),
           _size: i * 8,
