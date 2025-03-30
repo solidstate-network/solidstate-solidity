@@ -61,18 +61,21 @@ library MerkleTree {
     /**
      * @notice retrieve element at given index
      * @param self Tree struct storage reference
-     * @param index index to query
+     * @param index leaf node index to query
      * @return element element stored at index
      */
     function at(
         Tree storage self,
         uint256 index
     ) internal view returns (bytes32 element) {
-        if (index >= self.size()) {
+        // convert leaf node index to internal index
+        index <<= 1;
+
+        if (index >= self._elements.length) {
             Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
 
-        element = _at(_arraySlot(self), index << 1);
+        element = _at(_arraySlot(self), index);
     }
 
     /**
@@ -131,22 +134,22 @@ library MerkleTree {
     /**
      * @notice overwrite element in tree at given index
      * @param self Tree struct storage reference
-     * @param index index to update
-     * @param element element to add
+     * @param index leaf node index to update
+     * @param element element to insert
      */
     function set(Tree storage self, uint256 index, bytes32 element) internal {
-        if (index >= self.size()) {
+        uint256 length = self._elements.length;
+
+        // convert leaf node index to internal index
+        index <<= 1;
+
+        if (index >= length) {
             Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
 
         unchecked {
-            _set(
-                _arraySlot(self),
-                0,
-                self._elements.length - 2,
-                index << 1,
-                element
-            );
+            // recalculate branch and root nodes
+            _set(_arraySlot(self), 0, length - 2, index, element);
         }
     }
 
