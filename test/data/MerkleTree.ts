@@ -23,7 +23,7 @@ describe('MerkleTree', () => {
     it('returns number of elements in tree', async () => {
       expect(await instance.$size.staticCall(STORAGE_SLOT)).to.equal(0);
 
-      for (let i = 1; i < 10; i++) {
+      for (let i = 1; i < 2 ** 5; i++) {
         await instance.$push(STORAGE_SLOT, randomHash());
 
         expect(await instance.$size.staticCall(STORAGE_SLOT)).to.equal(i);
@@ -33,7 +33,7 @@ describe('MerkleTree', () => {
 
   describe('#height', () => {
     it('returns zero-indexed height of tree', async () => {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 2 ** 5; i++) {
         await instance.$push(STORAGE_SLOT, randomHash());
 
         const size = await instance.$size.staticCall(STORAGE_SLOT);
@@ -99,7 +99,7 @@ describe('MerkleTree', () => {
     });
 
     it('returns result matching reference implementation regardless of previous operations', async () => {
-      const count = 5;
+      const count = 2 ** 5;
       const hashes: string[] = [];
 
       for (let i = 0; i < count; i++) {
@@ -165,7 +165,7 @@ describe('MerkleTree', () => {
     it('updates Merkle root', async () => {
       const hashes: string[] = [];
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 2 ** 5; i++) {
         hashes.push(ethers.zeroPadValue(ethers.toBeHex(i + 1), 32));
       }
 
@@ -185,7 +185,7 @@ describe('MerkleTree', () => {
     it('updates Merkle root', async () => {
       const hashes: string[] = [];
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 2 ** 5; i++) {
         hashes.push(ethers.zeroPadValue(ethers.toBeHex(i + 1), 32));
         await instance.$push(STORAGE_SLOT, hashes[i]);
       }
