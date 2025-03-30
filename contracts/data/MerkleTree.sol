@@ -34,7 +34,9 @@ library MerkleTree {
     ) internal view returns (uint256 treeHeight) {
         uint256 length = self._elements.length;
 
-        assert(length != 0);
+        if (length == 0) {
+            Panic.panic(Panic.ASSERTION_ERROR);
+        }
 
         while (2 << treeHeight < length) {
             unchecked {
