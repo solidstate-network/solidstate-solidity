@@ -2,13 +2,20 @@
 
 pragma solidity ^0.8.24;
 
-import { Bytes32Builder } from '../data/Bytes32Builder.sol';
 import { Uint256 } from './Uint256.sol';
 
 /**
  * @title utility functions for bytes32 operations
  */
 library Bytes32 {
+    /**
+     * @notice Bytes32 wrapper for use with the Bytes32Builder library
+     */
+    struct Builder {
+        bytes32 _data;
+        uint256 _size;
+    }
+
     /**
      * @notice convert 20 lower-order bytes of bytes32 data payload to sanitized address
      * @param data bytes32 value to convert
@@ -71,12 +78,12 @@ library Bytes32 {
      */
     function toBuilder(
         bytes32 data
-    ) internal pure returns (Bytes32Builder.Builder memory builder) {
+    ) internal pure returns (Builder memory builder) {
         builder = toBuilder(data, 256);
     }
 
     /**
-     * @notice create a Bytes32Builder object from data payload
+     * @notice create a Builder object from data payload
      * @param data underlying data payload
      * @param length bit length of usable data
      * @return builder builder struct
@@ -84,7 +91,7 @@ library Bytes32 {
     function toBuilder(
         bytes32 data,
         uint256 length
-    ) internal pure returns (Bytes32Builder.Builder memory builder) {
-        builder = Bytes32Builder.Builder(data, length);
+    ) internal pure returns (Builder memory builder) {
+        builder = Builder(data, length);
     }
 }
