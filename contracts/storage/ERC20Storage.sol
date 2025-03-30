@@ -11,7 +11,7 @@ library ERC20Storage {
     }
 
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC20
+     * @custom:storage-location erc7201:solidstate.layout.ERC20
      */
     struct Layout {
         mapping(address account => uint256 balance) balances;
@@ -32,9 +32,7 @@ library ERC20Storage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.contracts.storage.ERC20'))
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.ERC20'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );

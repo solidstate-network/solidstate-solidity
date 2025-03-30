@@ -6,7 +6,7 @@ import { Slot } from '../data/Slot.sol';
 
 library ERC173Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC173
+     * @custom:storage-location erc7201:solidstate.layout.ERC173
      */
     struct Layout {
         address owner;
@@ -17,9 +17,7 @@ library ERC173Storage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.contracts.storage.ERC173'))
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.ERC173'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );
