@@ -51,7 +51,10 @@ library MerkleTree {
      */
     function root(Tree storage self) internal view returns (bytes32 rootHash) {
         unchecked {
-            rootHash = _at(_arraySlot(self), (1 << self.height()) - 1);
+            rootHash = _at(
+                _arraySlot(self),
+                ~(type(uint256).max << self.height())
+            );
         }
     }
 
