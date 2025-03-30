@@ -9,7 +9,7 @@ import { Slot } from '../data/Slot.sol';
  */
 library ERC2535Storage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.ERC2535
+     * @custom:storage-location erc7201:solidstate.layout.ERC2535
      */
     struct Layout {
         // function selector => (facet address, selector slug position)
@@ -25,9 +25,7 @@ library ERC2535Storage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.contracts.storage.ERC2535'))
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.ERC2535'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );
