@@ -10,8 +10,7 @@ library MerkleTree {
     struct Tree {
         // underlying array always has even length
         // elements are stored at even indexes, and their hashes in between
-        // last index is empty
-
+        // last index is unused - maintaining an even-length array makes some calculations cheaper
         bytes32[] _elements;
     }
 
