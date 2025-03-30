@@ -81,14 +81,15 @@ library MerkleTree {
      * @param element element to add
      */
     function push(Tree storage self, bytes32 element) internal {
-        // index of element being added
-        uint256 index;
+        // index of element being pushed, equal to length of array before operation
+        uint256 index = self._elements.length;
 
         assembly {
-            index := sload(self.slot)
+            // increase array length by 2
             sstore(self.slot, add(index, 2))
         }
 
+        // insert element into array and recalculate branch and root nodes
         _set(_arraySlot(self), 0, index, index, element);
     }
 
@@ -98,33 +99,32 @@ library MerkleTree {
      */
     function pop(Tree storage self) internal {
         // index of next available position in array
-        uint256 index;
-
-        assembly {
-            index := sload(self.slot)
-        }
+        uint256 index = self._elements.length;
 
         if (index == 0) {
             Panic.panic(Panic.POP_ON_EMPTY_ARRAY);
         }
 
-        assembly {
-            // index of element being removed
-            index := sub(index, 2)
-            sstore(self.slot, index)
-        }
-
         unchecked {
-            // if tree is now empty or is balanced, do nothing more
+            // index of element being popped, equal to length of array after operation
+            index -= 2;
+
+            assembly {
+                // decrease array length by 2
+                sstore(self.slot, index)
+            }
+
+            // if tree is empty or is balanced after operation, do nothing more
             if (index == 0 || (index & (index - 1) == 0)) return;
 
-            // index of last element after removal, which may need to be reset
+            // index of last element after operation
             index -= 2;
         }
 
         bytes32 slot = _arraySlot(self);
 
-        // TODO: don't start at depth 0
+        // recalculate branch and root nodes
+        // TODO: this involves an unnecessary storage write at depth 0
         _set(slot, 0, index, index, _at(slot, index));
     }
 
@@ -173,6 +173,7 @@ library MerkleTree {
         uint256 index
     ) private view returns (bytes32 element) {
         assembly {
+            // load via assembly to avoid array length check
             element := sload(add(arraySlot, index))
         }
     }
@@ -185,8 +186,8 @@ library MerkleTree {
         bytes32 element
     ) private {
         if (index <= maxIndex) {
-            // current index is within bounds of data, so write it to storage
             assembly {
+                // current index is within bounds of data, so write it to storage
                 sstore(add(arraySlot, index), element)
             }
         }
