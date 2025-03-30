@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 
 import { Panic } from '../utils/Panic.sol';
 
-library IncrementalMerkleTree {
-    using IncrementalMerkleTree for Tree;
+library MerkleTree {
+    using MerkleTree for Tree;
 
     struct Tree {
         // underlying array always has even length

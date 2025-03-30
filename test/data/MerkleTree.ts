@@ -1,8 +1,5 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import {
-  $IncrementalMerkleTree,
-  $IncrementalMerkleTree__factory,
-} from '@solidstate/typechain-types';
+import { $MerkleTree, $MerkleTree__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
@@ -14,12 +11,12 @@ const STORAGE_SLOT = 0n;
 
 const randomHash = () => ethers.hexlify(ethers.randomBytes(32));
 
-describe('IncrementalMerkleTree', () => {
-  let instance: $IncrementalMerkleTree;
+describe('MerkleTree', () => {
+  let instance: $MerkleTree;
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
-    instance = await new $IncrementalMerkleTree__factory(deployer).deploy();
+    instance = await new $MerkleTree__factory(deployer).deploy();
   });
 
   describe('#size', () => {

@@ -327,7 +327,7 @@ describe('Inheritance Graph', () => {
             'PackedDoublyLinkedList',
             'EnumerableMap',
             'EnumerableSet',
-            'IncrementalMerkleTree',
+            'MerkleTree',
             'CloneFactory',
             'Factory',
             'MinimalProxyFactory',
