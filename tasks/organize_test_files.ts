@@ -132,7 +132,7 @@ task(
           recursive: true,
         });
 
-        await fs.promises.rename(testFile, expectedSpecFile);
+        await fs.promises.rename(specFile, expectedSpecFile);
       }
     }
   }
