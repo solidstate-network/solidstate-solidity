@@ -44,6 +44,7 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled: true,
     reportPureAndViewMethods: true,
+    outputFile: './gasreport.txt',
   },
 
   spdxLicenseIdentifier: {
