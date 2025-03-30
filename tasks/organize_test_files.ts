@@ -84,6 +84,8 @@ task(
     {} as EntityPathLookup,
   );
 
+  const specBarrel: string[] = [];
+
   for (const fullyQualifiedName of fullyQualifiedNames) {
     const [sourceFile, entityName] = fullyQualifiedName.split(':');
 
@@ -134,6 +136,23 @@ task(
 
         await fs.promises.rename(specFile, expectedSpecFile);
       }
+
+      specBarrel.push(expectedSpecFile);
     }
   }
+
+  const specBarrelPath = path.resolve(
+    hre.config.paths.root,
+    'spec',
+    'index.ts',
+  );
+
+  const specBarrelContents: string = specBarrel
+    .map(
+      (s) =>
+        `export * from './${path.relative(path.dirname(specBarrelPath), s)}';\n`,
+    )
+    .join('');
+
+  await fs.promises.writeFile(specBarrelPath, specBarrelContents);
 });
