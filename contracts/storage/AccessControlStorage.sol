@@ -12,7 +12,7 @@ library AccessControlStorage {
     }
 
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.AccessControl
+     * @custom:storage-location erc7201:solidstate.layout.AccessControl
      */
     struct Layout {
         mapping(bytes32 roleId => RoleData roleData) roles;
@@ -25,9 +25,7 @@ library AccessControlStorage {
             keccak256(
                 abi.encode(
                     uint256(
-                        keccak256(
-                            bytes('solidstate.contracts.storage.AccessControl')
-                        )
+                        keccak256(bytes('solidstate.layout.AccessControl'))
                     ) - 1
                 )
             ) & ~bytes32(uint256(0xff))

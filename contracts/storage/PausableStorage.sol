@@ -6,7 +6,7 @@ import { Slot } from '../data/Slot.sol';
 
 library PausableStorage {
     /**
-     * @custom:storage-location erc7201:solidstate.contracts.storage.Pausable
+     * @custom:storage-location erc7201:solidstate.layout.Pausable
      */
     struct Layout {
         bool paused;
@@ -17,11 +17,7 @@ library PausableStorage {
         Slot.StorageSlot.wrap(
             keccak256(
                 abi.encode(
-                    uint256(
-                        keccak256(
-                            bytes('solidstate.contracts.storage.Pausable')
-                        )
-                    ) - 1
+                    uint256(keccak256(bytes('solidstate.layout.Pausable'))) - 1
                 )
             ) & ~bytes32(uint256(0xff))
         );
