@@ -3,8 +3,8 @@ import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
   OwnableBehaviorArgs,
+  DiamondProxyWritableBehaviorArgs,
 } from '@solidstate/spec';
-import { DiamondProxyWritableBehaviorArgs } from '@solidstate/spec';
 import { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';

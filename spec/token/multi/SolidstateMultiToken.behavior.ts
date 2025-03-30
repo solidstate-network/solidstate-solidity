@@ -2,12 +2,8 @@ import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfMultiToken,
   MultiTokenBehaviorArgs,
-} from '@solidstate/spec';
-import {
   describeBehaviorOfMultiTokenEnumerable,
   MultiTokenEnumerableBehaviorArgs,
-} from '@solidstate/spec';
-import {
   describeBehaviorOfMultiTokenMetadata,
   MultiTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';

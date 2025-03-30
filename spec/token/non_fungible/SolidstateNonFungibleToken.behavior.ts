@@ -3,12 +3,8 @@ import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfNonFungibleToken,
   NonFungibleTokenBehaviorArgs,
-} from '@solidstate/spec';
-import {
   describeBehaviorOfNonFungibleTokenEnumerable,
   NonFungibleTokenEnumerableBehaviorArgs,
-} from '@solidstate/spec';
-import {
   describeBehaviorOfNonFungibleTokenMetadata,
   NonFungibleTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
