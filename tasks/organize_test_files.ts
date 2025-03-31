@@ -84,10 +84,13 @@ task(
     {} as EntityPathLookup,
   );
 
+  const contractsBarrel: string[] = [];
   const specBarrel: string[] = [];
 
   for (const fullyQualifiedName of fullyQualifiedNames) {
     const [sourceFile, entityName] = fullyQualifiedName.split(':');
+
+    contractsBarrel.push(sourceFile);
 
     if (!EXTERNAL_CONTRACT.test(entityName)) continue;
 
@@ -141,18 +144,38 @@ task(
     }
   }
 
+  const contractsBarrelPath = path.resolve(
+    hre.config.paths.sources,
+    'index.sol',
+  );
+
+  const contractsBarrelContents: string =
+    [
+      '// SPDX-License-Identifier: MIT',
+      '',
+      'pragma solidity ^0.8.24;',
+      '',
+      ...contractsBarrel.map(
+        (s) =>
+          `import './${path.relative(path.dirname(contractsBarrelPath), s)}';`,
+      ),
+    ].join('\n') + '\n';
+
+  await fs.promises.writeFile(contractsBarrelPath, contractsBarrelContents);
+
   const specBarrelPath = path.resolve(
     hre.config.paths.root,
     'spec',
     'index.ts',
   );
 
-  const specBarrelContents: string = specBarrel
-    .map(
-      (s) =>
-        `export * from './${path.relative(path.dirname(specBarrelPath), s)}';\n`,
-    )
-    .join('');
+  const specBarrelContents: string =
+    specBarrel
+      .map(
+        (s) =>
+          `export * from './${path.relative(path.dirname(specBarrelPath), s)}';`,
+      )
+      .join('\n') + '\n';
 
   await fs.promises.writeFile(specBarrelPath, specBarrelContents);
 });
