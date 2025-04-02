@@ -1,7 +1,10 @@
-import { DiamondProxyBehaviorArgs, describeBehaviorOfDiamondProxy } from '..';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
+import {
+  DiamondProxyBehaviorArgs,
+  describeBehaviorOfDiamondProxy,
+} from '@solidstate/spec';
 import { IDiamondProxyFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

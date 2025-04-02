@@ -1,22 +1,16 @@
-import {
-  describeBehaviorOfDiamondProxy,
-  DiamondProxyBehaviorArgs,
-} from './DiamondProxy.behavior';
-import {
-  describeBehaviorOfDiamondProxyFallback,
-  DiamondProxyFallbackBehaviorArgs,
-} from './fallback/DiamondProxyFallback.behavior';
-import {
-  describeBehaviorOfDiamondProxyReadable,
-  DiamondProxyReadableBehaviorArgs,
-} from './readable/DiamondProxyReadable.behavior';
-import {
-  describeBehaviorOfDiamondProxyWritable,
-  DiamondProxyWritableBehaviorArgs,
-} from './writable/DiamondProxyWritable.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
+import {
+  describeBehaviorOfDiamondProxy,
+  DiamondProxyBehaviorArgs,
+  describeBehaviorOfDiamondProxyFallback,
+  DiamondProxyFallbackBehaviorArgs,
+  describeBehaviorOfDiamondProxyReadable,
+  DiamondProxyReadableBehaviorArgs,
+  describeBehaviorOfDiamondProxyWritable,
+  DiamondProxyWritableBehaviorArgs,
+} from '@solidstate/spec';
 import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

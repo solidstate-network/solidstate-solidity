@@ -20,11 +20,6 @@ import { Uint256 } from '../utils/Uint256.sol';
  * @title Procedurally generated library for packing primitive types into bytes32
  **/
 library <%- libraryName %> {
-    struct <%- structName %> {
-        bytes32 _data;
-        uint256 _size;
-    }
-
     <%_ for (let i = 1; i <= 32; i++ ) { _%>
     bytes32 private constant MASK_<%- i.toString().padStart(2, '0') %> = 0x<%- '00'.repeat(32 - i) + 'ff'.repeat(i) %>;
     <%_ } _%>
@@ -35,18 +30,18 @@ library <%- libraryName %> {
      * @param offset slot offset in bits
      * @return element <%- type.name %> derived from bytes
      */
-    function parse<%- type.nameUpcase %>(<%- structName %> memory self, uint256 offset) internal pure returns (<%- type.name %> element) {
+    function parse<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, uint256 offset) internal pure returns (<%- type.name %> element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
         element = <%- type.castFrom %>;
     }
 
     /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at given offset
-     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param self <%- libraryName %> Bytes32.<%- structName %> struct on which to operate
      * @param element <%- type.name %> to insert
      * @param offset slot offset in bits
      */
-    function insert<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element, uint256 offset) internal pure {
+    function insert<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element, uint256 offset) internal pure {
         unchecked {
             self._data = self._data & ~(MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %> << offset) | (<%- type.castTo %> << offset);
             if (self._size < <%- type.sizeBits %> + offset) self._size = <%- type.sizeBits %> + offset;
@@ -55,10 +50,10 @@ library <%- libraryName %> {
 
     /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at end of bytes
-     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param self <%- libraryName %> Bytes32.<%- structName %> struct on which to operate
      * @param element <%- type.name %> to add
      */
-    function push<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
+    function push<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
             self._data |= <%- type.castTo %> << self._size;
             self._size += <%- type.sizeBits %>;
@@ -67,10 +62,10 @@ library <%- libraryName %> {
 
     /**
      * @notice remove last <%- type.sizeBytes %>-byte segment from bytes and return as <%- type.name %>
-     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param self <%- libraryName %> Bytes32.<%- structName %> struct on which to operate
      * @return element <%- type.name %> derived from bytes
      */
-    function pop<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
+    function pop<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
             self._size -= <%- type.sizeBits %>;
             bytes32 elementBytes = (self._data >> self._size) & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
@@ -81,10 +76,10 @@ library <%- libraryName %> {
 
     /**
      * @notice remove first <%- type.sizeBytes %>-byte segment from bytes and return as <%- type.name %>
-     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param self <%- libraryName %> Bytes32.<%- structName %> struct on which to operate
      * @return element <%- type.name %> derived from bytes
      */
-    function shift<%- type.nameUpcase %>(<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
+    function shift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) internal pure returns (<%- type.name %> element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_<%- (type.sizeBytes).toString().padStart(2, '0') %>;
             element = <%- type.castFrom %>;
@@ -95,10 +90,10 @@ library <%- libraryName %> {
 
     /**
      * @notice insert <%- type.name %> value to <%- type.sizeBytes %>-byte position at beginning of bytes
-     * @param self <%- libraryName %> <%- structName %> struct on which to operate
+     * @param self <%- libraryName %> Bytes32.<%- structName %> struct on which to operate
      * @param element <%- type.name %> to add
      */
-    function unshift<%- type.nameUpcase %>(<%- structName %> memory self, <%- type.name %> element) internal pure {
+    function unshift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) internal pure {
         unchecked {
             self._data = (self._data << <%- type.sizeBits %>) | <%- type.castTo %>;
             self._size += <%- type.sizeBits %>;
@@ -112,40 +107,41 @@ const TEMPLATE_SOL_TEST = `
 pragma solidity ^0.8.24;
 
 import { <%- libraryName %> } from '../<%- filepath %>/<%- libraryName %>.sol';
+import { Bytes32 } from '../utils/Bytes32.sol';
 
 /**
  * @title Procedurally generated <%- libraryName %> test contract
  * @dev custom solution is required because there is no other way to access memory struct post-operation
  **/
 contract <%- libraryName %>Test {
-    using <%- libraryName %> for <%- libraryName %>.<%- structName %>;
+    using <%- libraryName %> for Bytes32.<%- structName %>;
 
     <%_ for (const type of types) { _%>
-    function parse<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, uint256 offset) external pure returns(<%- type.name %> element) {
+    function parse<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, uint256 offset) external pure returns(<%- type.name %> element) {
         return self.parse<%- type.nameUpcase %>(offset);
     }
 
-    function insert<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+    function insert<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (Bytes32.<%- structName %> memory) {
         self.insert<%- type.nameUpcase %>(element, offset);
         return self;
     }
 
-    function push<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+    function push<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory) {
         self.push<%- type.nameUpcase %>(element);
         return self;
     }
 
-    function pop<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self) external pure returns (<%- libraryName %>.<%- structName %> memory, <%- type.name %> element) {
+    function pop<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory, <%- type.name %> element) {
         element = self.pop<%- type.nameUpcase %>();
         return (self, element);
     }
 
-    function shift<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self) external pure returns (<%- libraryName %>.<%- structName %> memory, <%- type.name %> element) {
+    function shift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory, <%- type.name %> element) {
         element = self.shift<%- type.nameUpcase %>();
         return (self, element);
     }
 
-    function unshift<%- type.nameUpcase %>(<%- libraryName %>.<%- structName %> memory self, <%- type.name %> element) external pure returns (<%- libraryName %>.<%- structName %> memory) {
+    function unshift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory) {
         self.unshift<%- type.nameUpcase %>(element);
         return self;
     }

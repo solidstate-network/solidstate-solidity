@@ -142,5 +142,26 @@ describe('Math', () => {
         );
       });
     });
+
+    describe('#log2(uint256)', () => {
+      it('returns 0 for input of 0', async () => {
+        // this is not mathematically correct, but checking within the log2 function would be inefficient
+        expect(await instance.$log2.staticCall(0n)).to.eq(0n);
+      });
+
+      it('returns 0 for input of 1', async () => {
+        expect(await instance.$log2.staticCall(1n)).to.eq(0n);
+      });
+
+      it('returns log base 2 of input, rounded down', async () => {
+        for (let i = 1n; i < 256n; i++) {
+          // test powers of 2
+          expect(await instance.$log2.staticCall(2n ** i)).to.eq(i);
+
+          // test rounding
+          expect(await instance.$log2.staticCall(2n ** i - 1n)).to.eq(i - 1n);
+        }
+      });
+    });
   });
 });
