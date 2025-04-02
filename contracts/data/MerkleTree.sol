@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.24;
 
+import { Math } from '../utils/Math.sol';
 import { Panic } from '../utils/Panic.sol';
 
 library MerkleTree {
@@ -38,10 +39,8 @@ library MerkleTree {
             Panic.panic(Panic.ASSERTION_ERROR);
         }
 
-        while (2 << treeHeight < length) {
-            unchecked {
-                treeHeight++;
-            }
+        unchecked {
+            treeHeight = Math.log2(length - 1);
         }
     }
 
