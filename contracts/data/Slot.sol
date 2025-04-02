@@ -7,6 +7,38 @@ library Slot {
     type TransientSlot is bytes32;
 
     /**
+     * @notice calculate the EIP-7201 storage slot for a given string id
+     * @dev id parameter should not contain whitespace
+     * @dev see https://eips.ethereum.org/EIPS/eip-7201
+     * @param id namespace id
+     * @return slot storage slot
+     */
+    function calculateErc7201StorageSlot(
+        string memory id
+    ) internal pure returns (StorageSlot slot) {
+        slot = StorageSlot.wrap(
+            keccak256(abi.encode(uint256(keccak256(bytes(id))) - 1)) &
+                ~bytes32(uint256(0xff))
+        );
+    }
+
+    /**
+     * @notice calculate the EIP-7201 storage slot for a given string id
+     * @dev id parameter should not contain whitespace
+     * @dev see https://eips.ethereum.org/EIPS/eip-7201
+     * @param id namespace id
+     * @return slot transient slot
+     */
+    function calculateErc7201TransientSlot(
+        string memory id
+    ) internal pure returns (TransientSlot slot) {
+        slot = TransientSlot.wrap(
+            keccak256(abi.encode(uint256(keccak256(bytes(id))) - 1)) &
+                ~bytes32(uint256(0xff))
+        );
+    }
+
+    /**
      * @notice calculate the slot of an index of an array
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate

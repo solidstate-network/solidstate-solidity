@@ -1,10 +1,10 @@
-import {
-  describeBehaviorOfBeaconProxy,
-  BeaconProxyBehaviorArgs,
-} from '../BeaconProxy.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
+import {
+  describeBehaviorOfBeaconProxy,
+  BeaconProxyBehaviorArgs,
+} from '@solidstate/spec';
 import {
   ITransparentBeaconProxy,
   ITransparentBeaconProxyWithAdminFunctions,

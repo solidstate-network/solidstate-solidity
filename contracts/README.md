@@ -14,6 +14,22 @@ npm install --save-dev @solidstate/contracts
 yarn add --dev @solidstate/contracts
 ```
 
+## Contents
+
+| directory       | description                                                         | 📕                      |
+| --------------- | ------------------------------------------------------------------- | ----------------------- |
+| `access/`       | modules for restricting calls to certain senders or certain times   |                         |
+| `cryptography/` | libraries for generating cryptographic hashes and validating proofs |                         |
+| `data/`         | data strucutures and manipulators                                   |                         |
+| `factory/`      | factories for programmatic deployment with `CREATE` and `CREATE2`   |                         |
+| `interfaces/`   | standard ERC interfaces                                             |                         |
+| `meta/`         | metadata accessors and extensions with metatransaction support      |                         |
+| `proxy/`        | proxy contracts for upgradeability and mass deployments             | [📖](./proxy/README.md) |
+| `signature/`    | modules for contract-based signatures                               |                         |
+| `storage/`      | ERC-7201 storage accessors                                          |                         |
+| `token/`        | token contracts and extensions                                      |                         |
+| `utils/`        | primitive type extensions and other utilities                       |                         |
+
 ## Code Structure
 
 All contracts are designed to either be deployed through the standard `constructor` method, or referenced by a proxy. To this end, the [ERC-7201 namespaced storage](https://eips.ethereum.org/EIPS/eip-7201) pattern is employed exclusively.

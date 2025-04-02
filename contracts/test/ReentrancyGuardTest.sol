@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { ReentrancyGuard } from '../security/reentrancy_guard/ReentrancyGuard.sol';
+import { ReentrancyGuard } from '../access/reentrancy_guard/ReentrancyGuard.sol';
 
 abstract contract ReentrancyGuardTest is ReentrancyGuard {
     function modifier_nonReentrant() external nonReentrant {

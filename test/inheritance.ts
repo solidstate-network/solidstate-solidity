@@ -340,9 +340,11 @@ describe('Inheritance Graph', () => {
             'Math',
             'SafeCast',
             'SafeERC20',
+            'Bytes32Builder',
             'Slot',
             'Storage',
             'Uint256',
+            'Panic',
           ].includes(name),
       );
     });
