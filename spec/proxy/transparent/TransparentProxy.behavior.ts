@@ -1,7 +1,7 @@
-import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '../Proxy.behavior';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
+import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
 import {
   ITransparentProxy,
   ITransparentProxyWithAdminFunctions,

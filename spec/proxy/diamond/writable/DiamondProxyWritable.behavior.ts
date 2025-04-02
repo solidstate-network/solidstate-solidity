@@ -1,14 +1,8 @@
-import {
-  OwnableBehaviorArgs,
-  describeBehaviorOfIntrospectable,
-} from '../../../';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import {
-  IDiamondProxyWritable,
-  IDiamondProxyReadable__factory,
-} from '@solidstate/typechain-types';
+import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
+import { IDiamondProxyWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

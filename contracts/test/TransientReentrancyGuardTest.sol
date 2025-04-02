@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { TransientReentrancyGuard } from '../security/reentrancy_guard/TransientReentrancyGuard.sol';
+import { TransientReentrancyGuard } from '../access/reentrancy_guard/TransientReentrancyGuard.sol';
 
 abstract contract TransientReentrancyGuardTest is TransientReentrancyGuard {
     function modifier_nonReentrant() external nonReentrant {
