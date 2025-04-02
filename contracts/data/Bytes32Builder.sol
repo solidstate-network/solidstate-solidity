@@ -12,11 +12,6 @@ import { Uint256 } from '../utils/Uint256.sol';
  * @title Procedurally generated library for packing primitive types into bytes32
  **/
 library Bytes32Builder {
-    struct Builder {
-        bytes32 _data;
-        uint256 _size;
-    }
-
     bytes32 private constant MASK_01 =
         0x00000000000000000000000000000000000000000000000000000000000000ff;
     bytes32 private constant MASK_02 =
@@ -88,7 +83,7 @@ library Bytes32Builder {
      * @return element bytes1 derived from bytes
      */
     function parseBytes1(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes1 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
@@ -97,12 +92,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes1 value to 1-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes1 to insert
      * @param offset slot offset in bits
      */
     function insertBytes1(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes1 element,
         uint256 offset
     ) internal pure {
@@ -116,10 +111,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes1 value to 1-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes1 to add
      */
-    function pushBytes1(Builder memory self, bytes1 element) internal pure {
+    function pushBytes1(
+        Bytes32.Builder memory self,
+        bytes1 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 248) << self._size;
             self._size += 8;
@@ -128,11 +126,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 1-byte segment from bytes and return as bytes1
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes1 derived from bytes
      */
     function popBytes1(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes1 element) {
         unchecked {
             self._size -= 8;
@@ -144,11 +142,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 1-byte segment from bytes and return as bytes1
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes1 derived from bytes
      */
     function shiftBytes1(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes1 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_01;
@@ -160,10 +158,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes1 value to 1-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes1 to add
      */
-    function unshiftBytes1(Builder memory self, bytes1 element) internal pure {
+    function unshiftBytes1(
+        Bytes32.Builder memory self,
+        bytes1 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 8) | (bytes32(element) >> 248);
             self._size += 8;
@@ -175,7 +176,7 @@ library Bytes32Builder {
      * @return element int8 derived from bytes
      */
     function parseInt8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int8 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
@@ -184,12 +185,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int8 value to 1-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int8 to insert
      * @param offset slot offset in bits
      */
     function insertInt8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int8 element,
         uint256 offset
     ) internal pure {
@@ -203,10 +204,10 @@ library Bytes32Builder {
 
     /**
      * @notice insert int8 value to 1-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int8 to add
      */
-    function pushInt8(Builder memory self, int8 element) internal pure {
+    function pushInt8(Bytes32.Builder memory self, int8 element) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 248)) <<
@@ -217,10 +218,12 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 1-byte segment from bytes and return as int8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int8 derived from bytes
      */
-    function popInt8(Builder memory self) internal pure returns (int8 element) {
+    function popInt8(
+        Bytes32.Builder memory self
+    ) internal pure returns (int8 element) {
         unchecked {
             self._size -= 8;
             bytes32 elementBytes = (self._data >> self._size) & MASK_01;
@@ -231,11 +234,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 1-byte segment from bytes and return as int8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int8 derived from bytes
      */
     function shiftInt8(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int8 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_01;
@@ -247,10 +250,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int8 value to 1-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int8 to add
      */
-    function unshiftInt8(Builder memory self, int8 element) internal pure {
+    function unshiftInt8(
+        Bytes32.Builder memory self,
+        int8 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 8) |
@@ -264,7 +270,7 @@ library Bytes32Builder {
      * @return element uint8 derived from bytes
      */
     function parseUint8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint8 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
@@ -273,12 +279,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint8 value to 1-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint8 to insert
      * @param offset slot offset in bits
      */
     function insertUint8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint8 element,
         uint256 offset
     ) internal pure {
@@ -292,10 +298,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint8 value to 1-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint8 to add
      */
-    function pushUint8(Builder memory self, uint8 element) internal pure {
+    function pushUint8(
+        Bytes32.Builder memory self,
+        uint8 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 8;
@@ -304,11 +313,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 1-byte segment from bytes and return as uint8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint8 derived from bytes
      */
     function popUint8(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint8 element) {
         unchecked {
             self._size -= 8;
@@ -320,11 +329,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 1-byte segment from bytes and return as uint8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint8 derived from bytes
      */
     function shiftUint8(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint8 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_01;
@@ -336,10 +345,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint8 value to 1-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint8 to add
      */
-    function unshiftUint8(Builder memory self, uint8 element) internal pure {
+    function unshiftUint8(
+        Bytes32.Builder memory self,
+        uint8 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 8) | Uint256.toBytes32(element);
             self._size += 8;
@@ -351,7 +363,7 @@ library Bytes32Builder {
      * @return element bool derived from bytes
      */
     function parseBool(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bool element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_01;
@@ -360,12 +372,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bool value to 1-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bool to insert
      * @param offset slot offset in bits
      */
     function insertBool(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bool element,
         uint256 offset
     ) internal pure {
@@ -379,10 +391,10 @@ library Bytes32Builder {
 
     /**
      * @notice insert bool value to 1-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bool to add
      */
-    function pushBool(Builder memory self, bool element) internal pure {
+    function pushBool(Bytes32.Builder memory self, bool element) internal pure {
         unchecked {
             self._data |= Bool.toBytes32(element) << self._size;
             self._size += 8;
@@ -391,10 +403,12 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 1-byte segment from bytes and return as bool
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bool derived from bytes
      */
-    function popBool(Builder memory self) internal pure returns (bool element) {
+    function popBool(
+        Bytes32.Builder memory self
+    ) internal pure returns (bool element) {
         unchecked {
             self._size -= 8;
             bytes32 elementBytes = (self._data >> self._size) & MASK_01;
@@ -405,11 +419,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 1-byte segment from bytes and return as bool
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bool derived from bytes
      */
     function shiftBool(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bool element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_01;
@@ -421,10 +435,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bool value to 1-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bool to add
      */
-    function unshiftBool(Builder memory self, bool element) internal pure {
+    function unshiftBool(
+        Bytes32.Builder memory self,
+        bool element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 8) | Bool.toBytes32(element);
             self._size += 8;
@@ -436,7 +453,7 @@ library Bytes32Builder {
      * @return element bytes2 derived from bytes
      */
     function parseBytes2(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes2 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_02;
@@ -445,12 +462,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes2 value to 2-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes2 to insert
      * @param offset slot offset in bits
      */
     function insertBytes2(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes2 element,
         uint256 offset
     ) internal pure {
@@ -464,10 +481,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes2 value to 2-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes2 to add
      */
-    function pushBytes2(Builder memory self, bytes2 element) internal pure {
+    function pushBytes2(
+        Bytes32.Builder memory self,
+        bytes2 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 240) << self._size;
             self._size += 16;
@@ -476,11 +496,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 2-byte segment from bytes and return as bytes2
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes2 derived from bytes
      */
     function popBytes2(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes2 element) {
         unchecked {
             self._size -= 16;
@@ -492,11 +512,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 2-byte segment from bytes and return as bytes2
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes2 derived from bytes
      */
     function shiftBytes2(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes2 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_02;
@@ -508,10 +528,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes2 value to 2-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes2 to add
      */
-    function unshiftBytes2(Builder memory self, bytes2 element) internal pure {
+    function unshiftBytes2(
+        Bytes32.Builder memory self,
+        bytes2 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 16) | (bytes32(element) >> 240);
             self._size += 16;
@@ -523,7 +546,7 @@ library Bytes32Builder {
      * @return element int16 derived from bytes
      */
     function parseInt16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int16 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_02;
@@ -532,12 +555,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int16 value to 2-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int16 to insert
      * @param offset slot offset in bits
      */
     function insertInt16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int16 element,
         uint256 offset
     ) internal pure {
@@ -551,10 +574,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int16 value to 2-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int16 to add
      */
-    function pushInt16(Builder memory self, int16 element) internal pure {
+    function pushInt16(
+        Bytes32.Builder memory self,
+        int16 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 240)) <<
@@ -565,11 +591,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 2-byte segment from bytes and return as int16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int16 derived from bytes
      */
     function popInt16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int16 element) {
         unchecked {
             self._size -= 16;
@@ -581,11 +607,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 2-byte segment from bytes and return as int16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int16 derived from bytes
      */
     function shiftInt16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int16 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_02;
@@ -597,10 +623,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int16 value to 2-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int16 to add
      */
-    function unshiftInt16(Builder memory self, int16 element) internal pure {
+    function unshiftInt16(
+        Bytes32.Builder memory self,
+        int16 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 16) |
@@ -614,7 +643,7 @@ library Bytes32Builder {
      * @return element uint16 derived from bytes
      */
     function parseUint16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint16 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_02;
@@ -623,12 +652,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint16 value to 2-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint16 to insert
      * @param offset slot offset in bits
      */
     function insertUint16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint16 element,
         uint256 offset
     ) internal pure {
@@ -642,10 +671,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint16 value to 2-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint16 to add
      */
-    function pushUint16(Builder memory self, uint16 element) internal pure {
+    function pushUint16(
+        Bytes32.Builder memory self,
+        uint16 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 16;
@@ -654,11 +686,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 2-byte segment from bytes and return as uint16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint16 derived from bytes
      */
     function popUint16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint16 element) {
         unchecked {
             self._size -= 16;
@@ -670,11 +702,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 2-byte segment from bytes and return as uint16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint16 derived from bytes
      */
     function shiftUint16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint16 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_02;
@@ -686,10 +718,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint16 value to 2-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint16 to add
      */
-    function unshiftUint16(Builder memory self, uint16 element) internal pure {
+    function unshiftUint16(
+        Bytes32.Builder memory self,
+        uint16 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 16) | Uint256.toBytes32(element);
             self._size += 16;
@@ -701,7 +736,7 @@ library Bytes32Builder {
      * @return element bytes3 derived from bytes
      */
     function parseBytes3(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes3 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_03;
@@ -710,12 +745,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes3 value to 3-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes3 to insert
      * @param offset slot offset in bits
      */
     function insertBytes3(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes3 element,
         uint256 offset
     ) internal pure {
@@ -729,10 +764,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes3 value to 3-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes3 to add
      */
-    function pushBytes3(Builder memory self, bytes3 element) internal pure {
+    function pushBytes3(
+        Bytes32.Builder memory self,
+        bytes3 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 232) << self._size;
             self._size += 24;
@@ -741,11 +779,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 3-byte segment from bytes and return as bytes3
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes3 derived from bytes
      */
     function popBytes3(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes3 element) {
         unchecked {
             self._size -= 24;
@@ -757,11 +795,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 3-byte segment from bytes and return as bytes3
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes3 derived from bytes
      */
     function shiftBytes3(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes3 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_03;
@@ -773,10 +811,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes3 value to 3-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes3 to add
      */
-    function unshiftBytes3(Builder memory self, bytes3 element) internal pure {
+    function unshiftBytes3(
+        Bytes32.Builder memory self,
+        bytes3 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 24) | (bytes32(element) >> 232);
             self._size += 24;
@@ -788,7 +829,7 @@ library Bytes32Builder {
      * @return element int24 derived from bytes
      */
     function parseInt24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int24 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_03;
@@ -797,12 +838,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int24 value to 3-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int24 to insert
      * @param offset slot offset in bits
      */
     function insertInt24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int24 element,
         uint256 offset
     ) internal pure {
@@ -816,10 +857,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int24 value to 3-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int24 to add
      */
-    function pushInt24(Builder memory self, int24 element) internal pure {
+    function pushInt24(
+        Bytes32.Builder memory self,
+        int24 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 232)) <<
@@ -830,11 +874,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 3-byte segment from bytes and return as int24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int24 derived from bytes
      */
     function popInt24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int24 element) {
         unchecked {
             self._size -= 24;
@@ -846,11 +890,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 3-byte segment from bytes and return as int24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int24 derived from bytes
      */
     function shiftInt24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int24 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_03;
@@ -862,10 +906,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int24 value to 3-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int24 to add
      */
-    function unshiftInt24(Builder memory self, int24 element) internal pure {
+    function unshiftInt24(
+        Bytes32.Builder memory self,
+        int24 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 24) |
@@ -879,7 +926,7 @@ library Bytes32Builder {
      * @return element uint24 derived from bytes
      */
     function parseUint24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint24 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_03;
@@ -888,12 +935,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint24 value to 3-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint24 to insert
      * @param offset slot offset in bits
      */
     function insertUint24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint24 element,
         uint256 offset
     ) internal pure {
@@ -907,10 +954,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint24 value to 3-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint24 to add
      */
-    function pushUint24(Builder memory self, uint24 element) internal pure {
+    function pushUint24(
+        Bytes32.Builder memory self,
+        uint24 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 24;
@@ -919,11 +969,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 3-byte segment from bytes and return as uint24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint24 derived from bytes
      */
     function popUint24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint24 element) {
         unchecked {
             self._size -= 24;
@@ -935,11 +985,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 3-byte segment from bytes and return as uint24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint24 derived from bytes
      */
     function shiftUint24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint24 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_03;
@@ -951,10 +1001,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint24 value to 3-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint24 to add
      */
-    function unshiftUint24(Builder memory self, uint24 element) internal pure {
+    function unshiftUint24(
+        Bytes32.Builder memory self,
+        uint24 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 24) | Uint256.toBytes32(element);
             self._size += 24;
@@ -966,7 +1019,7 @@ library Bytes32Builder {
      * @return element bytes4 derived from bytes
      */
     function parseBytes4(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes4 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_04;
@@ -975,12 +1028,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes4 value to 4-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes4 to insert
      * @param offset slot offset in bits
      */
     function insertBytes4(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes4 element,
         uint256 offset
     ) internal pure {
@@ -994,10 +1047,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes4 value to 4-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes4 to add
      */
-    function pushBytes4(Builder memory self, bytes4 element) internal pure {
+    function pushBytes4(
+        Bytes32.Builder memory self,
+        bytes4 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 224) << self._size;
             self._size += 32;
@@ -1006,11 +1062,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 4-byte segment from bytes and return as bytes4
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes4 derived from bytes
      */
     function popBytes4(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes4 element) {
         unchecked {
             self._size -= 32;
@@ -1022,11 +1078,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 4-byte segment from bytes and return as bytes4
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes4 derived from bytes
      */
     function shiftBytes4(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes4 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_04;
@@ -1038,10 +1094,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes4 value to 4-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes4 to add
      */
-    function unshiftBytes4(Builder memory self, bytes4 element) internal pure {
+    function unshiftBytes4(
+        Bytes32.Builder memory self,
+        bytes4 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 32) | (bytes32(element) >> 224);
             self._size += 32;
@@ -1053,7 +1112,7 @@ library Bytes32Builder {
      * @return element int32 derived from bytes
      */
     function parseInt32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int32 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_04;
@@ -1062,12 +1121,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int32 value to 4-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int32 to insert
      * @param offset slot offset in bits
      */
     function insertInt32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int32 element,
         uint256 offset
     ) internal pure {
@@ -1081,10 +1140,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int32 value to 4-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int32 to add
      */
-    function pushInt32(Builder memory self, int32 element) internal pure {
+    function pushInt32(
+        Bytes32.Builder memory self,
+        int32 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 224)) <<
@@ -1095,11 +1157,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 4-byte segment from bytes and return as int32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int32 derived from bytes
      */
     function popInt32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int32 element) {
         unchecked {
             self._size -= 32;
@@ -1111,11 +1173,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 4-byte segment from bytes and return as int32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int32 derived from bytes
      */
     function shiftInt32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int32 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_04;
@@ -1127,10 +1189,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int32 value to 4-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int32 to add
      */
-    function unshiftInt32(Builder memory self, int32 element) internal pure {
+    function unshiftInt32(
+        Bytes32.Builder memory self,
+        int32 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 32) |
@@ -1144,7 +1209,7 @@ library Bytes32Builder {
      * @return element uint32 derived from bytes
      */
     function parseUint32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint32 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_04;
@@ -1153,12 +1218,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint32 value to 4-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint32 to insert
      * @param offset slot offset in bits
      */
     function insertUint32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint32 element,
         uint256 offset
     ) internal pure {
@@ -1172,10 +1237,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint32 value to 4-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint32 to add
      */
-    function pushUint32(Builder memory self, uint32 element) internal pure {
+    function pushUint32(
+        Bytes32.Builder memory self,
+        uint32 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 32;
@@ -1184,11 +1252,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 4-byte segment from bytes and return as uint32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint32 derived from bytes
      */
     function popUint32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint32 element) {
         unchecked {
             self._size -= 32;
@@ -1200,11 +1268,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 4-byte segment from bytes and return as uint32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint32 derived from bytes
      */
     function shiftUint32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint32 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_04;
@@ -1216,10 +1284,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint32 value to 4-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint32 to add
      */
-    function unshiftUint32(Builder memory self, uint32 element) internal pure {
+    function unshiftUint32(
+        Bytes32.Builder memory self,
+        uint32 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 32) | Uint256.toBytes32(element);
             self._size += 32;
@@ -1231,7 +1302,7 @@ library Bytes32Builder {
      * @return element bytes5 derived from bytes
      */
     function parseBytes5(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes5 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_05;
@@ -1240,12 +1311,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes5 value to 5-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes5 to insert
      * @param offset slot offset in bits
      */
     function insertBytes5(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes5 element,
         uint256 offset
     ) internal pure {
@@ -1259,10 +1330,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes5 value to 5-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes5 to add
      */
-    function pushBytes5(Builder memory self, bytes5 element) internal pure {
+    function pushBytes5(
+        Bytes32.Builder memory self,
+        bytes5 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 216) << self._size;
             self._size += 40;
@@ -1271,11 +1345,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 5-byte segment from bytes and return as bytes5
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes5 derived from bytes
      */
     function popBytes5(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes5 element) {
         unchecked {
             self._size -= 40;
@@ -1287,11 +1361,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 5-byte segment from bytes and return as bytes5
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes5 derived from bytes
      */
     function shiftBytes5(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes5 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_05;
@@ -1303,10 +1377,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes5 value to 5-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes5 to add
      */
-    function unshiftBytes5(Builder memory self, bytes5 element) internal pure {
+    function unshiftBytes5(
+        Bytes32.Builder memory self,
+        bytes5 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 40) | (bytes32(element) >> 216);
             self._size += 40;
@@ -1318,7 +1395,7 @@ library Bytes32Builder {
      * @return element int40 derived from bytes
      */
     function parseInt40(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int40 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_05;
@@ -1327,12 +1404,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int40 value to 5-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int40 to insert
      * @param offset slot offset in bits
      */
     function insertInt40(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int40 element,
         uint256 offset
     ) internal pure {
@@ -1346,10 +1423,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int40 value to 5-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int40 to add
      */
-    function pushInt40(Builder memory self, int40 element) internal pure {
+    function pushInt40(
+        Bytes32.Builder memory self,
+        int40 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 216)) <<
@@ -1360,11 +1440,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 5-byte segment from bytes and return as int40
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int40 derived from bytes
      */
     function popInt40(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int40 element) {
         unchecked {
             self._size -= 40;
@@ -1376,11 +1456,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 5-byte segment from bytes and return as int40
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int40 derived from bytes
      */
     function shiftInt40(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int40 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_05;
@@ -1392,10 +1472,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int40 value to 5-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int40 to add
      */
-    function unshiftInt40(Builder memory self, int40 element) internal pure {
+    function unshiftInt40(
+        Bytes32.Builder memory self,
+        int40 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 40) |
@@ -1409,7 +1492,7 @@ library Bytes32Builder {
      * @return element uint40 derived from bytes
      */
     function parseUint40(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint40 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_05;
@@ -1418,12 +1501,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint40 value to 5-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint40 to insert
      * @param offset slot offset in bits
      */
     function insertUint40(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint40 element,
         uint256 offset
     ) internal pure {
@@ -1437,10 +1520,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint40 value to 5-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint40 to add
      */
-    function pushUint40(Builder memory self, uint40 element) internal pure {
+    function pushUint40(
+        Bytes32.Builder memory self,
+        uint40 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 40;
@@ -1449,11 +1535,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 5-byte segment from bytes and return as uint40
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint40 derived from bytes
      */
     function popUint40(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint40 element) {
         unchecked {
             self._size -= 40;
@@ -1465,11 +1551,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 5-byte segment from bytes and return as uint40
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint40 derived from bytes
      */
     function shiftUint40(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint40 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_05;
@@ -1481,10 +1567,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint40 value to 5-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint40 to add
      */
-    function unshiftUint40(Builder memory self, uint40 element) internal pure {
+    function unshiftUint40(
+        Bytes32.Builder memory self,
+        uint40 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 40) | Uint256.toBytes32(element);
             self._size += 40;
@@ -1496,7 +1585,7 @@ library Bytes32Builder {
      * @return element bytes6 derived from bytes
      */
     function parseBytes6(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes6 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_06;
@@ -1505,12 +1594,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes6 value to 6-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes6 to insert
      * @param offset slot offset in bits
      */
     function insertBytes6(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes6 element,
         uint256 offset
     ) internal pure {
@@ -1524,10 +1613,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes6 value to 6-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes6 to add
      */
-    function pushBytes6(Builder memory self, bytes6 element) internal pure {
+    function pushBytes6(
+        Bytes32.Builder memory self,
+        bytes6 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 208) << self._size;
             self._size += 48;
@@ -1536,11 +1628,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 6-byte segment from bytes and return as bytes6
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes6 derived from bytes
      */
     function popBytes6(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes6 element) {
         unchecked {
             self._size -= 48;
@@ -1552,11 +1644,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 6-byte segment from bytes and return as bytes6
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes6 derived from bytes
      */
     function shiftBytes6(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes6 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_06;
@@ -1568,10 +1660,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes6 value to 6-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes6 to add
      */
-    function unshiftBytes6(Builder memory self, bytes6 element) internal pure {
+    function unshiftBytes6(
+        Bytes32.Builder memory self,
+        bytes6 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 48) | (bytes32(element) >> 208);
             self._size += 48;
@@ -1583,7 +1678,7 @@ library Bytes32Builder {
      * @return element int48 derived from bytes
      */
     function parseInt48(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int48 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_06;
@@ -1592,12 +1687,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int48 value to 6-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int48 to insert
      * @param offset slot offset in bits
      */
     function insertInt48(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int48 element,
         uint256 offset
     ) internal pure {
@@ -1611,10 +1706,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int48 value to 6-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int48 to add
      */
-    function pushInt48(Builder memory self, int48 element) internal pure {
+    function pushInt48(
+        Bytes32.Builder memory self,
+        int48 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 208)) <<
@@ -1625,11 +1723,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 6-byte segment from bytes and return as int48
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int48 derived from bytes
      */
     function popInt48(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int48 element) {
         unchecked {
             self._size -= 48;
@@ -1641,11 +1739,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 6-byte segment from bytes and return as int48
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int48 derived from bytes
      */
     function shiftInt48(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int48 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_06;
@@ -1657,10 +1755,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int48 value to 6-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int48 to add
      */
-    function unshiftInt48(Builder memory self, int48 element) internal pure {
+    function unshiftInt48(
+        Bytes32.Builder memory self,
+        int48 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 48) |
@@ -1674,7 +1775,7 @@ library Bytes32Builder {
      * @return element uint48 derived from bytes
      */
     function parseUint48(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint48 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_06;
@@ -1683,12 +1784,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint48 value to 6-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint48 to insert
      * @param offset slot offset in bits
      */
     function insertUint48(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint48 element,
         uint256 offset
     ) internal pure {
@@ -1702,10 +1803,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint48 value to 6-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint48 to add
      */
-    function pushUint48(Builder memory self, uint48 element) internal pure {
+    function pushUint48(
+        Bytes32.Builder memory self,
+        uint48 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 48;
@@ -1714,11 +1818,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 6-byte segment from bytes and return as uint48
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint48 derived from bytes
      */
     function popUint48(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint48 element) {
         unchecked {
             self._size -= 48;
@@ -1730,11 +1834,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 6-byte segment from bytes and return as uint48
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint48 derived from bytes
      */
     function shiftUint48(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint48 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_06;
@@ -1746,10 +1850,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint48 value to 6-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint48 to add
      */
-    function unshiftUint48(Builder memory self, uint48 element) internal pure {
+    function unshiftUint48(
+        Bytes32.Builder memory self,
+        uint48 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 48) | Uint256.toBytes32(element);
             self._size += 48;
@@ -1761,7 +1868,7 @@ library Bytes32Builder {
      * @return element bytes7 derived from bytes
      */
     function parseBytes7(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes7 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_07;
@@ -1770,12 +1877,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes7 value to 7-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes7 to insert
      * @param offset slot offset in bits
      */
     function insertBytes7(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes7 element,
         uint256 offset
     ) internal pure {
@@ -1789,10 +1896,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes7 value to 7-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes7 to add
      */
-    function pushBytes7(Builder memory self, bytes7 element) internal pure {
+    function pushBytes7(
+        Bytes32.Builder memory self,
+        bytes7 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 200) << self._size;
             self._size += 56;
@@ -1801,11 +1911,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 7-byte segment from bytes and return as bytes7
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes7 derived from bytes
      */
     function popBytes7(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes7 element) {
         unchecked {
             self._size -= 56;
@@ -1817,11 +1927,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 7-byte segment from bytes and return as bytes7
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes7 derived from bytes
      */
     function shiftBytes7(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes7 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_07;
@@ -1833,10 +1943,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes7 value to 7-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes7 to add
      */
-    function unshiftBytes7(Builder memory self, bytes7 element) internal pure {
+    function unshiftBytes7(
+        Bytes32.Builder memory self,
+        bytes7 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 56) | (bytes32(element) >> 200);
             self._size += 56;
@@ -1848,7 +1961,7 @@ library Bytes32Builder {
      * @return element int56 derived from bytes
      */
     function parseInt56(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int56 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_07;
@@ -1857,12 +1970,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int56 value to 7-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int56 to insert
      * @param offset slot offset in bits
      */
     function insertInt56(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int56 element,
         uint256 offset
     ) internal pure {
@@ -1876,10 +1989,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int56 value to 7-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int56 to add
      */
-    function pushInt56(Builder memory self, int56 element) internal pure {
+    function pushInt56(
+        Bytes32.Builder memory self,
+        int56 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 200)) <<
@@ -1890,11 +2006,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 7-byte segment from bytes and return as int56
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int56 derived from bytes
      */
     function popInt56(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int56 element) {
         unchecked {
             self._size -= 56;
@@ -1906,11 +2022,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 7-byte segment from bytes and return as int56
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int56 derived from bytes
      */
     function shiftInt56(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int56 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_07;
@@ -1922,10 +2038,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int56 value to 7-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int56 to add
      */
-    function unshiftInt56(Builder memory self, int56 element) internal pure {
+    function unshiftInt56(
+        Bytes32.Builder memory self,
+        int56 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 56) |
@@ -1939,7 +2058,7 @@ library Bytes32Builder {
      * @return element uint56 derived from bytes
      */
     function parseUint56(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint56 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_07;
@@ -1948,12 +2067,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint56 value to 7-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint56 to insert
      * @param offset slot offset in bits
      */
     function insertUint56(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint56 element,
         uint256 offset
     ) internal pure {
@@ -1967,10 +2086,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint56 value to 7-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint56 to add
      */
-    function pushUint56(Builder memory self, uint56 element) internal pure {
+    function pushUint56(
+        Bytes32.Builder memory self,
+        uint56 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 56;
@@ -1979,11 +2101,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 7-byte segment from bytes and return as uint56
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint56 derived from bytes
      */
     function popUint56(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint56 element) {
         unchecked {
             self._size -= 56;
@@ -1995,11 +2117,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 7-byte segment from bytes and return as uint56
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint56 derived from bytes
      */
     function shiftUint56(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint56 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_07;
@@ -2011,10 +2133,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint56 value to 7-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint56 to add
      */
-    function unshiftUint56(Builder memory self, uint56 element) internal pure {
+    function unshiftUint56(
+        Bytes32.Builder memory self,
+        uint56 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 56) | Uint256.toBytes32(element);
             self._size += 56;
@@ -2026,7 +2151,7 @@ library Bytes32Builder {
      * @return element bytes8 derived from bytes
      */
     function parseBytes8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes8 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_08;
@@ -2035,12 +2160,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes8 value to 8-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes8 to insert
      * @param offset slot offset in bits
      */
     function insertBytes8(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes8 element,
         uint256 offset
     ) internal pure {
@@ -2054,10 +2179,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes8 value to 8-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes8 to add
      */
-    function pushBytes8(Builder memory self, bytes8 element) internal pure {
+    function pushBytes8(
+        Bytes32.Builder memory self,
+        bytes8 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 192) << self._size;
             self._size += 64;
@@ -2066,11 +2194,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 8-byte segment from bytes and return as bytes8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes8 derived from bytes
      */
     function popBytes8(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes8 element) {
         unchecked {
             self._size -= 64;
@@ -2082,11 +2210,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 8-byte segment from bytes and return as bytes8
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes8 derived from bytes
      */
     function shiftBytes8(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes8 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_08;
@@ -2098,10 +2226,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes8 value to 8-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes8 to add
      */
-    function unshiftBytes8(Builder memory self, bytes8 element) internal pure {
+    function unshiftBytes8(
+        Bytes32.Builder memory self,
+        bytes8 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 64) | (bytes32(element) >> 192);
             self._size += 64;
@@ -2113,7 +2244,7 @@ library Bytes32Builder {
      * @return element int64 derived from bytes
      */
     function parseInt64(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int64 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_08;
@@ -2122,12 +2253,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int64 value to 8-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int64 to insert
      * @param offset slot offset in bits
      */
     function insertInt64(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int64 element,
         uint256 offset
     ) internal pure {
@@ -2141,10 +2272,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int64 value to 8-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int64 to add
      */
-    function pushInt64(Builder memory self, int64 element) internal pure {
+    function pushInt64(
+        Bytes32.Builder memory self,
+        int64 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 192)) <<
@@ -2155,11 +2289,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 8-byte segment from bytes and return as int64
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int64 derived from bytes
      */
     function popInt64(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int64 element) {
         unchecked {
             self._size -= 64;
@@ -2171,11 +2305,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 8-byte segment from bytes and return as int64
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int64 derived from bytes
      */
     function shiftInt64(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int64 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_08;
@@ -2187,10 +2321,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int64 value to 8-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int64 to add
      */
-    function unshiftInt64(Builder memory self, int64 element) internal pure {
+    function unshiftInt64(
+        Bytes32.Builder memory self,
+        int64 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 64) |
@@ -2204,7 +2341,7 @@ library Bytes32Builder {
      * @return element uint64 derived from bytes
      */
     function parseUint64(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint64 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_08;
@@ -2213,12 +2350,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint64 value to 8-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint64 to insert
      * @param offset slot offset in bits
      */
     function insertUint64(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint64 element,
         uint256 offset
     ) internal pure {
@@ -2232,10 +2369,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint64 value to 8-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint64 to add
      */
-    function pushUint64(Builder memory self, uint64 element) internal pure {
+    function pushUint64(
+        Bytes32.Builder memory self,
+        uint64 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 64;
@@ -2244,11 +2384,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 8-byte segment from bytes and return as uint64
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint64 derived from bytes
      */
     function popUint64(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint64 element) {
         unchecked {
             self._size -= 64;
@@ -2260,11 +2400,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 8-byte segment from bytes and return as uint64
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint64 derived from bytes
      */
     function shiftUint64(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint64 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_08;
@@ -2276,10 +2416,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint64 value to 8-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint64 to add
      */
-    function unshiftUint64(Builder memory self, uint64 element) internal pure {
+    function unshiftUint64(
+        Bytes32.Builder memory self,
+        uint64 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 64) | Uint256.toBytes32(element);
             self._size += 64;
@@ -2291,7 +2434,7 @@ library Bytes32Builder {
      * @return element bytes9 derived from bytes
      */
     function parseBytes9(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes9 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_09;
@@ -2300,12 +2443,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes9 value to 9-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes9 to insert
      * @param offset slot offset in bits
      */
     function insertBytes9(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes9 element,
         uint256 offset
     ) internal pure {
@@ -2319,10 +2462,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes9 value to 9-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes9 to add
      */
-    function pushBytes9(Builder memory self, bytes9 element) internal pure {
+    function pushBytes9(
+        Bytes32.Builder memory self,
+        bytes9 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 184) << self._size;
             self._size += 72;
@@ -2331,11 +2477,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 9-byte segment from bytes and return as bytes9
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes9 derived from bytes
      */
     function popBytes9(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes9 element) {
         unchecked {
             self._size -= 72;
@@ -2347,11 +2493,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 9-byte segment from bytes and return as bytes9
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes9 derived from bytes
      */
     function shiftBytes9(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes9 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_09;
@@ -2363,10 +2509,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes9 value to 9-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes9 to add
      */
-    function unshiftBytes9(Builder memory self, bytes9 element) internal pure {
+    function unshiftBytes9(
+        Bytes32.Builder memory self,
+        bytes9 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 72) | (bytes32(element) >> 184);
             self._size += 72;
@@ -2378,7 +2527,7 @@ library Bytes32Builder {
      * @return element int72 derived from bytes
      */
     function parseInt72(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int72 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_09;
@@ -2387,12 +2536,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int72 value to 9-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int72 to insert
      * @param offset slot offset in bits
      */
     function insertInt72(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int72 element,
         uint256 offset
     ) internal pure {
@@ -2406,10 +2555,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int72 value to 9-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int72 to add
      */
-    function pushInt72(Builder memory self, int72 element) internal pure {
+    function pushInt72(
+        Bytes32.Builder memory self,
+        int72 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 184)) <<
@@ -2420,11 +2572,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 9-byte segment from bytes and return as int72
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int72 derived from bytes
      */
     function popInt72(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int72 element) {
         unchecked {
             self._size -= 72;
@@ -2436,11 +2588,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 9-byte segment from bytes and return as int72
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int72 derived from bytes
      */
     function shiftInt72(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int72 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_09;
@@ -2452,10 +2604,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int72 value to 9-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int72 to add
      */
-    function unshiftInt72(Builder memory self, int72 element) internal pure {
+    function unshiftInt72(
+        Bytes32.Builder memory self,
+        int72 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 72) |
@@ -2469,7 +2624,7 @@ library Bytes32Builder {
      * @return element uint72 derived from bytes
      */
     function parseUint72(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint72 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_09;
@@ -2478,12 +2633,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint72 value to 9-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint72 to insert
      * @param offset slot offset in bits
      */
     function insertUint72(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint72 element,
         uint256 offset
     ) internal pure {
@@ -2497,10 +2652,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint72 value to 9-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint72 to add
      */
-    function pushUint72(Builder memory self, uint72 element) internal pure {
+    function pushUint72(
+        Bytes32.Builder memory self,
+        uint72 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 72;
@@ -2509,11 +2667,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 9-byte segment from bytes and return as uint72
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint72 derived from bytes
      */
     function popUint72(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint72 element) {
         unchecked {
             self._size -= 72;
@@ -2525,11 +2683,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 9-byte segment from bytes and return as uint72
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint72 derived from bytes
      */
     function shiftUint72(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint72 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_09;
@@ -2541,10 +2699,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint72 value to 9-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint72 to add
      */
-    function unshiftUint72(Builder memory self, uint72 element) internal pure {
+    function unshiftUint72(
+        Bytes32.Builder memory self,
+        uint72 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 72) | Uint256.toBytes32(element);
             self._size += 72;
@@ -2556,7 +2717,7 @@ library Bytes32Builder {
      * @return element bytes10 derived from bytes
      */
     function parseBytes10(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes10 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_10;
@@ -2565,12 +2726,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes10 value to 10-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes10 to insert
      * @param offset slot offset in bits
      */
     function insertBytes10(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes10 element,
         uint256 offset
     ) internal pure {
@@ -2584,10 +2745,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes10 value to 10-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes10 to add
      */
-    function pushBytes10(Builder memory self, bytes10 element) internal pure {
+    function pushBytes10(
+        Bytes32.Builder memory self,
+        bytes10 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 176) << self._size;
             self._size += 80;
@@ -2596,11 +2760,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 10-byte segment from bytes and return as bytes10
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes10 derived from bytes
      */
     function popBytes10(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes10 element) {
         unchecked {
             self._size -= 80;
@@ -2612,11 +2776,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 10-byte segment from bytes and return as bytes10
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes10 derived from bytes
      */
     function shiftBytes10(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes10 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_10;
@@ -2628,11 +2792,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes10 value to 10-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes10 to add
      */
     function unshiftBytes10(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes10 element
     ) internal pure {
         unchecked {
@@ -2646,7 +2810,7 @@ library Bytes32Builder {
      * @return element int80 derived from bytes
      */
     function parseInt80(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int80 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_10;
@@ -2655,12 +2819,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int80 value to 10-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int80 to insert
      * @param offset slot offset in bits
      */
     function insertInt80(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int80 element,
         uint256 offset
     ) internal pure {
@@ -2674,10 +2838,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int80 value to 10-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int80 to add
      */
-    function pushInt80(Builder memory self, int80 element) internal pure {
+    function pushInt80(
+        Bytes32.Builder memory self,
+        int80 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 176)) <<
@@ -2688,11 +2855,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 10-byte segment from bytes and return as int80
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int80 derived from bytes
      */
     function popInt80(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int80 element) {
         unchecked {
             self._size -= 80;
@@ -2704,11 +2871,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 10-byte segment from bytes and return as int80
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int80 derived from bytes
      */
     function shiftInt80(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int80 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_10;
@@ -2720,10 +2887,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int80 value to 10-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int80 to add
      */
-    function unshiftInt80(Builder memory self, int80 element) internal pure {
+    function unshiftInt80(
+        Bytes32.Builder memory self,
+        int80 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 80) |
@@ -2737,7 +2907,7 @@ library Bytes32Builder {
      * @return element uint80 derived from bytes
      */
     function parseUint80(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint80 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_10;
@@ -2746,12 +2916,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint80 value to 10-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint80 to insert
      * @param offset slot offset in bits
      */
     function insertUint80(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint80 element,
         uint256 offset
     ) internal pure {
@@ -2765,10 +2935,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint80 value to 10-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint80 to add
      */
-    function pushUint80(Builder memory self, uint80 element) internal pure {
+    function pushUint80(
+        Bytes32.Builder memory self,
+        uint80 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 80;
@@ -2777,11 +2950,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 10-byte segment from bytes and return as uint80
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint80 derived from bytes
      */
     function popUint80(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint80 element) {
         unchecked {
             self._size -= 80;
@@ -2793,11 +2966,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 10-byte segment from bytes and return as uint80
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint80 derived from bytes
      */
     function shiftUint80(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint80 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_10;
@@ -2809,10 +2982,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint80 value to 10-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint80 to add
      */
-    function unshiftUint80(Builder memory self, uint80 element) internal pure {
+    function unshiftUint80(
+        Bytes32.Builder memory self,
+        uint80 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 80) | Uint256.toBytes32(element);
             self._size += 80;
@@ -2824,7 +3000,7 @@ library Bytes32Builder {
      * @return element bytes11 derived from bytes
      */
     function parseBytes11(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes11 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_11;
@@ -2833,12 +3009,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes11 value to 11-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes11 to insert
      * @param offset slot offset in bits
      */
     function insertBytes11(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes11 element,
         uint256 offset
     ) internal pure {
@@ -2852,10 +3028,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes11 value to 11-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes11 to add
      */
-    function pushBytes11(Builder memory self, bytes11 element) internal pure {
+    function pushBytes11(
+        Bytes32.Builder memory self,
+        bytes11 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 168) << self._size;
             self._size += 88;
@@ -2864,11 +3043,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 11-byte segment from bytes and return as bytes11
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes11 derived from bytes
      */
     function popBytes11(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes11 element) {
         unchecked {
             self._size -= 88;
@@ -2880,11 +3059,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 11-byte segment from bytes and return as bytes11
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes11 derived from bytes
      */
     function shiftBytes11(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes11 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_11;
@@ -2896,11 +3075,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes11 value to 11-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes11 to add
      */
     function unshiftBytes11(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes11 element
     ) internal pure {
         unchecked {
@@ -2914,7 +3093,7 @@ library Bytes32Builder {
      * @return element int88 derived from bytes
      */
     function parseInt88(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int88 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_11;
@@ -2923,12 +3102,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int88 value to 11-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int88 to insert
      * @param offset slot offset in bits
      */
     function insertInt88(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int88 element,
         uint256 offset
     ) internal pure {
@@ -2942,10 +3121,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int88 value to 11-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int88 to add
      */
-    function pushInt88(Builder memory self, int88 element) internal pure {
+    function pushInt88(
+        Bytes32.Builder memory self,
+        int88 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 168)) <<
@@ -2956,11 +3138,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 11-byte segment from bytes and return as int88
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int88 derived from bytes
      */
     function popInt88(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int88 element) {
         unchecked {
             self._size -= 88;
@@ -2972,11 +3154,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 11-byte segment from bytes and return as int88
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int88 derived from bytes
      */
     function shiftInt88(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int88 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_11;
@@ -2988,10 +3170,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int88 value to 11-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int88 to add
      */
-    function unshiftInt88(Builder memory self, int88 element) internal pure {
+    function unshiftInt88(
+        Bytes32.Builder memory self,
+        int88 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 88) |
@@ -3005,7 +3190,7 @@ library Bytes32Builder {
      * @return element uint88 derived from bytes
      */
     function parseUint88(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint88 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_11;
@@ -3014,12 +3199,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint88 value to 11-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint88 to insert
      * @param offset slot offset in bits
      */
     function insertUint88(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint88 element,
         uint256 offset
     ) internal pure {
@@ -3033,10 +3218,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint88 value to 11-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint88 to add
      */
-    function pushUint88(Builder memory self, uint88 element) internal pure {
+    function pushUint88(
+        Bytes32.Builder memory self,
+        uint88 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 88;
@@ -3045,11 +3233,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 11-byte segment from bytes and return as uint88
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint88 derived from bytes
      */
     function popUint88(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint88 element) {
         unchecked {
             self._size -= 88;
@@ -3061,11 +3249,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 11-byte segment from bytes and return as uint88
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint88 derived from bytes
      */
     function shiftUint88(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint88 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_11;
@@ -3077,10 +3265,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint88 value to 11-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint88 to add
      */
-    function unshiftUint88(Builder memory self, uint88 element) internal pure {
+    function unshiftUint88(
+        Bytes32.Builder memory self,
+        uint88 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 88) | Uint256.toBytes32(element);
             self._size += 88;
@@ -3092,7 +3283,7 @@ library Bytes32Builder {
      * @return element bytes12 derived from bytes
      */
     function parseBytes12(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes12 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_12;
@@ -3101,12 +3292,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes12 value to 12-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes12 to insert
      * @param offset slot offset in bits
      */
     function insertBytes12(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes12 element,
         uint256 offset
     ) internal pure {
@@ -3120,10 +3311,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes12 value to 12-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes12 to add
      */
-    function pushBytes12(Builder memory self, bytes12 element) internal pure {
+    function pushBytes12(
+        Bytes32.Builder memory self,
+        bytes12 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 160) << self._size;
             self._size += 96;
@@ -3132,11 +3326,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 12-byte segment from bytes and return as bytes12
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes12 derived from bytes
      */
     function popBytes12(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes12 element) {
         unchecked {
             self._size -= 96;
@@ -3148,11 +3342,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 12-byte segment from bytes and return as bytes12
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes12 derived from bytes
      */
     function shiftBytes12(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes12 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_12;
@@ -3164,11 +3358,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes12 value to 12-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes12 to add
      */
     function unshiftBytes12(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes12 element
     ) internal pure {
         unchecked {
@@ -3182,7 +3376,7 @@ library Bytes32Builder {
      * @return element int96 derived from bytes
      */
     function parseInt96(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int96 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_12;
@@ -3191,12 +3385,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int96 value to 12-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int96 to insert
      * @param offset slot offset in bits
      */
     function insertInt96(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int96 element,
         uint256 offset
     ) internal pure {
@@ -3210,10 +3404,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int96 value to 12-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int96 to add
      */
-    function pushInt96(Builder memory self, int96 element) internal pure {
+    function pushInt96(
+        Bytes32.Builder memory self,
+        int96 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 160)) <<
@@ -3224,11 +3421,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 12-byte segment from bytes and return as int96
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int96 derived from bytes
      */
     function popInt96(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int96 element) {
         unchecked {
             self._size -= 96;
@@ -3240,11 +3437,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 12-byte segment from bytes and return as int96
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int96 derived from bytes
      */
     function shiftInt96(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int96 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_12;
@@ -3256,10 +3453,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int96 value to 12-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int96 to add
      */
-    function unshiftInt96(Builder memory self, int96 element) internal pure {
+    function unshiftInt96(
+        Bytes32.Builder memory self,
+        int96 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 96) |
@@ -3273,7 +3473,7 @@ library Bytes32Builder {
      * @return element uint96 derived from bytes
      */
     function parseUint96(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint96 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_12;
@@ -3282,12 +3482,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint96 value to 12-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint96 to insert
      * @param offset slot offset in bits
      */
     function insertUint96(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint96 element,
         uint256 offset
     ) internal pure {
@@ -3301,10 +3501,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint96 value to 12-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint96 to add
      */
-    function pushUint96(Builder memory self, uint96 element) internal pure {
+    function pushUint96(
+        Bytes32.Builder memory self,
+        uint96 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 96;
@@ -3313,11 +3516,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 12-byte segment from bytes and return as uint96
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint96 derived from bytes
      */
     function popUint96(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint96 element) {
         unchecked {
             self._size -= 96;
@@ -3329,11 +3532,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 12-byte segment from bytes and return as uint96
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint96 derived from bytes
      */
     function shiftUint96(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint96 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_12;
@@ -3345,10 +3548,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint96 value to 12-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint96 to add
      */
-    function unshiftUint96(Builder memory self, uint96 element) internal pure {
+    function unshiftUint96(
+        Bytes32.Builder memory self,
+        uint96 element
+    ) internal pure {
         unchecked {
             self._data = (self._data << 96) | Uint256.toBytes32(element);
             self._size += 96;
@@ -3360,7 +3566,7 @@ library Bytes32Builder {
      * @return element bytes13 derived from bytes
      */
     function parseBytes13(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes13 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_13;
@@ -3369,12 +3575,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes13 value to 13-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes13 to insert
      * @param offset slot offset in bits
      */
     function insertBytes13(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes13 element,
         uint256 offset
     ) internal pure {
@@ -3388,10 +3594,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes13 value to 13-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes13 to add
      */
-    function pushBytes13(Builder memory self, bytes13 element) internal pure {
+    function pushBytes13(
+        Bytes32.Builder memory self,
+        bytes13 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 152) << self._size;
             self._size += 104;
@@ -3400,11 +3609,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 13-byte segment from bytes and return as bytes13
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes13 derived from bytes
      */
     function popBytes13(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes13 element) {
         unchecked {
             self._size -= 104;
@@ -3416,11 +3625,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 13-byte segment from bytes and return as bytes13
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes13 derived from bytes
      */
     function shiftBytes13(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes13 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_13;
@@ -3432,11 +3641,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes13 value to 13-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes13 to add
      */
     function unshiftBytes13(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes13 element
     ) internal pure {
         unchecked {
@@ -3450,7 +3659,7 @@ library Bytes32Builder {
      * @return element int104 derived from bytes
      */
     function parseInt104(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int104 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_13;
@@ -3459,12 +3668,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int104 value to 13-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int104 to insert
      * @param offset slot offset in bits
      */
     function insertInt104(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int104 element,
         uint256 offset
     ) internal pure {
@@ -3478,10 +3687,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int104 value to 13-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int104 to add
      */
-    function pushInt104(Builder memory self, int104 element) internal pure {
+    function pushInt104(
+        Bytes32.Builder memory self,
+        int104 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 152)) <<
@@ -3492,11 +3704,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 13-byte segment from bytes and return as int104
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int104 derived from bytes
      */
     function popInt104(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int104 element) {
         unchecked {
             self._size -= 104;
@@ -3508,11 +3720,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 13-byte segment from bytes and return as int104
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int104 derived from bytes
      */
     function shiftInt104(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int104 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_13;
@@ -3524,10 +3736,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int104 value to 13-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int104 to add
      */
-    function unshiftInt104(Builder memory self, int104 element) internal pure {
+    function unshiftInt104(
+        Bytes32.Builder memory self,
+        int104 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 104) |
@@ -3541,7 +3756,7 @@ library Bytes32Builder {
      * @return element uint104 derived from bytes
      */
     function parseUint104(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint104 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_13;
@@ -3550,12 +3765,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint104 value to 13-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint104 to insert
      * @param offset slot offset in bits
      */
     function insertUint104(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint104 element,
         uint256 offset
     ) internal pure {
@@ -3569,10 +3784,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint104 value to 13-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint104 to add
      */
-    function pushUint104(Builder memory self, uint104 element) internal pure {
+    function pushUint104(
+        Bytes32.Builder memory self,
+        uint104 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 104;
@@ -3581,11 +3799,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 13-byte segment from bytes and return as uint104
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint104 derived from bytes
      */
     function popUint104(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint104 element) {
         unchecked {
             self._size -= 104;
@@ -3597,11 +3815,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 13-byte segment from bytes and return as uint104
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint104 derived from bytes
      */
     function shiftUint104(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint104 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_13;
@@ -3613,11 +3831,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint104 value to 13-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint104 to add
      */
     function unshiftUint104(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint104 element
     ) internal pure {
         unchecked {
@@ -3631,7 +3849,7 @@ library Bytes32Builder {
      * @return element bytes14 derived from bytes
      */
     function parseBytes14(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes14 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_14;
@@ -3640,12 +3858,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes14 value to 14-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes14 to insert
      * @param offset slot offset in bits
      */
     function insertBytes14(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes14 element,
         uint256 offset
     ) internal pure {
@@ -3659,10 +3877,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes14 value to 14-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes14 to add
      */
-    function pushBytes14(Builder memory self, bytes14 element) internal pure {
+    function pushBytes14(
+        Bytes32.Builder memory self,
+        bytes14 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 144) << self._size;
             self._size += 112;
@@ -3671,11 +3892,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 14-byte segment from bytes and return as bytes14
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes14 derived from bytes
      */
     function popBytes14(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes14 element) {
         unchecked {
             self._size -= 112;
@@ -3687,11 +3908,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 14-byte segment from bytes and return as bytes14
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes14 derived from bytes
      */
     function shiftBytes14(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes14 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_14;
@@ -3703,11 +3924,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes14 value to 14-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes14 to add
      */
     function unshiftBytes14(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes14 element
     ) internal pure {
         unchecked {
@@ -3721,7 +3942,7 @@ library Bytes32Builder {
      * @return element int112 derived from bytes
      */
     function parseInt112(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int112 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_14;
@@ -3730,12 +3951,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int112 value to 14-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int112 to insert
      * @param offset slot offset in bits
      */
     function insertInt112(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int112 element,
         uint256 offset
     ) internal pure {
@@ -3749,10 +3970,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int112 value to 14-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int112 to add
      */
-    function pushInt112(Builder memory self, int112 element) internal pure {
+    function pushInt112(
+        Bytes32.Builder memory self,
+        int112 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 144)) <<
@@ -3763,11 +3987,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 14-byte segment from bytes and return as int112
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int112 derived from bytes
      */
     function popInt112(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int112 element) {
         unchecked {
             self._size -= 112;
@@ -3779,11 +4003,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 14-byte segment from bytes and return as int112
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int112 derived from bytes
      */
     function shiftInt112(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int112 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_14;
@@ -3795,10 +4019,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int112 value to 14-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int112 to add
      */
-    function unshiftInt112(Builder memory self, int112 element) internal pure {
+    function unshiftInt112(
+        Bytes32.Builder memory self,
+        int112 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 112) |
@@ -3812,7 +4039,7 @@ library Bytes32Builder {
      * @return element uint112 derived from bytes
      */
     function parseUint112(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint112 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_14;
@@ -3821,12 +4048,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint112 value to 14-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint112 to insert
      * @param offset slot offset in bits
      */
     function insertUint112(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint112 element,
         uint256 offset
     ) internal pure {
@@ -3840,10 +4067,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint112 value to 14-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint112 to add
      */
-    function pushUint112(Builder memory self, uint112 element) internal pure {
+    function pushUint112(
+        Bytes32.Builder memory self,
+        uint112 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 112;
@@ -3852,11 +4082,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 14-byte segment from bytes and return as uint112
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint112 derived from bytes
      */
     function popUint112(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint112 element) {
         unchecked {
             self._size -= 112;
@@ -3868,11 +4098,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 14-byte segment from bytes and return as uint112
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint112 derived from bytes
      */
     function shiftUint112(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint112 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_14;
@@ -3884,11 +4114,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint112 value to 14-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint112 to add
      */
     function unshiftUint112(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint112 element
     ) internal pure {
         unchecked {
@@ -3902,7 +4132,7 @@ library Bytes32Builder {
      * @return element bytes15 derived from bytes
      */
     function parseBytes15(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes15 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_15;
@@ -3911,12 +4141,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes15 value to 15-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes15 to insert
      * @param offset slot offset in bits
      */
     function insertBytes15(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes15 element,
         uint256 offset
     ) internal pure {
@@ -3930,10 +4160,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes15 value to 15-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes15 to add
      */
-    function pushBytes15(Builder memory self, bytes15 element) internal pure {
+    function pushBytes15(
+        Bytes32.Builder memory self,
+        bytes15 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 136) << self._size;
             self._size += 120;
@@ -3942,11 +4175,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 15-byte segment from bytes and return as bytes15
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes15 derived from bytes
      */
     function popBytes15(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes15 element) {
         unchecked {
             self._size -= 120;
@@ -3958,11 +4191,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 15-byte segment from bytes and return as bytes15
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes15 derived from bytes
      */
     function shiftBytes15(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes15 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_15;
@@ -3974,11 +4207,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes15 value to 15-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes15 to add
      */
     function unshiftBytes15(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes15 element
     ) internal pure {
         unchecked {
@@ -3992,7 +4225,7 @@ library Bytes32Builder {
      * @return element int120 derived from bytes
      */
     function parseInt120(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int120 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_15;
@@ -4001,12 +4234,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int120 value to 15-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int120 to insert
      * @param offset slot offset in bits
      */
     function insertInt120(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int120 element,
         uint256 offset
     ) internal pure {
@@ -4020,10 +4253,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int120 value to 15-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int120 to add
      */
-    function pushInt120(Builder memory self, int120 element) internal pure {
+    function pushInt120(
+        Bytes32.Builder memory self,
+        int120 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 136)) <<
@@ -4034,11 +4270,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 15-byte segment from bytes and return as int120
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int120 derived from bytes
      */
     function popInt120(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int120 element) {
         unchecked {
             self._size -= 120;
@@ -4050,11 +4286,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 15-byte segment from bytes and return as int120
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int120 derived from bytes
      */
     function shiftInt120(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int120 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_15;
@@ -4066,10 +4302,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int120 value to 15-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int120 to add
      */
-    function unshiftInt120(Builder memory self, int120 element) internal pure {
+    function unshiftInt120(
+        Bytes32.Builder memory self,
+        int120 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 120) |
@@ -4083,7 +4322,7 @@ library Bytes32Builder {
      * @return element uint120 derived from bytes
      */
     function parseUint120(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint120 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_15;
@@ -4092,12 +4331,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint120 value to 15-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint120 to insert
      * @param offset slot offset in bits
      */
     function insertUint120(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint120 element,
         uint256 offset
     ) internal pure {
@@ -4111,10 +4350,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint120 value to 15-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint120 to add
      */
-    function pushUint120(Builder memory self, uint120 element) internal pure {
+    function pushUint120(
+        Bytes32.Builder memory self,
+        uint120 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 120;
@@ -4123,11 +4365,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 15-byte segment from bytes and return as uint120
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint120 derived from bytes
      */
     function popUint120(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint120 element) {
         unchecked {
             self._size -= 120;
@@ -4139,11 +4381,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 15-byte segment from bytes and return as uint120
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint120 derived from bytes
      */
     function shiftUint120(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint120 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_15;
@@ -4155,11 +4397,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint120 value to 15-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint120 to add
      */
     function unshiftUint120(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint120 element
     ) internal pure {
         unchecked {
@@ -4173,7 +4415,7 @@ library Bytes32Builder {
      * @return element bytes16 derived from bytes
      */
     function parseBytes16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes16 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_16;
@@ -4182,12 +4424,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes16 value to 16-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes16 to insert
      * @param offset slot offset in bits
      */
     function insertBytes16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes16 element,
         uint256 offset
     ) internal pure {
@@ -4201,10 +4443,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes16 value to 16-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes16 to add
      */
-    function pushBytes16(Builder memory self, bytes16 element) internal pure {
+    function pushBytes16(
+        Bytes32.Builder memory self,
+        bytes16 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 128) << self._size;
             self._size += 128;
@@ -4213,11 +4458,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 16-byte segment from bytes and return as bytes16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes16 derived from bytes
      */
     function popBytes16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes16 element) {
         unchecked {
             self._size -= 128;
@@ -4229,11 +4474,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 16-byte segment from bytes and return as bytes16
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes16 derived from bytes
      */
     function shiftBytes16(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes16 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_16;
@@ -4245,11 +4490,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes16 value to 16-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes16 to add
      */
     function unshiftBytes16(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes16 element
     ) internal pure {
         unchecked {
@@ -4263,7 +4508,7 @@ library Bytes32Builder {
      * @return element int128 derived from bytes
      */
     function parseInt128(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int128 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_16;
@@ -4272,12 +4517,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int128 value to 16-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int128 to insert
      * @param offset slot offset in bits
      */
     function insertInt128(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int128 element,
         uint256 offset
     ) internal pure {
@@ -4291,10 +4536,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int128 value to 16-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int128 to add
      */
-    function pushInt128(Builder memory self, int128 element) internal pure {
+    function pushInt128(
+        Bytes32.Builder memory self,
+        int128 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 128)) <<
@@ -4305,11 +4553,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 16-byte segment from bytes and return as int128
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int128 derived from bytes
      */
     function popInt128(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int128 element) {
         unchecked {
             self._size -= 128;
@@ -4321,11 +4569,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 16-byte segment from bytes and return as int128
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int128 derived from bytes
      */
     function shiftInt128(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int128 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_16;
@@ -4337,10 +4585,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int128 value to 16-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int128 to add
      */
-    function unshiftInt128(Builder memory self, int128 element) internal pure {
+    function unshiftInt128(
+        Bytes32.Builder memory self,
+        int128 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 128) |
@@ -4354,7 +4605,7 @@ library Bytes32Builder {
      * @return element uint128 derived from bytes
      */
     function parseUint128(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint128 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_16;
@@ -4363,12 +4614,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint128 value to 16-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint128 to insert
      * @param offset slot offset in bits
      */
     function insertUint128(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint128 element,
         uint256 offset
     ) internal pure {
@@ -4382,10 +4633,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint128 value to 16-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint128 to add
      */
-    function pushUint128(Builder memory self, uint128 element) internal pure {
+    function pushUint128(
+        Bytes32.Builder memory self,
+        uint128 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 128;
@@ -4394,11 +4648,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 16-byte segment from bytes and return as uint128
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint128 derived from bytes
      */
     function popUint128(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint128 element) {
         unchecked {
             self._size -= 128;
@@ -4410,11 +4664,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 16-byte segment from bytes and return as uint128
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint128 derived from bytes
      */
     function shiftUint128(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint128 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_16;
@@ -4426,11 +4680,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint128 value to 16-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint128 to add
      */
     function unshiftUint128(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint128 element
     ) internal pure {
         unchecked {
@@ -4444,7 +4698,7 @@ library Bytes32Builder {
      * @return element bytes17 derived from bytes
      */
     function parseBytes17(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes17 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_17;
@@ -4453,12 +4707,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes17 value to 17-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes17 to insert
      * @param offset slot offset in bits
      */
     function insertBytes17(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes17 element,
         uint256 offset
     ) internal pure {
@@ -4472,10 +4726,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes17 value to 17-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes17 to add
      */
-    function pushBytes17(Builder memory self, bytes17 element) internal pure {
+    function pushBytes17(
+        Bytes32.Builder memory self,
+        bytes17 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 120) << self._size;
             self._size += 136;
@@ -4484,11 +4741,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 17-byte segment from bytes and return as bytes17
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes17 derived from bytes
      */
     function popBytes17(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes17 element) {
         unchecked {
             self._size -= 136;
@@ -4500,11 +4757,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 17-byte segment from bytes and return as bytes17
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes17 derived from bytes
      */
     function shiftBytes17(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes17 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_17;
@@ -4516,11 +4773,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes17 value to 17-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes17 to add
      */
     function unshiftBytes17(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes17 element
     ) internal pure {
         unchecked {
@@ -4534,7 +4791,7 @@ library Bytes32Builder {
      * @return element int136 derived from bytes
      */
     function parseInt136(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int136 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_17;
@@ -4543,12 +4800,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int136 value to 17-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int136 to insert
      * @param offset slot offset in bits
      */
     function insertInt136(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int136 element,
         uint256 offset
     ) internal pure {
@@ -4562,10 +4819,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int136 value to 17-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int136 to add
      */
-    function pushInt136(Builder memory self, int136 element) internal pure {
+    function pushInt136(
+        Bytes32.Builder memory self,
+        int136 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 120)) <<
@@ -4576,11 +4836,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 17-byte segment from bytes and return as int136
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int136 derived from bytes
      */
     function popInt136(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int136 element) {
         unchecked {
             self._size -= 136;
@@ -4592,11 +4852,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 17-byte segment from bytes and return as int136
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int136 derived from bytes
      */
     function shiftInt136(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int136 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_17;
@@ -4608,10 +4868,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int136 value to 17-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int136 to add
      */
-    function unshiftInt136(Builder memory self, int136 element) internal pure {
+    function unshiftInt136(
+        Bytes32.Builder memory self,
+        int136 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 136) |
@@ -4625,7 +4888,7 @@ library Bytes32Builder {
      * @return element uint136 derived from bytes
      */
     function parseUint136(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint136 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_17;
@@ -4634,12 +4897,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint136 value to 17-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint136 to insert
      * @param offset slot offset in bits
      */
     function insertUint136(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint136 element,
         uint256 offset
     ) internal pure {
@@ -4653,10 +4916,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint136 value to 17-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint136 to add
      */
-    function pushUint136(Builder memory self, uint136 element) internal pure {
+    function pushUint136(
+        Bytes32.Builder memory self,
+        uint136 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 136;
@@ -4665,11 +4931,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 17-byte segment from bytes and return as uint136
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint136 derived from bytes
      */
     function popUint136(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint136 element) {
         unchecked {
             self._size -= 136;
@@ -4681,11 +4947,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 17-byte segment from bytes and return as uint136
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint136 derived from bytes
      */
     function shiftUint136(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint136 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_17;
@@ -4697,11 +4963,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint136 value to 17-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint136 to add
      */
     function unshiftUint136(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint136 element
     ) internal pure {
         unchecked {
@@ -4715,7 +4981,7 @@ library Bytes32Builder {
      * @return element bytes18 derived from bytes
      */
     function parseBytes18(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes18 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_18;
@@ -4724,12 +4990,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes18 value to 18-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes18 to insert
      * @param offset slot offset in bits
      */
     function insertBytes18(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes18 element,
         uint256 offset
     ) internal pure {
@@ -4743,10 +5009,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes18 value to 18-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes18 to add
      */
-    function pushBytes18(Builder memory self, bytes18 element) internal pure {
+    function pushBytes18(
+        Bytes32.Builder memory self,
+        bytes18 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 112) << self._size;
             self._size += 144;
@@ -4755,11 +5024,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 18-byte segment from bytes and return as bytes18
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes18 derived from bytes
      */
     function popBytes18(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes18 element) {
         unchecked {
             self._size -= 144;
@@ -4771,11 +5040,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 18-byte segment from bytes and return as bytes18
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes18 derived from bytes
      */
     function shiftBytes18(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes18 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_18;
@@ -4787,11 +5056,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes18 value to 18-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes18 to add
      */
     function unshiftBytes18(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes18 element
     ) internal pure {
         unchecked {
@@ -4805,7 +5074,7 @@ library Bytes32Builder {
      * @return element int144 derived from bytes
      */
     function parseInt144(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int144 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_18;
@@ -4814,12 +5083,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int144 value to 18-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int144 to insert
      * @param offset slot offset in bits
      */
     function insertInt144(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int144 element,
         uint256 offset
     ) internal pure {
@@ -4833,10 +5102,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int144 value to 18-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int144 to add
      */
-    function pushInt144(Builder memory self, int144 element) internal pure {
+    function pushInt144(
+        Bytes32.Builder memory self,
+        int144 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 112)) <<
@@ -4847,11 +5119,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 18-byte segment from bytes and return as int144
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int144 derived from bytes
      */
     function popInt144(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int144 element) {
         unchecked {
             self._size -= 144;
@@ -4863,11 +5135,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 18-byte segment from bytes and return as int144
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int144 derived from bytes
      */
     function shiftInt144(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int144 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_18;
@@ -4879,10 +5151,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int144 value to 18-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int144 to add
      */
-    function unshiftInt144(Builder memory self, int144 element) internal pure {
+    function unshiftInt144(
+        Bytes32.Builder memory self,
+        int144 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 144) |
@@ -4896,7 +5171,7 @@ library Bytes32Builder {
      * @return element uint144 derived from bytes
      */
     function parseUint144(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint144 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_18;
@@ -4905,12 +5180,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint144 value to 18-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint144 to insert
      * @param offset slot offset in bits
      */
     function insertUint144(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint144 element,
         uint256 offset
     ) internal pure {
@@ -4924,10 +5199,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint144 value to 18-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint144 to add
      */
-    function pushUint144(Builder memory self, uint144 element) internal pure {
+    function pushUint144(
+        Bytes32.Builder memory self,
+        uint144 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 144;
@@ -4936,11 +5214,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 18-byte segment from bytes and return as uint144
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint144 derived from bytes
      */
     function popUint144(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint144 element) {
         unchecked {
             self._size -= 144;
@@ -4952,11 +5230,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 18-byte segment from bytes and return as uint144
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint144 derived from bytes
      */
     function shiftUint144(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint144 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_18;
@@ -4968,11 +5246,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint144 value to 18-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint144 to add
      */
     function unshiftUint144(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint144 element
     ) internal pure {
         unchecked {
@@ -4986,7 +5264,7 @@ library Bytes32Builder {
      * @return element bytes19 derived from bytes
      */
     function parseBytes19(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes19 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_19;
@@ -4995,12 +5273,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes19 value to 19-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes19 to insert
      * @param offset slot offset in bits
      */
     function insertBytes19(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes19 element,
         uint256 offset
     ) internal pure {
@@ -5014,10 +5292,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes19 value to 19-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes19 to add
      */
-    function pushBytes19(Builder memory self, bytes19 element) internal pure {
+    function pushBytes19(
+        Bytes32.Builder memory self,
+        bytes19 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 104) << self._size;
             self._size += 152;
@@ -5026,11 +5307,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 19-byte segment from bytes and return as bytes19
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes19 derived from bytes
      */
     function popBytes19(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes19 element) {
         unchecked {
             self._size -= 152;
@@ -5042,11 +5323,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 19-byte segment from bytes and return as bytes19
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes19 derived from bytes
      */
     function shiftBytes19(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes19 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_19;
@@ -5058,11 +5339,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes19 value to 19-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes19 to add
      */
     function unshiftBytes19(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes19 element
     ) internal pure {
         unchecked {
@@ -5076,7 +5357,7 @@ library Bytes32Builder {
      * @return element int152 derived from bytes
      */
     function parseInt152(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int152 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_19;
@@ -5085,12 +5366,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int152 value to 19-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int152 to insert
      * @param offset slot offset in bits
      */
     function insertInt152(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int152 element,
         uint256 offset
     ) internal pure {
@@ -5104,10 +5385,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int152 value to 19-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int152 to add
      */
-    function pushInt152(Builder memory self, int152 element) internal pure {
+    function pushInt152(
+        Bytes32.Builder memory self,
+        int152 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 104)) <<
@@ -5118,11 +5402,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 19-byte segment from bytes and return as int152
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int152 derived from bytes
      */
     function popInt152(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int152 element) {
         unchecked {
             self._size -= 152;
@@ -5134,11 +5418,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 19-byte segment from bytes and return as int152
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int152 derived from bytes
      */
     function shiftInt152(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int152 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_19;
@@ -5150,10 +5434,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int152 value to 19-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int152 to add
      */
-    function unshiftInt152(Builder memory self, int152 element) internal pure {
+    function unshiftInt152(
+        Bytes32.Builder memory self,
+        int152 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 152) |
@@ -5167,7 +5454,7 @@ library Bytes32Builder {
      * @return element uint152 derived from bytes
      */
     function parseUint152(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint152 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_19;
@@ -5176,12 +5463,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint152 value to 19-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint152 to insert
      * @param offset slot offset in bits
      */
     function insertUint152(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint152 element,
         uint256 offset
     ) internal pure {
@@ -5195,10 +5482,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint152 value to 19-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint152 to add
      */
-    function pushUint152(Builder memory self, uint152 element) internal pure {
+    function pushUint152(
+        Bytes32.Builder memory self,
+        uint152 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 152;
@@ -5207,11 +5497,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 19-byte segment from bytes and return as uint152
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint152 derived from bytes
      */
     function popUint152(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint152 element) {
         unchecked {
             self._size -= 152;
@@ -5223,11 +5513,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 19-byte segment from bytes and return as uint152
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint152 derived from bytes
      */
     function shiftUint152(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint152 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_19;
@@ -5239,11 +5529,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint152 value to 19-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint152 to add
      */
     function unshiftUint152(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint152 element
     ) internal pure {
         unchecked {
@@ -5257,7 +5547,7 @@ library Bytes32Builder {
      * @return element bytes20 derived from bytes
      */
     function parseBytes20(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes20 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
@@ -5266,12 +5556,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes20 value to 20-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes20 to insert
      * @param offset slot offset in bits
      */
     function insertBytes20(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes20 element,
         uint256 offset
     ) internal pure {
@@ -5285,10 +5575,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes20 value to 20-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes20 to add
      */
-    function pushBytes20(Builder memory self, bytes20 element) internal pure {
+    function pushBytes20(
+        Bytes32.Builder memory self,
+        bytes20 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 96) << self._size;
             self._size += 160;
@@ -5297,11 +5590,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 20-byte segment from bytes and return as bytes20
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes20 derived from bytes
      */
     function popBytes20(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes20 element) {
         unchecked {
             self._size -= 160;
@@ -5313,11 +5606,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 20-byte segment from bytes and return as bytes20
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes20 derived from bytes
      */
     function shiftBytes20(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes20 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_20;
@@ -5329,11 +5622,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes20 value to 20-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes20 to add
      */
     function unshiftBytes20(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes20 element
     ) internal pure {
         unchecked {
@@ -5347,7 +5640,7 @@ library Bytes32Builder {
      * @return element int160 derived from bytes
      */
     function parseInt160(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int160 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
@@ -5356,12 +5649,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int160 value to 20-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int160 to insert
      * @param offset slot offset in bits
      */
     function insertInt160(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int160 element,
         uint256 offset
     ) internal pure {
@@ -5375,10 +5668,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int160 value to 20-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int160 to add
      */
-    function pushInt160(Builder memory self, int160 element) internal pure {
+    function pushInt160(
+        Bytes32.Builder memory self,
+        int160 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 96)) <<
@@ -5389,11 +5685,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 20-byte segment from bytes and return as int160
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int160 derived from bytes
      */
     function popInt160(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int160 element) {
         unchecked {
             self._size -= 160;
@@ -5405,11 +5701,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 20-byte segment from bytes and return as int160
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int160 derived from bytes
      */
     function shiftInt160(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int160 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_20;
@@ -5421,10 +5717,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int160 value to 20-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int160 to add
      */
-    function unshiftInt160(Builder memory self, int160 element) internal pure {
+    function unshiftInt160(
+        Bytes32.Builder memory self,
+        int160 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 160) |
@@ -5438,7 +5737,7 @@ library Bytes32Builder {
      * @return element uint160 derived from bytes
      */
     function parseUint160(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint160 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
@@ -5447,12 +5746,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint160 value to 20-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint160 to insert
      * @param offset slot offset in bits
      */
     function insertUint160(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint160 element,
         uint256 offset
     ) internal pure {
@@ -5466,10 +5765,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint160 value to 20-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint160 to add
      */
-    function pushUint160(Builder memory self, uint160 element) internal pure {
+    function pushUint160(
+        Bytes32.Builder memory self,
+        uint160 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 160;
@@ -5478,11 +5780,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 20-byte segment from bytes and return as uint160
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint160 derived from bytes
      */
     function popUint160(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint160 element) {
         unchecked {
             self._size -= 160;
@@ -5494,11 +5796,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 20-byte segment from bytes and return as uint160
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint160 derived from bytes
      */
     function shiftUint160(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint160 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_20;
@@ -5510,11 +5812,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint160 value to 20-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint160 to add
      */
     function unshiftUint160(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint160 element
     ) internal pure {
         unchecked {
@@ -5528,7 +5830,7 @@ library Bytes32Builder {
      * @return element address derived from bytes
      */
     function parseAddress(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (address element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_20;
@@ -5537,12 +5839,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert address value to 20-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element address to insert
      * @param offset slot offset in bits
      */
     function insertAddress(
-        Builder memory self,
+        Bytes32.Builder memory self,
         address element,
         uint256 offset
     ) internal pure {
@@ -5556,10 +5858,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert address value to 20-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element address to add
      */
-    function pushAddress(Builder memory self, address element) internal pure {
+    function pushAddress(
+        Bytes32.Builder memory self,
+        address element
+    ) internal pure {
         unchecked {
             self._data |= Address.toBytes32(element) << self._size;
             self._size += 160;
@@ -5568,11 +5873,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 20-byte segment from bytes and return as address
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element address derived from bytes
      */
     function popAddress(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (address element) {
         unchecked {
             self._size -= 160;
@@ -5584,11 +5889,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 20-byte segment from bytes and return as address
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element address derived from bytes
      */
     function shiftAddress(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (address element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_20;
@@ -5600,11 +5905,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert address value to 20-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element address to add
      */
     function unshiftAddress(
-        Builder memory self,
+        Bytes32.Builder memory self,
         address element
     ) internal pure {
         unchecked {
@@ -5618,7 +5923,7 @@ library Bytes32Builder {
      * @return element bytes21 derived from bytes
      */
     function parseBytes21(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes21 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_21;
@@ -5627,12 +5932,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes21 value to 21-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes21 to insert
      * @param offset slot offset in bits
      */
     function insertBytes21(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes21 element,
         uint256 offset
     ) internal pure {
@@ -5646,10 +5951,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes21 value to 21-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes21 to add
      */
-    function pushBytes21(Builder memory self, bytes21 element) internal pure {
+    function pushBytes21(
+        Bytes32.Builder memory self,
+        bytes21 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 88) << self._size;
             self._size += 168;
@@ -5658,11 +5966,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 21-byte segment from bytes and return as bytes21
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes21 derived from bytes
      */
     function popBytes21(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes21 element) {
         unchecked {
             self._size -= 168;
@@ -5674,11 +5982,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 21-byte segment from bytes and return as bytes21
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes21 derived from bytes
      */
     function shiftBytes21(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes21 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_21;
@@ -5690,11 +5998,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes21 value to 21-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes21 to add
      */
     function unshiftBytes21(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes21 element
     ) internal pure {
         unchecked {
@@ -5708,7 +6016,7 @@ library Bytes32Builder {
      * @return element int168 derived from bytes
      */
     function parseInt168(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int168 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_21;
@@ -5717,12 +6025,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int168 value to 21-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int168 to insert
      * @param offset slot offset in bits
      */
     function insertInt168(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int168 element,
         uint256 offset
     ) internal pure {
@@ -5736,10 +6044,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int168 value to 21-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int168 to add
      */
-    function pushInt168(Builder memory self, int168 element) internal pure {
+    function pushInt168(
+        Bytes32.Builder memory self,
+        int168 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 88)) <<
@@ -5750,11 +6061,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 21-byte segment from bytes and return as int168
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int168 derived from bytes
      */
     function popInt168(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int168 element) {
         unchecked {
             self._size -= 168;
@@ -5766,11 +6077,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 21-byte segment from bytes and return as int168
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int168 derived from bytes
      */
     function shiftInt168(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int168 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_21;
@@ -5782,10 +6093,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int168 value to 21-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int168 to add
      */
-    function unshiftInt168(Builder memory self, int168 element) internal pure {
+    function unshiftInt168(
+        Bytes32.Builder memory self,
+        int168 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 168) |
@@ -5799,7 +6113,7 @@ library Bytes32Builder {
      * @return element uint168 derived from bytes
      */
     function parseUint168(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint168 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_21;
@@ -5808,12 +6122,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint168 value to 21-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint168 to insert
      * @param offset slot offset in bits
      */
     function insertUint168(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint168 element,
         uint256 offset
     ) internal pure {
@@ -5827,10 +6141,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint168 value to 21-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint168 to add
      */
-    function pushUint168(Builder memory self, uint168 element) internal pure {
+    function pushUint168(
+        Bytes32.Builder memory self,
+        uint168 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 168;
@@ -5839,11 +6156,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 21-byte segment from bytes and return as uint168
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint168 derived from bytes
      */
     function popUint168(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint168 element) {
         unchecked {
             self._size -= 168;
@@ -5855,11 +6172,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 21-byte segment from bytes and return as uint168
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint168 derived from bytes
      */
     function shiftUint168(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint168 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_21;
@@ -5871,11 +6188,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint168 value to 21-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint168 to add
      */
     function unshiftUint168(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint168 element
     ) internal pure {
         unchecked {
@@ -5889,7 +6206,7 @@ library Bytes32Builder {
      * @return element bytes22 derived from bytes
      */
     function parseBytes22(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes22 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_22;
@@ -5898,12 +6215,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes22 value to 22-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes22 to insert
      * @param offset slot offset in bits
      */
     function insertBytes22(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes22 element,
         uint256 offset
     ) internal pure {
@@ -5917,10 +6234,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes22 value to 22-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes22 to add
      */
-    function pushBytes22(Builder memory self, bytes22 element) internal pure {
+    function pushBytes22(
+        Bytes32.Builder memory self,
+        bytes22 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 80) << self._size;
             self._size += 176;
@@ -5929,11 +6249,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 22-byte segment from bytes and return as bytes22
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes22 derived from bytes
      */
     function popBytes22(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes22 element) {
         unchecked {
             self._size -= 176;
@@ -5945,11 +6265,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 22-byte segment from bytes and return as bytes22
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes22 derived from bytes
      */
     function shiftBytes22(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes22 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_22;
@@ -5961,11 +6281,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes22 value to 22-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes22 to add
      */
     function unshiftBytes22(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes22 element
     ) internal pure {
         unchecked {
@@ -5979,7 +6299,7 @@ library Bytes32Builder {
      * @return element int176 derived from bytes
      */
     function parseInt176(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int176 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_22;
@@ -5988,12 +6308,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int176 value to 22-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int176 to insert
      * @param offset slot offset in bits
      */
     function insertInt176(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int176 element,
         uint256 offset
     ) internal pure {
@@ -6007,10 +6327,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int176 value to 22-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int176 to add
      */
-    function pushInt176(Builder memory self, int176 element) internal pure {
+    function pushInt176(
+        Bytes32.Builder memory self,
+        int176 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 80)) <<
@@ -6021,11 +6344,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 22-byte segment from bytes and return as int176
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int176 derived from bytes
      */
     function popInt176(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int176 element) {
         unchecked {
             self._size -= 176;
@@ -6037,11 +6360,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 22-byte segment from bytes and return as int176
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int176 derived from bytes
      */
     function shiftInt176(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int176 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_22;
@@ -6053,10 +6376,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int176 value to 22-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int176 to add
      */
-    function unshiftInt176(Builder memory self, int176 element) internal pure {
+    function unshiftInt176(
+        Bytes32.Builder memory self,
+        int176 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 176) |
@@ -6070,7 +6396,7 @@ library Bytes32Builder {
      * @return element uint176 derived from bytes
      */
     function parseUint176(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint176 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_22;
@@ -6079,12 +6405,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint176 value to 22-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint176 to insert
      * @param offset slot offset in bits
      */
     function insertUint176(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint176 element,
         uint256 offset
     ) internal pure {
@@ -6098,10 +6424,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint176 value to 22-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint176 to add
      */
-    function pushUint176(Builder memory self, uint176 element) internal pure {
+    function pushUint176(
+        Bytes32.Builder memory self,
+        uint176 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 176;
@@ -6110,11 +6439,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 22-byte segment from bytes and return as uint176
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint176 derived from bytes
      */
     function popUint176(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint176 element) {
         unchecked {
             self._size -= 176;
@@ -6126,11 +6455,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 22-byte segment from bytes and return as uint176
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint176 derived from bytes
      */
     function shiftUint176(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint176 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_22;
@@ -6142,11 +6471,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint176 value to 22-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint176 to add
      */
     function unshiftUint176(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint176 element
     ) internal pure {
         unchecked {
@@ -6160,7 +6489,7 @@ library Bytes32Builder {
      * @return element bytes23 derived from bytes
      */
     function parseBytes23(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes23 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_23;
@@ -6169,12 +6498,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes23 value to 23-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes23 to insert
      * @param offset slot offset in bits
      */
     function insertBytes23(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes23 element,
         uint256 offset
     ) internal pure {
@@ -6188,10 +6517,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes23 value to 23-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes23 to add
      */
-    function pushBytes23(Builder memory self, bytes23 element) internal pure {
+    function pushBytes23(
+        Bytes32.Builder memory self,
+        bytes23 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 72) << self._size;
             self._size += 184;
@@ -6200,11 +6532,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 23-byte segment from bytes and return as bytes23
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes23 derived from bytes
      */
     function popBytes23(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes23 element) {
         unchecked {
             self._size -= 184;
@@ -6216,11 +6548,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 23-byte segment from bytes and return as bytes23
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes23 derived from bytes
      */
     function shiftBytes23(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes23 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_23;
@@ -6232,11 +6564,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes23 value to 23-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes23 to add
      */
     function unshiftBytes23(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes23 element
     ) internal pure {
         unchecked {
@@ -6250,7 +6582,7 @@ library Bytes32Builder {
      * @return element int184 derived from bytes
      */
     function parseInt184(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int184 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_23;
@@ -6259,12 +6591,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int184 value to 23-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int184 to insert
      * @param offset slot offset in bits
      */
     function insertInt184(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int184 element,
         uint256 offset
     ) internal pure {
@@ -6278,10 +6610,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int184 value to 23-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int184 to add
      */
-    function pushInt184(Builder memory self, int184 element) internal pure {
+    function pushInt184(
+        Bytes32.Builder memory self,
+        int184 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 72)) <<
@@ -6292,11 +6627,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 23-byte segment from bytes and return as int184
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int184 derived from bytes
      */
     function popInt184(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int184 element) {
         unchecked {
             self._size -= 184;
@@ -6308,11 +6643,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 23-byte segment from bytes and return as int184
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int184 derived from bytes
      */
     function shiftInt184(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int184 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_23;
@@ -6324,10 +6659,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int184 value to 23-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int184 to add
      */
-    function unshiftInt184(Builder memory self, int184 element) internal pure {
+    function unshiftInt184(
+        Bytes32.Builder memory self,
+        int184 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 184) |
@@ -6341,7 +6679,7 @@ library Bytes32Builder {
      * @return element uint184 derived from bytes
      */
     function parseUint184(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint184 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_23;
@@ -6350,12 +6688,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint184 value to 23-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint184 to insert
      * @param offset slot offset in bits
      */
     function insertUint184(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint184 element,
         uint256 offset
     ) internal pure {
@@ -6369,10 +6707,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint184 value to 23-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint184 to add
      */
-    function pushUint184(Builder memory self, uint184 element) internal pure {
+    function pushUint184(
+        Bytes32.Builder memory self,
+        uint184 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 184;
@@ -6381,11 +6722,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 23-byte segment from bytes and return as uint184
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint184 derived from bytes
      */
     function popUint184(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint184 element) {
         unchecked {
             self._size -= 184;
@@ -6397,11 +6738,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 23-byte segment from bytes and return as uint184
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint184 derived from bytes
      */
     function shiftUint184(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint184 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_23;
@@ -6413,11 +6754,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint184 value to 23-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint184 to add
      */
     function unshiftUint184(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint184 element
     ) internal pure {
         unchecked {
@@ -6431,7 +6772,7 @@ library Bytes32Builder {
      * @return element bytes24 derived from bytes
      */
     function parseBytes24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes24 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_24;
@@ -6440,12 +6781,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes24 value to 24-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes24 to insert
      * @param offset slot offset in bits
      */
     function insertBytes24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes24 element,
         uint256 offset
     ) internal pure {
@@ -6459,10 +6800,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes24 value to 24-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes24 to add
      */
-    function pushBytes24(Builder memory self, bytes24 element) internal pure {
+    function pushBytes24(
+        Bytes32.Builder memory self,
+        bytes24 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 64) << self._size;
             self._size += 192;
@@ -6471,11 +6815,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 24-byte segment from bytes and return as bytes24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes24 derived from bytes
      */
     function popBytes24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes24 element) {
         unchecked {
             self._size -= 192;
@@ -6487,11 +6831,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 24-byte segment from bytes and return as bytes24
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes24 derived from bytes
      */
     function shiftBytes24(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes24 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_24;
@@ -6503,11 +6847,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes24 value to 24-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes24 to add
      */
     function unshiftBytes24(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes24 element
     ) internal pure {
         unchecked {
@@ -6521,7 +6865,7 @@ library Bytes32Builder {
      * @return element int192 derived from bytes
      */
     function parseInt192(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int192 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_24;
@@ -6530,12 +6874,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int192 value to 24-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int192 to insert
      * @param offset slot offset in bits
      */
     function insertInt192(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int192 element,
         uint256 offset
     ) internal pure {
@@ -6549,10 +6893,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int192 value to 24-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int192 to add
      */
-    function pushInt192(Builder memory self, int192 element) internal pure {
+    function pushInt192(
+        Bytes32.Builder memory self,
+        int192 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 64)) <<
@@ -6563,11 +6910,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 24-byte segment from bytes and return as int192
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int192 derived from bytes
      */
     function popInt192(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int192 element) {
         unchecked {
             self._size -= 192;
@@ -6579,11 +6926,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 24-byte segment from bytes and return as int192
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int192 derived from bytes
      */
     function shiftInt192(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int192 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_24;
@@ -6595,10 +6942,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int192 value to 24-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int192 to add
      */
-    function unshiftInt192(Builder memory self, int192 element) internal pure {
+    function unshiftInt192(
+        Bytes32.Builder memory self,
+        int192 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 192) |
@@ -6612,7 +6962,7 @@ library Bytes32Builder {
      * @return element uint192 derived from bytes
      */
     function parseUint192(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint192 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_24;
@@ -6621,12 +6971,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint192 value to 24-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint192 to insert
      * @param offset slot offset in bits
      */
     function insertUint192(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint192 element,
         uint256 offset
     ) internal pure {
@@ -6640,10 +6990,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint192 value to 24-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint192 to add
      */
-    function pushUint192(Builder memory self, uint192 element) internal pure {
+    function pushUint192(
+        Bytes32.Builder memory self,
+        uint192 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 192;
@@ -6652,11 +7005,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 24-byte segment from bytes and return as uint192
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint192 derived from bytes
      */
     function popUint192(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint192 element) {
         unchecked {
             self._size -= 192;
@@ -6668,11 +7021,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 24-byte segment from bytes and return as uint192
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint192 derived from bytes
      */
     function shiftUint192(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint192 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_24;
@@ -6684,11 +7037,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint192 value to 24-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint192 to add
      */
     function unshiftUint192(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint192 element
     ) internal pure {
         unchecked {
@@ -6702,7 +7055,7 @@ library Bytes32Builder {
      * @return element bytes25 derived from bytes
      */
     function parseBytes25(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes25 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_25;
@@ -6711,12 +7064,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes25 value to 25-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes25 to insert
      * @param offset slot offset in bits
      */
     function insertBytes25(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes25 element,
         uint256 offset
     ) internal pure {
@@ -6730,10 +7083,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes25 value to 25-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes25 to add
      */
-    function pushBytes25(Builder memory self, bytes25 element) internal pure {
+    function pushBytes25(
+        Bytes32.Builder memory self,
+        bytes25 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 56) << self._size;
             self._size += 200;
@@ -6742,11 +7098,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 25-byte segment from bytes and return as bytes25
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes25 derived from bytes
      */
     function popBytes25(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes25 element) {
         unchecked {
             self._size -= 200;
@@ -6758,11 +7114,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 25-byte segment from bytes and return as bytes25
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes25 derived from bytes
      */
     function shiftBytes25(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes25 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_25;
@@ -6774,11 +7130,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes25 value to 25-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes25 to add
      */
     function unshiftBytes25(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes25 element
     ) internal pure {
         unchecked {
@@ -6792,7 +7148,7 @@ library Bytes32Builder {
      * @return element int200 derived from bytes
      */
     function parseInt200(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int200 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_25;
@@ -6801,12 +7157,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int200 value to 25-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int200 to insert
      * @param offset slot offset in bits
      */
     function insertInt200(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int200 element,
         uint256 offset
     ) internal pure {
@@ -6820,10 +7176,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int200 value to 25-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int200 to add
      */
-    function pushInt200(Builder memory self, int200 element) internal pure {
+    function pushInt200(
+        Bytes32.Builder memory self,
+        int200 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 56)) <<
@@ -6834,11 +7193,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 25-byte segment from bytes and return as int200
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int200 derived from bytes
      */
     function popInt200(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int200 element) {
         unchecked {
             self._size -= 200;
@@ -6850,11 +7209,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 25-byte segment from bytes and return as int200
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int200 derived from bytes
      */
     function shiftInt200(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int200 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_25;
@@ -6866,10 +7225,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int200 value to 25-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int200 to add
      */
-    function unshiftInt200(Builder memory self, int200 element) internal pure {
+    function unshiftInt200(
+        Bytes32.Builder memory self,
+        int200 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 200) |
@@ -6883,7 +7245,7 @@ library Bytes32Builder {
      * @return element uint200 derived from bytes
      */
     function parseUint200(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint200 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_25;
@@ -6892,12 +7254,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint200 value to 25-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint200 to insert
      * @param offset slot offset in bits
      */
     function insertUint200(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint200 element,
         uint256 offset
     ) internal pure {
@@ -6911,10 +7273,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint200 value to 25-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint200 to add
      */
-    function pushUint200(Builder memory self, uint200 element) internal pure {
+    function pushUint200(
+        Bytes32.Builder memory self,
+        uint200 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 200;
@@ -6923,11 +7288,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 25-byte segment from bytes and return as uint200
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint200 derived from bytes
      */
     function popUint200(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint200 element) {
         unchecked {
             self._size -= 200;
@@ -6939,11 +7304,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 25-byte segment from bytes and return as uint200
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint200 derived from bytes
      */
     function shiftUint200(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint200 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_25;
@@ -6955,11 +7320,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint200 value to 25-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint200 to add
      */
     function unshiftUint200(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint200 element
     ) internal pure {
         unchecked {
@@ -6973,7 +7338,7 @@ library Bytes32Builder {
      * @return element bytes26 derived from bytes
      */
     function parseBytes26(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes26 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_26;
@@ -6982,12 +7347,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes26 value to 26-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes26 to insert
      * @param offset slot offset in bits
      */
     function insertBytes26(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes26 element,
         uint256 offset
     ) internal pure {
@@ -7001,10 +7366,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes26 value to 26-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes26 to add
      */
-    function pushBytes26(Builder memory self, bytes26 element) internal pure {
+    function pushBytes26(
+        Bytes32.Builder memory self,
+        bytes26 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 48) << self._size;
             self._size += 208;
@@ -7013,11 +7381,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 26-byte segment from bytes and return as bytes26
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes26 derived from bytes
      */
     function popBytes26(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes26 element) {
         unchecked {
             self._size -= 208;
@@ -7029,11 +7397,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 26-byte segment from bytes and return as bytes26
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes26 derived from bytes
      */
     function shiftBytes26(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes26 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_26;
@@ -7045,11 +7413,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes26 value to 26-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes26 to add
      */
     function unshiftBytes26(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes26 element
     ) internal pure {
         unchecked {
@@ -7063,7 +7431,7 @@ library Bytes32Builder {
      * @return element int208 derived from bytes
      */
     function parseInt208(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int208 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_26;
@@ -7072,12 +7440,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int208 value to 26-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int208 to insert
      * @param offset slot offset in bits
      */
     function insertInt208(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int208 element,
         uint256 offset
     ) internal pure {
@@ -7091,10 +7459,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int208 value to 26-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int208 to add
      */
-    function pushInt208(Builder memory self, int208 element) internal pure {
+    function pushInt208(
+        Bytes32.Builder memory self,
+        int208 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 48)) <<
@@ -7105,11 +7476,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 26-byte segment from bytes and return as int208
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int208 derived from bytes
      */
     function popInt208(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int208 element) {
         unchecked {
             self._size -= 208;
@@ -7121,11 +7492,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 26-byte segment from bytes and return as int208
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int208 derived from bytes
      */
     function shiftInt208(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int208 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_26;
@@ -7137,10 +7508,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int208 value to 26-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int208 to add
      */
-    function unshiftInt208(Builder memory self, int208 element) internal pure {
+    function unshiftInt208(
+        Bytes32.Builder memory self,
+        int208 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 208) |
@@ -7154,7 +7528,7 @@ library Bytes32Builder {
      * @return element uint208 derived from bytes
      */
     function parseUint208(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint208 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_26;
@@ -7163,12 +7537,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint208 value to 26-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint208 to insert
      * @param offset slot offset in bits
      */
     function insertUint208(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint208 element,
         uint256 offset
     ) internal pure {
@@ -7182,10 +7556,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint208 value to 26-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint208 to add
      */
-    function pushUint208(Builder memory self, uint208 element) internal pure {
+    function pushUint208(
+        Bytes32.Builder memory self,
+        uint208 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 208;
@@ -7194,11 +7571,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 26-byte segment from bytes and return as uint208
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint208 derived from bytes
      */
     function popUint208(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint208 element) {
         unchecked {
             self._size -= 208;
@@ -7210,11 +7587,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 26-byte segment from bytes and return as uint208
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint208 derived from bytes
      */
     function shiftUint208(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint208 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_26;
@@ -7226,11 +7603,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint208 value to 26-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint208 to add
      */
     function unshiftUint208(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint208 element
     ) internal pure {
         unchecked {
@@ -7244,7 +7621,7 @@ library Bytes32Builder {
      * @return element bytes27 derived from bytes
      */
     function parseBytes27(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes27 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_27;
@@ -7253,12 +7630,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes27 value to 27-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes27 to insert
      * @param offset slot offset in bits
      */
     function insertBytes27(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes27 element,
         uint256 offset
     ) internal pure {
@@ -7272,10 +7649,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes27 value to 27-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes27 to add
      */
-    function pushBytes27(Builder memory self, bytes27 element) internal pure {
+    function pushBytes27(
+        Bytes32.Builder memory self,
+        bytes27 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 40) << self._size;
             self._size += 216;
@@ -7284,11 +7664,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 27-byte segment from bytes and return as bytes27
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes27 derived from bytes
      */
     function popBytes27(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes27 element) {
         unchecked {
             self._size -= 216;
@@ -7300,11 +7680,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 27-byte segment from bytes and return as bytes27
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes27 derived from bytes
      */
     function shiftBytes27(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes27 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_27;
@@ -7316,11 +7696,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes27 value to 27-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes27 to add
      */
     function unshiftBytes27(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes27 element
     ) internal pure {
         unchecked {
@@ -7334,7 +7714,7 @@ library Bytes32Builder {
      * @return element int216 derived from bytes
      */
     function parseInt216(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int216 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_27;
@@ -7343,12 +7723,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int216 value to 27-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int216 to insert
      * @param offset slot offset in bits
      */
     function insertInt216(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int216 element,
         uint256 offset
     ) internal pure {
@@ -7362,10 +7742,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int216 value to 27-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int216 to add
      */
-    function pushInt216(Builder memory self, int216 element) internal pure {
+    function pushInt216(
+        Bytes32.Builder memory self,
+        int216 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 40)) <<
@@ -7376,11 +7759,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 27-byte segment from bytes and return as int216
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int216 derived from bytes
      */
     function popInt216(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int216 element) {
         unchecked {
             self._size -= 216;
@@ -7392,11 +7775,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 27-byte segment from bytes and return as int216
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int216 derived from bytes
      */
     function shiftInt216(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int216 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_27;
@@ -7408,10 +7791,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int216 value to 27-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int216 to add
      */
-    function unshiftInt216(Builder memory self, int216 element) internal pure {
+    function unshiftInt216(
+        Bytes32.Builder memory self,
+        int216 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 216) |
@@ -7425,7 +7811,7 @@ library Bytes32Builder {
      * @return element uint216 derived from bytes
      */
     function parseUint216(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint216 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_27;
@@ -7434,12 +7820,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint216 value to 27-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint216 to insert
      * @param offset slot offset in bits
      */
     function insertUint216(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint216 element,
         uint256 offset
     ) internal pure {
@@ -7453,10 +7839,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint216 value to 27-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint216 to add
      */
-    function pushUint216(Builder memory self, uint216 element) internal pure {
+    function pushUint216(
+        Bytes32.Builder memory self,
+        uint216 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 216;
@@ -7465,11 +7854,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 27-byte segment from bytes and return as uint216
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint216 derived from bytes
      */
     function popUint216(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint216 element) {
         unchecked {
             self._size -= 216;
@@ -7481,11 +7870,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 27-byte segment from bytes and return as uint216
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint216 derived from bytes
      */
     function shiftUint216(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint216 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_27;
@@ -7497,11 +7886,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint216 value to 27-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint216 to add
      */
     function unshiftUint216(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint216 element
     ) internal pure {
         unchecked {
@@ -7515,7 +7904,7 @@ library Bytes32Builder {
      * @return element bytes28 derived from bytes
      */
     function parseBytes28(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes28 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_28;
@@ -7524,12 +7913,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes28 value to 28-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes28 to insert
      * @param offset slot offset in bits
      */
     function insertBytes28(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes28 element,
         uint256 offset
     ) internal pure {
@@ -7543,10 +7932,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes28 value to 28-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes28 to add
      */
-    function pushBytes28(Builder memory self, bytes28 element) internal pure {
+    function pushBytes28(
+        Bytes32.Builder memory self,
+        bytes28 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 32) << self._size;
             self._size += 224;
@@ -7555,11 +7947,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 28-byte segment from bytes and return as bytes28
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes28 derived from bytes
      */
     function popBytes28(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes28 element) {
         unchecked {
             self._size -= 224;
@@ -7571,11 +7963,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 28-byte segment from bytes and return as bytes28
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes28 derived from bytes
      */
     function shiftBytes28(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes28 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_28;
@@ -7587,11 +7979,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes28 value to 28-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes28 to add
      */
     function unshiftBytes28(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes28 element
     ) internal pure {
         unchecked {
@@ -7605,7 +7997,7 @@ library Bytes32Builder {
      * @return element int224 derived from bytes
      */
     function parseInt224(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int224 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_28;
@@ -7614,12 +8006,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int224 value to 28-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int224 to insert
      * @param offset slot offset in bits
      */
     function insertInt224(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int224 element,
         uint256 offset
     ) internal pure {
@@ -7633,10 +8025,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int224 value to 28-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int224 to add
      */
-    function pushInt224(Builder memory self, int224 element) internal pure {
+    function pushInt224(
+        Bytes32.Builder memory self,
+        int224 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 32)) <<
@@ -7647,11 +8042,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 28-byte segment from bytes and return as int224
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int224 derived from bytes
      */
     function popInt224(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int224 element) {
         unchecked {
             self._size -= 224;
@@ -7663,11 +8058,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 28-byte segment from bytes and return as int224
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int224 derived from bytes
      */
     function shiftInt224(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int224 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_28;
@@ -7679,10 +8074,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int224 value to 28-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int224 to add
      */
-    function unshiftInt224(Builder memory self, int224 element) internal pure {
+    function unshiftInt224(
+        Bytes32.Builder memory self,
+        int224 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 224) |
@@ -7696,7 +8094,7 @@ library Bytes32Builder {
      * @return element uint224 derived from bytes
      */
     function parseUint224(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint224 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_28;
@@ -7705,12 +8103,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint224 value to 28-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint224 to insert
      * @param offset slot offset in bits
      */
     function insertUint224(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint224 element,
         uint256 offset
     ) internal pure {
@@ -7724,10 +8122,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint224 value to 28-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint224 to add
      */
-    function pushUint224(Builder memory self, uint224 element) internal pure {
+    function pushUint224(
+        Bytes32.Builder memory self,
+        uint224 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 224;
@@ -7736,11 +8137,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 28-byte segment from bytes and return as uint224
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint224 derived from bytes
      */
     function popUint224(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint224 element) {
         unchecked {
             self._size -= 224;
@@ -7752,11 +8153,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 28-byte segment from bytes and return as uint224
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint224 derived from bytes
      */
     function shiftUint224(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint224 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_28;
@@ -7768,11 +8169,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint224 value to 28-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint224 to add
      */
     function unshiftUint224(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint224 element
     ) internal pure {
         unchecked {
@@ -7786,7 +8187,7 @@ library Bytes32Builder {
      * @return element bytes29 derived from bytes
      */
     function parseBytes29(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes29 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_29;
@@ -7795,12 +8196,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes29 value to 29-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes29 to insert
      * @param offset slot offset in bits
      */
     function insertBytes29(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes29 element,
         uint256 offset
     ) internal pure {
@@ -7814,10 +8215,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes29 value to 29-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes29 to add
      */
-    function pushBytes29(Builder memory self, bytes29 element) internal pure {
+    function pushBytes29(
+        Bytes32.Builder memory self,
+        bytes29 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 24) << self._size;
             self._size += 232;
@@ -7826,11 +8230,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 29-byte segment from bytes and return as bytes29
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes29 derived from bytes
      */
     function popBytes29(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes29 element) {
         unchecked {
             self._size -= 232;
@@ -7842,11 +8246,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 29-byte segment from bytes and return as bytes29
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes29 derived from bytes
      */
     function shiftBytes29(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes29 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_29;
@@ -7858,11 +8262,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes29 value to 29-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes29 to add
      */
     function unshiftBytes29(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes29 element
     ) internal pure {
         unchecked {
@@ -7876,7 +8280,7 @@ library Bytes32Builder {
      * @return element int232 derived from bytes
      */
     function parseInt232(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int232 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_29;
@@ -7885,12 +8289,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int232 value to 29-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int232 to insert
      * @param offset slot offset in bits
      */
     function insertInt232(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int232 element,
         uint256 offset
     ) internal pure {
@@ -7904,10 +8308,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int232 value to 29-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int232 to add
      */
-    function pushInt232(Builder memory self, int232 element) internal pure {
+    function pushInt232(
+        Bytes32.Builder memory self,
+        int232 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 24)) <<
@@ -7918,11 +8325,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 29-byte segment from bytes and return as int232
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int232 derived from bytes
      */
     function popInt232(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int232 element) {
         unchecked {
             self._size -= 232;
@@ -7934,11 +8341,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 29-byte segment from bytes and return as int232
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int232 derived from bytes
      */
     function shiftInt232(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int232 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_29;
@@ -7950,10 +8357,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int232 value to 29-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int232 to add
      */
-    function unshiftInt232(Builder memory self, int232 element) internal pure {
+    function unshiftInt232(
+        Bytes32.Builder memory self,
+        int232 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 232) |
@@ -7967,7 +8377,7 @@ library Bytes32Builder {
      * @return element uint232 derived from bytes
      */
     function parseUint232(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint232 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_29;
@@ -7976,12 +8386,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint232 value to 29-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint232 to insert
      * @param offset slot offset in bits
      */
     function insertUint232(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint232 element,
         uint256 offset
     ) internal pure {
@@ -7995,10 +8405,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint232 value to 29-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint232 to add
      */
-    function pushUint232(Builder memory self, uint232 element) internal pure {
+    function pushUint232(
+        Bytes32.Builder memory self,
+        uint232 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 232;
@@ -8007,11 +8420,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 29-byte segment from bytes and return as uint232
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint232 derived from bytes
      */
     function popUint232(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint232 element) {
         unchecked {
             self._size -= 232;
@@ -8023,11 +8436,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 29-byte segment from bytes and return as uint232
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint232 derived from bytes
      */
     function shiftUint232(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint232 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_29;
@@ -8039,11 +8452,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint232 value to 29-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint232 to add
      */
     function unshiftUint232(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint232 element
     ) internal pure {
         unchecked {
@@ -8057,7 +8470,7 @@ library Bytes32Builder {
      * @return element bytes30 derived from bytes
      */
     function parseBytes30(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes30 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_30;
@@ -8066,12 +8479,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes30 value to 30-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes30 to insert
      * @param offset slot offset in bits
      */
     function insertBytes30(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes30 element,
         uint256 offset
     ) internal pure {
@@ -8085,10 +8498,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes30 value to 30-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes30 to add
      */
-    function pushBytes30(Builder memory self, bytes30 element) internal pure {
+    function pushBytes30(
+        Bytes32.Builder memory self,
+        bytes30 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 16) << self._size;
             self._size += 240;
@@ -8097,11 +8513,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 30-byte segment from bytes and return as bytes30
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes30 derived from bytes
      */
     function popBytes30(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes30 element) {
         unchecked {
             self._size -= 240;
@@ -8113,11 +8529,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 30-byte segment from bytes and return as bytes30
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes30 derived from bytes
      */
     function shiftBytes30(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes30 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_30;
@@ -8129,11 +8545,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes30 value to 30-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes30 to add
      */
     function unshiftBytes30(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes30 element
     ) internal pure {
         unchecked {
@@ -8147,7 +8563,7 @@ library Bytes32Builder {
      * @return element int240 derived from bytes
      */
     function parseInt240(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int240 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_30;
@@ -8156,12 +8572,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int240 value to 30-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int240 to insert
      * @param offset slot offset in bits
      */
     function insertInt240(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int240 element,
         uint256 offset
     ) internal pure {
@@ -8175,10 +8591,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int240 value to 30-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int240 to add
      */
-    function pushInt240(Builder memory self, int240 element) internal pure {
+    function pushInt240(
+        Bytes32.Builder memory self,
+        int240 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 16)) <<
@@ -8189,11 +8608,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 30-byte segment from bytes and return as int240
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int240 derived from bytes
      */
     function popInt240(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int240 element) {
         unchecked {
             self._size -= 240;
@@ -8205,11 +8624,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 30-byte segment from bytes and return as int240
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int240 derived from bytes
      */
     function shiftInt240(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int240 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_30;
@@ -8221,10 +8640,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int240 value to 30-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int240 to add
      */
-    function unshiftInt240(Builder memory self, int240 element) internal pure {
+    function unshiftInt240(
+        Bytes32.Builder memory self,
+        int240 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 240) |
@@ -8238,7 +8660,7 @@ library Bytes32Builder {
      * @return element uint240 derived from bytes
      */
     function parseUint240(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint240 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_30;
@@ -8247,12 +8669,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint240 value to 30-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint240 to insert
      * @param offset slot offset in bits
      */
     function insertUint240(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint240 element,
         uint256 offset
     ) internal pure {
@@ -8266,10 +8688,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint240 value to 30-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint240 to add
      */
-    function pushUint240(Builder memory self, uint240 element) internal pure {
+    function pushUint240(
+        Bytes32.Builder memory self,
+        uint240 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 240;
@@ -8278,11 +8703,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 30-byte segment from bytes and return as uint240
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint240 derived from bytes
      */
     function popUint240(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint240 element) {
         unchecked {
             self._size -= 240;
@@ -8294,11 +8719,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 30-byte segment from bytes and return as uint240
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint240 derived from bytes
      */
     function shiftUint240(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint240 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_30;
@@ -8310,11 +8735,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint240 value to 30-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint240 to add
      */
     function unshiftUint240(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint240 element
     ) internal pure {
         unchecked {
@@ -8328,7 +8753,7 @@ library Bytes32Builder {
      * @return element bytes31 derived from bytes
      */
     function parseBytes31(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes31 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_31;
@@ -8337,12 +8762,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes31 value to 31-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes31 to insert
      * @param offset slot offset in bits
      */
     function insertBytes31(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes31 element,
         uint256 offset
     ) internal pure {
@@ -8356,10 +8781,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes31 value to 31-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes31 to add
      */
-    function pushBytes31(Builder memory self, bytes31 element) internal pure {
+    function pushBytes31(
+        Bytes32.Builder memory self,
+        bytes31 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 8) << self._size;
             self._size += 248;
@@ -8368,11 +8796,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 31-byte segment from bytes and return as bytes31
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes31 derived from bytes
      */
     function popBytes31(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes31 element) {
         unchecked {
             self._size -= 248;
@@ -8384,11 +8812,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 31-byte segment from bytes and return as bytes31
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes31 derived from bytes
      */
     function shiftBytes31(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes31 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_31;
@@ -8400,11 +8828,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes31 value to 31-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes31 to add
      */
     function unshiftBytes31(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes31 element
     ) internal pure {
         unchecked {
@@ -8418,7 +8846,7 @@ library Bytes32Builder {
      * @return element int248 derived from bytes
      */
     function parseInt248(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int248 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_31;
@@ -8427,12 +8855,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int248 value to 31-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int248 to insert
      * @param offset slot offset in bits
      */
     function insertInt248(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int248 element,
         uint256 offset
     ) internal pure {
@@ -8446,10 +8874,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int248 value to 31-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int248 to add
      */
-    function pushInt248(Builder memory self, int248 element) internal pure {
+    function pushInt248(
+        Bytes32.Builder memory self,
+        int248 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 8)) <<
@@ -8460,11 +8891,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 31-byte segment from bytes and return as int248
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int248 derived from bytes
      */
     function popInt248(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int248 element) {
         unchecked {
             self._size -= 248;
@@ -8476,11 +8907,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 31-byte segment from bytes and return as int248
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int248 derived from bytes
      */
     function shiftInt248(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int248 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_31;
@@ -8492,10 +8923,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int248 value to 31-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int248 to add
      */
-    function unshiftInt248(Builder memory self, int248 element) internal pure {
+    function unshiftInt248(
+        Bytes32.Builder memory self,
+        int248 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 248) |
@@ -8509,7 +8943,7 @@ library Bytes32Builder {
      * @return element uint248 derived from bytes
      */
     function parseUint248(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint248 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_31;
@@ -8518,12 +8952,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint248 value to 31-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint248 to insert
      * @param offset slot offset in bits
      */
     function insertUint248(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint248 element,
         uint256 offset
     ) internal pure {
@@ -8537,10 +8971,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint248 value to 31-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint248 to add
      */
-    function pushUint248(Builder memory self, uint248 element) internal pure {
+    function pushUint248(
+        Bytes32.Builder memory self,
+        uint248 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 248;
@@ -8549,11 +8986,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 31-byte segment from bytes and return as uint248
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint248 derived from bytes
      */
     function popUint248(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint248 element) {
         unchecked {
             self._size -= 248;
@@ -8565,11 +9002,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 31-byte segment from bytes and return as uint248
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint248 derived from bytes
      */
     function shiftUint248(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint248 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_31;
@@ -8581,11 +9018,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint248 value to 31-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint248 to add
      */
     function unshiftUint248(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint248 element
     ) internal pure {
         unchecked {
@@ -8599,7 +9036,7 @@ library Bytes32Builder {
      * @return element bytes32 derived from bytes
      */
     function parseBytes32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (bytes32 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_32;
@@ -8608,12 +9045,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes32 value to 32-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes32 to insert
      * @param offset slot offset in bits
      */
     function insertBytes32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes32 element,
         uint256 offset
     ) internal pure {
@@ -8627,10 +9064,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes32 value to 32-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes32 to add
      */
-    function pushBytes32(Builder memory self, bytes32 element) internal pure {
+    function pushBytes32(
+        Bytes32.Builder memory self,
+        bytes32 element
+    ) internal pure {
         unchecked {
             self._data |= (bytes32(element) >> 0) << self._size;
             self._size += 256;
@@ -8639,11 +9079,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 32-byte segment from bytes and return as bytes32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes32 derived from bytes
      */
     function popBytes32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes32 element) {
         unchecked {
             self._size -= 256;
@@ -8655,11 +9095,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 32-byte segment from bytes and return as bytes32
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element bytes32 derived from bytes
      */
     function shiftBytes32(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (bytes32 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_32;
@@ -8671,11 +9111,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert bytes32 value to 32-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element bytes32 to add
      */
     function unshiftBytes32(
-        Builder memory self,
+        Bytes32.Builder memory self,
         bytes32 element
     ) internal pure {
         unchecked {
@@ -8689,7 +9129,7 @@ library Bytes32Builder {
      * @return element int256 derived from bytes
      */
     function parseInt256(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (int256 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_32;
@@ -8698,12 +9138,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert int256 value to 32-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int256 to insert
      * @param offset slot offset in bits
      */
     function insertInt256(
-        Builder memory self,
+        Bytes32.Builder memory self,
         int256 element,
         uint256 offset
     ) internal pure {
@@ -8717,10 +9157,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int256 value to 32-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int256 to add
      */
-    function pushInt256(Builder memory self, int256 element) internal pure {
+    function pushInt256(
+        Bytes32.Builder memory self,
+        int256 element
+    ) internal pure {
         unchecked {
             self._data |=
                 (Int256.toBytes32(element) & (~bytes32(0) >> 0)) <<
@@ -8731,11 +9174,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 32-byte segment from bytes and return as int256
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int256 derived from bytes
      */
     function popInt256(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int256 element) {
         unchecked {
             self._size -= 256;
@@ -8747,11 +9190,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 32-byte segment from bytes and return as int256
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element int256 derived from bytes
      */
     function shiftInt256(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (int256 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_32;
@@ -8763,10 +9206,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert int256 value to 32-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element int256 to add
      */
-    function unshiftInt256(Builder memory self, int256 element) internal pure {
+    function unshiftInt256(
+        Bytes32.Builder memory self,
+        int256 element
+    ) internal pure {
         unchecked {
             self._data =
                 (self._data << 256) |
@@ -8780,7 +9226,7 @@ library Bytes32Builder {
      * @return element uint256 derived from bytes
      */
     function parseUint256(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 offset
     ) internal pure returns (uint256 element) {
         bytes32 elementBytes = (self._data >> offset) & MASK_32;
@@ -8789,12 +9235,12 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint256 value to 32-byte position at given offset
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint256 to insert
      * @param offset slot offset in bits
      */
     function insertUint256(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 element,
         uint256 offset
     ) internal pure {
@@ -8808,10 +9254,13 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint256 value to 32-byte position at end of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint256 to add
      */
-    function pushUint256(Builder memory self, uint256 element) internal pure {
+    function pushUint256(
+        Bytes32.Builder memory self,
+        uint256 element
+    ) internal pure {
         unchecked {
             self._data |= Uint256.toBytes32(element) << self._size;
             self._size += 256;
@@ -8820,11 +9269,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove last 32-byte segment from bytes and return as uint256
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint256 derived from bytes
      */
     function popUint256(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint256 element) {
         unchecked {
             self._size -= 256;
@@ -8836,11 +9285,11 @@ library Bytes32Builder {
 
     /**
      * @notice remove first 32-byte segment from bytes and return as uint256
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @return element uint256 derived from bytes
      */
     function shiftUint256(
-        Builder memory self
+        Bytes32.Builder memory self
     ) internal pure returns (uint256 element) {
         unchecked {
             bytes32 elementBytes = self._data & MASK_32;
@@ -8852,11 +9301,11 @@ library Bytes32Builder {
 
     /**
      * @notice insert uint256 value to 32-byte position at beginning of bytes
-     * @param self Bytes32Builder Builder struct on which to operate
+     * @param self Bytes32Builder Bytes32.Builder struct on which to operate
      * @param element uint256 to add
      */
     function unshiftUint256(
-        Builder memory self,
+        Bytes32.Builder memory self,
         uint256 element
     ) internal pure {
         unchecked {

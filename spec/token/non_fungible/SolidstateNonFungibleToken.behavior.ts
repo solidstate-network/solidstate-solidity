@@ -1,17 +1,13 @@
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfNonFungibleToken,
   NonFungibleTokenBehaviorArgs,
-} from './NonFungibleToken.behavior';
-import {
   describeBehaviorOfNonFungibleTokenEnumerable,
   NonFungibleTokenEnumerableBehaviorArgs,
-} from './NonFungibleTokenEnumerable.behavior';
-import {
   describeBehaviorOfNonFungibleTokenMetadata,
   NonFungibleTokenMetadataBehaviorArgs,
-} from './NonFungibleTokenMetadata.behavior';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { describeFilter } from '@solidstate/library';
+} from '@solidstate/spec';
 import { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

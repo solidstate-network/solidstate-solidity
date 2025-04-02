@@ -1,5 +1,7 @@
+import './tasks/compile';
 import './tasks/generate_bytes32_builder';
 import './tasks/generate_eip_712';
+import './tasks/organize_test_files';
 import './tasks/rename_entity';
 import './tasks/scaffold_contract';
 import '@nomicfoundation/hardhat-chai-matchers';

@@ -39,5 +39,24 @@ describe('Bool', async () => {
         ).to.hexEqual('0x01');
       });
     });
+
+    describe('#toUint256(bool)', () => {
+      it('returns a uint256 representation of bool', async () => {
+        expect(await instance.$toUint256.staticCall(true)).to.eq(1n);
+
+        expect(await instance.$toUint256.staticCall(false)).to.eq(0n);
+      });
+
+      it('sanitizes higher-order bits as true', async () => {
+        const testInstance = await new BoolTest__factory(deployer).deploy();
+
+        expect(await testInstance.sanitizeUint256Test.staticCall(false)).to.eq(
+          1n,
+        );
+        expect(await testInstance.sanitizeUint256Test.staticCall(true)).to.eq(
+          1n,
+        );
+      });
+    });
   });
 });
