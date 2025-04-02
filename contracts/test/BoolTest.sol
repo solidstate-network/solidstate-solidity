@@ -15,4 +15,15 @@ contract BoolTest {
 
         output = Bool.toBytes32(input);
     }
+
+    function sanitizeUint256Test(
+        bool input
+    ) external pure returns (uint256 output) {
+        // contaminate the higher-order bits
+        assembly {
+            input := or(input, shl(1, not(1)))
+        }
+
+        output = Bool.toUint256(input);
+    }
 }
