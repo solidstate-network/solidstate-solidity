@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
+import { IDiamondBeacon } from '../../../beacon/diamond/IDiamondBeacon.sol';
 import { _BeaconProxy } from '../_BeaconProxy.sol';
-import { IDiamondBeacon } from './IDiamondBeacon.sol';
 import { _IDiamondBeaconProxy } from './_IDiamondBeaconProxy.sol';
 
 abstract contract _DiamondBeaconProxy is _IDiamondBeaconProxy, _BeaconProxy {
@@ -20,6 +20,6 @@ abstract contract _DiamondBeaconProxy is _IDiamondBeaconProxy, _BeaconProxy {
     function _getImplementation(
         bytes4 sig
     ) internal view virtual returns (address implementation) {
-        implementation = IDiamondBeacon(_getBeacon()).facetAddress(sig);
+        implementation = IDiamondBeacon(_getBeacon()).implementation(sig);
     }
 }

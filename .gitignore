@@ -12,6 +12,8 @@ cache/
 abi/*.json
 !abi/package.json
 
+gasreport.txt
+
 coverage/
 coverage.json
 

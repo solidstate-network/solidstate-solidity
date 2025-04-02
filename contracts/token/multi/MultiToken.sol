@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { IERC1155 } from '../../interfaces/IERC1155.sol';
 import { Introspectable } from '../../introspection/Introspectable.sol';
+import { Context } from '../../meta/Context.sol';
 import { IMultiToken } from './IMultiToken.sol';
 import { _MultiToken } from './_MultiToken.sol';
 
@@ -11,7 +12,12 @@ import { _MultiToken } from './_MultiToken.sol';
  * @title Base MultiToken contract
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
-abstract contract MultiToken is IMultiToken, _MultiToken, Introspectable {
+abstract contract MultiToken is
+    IMultiToken,
+    _MultiToken,
+    Introspectable,
+    Context
+{
     /**
      * @inheritdoc IERC1155
      */

@@ -1,3 +1,3 @@
 export * from './diamond';
-export * from './Beacon.behavior';
+export * from './transparent';
 export * from './BeaconProxy.behavior';

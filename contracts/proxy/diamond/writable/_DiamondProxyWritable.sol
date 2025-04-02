@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
-import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';
@@ -11,7 +10,6 @@ import { _IDiamondProxyWritable } from './_IDiamondProxyWritable.sol';
 abstract contract _DiamondProxyWritable is
     _IDiamondProxyWritable,
     _DiamondProxy,
-    _Ownable,
     _Introspectable
 {
     /**
@@ -21,7 +19,7 @@ abstract contract _DiamondProxyWritable is
         FacetCut[] memory facetCuts,
         address target,
         bytes memory data
-    ) internal virtual onlyOwner {
+    ) internal virtual onlyProxyAdmin {
         _diamondCut(facetCuts, target, data);
     }
 }

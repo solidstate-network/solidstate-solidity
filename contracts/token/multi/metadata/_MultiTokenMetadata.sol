@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
-import { UintUtils } from '../../../utils/UintUtils.sol';
+import { Uint256 } from '../../../utils/Uint256.sol';
 import { _IMultiTokenMetadata } from './_IMultiTokenMetadata.sol';
 import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 
@@ -10,7 +10,7 @@ import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
  * @title MultiTokenMetadata internal functions
  */
 abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
-    using UintUtils for uint256;
+    using Uint256 for uint256;
 
     function _uri(
         uint256 tokenId

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { IERC721 } from '../../interfaces/IERC721.sol';
 import { Introspectable } from '../../introspection/Introspectable.sol';
+import { Context } from '../../meta/Context.sol';
 import { INonFungibleToken } from './INonFungibleToken.sol';
 import { _NonFungibleToken } from './_NonFungibleToken.sol';
 
@@ -13,7 +14,8 @@ import { _NonFungibleToken } from './_NonFungibleToken.sol';
 abstract contract NonFungibleToken is
     INonFungibleToken,
     _NonFungibleToken,
-    Introspectable
+    Introspectable,
+    Context
 {
     /**
      * @inheritdoc IERC721

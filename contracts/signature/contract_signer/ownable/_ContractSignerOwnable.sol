@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
@@ -26,7 +26,7 @@ abstract contract _ContractSignerOwnable is
         bytes memory signature
     ) internal view virtual override returns (bytes4 magicValue) {
         return
-            hash.toEthSignedMessageHash().recover(signature) == _owner()
+            hash.toEthSignRecoverableHash().recover(signature) == _owner()
                 ? MAGIC_VALUE
                 : bytes4(0);
     }

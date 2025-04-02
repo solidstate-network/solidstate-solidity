@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { ERC2771Storage } from '../storage/ERC2771Storage.sol';
-import { AddressUtils } from '../utils/AddressUtils.sol';
+import { Address } from '../utils/Address.sol';
 import { _Context } from './_Context.sol';
 import { _IForwardedMetaTransactionContext } from './_IForwardedMetaTransactionContext.sol';
 
@@ -11,9 +11,7 @@ abstract contract _ForwardedMetaTransactionContext is
     _IForwardedMetaTransactionContext,
     _Context
 {
-    using AddressUtils for address;
-
-    error ForwardedMetaTransactionContext__TrustedForwarderMustBeContract();
+    using Address for address;
 
     /**
      * @inheritdoc _Context
@@ -84,18 +82,15 @@ abstract contract _ForwardedMetaTransactionContext is
 
     /**
      * @notice query whether account is a trusted ERC2771 forwarder
-     * @dev only contracts can be considered trusted forwarders
      * @param account address to query
      * @return trustedStatus whether account is a trusted forwarder
      */
     function _isTrustedForwarder(
         address account
     ) internal view virtual returns (bool trustedStatus) {
-        trustedStatus =
-            account.isContract() &&
-            ERC2771Storage
-                .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
-                .trustedForwarders[account];
+        trustedStatus = ERC2771Storage
+            .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
+            .trustedForwarders[account];
     }
 
     /**
@@ -103,10 +98,6 @@ abstract contract _ForwardedMetaTransactionContext is
      * @param account account whose trusted forwarder status to grant
      */
     function _addTrustedForwarder(address account) internal virtual {
-        // exception for address(this) allows a contract to set itself as a trusted forwarder in its constructor
-        if (!account.isContract() && account != address(this))
-            revert ForwardedMetaTransactionContext__TrustedForwarderMustBeContract();
-
         ERC2771Storage
             .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
             .trustedForwarders[account] = true;
