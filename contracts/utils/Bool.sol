@@ -14,6 +14,12 @@ library Bool {
         }
     }
 
+    function toUint256(bool value) internal pure returns (uint256 result) {
+        assembly {
+            result := iszero(iszero(value))
+        }
+    }
+
     function xor(bool value0, bool value1) internal pure returns (bool result) {
         assembly {
             result := xor(value0, value1)
