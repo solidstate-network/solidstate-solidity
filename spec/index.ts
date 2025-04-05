@@ -1,6 +1,6 @@
 export * from './access/access_control/AccessControl.behavior.ts';
 export * from './access/ownable/Ownable.behavior.ts';
-export * from './access/ownable/SafeOwnable.behavior.ts';
+export * from './access/ownable/safe/SafeOwnable.behavior.ts';
 export * from './access/partially_pausable/PartiallyPausable.behavior.ts';
 export * from './access/pausable/Pausable.behavior.ts';
 export * from './beacon/Beacon.behavior.ts';
