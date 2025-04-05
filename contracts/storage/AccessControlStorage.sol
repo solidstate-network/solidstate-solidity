@@ -24,8 +24,6 @@ library AccessControlStorage {
         uint48 pendingDelaySchedule;
     }
 
-    bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
-
     Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
         Slot.StorageSlot.wrap(
             keccak256(

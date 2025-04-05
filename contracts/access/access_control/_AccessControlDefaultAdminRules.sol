@@ -100,7 +100,7 @@ abstract contract _AccessControlDefaultAdminRules is
         bytes32 role,
         address account
     ) internal virtual override {
-        if (role == AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+        if (role == DEFAULT_ADMIN_ROLE) {
             if (_defaultAdmin() != address(0)) {
                 revert AccessControlEnforcedDefaultAdminRules();
             }
@@ -120,10 +120,7 @@ abstract contract _AccessControlDefaultAdminRules is
         bytes32 role,
         address account
     ) internal virtual override {
-        if (
-            role == AccessControlStorage.DEFAULT_ADMIN_ROLE &&
-            account == _defaultAdmin()
-        ) {
+        if (role == DEFAULT_ADMIN_ROLE && account == _defaultAdmin()) {
             delete AccessControlStorage
                 .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .currentDefaultAdmin;
@@ -140,7 +137,7 @@ abstract contract _AccessControlDefaultAdminRules is
         bytes32 role,
         bytes32 adminRole
     ) internal virtual override {
-        if (role == AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+        if (role == DEFAULT_ADMIN_ROLE) {
             revert AccessControlEnforcedDefaultAdminRules();
         }
         super._setRoleAdmin(role, adminRole);
@@ -152,7 +149,7 @@ abstract contract _AccessControlDefaultAdminRules is
      */
     function _beginDefaultAdminTransfer(
         address newAdmin
-    ) internal virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+    ) internal virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         uint48 newSchedule = uint48(block.timestamp) + _defaultAdminDelay();
         _setPendingDefaultAdmin(newAdmin, newSchedule);
         emit DefaultAdminTransferScheduled(newAdmin, newSchedule);
@@ -164,7 +161,7 @@ abstract contract _AccessControlDefaultAdminRules is
     function _cancelDefaultAdminTransfer()
         internal
         virtual
-        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setPendingDefaultAdmin(address(0), 0);
     }
@@ -184,8 +181,8 @@ abstract contract _AccessControlDefaultAdminRules is
         if (!_isScheduleSet(schedule) || !_hasSchedulePassed(schedule)) {
             revert AccessControlEnforcedDefaultAdminDelay(schedule);
         }
-        _revokeRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, _defaultAdmin());
-        _grantRole(AccessControlStorage.DEFAULT_ADMIN_ROLE, newAdmin);
+        _revokeRole(DEFAULT_ADMIN_ROLE, _defaultAdmin());
+        _grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
         delete $.pendingDefaultAdmin;
         delete $.pendingDefaultAdminSchedule;
     }
@@ -196,7 +193,7 @@ abstract contract _AccessControlDefaultAdminRules is
      */
     function _changeDefaultAdminDelay(
         uint48 newDelay
-    ) internal virtual onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE) {
+    ) internal virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         uint48 newSchedule = uint48(block.timestamp) +
             _delayChangeWait(newDelay);
         _setPendingDelay(newDelay, newSchedule);
@@ -209,7 +206,7 @@ abstract contract _AccessControlDefaultAdminRules is
     function _rollbackDefaultAdminDelay()
         internal
         virtual
-        onlyRole(AccessControlStorage.DEFAULT_ADMIN_ROLE)
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setPendingDelay(0, 0);
     }
