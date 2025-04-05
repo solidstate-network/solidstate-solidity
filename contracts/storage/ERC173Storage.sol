@@ -11,6 +11,8 @@ library ERC173Storage {
     struct Layout {
         address owner;
         address nomineeOwner;
+        uint128 transferTimelock;
+        uint128 transferTimelockDuration;
     }
 
     Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =

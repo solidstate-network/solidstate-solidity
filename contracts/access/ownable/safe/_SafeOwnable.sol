@@ -24,13 +24,39 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     }
 
     /**
+     * @notice query the current timelock and timelock duration
+     * @return transferTimelock timestamp when nomineeOwner can call acceptOwnership
+     * @return transferTimelockDuration waiting period after timelock is set
+     */
+    function _transferTimelock()
+        internal
+        view
+        virtual
+        returns (uint128 transferTimelock, uint128 transferTimelockDuration)
+    {
+        ERC173Storage.Layout storage $ = ERC173Storage.layout(
+            ERC173Storage.DEFAULT_STORAGE_SLOT
+        );
+
+        transferTimelock = $.transferTimelock;
+        transferTimelockDuration = $.transferTimelockDuration;
+    }
+
+    /**
      * @notice accept transfer of contract ownership
      */
     function _acceptOwnership() internal virtual onlyNomineeOwner {
+        ERC173Storage.Layout storage $ = ERC173Storage.layout(
+            ERC173Storage.DEFAULT_STORAGE_SLOT
+        );
+
+        if (block.timestamp < $.transferTimelock)
+            revert SafeOwnable__TimelockActive();
+
         _setOwner(_msgSender());
-        delete ERC173Storage
-            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
-            .nomineeOwner;
+
+        delete $.nomineeOwner;
+        delete $.transferTimelock;
     }
 
     /**
@@ -40,6 +66,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         address account
     ) internal virtual override onlyOwner {
         _setNomineeOwner(account);
+        _setTransferTimelock();
     }
 
     /**
@@ -49,5 +76,20 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         ERC173Storage
             .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .nomineeOwner = account;
+    }
+
+    /**
+     * @notice set the transfer timelock relative to current timestamp
+     */
+    function _setTransferTimelock() internal virtual {
+        (, uint128 transferTimelockDuration) = _transferTimelock();
+
+        unchecked {
+            ERC173Storage
+                .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+                .transferTimelock =
+                uint128(block.timestamp) +
+                transferTimelockDuration;
+        }
     }
 }
