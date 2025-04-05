@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import { ECDSA } from '../cryptography/ECDSA.sol';
 import { EIP712 } from '../cryptography/EIP712.sol';
 import { Slot } from '../data/Slot.sol';
-import { _TransientReentrancyGuard } from '../security/reentrancy_guard/_TransientReentrancyGuard.sol';
+import { _TransientReentrancyGuard } from '../access/reentrancy_guard/_TransientReentrancyGuard.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
 import { Bytes32Builder } from '../data/Bytes32Builder.sol';
 import { _Context } from './_Context.sol';
@@ -17,7 +17,7 @@ abstract contract _ECDSAMetaTransactionContext is
     _TransientReentrancyGuard
 {
     using Bytes32 for bytes32;
-    using Bytes32Builder for Bytes32Builder.Builder;
+    using Bytes32Builder for Bytes32.Builder;
     using ECDSA for bytes32;
     using Slot for Slot.TransientSlot;
 
@@ -188,7 +188,7 @@ abstract contract _ECDSAMetaTransactionContext is
         // it is necessary to store metadata in transient storage because
         // subsequent derivation will fail due to nonce invalidation
 
-        Bytes32Builder.Builder memory builder;
+        Bytes32.Builder memory builder;
 
         builder.pushAddress(msgSender);
         builder.pushUint96(uint96(msgDataIndex));

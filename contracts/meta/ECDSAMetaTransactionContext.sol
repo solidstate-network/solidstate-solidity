@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC5267 } from '../interfaces/IERC5267.sol';
-import { TransientReentrancyGuard } from '../security/reentrancy_guard/TransientReentrancyGuard.sol';
-import { _TransientReentrancyGuard } from '../security/reentrancy_guard/_TransientReentrancyGuard.sol';
+import { TransientReentrancyGuard } from '../access/reentrancy_guard/TransientReentrancyGuard.sol';
+import { _TransientReentrancyGuard } from '../access/reentrancy_guard/_TransientReentrancyGuard.sol';
 import { Context } from './Context.sol';
 import { _Context } from './_Context.sol';
 import { IECDSAMetaTransactionContext } from './IECDSAMetaTransactionContext.sol';
