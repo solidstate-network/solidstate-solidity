@@ -241,6 +241,7 @@ import './token/non_fungible/metadata/_INonFungibleTokenMetadata.sol';
 import './token/non_fungible/metadata/_NonFungibleTokenMetadata.sol';
 import './utils/Address.sol';
 import './utils/Array.sol';
+import './utils/Block.sol';
 import './utils/Bool.sol';
 import './utils/Bytes32.sol';
 import './utils/IMulticall.sol';
