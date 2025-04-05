@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { _IOwnable } from './_IOwnable.sol';
+import { _IOwnable } from '../_IOwnable.sol';
 
 interface _ISafeOwnable is _IOwnable {
     error SafeOwnable__NotNomineeOwner();

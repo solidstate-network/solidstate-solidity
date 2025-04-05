@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { ERC173Storage } from '../../storage/ERC173Storage.sol';
+import { ERC173Storage } from '../../../storage/ERC173Storage.sol';
+import { _Ownable } from '../_Ownable.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';
-import { _Ownable } from './_Ownable.sol';
 
 abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     modifier onlyNomineeOwner() {
