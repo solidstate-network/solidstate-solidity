@@ -11,7 +11,9 @@ using {
     gt as >,
     lt as <,
     gte as >=,
-    lte as <=
+    lte as <=,
+    add as +,
+    sub as -
 } for Duration global;
 
 function eq(Duration t0, Duration t1) pure returns (bool status) {
@@ -36,4 +38,12 @@ function gte(Duration t0, Duration t1) pure returns (bool status) {
 
 function lte(Duration t0, Duration t1) pure returns (bool status) {
     status = Duration.unwrap(t0) <= Duration.unwrap(t1);
+}
+
+function add(Duration t0, Duration t1) pure returns (Duration duration) {
+    duration = Duration.wrap(Duration.unwrap(t0) + Duration.unwrap(t1));
+}
+
+function sub(Duration t0, Duration t1) pure returns (Duration duration) {
+    duration = Duration.wrap(Duration.unwrap(t0) - Duration.unwrap(t1));
 }
