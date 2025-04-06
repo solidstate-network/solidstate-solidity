@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { Block } from './Block.sol';
+import { Block } from '../Block.sol';
+import { Panic } from '../Panic.sol';
 import { duration } from './Duration.sol';
-import { Panic } from './Panic.sol';
 import { timestamp } from './Timestamp.sol';
 
 type timelock is bytes12;
