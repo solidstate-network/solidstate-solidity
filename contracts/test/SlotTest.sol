@@ -2,23 +2,23 @@
 
 pragma solidity ^0.8.24;
 
-import { Slot } from '../data/Slot.sol';
+import { tslot } from '../data/Slot.sol';
 
 contract SlotTest {
     function transientWriteTest(
-        Slot.TransientSlot slot,
+        tslot slot,
         bytes32 input
     ) external returns (bytes32 output) {
-        Slot.write(slot, input);
-        output = Slot.read(slot);
+        slot.write(input);
+        output = slot.read();
     }
 
     function transientClearTest(
-        Slot.TransientSlot slot,
+        tslot slot,
         bytes32 input
     ) external returns (bytes32 output) {
-        Slot.write(slot, input);
-        Slot.clear(slot);
-        output = Slot.read(slot);
+        slot.write(input);
+        slot.clear();
+        output = slot.read();
     }
 }

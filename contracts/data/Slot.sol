@@ -2,10 +2,13 @@
 
 pragma solidity ^0.8.24;
 
-library Slot {
-    type StorageSlot is bytes32;
-    type TransientSlot is bytes32;
+type sslot is bytes32;
+type tslot is bytes32;
 
+using Slot for sslot global;
+using Slot for tslot global;
+
+library Slot {
     /**
      * @notice calculate the EIP-7201 storage slot for a given string id
      * @dev id parameter should not contain whitespace
@@ -15,8 +18,8 @@ library Slot {
      */
     function calculateErc7201StorageSlot(
         string memory id
-    ) internal pure returns (StorageSlot slot) {
-        slot = StorageSlot.wrap(
+    ) internal pure returns (sslot slot) {
+        slot = sslot.wrap(
             keccak256(abi.encode(uint256(keccak256(bytes(id))) - 1)) &
                 ~bytes32(uint256(0xff))
         );
@@ -31,8 +34,8 @@ library Slot {
      */
     function calculateErc7201TransientSlot(
         string memory id
-    ) internal pure returns (TransientSlot slot) {
-        slot = TransientSlot.wrap(
+    ) internal pure returns (tslot slot) {
+        slot = tslot.wrap(
             keccak256(abi.encode(uint256(keccak256(bytes(id))) - 1)) &
                 ~bytes32(uint256(0xff))
         );
@@ -43,11 +46,8 @@ library Slot {
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate
      */
-    function index(
-        StorageSlot slot,
-        uint256 idx
-    ) internal pure returns (StorageSlot) {
-        return StorageSlot.wrap(_index(StorageSlot.unwrap(slot), idx));
+    function index(sslot slot, uint256 idx) internal pure returns (sslot) {
+        return sslot.wrap(_index(sslot.unwrap(slot), idx));
     }
 
     /**
@@ -55,11 +55,8 @@ library Slot {
      * @param slot array declaration slot where its length is stored
      * @param idx index of array whose slot to calculate
      */
-    function index(
-        TransientSlot slot,
-        uint256 idx
-    ) internal pure returns (TransientSlot) {
-        return TransientSlot.wrap(_index(TransientSlot.unwrap(slot), idx));
+    function index(tslot slot, uint256 idx) internal pure returns (tslot) {
+        return tslot.wrap(_index(tslot.unwrap(slot), idx));
     }
 
     /**
@@ -67,11 +64,8 @@ library Slot {
      * @param slot mapping declaration slot
      * @param key index of mapping whose slot to calculate
      */
-    function map(
-        StorageSlot slot,
-        bytes32 key
-    ) internal pure returns (StorageSlot) {
-        return StorageSlot.wrap(_map(StorageSlot.unwrap(slot), key));
+    function map(sslot slot, bytes32 key) internal pure returns (sslot) {
+        return sslot.wrap(_map(sslot.unwrap(slot), key));
     }
 
     /**
@@ -79,11 +73,8 @@ library Slot {
      * @param slot mapping declaration slot
      * @param key index of mapping whose slot to calculate
      */
-    function map(
-        TransientSlot slot,
-        bytes32 key
-    ) internal pure returns (TransientSlot) {
-        return TransientSlot.wrap(_map(TransientSlot.unwrap(slot), key));
+    function map(tslot slot, bytes32 key) internal pure returns (tslot) {
+        return tslot.wrap(_map(tslot.unwrap(slot), key));
     }
 
     /**
@@ -91,7 +82,7 @@ library Slot {
      * @param slot current slot
      * @return next slot
      */
-    function next(StorageSlot slot) internal pure returns (StorageSlot) {
+    function next(sslot slot) internal pure returns (sslot) {
         return next(slot, 1);
     }
 
@@ -100,7 +91,7 @@ library Slot {
      * @param slot current slot
      * @return next slot
      */
-    function next(TransientSlot slot) internal pure returns (TransientSlot) {
+    function next(tslot slot) internal pure returns (tslot) {
         return next(slot, 1);
     }
 
@@ -110,10 +101,7 @@ library Slot {
      * @param amount number of slots to shift
      * @return nth next slot
      */
-    function next(
-        StorageSlot slot,
-        uint256 amount
-    ) internal pure returns (StorageSlot) {
+    function next(sslot slot, uint256 amount) internal pure returns (sslot) {
         assembly {
             slot := add(slot, amount)
         }
@@ -127,10 +115,7 @@ library Slot {
      * @param amount number of slots to shift
      * @return nth next slot
      */
-    function next(
-        TransientSlot slot,
-        uint256 amount
-    ) internal pure returns (TransientSlot) {
+    function next(tslot slot, uint256 amount) internal pure returns (tslot) {
         assembly {
             slot := add(slot, amount)
         }
@@ -143,7 +128,7 @@ library Slot {
      * @param slot current slot
      * @return previous slot
      */
-    function prev(StorageSlot slot) internal pure returns (StorageSlot) {
+    function prev(sslot slot) internal pure returns (sslot) {
         return prev(slot, 1);
     }
 
@@ -152,7 +137,7 @@ library Slot {
      * @param slot current slot
      * @return previous slot
      */
-    function prev(TransientSlot slot) internal pure returns (TransientSlot) {
+    function prev(tslot slot) internal pure returns (tslot) {
         return prev(slot, 1);
     }
 
@@ -162,10 +147,7 @@ library Slot {
      * @param amount number of slots to shift
      * @return nth previous slot
      */
-    function prev(
-        StorageSlot slot,
-        uint256 amount
-    ) internal pure returns (StorageSlot) {
+    function prev(sslot slot, uint256 amount) internal pure returns (sslot) {
         assembly {
             slot := sub(slot, amount)
         }
@@ -179,10 +161,7 @@ library Slot {
      * @param amount number of slots to shift
      * @return nth previous slot
      */
-    function prev(
-        TransientSlot slot,
-        uint256 amount
-    ) internal pure returns (TransientSlot) {
+    function prev(tslot slot, uint256 amount) internal pure returns (tslot) {
         assembly {
             slot := sub(slot, amount)
         }
@@ -195,7 +174,7 @@ library Slot {
      * @param slot storage slot to query
      * @return data contents of storage slot
      */
-    function read(StorageSlot slot) internal view returns (bytes32 data) {
+    function read(sslot slot) internal view returns (bytes32 data) {
         assembly {
             data := sload(slot)
         }
@@ -206,7 +185,7 @@ library Slot {
      * @param slot transient storage slot to query
      * @return data contents of transient storage slot
      */
-    function read(TransientSlot slot) internal view returns (bytes32 data) {
+    function read(tslot slot) internal view returns (bytes32 data) {
         assembly {
             data := tload(slot)
         }
@@ -217,7 +196,7 @@ library Slot {
      * @param slot storage slot to write to
      * @param data data to write
      */
-    function write(StorageSlot slot, bytes32 data) internal {
+    function write(sslot slot, bytes32 data) internal {
         assembly {
             sstore(slot, data)
         }
@@ -228,7 +207,7 @@ library Slot {
      * @param slot transient storage slot to write to
      * @param data data to write
      */
-    function write(TransientSlot slot, bytes32 data) internal {
+    function write(tslot slot, bytes32 data) internal {
         assembly {
             tstore(slot, data)
         }
@@ -238,7 +217,7 @@ library Slot {
      * @notice clear contents of storage slot
      * @param slot storage slot to clear
      */
-    function clear(StorageSlot slot) internal {
+    function clear(sslot slot) internal {
         write(slot, bytes32(0));
     }
 
@@ -246,7 +225,7 @@ library Slot {
      * @notice clear contents of transient storage slot
      * @param slot transient storage slot to clear
      */
-    function clear(TransientSlot slot) internal {
+    function clear(tslot slot) internal {
         write(slot, bytes32(0));
     }
 

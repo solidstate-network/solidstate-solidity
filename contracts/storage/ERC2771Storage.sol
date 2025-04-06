@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { Slot } from '../data/Slot.sol';
+import { sslot } from '../data/Slot.sol';
 
 library ERC2771Storage {
     /**
@@ -12,8 +12,8 @@ library ERC2771Storage {
         mapping(address account => bool trustedStatus) trustedForwarders;
     }
 
-    Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
+    sslot internal constant DEFAULT_STORAGE_SLOT =
+        sslot.wrap(
             keccak256(
                 abi.encode(
                     uint256(keccak256(bytes('solidstate.layout.ERC2771'))) - 1
@@ -25,9 +25,7 @@ library ERC2771Storage {
         $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(
-        Slot.StorageSlot slot
-    ) internal pure returns (Layout storage $) {
+    function layout(sslot slot) internal pure returns (Layout storage $) {
         assembly {
             $.slot := slot
         }
