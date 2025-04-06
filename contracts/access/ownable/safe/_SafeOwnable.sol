@@ -93,4 +93,16 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
             .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .transferTimelock = transferTimelock;
     }
+
+    /**
+     * @notice set the duration used when creating transfer timelocks
+     * @param transferTimelockDuration duration of transfer timelock
+     */
+    function _setTransferTimelockDuration(
+        duration transferTimelockDuration
+    ) internal virtual {
+        ERC173Storage
+            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .transferTimelockDuration = transferTimelockDuration;
+    }
 }
