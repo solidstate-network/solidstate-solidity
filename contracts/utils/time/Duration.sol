@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { Panic } from './Panic.sol';
+import { Panic } from '../Panic.sol';
 
 // uint48 is safe for durations of up to 8,919,586.9 years
 type duration is uint48;

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { timestamp } from '../utils/Timestamp.sol';
+import { timestamp } from '../utils/time/Timestamp.sol';
 
 contract TimestampTest {
     function eq(

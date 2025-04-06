@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { timestamp as _timestamp } from './Timestamp.sol';
+import { timestamp as _timestamp } from './time/Timestamp.sol';
 
 library Block {
     /**

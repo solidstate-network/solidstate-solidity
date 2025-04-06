@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { duration } from '../utils/Duration.sol';
+import { duration } from '../utils/time/Duration.sol';
 
 contract DurationTest {
     function eq(duration d0, duration d1) external pure returns (bool status) {

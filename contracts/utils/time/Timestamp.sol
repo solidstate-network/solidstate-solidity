@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+import { Panic } from '../Panic.sol';
 import { duration } from './Duration.sol';
-import { Panic } from './Panic.sol';
 
 // uint48 is safe for timestamps until 07 December 8,921,556 10:44:15 AM
 type timestamp is uint48;
