@@ -17,15 +17,15 @@ library Timelock {
     function getStartTimestamp(
         timelock self
     ) internal pure returns (timestamp startTimestamp) {
-        startTimestamp = timestamp.wrap(uint48(bytes6(timelock.unwrap(self))));
+        startTimestamp = timestamp.wrap(
+            uint48(bytes6(timelock.unwrap(self) << 48))
+        );
     }
 
     function getEndTimestamp(
         timelock self
     ) internal pure returns (timestamp endTimestamp) {
-        endTimestamp = timestamp.wrap(
-            uint48(bytes6(timelock.unwrap(self) >> 48))
-        );
+        endTimestamp = timestamp.wrap(uint48(bytes6(timelock.unwrap(self))));
     }
 
     function isLocked(timelock self) internal view returns (bool status) {
