@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 
 import { Block } from './Block.sol';
 import { duration } from './Duration.sol';
+import { Panic } from './Panic.sol';
 import { timestamp } from './Timestamp.sol';
 
 type timelock is bytes12;
@@ -67,6 +68,7 @@ library Timelock {
         timestamp startTimestamp,
         timestamp endTimestamp
     ) internal pure returns (timelock lock) {
+        if (startTimestamp > endTimestamp) Panic.panic(Panic.ASSERTION_ERROR);
         assembly {
             lock := or(shl(208, endTimestamp), shl(160, startTimestamp))
         }
