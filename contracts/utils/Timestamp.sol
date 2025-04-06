@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { Duration } from './Duration.sol';
+import { duration } from './Duration.sol';
 
 // uint48 is safe for timestamps until 07 December 8,921,556 10:44:15 AM
 type timestamp is uint48;
@@ -45,19 +45,15 @@ function lte(timestamp t0, timestamp t1) pure returns (bool status) {
 library Timestamp {
     function add(
         timestamp t,
-        Duration duration
+        duration d
     ) internal pure returns (timestamp result) {
-        result = timestamp.wrap(
-            timestamp.unwrap(t) + Duration.unwrap(duration)
-        );
+        result = timestamp.wrap(timestamp.unwrap(t) + duration.unwrap(d));
     }
 
     function sub(
         timestamp t,
-        Duration duration
+        duration d
     ) internal pure returns (timestamp result) {
-        result = timestamp.wrap(
-            timestamp.unwrap(t) - Duration.unwrap(duration)
-        );
+        result = timestamp.wrap(timestamp.unwrap(t) - duration.unwrap(d));
     }
 }
