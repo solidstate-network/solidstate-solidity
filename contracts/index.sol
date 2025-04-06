@@ -3,13 +3,13 @@
 pragma solidity ^0.8.24;
 
 import './access/access_control/AccessControl.sol';
-import './access/access_control/AccessControlOwnable.sol';
 import './access/access_control/IAccessControl.sol';
-import './access/access_control/IAccessControlOwnable.sol';
 import './access/access_control/_AccessControl.sol';
-import './access/access_control/_AccessControlOwnable.sol';
 import './access/access_control/_IAccessControl.sol';
-import './access/access_control/_IAccessControlOwnable.sol';
+import './access/access_control/ownable/AccessControlOwnable.sol';
+import './access/access_control/ownable/IAccessControlOwnable.sol';
+import './access/access_control/ownable/_AccessControlOwnable.sol';
+import './access/access_control/ownable/_IAccessControlOwnable.sol';
 import './access/initializable/IInitializable.sol';
 import './access/initializable/Initializable.sol';
 import './access/initializable/_IInitializable.sol';

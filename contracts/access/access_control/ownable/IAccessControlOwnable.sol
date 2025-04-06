@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-import { IAccessControl } from './IAccessControl.sol';
+import { IAccessControl } from '../IAccessControl.sol';
 import { _IAccessControlOwnable } from './_IAccessControlOwnable.sol';
 
 /**

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.20;
 
-import { AccessControl } from './AccessControl.sol';
-import { _AccessControl } from './_AccessControl.sol';
+import { AccessControl } from '../AccessControl.sol';
+import { _AccessControl } from '../_AccessControl.sol';
 import { IAccessControlOwnable } from './IAccessControlOwnable.sol';
 import { _AccessControlOwnable } from './_AccessControlOwnable.sol';
 
