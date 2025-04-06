@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.24;
 
-import { Timestamp } from './Timestamp.sol';
+import { timestamp as _timestamp } from './Timestamp.sol';
 
 library Block {
     /**
      * @notice replacement for block.timestamp which returns the current time as a Timestamp type
      * @return blockTimestamp current timestamp
      */
-    function timestamp() internal view returns (Timestamp blockTimestamp) {
+    function timestamp() internal view returns (_timestamp blockTimestamp) {
         assembly {
             blockTimestamp := timestamp()
         }

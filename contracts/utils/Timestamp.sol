@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import { Duration } from './Duration.sol';
 
 // uint48 is safe for timestamps until 07 December 8,921,556 10:44:15 AM
-type Timestamp is uint48;
+type timestamp is uint48;
 
 using {
     eq as ==,
@@ -13,49 +13,51 @@ using {
     gt as >,
     lt as <,
     gte as >=,
-    lte as <=,
-    add,
-    sub
-} for Timestamp global;
+    lte as <=
+} for timestamp global;
 
-function eq(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) == Timestamp.unwrap(t1);
+using Timestamp for timestamp global;
+
+function eq(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) == timestamp.unwrap(t1);
 }
 
-function notEq(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) != Timestamp.unwrap(t1);
+function notEq(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) != timestamp.unwrap(t1);
 }
 
-function gt(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) > Timestamp.unwrap(t1);
+function gt(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) > timestamp.unwrap(t1);
 }
 
-function lt(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) < Timestamp.unwrap(t1);
+function lt(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) < timestamp.unwrap(t1);
 }
 
-function gte(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) >= Timestamp.unwrap(t1);
+function gte(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) >= timestamp.unwrap(t1);
 }
 
-function lte(Timestamp t0, Timestamp t1) pure returns (bool status) {
-    status = Timestamp.unwrap(t0) <= Timestamp.unwrap(t1);
+function lte(timestamp t0, timestamp t1) pure returns (bool status) {
+    status = timestamp.unwrap(t0) <= timestamp.unwrap(t1);
 }
 
-function add(
-    Timestamp timestamp,
-    Duration duration
-) pure returns (Timestamp result) {
-    result = Timestamp.wrap(
-        Timestamp.unwrap(timestamp) + Duration.unwrap(duration)
-    );
-}
+library Timestamp {
+    function add(
+        timestamp t,
+        Duration duration
+    ) internal pure returns (timestamp result) {
+        result = timestamp.wrap(
+            timestamp.unwrap(t) + Duration.unwrap(duration)
+        );
+    }
 
-function sub(
-    Timestamp timestamp,
-    Duration duration
-) pure returns (Timestamp result) {
-    result = Timestamp.wrap(
-        Timestamp.unwrap(timestamp) - Duration.unwrap(duration)
-    );
+    function sub(
+        timestamp t,
+        Duration duration
+    ) internal pure returns (timestamp result) {
+        result = timestamp.wrap(
+            timestamp.unwrap(t) - Duration.unwrap(duration)
+        );
+    }
 }
