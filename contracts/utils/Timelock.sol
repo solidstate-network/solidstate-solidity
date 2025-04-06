@@ -68,7 +68,7 @@ library Timelock {
         timestamp endTimestamp
     ) internal pure returns (timelock lock) {
         assembly {
-            lock := or(shl(endTimestamp, 48), startTimestamp)
+            lock := or(shl(208, endTimestamp), shl(160, startTimestamp))
         }
     }
 }
