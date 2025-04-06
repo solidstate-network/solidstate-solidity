@@ -3,15 +3,12 @@
 pragma solidity ^0.8.20;
 
 import { IAccessControl } from './IAccessControl.sol';
-import { _IAccessControlDefaultAdminRules } from './_IAccessControlDefaultAdminRules.sol';
+import { _IAccessControlOwnable } from './_IAccessControlOwnable.sol';
 
 /**
- * @title AccessControlDefaultAdminRules interface
+ * @title AccessControlOwnable interface
  */
-interface IAccessControlDefaultAdminRules is
-    _IAccessControlDefaultAdminRules,
-    IAccessControl
-{
+interface IAccessControlOwnable is _IAccessControlOwnable, IAccessControl {
     /**
      * @notice query default admin
      * @return defaultAdmin the default admin

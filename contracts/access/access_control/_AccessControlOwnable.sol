@@ -6,14 +6,14 @@ import { Math } from '../../utils/Math.sol';
 import { AccessControlStorage } from '../../storage/AccessControlStorage.sol';
 import { SafeCast } from '../../utils/SafeCast.sol';
 import { _AccessControl } from './_AccessControl.sol';
-import { _IAccessControlDefaultAdminRules } from './_IAccessControlDefaultAdminRules.sol';
+import { _IAccessControlOwnable } from './_IAccessControlOwnable.sol';
 
 /**
  * @title Role-based access control system with default admin rules
  * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
-abstract contract _AccessControlDefaultAdminRules is
-    _IAccessControlDefaultAdminRules,
+abstract contract _AccessControlOwnable is
+    _IAccessControlOwnable,
     _AccessControl
 {
     /**
@@ -102,7 +102,7 @@ abstract contract _AccessControlDefaultAdminRules is
     ) internal virtual override {
         if (role == DEFAULT_ADMIN_ROLE) {
             if (_defaultAdmin() != address(0)) {
-                revert AccessControlEnforcedDefaultAdminRules();
+                revert AccessControlEnforcedOwnable();
             }
             AccessControlStorage
                 .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
@@ -138,7 +138,7 @@ abstract contract _AccessControlDefaultAdminRules is
         bytes32 adminRole
     ) internal virtual override {
         if (role == DEFAULT_ADMIN_ROLE) {
-            revert AccessControlEnforcedDefaultAdminRules();
+            revert AccessControlEnforcedOwnable();
         }
         super._setRoleAdmin(role, adminRole);
     }

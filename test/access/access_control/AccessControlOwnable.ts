@@ -1,19 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  $AccessControlDefaultAdminRules,
-  $AccessControlDefaultAdminRules__factory,
+  $AccessControlOwnable,
+  $AccessControlOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 
-describe('AccessControlDefaultAdminRules', () => {
+describe('AccessControlOwnable', () => {
   let defaultAdmin: SignerWithAddress;
   let nonAdmin: SignerWithAddress;
   let nonAdmin2: SignerWithAddress;
   let nonAdmin3: SignerWithAddress;
-  let instance: $AccessControlDefaultAdminRules;
+  let instance: $AccessControlOwnable;
   const oneDayInSeconds = 86400;
 
   before(async () => {
@@ -21,9 +21,7 @@ describe('AccessControlDefaultAdminRules', () => {
   });
 
   beforeEach(async () => {
-    instance = await new $AccessControlDefaultAdminRules__factory(
-      defaultAdmin,
-    ).deploy();
+    instance = await new $AccessControlOwnable__factory(defaultAdmin).deploy();
 
     await instance.$_setRole(
       DEFAULT_ADMIN_ROLE,
