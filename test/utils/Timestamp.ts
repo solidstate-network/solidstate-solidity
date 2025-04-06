@@ -9,6 +9,8 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
+const MAX_UINT48 = 2n ** 48n - 1n;
+
 describe('Timestamp', async () => {
   let deployer: SignerWithAddress;
   let instance: $Timestamp;
@@ -67,6 +69,20 @@ describe('Timestamp', async () => {
   });
 
   describe('library', () => {
+    describe('#fromUint256(uint256)', () => {
+      it('converts uint256 to timestamp', async () => {
+        expect(await instance.$fromUint256.staticCall(1n)).to.eq(1n);
+      });
+
+      describe('reverts if', () => {
+        it('input is too large for uint48', async () => {
+          await expect(
+            instance.$fromUint256.staticCall(MAX_UINT48 + 1n),
+          ).to.be.revertedWithPanic(PANIC_CODES.ARITHMETIC_OVERFLOW);
+        });
+      });
+    });
+
     describe('#add(uint256,uint256)', () => {
       it('adds duration to timestamp', async () => {
         expect(await instance.$add.staticCall(1n, 1n)).to.eq(2n);

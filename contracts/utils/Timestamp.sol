@@ -3,6 +3,7 @@
 pragma solidity ^0.8.24;
 
 import { duration } from './Duration.sol';
+import { Panic } from './Panic.sol';
 
 // uint48 is safe for timestamps until 07 December 8,921,556 10:44:15 AM
 type timestamp is uint48;
@@ -43,6 +44,13 @@ function lte(timestamp t0, timestamp t1) pure returns (bool status) {
 }
 
 library Timestamp {
+    function fromUint256(
+        uint256 value
+    ) internal pure returns (timestamp result) {
+        if (value > type(uint48).max) Panic.panic(Panic.ARITHMETIC_OVERFLOW);
+        result = timestamp.wrap(uint48(value));
+    }
+
     function add(
         timestamp t,
         duration d
