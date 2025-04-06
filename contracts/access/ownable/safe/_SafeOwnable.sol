@@ -3,6 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { ERC173Storage } from '../../../storage/ERC173Storage.sol';
+import { Duration, duration } from '../../../utils/time/Duration.sol';
+import { Timelock, timelock } from '../../../utils/time/Timelock.sol';
 import { _Ownable } from '../_Ownable.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';
 
@@ -24,22 +26,18 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     }
 
     /**
-     * @notice query the current timelock and timelock duration
-     * @return transferTimelock timestamp when nomineeOwner can call acceptOwnership
-     * @return transferTimelockDuration waiting period after timelock is set
+     * @notice query the waiting period after an ownership transfer is initiated before the nomineeOwner can claim ownership
+     * @return transferTimelockDuration duration of waiting period
      */
-    function _transferTimelock()
+    function _getTransferTimelockDuration()
         internal
         view
         virtual
-        returns (uint128 transferTimelock, uint128 transferTimelockDuration)
+        returns (duration transferTimelockDuration)
     {
-        ERC173Storage.Layout storage $ = ERC173Storage.layout(
-            ERC173Storage.DEFAULT_STORAGE_SLOT
-        );
-
-        transferTimelock = $.transferTimelock;
-        transferTimelockDuration = $.transferTimelockDuration;
+        transferTimelockDuration = ERC173Storage
+            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .transferTimelockDuration;
     }
 
     /**
@@ -50,13 +48,11 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
             ERC173Storage.DEFAULT_STORAGE_SLOT
         );
 
-        if (block.timestamp < $.transferTimelock)
-            revert SafeOwnable__TimelockActive();
+        $.transferTimelock.requireUnlocked();
 
         _setOwner(_msgSender());
 
         delete $.nomineeOwner;
-        delete $.transferTimelock;
     }
 
     /**
@@ -66,7 +62,12 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         address account
     ) internal virtual override onlyOwner {
         _setNomineeOwner(account);
-        _setTransferTimelock();
+        timelock transferTimelock = _setTransferTimelock();
+        emit OwnershipTransferInitiated(
+            _owner(),
+            account,
+            transferTimelock.getEndTimestamp()
+        );
     }
 
     /**
@@ -81,15 +82,15 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     /**
      * @notice set the transfer timelock relative to current timestamp
      */
-    function _setTransferTimelock() internal virtual {
-        (, uint128 transferTimelockDuration) = _transferTimelock();
+    function _setTransferTimelock()
+        internal
+        virtual
+        returns (timelock transferTimelock)
+    {
+        transferTimelock = Timelock.create(_getTransferTimelockDuration());
 
-        unchecked {
-            ERC173Storage
-                .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
-                .transferTimelock =
-                uint128(block.timestamp) +
-                transferTimelockDuration;
-        }
+        ERC173Storage
+            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .transferTimelock = transferTimelock;
     }
 }
