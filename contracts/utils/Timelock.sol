@@ -6,7 +6,7 @@ import { Block } from './Block.sol';
 import { duration } from './Duration.sol';
 import { timestamp } from './Timestamp.sol';
 
-type timelock is uint96;
+type timelock is bytes12;
 
 using Timelock for timelock global;
 
@@ -17,13 +17,15 @@ library Timelock {
     function getStartTimestamp(
         timelock self
     ) internal pure returns (timestamp startTimestamp) {
-        startTimestamp = timestamp.wrap(uint48(timelock.unwrap(self)));
+        startTimestamp = timestamp.wrap(uint48(bytes6(timelock.unwrap(self))));
     }
 
     function getEndTimestamp(
         timelock self
     ) internal pure returns (timestamp endTimestamp) {
-        endTimestamp = timestamp.wrap(uint48(timelock.unwrap(self) >> 48));
+        endTimestamp = timestamp.wrap(
+            uint48(bytes6(timelock.unwrap(self) >> 48))
+        );
     }
 
     function isLocked(timelock self) internal view returns (bool status) {
@@ -65,9 +67,8 @@ library Timelock {
         timestamp startTimestamp,
         timestamp endTimestamp
     ) internal pure returns (timelock lock) {
-        lock = timelock.wrap(
-            (uint96(timestamp.unwrap(endTimestamp)) << 48) |
-                timestamp.unwrap(startTimestamp)
-        );
+        assembly {
+            lock := or(shl(endTimestamp, 48), startTimestamp)
+        }
     }
 }
