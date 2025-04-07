@@ -18,6 +18,9 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     using EnumerableSet for EnumerableSet.AddressSet;
     using Uint256 for uint256;
 
+    /**
+     * @dev zero bytes are used for the default admin role _getRoleAdmin will return zero bytes if no admin is assigned
+     */
     bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
 
     modifier onlyRole(bytes32 role) {
