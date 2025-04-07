@@ -25,16 +25,16 @@ abstract contract _AccessControl is _IAccessControl, _Context {
         _;
     }
 
-    /*
+    /**
      * @notice query whether role is assigned to account
      * @param role role to query
      * @param account account to query
-     * @return whether role is assigned to account
+     * @return status whether role is assigned to account
      */
     function _hasRole(
         bytes32 role,
         address account
-    ) internal view virtual returns (bool) {
+    ) internal view virtual returns (bool status) {
         return
             AccessControlStorage
                 .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
