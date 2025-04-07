@@ -9,48 +9,53 @@ import { ethers } from 'hardhat';
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 
 describe('AccessControlOwnable', () => {
-  let defaultAdmin: SignerWithAddress;
-  let nonAdmin: SignerWithAddress;
-  let nonAdmin2: SignerWithAddress;
-  let nonAdmin3: SignerWithAddress;
+  let deployer: SignerWithAddress;
+  let owner: SignerWithAddress;
+  let nonOwner: SignerWithAddress;
   let instance: $AccessControlOwnable;
 
   before(async () => {
-    [defaultAdmin, nonAdmin, nonAdmin2, nonAdmin3] = await ethers.getSigners();
+    [deployer, owner, nonOwner] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
-    instance = await new $AccessControlOwnable__factory(defaultAdmin).deploy();
+    instance = await new $AccessControlOwnable__factory(deployer).deploy();
 
-    await instance.$_setRole(
-      DEFAULT_ADMIN_ROLE,
-      await defaultAdmin.getAddress(),
-      true,
-    );
+    await instance.$_setOwner(await owner.getAddress());
   });
 
   describe('#grantRole(bytes32,address)', () => {
     it('allows the default admin to grant roles', async () => {
       await instance
-        .connect(defaultAdmin)
-        .grantRole(ethers.id('ROLE'), nonAdmin.address);
-      expect(
-        await instance.hasRole(ethers.id('ROLE'), nonAdmin.address),
-      ).to.equal(true);
+        .connect(owner)
+        .$_grantRole(ethers.id('ROLE'), nonOwner.address);
+      expect(await instance.$_hasRole(ethers.id('ROLE'), nonOwner.address)).to
+        .be.true;
     });
 
     describe('reverts if', () => {
+      it('role is default admin role', async () => {
+        await expect(
+          instance
+            .connect(owner)
+            .$_grantRole(DEFAULT_ADMIN_ROLE, await owner.getAddress()),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'AccessControlOwnable__InvalidActionOnDefaultAdminRole',
+        );
+      });
+
       it('sender is not default admin', async () => {
         await expect(
           instance
-            .connect(nonAdmin)
-            .grantRole(ethers.id('ROLE'), nonAdmin.address),
+            .connect(nonOwner)
+            .$_grantRole(ethers.id('ROLE'), nonOwner.address),
         )
           .to.be.revertedWithCustomError(
             instance,
             'AccessControl__Unauthorized',
           )
-          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonOwner.getAddress());
       });
     });
   });
@@ -58,29 +63,104 @@ describe('AccessControlOwnable', () => {
   describe('#revokeRole(bytes32,address)', () => {
     it('allows the default admin to revoke roles', async () => {
       await instance
-        .connect(defaultAdmin)
-        .grantRole(ethers.id('ROLE'), nonAdmin.address);
+        .connect(owner)
+        .$_grantRole(ethers.id('ROLE'), nonOwner.address);
       await instance
-        .connect(defaultAdmin)
-        .revokeRole(ethers.id('ROLE'), nonAdmin.address);
-      expect(
-        await instance.hasRole(ethers.id('ROLE'), nonAdmin.address),
-      ).to.equal(false);
+        .connect(owner)
+        .$_revokeRole(ethers.id('ROLE'), nonOwner.address);
+      expect(await instance.$_hasRole(ethers.id('ROLE'), nonOwner.address)).to
+        .be.false;
     });
 
     describe('reverts if', () => {
+      it('role is default admin role', async () => {
+        await expect(
+          instance
+            .connect(owner)
+            .$_revokeRole(DEFAULT_ADMIN_ROLE, await owner.getAddress()),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'AccessControlOwnable__InvalidActionOnDefaultAdminRole',
+        );
+      });
+
       it('sender is not default admin', async () => {
         await expect(
           instance
-            .connect(nonAdmin)
-            .grantRole(ethers.id('ROLE'), nonAdmin.address),
+            .connect(nonOwner)
+            .$_grantRole(ethers.id('ROLE'), nonOwner.address),
         )
           .to.be.revertedWithCustomError(
             instance,
             'AccessControl__Unauthorized',
           )
-          .withArgs(DEFAULT_ADMIN_ROLE, await nonAdmin.getAddress());
+          .withArgs(DEFAULT_ADMIN_ROLE, await nonOwner.getAddress());
       });
+    });
+  });
+
+  describe('#setRoleAdmin(bytes32,address)', () => {
+    describe('reverts if', () => {
+      it('role is default admin role', async () => {
+        await expect(
+          instance
+            .connect(owner)
+            .$_setRoleAdmin(DEFAULT_ADMIN_ROLE, ethers.id('ROLE')),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'AccessControlOwnable__InvalidActionOnDefaultAdminRole',
+        );
+      });
+    });
+  });
+
+  describe('#_setOwner(address)', () => {
+    it('transfers default admin role along with ownership', async () => {
+      expect(
+        await instance.$_hasRole(DEFAULT_ADMIN_ROLE, await owner.getAddress()),
+      ).to.be.true;
+      expect(
+        await instance.$_hasRole(
+          DEFAULT_ADMIN_ROLE,
+          await nonOwner.getAddress(),
+        ),
+      ).to.be.false;
+
+      await instance.$_setOwner(await nonOwner.getAddress());
+
+      expect(
+        await instance.$_hasRole(DEFAULT_ADMIN_ROLE, await owner.getAddress()),
+      ).to.be.false;
+      expect(
+        await instance.$_hasRole(
+          DEFAULT_ADMIN_ROLE,
+          await nonOwner.getAddress(),
+        ),
+      ).to.be.true;
+    });
+
+    it('emits RoleGranted event', async () => {
+      await expect(
+        instance.connect(deployer).$_setOwner(await nonOwner.getAddress()),
+      )
+        .to.emit(instance, 'RoleGranted')
+        .withArgs(
+          DEFAULT_ADMIN_ROLE,
+          await nonOwner.getAddress(),
+          await deployer.getAddress(),
+        );
+    });
+
+    it('emits RoleRevoked event', async () => {
+      await expect(
+        instance.connect(deployer).$_setOwner(await nonOwner.getAddress()),
+      )
+        .to.emit(instance, 'RoleRevoked')
+        .withArgs(
+          DEFAULT_ADMIN_ROLE,
+          await owner.getAddress(),
+          await deployer.getAddress(),
+        );
     });
   });
 });
