@@ -24,7 +24,7 @@ describe('AccessControlOwnable', () => {
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describe('#grantRole(bytes32,address)', () => {
+  describe('#_grantRole(bytes32,address)', () => {
     it('allows the default admin to grant roles', async () => {
       await instance
         .connect(owner)
@@ -60,7 +60,7 @@ describe('AccessControlOwnable', () => {
     });
   });
 
-  describe('#revokeRole(bytes32,address)', () => {
+  describe('#_revokeRole(bytes32,address)', () => {
     it('allows the default admin to revoke roles', async () => {
       await instance
         .connect(owner)
@@ -99,7 +99,17 @@ describe('AccessControlOwnable', () => {
     });
   });
 
-  describe('#setRoleAdmin(bytes32,address)', () => {
+  describe('#_setRoleAdmin(bytes32,bytes32)', () => {
+    it('sets role admin regardless of sender', async () => {
+      await instance
+        .connect(nonOwner)
+        .$_setRoleAdmin(ethers.id('ROLE'), ethers.id('ADMIN'));
+
+      expect(await instance.$_getRoleAdmin.staticCall(ethers.id('ROLE'))).to.eq(
+        ethers.id('ADMIN'),
+      );
+    });
+
     describe('reverts if', () => {
       it('role is default admin role', async () => {
         await expect(
