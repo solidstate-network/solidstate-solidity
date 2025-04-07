@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { tslot } from '../data/Slot.sol';
+import { tslot } from '../data/TransientSlot.sol';
 
-contract SlotTest {
+contract TransientSlotTest {
     function transientWriteTest(
         tslot slot,
         bytes32 input

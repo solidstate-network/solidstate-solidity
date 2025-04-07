@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { sslot } from '../data/Slot.sol';
+import { sslot } from '../data/StorageSlot.sol';
 
 library ERC2771Storage {
     /**

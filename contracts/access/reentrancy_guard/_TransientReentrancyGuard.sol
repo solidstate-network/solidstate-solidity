@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { sslot, tslot } from '../../data/Slot.sol';
+import { sslot } from '../../data/StorageSlot.sol';
+import { tslot } from '../../data/TransientSlot.sol';
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
 import { Bool } from '../../utils/Bool.sol';
 import { Bytes32 } from '../../utils/Bytes32.sol';
