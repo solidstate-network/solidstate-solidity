@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.20;
 
+import { Ownable } from '../../ownable/Ownable.sol';
+import { _Ownable } from '../../ownable/_Ownable.sol';
 import { AccessControl } from '../AccessControl.sol';
 import { _AccessControl } from '../_AccessControl.sol';
 import { IAccessControlOwnable } from './IAccessControlOwnable.sol';
@@ -9,91 +11,13 @@ import { _AccessControlOwnable } from './_AccessControlOwnable.sol';
 
 /**
  * @title Role-based access control system with default admin rules
- * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 abstract contract AccessControlOwnable is
     IAccessControlOwnable,
     _AccessControlOwnable,
-    AccessControl
+    AccessControl,
+    Ownable
 {
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function defaultAdmin() external view returns (address) {
-        return _defaultAdmin();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function pendingDefaultAdmin()
-        external
-        view
-        returns (address newAdmin, uint48 acceptSchedule)
-    {
-        return _pendingDefaultAdmin();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function defaultAdminDelay() external view returns (uint48) {
-        return _defaultAdminDelay();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function pendingDefaultAdminDelay()
-        external
-        view
-        returns (uint48 newDelay, uint48 effectSchedule)
-    {
-        return _pendingDefaultAdminDelay();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function beginDefaultAdminTransfer(address newAdmin) external {
-        _beginDefaultAdminTransfer(newAdmin);
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function cancelDefaultAdminTransfer() external {
-        _cancelDefaultAdminTransfer();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function acceptDefaultAdminTransfer() external {
-        _acceptDefaultAdminTransfer();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function changeDefaultAdminDelay(uint48 newDelay) external {
-        _changeDefaultAdminDelay(newDelay);
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function rollbackDefaultAdminDelay() external {
-        _rollbackDefaultAdminDelay();
-    }
-
-    /**
-     * @inheritdoc IAccessControlOwnable
-     */
-    function defaultAdminDelayIncreaseWait() external view returns (uint48) {
-        return _defaultAdminDelayIncreaseWait();
-    }
-
     function _grantRole(
         bytes32 role,
         address account
@@ -113,5 +37,11 @@ abstract contract AccessControlOwnable is
         bytes32 adminRole
     ) internal override(_AccessControl, _AccessControlOwnable) {
         super._setRoleAdmin(role, adminRole);
+    }
+
+    function _setOwner(
+        address account
+    ) internal virtual override(_Ownable, _AccessControlOwnable) {
+        super._setOwner(account);
     }
 }

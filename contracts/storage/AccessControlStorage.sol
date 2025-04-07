@@ -16,12 +16,6 @@ library AccessControlStorage {
      */
     struct Layout {
         mapping(bytes32 roleId => RoleData roleData) roles;
-        address pendingDefaultAdmin;
-        uint48 pendingDefaultAdminSchedule;
-        uint48 currentDelay;
-        address currentDefaultAdmin;
-        uint48 pendingDelay;
-        uint48 pendingDelaySchedule;
     }
 
     Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
