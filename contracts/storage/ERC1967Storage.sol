@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import { Slot } from '../data/Slot.sol';
+import { sslot } from '../data/StorageSlot.sol';
 
 library ERC1967Storage {
     // this storage layout is compatible with both ERC1967 and ERC7201
@@ -20,8 +20,8 @@ library ERC1967Storage {
     //     address admin;
     // }
     //
-    // Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
-    //     Slot.StorageSlot.wrap(
+    // sslot internal constant DEFAULT_STORAGE_SLOT =
+    //     sslot.wrap(
     //         keccak256(
     //             abi.encode(
     //                 uint256(keccak256(bytes('solidstate.layout.ERC1967'))) - 1
@@ -29,16 +29,12 @@ library ERC1967Storage {
     //         ) & ~bytes32(uint256(0xff))
     //     );
 
-    Slot.StorageSlot internal constant IMPLEMENTATION_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
+    sslot internal constant IMPLEMENTATION_STORAGE_SLOT =
+        sslot.wrap(
             bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
         );
-    Slot.StorageSlot internal constant BEACON_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
-            bytes32(uint256(keccak256('eip1967.proxy.beacon')) - 1)
-        );
-    Slot.StorageSlot internal constant ADMIN_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
-            bytes32(uint256(keccak256('eip1967.proxy.admin')) - 1)
-        );
+    sslot internal constant BEACON_STORAGE_SLOT =
+        sslot.wrap(bytes32(uint256(keccak256('eip1967.proxy.beacon')) - 1));
+    sslot internal constant ADMIN_STORAGE_SLOT =
+        sslot.wrap(bytes32(uint256(keccak256('eip1967.proxy.admin')) - 1));
 }

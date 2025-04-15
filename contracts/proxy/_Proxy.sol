@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.24;
 
-import { Slot } from '../data/Slot.sol';
 import { _Context } from '../meta/_Context.sol';
 import { Address } from '../utils/Address.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
@@ -12,7 +11,6 @@ import { _IProxy } from './_IProxy.sol';
 abstract contract _Proxy is _IProxy, _Context {
     using Address for address;
     using Bytes32 for bytes32;
-    using Slot for Slot.StorageSlot;
 
     modifier onlyProxyAdmin() {
         if (_msgSender() != _getProxyAdmin()) {

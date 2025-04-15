@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import { IBeacon } from '../../beacon/IBeacon.sol';
-import { Slot } from '../../data/Slot.sol';
 import { ERC1967Storage } from '../../storage/ERC1967Storage.sol';
 import { Address } from '../../utils/Address.sol';
 import { Bytes32 } from '../../utils/Bytes32.sol';
@@ -13,7 +12,6 @@ import { _IBeaconProxy } from './_IBeaconProxy.sol';
 abstract contract _BeaconProxy is _IBeaconProxy, _Proxy {
     using Address for address;
     using Bytes32 for bytes32;
-    using Slot for Slot.StorageSlot;
 
     /**
      * @inheritdoc _Proxy
