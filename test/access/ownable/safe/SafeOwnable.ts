@@ -1,4 +1,5 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeBehaviorOfSafeOwnable } from '@solidstate/spec';
 import {
   $SafeOwnable,
@@ -12,6 +13,7 @@ describe('SafeOwnable', () => {
   let nomineeOwner: SignerWithAddress;
   let nonOwner: SignerWithAddress;
   let instance: $SafeOwnable;
+  let transferTimelockDuration: bigint;
 
   before(async () => {
     [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
@@ -19,6 +21,8 @@ describe('SafeOwnable', () => {
 
   beforeEach(async () => {
     instance = await new $SafeOwnable__factory(owner).deploy();
+
+    transferTimelockDuration = 123n;
 
     await instance.$_setOwner(await owner.getAddress());
   });
@@ -91,6 +95,20 @@ describe('SafeOwnable', () => {
           ethers.ZeroAddress,
         );
       });
+
+      describe('reverts if', () => {
+        it('transfer timelock is locked', async () => {
+          await instance.$_setTransferTimelockDuration(
+            transferTimelockDuration,
+          );
+
+          await instance.connect(owner).transferOwnership(nomineeOwner);
+
+          await expect(
+            instance.connect(nomineeOwner).$_acceptOwnership(),
+          ).to.be.revertedWithCustomError(instance, 'Timelock__Locked');
+        });
+      });
     });
 
     describe('#_transferOwnership(address)', () => {
@@ -106,6 +124,21 @@ describe('SafeOwnable', () => {
         await instance.$_transferOwnership(nomineeOwner.address);
 
         expect(await instance.$_owner.staticCall()).to.equal(owner.address);
+      });
+
+      it('emits OwnershipTransferInitiated event', async () => {
+        await instance.$_setTransferTimelockDuration(transferTimelockDuration);
+
+        const timestamp = BigInt(await time.latest()) + 1n;
+        await time.setNextBlockTimestamp(timestamp);
+
+        await expect(instance.$_transferOwnership(nomineeOwner.address))
+          .to.emit(instance, 'OwnershipTransferInitiated')
+          .withArgs(
+            await owner.getAddress(),
+            await nomineeOwner.getAddress(),
+            timestamp + transferTimelockDuration,
+          );
       });
     });
 

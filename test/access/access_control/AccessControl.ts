@@ -38,6 +38,12 @@ describe('AccessControl', () => {
   });
 
   describe('__internal', () => {
+    describe('#DEFAULT_ADMIN_ROLE()', () => {
+      it('returns zero bytes', async () => {
+        expect(await instance.$DEFAULT_ADMIN_ROLE.staticCall()).to.eq(0n);
+      });
+    });
+
     describe('onlyRole(bytes32) modifier', () => {
       it('does not revert if sender has role', async () => {
         await expect(instance.connect(admin).$onlyRole(DEFAULT_ADMIN_ROLE)).not
