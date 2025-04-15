@@ -4,7 +4,8 @@ pragma solidity ^0.8.24;
 
 import { ECDSA } from '../cryptography/ECDSA.sol';
 import { EIP712 } from '../cryptography/EIP712.sol';
-import { Slot } from '../data/Slot.sol';
+import { sslot } from '../data/StorageSlot.sol';
+import { tslot } from '../data/TransientSlot.sol';
 import { _TransientReentrancyGuard } from '../access/reentrancy_guard/_TransientReentrancyGuard.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
 import { Bytes32Builder } from '../data/Bytes32Builder.sol';
@@ -19,15 +20,14 @@ abstract contract _ECDSAMetaTransactionContext is
     using Bytes32 for bytes32;
     using Bytes32Builder for Bytes32.Builder;
     using ECDSA for bytes32;
-    using Slot for Slot.TransientSlot;
 
     bytes32 internal constant EIP_712_TYPE_HASH =
         keccak256(
             'ECDSAMetaTransaction(bytes msgData,uint256 msgValue,uint256 nonce)'
         );
 
-    Slot.TransientSlot private constant TRANSIENT_SLOT =
-        Slot.TransientSlot.wrap(
+    tslot private constant TRANSIENT_SLOT =
+        tslot.wrap(
             keccak256(abi.encode(uint256(EIP_712_TYPE_HASH) - 1)) &
                 ~bytes32(uint256(0xff))
         );
