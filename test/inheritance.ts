@@ -345,6 +345,10 @@ describe('Inheritance Graph', () => {
             'Storage',
             'Uint256',
             'Panic',
+            'Block',
+            'Duration',
+            'Timelock',
+            'Timestamp',
           ].includes(name),
       );
     });
