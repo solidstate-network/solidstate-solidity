@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import { EnumerableSet } from '../data/EnumerableSet.sol';
-import { Slot } from '../data/Slot.sol';
+import { sslot } from '../data/StorageSlot.sol';
 
 library AccessControlStorage {
     struct RoleData {
@@ -20,8 +20,8 @@ library AccessControlStorage {
 
     bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
 
-    Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
+    sslot internal constant DEFAULT_STORAGE_SLOT =
+        sslot.wrap(
             keccak256(
                 abi.encode(
                     uint256(
@@ -35,9 +35,7 @@ library AccessControlStorage {
         $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(
-        Slot.StorageSlot slot
-    ) internal pure returns (Layout storage $) {
+    function layout(sslot slot) internal pure returns (Layout storage $) {
         assembly {
             $.slot := slot
         }
