@@ -341,10 +341,14 @@ describe('Inheritance Graph', () => {
             'SafeCast',
             'SafeERC20',
             'Bytes32Builder',
-            'Slot',
-            'Storage',
+            'StorageSlot',
+            'TransientSlot',
             'Uint256',
             'Panic',
+            'Block',
+            'Duration',
+            'Timelock',
+            'Timestamp',
           ].includes(name),
       );
     });

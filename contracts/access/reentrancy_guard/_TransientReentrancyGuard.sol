@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { Slot } from '../../data/Slot.sol';
+import { sslot } from '../../data/StorageSlot.sol';
+import { tslot } from '../../data/TransientSlot.sol';
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
 import { Bool } from '../../utils/Bool.sol';
 import { Bytes32 } from '../../utils/Bytes32.sol';
@@ -15,12 +16,9 @@ abstract contract _TransientReentrancyGuard is
 {
     using Bool for bool;
     using Bytes32 for bytes32;
-    using Slot for Slot.TransientSlot;
 
-    Slot.TransientSlot private constant TRANSIENT_SLOT =
-        Slot.TransientSlot.wrap(
-            Slot.StorageSlot.unwrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
-        );
+    tslot private constant TRANSIENT_SLOT =
+        tslot.wrap(sslot.unwrap(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT));
 
     /**
      * @notice returns true if the reentrancy guard is locked, false otherwise

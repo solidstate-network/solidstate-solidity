@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import { EnumerableSet } from '../data/EnumerableSet.sol';
-import { Slot } from '../data/Slot.sol';
+import { sslot } from '../data/StorageSlot.sol';
 
 library ERC1155Storage {
     /**
@@ -19,8 +19,8 @@ library ERC1155Storage {
         mapping(address account => EnumerableSet.UintSet tokenIds) tokensByAccount;
     }
 
-    Slot.StorageSlot internal constant DEFAULT_STORAGE_SLOT =
-        Slot.StorageSlot.wrap(
+    sslot internal constant DEFAULT_STORAGE_SLOT =
+        sslot.wrap(
             keccak256(
                 abi.encode(
                     uint256(keccak256(bytes('solidstate.layout.ERC1155'))) - 1
@@ -32,9 +32,7 @@ library ERC1155Storage {
         $ = layout(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(
-        Slot.StorageSlot slot
-    ) internal pure returns (Layout storage $) {
+    function layout(sslot slot) internal pure returns (Layout storage $) {
         assembly {
             $.slot := slot
         }
