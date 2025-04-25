@@ -26,9 +26,10 @@ abstract contract _RestrictedFungibleToken is
         if (restrictionCodes.length != restrictionMessages.length)
             revert RestrictedFungibleToken__ArrayLengthMismatch();
 
-        mapping(uint8 => string) storage restrictions = ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
-            .erc1404RestrictionMessages;
+        mapping(uint8 restrictionCode => string restrictionMessage)
+            storage restrictions = ERC20Storage
+                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+                .erc1404RestrictionMessages;
 
         unchecked {
             for (uint256 i; i < restrictionCodes.length; i++) {

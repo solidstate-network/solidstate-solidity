@@ -8,8 +8,8 @@ pragma solidity ^0.8.24;
  */
 library DoublyLinkedList {
     struct _DoublyLinkedList {
-        mapping(bytes32 => bytes32) _nextValues;
-        mapping(bytes32 => bytes32) _prevValues;
+        mapping(bytes32 current => bytes32 next) _nextValues;
+        mapping(bytes32 current => bytes32 prev) _prevValues;
     }
 
     struct Bytes32List {

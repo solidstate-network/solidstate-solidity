@@ -17,7 +17,7 @@ library EnumerableSet {
     struct Set {
         bytes32[] _values;
         // 1-indexed to allow 0 to signify nonexistence
-        mapping(bytes32 => uint256) _indexes;
+        mapping(bytes32 value => uint256 index) _indexes;
     }
 
     struct Bytes32Set {
