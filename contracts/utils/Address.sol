@@ -131,7 +131,7 @@ library Address {
                 gasAmount,
                 target,
                 value,
-                add(data, 0x20),
+                add(data, 32),
                 mload(data),
                 0,
                 0
@@ -148,7 +148,7 @@ library Address {
             mstore(returnData, toCopy)
 
             // copy the bytes from returndata[0:toCopy]
-            returndatacopy(add(returnData, 0x20), 0, toCopy)
+            returndatacopy(add(returnData, 32), 0, toCopy)
         }
     }
 

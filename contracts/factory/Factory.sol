@@ -17,7 +17,7 @@ library Factory {
         bytes memory initCode
     ) internal returns (address deployment) {
         assembly {
-            let encoded_data := add(0x20, initCode)
+            let encoded_data := add(32, initCode)
             let encoded_size := mload(initCode)
             deployment := create(0, encoded_data, encoded_size)
         }
@@ -37,7 +37,7 @@ library Factory {
         bytes32 salt
     ) internal returns (address deployment) {
         assembly {
-            let encoded_data := add(0x20, initCode)
+            let encoded_data := add(32, initCode)
             let encoded_size := mload(initCode)
             deployment := create2(0, encoded_data, encoded_size, salt)
         }
