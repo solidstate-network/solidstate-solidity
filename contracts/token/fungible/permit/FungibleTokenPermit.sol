@@ -10,7 +10,6 @@ import { IFungibleTokenPermit } from './IFungibleTokenPermit.sol';
 
 /**
  * @title ERC20 extension with support for ERC2612 permits
- * @dev derived from https://github.com/soliditylabs/ERC20-Permit (MIT license)
  */
 abstract contract FungibleTokenPermit is
     IFungibleTokenPermit,

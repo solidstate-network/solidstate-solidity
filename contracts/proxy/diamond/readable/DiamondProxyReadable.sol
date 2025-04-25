@@ -11,7 +11,6 @@ import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract
- * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
  */
 abstract contract DiamondProxyReadable is
     IDiamondProxyReadable,

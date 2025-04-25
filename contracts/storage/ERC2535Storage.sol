@@ -4,9 +4,6 @@ pragma solidity ^0.8.24;
 
 import { sslot } from '../data/StorageSlot.sol';
 
-/**
- * @dev derived from https://github.com/mudgen/diamond-2 (MIT license)
- */
 library ERC2535Storage {
     /**
      * @custom:storage-location erc7201:solidstate.layout.ERC2535
