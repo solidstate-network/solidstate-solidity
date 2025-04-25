@@ -18,8 +18,6 @@ library AccessControlStorage {
         mapping(bytes32 roleId => RoleData roleData) roles;
     }
 
-    bytes32 internal constant DEFAULT_ADMIN_ROLE = 0x00;
-
     sslot internal constant DEFAULT_STORAGE_SLOT =
         sslot.wrap(
             keccak256(

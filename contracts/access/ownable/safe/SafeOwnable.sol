@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { Ownable } from './Ownable.sol';
+import { Ownable } from '../Ownable.sol';
+import { _Ownable } from '../_Ownable.sol';
 import { ISafeOwnable } from './ISafeOwnable.sol';
-import { _Ownable } from './_Ownable.sol';
 import { _SafeOwnable } from './_SafeOwnable.sol';
 
 /**
