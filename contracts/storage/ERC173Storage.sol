@@ -3,6 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { sslot } from '../data/StorageSlot.sol';
+import { duration } from '../utils/time/Duration.sol';
+import { timelock } from '../utils/time/Timelock.sol';
 
 library ERC173Storage {
     /**
@@ -11,6 +13,8 @@ library ERC173Storage {
     struct Layout {
         address owner;
         address nomineeOwner;
+        timelock transferTimelock;
+        duration transferTimelockDuration;
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
