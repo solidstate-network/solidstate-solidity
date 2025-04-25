@@ -49,7 +49,7 @@ import './data/Bytes32Builder.sol';
 import './data/DoublyLinkedList.sol';
 import './data/EnumerableMap.sol';
 import './data/EnumerableSet.sol';
-import './data/IncrementalMerkleTree.sol';
+import './data/MerkleTree.sol';
 import './data/PackedDoublyLinkedList.sol';
 import './data/StorageSlot.sol';
 import './data/TransientSlot.sol';
