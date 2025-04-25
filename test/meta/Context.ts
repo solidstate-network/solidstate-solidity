@@ -12,43 +12,41 @@ describe('Context', () => {
     instance = await new $Context__factory(deployer).deploy();
   });
 
-  describe('__internal', () => {
-    describe('#_msgSender()', () => {
-      it('returns message sender', async () => {
-        const tx = await instance.$_msgSender.populateTransaction();
-        tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
+  describe('#_msgSender()', () => {
+    it('returns message sender', async () => {
+      const tx = await instance.$_msgSender.populateTransaction();
+      tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
 
-        const result = await deployer.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgSender',
-          result,
-        );
+      const result = await deployer.call(tx);
+      const decoded = instance.interface.decodeFunctionResult(
+        '$_msgSender',
+        result,
+      );
 
-        expect(decoded).to.deep.equal([await deployer.getAddress()]);
-      });
+      expect(decoded).to.deep.equal([await deployer.getAddress()]);
     });
+  });
 
-    describe('#_msgData()', () => {
-      it('returns complete message data', async () => {
-        const tx = await instance.$_msgData.populateTransaction();
-        tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
+  describe('#_msgData()', () => {
+    it('returns complete message data', async () => {
+      const tx = await instance.$_msgData.populateTransaction();
+      tx.data = ethers.concat([tx.data, ethers.randomBytes(20)]);
 
-        // message data is returned as received, demonstrating the malleability of msg.data
+      // message data is returned as received, demonstrating the malleability of msg.data
 
-        const result = await deployer.call(tx);
-        const decoded = instance.interface.decodeFunctionResult(
-          '$_msgData',
-          result,
-        );
+      const result = await deployer.call(tx);
+      const decoded = instance.interface.decodeFunctionResult(
+        '$_msgData',
+        result,
+      );
 
-        expect(decoded).to.deep.equal([tx.data]);
-      });
+      expect(decoded).to.deep.equal([tx.data]);
     });
+  });
 
-    describe('#_calldataSuffixLength()', () => {
-      it('returns 0', async () => {
-        expect(await instance.$_calldataSuffixLength.staticCall()).to.equal(0n);
-      });
+  describe('#_calldataSuffixLength()', () => {
+    it('returns 0', async () => {
+      expect(await instance.$_calldataSuffixLength.staticCall()).to.equal(0n);
     });
   });
 });

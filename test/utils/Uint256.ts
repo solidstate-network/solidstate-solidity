@@ -25,474 +25,460 @@ describe('Uint256', () => {
     instance = await new $Uint256__factory(deployer).deploy();
   });
 
-  describe('__internal', () => {
-    describe('#toBytes32(uint256)', () => {
-      it('returns a bytes32 representation of uint256', async () => {
+  describe('#toBytes32(uint256)', () => {
+    it('returns a bytes32 representation of uint256', async () => {
+      expect(await instance.$toBytes32.staticCall(ethers.MaxUint256)).to.equal(
+        `0x${ethers.MaxUint256.toString(16)}`,
+      );
+    });
+  });
+
+  describe('#toString(uint256,uint256)', () => {
+    it('returns 0 if input is 0', async () => {
+      for (let radix = 2; radix <= 36; radix++) {
         expect(
-          await instance.$toBytes32.staticCall(ethers.MaxUint256),
-        ).to.equal(`0x${ethers.MaxUint256.toString(16)}`);
-      });
+          await instance['$toString(uint256,uint256)'].staticCall(0n, radix),
+        ).to.equal('0');
+      }
     });
 
-    describe('#toString(uint256,uint256)', () => {
-      it('returns 0 if input is 0', async () => {
-        for (let radix = 2; radix <= 36; radix++) {
-          expect(
-            await instance['$toString(uint256,uint256)'].staticCall(0n, radix),
-          ).to.equal('0');
-        }
-      });
-
-      it('returns string representation of number in given radix up to 36', async () => {
-        for (let radix = 2; radix <= 36; radix++) {
-          for (let i = 0; i < 12; i++) {
-            const value = BigInt(i);
-            const string = value.toString(radix);
-
-            expect(
-              await instance['$toString(uint256,uint256)'].staticCall(
-                value,
-                radix,
-              ),
-            ).to.equal(string);
-          }
+    it('returns string representation of number in given radix up to 36', async () => {
+      for (let radix = 2; radix <= 36; radix++) {
+        for (let i = 0; i < 12; i++) {
+          const value = BigInt(i);
+          const string = value.toString(radix);
 
           expect(
             await instance['$toString(uint256,uint256)'].staticCall(
-              ethers.MaxUint256,
+              value,
               radix,
             ),
-          ).to.equal(ethers.MaxUint256.toString(radix));
+          ).to.equal(string);
         }
-      });
 
-      describe('reverts if', () => {
-        it('radix is 0', async () => {
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(0n, 0n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(1n, 0n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-
-        it('radix is 1', async () => {
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(0n, 1n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(1n, 1n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-
-        it('radix is greater than 36', async () => {
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(0n, 37n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256)'].staticCall(1n, 37n),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-      });
+        expect(
+          await instance['$toString(uint256,uint256)'].staticCall(
+            ethers.MaxUint256,
+            radix,
+          ),
+        ).to.equal(ethers.MaxUint256.toString(radix));
+      }
     });
 
-    describe('#toString(uint256,uint256,uint256)', () => {
-      it('returns empty string if input is 0 and length is 0', async () => {
-        for (let radix = 2; radix <= 36; radix++) {
-          expect(
-            await instance['$toString(uint256,uint256,uint256)'].staticCall(
-              0n,
-              radix,
-              0n,
-            ),
-          ).to.equal('');
-        }
+    describe('reverts if', () => {
+      it('radix is 0', async () => {
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(0n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(1n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
       });
 
-      it('returns string representation of number in given radix up to 36', async () => {
-        for (let radix = 2; radix <= 36; radix++) {
-          for (let value of values) {
-            const string = value.toString(radix);
-            const length = string.length;
+      it('radix is 1', async () => {
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(0n, 1n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
 
-            const result = await instance[
-              '$toString(uint256,uint256,uint256)'
-            ].staticCall(value, radix, length);
-
-            expect(result).to.equal(string);
-          }
-        }
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(1n, 1n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
       });
 
-      it('returns string with specified zero padding', async () => {
-        for (let radix = 2; radix <= 36; radix++) {
-          const value = 1;
-          const length = 100;
+      it('radix is greater than 36', async () => {
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(0n, 37n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+
+        await expect(
+          instance['$toString(uint256,uint256)'].staticCall(1n, 37n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+      });
+    });
+  });
+
+  describe('#toString(uint256,uint256,uint256)', () => {
+    it('returns empty string if input is 0 and length is 0', async () => {
+      for (let radix = 2; radix <= 36; radix++) {
+        expect(
+          await instance['$toString(uint256,uint256,uint256)'].staticCall(
+            0n,
+            radix,
+            0n,
+          ),
+        ).to.equal('');
+      }
+    });
+
+    it('returns string representation of number in given radix up to 36', async () => {
+      for (let radix = 2; radix <= 36; radix++) {
+        for (let value of values) {
+          const string = value.toString(radix);
+          const length = string.length;
 
           const result = await instance[
             '$toString(uint256,uint256,uint256)'
           ].staticCall(value, radix, length);
 
-          expect(result).to.have.length(length);
-        }
-      });
-
-      describe('reverts if', () => {
-        it('radix is 0', async () => {
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              0n,
-              0n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              1n,
-              0n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-
-        it('radix is 1', async () => {
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              0n,
-              1n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              1n,
-              1n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-
-        it('radix is greater than 36', async () => {
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              0n,
-              37n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              1n,
-              37n,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
-        });
-      });
-
-      it('padding is insufficient', async () => {
-        for (let radix = 2; radix <= 10; radix++) {
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              1n,
-              radix,
-              0n,
-            ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-
-          await expect(
-            instance['$toString(uint256,uint256,uint256)'].staticCall(
-              radix,
-              radix,
-              1n,
-            ),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-        }
-      });
-    });
-
-    describe('#toBinString(uint256)', () => {
-      it('returns 0b0 if input is 0', async () => {
-        expect(await instance['$toBinString(uint256)'].staticCall(0n)).to.equal(
-          '0b0',
-        );
-      });
-
-      it('returns binary string representation of a number', async () => {
-        for (const value of values) {
-          expect(
-            await instance['$toBinString(uint256)'].staticCall(value),
-          ).to.equal(`0b${value.toString(2)}`);
-        }
-      });
-    });
-
-    describe('#toBinString(uint256,uint256)', () => {
-      it('returns empty 0b-prefixed string if input is 0 and length is 0', async () => {
-        expect(
-          await instance['$toBinString(uint256,uint256)'].staticCall(0n, 0n),
-        ).to.equal('0b');
-      });
-
-      it('returns 0b-prefixed binary string representation of a number', async () => {
-        for (let value of values) {
-          const string = `0b${value.toString(2)}`;
-          const length = string.length - 2;
-
-          const result = await instance[
-            '$toBinString(uint256,uint256)'
-          ].staticCall(value, length);
-
           expect(result).to.equal(string);
         }
-      });
+      }
+    });
 
-      it('returns string with specified zero padding', async () => {
+    it('returns string with specified zero padding', async () => {
+      for (let radix = 2; radix <= 36; radix++) {
         const value = 1;
         const length = 100;
+
+        const result = await instance[
+          '$toString(uint256,uint256,uint256)'
+        ].staticCall(value, radix, length);
+
+        expect(result).to.have.length(length);
+      }
+    });
+
+    describe('reverts if', () => {
+      it('radix is 0', async () => {
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(0n, 0n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(1n, 0n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+      });
+
+      it('radix is 1', async () => {
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(0n, 1n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(1n, 1n, 0n),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+      });
+
+      it('radix is greater than 36', async () => {
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(
+            0n,
+            37n,
+            0n,
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(
+            1n,
+            37n,
+            0n,
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Uint256__InvalidBase');
+      });
+    });
+
+    it('padding is insufficient', async () => {
+      for (let radix = 2; radix <= 10; radix++) {
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(
+            1n,
+            radix,
+            0n,
+          ),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+
+        await expect(
+          instance['$toString(uint256,uint256,uint256)'].staticCall(
+            radix,
+            radix,
+            1n,
+          ),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+      }
+    });
+  });
+
+  describe('#toBinString(uint256)', () => {
+    it('returns 0b0 if input is 0', async () => {
+      expect(await instance['$toBinString(uint256)'].staticCall(0n)).to.equal(
+        '0b0',
+      );
+    });
+
+    it('returns binary string representation of a number', async () => {
+      for (const value of values) {
+        expect(
+          await instance['$toBinString(uint256)'].staticCall(value),
+        ).to.equal(`0b${value.toString(2)}`);
+      }
+    });
+  });
+
+  describe('#toBinString(uint256,uint256)', () => {
+    it('returns empty 0b-prefixed string if input is 0 and length is 0', async () => {
+      expect(
+        await instance['$toBinString(uint256,uint256)'].staticCall(0n, 0n),
+      ).to.equal('0b');
+    });
+
+    it('returns 0b-prefixed binary string representation of a number', async () => {
+      for (let value of values) {
+        const string = `0b${value.toString(2)}`;
+        const length = string.length - 2;
 
         const result = await instance[
           '$toBinString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length(length + 2);
-      });
-
-      describe('reverts if', () => {
-        it('padding is insufficient', async () => {
-          await expect(
-            instance['$toBinString(uint256,uint256)'].staticCall(0b1, 0n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-
-          await expect(
-            instance['$toBinString(uint256,uint256)'].staticCall(0b10, 1n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-        });
-      });
+        expect(result).to.equal(string);
+      }
     });
 
-    describe('#toOctString(uint256)', () => {
-      it('returns 0o0 if input is 0', async () => {
-        expect(await instance['$toOctString(uint256)'].staticCall(0n)).to.equal(
-          '0o0',
+    it('returns string with specified zero padding', async () => {
+      const value = 1;
+      const length = 100;
+
+      const result = await instance['$toBinString(uint256,uint256)'].staticCall(
+        value,
+        length,
+      );
+
+      expect(result).to.have.length(length + 2);
+    });
+
+    describe('reverts if', () => {
+      it('padding is insufficient', async () => {
+        await expect(
+          instance['$toBinString(uint256,uint256)'].staticCall(0b1, 0n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+
+        await expect(
+          instance['$toBinString(uint256,uint256)'].staticCall(0b10, 1n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
         );
       });
+    });
+  });
 
-      it('returns octal string representation of a number', async () => {
-        for (const value of values) {
-          expect(
-            await instance['$toOctString(uint256)'].staticCall(value),
-          ).to.equal(`0o${value.toString(8)}`);
-        }
-      });
+  describe('#toOctString(uint256)', () => {
+    it('returns 0o0 if input is 0', async () => {
+      expect(await instance['$toOctString(uint256)'].staticCall(0n)).to.equal(
+        '0o0',
+      );
     });
 
-    describe('#toOctString(uint256,uint256)', () => {
-      it('returns empty 0o-prefixed string if input is 0 and length is 0', async () => {
+    it('returns octal string representation of a number', async () => {
+      for (const value of values) {
         expect(
-          await instance['$toOctString(uint256,uint256)'].staticCall(0n, 0n),
-        ).to.equal('0o');
-      });
+          await instance['$toOctString(uint256)'].staticCall(value),
+        ).to.equal(`0o${value.toString(8)}`);
+      }
+    });
+  });
 
-      it('returns 0o-prefixed octal string representation of a number', async () => {
-        for (let value of values) {
-          const string = `0o${value.toString(8)}`;
-          const length = string.length - 2;
+  describe('#toOctString(uint256,uint256)', () => {
+    it('returns empty 0o-prefixed string if input is 0 and length is 0', async () => {
+      expect(
+        await instance['$toOctString(uint256,uint256)'].staticCall(0n, 0n),
+      ).to.equal('0o');
+    });
 
-          const result = await instance[
-            '$toOctString(uint256,uint256)'
-          ].staticCall(value, length);
-
-          expect(result).to.equal(string);
-        }
-      });
-
-      it('returns string with specified zero padding', async () => {
-        const value = 1;
-        const length = 100;
+    it('returns 0o-prefixed octal string representation of a number', async () => {
+      for (let value of values) {
+        const string = `0o${value.toString(8)}`;
+        const length = string.length - 2;
 
         const result = await instance[
           '$toOctString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length(length + 2);
-      });
-
-      describe('reverts if', () => {
-        it('padding is insufficient', async () => {
-          await expect(
-            instance['$toOctString(uint256,uint256)'].staticCall(0o1, 0n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-
-          await expect(
-            instance['$toOctString(uint256,uint256)'].staticCall(0o10, 1n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-        });
-      });
+        expect(result).to.equal(string);
+      }
     });
 
-    describe('#toDecString(uint256)', () => {
-      it('returns 0 if input is 0', async () => {
-        expect(await instance['$toDecString(uint256)'].staticCall(0n)).to.equal(
-          '0',
+    it('returns string with specified zero padding', async () => {
+      const value = 1;
+      const length = 100;
+
+      const result = await instance['$toOctString(uint256,uint256)'].staticCall(
+        value,
+        length,
+      );
+
+      expect(result).to.have.length(length + 2);
+    });
+
+    describe('reverts if', () => {
+      it('padding is insufficient', async () => {
+        await expect(
+          instance['$toOctString(uint256,uint256)'].staticCall(0o1, 0n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+
+        await expect(
+          instance['$toOctString(uint256,uint256)'].staticCall(0o10, 1n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
         );
       });
+    });
+  });
 
-      it('returns decimal string representation of number', async () => {
-        for (let i = 0; i < 12; i++) {
-          const string = i.toString();
-          const number = BigInt(string);
-          expect(
-            await instance['$toDecString(uint256)'].staticCall(number),
-          ).to.equal(string);
-        }
-
-        expect(
-          await instance['$toDecString(uint256)'].staticCall(ethers.MaxUint256),
-        ).to.equal(ethers.MaxUint256.toString());
-      });
+  describe('#toDecString(uint256)', () => {
+    it('returns 0 if input is 0', async () => {
+      expect(await instance['$toDecString(uint256)'].staticCall(0n)).to.equal(
+        '0',
+      );
     });
 
-    describe('#toDecString(uint256,uint256)', () => {
-      it('returns empty string if input is 0 and length is 0', async () => {
+    it('returns decimal string representation of number', async () => {
+      for (let i = 0; i < 12; i++) {
+        const string = i.toString();
+        const number = BigInt(string);
         expect(
-          await instance['$toDecString(uint256,uint256)'].staticCall(0n, 0n),
-        ).to.equal('');
-      });
+          await instance['$toDecString(uint256)'].staticCall(number),
+        ).to.equal(string);
+      }
 
-      it('returns decimal string representation of a number', async () => {
-        for (let value of values) {
-          const string = value.toString();
-          const length = string.length;
+      expect(
+        await instance['$toDecString(uint256)'].staticCall(ethers.MaxUint256),
+      ).to.equal(ethers.MaxUint256.toString());
+    });
+  });
 
-          const result = await instance[
-            '$toDecString(uint256,uint256)'
-          ].staticCall(value, length);
+  describe('#toDecString(uint256,uint256)', () => {
+    it('returns empty string if input is 0 and length is 0', async () => {
+      expect(
+        await instance['$toDecString(uint256,uint256)'].staticCall(0n, 0n),
+      ).to.equal('');
+    });
 
-          expect(result).to.equal(string);
-
-          expect(BigInt(result)).to.equal(value);
-          expect(result.length).to.equal(length);
-        }
-      });
-
-      it('returns string with specified zero padding', async () => {
-        const value = 1;
-        const length = 100;
+    it('returns decimal string representation of a number', async () => {
+      for (let value of values) {
+        const string = value.toString();
+        const length = string.length;
 
         const result = await instance[
           '$toDecString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length(length);
-      });
+        expect(result).to.equal(string);
 
-      describe('reverts if', () => {
-        it('padding is insufficient', async () => {
-          await expect(
-            instance['$toDecString(uint256,uint256)'].staticCall(1n, 0n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-
-          await expect(
-            instance['$toDecString(uint256,uint256)'].staticCall(10n, 1n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-        });
-      });
+        expect(BigInt(result)).to.equal(value);
+        expect(result.length).to.equal(length);
+      }
     });
 
-    describe('#toHexString(uint256)', () => {
-      it('returns 0x00 if input is 0', async () => {
-        expect(await instance['$toHexString(uint256)'].staticCall(0n)).to.equal(
-          '0x00',
+    it('returns string with specified zero padding', async () => {
+      const value = 1;
+      const length = 100;
+
+      const result = await instance['$toDecString(uint256,uint256)'].staticCall(
+        value,
+        length,
+      );
+
+      expect(result).to.have.length(length);
+    });
+
+    describe('reverts if', () => {
+      it('padding is insufficient', async () => {
+        await expect(
+          instance['$toDecString(uint256,uint256)'].staticCall(1n, 0n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+
+        await expect(
+          instance['$toDecString(uint256,uint256)'].staticCall(10n, 1n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
         );
       });
+    });
+  });
 
-      it('returns hexadecimal string representation of a number', async () => {
-        for (const value of values) {
-          expect(
-            await instance['$toHexString(uint256)'].staticCall(value),
-          ).to.equal(ethers.toBeHex(value));
-        }
-      });
+  describe('#toHexString(uint256)', () => {
+    it('returns 0x00 if input is 0', async () => {
+      expect(await instance['$toHexString(uint256)'].staticCall(0n)).to.equal(
+        '0x00',
+      );
     });
 
-    describe('#toHexString(uint256,uint256)', () => {
-      it('returns empty 0x-prefixed string if input is 0 and length is 0', async () => {
+    it('returns hexadecimal string representation of a number', async () => {
+      for (const value of values) {
         expect(
-          await instance['$toHexString(uint256,uint256)'].staticCall(0n, 0n),
-        ).to.equal('0x');
-      });
+          await instance['$toHexString(uint256)'].staticCall(value),
+        ).to.equal(ethers.toBeHex(value));
+      }
+    });
+  });
 
-      it('returns 0x-prefixed hexadecimal string representation of a number', async () => {
-        for (let value of values) {
-          const string = ethers.toBeHex(value);
-          const length = (string.length - 2) / 2;
+  describe('#toHexString(uint256,uint256)', () => {
+    it('returns empty 0x-prefixed string if input is 0 and length is 0', async () => {
+      expect(
+        await instance['$toHexString(uint256,uint256)'].staticCall(0n, 0n),
+      ).to.equal('0x');
+    });
 
-          const result = await instance[
-            '$toHexString(uint256,uint256)'
-          ].staticCall(value, length);
-
-          expect(result).to.equal(string);
-        }
-      });
-
-      it('returns string with specified zero padding (in bytes)', async () => {
-        const value = 1;
-        const length = 100;
+    it('returns 0x-prefixed hexadecimal string representation of a number', async () => {
+      for (let value of values) {
+        const string = ethers.toBeHex(value);
+        const length = (string.length - 2) / 2;
 
         const result = await instance[
           '$toHexString(uint256,uint256)'
         ].staticCall(value, length);
 
-        expect(result).to.have.length(length * 2 + 2);
-      });
+        expect(result).to.equal(string);
+      }
+    });
 
-      describe('reverts if', () => {
-        it('padding is insufficient', async () => {
-          await expect(
-            instance['$toHexString(uint256,uint256)'].staticCall(1n, 0n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
+    it('returns string with specified zero padding (in bytes)', async () => {
+      const value = 1;
+      const length = 100;
 
-          await expect(
-            instance['$toHexString(uint256,uint256)'].staticCall(256n, 1n),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Uint256__InsufficientPadding',
-          );
-        });
+      const result = await instance['$toHexString(uint256,uint256)'].staticCall(
+        value,
+        length,
+      );
+
+      expect(result).to.have.length(length * 2 + 2);
+    });
+
+    describe('reverts if', () => {
+      it('padding is insufficient', async () => {
+        await expect(
+          instance['$toHexString(uint256,uint256)'].staticCall(1n, 0n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
+
+        await expect(
+          instance['$toHexString(uint256,uint256)'].staticCall(256n, 1n),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Uint256__InsufficientPadding',
+        );
       });
     });
   });

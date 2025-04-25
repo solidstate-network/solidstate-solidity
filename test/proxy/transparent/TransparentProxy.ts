@@ -39,28 +39,24 @@ describe('TransparentProxy', () => {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', () => {
-    describe('#_getImplementation()', () => {
-      it('returns implementation address', async () => {
-        expect(await instance.$_getImplementation.staticCall()).to.be
-          .properAddress;
-      });
+  describe('#_getImplementation()', () => {
+    it('returns implementation address', async () => {
+      expect(await instance.$_getImplementation.staticCall()).to.be
+        .properAddress;
     });
+  });
 
-    describe('#_setImplementation(address)', () => {
-      it('updates implementation address', async () => {
-        const address = await instance.getAddress();
+  describe('#_setImplementation(address)', () => {
+    it('updates implementation address', async () => {
+      const address = await instance.getAddress();
 
-        expect(await instance.$_getImplementation.staticCall()).not.to.equal(
-          address,
-        );
+      expect(await instance.$_getImplementation.staticCall()).not.to.equal(
+        address,
+      );
 
-        await instance.$_setImplementation(address);
+      await instance.$_setImplementation(address);
 
-        expect(await instance.$_getImplementation.staticCall()).to.equal(
-          address,
-        );
-      });
+      expect(await instance.$_getImplementation.staticCall()).to.equal(address);
     });
   });
 });

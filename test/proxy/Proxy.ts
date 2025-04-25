@@ -32,43 +32,39 @@ describe('Proxy', () => {
     implementationFunctionArgs: [],
   });
 
-  describe('__internal', () => {
-    describe('onlyProxyAdmin() modifier', () => {
-      it('does not revert if sender is proxy admin', async () => {
-        await expect(instance.connect(admin).$onlyProxyAdmin.staticCall()).not
-          .to.be.reverted;
-      });
-
-      describe('reverts if', () => {
-        it('sender is not proxy admin', async () => {
-          await expect(
-            instance.connect(nonAdmin).$onlyProxyAdmin.staticCall(),
-          ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
-        });
-      });
+  describe('onlyProxyAdmin() modifier', () => {
+    it('does not revert if sender is proxy admin', async () => {
+      await expect(instance.connect(admin).$onlyProxyAdmin.staticCall()).not.to
+        .be.reverted;
     });
 
-    describe('#_getImplementation()', () => {
-      it('returns implementation address', async () => {
-        expect(await instance.$_getImplementation.staticCall()).to.be
-          .properAddress;
+    describe('reverts if', () => {
+      it('sender is not proxy admin', async () => {
+        await expect(
+          instance.connect(nonAdmin).$onlyProxyAdmin.staticCall(),
+        ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
       });
     });
+  });
 
-    describe('#_setImplementation(address)', () => {
-      it('updates implementation address', async () => {
-        const address = await instance.getAddress();
+  describe('#_getImplementation()', () => {
+    it('returns implementation address', async () => {
+      expect(await instance.$_getImplementation.staticCall()).to.be
+        .properAddress;
+    });
+  });
 
-        expect(await instance.$_getImplementation.staticCall()).not.to.equal(
-          address,
-        );
+  describe('#_setImplementation(address)', () => {
+    it('updates implementation address', async () => {
+      const address = await instance.getAddress();
 
-        await instance.$_setImplementation(address);
+      expect(await instance.$_getImplementation.staticCall()).not.to.equal(
+        address,
+      );
 
-        expect(await instance.$_getImplementation.staticCall()).to.equal(
-          address,
-        );
-      });
+      await instance.$_setImplementation(address);
+
+      expect(await instance.$_getImplementation.staticCall()).to.equal(address);
     });
   });
 });
