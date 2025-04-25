@@ -1,3 +1,7 @@
+import './tasks/compile';
+import './tasks/generate_bytes32_builder';
+import './tasks/generate_eip_712';
+import './tasks/organize_test_files';
 import './tasks/rename_entity';
 import './tasks/scaffold_contract';
 import '@nomicfoundation/hardhat-chai-matchers';
@@ -14,9 +18,16 @@ import { HardhatUserConfig } from 'hardhat/types';
 import 'solidity-coverage';
 
 const config: HardhatUserConfig = {
+  networks: {
+    hardhat: {
+      allowUnlimitedContractSize: true,
+    },
+  },
+
   solidity: {
-    version: '0.8.28',
+    version: '0.8.29',
     settings: {
+      evmVersion: 'cancun',
       optimizer: {
         enabled: true,
         runs: 200,
@@ -35,6 +46,7 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled: true,
     reportPureAndViewMethods: true,
+    outputFile: './gasreport.txt',
   },
 
   spdxLicenseIdentifier: {

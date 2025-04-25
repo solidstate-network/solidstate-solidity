@@ -1,18 +1,12 @@
-import {
-  OwnableBehaviorArgs,
-  describeBehaviorOfIntrospectable,
-} from '../../../';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import {
-  IDiamondProxyWritable,
-  IDiamondProxyReadable__factory,
-} from '@solidstate/typechain-types';
+import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
+import { IDiamondProxyWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondProxyWritableBehaviorArgs extends OwnableBehaviorArgs {
+export interface DiamondProxyWritableBehaviorArgs {
   immutableSelectors: string[];
 }
 
@@ -24,8 +18,8 @@ export function describeBehaviorOfDiamondProxyWritable(
   const describe = describeFilter(skips);
 
   describe('::DiamondProxyWritable', () => {
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let proxyAdmin: SignerWithAddress;
+    let nonProxyAdmin: SignerWithAddress;
 
     const functions: string[] = [];
     const selectors: string[] = [];
@@ -35,8 +29,8 @@ export function describeBehaviorOfDiamondProxyWritable(
     let instance: IDiamondProxyWritable;
 
     before(async () => {
-      owner = await args.getOwner();
-      nonOwner = await args.getNonOwner();
+      proxyAdmin = await args.getProxyAdmin();
+      nonProxyAdmin = await args.getNonProxyAdmin();
 
       for (let i = 0; i < 24; i++) {
         const fn = `fn${i}()`;
@@ -56,7 +50,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
       abi = functions.map((fn) => `function ${fn}`);
 
-      facet = await deployMockContract(owner, abi);
+      facet = await deployMockContract(proxyAdmin, abi);
     });
 
     beforeEach(async () => {
@@ -84,7 +78,9 @@ export function describeBehaviorOfDiamondProxyWritable(
         const target = ethers.ZeroAddress;
         const data = '0x';
 
-        await expect(instance.connect(owner).diamondCut(facets, target, data))
+        await expect(
+          instance.connect(proxyAdmin).diamondCut(facets, target, data),
+        )
           .to.emit(instance, 'DiamondCut')
           .withArgs(
             facets.map((f) => [f.target, f.action, f.selectors]),
@@ -111,7 +107,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           }
 
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.ZeroAddress,
@@ -129,7 +125,7 @@ export function describeBehaviorOfDiamondProxyWritable(
         describe('reverts if', () => {
           it('target facet is not a contract', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: ethers.ZeroAddress,
@@ -148,7 +144,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
           it('target facet is diamond itself', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: await instance.getAddress(),
@@ -175,12 +171,12 @@ export function describeBehaviorOfDiamondProxyWritable(
             ];
 
             await instance
-              .connect(owner)
+              .connect(proxyAdmin)
               .diamondCut(facetCuts, ethers.ZeroAddress, '0x');
 
             await expect(
               instance
-                .connect(owner)
+                .connect(proxyAdmin)
                 .diamondCut(facetCuts, ethers.ZeroAddress, '0x'),
             ).to.be.revertedWithCustomError(
               instance,
@@ -199,7 +195,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           );
 
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.ZeroAddress,
@@ -213,14 +209,14 @@ export function describeBehaviorOfDiamondProxyWritable(
             );
           }
 
-          const facetReplacement = await deployMockContract(owner, abi);
+          const facetReplacement = await deployMockContract(proxyAdmin, abi);
 
           for (let fn of functions) {
             expect(facetReplacement[fn]).not.to.be.undefined;
           }
 
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: facetReplacement.address, action: 1, selectors }],
               ethers.ZeroAddress,
@@ -238,7 +234,7 @@ export function describeBehaviorOfDiamondProxyWritable(
         describe('reverts if', () => {
           it('target facet is not a contract', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: ethers.ZeroAddress,
@@ -257,7 +253,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
           it('selector has not been added', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: facet.address,
@@ -277,7 +273,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           it('selector is immutable', async () => {
             for (const immutableSelector of args.immutableSelectors) {
               await expect(
-                instance.connect(owner).diamondCut(
+                instance.connect(proxyAdmin).diamondCut(
                   [
                     {
                       target: facet.address,
@@ -298,7 +294,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           it('replacement facet is same as existing facet', async () => {
             const selector = ethers.randomBytes(4);
 
-            await instance.connect(owner).diamondCut(
+            await instance.connect(proxyAdmin).diamondCut(
               [
                 {
                   target: facet.address,
@@ -311,7 +307,7 @@ export function describeBehaviorOfDiamondProxyWritable(
             );
 
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: facet.address,
@@ -339,7 +335,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           );
 
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: facet.address, action: 0, selectors }],
               ethers.ZeroAddress,
@@ -354,7 +350,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           }
 
           await instance
-            .connect(owner)
+            .connect(proxyAdmin)
             .diamondCut(
               [{ target: ethers.ZeroAddress, action: 2, selectors }],
               ethers.ZeroAddress,
@@ -374,7 +370,7 @@ export function describeBehaviorOfDiamondProxyWritable(
         describe('reverts if', () => {
           it('target address is not zero address', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: await instance.getAddress(),
@@ -393,7 +389,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
           it('selector has not been added', async () => {
             await expect(
-              instance.connect(owner).diamondCut(
+              instance.connect(proxyAdmin).diamondCut(
                 [
                   {
                     target: ethers.ZeroAddress,
@@ -413,7 +409,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           it('selector is immutable', async () => {
             for (const immutableSelector of args.immutableSelectors) {
               await expect(
-                instance.connect(owner).diamondCut(
+                instance.connect(proxyAdmin).diamondCut(
                   [
                     {
                       target: ethers.ZeroAddress,
@@ -434,15 +430,17 @@ export function describeBehaviorOfDiamondProxyWritable(
       });
 
       describe('reverts if', () => {
-        it('sender is not owner', async () => {
+        it('sender is not proxy admin', async () => {
           await expect(
-            instance.connect(nonOwner).diamondCut([], ethers.ZeroAddress, '0x'),
-          ).to.be.revertedWithCustomError(instance, 'Ownable__NotOwner');
+            instance
+              .connect(nonProxyAdmin)
+              .diamondCut([], ethers.ZeroAddress, '0x'),
+          ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
         });
 
         it('passed FacetCutAction is invalid', async () => {
           await expect(
-            instance.connect(owner).diamondCut(
+            instance.connect(proxyAdmin).diamondCut(
               [
                 {
                   target: ethers.ZeroAddress,
@@ -458,7 +456,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
         it('passed selector array is empty', async () => {
           await expect(
-            instance.connect(owner).diamondCut(
+            instance.connect(proxyAdmin).diamondCut(
               [
                 {
                   target: ethers.ZeroAddress,
@@ -477,7 +475,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
         it('initialization target is provided but data is not', async () => {
           await expect(
-            instance.connect(owner).diamondCut([], facet.address, '0x'),
+            instance.connect(proxyAdmin).diamondCut([], facet.address, '0x'),
           ).to.be.revertedWithCustomError(
             instance,
             'DiamondProxyWritable__InvalidInitializationParameters',
@@ -486,7 +484,9 @@ export function describeBehaviorOfDiamondProxyWritable(
 
         it('initialization data is provided but target is not', async () => {
           await expect(
-            instance.connect(owner).diamondCut([], ethers.ZeroAddress, '0x01'),
+            instance
+              .connect(proxyAdmin)
+              .diamondCut([], ethers.ZeroAddress, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
             'DiamondProxyWritable__InvalidInitializationParameters',
@@ -495,7 +495,9 @@ export function describeBehaviorOfDiamondProxyWritable(
 
         it('initialization target has no code', async () => {
           await expect(
-            instance.connect(owner).diamondCut([], owner.address, '0x01'),
+            instance
+              .connect(proxyAdmin)
+              .diamondCut([], proxyAdmin.address, '0x01'),
           ).to.be.revertedWithCustomError(
             instance,
             'DiamondProxyWritable__TargetHasNoCode',
@@ -504,7 +506,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
         it('initialization function reverts', async () => {
           await expect(
-            instance.connect(owner).diamondCut([], facet.address, '0x01'),
+            instance.connect(proxyAdmin).diamondCut([], facet.address, '0x01'),
           ).to.be.revertedWith('Mock on the method is not initialized');
         });
       });

@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
+
+import { _IContext } from '../../meta/_IContext.sol';
 
 /**
  * @title Partial AccessControl interface needed by internal functions
  */
-interface _IAccessControl {
+interface _IAccessControl is _IContext {
     event RoleAdminChanged(
         bytes32 indexed role,
         bytes32 indexed previousAdminRole,

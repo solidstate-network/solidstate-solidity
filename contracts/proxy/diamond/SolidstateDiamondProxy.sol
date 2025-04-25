@@ -1,13 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
-import { Ownable } from '../../access/ownable/Ownable.sol';
-import { _Ownable } from '../../access/ownable/_Ownable.sol';
-import { ISafeOwnable } from '../../access/ownable/ISafeOwnable.sol';
-import { SafeOwnable } from '../../access/ownable/SafeOwnable.sol';
 import { IERC165 } from '../../interfaces/IERC165.sol';
-import { IERC173 } from '../../interfaces/IERC173.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
 import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { _Proxy } from '../_Proxy.sol';
@@ -30,11 +25,10 @@ abstract contract SolidstateDiamondProxy is
     DiamondProxy,
     DiamondProxyFallback,
     DiamondProxyReadable,
-    DiamondProxyWritable,
-    SafeOwnable
+    DiamondProxyWritable
 {
     constructor() {
-        bytes4[] memory selectors = new bytes4[](12);
+        bytes4[] memory selectors = new bytes4[](8);
         uint256 selectorIndex;
 
         // register DiamondProxyFallback
@@ -73,15 +67,6 @@ abstract contract SolidstateDiamondProxy is
 
         _setSupportsInterface(type(IERC165).interfaceId, true);
 
-        // register SafeOwnable
-
-        selectors[selectorIndex++] = Ownable.owner.selector;
-        selectors[selectorIndex++] = SafeOwnable.nomineeOwner.selector;
-        selectors[selectorIndex++] = Ownable.transferOwnership.selector;
-        selectors[selectorIndex++] = SafeOwnable.acceptOwnership.selector;
-
-        _setSupportsInterface(type(IERC173).interfaceId, true);
-
         // diamond cut
 
         FacetCut[] memory facetCuts = new FacetCut[](1);
@@ -94,21 +79,11 @@ abstract contract SolidstateDiamondProxy is
 
         _diamondCut(facetCuts, address(0), '');
 
-        // set owner
+        // set proxy admin
 
-        _setOwner(msg.sender);
-    }
+        // TODO: add an external proxy admin transfer function
 
-    receive() external payable {}
-
-    function _transferOwnership(
-        address account
-    )
-        internal
-        virtual
-        override(SafeOwnable, _Ownable, _SolidstateDiamondProxy)
-    {
-        super._transferOwnership(account);
+        _setProxyAdmin(msg.sender);
     }
 
     /**

@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { _IERC1155 } from '../../interfaces/_IERC1155.sol';
 import { _IIntrospectable } from '../../introspection/_IIntrospectable.sol';
+import { _IContext } from '../../meta/_IContext.sol';
 
 /**
  * @title MultiToken base interface
  */
-interface _IMultiToken is _IERC1155, _IIntrospectable {
+interface _IMultiToken is _IERC1155, _IIntrospectable, _IContext {
     error MultiToken__ArrayLengthMismatch();
     error MultiToken__BalanceQueryZeroAddress();
     error MultiToken__NotOwnerOrApproved();

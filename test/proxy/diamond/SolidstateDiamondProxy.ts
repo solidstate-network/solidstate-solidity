@@ -8,9 +8,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('SolidstateDiamondProxy', () => {
-  let owner: SignerWithAddress;
-  let nomineeOwner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let proxyAdmin: SignerWithAddress;
+  let nonProxyAdmin: SignerWithAddress;
 
   let instance: $SolidstateDiamondProxy;
 
@@ -18,7 +17,7 @@ describe('SolidstateDiamondProxy', () => {
   let immutableSelectors: string[] = [];
 
   before(async () => {
-    [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -45,15 +44,14 @@ describe('SolidstateDiamondProxy', () => {
   describeBehaviorOfSolidstateDiamondProxy(
     async () => instance,
     {
-      getOwner: async () => owner,
-      getNomineeOwner: async () => nomineeOwner,
-      getNonOwner: async () => nonOwner,
+      getProxyAdmin: async () => proxyAdmin,
+      getNonProxyAdmin: async () => nonProxyAdmin,
       implementationFunction: '',
       implementationFunctionArgs: [],
       facetCuts,
       fallbackAddress: ethers.ZeroAddress,
       immutableSelectors,
     },
-    ['fallback()'],
+    ['fallback()', 'receive()'],
   );
 });

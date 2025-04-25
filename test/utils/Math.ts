@@ -1,3 +1,4 @@
+import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { $Math, $Math__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -11,6 +12,36 @@ describe('Math', () => {
   });
 
   describe('__internal', () => {
+    describe('#add(uint256,int256)', () => {
+      it('adds unsigned and signed integers', async () => {
+        expect(await instance.$add.staticCall(1, 1)).to.equal(2);
+        expect(await instance.$add.staticCall(1, -1)).to.equal(0);
+      });
+
+      describe('reverts if', () => {
+        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
+          await expect(instance.$add.staticCall(0, -1)).to.be.revertedWithPanic(
+            PANIC_CODES.ARITHMETIC_OVERFLOW,
+          );
+        });
+      });
+    });
+
+    describe('#sub(uint256,int256)', () => {
+      it('subtracts unsigned and signed integers', async () => {
+        expect(await instance.$sub.staticCall(1, 1)).to.equal(0);
+        expect(await instance.$sub.staticCall(1, -1)).to.equal(2);
+      });
+
+      describe('reverts if', () => {
+        it('signed integer is negative and has absolute value greater than unsigned integer', async () => {
+          await expect(instance.$sub.staticCall(0, 1)).to.be.revertedWithPanic(
+            PANIC_CODES.ARITHMETIC_OVERFLOW,
+          );
+        });
+      });
+    });
+
     describe('#abs(int256)', () => {
       it('returns the absolute value of a number', async () => {
         expect(await instance.$abs.staticCall(-1)).to.equal(1);
@@ -109,6 +140,27 @@ describe('Math', () => {
         expect(await instance.$sqrt.staticCall(ethers.MaxUint256)).to.eq(
           340282366920938463463374607431768211455n,
         );
+      });
+    });
+
+    describe('#log2(uint256)', () => {
+      it('returns 0 for input of 0', async () => {
+        // this is not mathematically correct, but checking within the log2 function would be inefficient
+        expect(await instance.$log2.staticCall(0n)).to.eq(0n);
+      });
+
+      it('returns 0 for input of 1', async () => {
+        expect(await instance.$log2.staticCall(1n)).to.eq(0n);
+      });
+
+      it('returns log base 2 of input, rounded down', async () => {
+        for (let i = 1n; i < 256n; i++) {
+          // test powers of 2
+          expect(await instance.$log2.staticCall(2n ** i)).to.eq(i);
+
+          // test rounding
+          expect(await instance.$log2.staticCall(2n ** i - 1n)).to.eq(i - 1n);
+        }
       });
     });
   });

@@ -13,15 +13,18 @@ describe('Proxy', () => {
   let implementation: $Ownable;
   let instance: $Proxy;
   let deployer: SignerWithAddress;
+  let admin: SignerWithAddress;
+  let nonAdmin: SignerWithAddress;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer, admin, nonAdmin] = await ethers.getSigners();
     implementation = await new $Ownable__factory(deployer).deploy();
   });
 
   beforeEach(async () => {
     instance = await new $Proxy__factory(deployer).deploy();
     await instance.$_setImplementation(await implementation.getAddress());
+    await instance.$_setProxyAdmin(await admin.getAddress());
   });
 
   describeBehaviorOfProxy(async () => instance, {
@@ -30,6 +33,21 @@ describe('Proxy', () => {
   });
 
   describe('__internal', () => {
+    describe('onlyProxyAdmin() modifier', () => {
+      it('does not revert if sender is proxy admin', async () => {
+        await expect(instance.connect(admin).$onlyProxyAdmin.staticCall()).not
+          .to.be.reverted;
+      });
+
+      describe('reverts if', () => {
+        it('sender is not proxy admin', async () => {
+          await expect(
+            instance.connect(nonAdmin).$onlyProxyAdmin.staticCall(),
+          ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
+        });
+      });
+    });
+
     describe('#_getImplementation()', () => {
       it('returns implementation address', async () => {
         expect(await instance.$_getImplementation.staticCall()).to.be

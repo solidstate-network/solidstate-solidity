@@ -1,22 +1,23 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { ERC173Storage } from '../../storage/ERC173Storage.sol';
-import { AddressUtils } from '../../utils/AddressUtils.sol';
+import { Address } from '../../utils/Address.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { _IOwnable } from './_IOwnable.sol';
 
-abstract contract _Ownable is _IOwnable {
-    using AddressUtils for address;
+abstract contract _Ownable is _IOwnable, _Context {
+    using Address for address;
 
     modifier onlyOwner() {
-        if (msg.sender != _owner()) revert Ownable__NotOwner();
+        if (_msgSender() != _owner()) revert Ownable__NotOwner();
         _;
     }
 
     modifier onlyTransitiveOwner() {
-        if (msg.sender != _transitiveOwner())
+        if (_msgSender() != _transitiveOwner())
             revert Ownable__NotTransitiveOwner();
         _;
     }
