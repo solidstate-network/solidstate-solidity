@@ -45,12 +45,6 @@ Compile contracts via Hardhat:
 yarn run hardhat compile
 ```
 
-Automatically upgrade dependencies:
-
-```bash
-yarn upgrade-dependencies
-```
-
 ### Testing
 
 Test contracts with Hardhat and generate gas report using `hardhat-gas-reporter`:

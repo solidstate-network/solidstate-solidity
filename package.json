@@ -8,8 +8,7 @@
     "build": "hardhat clean && hardhat compile && lerna run tsc",
     "postinstall": "patch-package",
     "prepare": "husky",
-    "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports .",
-    "upgrade-dependencies": "taze -wi"
+    "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports ."
   },
   "workspaces": [
     "abi",
@@ -56,7 +55,6 @@
     "prettier-plugin-solidity": "^1.4.3",
     "solidity-coverage": "^0.8.15",
     "surya": "^0.4.12",
-    "taze": "^19.0.4",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.8.3"
