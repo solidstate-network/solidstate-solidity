@@ -45,7 +45,7 @@ Compile contracts via Hardhat:
 yarn run hardhat compile
 ```
 
-Automatically upgrade dependencies with yarn-up:
+Automatically upgrade dependencies:
 
 ```bash
 yarn upgrade-dependencies
