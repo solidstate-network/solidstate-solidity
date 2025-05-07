@@ -1,21 +1,24 @@
 {
   "name": "root",
   "private": true,
-  "author": "Nick Barry",
   "license": "MIT",
-  "scripts": {
-    "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
-    "build": "hardhat clean && hardhat compile && lerna run tsc",
-    "postinstall": "patch-package",
-    "prepare": "husky",
-    "prettier": "prettier --write --plugin=prettier-plugin-solidity --plugin=@trivago/prettier-plugin-sort-imports ."
-  },
+  "author": "Nick Barry",
   "workspaces": [
     "abi",
     "contracts",
     "lib",
     "spec"
   ],
+  "scripts": {
+    "build": "hardhat clean && hardhat compile && lerna run tsc",
+    "postinstall": "patch-package",
+    "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
+    "prepare": "husky",
+    "prettier": "prettier --write ."
+  },
+  "resolutions": {
+    "@ethereum-waffle/mock-contract/ethers": "^5.8.0"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
@@ -52,14 +55,12 @@
     "merkletreejs": "^0.5.2",
     "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
+    "prettier-plugin-packagejson": "^2.5.11",
     "prettier-plugin-solidity": "^1.4.3",
     "solidity-coverage": "^0.8.15",
     "surya": "^0.4.12",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.8.3"
-  },
-  "resolutions": {
-    "@ethereum-waffle/mock-contract/ethers": "^5.8.0"
   }
 }
