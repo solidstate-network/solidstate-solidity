@@ -1,8 +1,6 @@
 {
   "name": "@solidstate/library",
   "version": "0.0.61",
-  "author": "Nick Barry",
-  "license": "MIT",
   "description": "Solidstate utility library",
   "keywords": [
     "solidity",
@@ -18,15 +16,17 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "license": "MIT",
+  "author": "Nick Barry",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "tsc": "tsc --build tsconfig.json",
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
-  "files": [
-    "dist/"
-  ],
   "publishConfig": {
     "access": "public"
   }

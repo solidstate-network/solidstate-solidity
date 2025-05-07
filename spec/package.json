@@ -1,8 +1,6 @@
 {
   "name": "@solidstate/spec",
   "version": "0.0.61",
-  "author": "Nick Barry",
-  "license": "MIT",
   "description": "Portable specifications for Solidstate contracts",
   "keywords": [
     "solidity",
@@ -18,8 +16,13 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "license": "MIT",
+  "author": "Nick Barry",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "tsc": "tsc --build tsconfig.json",
     "tsc-clean": "tsc --build --clean tsconfig.json"
@@ -34,9 +37,6 @@
     "ethers": "^6.0.0",
     "hardhat": "^2.0.0"
   },
-  "files": [
-    "dist/"
-  ],
   "publishConfig": {
     "access": "public"
   }
