@@ -323,6 +323,7 @@ describe('Inheritance Graph', () => {
             'ECDSA',
             'EIP712',
             'MerkleProof',
+            'BinaryHeap',
             'DoublyLinkedList',
             'PackedDoublyLinkedList',
             'EnumerableMap',
