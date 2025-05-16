@@ -27,6 +27,9 @@
     "tsc": "tsc --build tsconfig.json",
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
+  "dependencies": {
+    "@ethereum-waffle/mock-contract": "^4.0.4"
+  },
   "publishConfig": {
     "access": "public"
   }

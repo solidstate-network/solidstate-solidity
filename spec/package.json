@@ -28,7 +28,6 @@
     "tsc-clean": "tsc --build --clean tsconfig.json"
   },
   "dependencies": {
-    "@ethereum-waffle/mock-contract": "^4.0.4",
     "@solidstate/library": "file:../lib"
   },
   "peerDependencies": {
