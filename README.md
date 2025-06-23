@@ -8,7 +8,9 @@
   <a href="https://github.com/solidstate-network/solidstate-solidity/stargazers">
     <img src="https://img.shields.io/github/stars/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" />
   </a>
-  <img src="https://img.shields.io/github/contributors/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" />
+  <a href="https://github.com/solidstate-network/solidstate-solidity/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/solidstate-network/solidstate-solidity?color=FDF685&style=flat-square" />
+  </a>  
   <img src="https://img.shields.io/npm/dy/@solidstate/contracts?color=FDF685&style=flat-square" />
   <br/>
   <br/>
