@@ -1,0 +1,12 @@
+diff --git a/dist/codegen/normalizeDirName.js b/dist/codegen/normalizeDirName.js
+index a86f6a23aadcff6dc792f32f99eef5dd56d79426..e38a088d9a89a10be11b24729755bde2d74b90ae 100644
+--- a/dist/codegen/normalizeDirName.js
++++ b/dist/codegen/normalizeDirName.js
+@@ -9,6 +9,7 @@ function normalizeDirName(rawName) {
+     const transformations = [
+         (s) => (0, lodash_1.camelCase)(s),
+         (s) => s.replace(/^\d/g, (match) => '_' + match), // prepend '_' if contains a leading number
++        (s) => `${rawName.match(/_*/)[0]}${s}`
+     ];
+     return transformations.reduce((s, t) => t(s), rawName);
+ }

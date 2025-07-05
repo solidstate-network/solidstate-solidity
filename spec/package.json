@@ -24,8 +24,8 @@
     "dist/"
   ],
   "scripts": {
-    "tsc": "tsc --build tsconfig.json",
-    "tsc-clean": "tsc --build --clean tsconfig.json"
+    "build": "pnpm clean && tsc --build tsconfig.json",
+    "clean": "rm -rf dist/"
   },
   "dependencies": {
     "@solidstate/library": "file:../lib"
