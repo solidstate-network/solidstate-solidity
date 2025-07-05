@@ -9,7 +9,7 @@ Install the package as a development dependency:
 ```bash
 npm install --save-dev @solidstate/spec
 # or
-yarn add --dev @solidstate/spec
+pnpm add -D @solidstate/spec
 ```
 
 ## Usage

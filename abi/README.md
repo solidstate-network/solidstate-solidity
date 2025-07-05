@@ -9,7 +9,7 @@ Install the package as a development dependency:
 ```bash
 npm install --save-dev @solidstate/abi
 # or
-yarn add --dev @solidstate/abi
+pnpm add -D @solidstate/abi
 ```
 
 ## Development

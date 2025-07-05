@@ -3,16 +3,10 @@
   "private": true,
   "license": "MIT",
   "author": "Nick Barry",
-  "workspaces": [
-    "abi",
-    "contracts",
-    "lib",
-    "spec"
-  ],
   "scripts": {
     "build": "hardhat clean && hardhat compile && lerna run tsc",
     "postinstall": "patch-package",
-    "lerna-publish": "yarn build && lerna publish && lerna run tsc-clean",
+    "lerna-publish": "pnpm build && lerna publish && lerna run tsc-clean",
     "prepare": "husky",
     "prettier": "prettier --write ."
   },
