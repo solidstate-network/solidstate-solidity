@@ -5,7 +5,6 @@
   "author": "Nick Barry",
   "scripts": {
     "build": "hardhat clean && hardhat compile && lerna run tsc",
-    "postinstall": "patch-package",
     "lerna-publish": "pnpm build && lerna publish && lerna run tsc-clean",
     "prepare": "husky",
     "prettier": "prettier --write ."
@@ -45,7 +44,6 @@
     "lerna": "^8.2.2",
     "lint-staged": "^15.5.2",
     "merkletreejs": "^0.5.2",
-    "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-packagejson": "^2.5.15",
     "prettier-plugin-solidity": "^1.4.3",
