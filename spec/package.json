@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "0.0.61",
+  "version": "1.0.0-next.0",
   "description": "Portable specifications for Solidstate contracts",
   "keywords": [
     "solidity",
