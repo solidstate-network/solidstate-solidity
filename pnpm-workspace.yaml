@@ -1,5 +1,8 @@
 packages:
-  - './abi/'
-  - './contracts/'
-  - './lib/'
-  - './spec/'
+  - ./abi/
+  - ./contracts/
+  - ./lib/
+  - ./spec/
+
+patchedDependencies:
+  typechain: patches/typechain.patch
