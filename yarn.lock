@@ -113,11 +113,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@ethereum-waffle/mock-contract@^4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@ethereum-waffle/mock-contract/-/mock-contract-4.0.4.tgz#f13fea29922d87a4d2e7c4fc8fe72ea04d2c13de"
-  integrity sha512-LwEj5SIuEe9/gnrXgtqIkWbk2g15imM/qcJcxpLyAkOj981tQxXmtV4XmQMZsdedEsZ/D/rbUAOtZbgwqgUwQA==
-
 "@ethereumjs/rlp@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@ethereumjs/rlp/-/rlp-4.0.1.tgz#626fabfd9081baab3d0a3074b0c7ecaf674aaa41"
@@ -1490,7 +1485,7 @@
 "@solidstate/library@file:lib":
   version "0.0.61"
   dependencies:
-    "@ethereum-waffle/mock-contract" "^4.0.4"
+    ethers5 "npm:ethers@^5.8.0"
 
 "@solidstate/library@link:lib":
   version "0.0.0"
@@ -3123,6 +3118,42 @@ ethereumjs-util@^7.1.4:
     create-hash "^1.1.2"
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
+
+"ethers5@npm:ethers@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.8.0.tgz#97858dc4d4c74afce83ea7562fe9493cedb4d377"
+  integrity sha512-DUq+7fHrCg1aPDFCHx6UIPb3nmt2XMpM7Y/g2gLhsl3lIBqeAfOJIl1qEvRf2uq3BiKxmh6Fh5pfp2ieyek7Kg==
+  dependencies:
+    "@ethersproject/abi" "5.8.0"
+    "@ethersproject/abstract-provider" "5.8.0"
+    "@ethersproject/abstract-signer" "5.8.0"
+    "@ethersproject/address" "5.8.0"
+    "@ethersproject/base64" "5.8.0"
+    "@ethersproject/basex" "5.8.0"
+    "@ethersproject/bignumber" "5.8.0"
+    "@ethersproject/bytes" "5.8.0"
+    "@ethersproject/constants" "5.8.0"
+    "@ethersproject/contracts" "5.8.0"
+    "@ethersproject/hash" "5.8.0"
+    "@ethersproject/hdnode" "5.8.0"
+    "@ethersproject/json-wallets" "5.8.0"
+    "@ethersproject/keccak256" "5.8.0"
+    "@ethersproject/logger" "5.8.0"
+    "@ethersproject/networks" "5.8.0"
+    "@ethersproject/pbkdf2" "5.8.0"
+    "@ethersproject/properties" "5.8.0"
+    "@ethersproject/providers" "5.8.0"
+    "@ethersproject/random" "5.8.0"
+    "@ethersproject/rlp" "5.8.0"
+    "@ethersproject/sha2" "5.8.0"
+    "@ethersproject/signing-key" "5.8.0"
+    "@ethersproject/solidity" "5.8.0"
+    "@ethersproject/strings" "5.8.0"
+    "@ethersproject/transactions" "5.8.0"
+    "@ethersproject/units" "5.8.0"
+    "@ethersproject/wallet" "5.8.0"
+    "@ethersproject/web" "5.8.0"
+    "@ethersproject/wordlists" "5.8.0"
 
 ethers@^5.8.0:
   version "5.8.0"

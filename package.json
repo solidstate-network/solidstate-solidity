@@ -16,9 +16,6 @@
     "prepare": "husky",
     "prettier": "prettier --write ."
   },
-  "resolutions": {
-    "@ethereum-waffle/mock-contract/ethers": "^5.8.0"
-  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",

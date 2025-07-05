@@ -1,4 +1,4 @@
-import { deployMockContract as deployWaffleMockContract } from '@ethereum-waffle/mock-contract';
+import { deployMockContract as deployWaffleMockContract } from './mock_contract_copy';
 
 export async function deployMockContract(ethersV6Signer: any, abi: any) {
   const ethersV5Signer = ethersV6Signer;
