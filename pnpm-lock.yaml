@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@typechain/hardhat':
+    hash: 500ea181d4a80f19d7f56feed777c1dbe596ba6d0abd16eaee9d81307df4f491
+    path: patches/@typechain__hardhat.patch
   typechain:
     hash: 4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc
     path: patches/typechain.patch
@@ -42,7 +45,7 @@ importers:
         version: 0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3)
       '@typechain/hardhat':
         specifier: ^9.1.0
-        version: 9.1.0(@typechain/ethers-v6@0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3))(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@22.16.0)(typescript@5.8.3))(typescript@5.8.3))(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))
+        version: 9.1.0(patch_hash=500ea181d4a80f19d7f56feed777c1dbe596ba6d0abd16eaee9d81307df4f491)(@typechain/ethers-v6@0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3))(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@22.16.0)(typescript@5.8.3))(typescript@5.8.3))(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))
       '@types/chai':
         specifier: ^5.2.2
         version: 5.2.2
@@ -5239,7 +5242,7 @@ snapshots:
       typechain: 8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3)
       typescript: 5.8.3
 
-  '@typechain/hardhat@9.1.0(@typechain/ethers-v6@0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3))(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@22.16.0)(typescript@5.8.3))(typescript@5.8.3))(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))':
+  '@typechain/hardhat@9.1.0(patch_hash=500ea181d4a80f19d7f56feed777c1dbe596ba6d0abd16eaee9d81307df4f491)(@typechain/ethers-v6@0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3))(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@22.16.0)(typescript@5.8.3))(typescript@5.8.3))(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))':
     dependencies:
       '@typechain/ethers-v6': 0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3)
       ethers: 6.15.0
