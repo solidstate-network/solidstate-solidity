@@ -1,0 +1,5 @@
+packages:
+  - './abi/'
+  - './contracts/'
+  - './lib/'
+  - './spec/'

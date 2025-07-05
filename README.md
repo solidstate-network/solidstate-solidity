@@ -27,22 +27,22 @@ It consists of the following packages:
 
 ## Development
 
-Install dependencies via Yarn:
+Install dependencies:
 
 ```bash
-yarn install
+pnpm install
 ```
 
 Setup Husky to format code on commit:
 
 ```bash
-yarn prepare
+pnpm prepare
 ```
 
 Compile contracts via Hardhat:
 
 ```bash
-yarn run hardhat compile
+pnpm hardhat compile
 ```
 
 ### Testing
@@ -50,13 +50,13 @@ yarn run hardhat compile
 Test contracts with Hardhat and generate gas report using `hardhat-gas-reporter`:
 
 ```bash
-yarn run hardhat test
+pnpm hardhat test
 ```
 
 Generate a code coverage report using `solidity-coverage`:
 
 ```bash
-yarn run hardhat coverage
+pnpm hardhat coverage
 ```
 
 ### Publication
@@ -64,5 +64,5 @@ yarn run hardhat coverage
 Publish packages via Lerna:
 
 ```bash
-yarn lerna-publish
+pnpm lerna-publish
 ```

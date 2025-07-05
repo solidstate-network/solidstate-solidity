@@ -9,5 +9,5 @@ Install the package as a development dependency:
 ```bash
 npm install --save-dev @solidstate/library
 # or
-yarn add --dev @solidstate/library
+pnpm add -D @solidstate/library
 ```
