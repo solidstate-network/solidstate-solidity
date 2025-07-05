@@ -4,8 +4,9 @@
   "license": "MIT",
   "author": "Nick Barry",
   "scripts": {
-    "build": "hardhat clean && hardhat compile && lerna run tsc",
-    "lerna-publish": "pnpm build && lerna publish && lerna run tsc-clean",
+    "build": "pnpm clean && hardhat compile && lerna run build",
+    "clean": "hardhat clean && lerna run clean",
+    "lerna-publish": "pnpm build && lerna publish",
     "prepare": "husky",
     "prettier": "prettier --write ."
   },
