@@ -3,6 +3,7 @@
   "private": true,
   "license": "MIT",
   "author": "Nick Barry",
+  "type": "module",
   "scripts": {
     "build": "pnpm clean && hardhat compile && lerna run build",
     "clean": "hardhat clean && lerna run clean",
@@ -19,6 +20,7 @@
     "@solidstate/spec": "link:spec",
     "@solidstate/typechain-types": "link:typechain-types",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@tsconfig/node22": "^22.0.2",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",
     "@types/chai": "^5.2.2",
