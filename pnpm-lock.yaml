@@ -22,6 +22,9 @@ importers:
       '@nomicfoundation/hardhat-network-helpers':
         specifier: 3.0.0-next.21
         version: 3.0.0-next.21(hardhat@3.0.0-next.21)
+      '@nomicfoundation/hardhat-typechain':
+        specifier: 3.0.0-next.0
+        version: 3.0.0-next.0(@nomicfoundation/hardhat-ethers@4.0.0-next.21(hardhat@3.0.0-next.21))(ethers@6.15.0)(hardhat@3.0.0-next.21)(typescript@5.8.3)
       '@solidstate/hardhat-abi-exporter':
         specifier: 3.0.0-next.2
         version: 3.0.0-next.2(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
@@ -697,6 +700,13 @@ packages:
     resolution: {integrity: sha512-9xe8eY+DCQYZYX3sUNmIHk4FMpLhaADsTZqC8zY2WFwiEM24ywev19h5L8XghhmLG4NxSFLq6vqA9SGFKeOmXA==}
     peerDependencies:
       hardhat: ^3.0.0-next.21
+
+  '@nomicfoundation/hardhat-typechain@3.0.0-next.0':
+    resolution: {integrity: sha512-G2/UuXrKpL41BuINcP03NdMwWCOyoTGC+LS3OMaOHSHOYO7fhc7hiNkxfeFl/OzolC6184gMkmWInsxNjvOGNQ==}
+    peerDependencies:
+      '@nomicfoundation/hardhat-ethers': ^4.0.0-next.0
+      ethers: ^6.13.4
+      hardhat: ^3.0.0-next.0
 
   '@nomicfoundation/hardhat-utils@3.0.0-next.21':
     resolution: {integrity: sha512-OUzfqEgIgkpKxf2Yl2XlmyltHaPEQfYwu6k2OOsugu46zr360teYEw2ksNX4LAZYb6+pevDYOkrhnk8ZoxDBMg==}
@@ -5107,6 +5117,22 @@ snapshots:
       hardhat: 3.0.0-next.21
     transitivePeerDependencies:
       - supports-color
+
+  '@nomicfoundation/hardhat-typechain@3.0.0-next.0(@nomicfoundation/hardhat-ethers@4.0.0-next.21(hardhat@3.0.0-next.21))(ethers@6.15.0)(hardhat@3.0.0-next.21)(typescript@5.8.3)':
+    dependencies:
+      '@nomicfoundation/hardhat-errors': 3.0.0-next.21
+      '@nomicfoundation/hardhat-ethers': 4.0.0-next.21(hardhat@3.0.0-next.21)
+      '@nomicfoundation/hardhat-utils': 3.0.0-next.21
+      '@nomicfoundation/hardhat-zod-utils': 3.0.0-next.21(zod@3.25.74)
+      '@typechain/ethers-v6': 0.5.1(ethers@6.15.0)(typechain@8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3))(typescript@5.8.3)
+      debug: 4.4.1(supports-color@8.1.1)
+      ethers: 6.15.0
+      hardhat: 3.0.0-next.21
+      typechain: 8.3.2(patch_hash=4a3b05001063bdc1734b771a12d12509a79be2ce85cdcde71a77d645dd40b3bc)(typescript@5.8.3)
+      zod: 3.25.74
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   '@nomicfoundation/hardhat-utils@3.0.0-next.21':
     dependencies:

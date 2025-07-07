@@ -15,6 +15,7 @@
     "@nomicfoundation/hardhat-ethers": "4.0.0-next.21",
     "@nomicfoundation/hardhat-ethers-chai-matchers": "3.0.0-next.21",
     "@nomicfoundation/hardhat-network-helpers": "3.0.0-next.21",
+    "@nomicfoundation/hardhat-typechain": "3.0.0-next.0",
     "@solidstate/hardhat-abi-exporter": "3.0.0-next.2",
     "@solidstate/hardhat-contract-sizer": "3.0.0-next.1",
     "@solidstate/hardhat-license-identifier": "3.0.0-next.1",
