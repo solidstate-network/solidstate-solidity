@@ -12,7 +12,7 @@ import { _IERC4626 } from './_IERC4626.sol';
  */
 interface IERC4626 is _IERC4626, IERC20, IERC20Metadata {
     /**
-     * @notice get the address of the base token used for vault accountin purposes
+     * @notice get the address of the base token used for vault accounting purposes
      * @return base token address
      */
     function asset() external view returns (address);

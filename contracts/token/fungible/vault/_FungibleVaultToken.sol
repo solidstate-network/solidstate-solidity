@@ -5,7 +5,9 @@ pragma solidity ^0.8.24;
 import { IERC20 } from '../../../interfaces/IERC20.sol';
 import { SafeERC20 } from '../../../utils/SafeERC20.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
-import { _FungibleTokenMetadata } from '../../fungible/metadata/_FungibleTokenMetadata.sol';
+import {
+    _FungibleTokenMetadata
+} from '../../fungible/metadata/_FungibleTokenMetadata.sol';
 import { _IFungibleVaultToken } from './_IFungibleVaultToken.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 
@@ -20,7 +22,7 @@ abstract contract _FungibleVaultToken is
     using SafeERC20 for IERC20;
 
     /**
-     * @notice get the address of the base token used for vault accountin purposes
+     * @notice get the address of the base token used for vault accounting purposes
      * @return asset base token address
      */
     function _asset() internal view virtual returns (address asset) {
@@ -388,7 +390,7 @@ abstract contract _FungibleVaultToken is
     }
 
     /**
-     * @notice set the address of the base token used for vault accountin purposes
+     * @notice set the address of the base token used for vault accounting purposes
      * @param asset base token address
      */
     function _setAsset(address asset) internal virtual {
