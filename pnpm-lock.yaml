@@ -34,6 +34,9 @@ importers:
       '@solidstate/hardhat-license-identifier':
         specifier: 3.0.0-next.1
         version: 3.0.0-next.1(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
+      '@solidstate/hardhat-linearization':
+        specifier: 1.0.0-next.1
+        version: 1.0.0-next.1(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
       '@solidstate/hardhat-selector-uploader':
         specifier: 2.0.0-next.0
         version: 2.0.0-next.0(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
@@ -1114,6 +1117,12 @@ packages:
     peerDependencies:
       '@nomicfoundation/hardhat-utils': ^3.0.0-next.13
       hardhat: ^3.0.0-next.4
+
+  '@solidstate/hardhat-linearization@1.0.0-next.1':
+    resolution: {integrity: sha512-UKKz7sQ00oUClB7tPOrcnKf5o5Qwe8/67Qxru11Qlwsxf9mDVTbHoVjJ4X8K7361dfsBMP9krSh2XKKujg0IBQ==}
+    peerDependencies:
+      '@nomicfoundation/hardhat-utils': ^3.0.0-next.21
+      hardhat: ^3.0.0-next.21
 
   '@solidstate/hardhat-selector-uploader@2.0.0-next.0':
     resolution: {integrity: sha512-ZfC5VCJnKBTWrluG++7fBNDtB61GWhlDUkUEAjyvZOYRdp586qNBHCGq4TMcTl1yHRpvyhAOaguWYIpHyAIIwg==}
@@ -5637,6 +5646,15 @@ snapshots:
       '@nomicfoundation/hardhat-utils': 3.0.0-next.21
       '@solidstate/hardhat-solidstate-utils': 1.0.0-next.3(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
       hardhat: 3.0.0-next.21
+    transitivePeerDependencies:
+      - debug
+
+  '@solidstate/hardhat-linearization@1.0.0-next.1(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)':
+    dependencies:
+      '@nomicfoundation/hardhat-utils': 3.0.0-next.21
+      '@solidstate/hardhat-solidstate-utils': 1.0.0-next.3(@nomicfoundation/hardhat-utils@3.0.0-next.21)(hardhat@3.0.0-next.21)
+      hardhat: 3.0.0-next.21
+      solidity-ast: 0.4.60
     transitivePeerDependencies:
       - debug
 

@@ -10,10 +10,10 @@ import HardhatTypechain from '@nomicfoundation/hardhat-typechain';
 import HardhatAbiExporter from '@solidstate/hardhat-abi-exporter';
 import HardhatContractSizer from '@solidstate/hardhat-contract-sizer';
 import HardhatLicenseIdentifier from '@solidstate/hardhat-license-identifier';
+import HardhatLinearization from '@solidstate/hardhat-linearization';
 import HardhatSelectorUploader from '@solidstate/hardhat-selector-uploader';
 import 'hardhat-exposed';
 import 'hardhat-gas-reporter';
-import 'hardhat-linearization';
 import { type HardhatUserConfig } from 'hardhat/config';
 import 'solidity-coverage';
 
@@ -25,6 +25,7 @@ const config: HardhatUserConfig = {
     HardhatAbiExporter,
     HardhatContractSizer,
     HardhatLicenseIdentifier,
+    HardhatLinearization,
     HardhatSelectorUploader,
   ],
 

@@ -19,6 +19,7 @@
     "@solidstate/hardhat-abi-exporter": "3.0.0-next.2",
     "@solidstate/hardhat-contract-sizer": "3.0.0-next.1",
     "@solidstate/hardhat-license-identifier": "3.0.0-next.1",
+    "@solidstate/hardhat-linearization": "1.0.0-next.1",
     "@solidstate/hardhat-selector-uploader": "2.0.0-next.0",
     "@solidstate/library": "link:lib",
     "@solidstate/spec": "link:spec",
