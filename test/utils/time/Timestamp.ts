@@ -84,13 +84,13 @@ describe('Timestamp', async () => {
       });
     });
 
-    describe('#add(uint256,uint256)', () => {
+    describe('#add(uint48,uint48)', () => {
       it('adds duration to timestamp', async () => {
         expect(await instance.$add.staticCall(1n, 1n)).to.eq(2n);
       });
     });
 
-    describe('#sub(uint256,uint256)', () => {
+    describe('#sub(uint48,uint48)', () => {
       it('subtracts duration from timestamp', async () => {
         expect(await instance.$sub.staticCall(2n, 1n)).to.eq(1n);
       });
