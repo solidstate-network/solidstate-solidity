@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import { Panic } from '../Panic.sol';
-import { duration } from './Duration.sol';
+import { Duration, duration } from './Duration.sol';
 
 // uint48 is safe for timestamps until 07 December 8,921,556 10:44:15 AM
 type timestamp is uint48;
@@ -63,5 +63,11 @@ library Timestamp {
         duration d
     ) internal pure returns (timestamp result) {
         result = timestamp.wrap(timestamp.unwrap(t) - duration.unwrap(d));
+    }
+
+    function durationSince(
+        timestamp t
+    ) internal view returns (duration result) {
+        result = Duration.fromUint256(block.timestamp - timestamp.unwrap(t));
     }
 }

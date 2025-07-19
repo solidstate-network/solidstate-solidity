@@ -1,5 +1,6 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { time } from '@nomicfoundation/hardhat-network-helpers';
 import {
   $Timestamp,
   $Timestamp__factory,
@@ -100,6 +101,14 @@ describe('Timestamp', async () => {
             instance.$sub.staticCall(1n, 2n),
           ).to.be.revertedWithPanic(PANIC_CODES.ARITHMETIC_OVERFLOW);
         });
+      });
+    });
+
+    describe('#durationSince(uint48)', () => {
+      it('returns duration representing time elapsed since timestamp', async () => {
+        const timestamp = BigInt(await time.latest()) - 10n;
+
+        expect(await instance.$durationSince.staticCall(timestamp)).to.eq(10n);
       });
     });
   });
