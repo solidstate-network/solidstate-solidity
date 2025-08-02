@@ -13,7 +13,7 @@ abstract contract _Context is _IContext {
      * @dev if no Context extension is in use, msg.sender is returned as-is
      * @return msgSender account contextualized as message sender
      */
-    function _msgSender() internal view virtual returns (address msgSender) {
+    function _msgSender() internal virtual returns (address msgSender) {
         msgSender = msg.sender;
     }
 
@@ -22,7 +22,7 @@ abstract contract _Context is _IContext {
      * @dev if no Context extension is in use, msg.data is returned as-is
      * @return msgData message data with suffix removed, if applicable
      */
-    function _msgData() internal view virtual returns (bytes calldata msgData) {
+    function _msgData() internal virtual returns (bytes calldata msgData) {
         msgData = msg.data;
     }
 
