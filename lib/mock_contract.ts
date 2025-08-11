@@ -298,5 +298,5 @@ export async function deployMockContract(ethersV6Signer: any, abi: any) {
     getAddress: async () => waffleMock.address,
   });
 
-  return mock as any;
+  return mock as MockContract;
 }
