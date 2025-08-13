@@ -9,7 +9,7 @@
     "clean": "hardhat clean && lerna run clean",
     "lerna-publish": "pnpm build && lerna publish",
     "prepare": "husky",
-    "prettier": "prettier --write ."
+    "test": "pnpm hardhat test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "4.0.0-next.21",

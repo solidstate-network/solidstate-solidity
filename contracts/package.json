@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/contracts",
-  "version": "1.0.0-next.0",
+  "version": "1.0.0-next.1",
   "description": "Solidity library for flexible smart contract development",
   "keywords": [
     "solidity",
@@ -24,5 +24,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "edd6391ae61d9e82fe0464f179ca55b746da8806"
 }

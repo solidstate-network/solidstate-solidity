@@ -1,5 +1,6 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { time } from '@nomicfoundation/hardhat-network-helpers';
 import {
   $Timestamp,
   $Timestamp__factory,
@@ -83,13 +84,13 @@ describe('Timestamp', async () => {
       });
     });
 
-    describe('#add(uint256,uint256)', () => {
+    describe('#add(uint48,uint48)', () => {
       it('adds duration to timestamp', async () => {
         expect(await instance.$add.staticCall(1n, 1n)).to.eq(2n);
       });
     });
 
-    describe('#sub(uint256,uint256)', () => {
+    describe('#sub(uint48,uint48)', () => {
       it('subtracts duration from timestamp', async () => {
         expect(await instance.$sub.staticCall(2n, 1n)).to.eq(1n);
       });
@@ -100,6 +101,14 @@ describe('Timestamp', async () => {
             instance.$sub.staticCall(1n, 2n),
           ).to.be.revertedWithPanic(PANIC_CODES.ARITHMETIC_OVERFLOW);
         });
+      });
+    });
+
+    describe('#durationSince(uint48)', () => {
+      it('returns duration representing time elapsed since timestamp', async () => {
+        const timestamp = BigInt(await time.latest()) - 10n;
+
+        expect(await instance.$durationSince.staticCall(timestamp)).to.eq(10n);
       });
     });
   });

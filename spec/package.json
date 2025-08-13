@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/spec",
-  "version": "1.0.0-next.0",
+  "version": "1.0.0-next.1",
   "description": "Portable specifications for Solidstate contracts",
   "keywords": [
     "solidity",
@@ -28,7 +28,7 @@
     "clean": "rm -rf dist/"
   },
   "dependencies": {
-    "@solidstate/library": "file:../lib"
+    "@solidstate/library": "^1.0.0-next.1"
   },
   "peerDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
@@ -38,5 +38,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "edd6391ae61d9e82fe0464f179ca55b746da8806"
 }

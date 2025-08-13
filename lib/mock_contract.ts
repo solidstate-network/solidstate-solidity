@@ -287,16 +287,24 @@ async function deployEthersV5MockContract<
   return mockedContract;
 }
 
-export async function deployMockContract(ethersV6Signer: any, abi: any) {
+export async function deployMockContract(
+  ethersV6Signer: any,
+  abi: any,
+  options?: DeployOptions,
+) {
   const ethersV5Signer = ethersV6Signer;
 
   ethersV5Signer._isSigner = true;
 
-  const waffleMock = await deployEthersV5MockContract(ethersV5Signer, abi);
+  const waffleMock = await deployEthersV5MockContract(
+    ethersV5Signer,
+    abi,
+    options,
+  );
 
   const mock = Object.assign(waffleMock, {
     getAddress: async () => waffleMock.address,
   });
 
-  return mock as any;
+  return mock as MockContract;
 }
