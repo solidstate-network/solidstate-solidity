@@ -20,5 +20,6 @@
   "author": "Nick Barry",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "edd6391ae61d9e82fe0464f179ca55b746da8806"
 }
