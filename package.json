@@ -7,7 +7,8 @@
     "build": "pnpm clean && hardhat compile && lerna run build",
     "clean": "hardhat clean && lerna run clean",
     "lerna-publish": "pnpm build && lerna publish",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "pnpm hardhat test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.9",
