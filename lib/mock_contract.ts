@@ -1,16 +1,15 @@
 // MIT-licensed code derived from https://github.com/TrueFiEng/Waffle
 import DoppelgangerContract from './Doppelganger.json';
-import type { JsonFragment } from '@ethersproject/abi';
 import type { JsonRpcProvider } from '@ethersproject/providers';
 import {
   BaseContract,
   Contract,
   ContractFactory,
+  ContractInterface,
   Signer,
   utils,
 } from 'ethers5';
-
-type ABI = string | Array<utils.Fragment | JsonFragment | string>;
+import { Interface } from 'ethers5/lib/utils';
 
 interface StubInterface {
   returns(...args: any): StubInterface;
@@ -190,7 +189,7 @@ async function deploy(signer: Signer, options?: DeployOptions) {
 }
 
 function createMock<T extends BaseContract>(
-  abi: ABI,
+  abi: Exclude<ContractInterface, Interface>,
   mockContractInstance: Contract,
 ): MockContract<T>['mock'] {
   const { functions } = new utils.Interface(abi);
@@ -229,7 +228,11 @@ function createMock<T extends BaseContract>(
 
 async function deployEthersV5MockContract<
   T extends BaseContract = BaseContract,
->(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract<T>> {
+>(
+  signer: Signer,
+  abi: Exclude<ContractInterface, Interface>,
+  options?: DeployOptions,
+): Promise<MockContract<T>> {
   const mockContractInstance = await deploy(signer, options);
 
   const mock = createMock<T>(abi, mockContractInstance);
@@ -289,7 +292,7 @@ async function deployEthersV5MockContract<
 
 export async function deployMockContract(
   ethersV6Signer: any,
-  abi: any,
+  abi: Exclude<ContractInterface, Interface>,
   options?: DeployOptions,
 ) {
   const ethersV5Signer = ethersV6Signer;
