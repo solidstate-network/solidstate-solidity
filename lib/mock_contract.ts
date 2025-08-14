@@ -1,12 +1,13 @@
 // MIT-licensed code derived from https://github.com/TrueFiEng/Waffle
 import DoppelgangerContract from './Doppelganger.json';
 import type { JsonRpcProvider } from '@ethersproject/providers';
+import { Signer } from 'ethers';
 import {
   BaseContract,
   Contract,
   ContractFactory,
   ContractInterface,
-  Signer,
+  Signer as EthersV5Signer,
   utils,
 } from 'ethers5';
 import { Interface } from 'ethers5/lib/utils';
@@ -150,7 +151,7 @@ type DeployOptions = {
   override?: boolean;
 };
 
-async function deploy(signer: Signer, options?: DeployOptions) {
+async function deploy(signer: EthersV5Signer, options?: DeployOptions) {
   if (options) {
     const { address, override } = options;
     const provider = signer.provider as JsonRpcProvider;
@@ -229,7 +230,7 @@ function createMock<T extends BaseContract>(
 async function deployEthersV5MockContract<
   T extends BaseContract = BaseContract,
 >(
-  signer: Signer,
+  signer: EthersV5Signer,
   abi: Exclude<ContractInterface, Interface>,
   options?: DeployOptions,
 ): Promise<MockContract<T>> {
@@ -291,11 +292,11 @@ async function deployEthersV5MockContract<
 }
 
 export async function deployMockContract(
-  ethersV6Signer: any,
+  ethersV6Signer: Signer,
   abi: Exclude<ContractInterface, Interface>,
   options?: DeployOptions,
 ) {
-  const ethersV5Signer = ethersV6Signer;
+  const ethersV5Signer = ethersV6Signer as any;
 
   ethersV5Signer._isSigner = true;
 
