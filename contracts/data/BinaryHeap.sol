@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.20;
 
-import { ArrayUtils } from '../utils/ArrayUtils.sol';
+import { Array } from '../utils/Array.sol';
 
 /**
  * @title Binary Heap implementation
  * @dev The data structure is configured as a max-heap
  */
 library BinaryHeap {
-    using ArrayUtils for bytes32[];
+    using Array for bytes32[];
 
     struct Heap {
         bytes32[] _values;
