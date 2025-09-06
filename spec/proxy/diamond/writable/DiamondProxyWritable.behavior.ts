@@ -7,6 +7,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondProxyWritableBehaviorArgs {
+  getProxyAdmin: () => Promise<SignerWithAddress>;
+  getNonProxyAdmin: () => Promise<SignerWithAddress>;
   immutableSelectors: string[];
 }
 

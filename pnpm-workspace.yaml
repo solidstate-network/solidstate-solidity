@@ -1,0 +1,9 @@
+packages:
+  - ./abi/
+  - ./contracts/
+  - ./lib/
+  - ./spec/
+
+patchedDependencies:
+  typechain: patches/typechain.patch
+  '@typechain/hardhat': patches/@typechain__hardhat.patch

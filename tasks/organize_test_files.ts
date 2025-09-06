@@ -173,7 +173,7 @@ task(
     specBarrel
       .map(
         (s) =>
-          `export * from './${path.relative(path.dirname(specBarrelPath), s)}';`,
+          `export * from './${path.relative(path.dirname(specBarrelPath), s).replace(path.extname(s), '')}';`,
       )
       .join('\n') + '\n';
 

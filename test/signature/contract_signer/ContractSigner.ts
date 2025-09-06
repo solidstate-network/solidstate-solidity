@@ -30,48 +30,46 @@ describe('ContractSigner', () => {
     getInvalidParams: async () => invalidParams,
   });
 
-  describe('__internal', () => {
-    describe('#_isValidSignature(bytes32,bytes)', () => {
-      it('returns magic value if signature is stored', async () => {
-        expect(
-          await instance.$_isValidSignature.staticCall(
-            validParams[0],
-            validParams[1],
-          ),
-        ).to.equal('0x1626ba7e');
-      });
-
-      it('returns null bytes if signature is not stored', async () => {
-        expect(
-          await instance.$_isValidSignature.staticCall(
-            ethers.randomBytes(32),
-            ethers.randomBytes(0),
-          ),
-        ).to.equal('0x00000000');
-      });
+  describe('#_isValidSignature(bytes32,bytes)', () => {
+    it('returns magic value if signature is stored', async () => {
+      expect(
+        await instance.$_isValidSignature.staticCall(
+          validParams[0],
+          validParams[1],
+        ),
+      ).to.equal('0x1626ba7e');
     });
 
-    describe('#_setValidSignature(bytes32,bool)', () => {
-      it('sets signature validity', async () => {
-        let hash = ethers.randomBytes(32);
-        let signature = ethers.randomBytes(0);
+    it('returns null bytes if signature is not stored', async () => {
+      expect(
+        await instance.$_isValidSignature.staticCall(
+          ethers.randomBytes(32),
+          ethers.randomBytes(0),
+        ),
+      ).to.equal('0x00000000');
+    });
+  });
 
-        expect(
-          await instance.$_isValidSignature.staticCall(hash, signature),
-        ).to.equal('0x00000000');
+  describe('#_setValidSignature(bytes32,bool)', () => {
+    it('sets signature validity', async () => {
+      let hash = ethers.randomBytes(32);
+      let signature = ethers.randomBytes(0);
 
-        await instance.$_setValidSignature(hash, true);
+      expect(
+        await instance.$_isValidSignature.staticCall(hash, signature),
+      ).to.equal('0x00000000');
 
-        expect(
-          await instance.$_isValidSignature.staticCall(hash, signature),
-        ).to.equal('0x1626ba7e');
+      await instance.$_setValidSignature(hash, true);
 
-        await instance.$_setValidSignature(hash, false);
+      expect(
+        await instance.$_isValidSignature.staticCall(hash, signature),
+      ).to.equal('0x1626ba7e');
 
-        expect(
-          await instance.$_isValidSignature.staticCall(hash, signature),
-        ).to.equal('0x00000000');
-      });
+      await instance.$_setValidSignature(hash, false);
+
+      expect(
+        await instance.$_isValidSignature.staticCall(hash, signature),
+      ).to.equal('0x00000000');
     });
   });
 });

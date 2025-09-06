@@ -1,2 +1,2 @@
 #!/bin/sh
-yarn run lint-staged
+pnpm lint-staged

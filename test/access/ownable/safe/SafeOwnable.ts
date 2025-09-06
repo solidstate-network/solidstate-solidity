@@ -33,123 +33,119 @@ describe('SafeOwnable', () => {
     getNonOwner: async () => nonOwner,
   });
 
-  describe('__internal', () => {
-    describe('onlyNomineeOwner() modifier', () => {
-      it('does not revert if sender is nominee owner', async () => {
-        await instance.$_setNomineeOwner(nomineeOwner.address);
+  describe('onlyNomineeOwner() modifier', () => {
+    it('does not revert if sender is nominee owner', async () => {
+      await instance.$_setNomineeOwner(nomineeOwner.address);
 
-        await expect(instance.connect(nomineeOwner).$onlyNomineeOwner()).not.to
-          .be.reverted;
-      });
-
-      describe('reverts if', () => {
-        it('sender is not nominee owner', async () => {
-          await expect(
-            instance.connect(nonOwner).$onlyNomineeOwner(),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'SafeOwnable__NotNomineeOwner',
-          );
-
-          await expect(
-            instance.connect(owner).$onlyNomineeOwner(),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'SafeOwnable__NotNomineeOwner',
-          );
-        });
-      });
+      await expect(instance.connect(nomineeOwner).$onlyNomineeOwner()).not.to.be
+        .reverted;
     });
 
-    describe('#_nomineeOwner()', () => {
-      it('returns nominee owner address', async () => {
-        expect(await instance.$_nomineeOwner.staticCall()).to.equal(
-          ethers.ZeroAddress,
+    describe('reverts if', () => {
+      it('sender is not nominee owner', async () => {
+        await expect(
+          instance.connect(nonOwner).$onlyNomineeOwner(),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'SafeOwnable__NotNomineeOwner',
         );
 
-        await instance.connect(owner).transferOwnership(nomineeOwner);
-
-        expect(await instance.$_nomineeOwner.staticCall()).to.equal(
-          nomineeOwner.address,
+        await expect(
+          instance.connect(owner).$onlyNomineeOwner(),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'SafeOwnable__NotNomineeOwner',
         );
       });
     });
+  });
 
-    describe('#_acceptOwnership()', () => {
-      it('sets message sender as owner', async () => {
-        await instance.connect(owner).transferOwnership(nomineeOwner);
+  describe('#_nomineeOwner()', () => {
+    it('returns nominee owner address', async () => {
+      expect(await instance.$_nomineeOwner.staticCall()).to.equal(
+        ethers.ZeroAddress,
+      );
 
-        await instance.connect(nomineeOwner).$_acceptOwnership();
+      await instance.connect(owner).transferOwnership(nomineeOwner);
 
-        expect(await instance.$_owner.staticCall()).to.equal(
-          nomineeOwner.address,
-        );
-      });
+      expect(await instance.$_nomineeOwner.staticCall()).to.equal(
+        nomineeOwner.address,
+      );
+    });
+  });
 
-      it('sets nominee owner to zero address', async () => {
-        await instance.$_setNomineeOwner(nomineeOwner.address);
+  describe('#_acceptOwnership()', () => {
+    it('sets message sender as owner', async () => {
+      await instance.connect(owner).transferOwnership(nomineeOwner);
 
-        await instance.connect(nomineeOwner).$_acceptOwnership();
+      await instance.connect(nomineeOwner).$_acceptOwnership();
 
-        expect(await instance.$_nomineeOwner.staticCall()).to.equal(
-          ethers.ZeroAddress,
-        );
-      });
-
-      describe('reverts if', () => {
-        it('transfer timelock is locked', async () => {
-          await instance.$_setTransferTimelockDuration(
-            transferTimelockDuration,
-          );
-
-          await instance.connect(owner).transferOwnership(nomineeOwner);
-
-          await expect(
-            instance.connect(nomineeOwner).$_acceptOwnership(),
-          ).to.be.revertedWithCustomError(instance, 'Timelock__Locked');
-        });
-      });
+      expect(await instance.$_owner.staticCall()).to.equal(
+        nomineeOwner.address,
+      );
     });
 
-    describe('#_transferOwnership(address)', () => {
-      it('sets nominee owner to given address', async () => {
-        await instance.$_transferOwnership(nomineeOwner.address);
+    it('sets nominee owner to zero address', async () => {
+      await instance.$_setNomineeOwner(nomineeOwner.address);
 
-        expect(await instance.$_nomineeOwner.staticCall()).to.equal(
-          nomineeOwner.address,
-        );
-      });
+      await instance.connect(nomineeOwner).$_acceptOwnership();
 
-      it('does not update owner address', async () => {
-        await instance.$_transferOwnership(nomineeOwner.address);
+      expect(await instance.$_nomineeOwner.staticCall()).to.equal(
+        ethers.ZeroAddress,
+      );
+    });
 
-        expect(await instance.$_owner.staticCall()).to.equal(owner.address);
-      });
-
-      it('emits OwnershipTransferInitiated event', async () => {
+    describe('reverts if', () => {
+      it('transfer timelock is locked', async () => {
         await instance.$_setTransferTimelockDuration(transferTimelockDuration);
 
-        const timestamp = BigInt(await time.latest()) + 1n;
-        await time.setNextBlockTimestamp(timestamp);
+        await instance.connect(owner).transferOwnership(nomineeOwner);
 
-        await expect(instance.$_transferOwnership(nomineeOwner.address))
-          .to.emit(instance, 'OwnershipTransferInitiated')
-          .withArgs(
-            await owner.getAddress(),
-            await nomineeOwner.getAddress(),
-            timestamp + transferTimelockDuration,
-          );
+        await expect(
+          instance.connect(nomineeOwner).$_acceptOwnership(),
+        ).to.be.revertedWithCustomError(instance, 'Timelock__Locked');
       });
     });
+  });
 
-    describe('#_setNomineeOwner(address)', () => {
-      it('sets nominee owner to given address', async () => {
-        await instance.$_setNomineeOwner(nomineeOwner.address);
+  describe('#_transferOwnership(address)', () => {
+    it('sets nominee owner to given address', async () => {
+      await instance.$_transferOwnership(nomineeOwner.address);
 
-        expect(await instance.$_nomineeOwner.staticCall()).to.equal(
-          nomineeOwner.address,
+      expect(await instance.$_nomineeOwner.staticCall()).to.equal(
+        nomineeOwner.address,
+      );
+    });
+
+    it('does not update owner address', async () => {
+      await instance.$_transferOwnership(nomineeOwner.address);
+
+      expect(await instance.$_owner.staticCall()).to.equal(owner.address);
+    });
+
+    it('emits OwnershipTransferInitiated event', async () => {
+      await instance.$_setTransferTimelockDuration(transferTimelockDuration);
+
+      const timestamp = BigInt(await time.latest()) + 1n;
+      await time.setNextBlockTimestamp(timestamp);
+
+      await expect(instance.$_transferOwnership(nomineeOwner.address))
+        .to.emit(instance, 'OwnershipTransferInitiated')
+        .withArgs(
+          await owner.getAddress(),
+          await nomineeOwner.getAddress(),
+          timestamp + transferTimelockDuration,
         );
-      });
+    });
+  });
+
+  describe('#_setNomineeOwner(address)', () => {
+    it('sets nominee owner to given address', async () => {
+      await instance.$_setNomineeOwner(nomineeOwner.address);
+
+      expect(await instance.$_nomineeOwner.staticCall()).to.equal(
+        nomineeOwner.address,
+      );
     });
   });
 });

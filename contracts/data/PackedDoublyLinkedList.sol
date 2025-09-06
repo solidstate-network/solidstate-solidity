@@ -8,7 +8,7 @@ pragma solidity ^0.8.24;
  */
 library PackedDoublyLinkedList {
     struct _PackedDoublyLinkedList {
-        mapping(bytes16 => bytes32) _links;
+        mapping(bytes16 current => bytes32 links) _links;
     }
 
     struct Bytes16List {

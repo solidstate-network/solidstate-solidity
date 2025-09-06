@@ -28,14 +28,12 @@ describe('FungibleTokenPermit', () => {
       instance.$_allowance.staticCall(holder, spender),
   });
 
-  describe('__internal', () => {
-    describe('#_DOMAIN_SEPARATOR()', () => {
-      it('changes if token name is changed', async () => {
-        const oldDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
-        await instance.$_setName(`new ${name}`);
-        const newDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
-        expect(newDomainSeparator).not.to.eq(oldDomainSeparator);
-      });
+  describe('#_DOMAIN_SEPARATOR()', () => {
+    it('changes if token name is changed', async () => {
+      const oldDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
+      await instance.$_setName(`new ${name}`);
+      const newDomainSeparator = await instance.DOMAIN_SEPARATOR.staticCall();
+      expect(newDomainSeparator).not.to.eq(oldDomainSeparator);
     });
   });
 });

@@ -20,7 +20,7 @@ library EnumerableMap {
     struct Map {
         MapEntry[] _entries;
         // 1-indexed to allow 0 to signify nonexistence
-        mapping(bytes32 => uint256) _indexes;
+        mapping(bytes32 key => uint256 index) _indexes;
     }
 
     struct AddressToAddressMap {

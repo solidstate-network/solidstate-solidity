@@ -154,7 +154,7 @@ import { <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solids
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-const randomIndexNonInclusive = (start, end) => {
+const randomIndexNonInclusive = (start: number, end: number) => {
   return Math.ceil(Math.random() * (end - start - 1)) + start;
 };
 

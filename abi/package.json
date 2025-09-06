@@ -1,8 +1,6 @@
 {
   "name": "@solidstate/abi",
-  "version": "0.0.61",
-  "author": "Nick Barry",
-  "license": "MIT",
+  "version": "1.0.0-next.1",
   "description": "ABIs for Solidstate contracts",
   "keywords": [
     "solidity",
@@ -18,7 +16,10 @@
     "buidler"
   ],
   "repository": "github:solidstate-network/solidstate-solidity",
+  "license": "MIT",
+  "author": "Nick Barry",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "edd6391ae61d9e82fe0464f179ca55b746da8806"
 }

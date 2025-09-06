@@ -10,7 +10,6 @@ import { _MultiToken } from './_MultiToken.sol';
 
 /**
  * @title Base MultiToken contract
- * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts/ (MIT license)
  */
 abstract contract MultiToken is
     IMultiToken,

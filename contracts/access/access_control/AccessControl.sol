@@ -7,7 +7,6 @@ import { _AccessControl } from './_AccessControl.sol';
 
 /**
  * @title Role-based access control system
- * @dev derived from https://github.com/OpenZeppelin/openzeppelin-contracts (MIT license)
  */
 abstract contract AccessControl is IAccessControl, _AccessControl {
     /**

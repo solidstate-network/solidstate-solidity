@@ -26,25 +26,23 @@ describe('ContractSignerOwnable', () => {
     getNonOwner: async () => nonOwner,
   });
 
-  describe('__internal', () => {
-    describe('#_isValidSignature(bytes32,bytes)', () => {
-      it('returns magic value for signature created by owner', async () => {
-        const hash = ethers.randomBytes(32);
-        const signature = await owner.signMessage(ethers.getBytes(hash));
+  describe('#_isValidSignature(bytes32,bytes)', () => {
+    it('returns magic value for signature created by owner', async () => {
+      const hash = ethers.randomBytes(32);
+      const signature = await owner.signMessage(ethers.getBytes(hash));
 
-        expect(
-          await instance.$_isValidSignature.staticCall(hash, signature),
-        ).to.equal('0x1626ba7e');
-      });
+      expect(
+        await instance.$_isValidSignature.staticCall(hash, signature),
+      ).to.equal('0x1626ba7e');
+    });
 
-      it('returns null bytes for signature created by non-owner', async () => {
-        const hash = ethers.randomBytes(32);
-        const signature = await nonOwner.signMessage(ethers.getBytes(hash));
+    it('returns null bytes for signature created by non-owner', async () => {
+      const hash = ethers.randomBytes(32);
+      const signature = await nonOwner.signMessage(ethers.getBytes(hash));
 
-        expect(
-          await instance.$_isValidSignature.staticCall(hash, signature),
-        ).to.equal('0x00000000');
-      });
+      expect(
+        await instance.$_isValidSignature.staticCall(hash, signature),
+      ).to.equal('0x00000000');
     });
   });
 });

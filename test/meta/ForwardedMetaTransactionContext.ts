@@ -43,138 +43,126 @@ describe('ForwardedMetaTransactionContext', () => {
 
   // TODO: spec
 
-  describe('__internal', () => {
-    describe('#_msgSender()', () => {
-      it('returns forwarded sender if sender is trusted forwarder', async () => {
-        const forwardedAddress = ethers.hexlify(ethers.randomBytes(20));
+  describe('#_msgSender()', () => {
+    it('returns forwarded sender if sender is trusted forwarder', async () => {
+      const forwardedAddress = ethers.hexlify(ethers.randomBytes(20));
 
-        expect(
-          await callMetaTransaction(
-            trustedForwarder,
-            instance.$_msgSender,
-            forwardedAddress,
-          ),
-        ).to.deep.equal([forwardedAddress]);
-      });
-
-      it('returns message sender if sender is not trusted forwarder', async () => {
-        expect(
-          await callMetaTransaction(
-            nonTrustedForwarder,
-            instance.$_msgSender,
-            ethers.randomBytes(20),
-          ),
-        ).to.deep.equal([await nonTrustedForwarder.getAddress()]);
-      });
-
-      it('returns message sender if message data length is less than suffix length', async () => {
-        // account for 4-byte selector when calculting suffix length
-        const suffix = ethers.randomBytes(
-          Number(
-            (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
-          ),
-        );
-
-        expect(
-          await callMetaTransaction(
-            trustedForwarder,
-            instance.$_msgSender,
-            suffix,
-          ),
-        ).to.deep.equal([await trustedForwarder.getAddress()]);
-      });
+      expect(
+        await callMetaTransaction(
+          trustedForwarder,
+          instance.$_msgSender,
+          forwardedAddress,
+        ),
+      ).to.deep.equal([forwardedAddress]);
     });
 
-    describe('#_msgData()', () => {
-      it('returns message data without suffix if sender is trusted forwarder', async () => {
-        const nonSuffixedData = instance.$_msgData.fragment.selector;
-
-        expect(
-          await callMetaTransaction(
-            trustedForwarder,
-            instance.$_msgData,
-            ethers.randomBytes(20),
-          ),
-        ).to.deep.equal([nonSuffixedData]);
-      });
-
-      it('returns complete message data if sender is not trusted forwarder', async () => {
-        const nonSuffixedData = instance.$_msgData.fragment.selector;
-        const data = ethers.randomBytes(20);
-
-        // message data is returned as received, demonstrating the malleability of msg.data
-
-        expect(
-          await callMetaTransaction(
-            nonTrustedForwarder,
-            instance.$_msgData,
-            data,
-          ),
-        ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
-      });
-
-      it('returns complete message data if message data length is less than suffix length', async () => {
-        const nonSuffixedData = instance.$_msgData.fragment.selector;
-        // account for 4-byte selector when calculting suffix length
-        const suffix = ethers.randomBytes(
-          Number(
-            (await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n,
-          ),
-        );
-
-        // message data is returned as received, demonstrating the malleability of msg.data
-
-        expect(
-          await callMetaTransaction(
-            trustedForwarder,
-            instance.$_msgData,
-            suffix,
-          ),
-        ).to.deep.equal([ethers.concat([nonSuffixedData, suffix])]);
-      });
+    it('returns message sender if sender is not trusted forwarder', async () => {
+      expect(
+        await callMetaTransaction(
+          nonTrustedForwarder,
+          instance.$_msgSender,
+          ethers.randomBytes(20),
+        ),
+      ).to.deep.equal([await nonTrustedForwarder.getAddress()]);
     });
 
-    describe('#_calldataSuffixLength()', () => {
-      it('returns 20', async () => {
-        expect(await instance.$_calldataSuffixLength.staticCall()).to.equal(
-          20n,
-        );
-      });
+    it('returns message sender if message data length is less than suffix length', async () => {
+      // account for 4-byte selector when calculting suffix length
+      const suffix = ethers.randomBytes(
+        Number((await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n),
+      );
+
+      expect(
+        await callMetaTransaction(
+          trustedForwarder,
+          instance.$_msgSender,
+          suffix,
+        ),
+      ).to.deep.equal([await trustedForwarder.getAddress()]);
+    });
+  });
+
+  describe('#_msgData()', () => {
+    it('returns message data without suffix if sender is trusted forwarder', async () => {
+      const nonSuffixedData = instance.$_msgData.fragment.selector;
+
+      expect(
+        await callMetaTransaction(
+          trustedForwarder,
+          instance.$_msgData,
+          ethers.randomBytes(20),
+        ),
+      ).to.deep.equal([nonSuffixedData]);
     });
 
-    describe('#_isTrustedForwarder(address)', () => {
-      it('returns trusted forwarder status of account', async () => {
-        expect(
-          await instance.$_isTrustedForwarder(
-            await nonTrustedForwarder.getAddress(),
-          ),
-        ).to.be.false;
+    it('returns complete message data if sender is not trusted forwarder', async () => {
+      const nonSuffixedData = instance.$_msgData.fragment.selector;
+      const data = ethers.randomBytes(20);
 
-        expect(
-          await instance.$_isTrustedForwarder(
-            await trustedForwarder.getAddress(),
-          ),
-        ).to.be.true;
-      });
+      // message data is returned as received, demonstrating the malleability of msg.data
+
+      expect(
+        await callMetaTransaction(
+          nonTrustedForwarder,
+          instance.$_msgData,
+          data,
+        ),
+      ).to.deep.equal([ethers.concat([nonSuffixedData, data])]);
     });
 
-    describe('#_addTrustedForwarder(address)', () => {
-      it('grants trusted forwarder status to account', async () => {
-        await instance.$_addTrustedForwarder(await instance.getAddress());
+    it('returns complete message data if message data length is less than suffix length', async () => {
+      const nonSuffixedData = instance.$_msgData.fragment.selector;
+      // account for 4-byte selector when calculting suffix length
+      const suffix = ethers.randomBytes(
+        Number((await instance.$_calldataSuffixLength.staticCall()) - 4n - 1n),
+      );
 
-        expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
-          .to.be.true;
-      });
+      // message data is returned as received, demonstrating the malleability of msg.data
+
+      expect(
+        await callMetaTransaction(trustedForwarder, instance.$_msgData, suffix),
+      ).to.deep.equal([ethers.concat([nonSuffixedData, suffix])]);
     });
+  });
 
-    describe('#_removeTrustedForwarder(address)', () => {
-      it('revokes trusted forwarder status from account', async () => {
-        await instance.$_addTrustedForwarder(await instance.getAddress());
-        await instance.$_removeTrustedForwarder(await instance.getAddress());
+  describe('#_calldataSuffixLength()', () => {
+    it('returns 20', async () => {
+      expect(await instance.$_calldataSuffixLength.staticCall()).to.equal(20n);
+    });
+  });
 
-        expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
-          .to.be.false;
-      });
+  describe('#_isTrustedForwarder(address)', () => {
+    it('returns trusted forwarder status of account', async () => {
+      expect(
+        await instance.$_isTrustedForwarder(
+          await nonTrustedForwarder.getAddress(),
+        ),
+      ).to.be.false;
+
+      expect(
+        await instance.$_isTrustedForwarder(
+          await trustedForwarder.getAddress(),
+        ),
+      ).to.be.true;
+    });
+  });
+
+  describe('#_addTrustedForwarder(address)', () => {
+    it('grants trusted forwarder status to account', async () => {
+      await instance.$_addTrustedForwarder(await instance.getAddress());
+
+      expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
+        .to.be.true;
+    });
+  });
+
+  describe('#_removeTrustedForwarder(address)', () => {
+    it('revokes trusted forwarder status from account', async () => {
+      await instance.$_addTrustedForwarder(await instance.getAddress());
+      await instance.$_removeTrustedForwarder(await instance.getAddress());
+
+      expect(await instance.$_isTrustedForwarder(await instance.getAddress()))
+        .to.be.false;
     });
   });
 });

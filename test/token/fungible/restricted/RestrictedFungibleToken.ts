@@ -32,28 +32,26 @@ describe('RestrictedFungibleToken', () => {
       instance.$_burn(recipient, amount),
   });
 
-  describe('__internal', () => {
-    describe('#_setRestrictions', () => {
-      it('sets messages for restriction codes', async () => {
-        const code = 4n;
-        const message = 'err';
+  describe('#_setRestrictions', () => {
+    it('sets messages for restriction codes', async () => {
+      const code = 4n;
+      const message = 'err';
 
-        await instance.$_setRestrictions([code], [message]);
+      await instance.$_setRestrictions([code], [message]);
 
-        expect(
-          await instance.messageForTransferRestriction.staticCall(code),
-        ).to.eq(message);
-      });
+      expect(
+        await instance.messageForTransferRestriction.staticCall(code),
+      ).to.eq(message);
+    });
 
-      describe('reverts if', () => {
-        it('array lengts do not match', async () => {
-          await expect(
-            instance.$_setRestrictions([0n], []),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'RestrictedFungibleToken__ArrayLengthMismatch',
-          );
-        });
+    describe('reverts if', () => {
+      it('array lengts do not match', async () => {
+        await expect(
+          instance.$_setRestrictions([0n], []),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'RestrictedFungibleToken__ArrayLengthMismatch',
+        );
       });
     });
   });

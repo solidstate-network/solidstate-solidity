@@ -103,7 +103,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
             ERC1155Storage.Layout storage $ = ERC1155Storage.layout(
                 ERC1155Storage.DEFAULT_STORAGE_SLOT
             );
-            mapping(uint256 => EnumerableSet.AddressSet)
+            mapping(uint256 tokenId => EnumerableSet.AddressSet holders)
                 storage tokenAccounts = $.accountsByToken;
             EnumerableSet.UintSet storage fromTokens = $.tokensByAccount[from];
             EnumerableSet.UintSet storage toTokens = $.tokensByAccount[to];

@@ -32,641 +32,637 @@ describe('Address', async () => {
     instance = await new $Address__factory(deployer).deploy();
   });
 
-  describe('__internal', () => {
-    describe('#toBytes32(address)', () => {
-      it('returns a bytes32 representation of address', async () => {
-        const input = await instance.getAddress();
+  describe('#toBytes32(address)', () => {
+    it('returns a bytes32 representation of address', async () => {
+      const input = await instance.getAddress();
 
-        expect(await instance.$toBytes32.staticCall(input)).to.eq(
-          ethers.zeroPadValue(input, 32),
-        );
-      });
-
-      it('sanitizes higher-order bits', async () => {
-        const testInstance = await new AddressTest__factory(deployer).deploy();
-
-        expect(
-          await testInstance.sanitizeBytes32Test.staticCall(ethers.ZeroAddress),
-        ).to.hexEqual(ethers.ZeroAddress);
-      });
+      expect(await instance.$toBytes32.staticCall(input)).to.eq(
+        ethers.zeroPadValue(input, 32),
+      );
     });
 
-    describe('#toString(address)', () => {
-      it('returns a string from an address', async () => {
-        expect(
-          ethers.getAddress(
-            await instance.$toString.staticCall(deployer.address),
-          ),
-        ).to.eq(deployer.address);
-      });
+    it('sanitizes higher-order bits', async () => {
+      const testInstance = await new AddressTest__factory(deployer).deploy();
+
+      expect(
+        await testInstance.sanitizeBytes32Test.staticCall(ethers.ZeroAddress),
+      ).to.hexEqual(ethers.ZeroAddress);
+    });
+  });
+
+  describe('#toString(address)', () => {
+    it('returns a string from an address', async () => {
+      expect(
+        ethers.getAddress(
+          await instance.$toString.staticCall(deployer.address),
+        ),
+      ).to.eq(deployer.address);
+    });
+  });
+
+  describe('#isContract(address)', () => {
+    it('returns true when an address is a contract', async () => {
+      expect(await instance.$isContract(await instance.getAddress())).to.be
+        .true;
     });
 
-    describe('#isContract(address)', () => {
-      it('returns true when an address is a contract', async () => {
-        expect(await instance.$isContract(await instance.getAddress())).to.be
-          .true;
-      });
+    it('returns false when an address is not a contract', async () => {
+      expect(await instance.$isContract(deployer.address)).to.be.false;
+    });
+  });
 
-      it('returns false when an address is not a contract', async () => {
-        expect(await instance.$isContract(deployer.address)).to.be.false;
-      });
+  describe('#sendValue(address,uint256)', () => {
+    it('transfers given value to given address', async () => {
+      const value = 2n;
+
+      await setBalance(await instance.getAddress(), value);
+
+      const target = deployer;
+
+      await expect(() =>
+        instance.connect(deployer).$sendValue(target.address, value),
+      ).to.changeEtherBalances([instance, target], [-value, value]);
     });
 
-    describe('#sendValue(address,uint256)', () => {
-      it('transfers given value to given address', async () => {
+    describe('reverts if', () => {
+      it('target contract rejects transfer', async () => {
         const value = 2n;
 
         await setBalance(await instance.getAddress(), value);
 
-        const target = deployer;
+        const mock = await deployMockContract(deployer, []);
 
-        await expect(() =>
-          instance.connect(deployer).$sendValue(target.address, value),
-        ).to.changeEtherBalances([instance, target], [-value, value]);
-      });
+        await mock.mock.receive.reverts();
 
-      describe('reverts if', () => {
-        it('target contract rejects transfer', async () => {
-          const value = 2n;
-
-          await setBalance(await instance.getAddress(), value);
-
-          const mock = await deployMockContract(deployer, []);
-
-          await mock.mock.receive.reverts();
-
-          await expect(
-            instance.connect(deployer).$sendValue(mock.address, value),
-          ).to.be.revertedWithCustomError(instance, 'Address__SendValueFailed');
-        });
+        await expect(
+          instance.connect(deployer).$sendValue(mock.address, value),
+        ).to.be.revertedWithCustomError(instance, 'Address__SendValueFailed');
       });
     });
+  });
 
-    describe('#functionCall(address,bytes)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
-        const mock = await deployMockContract(deployer, [
-          'function fn() external returns (bool)',
-        ]);
+  describe('#functionCall(address,bytes)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const mock = await deployMockContract(deployer, [
+        'function fn() external returns (bool)',
+      ]);
 
-        await mock.mock.fn.returns(true);
+      await mock.mock.fn.returns(true);
 
-        const target = mock.address;
-        const { data } = (await mock.populateTransaction.fn()) as {
-          data: BytesLike;
-        };
+      const target = mock.address;
+      const { data } = (await mock.populateTransaction.fn()) as {
+        data: BytesLike;
+      };
 
-        expect(
-          await instance
-            .connect(deployer)
-            ['$functionCall(address,bytes)'].staticCall(target, data),
-        ).to.equal(ethers.zeroPadValue('0x01', 32));
-      });
-
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
-
-        it('target contract reverts, with target contract error message', async () => {
-          const revertReason = 'REVERT_REASON';
-
-          const mock = await deployMockContract(deployer, [
-            'function fn () external payable returns (bool)',
-          ]);
-
-          await mock.mock.fn.revertsWithReason(revertReason);
-
-          const target = mock.address;
-          const { data } = (await mock.populateTransaction.fn()) as {
-            data: BytesLike;
-          };
-
-          await expect(
-            instance
-              .connect(deployer)
-              ['$functionCall(address,bytes)'](target, data),
-          ).to.be.revertedWith(revertReason);
-        });
-
-        it('target contract reverts, with default error message', async () => {
-          const targetContract = await new Address__factory(deployer).deploy();
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCall(address,bytes)'
-              ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWithCustomError(placeholder, 'Address__FailedCall');
-        });
-      });
+      expect(
+        await instance
+          .connect(deployer)
+          ['$functionCall(address,bytes)'].staticCall(target, data),
+      ).to.equal(ethers.zeroPadValue('0x01', 32));
     });
 
-    describe('#functionCall(address,bytes,bytes4)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionCall(address,bytes)'](ethers.ZeroAddress, '0x'),
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const revertReason = 'REVERT_REASON';
+
         const mock = await deployMockContract(deployer, [
           'function fn () external payable returns (bool)',
         ]);
-        await mock.mock.fn.returns(true);
+
+        await mock.mock.fn.revertsWithReason(revertReason);
 
         const target = mock.address;
         const { data } = (await mock.populateTransaction.fn()) as {
           data: BytesLike;
         };
 
-        expect(
-          await instance
+        await expect(
+          instance
+            .connect(deployer)
+            ['$functionCall(address,bytes)'](target, data),
+        ).to.be.revertedWith(revertReason);
+      });
+
+      it('target contract reverts, with default error message', async () => {
+        const targetContract = await new Address__factory(deployer).deploy();
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCall(address,bytes)'
+            ](await targetContract.getAddress(), '0x'),
+        ).to.be.revertedWithCustomError(placeholder, 'Address__FailedCall');
+      });
+    });
+  });
+
+  describe('#functionCall(address,bytes,bytes4)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const mock = await deployMockContract(deployer, [
+        'function fn () external payable returns (bool)',
+      ]);
+      await mock.mock.fn.returns(true);
+
+      const target = mock.address;
+      const { data } = (await mock.populateTransaction.fn()) as {
+        data: BytesLike;
+      };
+
+      expect(
+        await instance
+          .connect(deployer)
+          [
+            '$functionCall(address,bytes,bytes4)'
+          ].staticCall(target, data, ethers.randomBytes(4)),
+      ).to.equal(ethers.zeroPadValue('0x01', 32));
+    });
+
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionCall(address,bytes,bytes4)'](
+            ethers.ZeroAddress,
+            '0x',
+            ethers.randomBytes(4),
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const revertReason = 'REVERT_REASON';
+
+        const mock = await deployMockContract(deployer, [
+          'function fn () external payable returns (bool)',
+        ]);
+
+        await mock.mock.fn.revertsWithReason(revertReason);
+
+        const target = mock.address;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
+
+        await expect(
+          instance
             .connect(deployer)
             [
               '$functionCall(address,bytes,bytes4)'
-            ].staticCall(target, data, ethers.randomBytes(4)),
-        ).to.equal(ethers.zeroPadValue('0x01', 32));
+            ](target, data, ethers.randomBytes(4)),
+        ).to.be.revertedWith(revertReason);
       });
 
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionCall(address,bytes,bytes4)'](
-              ethers.ZeroAddress,
-              '0x',
-              ethers.randomBytes(4),
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
+      it('target contract reverts, with provided custom error', async () => {
+        // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+        const customError = 'TestError';
+        const revertReason =
+          placeholder.interface.getError(customError)?.selector!;
 
-        it('target contract reverts, with target contract error message', async () => {
-          const revertReason = 'REVERT_REASON';
+        const targetContract = await new Address__factory(deployer).deploy();
 
-          const mock = await deployMockContract(deployer, [
-            'function fn () external payable returns (bool)',
-          ]);
-
-          await mock.mock.fn.revertsWithReason(revertReason);
-
-          const target = mock.address;
-          const { data } = (await mock.populateTransaction.fn()) as {
-            data: BytesLike;
-          };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCall(address,bytes,bytes4)'
-              ](target, data, ethers.randomBytes(4)),
-          ).to.be.revertedWith(revertReason);
-        });
-
-        it('target contract reverts, with provided custom error', async () => {
-          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'TestError';
-          const revertReason =
-            placeholder.interface.getError(customError)?.selector!;
-
-          const targetContract = await new Address__factory(deployer).deploy();
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCall(address,bytes,bytes4)'
-              ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWithCustomError(placeholder, customError);
-        });
-      });
-    });
-
-    describe('#functionCallWithValue(address,bytes,uint256)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
-        const mock = await deployMockContract(deployer, [
-          'function fn () external payable returns (bool)',
-        ]);
-
-        await mock.mock.fn.returns(true);
-
-        const target = mock.address;
-        const { data } = (await mock.populateTransaction.fn()) as {
-          data: BytesLike;
-        };
-
-        expect(
-          await instance
-            .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256)'
-            ].staticCall(target, data, 0),
-        ).to.equal(ethers.zeroPadValue('0x01', 32));
-      });
-
-      it('transfers given value to target contract', async () => {
-        const value = 2n;
-
-        await setBalance(await instance.getAddress(), value);
-
-        const mock = await deployMockContract(deployer, [
-          'function fn () external payable returns (bool)',
-        ]);
-
-        await mock.mock.fn.returns(true);
-
-        const target = mock.address;
-        const mocked = await mock.populateTransaction.fn();
-        const data = mocked.data as BytesLike;
-
-        await expect(() =>
+        await expect(
           instance
             .connect(deployer)
             [
-              '$functionCallWithValue(address,bytes,uint256)'
-            ](target, data, value),
-        ).to.changeEtherBalances([instance, mock], [-value, value]);
-      });
-
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionCallWithValue(address,bytes,uint256)'](
-              ethers.ZeroAddress,
-              '0x',
-              0,
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
-
-        it('contract balance is insufficient', async () => {
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256)'
-              ](await instance.getAddress(), '0x', 1),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Address__InsufficientBalance',
-          );
-        });
-
-        it('target function is not payable and value is included', async () => {
-          const value = 2n;
-
-          await setBalance(await instance.getAddress(), value);
-
-          const targetContract = await new $Ownable__factory(deployer).deploy();
-
-          await targetContract.$_setOwner(await instance.getAddress());
-
-          // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
-
-          const { data } = (await targetContract.__hh_exposed_bytecode_marker
-            .populateTransaction
-            // ethers.ZeroAddress,
-            ()) as { data: BytesLike };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256)'
-              ](await targetContract.getAddress(), data, value),
-          ).to.be.revertedWithCustomError(
-            placeholder,
-            'Address__FailedCallWithValue',
-          );
-        });
-
-        it('target contract reverts, with target contract error message', async () => {
-          const revertReason = 'REVERT_REASON';
-
-          const mock = await deployMockContract(deployer, [
-            'function fn () external payable returns (bool)',
-          ]);
-
-          await mock.mock.fn.revertsWithReason(revertReason);
-
-          const target = mock.address;
-          const { data } = (await mock.populateTransaction.fn()) as {
-            data: BytesLike;
-          };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256)'
-              ](target, data, 0),
-          ).to.be.revertedWith(revertReason);
-        });
-
-        it('target contract reverts, with default error message', async () => {
-          const targetContract = await new Address__factory(deployer).deploy();
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256)'
-              ](await targetContract.getAddress(), '0x', 0),
-          ).to.be.revertedWithCustomError(
-            placeholder,
-            'Address__FailedCallWithValue',
-          );
-        });
+              '$functionCall(address,bytes,bytes4)'
+            ](await targetContract.getAddress(), '0x', revertReason),
+        ).to.be.revertedWithCustomError(placeholder, customError);
       });
     });
+  });
 
-    describe('#functionCallWithValue(address,bytes,uint256,bytes4)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
-        const mock = await deployMockContract(deployer, [
-          'function fn () external payable returns (bool)',
-        ]);
+  describe('#functionCallWithValue(address,bytes,uint256)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const mock = await deployMockContract(deployer, [
+        'function fn () external payable returns (bool)',
+      ]);
 
-        await mock.mock.fn.returns(true);
+      await mock.mock.fn.returns(true);
 
-        const target = mock.address;
-        const { data } = (await mock.populateTransaction.fn()) as {
-          data: BytesLike;
-        };
+      const target = mock.address;
+      const { data } = (await mock.populateTransaction.fn()) as {
+        data: BytesLike;
+      };
 
-        expect(
-          await instance
-            .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ].staticCall(target, data, 0, ethers.randomBytes(4)),
-        ).to.equal(ethers.zeroPadValue('0x01', 32));
-      });
-
-      it('transfers given value to target contract', async () => {
-        const value = 2n;
-
-        await setBalance(await instance.getAddress(), value);
-
-        const mock = await deployMockContract(deployer, [
-          'function fn () external payable returns (bool)',
-        ]);
-
-        await mock.mock.fn.returns(true);
-
-        const target = mock.address;
-        const { data } = (await mock.populateTransaction.fn()) as {
-          data: BytesLike;
-        };
-
-        await expect(() =>
-          instance
-            .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ](target, data, value, ethers.randomBytes(4)),
-        ).to.changeEtherBalances([instance, mock], [-value, value]);
-      });
-
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionCallWithValue(address,bytes,uint256,bytes4)'](
-              ethers.ZeroAddress,
-              '0x',
-              0,
-              ethers.randomBytes(4),
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
-
-        it('contract balance is insufficient', async () => {
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256,bytes4)'
-              ](await instance.getAddress(), '0x', 1, ethers.randomBytes(4)),
-          ).to.be.revertedWithCustomError(
-            instance,
-            'Address__InsufficientBalance',
-          );
-        });
-
-        it('target function is not payable and value is included, with provided custom error', async () => {
-          const value = 2n;
-          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'TestError';
-          const revertReason =
-            placeholder.interface.getError(customError)?.selector!;
-
-          await setBalance(await instance.getAddress(), value);
-
-          const targetContract = await new $Ownable__factory(deployer).deploy();
-
-          await targetContract.$_setOwner(await instance.getAddress());
-
-          // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
-
-          const { data } =
-            (await targetContract.__hh_exposed_bytecode_marker.populateTransaction()) as {
-              data: BytesLike;
-            };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256,bytes4)'
-              ](await targetContract.getAddress(), data, value, revertReason),
-          ).to.be.revertedWithCustomError(placeholder, customError);
-        });
-
-        it('target contract reverts, with target contract error message', async () => {
-          const revertReason = 'REVERT_REASON';
-
-          const mock = await deployMockContract(deployer, [
-            'function fn () external payable returns (bool)',
-          ]);
-
-          await mock.mock.fn.revertsWithReason(revertReason);
-
-          const target = mock.address;
-          const { data } = (await mock.populateTransaction.fn()) as {
-            data: BytesLike;
-          };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256,bytes4)'
-              ](target, data, 0, ethers.randomBytes(4)),
-          ).to.be.revertedWith(revertReason);
-        });
-
-        it('target contract reverts, with provided custom error', async () => {
-          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'TestError';
-          const revertReason =
-            placeholder.interface.getError(customError)?.selector!;
-
-          const targetContract = await new Address__factory(deployer).deploy();
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionCallWithValue(address,bytes,uint256,bytes4)'
-              ](await targetContract.getAddress(), '0x', 0, revertReason),
-          ).to.be.revertedWithCustomError(placeholder, customError);
-        });
-      });
+      expect(
+        await instance
+          .connect(deployer)
+          [
+            '$functionCallWithValue(address,bytes,uint256)'
+          ].staticCall(target, data, 0),
+      ).to.equal(ethers.zeroPadValue('0x01', 32));
     });
 
-    describe('#functionDelegateCall(address,bytes)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
-        const targetContract = await new $Ownable__factory(deployer).deploy();
-        const target = await targetContract.getAddress();
+    it('transfers given value to target contract', async () => {
+      const value = 2n;
 
-        // use delegatecall to set the owner in storage, so that a non-zero value can be returned
-        const { data: setOwnerData } =
-          (await targetContract.$_setOwner.populateTransaction(
+      await setBalance(await instance.getAddress(), value);
+
+      const mock = await deployMockContract(deployer, [
+        'function fn () external payable returns (bool)',
+      ]);
+
+      await mock.mock.fn.returns(true);
+
+      const target = mock.address;
+      const mocked = await mock.populateTransaction.fn();
+      const data = mocked.data as BytesLike;
+
+      await expect(() =>
+        instance
+          .connect(deployer)
+          [
+            '$functionCallWithValue(address,bytes,uint256)'
+          ](target, data, value),
+      ).to.changeEtherBalances([instance, mock], [-value, value]);
+    });
+
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionCallWithValue(address,bytes,uint256)'](
             ethers.ZeroAddress,
-          )) as {
-            data: BytesLike;
-          };
-
-        await instance['$functionDelegateCall(address,bytes)'](
-          target,
-          setOwnerData,
-        );
-
-        const { data } = (await targetContract.owner.populateTransaction()) as {
-          data: BytesLike;
-        };
-
-        expect(
-          await instance['$functionDelegateCall(address,bytes)'].staticCall(
-            target,
-            data,
+            '0x',
+            0,
           ),
-        ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
       });
 
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionDelegateCall(address,bytes)'](
-              ethers.ZeroAddress,
-              '0x',
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
-
-        it('target contract reverts, with target contract error message', async () => {
-          const targetContract = await new $Ownable__factory(deployer).deploy();
-
-          const { data } =
-            (await targetContract.transferOwnership.populateTransaction(
-              ethers.ZeroAddress,
-            )) as { data: BytesLike };
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionDelegateCall(address,bytes)'
-              ](await targetContract.getAddress(), data),
-          ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
-        });
-
-        it('target contract reverts, with default error message', async () => {
-          const targetContract = await new Address__factory(deployer).deploy();
-
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionDelegateCall(address,bytes)'
-              ](await targetContract.getAddress(), '0x'),
-          ).to.be.revertedWithCustomError(
-            placeholder,
-            'Address__FailedDelegatecall',
-          );
-        });
-      });
-    });
-
-    describe('#functionDelegateCall(address,bytes,bytes4)', () => {
-      it('returns the bytes representation of the return value of the target function', async () => {
-        const targetContract = await new $Ownable__factory(deployer).deploy();
-        const target = await targetContract.getAddress();
-
-        // use delegatecall to set the owner in storage, so that a non-zero value can be returned
-        const { data: setOwnerData } =
-          (await targetContract.$_setOwner.populateTransaction(
-            ethers.ZeroAddress,
-          )) as {
-            data: BytesLike;
-          };
-
-        await instance['$functionDelegateCall(address,bytes,bytes4)'](
-          target,
-          setOwnerData,
-          ethers.randomBytes(4),
+      it('contract balance is insufficient', async () => {
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256)'
+            ](await instance.getAddress(), '0x', 1),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Address__InsufficientBalance',
         );
+      });
 
-        const { data } = (await targetContract.owner.populateTransaction()) as {
+      it('target function is not payable and value is included', async () => {
+        const value = 2n;
+
+        await setBalance(await instance.getAddress(), value);
+
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+
+        await targetContract.$_setOwner(await instance.getAddress());
+
+        // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
+
+        const { data } = (await targetContract.__hh_exposed_bytecode_marker
+          .populateTransaction
+          // ethers.ZeroAddress,
+          ()) as { data: BytesLike };
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256)'
+            ](await targetContract.getAddress(), data, value),
+        ).to.be.revertedWithCustomError(
+          placeholder,
+          'Address__FailedCallWithValue',
+        );
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const revertReason = 'REVERT_REASON';
+
+        const mock = await deployMockContract(deployer, [
+          'function fn () external payable returns (bool)',
+        ]);
+
+        await mock.mock.fn.revertsWithReason(revertReason);
+
+        const target = mock.address;
+        const { data } = (await mock.populateTransaction.fn()) as {
           data: BytesLike;
         };
 
-        expect(
-          await instance[
-            '$functionDelegateCall(address,bytes,bytes4)'
-          ].staticCall(target, data, ethers.randomBytes(4)),
-        ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+        await expect(
+          instance
+            .connect(deployer)
+            ['$functionCallWithValue(address,bytes,uint256)'](target, data, 0),
+        ).to.be.revertedWith(revertReason);
       });
 
-      describe('reverts if', () => {
-        it('target is not a contract', async () => {
-          await expect(
-            instance['$functionDelegateCall(address,bytes,bytes4)'](
-              ethers.ZeroAddress,
-              '0x',
-              ethers.randomBytes(4),
-            ),
-          ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
-        });
+      it('target contract reverts, with default error message', async () => {
+        const targetContract = await new Address__factory(deployer).deploy();
 
-        it('target contract reverts, with target contract error message', async () => {
-          const targetContract = await new $Ownable__factory(deployer).deploy();
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256)'
+            ](await targetContract.getAddress(), '0x', 0),
+        ).to.be.revertedWithCustomError(
+          placeholder,
+          'Address__FailedCallWithValue',
+        );
+      });
+    });
+  });
 
-          const { data } =
-            (await targetContract.transferOwnership.populateTransaction(
-              ethers.ZeroAddress,
-            )) as { data: BytesLike };
+  describe('#functionCallWithValue(address,bytes,uint256,bytes4)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const mock = await deployMockContract(deployer, [
+        'function fn () external payable returns (bool)',
+      ]);
 
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionDelegateCall(address,bytes,bytes4)'
-              ](await targetContract.getAddress(), data, ethers.randomBytes(4)),
-          ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
-        });
+      await mock.mock.fn.returns(true);
 
-        it('target contract reverts, with provided custom error', async () => {
-          // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
-          const customError = 'TestError';
-          const revertReason =
-            placeholder.interface.getError(customError)?.selector!;
+      const target = mock.address;
+      const { data } = (await mock.populateTransaction.fn()) as {
+        data: BytesLike;
+      };
 
-          const targetContract = await new Address__factory(deployer).deploy();
+      expect(
+        await instance
+          .connect(deployer)
+          [
+            '$functionCallWithValue(address,bytes,uint256,bytes4)'
+          ].staticCall(target, data, 0, ethers.randomBytes(4)),
+      ).to.equal(ethers.zeroPadValue('0x01', 32));
+    });
 
-          await expect(
-            instance
-              .connect(deployer)
-              [
-                '$functionDelegateCall(address,bytes,bytes4)'
-              ](await targetContract.getAddress(), '0x', revertReason),
-          ).to.be.revertedWithCustomError(placeholder, customError);
-        });
+    it('transfers given value to target contract', async () => {
+      const value = 2n;
+
+      await setBalance(await instance.getAddress(), value);
+
+      const mock = await deployMockContract(deployer, [
+        'function fn () external payable returns (bool)',
+      ]);
+
+      await mock.mock.fn.returns(true);
+
+      const target = mock.address;
+      const { data } = (await mock.populateTransaction.fn()) as {
+        data: BytesLike;
+      };
+
+      await expect(() =>
+        instance
+          .connect(deployer)
+          [
+            '$functionCallWithValue(address,bytes,uint256,bytes4)'
+          ](target, data, value, ethers.randomBytes(4)),
+      ).to.changeEtherBalances([instance, mock], [-value, value]);
+    });
+
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+            ethers.ZeroAddress,
+            '0x',
+            0,
+            ethers.randomBytes(4),
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
+      });
+
+      it('contract balance is insufficient', async () => {
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ](await instance.getAddress(), '0x', 1, ethers.randomBytes(4)),
+        ).to.be.revertedWithCustomError(
+          instance,
+          'Address__InsufficientBalance',
+        );
+      });
+
+      it('target function is not payable and value is included, with provided custom error', async () => {
+        const value = 2n;
+        // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+        const customError = 'TestError';
+        const revertReason =
+          placeholder.interface.getError(customError)?.selector!;
+
+        await setBalance(await instance.getAddress(), value);
+
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+
+        await targetContract.$_setOwner(await instance.getAddress());
+
+        // the hardhat-exposed built-in bytecode marker is used as the transaction target because it is nonpayable
+
+        const { data } =
+          (await targetContract.__hh_exposed_bytecode_marker.populateTransaction()) as {
+            data: BytesLike;
+          };
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ](await targetContract.getAddress(), data, value, revertReason),
+        ).to.be.revertedWithCustomError(placeholder, customError);
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const revertReason = 'REVERT_REASON';
+
+        const mock = await deployMockContract(deployer, [
+          'function fn () external payable returns (bool)',
+        ]);
+
+        await mock.mock.fn.revertsWithReason(revertReason);
+
+        const target = mock.address;
+        const { data } = (await mock.populateTransaction.fn()) as {
+          data: BytesLike;
+        };
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ](target, data, 0, ethers.randomBytes(4)),
+        ).to.be.revertedWith(revertReason);
+      });
+
+      it('target contract reverts, with provided custom error', async () => {
+        // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+        const customError = 'TestError';
+        const revertReason =
+          placeholder.interface.getError(customError)?.selector!;
+
+        const targetContract = await new Address__factory(deployer).deploy();
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionCallWithValue(address,bytes,uint256,bytes4)'
+            ](await targetContract.getAddress(), '0x', 0, revertReason),
+        ).to.be.revertedWithCustomError(placeholder, customError);
+      });
+    });
+  });
+
+  describe('#functionDelegateCall(address,bytes)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const targetContract = await new $Ownable__factory(deployer).deploy();
+      const target = await targetContract.getAddress();
+
+      // use delegatecall to set the owner in storage, so that a non-zero value can be returned
+      const { data: setOwnerData } =
+        (await targetContract.$_setOwner.populateTransaction(
+          ethers.ZeroAddress,
+        )) as {
+          data: BytesLike;
+        };
+
+      await instance['$functionDelegateCall(address,bytes)'](
+        target,
+        setOwnerData,
+      );
+
+      const { data } = (await targetContract.owner.populateTransaction()) as {
+        data: BytesLike;
+      };
+
+      expect(
+        await instance['$functionDelegateCall(address,bytes)'].staticCall(
+          target,
+          data,
+        ),
+      ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+    });
+
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionDelegateCall(address,bytes)'](
+            ethers.ZeroAddress,
+            '0x',
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+
+        const { data } =
+          (await targetContract.transferOwnership.populateTransaction(
+            ethers.ZeroAddress,
+          )) as { data: BytesLike };
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionDelegateCall(address,bytes)'
+            ](await targetContract.getAddress(), data),
+        ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
+      });
+
+      it('target contract reverts, with default error message', async () => {
+        const targetContract = await new Address__factory(deployer).deploy();
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionDelegateCall(address,bytes)'
+            ](await targetContract.getAddress(), '0x'),
+        ).to.be.revertedWithCustomError(
+          placeholder,
+          'Address__FailedDelegatecall',
+        );
+      });
+    });
+  });
+
+  describe('#functionDelegateCall(address,bytes,bytes4)', () => {
+    it('returns the bytes representation of the return value of the target function', async () => {
+      const targetContract = await new $Ownable__factory(deployer).deploy();
+      const target = await targetContract.getAddress();
+
+      // use delegatecall to set the owner in storage, so that a non-zero value can be returned
+      const { data: setOwnerData } =
+        (await targetContract.$_setOwner.populateTransaction(
+          ethers.ZeroAddress,
+        )) as {
+          data: BytesLike;
+        };
+
+      await instance['$functionDelegateCall(address,bytes,bytes4)'](
+        target,
+        setOwnerData,
+        ethers.randomBytes(4),
+      );
+
+      const { data } = (await targetContract.owner.populateTransaction()) as {
+        data: BytesLike;
+      };
+
+      expect(
+        await instance[
+          '$functionDelegateCall(address,bytes,bytes4)'
+        ].staticCall(target, data, ethers.randomBytes(4)),
+      ).to.equal(ethers.zeroPadValue(ethers.hexlify(ethers.ZeroAddress), 32));
+    });
+
+    describe('reverts if', () => {
+      it('target is not a contract', async () => {
+        await expect(
+          instance['$functionDelegateCall(address,bytes,bytes4)'](
+            ethers.ZeroAddress,
+            '0x',
+            ethers.randomBytes(4),
+          ),
+        ).to.be.revertedWithCustomError(instance, 'Address__NotContract');
+      });
+
+      it('target contract reverts, with target contract error message', async () => {
+        const targetContract = await new $Ownable__factory(deployer).deploy();
+
+        const { data } =
+          (await targetContract.transferOwnership.populateTransaction(
+            ethers.ZeroAddress,
+          )) as { data: BytesLike };
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionDelegateCall(address,bytes,bytes4)'
+            ](await targetContract.getAddress(), data, ethers.randomBytes(4)),
+        ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
+      });
+
+      it('target contract reverts, with provided custom error', async () => {
+        // unrelated custom error, but it must exist on the contract due to limitiations with revertedWithCustomError matcher
+        const customError = 'TestError';
+        const revertReason =
+          placeholder.interface.getError(customError)?.selector!;
+
+        const targetContract = await new Address__factory(deployer).deploy();
+
+        await expect(
+          instance
+            .connect(deployer)
+            [
+              '$functionDelegateCall(address,bytes,bytes4)'
+            ](await targetContract.getAddress(), '0x', revertReason),
+        ).to.be.revertedWithCustomError(placeholder, customError);
       });
     });
   });
