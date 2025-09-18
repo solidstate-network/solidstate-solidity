@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.24;
 
@@ -12,4413 +11,2747 @@ import { Bytes32 } from '../utils/Bytes32.sol';
 contract Bytes32BuilderTest {
     using Bytes32Builder for Bytes32.Builder;
 
-    function parseBytes1(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes1 element) {
+    function parseBytes1(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes1 element) {
         return self.parseBytes1(offset);
     }
 
-    function insertBytes1(
-        Bytes32.Builder memory self,
-        bytes1 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes1(Bytes32.Builder memory self, bytes1 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes1(element, offset);
         return self;
     }
 
-    function pushBytes1(
-        Bytes32.Builder memory self,
-        bytes1 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes1(Bytes32.Builder memory self, bytes1 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes1(element);
         return self;
     }
 
-    function popBytes1(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes1 element) {
+    function popBytes1(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes1 element) {
         element = self.popBytes1();
         return (self, element);
     }
 
-    function shiftBytes1(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes1 element) {
+    function shiftBytes1(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes1 element) {
         element = self.shiftBytes1();
         return (self, element);
     }
 
-    function unshiftBytes1(
-        Bytes32.Builder memory self,
-        bytes1 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes1(Bytes32.Builder memory self, bytes1 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes1(element);
         return self;
     }
-    function parseInt8(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int8 element) {
+    function parseInt8(Bytes32.Builder memory self, uint256 offset) external pure returns(int8 element) {
         return self.parseInt8(offset);
     }
 
-    function insertInt8(
-        Bytes32.Builder memory self,
-        int8 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt8(Bytes32.Builder memory self, int8 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt8(element, offset);
         return self;
     }
 
-    function pushInt8(
-        Bytes32.Builder memory self,
-        int8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt8(Bytes32.Builder memory self, int8 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt8(element);
         return self;
     }
 
-    function popInt8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int8 element) {
+    function popInt8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int8 element) {
         element = self.popInt8();
         return (self, element);
     }
 
-    function shiftInt8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int8 element) {
+    function shiftInt8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int8 element) {
         element = self.shiftInt8();
         return (self, element);
     }
 
-    function unshiftInt8(
-        Bytes32.Builder memory self,
-        int8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt8(Bytes32.Builder memory self, int8 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt8(element);
         return self;
     }
-    function parseUint8(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint8 element) {
+    function parseUint8(Bytes32.Builder memory self, uint256 offset) external pure returns(uint8 element) {
         return self.parseUint8(offset);
     }
 
-    function insertUint8(
-        Bytes32.Builder memory self,
-        uint8 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint8(Bytes32.Builder memory self, uint8 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint8(element, offset);
         return self;
     }
 
-    function pushUint8(
-        Bytes32.Builder memory self,
-        uint8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint8(Bytes32.Builder memory self, uint8 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint8(element);
         return self;
     }
 
-    function popUint8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint8 element) {
+    function popUint8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint8 element) {
         element = self.popUint8();
         return (self, element);
     }
 
-    function shiftUint8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint8 element) {
+    function shiftUint8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint8 element) {
         element = self.shiftUint8();
         return (self, element);
     }
 
-    function unshiftUint8(
-        Bytes32.Builder memory self,
-        uint8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint8(Bytes32.Builder memory self, uint8 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint8(element);
         return self;
     }
-    function parseBool(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bool element) {
+    function parseBool(Bytes32.Builder memory self, uint256 offset) external pure returns(bool element) {
         return self.parseBool(offset);
     }
 
-    function insertBool(
-        Bytes32.Builder memory self,
-        bool element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBool(Bytes32.Builder memory self, bool element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBool(element, offset);
         return self;
     }
 
-    function pushBool(
-        Bytes32.Builder memory self,
-        bool element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBool(Bytes32.Builder memory self, bool element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBool(element);
         return self;
     }
 
-    function popBool(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bool element) {
+    function popBool(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bool element) {
         element = self.popBool();
         return (self, element);
     }
 
-    function shiftBool(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bool element) {
+    function shiftBool(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bool element) {
         element = self.shiftBool();
         return (self, element);
     }
 
-    function unshiftBool(
-        Bytes32.Builder memory self,
-        bool element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBool(Bytes32.Builder memory self, bool element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBool(element);
         return self;
     }
-    function parseBytes2(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes2 element) {
+    function parseBytes2(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes2 element) {
         return self.parseBytes2(offset);
     }
 
-    function insertBytes2(
-        Bytes32.Builder memory self,
-        bytes2 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes2(Bytes32.Builder memory self, bytes2 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes2(element, offset);
         return self;
     }
 
-    function pushBytes2(
-        Bytes32.Builder memory self,
-        bytes2 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes2(Bytes32.Builder memory self, bytes2 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes2(element);
         return self;
     }
 
-    function popBytes2(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes2 element) {
+    function popBytes2(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes2 element) {
         element = self.popBytes2();
         return (self, element);
     }
 
-    function shiftBytes2(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes2 element) {
+    function shiftBytes2(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes2 element) {
         element = self.shiftBytes2();
         return (self, element);
     }
 
-    function unshiftBytes2(
-        Bytes32.Builder memory self,
-        bytes2 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes2(Bytes32.Builder memory self, bytes2 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes2(element);
         return self;
     }
-    function parseInt16(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int16 element) {
+    function parseInt16(Bytes32.Builder memory self, uint256 offset) external pure returns(int16 element) {
         return self.parseInt16(offset);
     }
 
-    function insertInt16(
-        Bytes32.Builder memory self,
-        int16 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt16(Bytes32.Builder memory self, int16 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt16(element, offset);
         return self;
     }
 
-    function pushInt16(
-        Bytes32.Builder memory self,
-        int16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt16(Bytes32.Builder memory self, int16 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt16(element);
         return self;
     }
 
-    function popInt16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int16 element) {
+    function popInt16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int16 element) {
         element = self.popInt16();
         return (self, element);
     }
 
-    function shiftInt16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int16 element) {
+    function shiftInt16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int16 element) {
         element = self.shiftInt16();
         return (self, element);
     }
 
-    function unshiftInt16(
-        Bytes32.Builder memory self,
-        int16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt16(Bytes32.Builder memory self, int16 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt16(element);
         return self;
     }
-    function parseUint16(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint16 element) {
+    function parseUint16(Bytes32.Builder memory self, uint256 offset) external pure returns(uint16 element) {
         return self.parseUint16(offset);
     }
 
-    function insertUint16(
-        Bytes32.Builder memory self,
-        uint16 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint16(Bytes32.Builder memory self, uint16 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint16(element, offset);
         return self;
     }
 
-    function pushUint16(
-        Bytes32.Builder memory self,
-        uint16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint16(Bytes32.Builder memory self, uint16 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint16(element);
         return self;
     }
 
-    function popUint16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint16 element) {
+    function popUint16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint16 element) {
         element = self.popUint16();
         return (self, element);
     }
 
-    function shiftUint16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint16 element) {
+    function shiftUint16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint16 element) {
         element = self.shiftUint16();
         return (self, element);
     }
 
-    function unshiftUint16(
-        Bytes32.Builder memory self,
-        uint16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint16(Bytes32.Builder memory self, uint16 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint16(element);
         return self;
     }
-    function parseBytes3(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes3 element) {
+    function parseBytes3(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes3 element) {
         return self.parseBytes3(offset);
     }
 
-    function insertBytes3(
-        Bytes32.Builder memory self,
-        bytes3 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes3(Bytes32.Builder memory self, bytes3 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes3(element, offset);
         return self;
     }
 
-    function pushBytes3(
-        Bytes32.Builder memory self,
-        bytes3 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes3(Bytes32.Builder memory self, bytes3 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes3(element);
         return self;
     }
 
-    function popBytes3(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes3 element) {
+    function popBytes3(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes3 element) {
         element = self.popBytes3();
         return (self, element);
     }
 
-    function shiftBytes3(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes3 element) {
+    function shiftBytes3(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes3 element) {
         element = self.shiftBytes3();
         return (self, element);
     }
 
-    function unshiftBytes3(
-        Bytes32.Builder memory self,
-        bytes3 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes3(Bytes32.Builder memory self, bytes3 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes3(element);
         return self;
     }
-    function parseInt24(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int24 element) {
+    function parseInt24(Bytes32.Builder memory self, uint256 offset) external pure returns(int24 element) {
         return self.parseInt24(offset);
     }
 
-    function insertInt24(
-        Bytes32.Builder memory self,
-        int24 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt24(Bytes32.Builder memory self, int24 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt24(element, offset);
         return self;
     }
 
-    function pushInt24(
-        Bytes32.Builder memory self,
-        int24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt24(Bytes32.Builder memory self, int24 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt24(element);
         return self;
     }
 
-    function popInt24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int24 element) {
+    function popInt24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int24 element) {
         element = self.popInt24();
         return (self, element);
     }
 
-    function shiftInt24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int24 element) {
+    function shiftInt24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int24 element) {
         element = self.shiftInt24();
         return (self, element);
     }
 
-    function unshiftInt24(
-        Bytes32.Builder memory self,
-        int24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt24(Bytes32.Builder memory self, int24 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt24(element);
         return self;
     }
-    function parseUint24(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint24 element) {
+    function parseUint24(Bytes32.Builder memory self, uint256 offset) external pure returns(uint24 element) {
         return self.parseUint24(offset);
     }
 
-    function insertUint24(
-        Bytes32.Builder memory self,
-        uint24 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint24(Bytes32.Builder memory self, uint24 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint24(element, offset);
         return self;
     }
 
-    function pushUint24(
-        Bytes32.Builder memory self,
-        uint24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint24(Bytes32.Builder memory self, uint24 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint24(element);
         return self;
     }
 
-    function popUint24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint24 element) {
+    function popUint24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint24 element) {
         element = self.popUint24();
         return (self, element);
     }
 
-    function shiftUint24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint24 element) {
+    function shiftUint24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint24 element) {
         element = self.shiftUint24();
         return (self, element);
     }
 
-    function unshiftUint24(
-        Bytes32.Builder memory self,
-        uint24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint24(Bytes32.Builder memory self, uint24 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint24(element);
         return self;
     }
-    function parseBytes4(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes4 element) {
+    function parseBytes4(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes4 element) {
         return self.parseBytes4(offset);
     }
 
-    function insertBytes4(
-        Bytes32.Builder memory self,
-        bytes4 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes4(Bytes32.Builder memory self, bytes4 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes4(element, offset);
         return self;
     }
 
-    function pushBytes4(
-        Bytes32.Builder memory self,
-        bytes4 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes4(Bytes32.Builder memory self, bytes4 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes4(element);
         return self;
     }
 
-    function popBytes4(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes4 element) {
+    function popBytes4(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes4 element) {
         element = self.popBytes4();
         return (self, element);
     }
 
-    function shiftBytes4(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes4 element) {
+    function shiftBytes4(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes4 element) {
         element = self.shiftBytes4();
         return (self, element);
     }
 
-    function unshiftBytes4(
-        Bytes32.Builder memory self,
-        bytes4 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes4(Bytes32.Builder memory self, bytes4 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes4(element);
         return self;
     }
-    function parseInt32(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int32 element) {
+    function parseInt32(Bytes32.Builder memory self, uint256 offset) external pure returns(int32 element) {
         return self.parseInt32(offset);
     }
 
-    function insertInt32(
-        Bytes32.Builder memory self,
-        int32 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt32(Bytes32.Builder memory self, int32 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt32(element, offset);
         return self;
     }
 
-    function pushInt32(
-        Bytes32.Builder memory self,
-        int32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt32(Bytes32.Builder memory self, int32 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt32(element);
         return self;
     }
 
-    function popInt32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int32 element) {
+    function popInt32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int32 element) {
         element = self.popInt32();
         return (self, element);
     }
 
-    function shiftInt32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int32 element) {
+    function shiftInt32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int32 element) {
         element = self.shiftInt32();
         return (self, element);
     }
 
-    function unshiftInt32(
-        Bytes32.Builder memory self,
-        int32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt32(Bytes32.Builder memory self, int32 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt32(element);
         return self;
     }
-    function parseUint32(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint32 element) {
+    function parseUint32(Bytes32.Builder memory self, uint256 offset) external pure returns(uint32 element) {
         return self.parseUint32(offset);
     }
 
-    function insertUint32(
-        Bytes32.Builder memory self,
-        uint32 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint32(Bytes32.Builder memory self, uint32 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint32(element, offset);
         return self;
     }
 
-    function pushUint32(
-        Bytes32.Builder memory self,
-        uint32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint32(Bytes32.Builder memory self, uint32 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint32(element);
         return self;
     }
 
-    function popUint32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint32 element) {
+    function popUint32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint32 element) {
         element = self.popUint32();
         return (self, element);
     }
 
-    function shiftUint32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint32 element) {
+    function shiftUint32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint32 element) {
         element = self.shiftUint32();
         return (self, element);
     }
 
-    function unshiftUint32(
-        Bytes32.Builder memory self,
-        uint32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint32(Bytes32.Builder memory self, uint32 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint32(element);
         return self;
     }
-    function parseBytes5(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes5 element) {
+    function parseBytes5(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes5 element) {
         return self.parseBytes5(offset);
     }
 
-    function insertBytes5(
-        Bytes32.Builder memory self,
-        bytes5 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes5(Bytes32.Builder memory self, bytes5 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes5(element, offset);
         return self;
     }
 
-    function pushBytes5(
-        Bytes32.Builder memory self,
-        bytes5 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes5(Bytes32.Builder memory self, bytes5 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes5(element);
         return self;
     }
 
-    function popBytes5(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes5 element) {
+    function popBytes5(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes5 element) {
         element = self.popBytes5();
         return (self, element);
     }
 
-    function shiftBytes5(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes5 element) {
+    function shiftBytes5(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes5 element) {
         element = self.shiftBytes5();
         return (self, element);
     }
 
-    function unshiftBytes5(
-        Bytes32.Builder memory self,
-        bytes5 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes5(Bytes32.Builder memory self, bytes5 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes5(element);
         return self;
     }
-    function parseInt40(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int40 element) {
+    function parseInt40(Bytes32.Builder memory self, uint256 offset) external pure returns(int40 element) {
         return self.parseInt40(offset);
     }
 
-    function insertInt40(
-        Bytes32.Builder memory self,
-        int40 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt40(Bytes32.Builder memory self, int40 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt40(element, offset);
         return self;
     }
 
-    function pushInt40(
-        Bytes32.Builder memory self,
-        int40 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt40(Bytes32.Builder memory self, int40 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt40(element);
         return self;
     }
 
-    function popInt40(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int40 element) {
+    function popInt40(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int40 element) {
         element = self.popInt40();
         return (self, element);
     }
 
-    function shiftInt40(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int40 element) {
+    function shiftInt40(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int40 element) {
         element = self.shiftInt40();
         return (self, element);
     }
 
-    function unshiftInt40(
-        Bytes32.Builder memory self,
-        int40 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt40(Bytes32.Builder memory self, int40 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt40(element);
         return self;
     }
-    function parseUint40(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint40 element) {
+    function parseUint40(Bytes32.Builder memory self, uint256 offset) external pure returns(uint40 element) {
         return self.parseUint40(offset);
     }
 
-    function insertUint40(
-        Bytes32.Builder memory self,
-        uint40 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint40(Bytes32.Builder memory self, uint40 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint40(element, offset);
         return self;
     }
 
-    function pushUint40(
-        Bytes32.Builder memory self,
-        uint40 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint40(Bytes32.Builder memory self, uint40 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint40(element);
         return self;
     }
 
-    function popUint40(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint40 element) {
+    function popUint40(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint40 element) {
         element = self.popUint40();
         return (self, element);
     }
 
-    function shiftUint40(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint40 element) {
+    function shiftUint40(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint40 element) {
         element = self.shiftUint40();
         return (self, element);
     }
 
-    function unshiftUint40(
-        Bytes32.Builder memory self,
-        uint40 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint40(Bytes32.Builder memory self, uint40 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint40(element);
         return self;
     }
-    function parseBytes6(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes6 element) {
+    function parseBytes6(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes6 element) {
         return self.parseBytes6(offset);
     }
 
-    function insertBytes6(
-        Bytes32.Builder memory self,
-        bytes6 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes6(Bytes32.Builder memory self, bytes6 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes6(element, offset);
         return self;
     }
 
-    function pushBytes6(
-        Bytes32.Builder memory self,
-        bytes6 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes6(Bytes32.Builder memory self, bytes6 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes6(element);
         return self;
     }
 
-    function popBytes6(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes6 element) {
+    function popBytes6(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes6 element) {
         element = self.popBytes6();
         return (self, element);
     }
 
-    function shiftBytes6(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes6 element) {
+    function shiftBytes6(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes6 element) {
         element = self.shiftBytes6();
         return (self, element);
     }
 
-    function unshiftBytes6(
-        Bytes32.Builder memory self,
-        bytes6 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes6(Bytes32.Builder memory self, bytes6 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes6(element);
         return self;
     }
-    function parseInt48(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int48 element) {
+    function parseInt48(Bytes32.Builder memory self, uint256 offset) external pure returns(int48 element) {
         return self.parseInt48(offset);
     }
 
-    function insertInt48(
-        Bytes32.Builder memory self,
-        int48 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt48(Bytes32.Builder memory self, int48 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt48(element, offset);
         return self;
     }
 
-    function pushInt48(
-        Bytes32.Builder memory self,
-        int48 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt48(Bytes32.Builder memory self, int48 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt48(element);
         return self;
     }
 
-    function popInt48(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int48 element) {
+    function popInt48(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int48 element) {
         element = self.popInt48();
         return (self, element);
     }
 
-    function shiftInt48(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int48 element) {
+    function shiftInt48(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int48 element) {
         element = self.shiftInt48();
         return (self, element);
     }
 
-    function unshiftInt48(
-        Bytes32.Builder memory self,
-        int48 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt48(Bytes32.Builder memory self, int48 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt48(element);
         return self;
     }
-    function parseUint48(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint48 element) {
+    function parseUint48(Bytes32.Builder memory self, uint256 offset) external pure returns(uint48 element) {
         return self.parseUint48(offset);
     }
 
-    function insertUint48(
-        Bytes32.Builder memory self,
-        uint48 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint48(Bytes32.Builder memory self, uint48 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint48(element, offset);
         return self;
     }
 
-    function pushUint48(
-        Bytes32.Builder memory self,
-        uint48 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint48(Bytes32.Builder memory self, uint48 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint48(element);
         return self;
     }
 
-    function popUint48(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint48 element) {
+    function popUint48(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint48 element) {
         element = self.popUint48();
         return (self, element);
     }
 
-    function shiftUint48(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint48 element) {
+    function shiftUint48(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint48 element) {
         element = self.shiftUint48();
         return (self, element);
     }
 
-    function unshiftUint48(
-        Bytes32.Builder memory self,
-        uint48 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint48(Bytes32.Builder memory self, uint48 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint48(element);
         return self;
     }
-    function parseBytes7(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes7 element) {
+    function parseBytes7(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes7 element) {
         return self.parseBytes7(offset);
     }
 
-    function insertBytes7(
-        Bytes32.Builder memory self,
-        bytes7 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes7(Bytes32.Builder memory self, bytes7 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes7(element, offset);
         return self;
     }
 
-    function pushBytes7(
-        Bytes32.Builder memory self,
-        bytes7 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes7(Bytes32.Builder memory self, bytes7 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes7(element);
         return self;
     }
 
-    function popBytes7(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes7 element) {
+    function popBytes7(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes7 element) {
         element = self.popBytes7();
         return (self, element);
     }
 
-    function shiftBytes7(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes7 element) {
+    function shiftBytes7(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes7 element) {
         element = self.shiftBytes7();
         return (self, element);
     }
 
-    function unshiftBytes7(
-        Bytes32.Builder memory self,
-        bytes7 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes7(Bytes32.Builder memory self, bytes7 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes7(element);
         return self;
     }
-    function parseInt56(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int56 element) {
+    function parseInt56(Bytes32.Builder memory self, uint256 offset) external pure returns(int56 element) {
         return self.parseInt56(offset);
     }
 
-    function insertInt56(
-        Bytes32.Builder memory self,
-        int56 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt56(Bytes32.Builder memory self, int56 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt56(element, offset);
         return self;
     }
 
-    function pushInt56(
-        Bytes32.Builder memory self,
-        int56 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt56(Bytes32.Builder memory self, int56 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt56(element);
         return self;
     }
 
-    function popInt56(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int56 element) {
+    function popInt56(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int56 element) {
         element = self.popInt56();
         return (self, element);
     }
 
-    function shiftInt56(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int56 element) {
+    function shiftInt56(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int56 element) {
         element = self.shiftInt56();
         return (self, element);
     }
 
-    function unshiftInt56(
-        Bytes32.Builder memory self,
-        int56 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt56(Bytes32.Builder memory self, int56 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt56(element);
         return self;
     }
-    function parseUint56(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint56 element) {
+    function parseUint56(Bytes32.Builder memory self, uint256 offset) external pure returns(uint56 element) {
         return self.parseUint56(offset);
     }
 
-    function insertUint56(
-        Bytes32.Builder memory self,
-        uint56 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint56(Bytes32.Builder memory self, uint56 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint56(element, offset);
         return self;
     }
 
-    function pushUint56(
-        Bytes32.Builder memory self,
-        uint56 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint56(Bytes32.Builder memory self, uint56 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint56(element);
         return self;
     }
 
-    function popUint56(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint56 element) {
+    function popUint56(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint56 element) {
         element = self.popUint56();
         return (self, element);
     }
 
-    function shiftUint56(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint56 element) {
+    function shiftUint56(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint56 element) {
         element = self.shiftUint56();
         return (self, element);
     }
 
-    function unshiftUint56(
-        Bytes32.Builder memory self,
-        uint56 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint56(Bytes32.Builder memory self, uint56 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint56(element);
         return self;
     }
-    function parseBytes8(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes8 element) {
+    function parseBytes8(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes8 element) {
         return self.parseBytes8(offset);
     }
 
-    function insertBytes8(
-        Bytes32.Builder memory self,
-        bytes8 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes8(Bytes32.Builder memory self, bytes8 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes8(element, offset);
         return self;
     }
 
-    function pushBytes8(
-        Bytes32.Builder memory self,
-        bytes8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes8(Bytes32.Builder memory self, bytes8 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes8(element);
         return self;
     }
 
-    function popBytes8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes8 element) {
+    function popBytes8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes8 element) {
         element = self.popBytes8();
         return (self, element);
     }
 
-    function shiftBytes8(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes8 element) {
+    function shiftBytes8(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes8 element) {
         element = self.shiftBytes8();
         return (self, element);
     }
 
-    function unshiftBytes8(
-        Bytes32.Builder memory self,
-        bytes8 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes8(Bytes32.Builder memory self, bytes8 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes8(element);
         return self;
     }
-    function parseInt64(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int64 element) {
+    function parseInt64(Bytes32.Builder memory self, uint256 offset) external pure returns(int64 element) {
         return self.parseInt64(offset);
     }
 
-    function insertInt64(
-        Bytes32.Builder memory self,
-        int64 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt64(Bytes32.Builder memory self, int64 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt64(element, offset);
         return self;
     }
 
-    function pushInt64(
-        Bytes32.Builder memory self,
-        int64 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt64(Bytes32.Builder memory self, int64 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt64(element);
         return self;
     }
 
-    function popInt64(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int64 element) {
+    function popInt64(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int64 element) {
         element = self.popInt64();
         return (self, element);
     }
 
-    function shiftInt64(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int64 element) {
+    function shiftInt64(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int64 element) {
         element = self.shiftInt64();
         return (self, element);
     }
 
-    function unshiftInt64(
-        Bytes32.Builder memory self,
-        int64 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt64(Bytes32.Builder memory self, int64 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt64(element);
         return self;
     }
-    function parseUint64(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint64 element) {
+    function parseUint64(Bytes32.Builder memory self, uint256 offset) external pure returns(uint64 element) {
         return self.parseUint64(offset);
     }
 
-    function insertUint64(
-        Bytes32.Builder memory self,
-        uint64 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint64(Bytes32.Builder memory self, uint64 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint64(element, offset);
         return self;
     }
 
-    function pushUint64(
-        Bytes32.Builder memory self,
-        uint64 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint64(Bytes32.Builder memory self, uint64 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint64(element);
         return self;
     }
 
-    function popUint64(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint64 element) {
+    function popUint64(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint64 element) {
         element = self.popUint64();
         return (self, element);
     }
 
-    function shiftUint64(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint64 element) {
+    function shiftUint64(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint64 element) {
         element = self.shiftUint64();
         return (self, element);
     }
 
-    function unshiftUint64(
-        Bytes32.Builder memory self,
-        uint64 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint64(Bytes32.Builder memory self, uint64 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint64(element);
         return self;
     }
-    function parseBytes9(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes9 element) {
+    function parseBytes9(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes9 element) {
         return self.parseBytes9(offset);
     }
 
-    function insertBytes9(
-        Bytes32.Builder memory self,
-        bytes9 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes9(Bytes32.Builder memory self, bytes9 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes9(element, offset);
         return self;
     }
 
-    function pushBytes9(
-        Bytes32.Builder memory self,
-        bytes9 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes9(Bytes32.Builder memory self, bytes9 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes9(element);
         return self;
     }
 
-    function popBytes9(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes9 element) {
+    function popBytes9(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes9 element) {
         element = self.popBytes9();
         return (self, element);
     }
 
-    function shiftBytes9(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes9 element) {
+    function shiftBytes9(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes9 element) {
         element = self.shiftBytes9();
         return (self, element);
     }
 
-    function unshiftBytes9(
-        Bytes32.Builder memory self,
-        bytes9 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes9(Bytes32.Builder memory self, bytes9 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes9(element);
         return self;
     }
-    function parseInt72(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int72 element) {
+    function parseInt72(Bytes32.Builder memory self, uint256 offset) external pure returns(int72 element) {
         return self.parseInt72(offset);
     }
 
-    function insertInt72(
-        Bytes32.Builder memory self,
-        int72 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt72(Bytes32.Builder memory self, int72 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt72(element, offset);
         return self;
     }
 
-    function pushInt72(
-        Bytes32.Builder memory self,
-        int72 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt72(Bytes32.Builder memory self, int72 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt72(element);
         return self;
     }
 
-    function popInt72(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int72 element) {
+    function popInt72(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int72 element) {
         element = self.popInt72();
         return (self, element);
     }
 
-    function shiftInt72(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int72 element) {
+    function shiftInt72(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int72 element) {
         element = self.shiftInt72();
         return (self, element);
     }
 
-    function unshiftInt72(
-        Bytes32.Builder memory self,
-        int72 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt72(Bytes32.Builder memory self, int72 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt72(element);
         return self;
     }
-    function parseUint72(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint72 element) {
+    function parseUint72(Bytes32.Builder memory self, uint256 offset) external pure returns(uint72 element) {
         return self.parseUint72(offset);
     }
 
-    function insertUint72(
-        Bytes32.Builder memory self,
-        uint72 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint72(Bytes32.Builder memory self, uint72 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint72(element, offset);
         return self;
     }
 
-    function pushUint72(
-        Bytes32.Builder memory self,
-        uint72 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint72(Bytes32.Builder memory self, uint72 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint72(element);
         return self;
     }
 
-    function popUint72(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint72 element) {
+    function popUint72(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint72 element) {
         element = self.popUint72();
         return (self, element);
     }
 
-    function shiftUint72(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint72 element) {
+    function shiftUint72(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint72 element) {
         element = self.shiftUint72();
         return (self, element);
     }
 
-    function unshiftUint72(
-        Bytes32.Builder memory self,
-        uint72 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint72(Bytes32.Builder memory self, uint72 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint72(element);
         return self;
     }
-    function parseBytes10(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes10 element) {
+    function parseBytes10(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes10 element) {
         return self.parseBytes10(offset);
     }
 
-    function insertBytes10(
-        Bytes32.Builder memory self,
-        bytes10 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes10(Bytes32.Builder memory self, bytes10 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes10(element, offset);
         return self;
     }
 
-    function pushBytes10(
-        Bytes32.Builder memory self,
-        bytes10 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes10(Bytes32.Builder memory self, bytes10 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes10(element);
         return self;
     }
 
-    function popBytes10(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes10 element) {
+    function popBytes10(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes10 element) {
         element = self.popBytes10();
         return (self, element);
     }
 
-    function shiftBytes10(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes10 element) {
+    function shiftBytes10(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes10 element) {
         element = self.shiftBytes10();
         return (self, element);
     }
 
-    function unshiftBytes10(
-        Bytes32.Builder memory self,
-        bytes10 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes10(Bytes32.Builder memory self, bytes10 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes10(element);
         return self;
     }
-    function parseInt80(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int80 element) {
+    function parseInt80(Bytes32.Builder memory self, uint256 offset) external pure returns(int80 element) {
         return self.parseInt80(offset);
     }
 
-    function insertInt80(
-        Bytes32.Builder memory self,
-        int80 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt80(Bytes32.Builder memory self, int80 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt80(element, offset);
         return self;
     }
 
-    function pushInt80(
-        Bytes32.Builder memory self,
-        int80 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt80(Bytes32.Builder memory self, int80 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt80(element);
         return self;
     }
 
-    function popInt80(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int80 element) {
+    function popInt80(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int80 element) {
         element = self.popInt80();
         return (self, element);
     }
 
-    function shiftInt80(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int80 element) {
+    function shiftInt80(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int80 element) {
         element = self.shiftInt80();
         return (self, element);
     }
 
-    function unshiftInt80(
-        Bytes32.Builder memory self,
-        int80 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt80(Bytes32.Builder memory self, int80 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt80(element);
         return self;
     }
-    function parseUint80(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint80 element) {
+    function parseUint80(Bytes32.Builder memory self, uint256 offset) external pure returns(uint80 element) {
         return self.parseUint80(offset);
     }
 
-    function insertUint80(
-        Bytes32.Builder memory self,
-        uint80 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint80(Bytes32.Builder memory self, uint80 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint80(element, offset);
         return self;
     }
 
-    function pushUint80(
-        Bytes32.Builder memory self,
-        uint80 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint80(Bytes32.Builder memory self, uint80 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint80(element);
         return self;
     }
 
-    function popUint80(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint80 element) {
+    function popUint80(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint80 element) {
         element = self.popUint80();
         return (self, element);
     }
 
-    function shiftUint80(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint80 element) {
+    function shiftUint80(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint80 element) {
         element = self.shiftUint80();
         return (self, element);
     }
 
-    function unshiftUint80(
-        Bytes32.Builder memory self,
-        uint80 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint80(Bytes32.Builder memory self, uint80 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint80(element);
         return self;
     }
-    function parseBytes11(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes11 element) {
+    function parseBytes11(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes11 element) {
         return self.parseBytes11(offset);
     }
 
-    function insertBytes11(
-        Bytes32.Builder memory self,
-        bytes11 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes11(Bytes32.Builder memory self, bytes11 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes11(element, offset);
         return self;
     }
 
-    function pushBytes11(
-        Bytes32.Builder memory self,
-        bytes11 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes11(Bytes32.Builder memory self, bytes11 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes11(element);
         return self;
     }
 
-    function popBytes11(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes11 element) {
+    function popBytes11(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes11 element) {
         element = self.popBytes11();
         return (self, element);
     }
 
-    function shiftBytes11(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes11 element) {
+    function shiftBytes11(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes11 element) {
         element = self.shiftBytes11();
         return (self, element);
     }
 
-    function unshiftBytes11(
-        Bytes32.Builder memory self,
-        bytes11 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes11(Bytes32.Builder memory self, bytes11 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes11(element);
         return self;
     }
-    function parseInt88(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int88 element) {
+    function parseInt88(Bytes32.Builder memory self, uint256 offset) external pure returns(int88 element) {
         return self.parseInt88(offset);
     }
 
-    function insertInt88(
-        Bytes32.Builder memory self,
-        int88 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt88(Bytes32.Builder memory self, int88 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt88(element, offset);
         return self;
     }
 
-    function pushInt88(
-        Bytes32.Builder memory self,
-        int88 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt88(Bytes32.Builder memory self, int88 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt88(element);
         return self;
     }
 
-    function popInt88(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int88 element) {
+    function popInt88(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int88 element) {
         element = self.popInt88();
         return (self, element);
     }
 
-    function shiftInt88(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int88 element) {
+    function shiftInt88(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int88 element) {
         element = self.shiftInt88();
         return (self, element);
     }
 
-    function unshiftInt88(
-        Bytes32.Builder memory self,
-        int88 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt88(Bytes32.Builder memory self, int88 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt88(element);
         return self;
     }
-    function parseUint88(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint88 element) {
+    function parseUint88(Bytes32.Builder memory self, uint256 offset) external pure returns(uint88 element) {
         return self.parseUint88(offset);
     }
 
-    function insertUint88(
-        Bytes32.Builder memory self,
-        uint88 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint88(Bytes32.Builder memory self, uint88 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint88(element, offset);
         return self;
     }
 
-    function pushUint88(
-        Bytes32.Builder memory self,
-        uint88 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint88(Bytes32.Builder memory self, uint88 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint88(element);
         return self;
     }
 
-    function popUint88(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint88 element) {
+    function popUint88(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint88 element) {
         element = self.popUint88();
         return (self, element);
     }
 
-    function shiftUint88(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint88 element) {
+    function shiftUint88(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint88 element) {
         element = self.shiftUint88();
         return (self, element);
     }
 
-    function unshiftUint88(
-        Bytes32.Builder memory self,
-        uint88 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint88(Bytes32.Builder memory self, uint88 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint88(element);
         return self;
     }
-    function parseBytes12(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes12 element) {
+    function parseBytes12(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes12 element) {
         return self.parseBytes12(offset);
     }
 
-    function insertBytes12(
-        Bytes32.Builder memory self,
-        bytes12 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes12(Bytes32.Builder memory self, bytes12 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes12(element, offset);
         return self;
     }
 
-    function pushBytes12(
-        Bytes32.Builder memory self,
-        bytes12 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes12(Bytes32.Builder memory self, bytes12 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes12(element);
         return self;
     }
 
-    function popBytes12(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes12 element) {
+    function popBytes12(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes12 element) {
         element = self.popBytes12();
         return (self, element);
     }
 
-    function shiftBytes12(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes12 element) {
+    function shiftBytes12(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes12 element) {
         element = self.shiftBytes12();
         return (self, element);
     }
 
-    function unshiftBytes12(
-        Bytes32.Builder memory self,
-        bytes12 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes12(Bytes32.Builder memory self, bytes12 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes12(element);
         return self;
     }
-    function parseInt96(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int96 element) {
+    function parseInt96(Bytes32.Builder memory self, uint256 offset) external pure returns(int96 element) {
         return self.parseInt96(offset);
     }
 
-    function insertInt96(
-        Bytes32.Builder memory self,
-        int96 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt96(Bytes32.Builder memory self, int96 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt96(element, offset);
         return self;
     }
 
-    function pushInt96(
-        Bytes32.Builder memory self,
-        int96 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt96(Bytes32.Builder memory self, int96 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt96(element);
         return self;
     }
 
-    function popInt96(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int96 element) {
+    function popInt96(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int96 element) {
         element = self.popInt96();
         return (self, element);
     }
 
-    function shiftInt96(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int96 element) {
+    function shiftInt96(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int96 element) {
         element = self.shiftInt96();
         return (self, element);
     }
 
-    function unshiftInt96(
-        Bytes32.Builder memory self,
-        int96 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt96(Bytes32.Builder memory self, int96 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt96(element);
         return self;
     }
-    function parseUint96(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint96 element) {
+    function parseUint96(Bytes32.Builder memory self, uint256 offset) external pure returns(uint96 element) {
         return self.parseUint96(offset);
     }
 
-    function insertUint96(
-        Bytes32.Builder memory self,
-        uint96 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint96(Bytes32.Builder memory self, uint96 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint96(element, offset);
         return self;
     }
 
-    function pushUint96(
-        Bytes32.Builder memory self,
-        uint96 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint96(Bytes32.Builder memory self, uint96 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint96(element);
         return self;
     }
 
-    function popUint96(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint96 element) {
+    function popUint96(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint96 element) {
         element = self.popUint96();
         return (self, element);
     }
 
-    function shiftUint96(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint96 element) {
+    function shiftUint96(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint96 element) {
         element = self.shiftUint96();
         return (self, element);
     }
 
-    function unshiftUint96(
-        Bytes32.Builder memory self,
-        uint96 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint96(Bytes32.Builder memory self, uint96 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint96(element);
         return self;
     }
-    function parseBytes13(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes13 element) {
+    function parseBytes13(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes13 element) {
         return self.parseBytes13(offset);
     }
 
-    function insertBytes13(
-        Bytes32.Builder memory self,
-        bytes13 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes13(Bytes32.Builder memory self, bytes13 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes13(element, offset);
         return self;
     }
 
-    function pushBytes13(
-        Bytes32.Builder memory self,
-        bytes13 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes13(Bytes32.Builder memory self, bytes13 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes13(element);
         return self;
     }
 
-    function popBytes13(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes13 element) {
+    function popBytes13(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes13 element) {
         element = self.popBytes13();
         return (self, element);
     }
 
-    function shiftBytes13(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes13 element) {
+    function shiftBytes13(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes13 element) {
         element = self.shiftBytes13();
         return (self, element);
     }
 
-    function unshiftBytes13(
-        Bytes32.Builder memory self,
-        bytes13 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes13(Bytes32.Builder memory self, bytes13 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes13(element);
         return self;
     }
-    function parseInt104(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int104 element) {
+    function parseInt104(Bytes32.Builder memory self, uint256 offset) external pure returns(int104 element) {
         return self.parseInt104(offset);
     }
 
-    function insertInt104(
-        Bytes32.Builder memory self,
-        int104 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt104(Bytes32.Builder memory self, int104 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt104(element, offset);
         return self;
     }
 
-    function pushInt104(
-        Bytes32.Builder memory self,
-        int104 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt104(Bytes32.Builder memory self, int104 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt104(element);
         return self;
     }
 
-    function popInt104(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int104 element) {
+    function popInt104(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int104 element) {
         element = self.popInt104();
         return (self, element);
     }
 
-    function shiftInt104(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int104 element) {
+    function shiftInt104(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int104 element) {
         element = self.shiftInt104();
         return (self, element);
     }
 
-    function unshiftInt104(
-        Bytes32.Builder memory self,
-        int104 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt104(Bytes32.Builder memory self, int104 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt104(element);
         return self;
     }
-    function parseUint104(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint104 element) {
+    function parseUint104(Bytes32.Builder memory self, uint256 offset) external pure returns(uint104 element) {
         return self.parseUint104(offset);
     }
 
-    function insertUint104(
-        Bytes32.Builder memory self,
-        uint104 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint104(Bytes32.Builder memory self, uint104 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint104(element, offset);
         return self;
     }
 
-    function pushUint104(
-        Bytes32.Builder memory self,
-        uint104 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint104(Bytes32.Builder memory self, uint104 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint104(element);
         return self;
     }
 
-    function popUint104(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint104 element) {
+    function popUint104(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint104 element) {
         element = self.popUint104();
         return (self, element);
     }
 
-    function shiftUint104(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint104 element) {
+    function shiftUint104(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint104 element) {
         element = self.shiftUint104();
         return (self, element);
     }
 
-    function unshiftUint104(
-        Bytes32.Builder memory self,
-        uint104 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint104(Bytes32.Builder memory self, uint104 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint104(element);
         return self;
     }
-    function parseBytes14(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes14 element) {
+    function parseBytes14(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes14 element) {
         return self.parseBytes14(offset);
     }
 
-    function insertBytes14(
-        Bytes32.Builder memory self,
-        bytes14 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes14(Bytes32.Builder memory self, bytes14 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes14(element, offset);
         return self;
     }
 
-    function pushBytes14(
-        Bytes32.Builder memory self,
-        bytes14 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes14(Bytes32.Builder memory self, bytes14 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes14(element);
         return self;
     }
 
-    function popBytes14(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes14 element) {
+    function popBytes14(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes14 element) {
         element = self.popBytes14();
         return (self, element);
     }
 
-    function shiftBytes14(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes14 element) {
+    function shiftBytes14(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes14 element) {
         element = self.shiftBytes14();
         return (self, element);
     }
 
-    function unshiftBytes14(
-        Bytes32.Builder memory self,
-        bytes14 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes14(Bytes32.Builder memory self, bytes14 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes14(element);
         return self;
     }
-    function parseInt112(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int112 element) {
+    function parseInt112(Bytes32.Builder memory self, uint256 offset) external pure returns(int112 element) {
         return self.parseInt112(offset);
     }
 
-    function insertInt112(
-        Bytes32.Builder memory self,
-        int112 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt112(Bytes32.Builder memory self, int112 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt112(element, offset);
         return self;
     }
 
-    function pushInt112(
-        Bytes32.Builder memory self,
-        int112 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt112(Bytes32.Builder memory self, int112 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt112(element);
         return self;
     }
 
-    function popInt112(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int112 element) {
+    function popInt112(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int112 element) {
         element = self.popInt112();
         return (self, element);
     }
 
-    function shiftInt112(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int112 element) {
+    function shiftInt112(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int112 element) {
         element = self.shiftInt112();
         return (self, element);
     }
 
-    function unshiftInt112(
-        Bytes32.Builder memory self,
-        int112 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt112(Bytes32.Builder memory self, int112 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt112(element);
         return self;
     }
-    function parseUint112(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint112 element) {
+    function parseUint112(Bytes32.Builder memory self, uint256 offset) external pure returns(uint112 element) {
         return self.parseUint112(offset);
     }
 
-    function insertUint112(
-        Bytes32.Builder memory self,
-        uint112 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint112(Bytes32.Builder memory self, uint112 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint112(element, offset);
         return self;
     }
 
-    function pushUint112(
-        Bytes32.Builder memory self,
-        uint112 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint112(Bytes32.Builder memory self, uint112 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint112(element);
         return self;
     }
 
-    function popUint112(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint112 element) {
+    function popUint112(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint112 element) {
         element = self.popUint112();
         return (self, element);
     }
 
-    function shiftUint112(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint112 element) {
+    function shiftUint112(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint112 element) {
         element = self.shiftUint112();
         return (self, element);
     }
 
-    function unshiftUint112(
-        Bytes32.Builder memory self,
-        uint112 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint112(Bytes32.Builder memory self, uint112 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint112(element);
         return self;
     }
-    function parseBytes15(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes15 element) {
+    function parseBytes15(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes15 element) {
         return self.parseBytes15(offset);
     }
 
-    function insertBytes15(
-        Bytes32.Builder memory self,
-        bytes15 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes15(Bytes32.Builder memory self, bytes15 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes15(element, offset);
         return self;
     }
 
-    function pushBytes15(
-        Bytes32.Builder memory self,
-        bytes15 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes15(Bytes32.Builder memory self, bytes15 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes15(element);
         return self;
     }
 
-    function popBytes15(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes15 element) {
+    function popBytes15(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes15 element) {
         element = self.popBytes15();
         return (self, element);
     }
 
-    function shiftBytes15(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes15 element) {
+    function shiftBytes15(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes15 element) {
         element = self.shiftBytes15();
         return (self, element);
     }
 
-    function unshiftBytes15(
-        Bytes32.Builder memory self,
-        bytes15 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes15(Bytes32.Builder memory self, bytes15 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes15(element);
         return self;
     }
-    function parseInt120(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int120 element) {
+    function parseInt120(Bytes32.Builder memory self, uint256 offset) external pure returns(int120 element) {
         return self.parseInt120(offset);
     }
 
-    function insertInt120(
-        Bytes32.Builder memory self,
-        int120 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt120(Bytes32.Builder memory self, int120 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt120(element, offset);
         return self;
     }
 
-    function pushInt120(
-        Bytes32.Builder memory self,
-        int120 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt120(Bytes32.Builder memory self, int120 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt120(element);
         return self;
     }
 
-    function popInt120(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int120 element) {
+    function popInt120(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int120 element) {
         element = self.popInt120();
         return (self, element);
     }
 
-    function shiftInt120(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int120 element) {
+    function shiftInt120(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int120 element) {
         element = self.shiftInt120();
         return (self, element);
     }
 
-    function unshiftInt120(
-        Bytes32.Builder memory self,
-        int120 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt120(Bytes32.Builder memory self, int120 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt120(element);
         return self;
     }
-    function parseUint120(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint120 element) {
+    function parseUint120(Bytes32.Builder memory self, uint256 offset) external pure returns(uint120 element) {
         return self.parseUint120(offset);
     }
 
-    function insertUint120(
-        Bytes32.Builder memory self,
-        uint120 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint120(Bytes32.Builder memory self, uint120 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint120(element, offset);
         return self;
     }
 
-    function pushUint120(
-        Bytes32.Builder memory self,
-        uint120 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint120(Bytes32.Builder memory self, uint120 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint120(element);
         return self;
     }
 
-    function popUint120(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint120 element) {
+    function popUint120(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint120 element) {
         element = self.popUint120();
         return (self, element);
     }
 
-    function shiftUint120(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint120 element) {
+    function shiftUint120(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint120 element) {
         element = self.shiftUint120();
         return (self, element);
     }
 
-    function unshiftUint120(
-        Bytes32.Builder memory self,
-        uint120 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint120(Bytes32.Builder memory self, uint120 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint120(element);
         return self;
     }
-    function parseBytes16(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes16 element) {
+    function parseBytes16(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes16 element) {
         return self.parseBytes16(offset);
     }
 
-    function insertBytes16(
-        Bytes32.Builder memory self,
-        bytes16 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes16(Bytes32.Builder memory self, bytes16 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes16(element, offset);
         return self;
     }
 
-    function pushBytes16(
-        Bytes32.Builder memory self,
-        bytes16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes16(Bytes32.Builder memory self, bytes16 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes16(element);
         return self;
     }
 
-    function popBytes16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes16 element) {
+    function popBytes16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes16 element) {
         element = self.popBytes16();
         return (self, element);
     }
 
-    function shiftBytes16(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes16 element) {
+    function shiftBytes16(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes16 element) {
         element = self.shiftBytes16();
         return (self, element);
     }
 
-    function unshiftBytes16(
-        Bytes32.Builder memory self,
-        bytes16 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes16(Bytes32.Builder memory self, bytes16 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes16(element);
         return self;
     }
-    function parseInt128(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int128 element) {
+    function parseInt128(Bytes32.Builder memory self, uint256 offset) external pure returns(int128 element) {
         return self.parseInt128(offset);
     }
 
-    function insertInt128(
-        Bytes32.Builder memory self,
-        int128 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt128(Bytes32.Builder memory self, int128 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt128(element, offset);
         return self;
     }
 
-    function pushInt128(
-        Bytes32.Builder memory self,
-        int128 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt128(Bytes32.Builder memory self, int128 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt128(element);
         return self;
     }
 
-    function popInt128(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int128 element) {
+    function popInt128(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int128 element) {
         element = self.popInt128();
         return (self, element);
     }
 
-    function shiftInt128(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int128 element) {
+    function shiftInt128(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int128 element) {
         element = self.shiftInt128();
         return (self, element);
     }
 
-    function unshiftInt128(
-        Bytes32.Builder memory self,
-        int128 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt128(Bytes32.Builder memory self, int128 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt128(element);
         return self;
     }
-    function parseUint128(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint128 element) {
+    function parseUint128(Bytes32.Builder memory self, uint256 offset) external pure returns(uint128 element) {
         return self.parseUint128(offset);
     }
 
-    function insertUint128(
-        Bytes32.Builder memory self,
-        uint128 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint128(Bytes32.Builder memory self, uint128 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint128(element, offset);
         return self;
     }
 
-    function pushUint128(
-        Bytes32.Builder memory self,
-        uint128 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint128(Bytes32.Builder memory self, uint128 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint128(element);
         return self;
     }
 
-    function popUint128(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint128 element) {
+    function popUint128(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint128 element) {
         element = self.popUint128();
         return (self, element);
     }
 
-    function shiftUint128(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint128 element) {
+    function shiftUint128(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint128 element) {
         element = self.shiftUint128();
         return (self, element);
     }
 
-    function unshiftUint128(
-        Bytes32.Builder memory self,
-        uint128 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint128(Bytes32.Builder memory self, uint128 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint128(element);
         return self;
     }
-    function parseBytes17(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes17 element) {
+    function parseBytes17(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes17 element) {
         return self.parseBytes17(offset);
     }
 
-    function insertBytes17(
-        Bytes32.Builder memory self,
-        bytes17 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes17(Bytes32.Builder memory self, bytes17 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes17(element, offset);
         return self;
     }
 
-    function pushBytes17(
-        Bytes32.Builder memory self,
-        bytes17 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes17(Bytes32.Builder memory self, bytes17 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes17(element);
         return self;
     }
 
-    function popBytes17(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes17 element) {
+    function popBytes17(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes17 element) {
         element = self.popBytes17();
         return (self, element);
     }
 
-    function shiftBytes17(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes17 element) {
+    function shiftBytes17(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes17 element) {
         element = self.shiftBytes17();
         return (self, element);
     }
 
-    function unshiftBytes17(
-        Bytes32.Builder memory self,
-        bytes17 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes17(Bytes32.Builder memory self, bytes17 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes17(element);
         return self;
     }
-    function parseInt136(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int136 element) {
+    function parseInt136(Bytes32.Builder memory self, uint256 offset) external pure returns(int136 element) {
         return self.parseInt136(offset);
     }
 
-    function insertInt136(
-        Bytes32.Builder memory self,
-        int136 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt136(Bytes32.Builder memory self, int136 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt136(element, offset);
         return self;
     }
 
-    function pushInt136(
-        Bytes32.Builder memory self,
-        int136 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt136(Bytes32.Builder memory self, int136 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt136(element);
         return self;
     }
 
-    function popInt136(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int136 element) {
+    function popInt136(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int136 element) {
         element = self.popInt136();
         return (self, element);
     }
 
-    function shiftInt136(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int136 element) {
+    function shiftInt136(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int136 element) {
         element = self.shiftInt136();
         return (self, element);
     }
 
-    function unshiftInt136(
-        Bytes32.Builder memory self,
-        int136 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt136(Bytes32.Builder memory self, int136 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt136(element);
         return self;
     }
-    function parseUint136(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint136 element) {
+    function parseUint136(Bytes32.Builder memory self, uint256 offset) external pure returns(uint136 element) {
         return self.parseUint136(offset);
     }
 
-    function insertUint136(
-        Bytes32.Builder memory self,
-        uint136 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint136(Bytes32.Builder memory self, uint136 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint136(element, offset);
         return self;
     }
 
-    function pushUint136(
-        Bytes32.Builder memory self,
-        uint136 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint136(Bytes32.Builder memory self, uint136 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint136(element);
         return self;
     }
 
-    function popUint136(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint136 element) {
+    function popUint136(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint136 element) {
         element = self.popUint136();
         return (self, element);
     }
 
-    function shiftUint136(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint136 element) {
+    function shiftUint136(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint136 element) {
         element = self.shiftUint136();
         return (self, element);
     }
 
-    function unshiftUint136(
-        Bytes32.Builder memory self,
-        uint136 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint136(Bytes32.Builder memory self, uint136 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint136(element);
         return self;
     }
-    function parseBytes18(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes18 element) {
+    function parseBytes18(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes18 element) {
         return self.parseBytes18(offset);
     }
 
-    function insertBytes18(
-        Bytes32.Builder memory self,
-        bytes18 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes18(Bytes32.Builder memory self, bytes18 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes18(element, offset);
         return self;
     }
 
-    function pushBytes18(
-        Bytes32.Builder memory self,
-        bytes18 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes18(Bytes32.Builder memory self, bytes18 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes18(element);
         return self;
     }
 
-    function popBytes18(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes18 element) {
+    function popBytes18(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes18 element) {
         element = self.popBytes18();
         return (self, element);
     }
 
-    function shiftBytes18(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes18 element) {
+    function shiftBytes18(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes18 element) {
         element = self.shiftBytes18();
         return (self, element);
     }
 
-    function unshiftBytes18(
-        Bytes32.Builder memory self,
-        bytes18 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes18(Bytes32.Builder memory self, bytes18 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes18(element);
         return self;
     }
-    function parseInt144(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int144 element) {
+    function parseInt144(Bytes32.Builder memory self, uint256 offset) external pure returns(int144 element) {
         return self.parseInt144(offset);
     }
 
-    function insertInt144(
-        Bytes32.Builder memory self,
-        int144 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt144(Bytes32.Builder memory self, int144 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt144(element, offset);
         return self;
     }
 
-    function pushInt144(
-        Bytes32.Builder memory self,
-        int144 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt144(Bytes32.Builder memory self, int144 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt144(element);
         return self;
     }
 
-    function popInt144(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int144 element) {
+    function popInt144(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int144 element) {
         element = self.popInt144();
         return (self, element);
     }
 
-    function shiftInt144(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int144 element) {
+    function shiftInt144(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int144 element) {
         element = self.shiftInt144();
         return (self, element);
     }
 
-    function unshiftInt144(
-        Bytes32.Builder memory self,
-        int144 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt144(Bytes32.Builder memory self, int144 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt144(element);
         return self;
     }
-    function parseUint144(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint144 element) {
+    function parseUint144(Bytes32.Builder memory self, uint256 offset) external pure returns(uint144 element) {
         return self.parseUint144(offset);
     }
 
-    function insertUint144(
-        Bytes32.Builder memory self,
-        uint144 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint144(Bytes32.Builder memory self, uint144 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint144(element, offset);
         return self;
     }
 
-    function pushUint144(
-        Bytes32.Builder memory self,
-        uint144 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint144(Bytes32.Builder memory self, uint144 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint144(element);
         return self;
     }
 
-    function popUint144(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint144 element) {
+    function popUint144(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint144 element) {
         element = self.popUint144();
         return (self, element);
     }
 
-    function shiftUint144(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint144 element) {
+    function shiftUint144(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint144 element) {
         element = self.shiftUint144();
         return (self, element);
     }
 
-    function unshiftUint144(
-        Bytes32.Builder memory self,
-        uint144 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint144(Bytes32.Builder memory self, uint144 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint144(element);
         return self;
     }
-    function parseBytes19(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes19 element) {
+    function parseBytes19(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes19 element) {
         return self.parseBytes19(offset);
     }
 
-    function insertBytes19(
-        Bytes32.Builder memory self,
-        bytes19 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes19(Bytes32.Builder memory self, bytes19 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes19(element, offset);
         return self;
     }
 
-    function pushBytes19(
-        Bytes32.Builder memory self,
-        bytes19 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes19(Bytes32.Builder memory self, bytes19 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes19(element);
         return self;
     }
 
-    function popBytes19(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes19 element) {
+    function popBytes19(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes19 element) {
         element = self.popBytes19();
         return (self, element);
     }
 
-    function shiftBytes19(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes19 element) {
+    function shiftBytes19(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes19 element) {
         element = self.shiftBytes19();
         return (self, element);
     }
 
-    function unshiftBytes19(
-        Bytes32.Builder memory self,
-        bytes19 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes19(Bytes32.Builder memory self, bytes19 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes19(element);
         return self;
     }
-    function parseInt152(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int152 element) {
+    function parseInt152(Bytes32.Builder memory self, uint256 offset) external pure returns(int152 element) {
         return self.parseInt152(offset);
     }
 
-    function insertInt152(
-        Bytes32.Builder memory self,
-        int152 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt152(Bytes32.Builder memory self, int152 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt152(element, offset);
         return self;
     }
 
-    function pushInt152(
-        Bytes32.Builder memory self,
-        int152 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt152(Bytes32.Builder memory self, int152 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt152(element);
         return self;
     }
 
-    function popInt152(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int152 element) {
+    function popInt152(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int152 element) {
         element = self.popInt152();
         return (self, element);
     }
 
-    function shiftInt152(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int152 element) {
+    function shiftInt152(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int152 element) {
         element = self.shiftInt152();
         return (self, element);
     }
 
-    function unshiftInt152(
-        Bytes32.Builder memory self,
-        int152 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt152(Bytes32.Builder memory self, int152 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt152(element);
         return self;
     }
-    function parseUint152(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint152 element) {
+    function parseUint152(Bytes32.Builder memory self, uint256 offset) external pure returns(uint152 element) {
         return self.parseUint152(offset);
     }
 
-    function insertUint152(
-        Bytes32.Builder memory self,
-        uint152 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint152(Bytes32.Builder memory self, uint152 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint152(element, offset);
         return self;
     }
 
-    function pushUint152(
-        Bytes32.Builder memory self,
-        uint152 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint152(Bytes32.Builder memory self, uint152 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint152(element);
         return self;
     }
 
-    function popUint152(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint152 element) {
+    function popUint152(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint152 element) {
         element = self.popUint152();
         return (self, element);
     }
 
-    function shiftUint152(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint152 element) {
+    function shiftUint152(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint152 element) {
         element = self.shiftUint152();
         return (self, element);
     }
 
-    function unshiftUint152(
-        Bytes32.Builder memory self,
-        uint152 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint152(Bytes32.Builder memory self, uint152 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint152(element);
         return self;
     }
-    function parseBytes20(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes20 element) {
+    function parseBytes20(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes20 element) {
         return self.parseBytes20(offset);
     }
 
-    function insertBytes20(
-        Bytes32.Builder memory self,
-        bytes20 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes20(Bytes32.Builder memory self, bytes20 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes20(element, offset);
         return self;
     }
 
-    function pushBytes20(
-        Bytes32.Builder memory self,
-        bytes20 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes20(Bytes32.Builder memory self, bytes20 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes20(element);
         return self;
     }
 
-    function popBytes20(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes20 element) {
+    function popBytes20(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes20 element) {
         element = self.popBytes20();
         return (self, element);
     }
 
-    function shiftBytes20(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes20 element) {
+    function shiftBytes20(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes20 element) {
         element = self.shiftBytes20();
         return (self, element);
     }
 
-    function unshiftBytes20(
-        Bytes32.Builder memory self,
-        bytes20 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes20(Bytes32.Builder memory self, bytes20 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes20(element);
         return self;
     }
-    function parseInt160(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int160 element) {
+    function parseInt160(Bytes32.Builder memory self, uint256 offset) external pure returns(int160 element) {
         return self.parseInt160(offset);
     }
 
-    function insertInt160(
-        Bytes32.Builder memory self,
-        int160 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt160(Bytes32.Builder memory self, int160 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt160(element, offset);
         return self;
     }
 
-    function pushInt160(
-        Bytes32.Builder memory self,
-        int160 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt160(Bytes32.Builder memory self, int160 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt160(element);
         return self;
     }
 
-    function popInt160(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int160 element) {
+    function popInt160(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int160 element) {
         element = self.popInt160();
         return (self, element);
     }
 
-    function shiftInt160(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int160 element) {
+    function shiftInt160(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int160 element) {
         element = self.shiftInt160();
         return (self, element);
     }
 
-    function unshiftInt160(
-        Bytes32.Builder memory self,
-        int160 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt160(Bytes32.Builder memory self, int160 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt160(element);
         return self;
     }
-    function parseUint160(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint160 element) {
+    function parseUint160(Bytes32.Builder memory self, uint256 offset) external pure returns(uint160 element) {
         return self.parseUint160(offset);
     }
 
-    function insertUint160(
-        Bytes32.Builder memory self,
-        uint160 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint160(Bytes32.Builder memory self, uint160 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint160(element, offset);
         return self;
     }
 
-    function pushUint160(
-        Bytes32.Builder memory self,
-        uint160 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint160(Bytes32.Builder memory self, uint160 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint160(element);
         return self;
     }
 
-    function popUint160(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint160 element) {
+    function popUint160(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint160 element) {
         element = self.popUint160();
         return (self, element);
     }
 
-    function shiftUint160(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint160 element) {
+    function shiftUint160(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint160 element) {
         element = self.shiftUint160();
         return (self, element);
     }
 
-    function unshiftUint160(
-        Bytes32.Builder memory self,
-        uint160 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint160(Bytes32.Builder memory self, uint160 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint160(element);
         return self;
     }
-    function parseAddress(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (address element) {
+    function parseAddress(Bytes32.Builder memory self, uint256 offset) external pure returns(address element) {
         return self.parseAddress(offset);
     }
 
-    function insertAddress(
-        Bytes32.Builder memory self,
-        address element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertAddress(Bytes32.Builder memory self, address element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertAddress(element, offset);
         return self;
     }
 
-    function pushAddress(
-        Bytes32.Builder memory self,
-        address element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushAddress(Bytes32.Builder memory self, address element) external pure returns (Bytes32.Builder memory self_) {
         self.pushAddress(element);
         return self;
     }
 
-    function popAddress(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, address element) {
+    function popAddress(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, address element) {
         element = self.popAddress();
         return (self, element);
     }
 
-    function shiftAddress(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, address element) {
+    function shiftAddress(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, address element) {
         element = self.shiftAddress();
         return (self, element);
     }
 
-    function unshiftAddress(
-        Bytes32.Builder memory self,
-        address element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftAddress(Bytes32.Builder memory self, address element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftAddress(element);
         return self;
     }
-    function parseBytes21(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes21 element) {
+    function parseBytes21(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes21 element) {
         return self.parseBytes21(offset);
     }
 
-    function insertBytes21(
-        Bytes32.Builder memory self,
-        bytes21 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes21(Bytes32.Builder memory self, bytes21 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes21(element, offset);
         return self;
     }
 
-    function pushBytes21(
-        Bytes32.Builder memory self,
-        bytes21 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes21(Bytes32.Builder memory self, bytes21 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes21(element);
         return self;
     }
 
-    function popBytes21(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes21 element) {
+    function popBytes21(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes21 element) {
         element = self.popBytes21();
         return (self, element);
     }
 
-    function shiftBytes21(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes21 element) {
+    function shiftBytes21(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes21 element) {
         element = self.shiftBytes21();
         return (self, element);
     }
 
-    function unshiftBytes21(
-        Bytes32.Builder memory self,
-        bytes21 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes21(Bytes32.Builder memory self, bytes21 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes21(element);
         return self;
     }
-    function parseInt168(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int168 element) {
+    function parseInt168(Bytes32.Builder memory self, uint256 offset) external pure returns(int168 element) {
         return self.parseInt168(offset);
     }
 
-    function insertInt168(
-        Bytes32.Builder memory self,
-        int168 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt168(Bytes32.Builder memory self, int168 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt168(element, offset);
         return self;
     }
 
-    function pushInt168(
-        Bytes32.Builder memory self,
-        int168 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt168(Bytes32.Builder memory self, int168 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt168(element);
         return self;
     }
 
-    function popInt168(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int168 element) {
+    function popInt168(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int168 element) {
         element = self.popInt168();
         return (self, element);
     }
 
-    function shiftInt168(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int168 element) {
+    function shiftInt168(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int168 element) {
         element = self.shiftInt168();
         return (self, element);
     }
 
-    function unshiftInt168(
-        Bytes32.Builder memory self,
-        int168 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt168(Bytes32.Builder memory self, int168 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt168(element);
         return self;
     }
-    function parseUint168(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint168 element) {
+    function parseUint168(Bytes32.Builder memory self, uint256 offset) external pure returns(uint168 element) {
         return self.parseUint168(offset);
     }
 
-    function insertUint168(
-        Bytes32.Builder memory self,
-        uint168 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint168(Bytes32.Builder memory self, uint168 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint168(element, offset);
         return self;
     }
 
-    function pushUint168(
-        Bytes32.Builder memory self,
-        uint168 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint168(Bytes32.Builder memory self, uint168 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint168(element);
         return self;
     }
 
-    function popUint168(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint168 element) {
+    function popUint168(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint168 element) {
         element = self.popUint168();
         return (self, element);
     }
 
-    function shiftUint168(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint168 element) {
+    function shiftUint168(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint168 element) {
         element = self.shiftUint168();
         return (self, element);
     }
 
-    function unshiftUint168(
-        Bytes32.Builder memory self,
-        uint168 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint168(Bytes32.Builder memory self, uint168 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint168(element);
         return self;
     }
-    function parseBytes22(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes22 element) {
+    function parseBytes22(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes22 element) {
         return self.parseBytes22(offset);
     }
 
-    function insertBytes22(
-        Bytes32.Builder memory self,
-        bytes22 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes22(Bytes32.Builder memory self, bytes22 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes22(element, offset);
         return self;
     }
 
-    function pushBytes22(
-        Bytes32.Builder memory self,
-        bytes22 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes22(Bytes32.Builder memory self, bytes22 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes22(element);
         return self;
     }
 
-    function popBytes22(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes22 element) {
+    function popBytes22(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes22 element) {
         element = self.popBytes22();
         return (self, element);
     }
 
-    function shiftBytes22(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes22 element) {
+    function shiftBytes22(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes22 element) {
         element = self.shiftBytes22();
         return (self, element);
     }
 
-    function unshiftBytes22(
-        Bytes32.Builder memory self,
-        bytes22 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes22(Bytes32.Builder memory self, bytes22 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes22(element);
         return self;
     }
-    function parseInt176(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int176 element) {
+    function parseInt176(Bytes32.Builder memory self, uint256 offset) external pure returns(int176 element) {
         return self.parseInt176(offset);
     }
 
-    function insertInt176(
-        Bytes32.Builder memory self,
-        int176 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt176(Bytes32.Builder memory self, int176 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt176(element, offset);
         return self;
     }
 
-    function pushInt176(
-        Bytes32.Builder memory self,
-        int176 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt176(Bytes32.Builder memory self, int176 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt176(element);
         return self;
     }
 
-    function popInt176(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int176 element) {
+    function popInt176(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int176 element) {
         element = self.popInt176();
         return (self, element);
     }
 
-    function shiftInt176(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int176 element) {
+    function shiftInt176(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int176 element) {
         element = self.shiftInt176();
         return (self, element);
     }
 
-    function unshiftInt176(
-        Bytes32.Builder memory self,
-        int176 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt176(Bytes32.Builder memory self, int176 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt176(element);
         return self;
     }
-    function parseUint176(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint176 element) {
+    function parseUint176(Bytes32.Builder memory self, uint256 offset) external pure returns(uint176 element) {
         return self.parseUint176(offset);
     }
 
-    function insertUint176(
-        Bytes32.Builder memory self,
-        uint176 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint176(Bytes32.Builder memory self, uint176 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint176(element, offset);
         return self;
     }
 
-    function pushUint176(
-        Bytes32.Builder memory self,
-        uint176 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint176(Bytes32.Builder memory self, uint176 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint176(element);
         return self;
     }
 
-    function popUint176(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint176 element) {
+    function popUint176(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint176 element) {
         element = self.popUint176();
         return (self, element);
     }
 
-    function shiftUint176(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint176 element) {
+    function shiftUint176(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint176 element) {
         element = self.shiftUint176();
         return (self, element);
     }
 
-    function unshiftUint176(
-        Bytes32.Builder memory self,
-        uint176 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint176(Bytes32.Builder memory self, uint176 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint176(element);
         return self;
     }
-    function parseBytes23(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes23 element) {
+    function parseBytes23(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes23 element) {
         return self.parseBytes23(offset);
     }
 
-    function insertBytes23(
-        Bytes32.Builder memory self,
-        bytes23 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes23(Bytes32.Builder memory self, bytes23 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes23(element, offset);
         return self;
     }
 
-    function pushBytes23(
-        Bytes32.Builder memory self,
-        bytes23 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes23(Bytes32.Builder memory self, bytes23 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes23(element);
         return self;
     }
 
-    function popBytes23(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes23 element) {
+    function popBytes23(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes23 element) {
         element = self.popBytes23();
         return (self, element);
     }
 
-    function shiftBytes23(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes23 element) {
+    function shiftBytes23(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes23 element) {
         element = self.shiftBytes23();
         return (self, element);
     }
 
-    function unshiftBytes23(
-        Bytes32.Builder memory self,
-        bytes23 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes23(Bytes32.Builder memory self, bytes23 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes23(element);
         return self;
     }
-    function parseInt184(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int184 element) {
+    function parseInt184(Bytes32.Builder memory self, uint256 offset) external pure returns(int184 element) {
         return self.parseInt184(offset);
     }
 
-    function insertInt184(
-        Bytes32.Builder memory self,
-        int184 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt184(Bytes32.Builder memory self, int184 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt184(element, offset);
         return self;
     }
 
-    function pushInt184(
-        Bytes32.Builder memory self,
-        int184 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt184(Bytes32.Builder memory self, int184 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt184(element);
         return self;
     }
 
-    function popInt184(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int184 element) {
+    function popInt184(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int184 element) {
         element = self.popInt184();
         return (self, element);
     }
 
-    function shiftInt184(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int184 element) {
+    function shiftInt184(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int184 element) {
         element = self.shiftInt184();
         return (self, element);
     }
 
-    function unshiftInt184(
-        Bytes32.Builder memory self,
-        int184 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt184(Bytes32.Builder memory self, int184 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt184(element);
         return self;
     }
-    function parseUint184(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint184 element) {
+    function parseUint184(Bytes32.Builder memory self, uint256 offset) external pure returns(uint184 element) {
         return self.parseUint184(offset);
     }
 
-    function insertUint184(
-        Bytes32.Builder memory self,
-        uint184 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint184(Bytes32.Builder memory self, uint184 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint184(element, offset);
         return self;
     }
 
-    function pushUint184(
-        Bytes32.Builder memory self,
-        uint184 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint184(Bytes32.Builder memory self, uint184 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint184(element);
         return self;
     }
 
-    function popUint184(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint184 element) {
+    function popUint184(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint184 element) {
         element = self.popUint184();
         return (self, element);
     }
 
-    function shiftUint184(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint184 element) {
+    function shiftUint184(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint184 element) {
         element = self.shiftUint184();
         return (self, element);
     }
 
-    function unshiftUint184(
-        Bytes32.Builder memory self,
-        uint184 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint184(Bytes32.Builder memory self, uint184 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint184(element);
         return self;
     }
-    function parseBytes24(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes24 element) {
+    function parseBytes24(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes24 element) {
         return self.parseBytes24(offset);
     }
 
-    function insertBytes24(
-        Bytes32.Builder memory self,
-        bytes24 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes24(Bytes32.Builder memory self, bytes24 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes24(element, offset);
         return self;
     }
 
-    function pushBytes24(
-        Bytes32.Builder memory self,
-        bytes24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes24(Bytes32.Builder memory self, bytes24 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes24(element);
         return self;
     }
 
-    function popBytes24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes24 element) {
+    function popBytes24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes24 element) {
         element = self.popBytes24();
         return (self, element);
     }
 
-    function shiftBytes24(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes24 element) {
+    function shiftBytes24(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes24 element) {
         element = self.shiftBytes24();
         return (self, element);
     }
 
-    function unshiftBytes24(
-        Bytes32.Builder memory self,
-        bytes24 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes24(Bytes32.Builder memory self, bytes24 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes24(element);
         return self;
     }
-    function parseInt192(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int192 element) {
+    function parseInt192(Bytes32.Builder memory self, uint256 offset) external pure returns(int192 element) {
         return self.parseInt192(offset);
     }
 
-    function insertInt192(
-        Bytes32.Builder memory self,
-        int192 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt192(Bytes32.Builder memory self, int192 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt192(element, offset);
         return self;
     }
 
-    function pushInt192(
-        Bytes32.Builder memory self,
-        int192 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt192(Bytes32.Builder memory self, int192 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt192(element);
         return self;
     }
 
-    function popInt192(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int192 element) {
+    function popInt192(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int192 element) {
         element = self.popInt192();
         return (self, element);
     }
 
-    function shiftInt192(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int192 element) {
+    function shiftInt192(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int192 element) {
         element = self.shiftInt192();
         return (self, element);
     }
 
-    function unshiftInt192(
-        Bytes32.Builder memory self,
-        int192 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt192(Bytes32.Builder memory self, int192 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt192(element);
         return self;
     }
-    function parseUint192(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint192 element) {
+    function parseUint192(Bytes32.Builder memory self, uint256 offset) external pure returns(uint192 element) {
         return self.parseUint192(offset);
     }
 
-    function insertUint192(
-        Bytes32.Builder memory self,
-        uint192 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint192(Bytes32.Builder memory self, uint192 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint192(element, offset);
         return self;
     }
 
-    function pushUint192(
-        Bytes32.Builder memory self,
-        uint192 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint192(Bytes32.Builder memory self, uint192 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint192(element);
         return self;
     }
 
-    function popUint192(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint192 element) {
+    function popUint192(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint192 element) {
         element = self.popUint192();
         return (self, element);
     }
 
-    function shiftUint192(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint192 element) {
+    function shiftUint192(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint192 element) {
         element = self.shiftUint192();
         return (self, element);
     }
 
-    function unshiftUint192(
-        Bytes32.Builder memory self,
-        uint192 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint192(Bytes32.Builder memory self, uint192 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint192(element);
         return self;
     }
-    function parseBytes25(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes25 element) {
+    function parseBytes25(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes25 element) {
         return self.parseBytes25(offset);
     }
 
-    function insertBytes25(
-        Bytes32.Builder memory self,
-        bytes25 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes25(Bytes32.Builder memory self, bytes25 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes25(element, offset);
         return self;
     }
 
-    function pushBytes25(
-        Bytes32.Builder memory self,
-        bytes25 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes25(Bytes32.Builder memory self, bytes25 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes25(element);
         return self;
     }
 
-    function popBytes25(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes25 element) {
+    function popBytes25(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes25 element) {
         element = self.popBytes25();
         return (self, element);
     }
 
-    function shiftBytes25(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes25 element) {
+    function shiftBytes25(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes25 element) {
         element = self.shiftBytes25();
         return (self, element);
     }
 
-    function unshiftBytes25(
-        Bytes32.Builder memory self,
-        bytes25 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes25(Bytes32.Builder memory self, bytes25 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes25(element);
         return self;
     }
-    function parseInt200(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int200 element) {
+    function parseInt200(Bytes32.Builder memory self, uint256 offset) external pure returns(int200 element) {
         return self.parseInt200(offset);
     }
 
-    function insertInt200(
-        Bytes32.Builder memory self,
-        int200 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt200(Bytes32.Builder memory self, int200 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt200(element, offset);
         return self;
     }
 
-    function pushInt200(
-        Bytes32.Builder memory self,
-        int200 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt200(Bytes32.Builder memory self, int200 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt200(element);
         return self;
     }
 
-    function popInt200(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int200 element) {
+    function popInt200(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int200 element) {
         element = self.popInt200();
         return (self, element);
     }
 
-    function shiftInt200(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int200 element) {
+    function shiftInt200(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int200 element) {
         element = self.shiftInt200();
         return (self, element);
     }
 
-    function unshiftInt200(
-        Bytes32.Builder memory self,
-        int200 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt200(Bytes32.Builder memory self, int200 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt200(element);
         return self;
     }
-    function parseUint200(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint200 element) {
+    function parseUint200(Bytes32.Builder memory self, uint256 offset) external pure returns(uint200 element) {
         return self.parseUint200(offset);
     }
 
-    function insertUint200(
-        Bytes32.Builder memory self,
-        uint200 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint200(Bytes32.Builder memory self, uint200 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint200(element, offset);
         return self;
     }
 
-    function pushUint200(
-        Bytes32.Builder memory self,
-        uint200 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint200(Bytes32.Builder memory self, uint200 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint200(element);
         return self;
     }
 
-    function popUint200(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint200 element) {
+    function popUint200(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint200 element) {
         element = self.popUint200();
         return (self, element);
     }
 
-    function shiftUint200(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint200 element) {
+    function shiftUint200(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint200 element) {
         element = self.shiftUint200();
         return (self, element);
     }
 
-    function unshiftUint200(
-        Bytes32.Builder memory self,
-        uint200 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint200(Bytes32.Builder memory self, uint200 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint200(element);
         return self;
     }
-    function parseBytes26(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes26 element) {
+    function parseBytes26(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes26 element) {
         return self.parseBytes26(offset);
     }
 
-    function insertBytes26(
-        Bytes32.Builder memory self,
-        bytes26 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes26(Bytes32.Builder memory self, bytes26 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes26(element, offset);
         return self;
     }
 
-    function pushBytes26(
-        Bytes32.Builder memory self,
-        bytes26 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes26(Bytes32.Builder memory self, bytes26 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes26(element);
         return self;
     }
 
-    function popBytes26(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes26 element) {
+    function popBytes26(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes26 element) {
         element = self.popBytes26();
         return (self, element);
     }
 
-    function shiftBytes26(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes26 element) {
+    function shiftBytes26(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes26 element) {
         element = self.shiftBytes26();
         return (self, element);
     }
 
-    function unshiftBytes26(
-        Bytes32.Builder memory self,
-        bytes26 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes26(Bytes32.Builder memory self, bytes26 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes26(element);
         return self;
     }
-    function parseInt208(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int208 element) {
+    function parseInt208(Bytes32.Builder memory self, uint256 offset) external pure returns(int208 element) {
         return self.parseInt208(offset);
     }
 
-    function insertInt208(
-        Bytes32.Builder memory self,
-        int208 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt208(Bytes32.Builder memory self, int208 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt208(element, offset);
         return self;
     }
 
-    function pushInt208(
-        Bytes32.Builder memory self,
-        int208 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt208(Bytes32.Builder memory self, int208 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt208(element);
         return self;
     }
 
-    function popInt208(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int208 element) {
+    function popInt208(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int208 element) {
         element = self.popInt208();
         return (self, element);
     }
 
-    function shiftInt208(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int208 element) {
+    function shiftInt208(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int208 element) {
         element = self.shiftInt208();
         return (self, element);
     }
 
-    function unshiftInt208(
-        Bytes32.Builder memory self,
-        int208 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt208(Bytes32.Builder memory self, int208 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt208(element);
         return self;
     }
-    function parseUint208(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint208 element) {
+    function parseUint208(Bytes32.Builder memory self, uint256 offset) external pure returns(uint208 element) {
         return self.parseUint208(offset);
     }
 
-    function insertUint208(
-        Bytes32.Builder memory self,
-        uint208 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint208(Bytes32.Builder memory self, uint208 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint208(element, offset);
         return self;
     }
 
-    function pushUint208(
-        Bytes32.Builder memory self,
-        uint208 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint208(Bytes32.Builder memory self, uint208 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint208(element);
         return self;
     }
 
-    function popUint208(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint208 element) {
+    function popUint208(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint208 element) {
         element = self.popUint208();
         return (self, element);
     }
 
-    function shiftUint208(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint208 element) {
+    function shiftUint208(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint208 element) {
         element = self.shiftUint208();
         return (self, element);
     }
 
-    function unshiftUint208(
-        Bytes32.Builder memory self,
-        uint208 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint208(Bytes32.Builder memory self, uint208 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint208(element);
         return self;
     }
-    function parseBytes27(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes27 element) {
+    function parseBytes27(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes27 element) {
         return self.parseBytes27(offset);
     }
 
-    function insertBytes27(
-        Bytes32.Builder memory self,
-        bytes27 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes27(Bytes32.Builder memory self, bytes27 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes27(element, offset);
         return self;
     }
 
-    function pushBytes27(
-        Bytes32.Builder memory self,
-        bytes27 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes27(Bytes32.Builder memory self, bytes27 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes27(element);
         return self;
     }
 
-    function popBytes27(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes27 element) {
+    function popBytes27(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes27 element) {
         element = self.popBytes27();
         return (self, element);
     }
 
-    function shiftBytes27(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes27 element) {
+    function shiftBytes27(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes27 element) {
         element = self.shiftBytes27();
         return (self, element);
     }
 
-    function unshiftBytes27(
-        Bytes32.Builder memory self,
-        bytes27 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes27(Bytes32.Builder memory self, bytes27 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes27(element);
         return self;
     }
-    function parseInt216(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int216 element) {
+    function parseInt216(Bytes32.Builder memory self, uint256 offset) external pure returns(int216 element) {
         return self.parseInt216(offset);
     }
 
-    function insertInt216(
-        Bytes32.Builder memory self,
-        int216 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt216(Bytes32.Builder memory self, int216 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt216(element, offset);
         return self;
     }
 
-    function pushInt216(
-        Bytes32.Builder memory self,
-        int216 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt216(Bytes32.Builder memory self, int216 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt216(element);
         return self;
     }
 
-    function popInt216(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int216 element) {
+    function popInt216(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int216 element) {
         element = self.popInt216();
         return (self, element);
     }
 
-    function shiftInt216(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int216 element) {
+    function shiftInt216(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int216 element) {
         element = self.shiftInt216();
         return (self, element);
     }
 
-    function unshiftInt216(
-        Bytes32.Builder memory self,
-        int216 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt216(Bytes32.Builder memory self, int216 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt216(element);
         return self;
     }
-    function parseUint216(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint216 element) {
+    function parseUint216(Bytes32.Builder memory self, uint256 offset) external pure returns(uint216 element) {
         return self.parseUint216(offset);
     }
 
-    function insertUint216(
-        Bytes32.Builder memory self,
-        uint216 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint216(Bytes32.Builder memory self, uint216 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint216(element, offset);
         return self;
     }
 
-    function pushUint216(
-        Bytes32.Builder memory self,
-        uint216 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint216(Bytes32.Builder memory self, uint216 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint216(element);
         return self;
     }
 
-    function popUint216(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint216 element) {
+    function popUint216(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint216 element) {
         element = self.popUint216();
         return (self, element);
     }
 
-    function shiftUint216(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint216 element) {
+    function shiftUint216(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint216 element) {
         element = self.shiftUint216();
         return (self, element);
     }
 
-    function unshiftUint216(
-        Bytes32.Builder memory self,
-        uint216 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint216(Bytes32.Builder memory self, uint216 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint216(element);
         return self;
     }
-    function parseBytes28(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes28 element) {
+    function parseBytes28(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes28 element) {
         return self.parseBytes28(offset);
     }
 
-    function insertBytes28(
-        Bytes32.Builder memory self,
-        bytes28 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes28(Bytes32.Builder memory self, bytes28 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes28(element, offset);
         return self;
     }
 
-    function pushBytes28(
-        Bytes32.Builder memory self,
-        bytes28 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes28(Bytes32.Builder memory self, bytes28 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes28(element);
         return self;
     }
 
-    function popBytes28(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes28 element) {
+    function popBytes28(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes28 element) {
         element = self.popBytes28();
         return (self, element);
     }
 
-    function shiftBytes28(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes28 element) {
+    function shiftBytes28(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes28 element) {
         element = self.shiftBytes28();
         return (self, element);
     }
 
-    function unshiftBytes28(
-        Bytes32.Builder memory self,
-        bytes28 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes28(Bytes32.Builder memory self, bytes28 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes28(element);
         return self;
     }
-    function parseInt224(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int224 element) {
+    function parseInt224(Bytes32.Builder memory self, uint256 offset) external pure returns(int224 element) {
         return self.parseInt224(offset);
     }
 
-    function insertInt224(
-        Bytes32.Builder memory self,
-        int224 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt224(Bytes32.Builder memory self, int224 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt224(element, offset);
         return self;
     }
 
-    function pushInt224(
-        Bytes32.Builder memory self,
-        int224 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt224(Bytes32.Builder memory self, int224 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt224(element);
         return self;
     }
 
-    function popInt224(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int224 element) {
+    function popInt224(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int224 element) {
         element = self.popInt224();
         return (self, element);
     }
 
-    function shiftInt224(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int224 element) {
+    function shiftInt224(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int224 element) {
         element = self.shiftInt224();
         return (self, element);
     }
 
-    function unshiftInt224(
-        Bytes32.Builder memory self,
-        int224 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt224(Bytes32.Builder memory self, int224 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt224(element);
         return self;
     }
-    function parseUint224(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint224 element) {
+    function parseUint224(Bytes32.Builder memory self, uint256 offset) external pure returns(uint224 element) {
         return self.parseUint224(offset);
     }
 
-    function insertUint224(
-        Bytes32.Builder memory self,
-        uint224 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint224(Bytes32.Builder memory self, uint224 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint224(element, offset);
         return self;
     }
 
-    function pushUint224(
-        Bytes32.Builder memory self,
-        uint224 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint224(Bytes32.Builder memory self, uint224 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint224(element);
         return self;
     }
 
-    function popUint224(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint224 element) {
+    function popUint224(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint224 element) {
         element = self.popUint224();
         return (self, element);
     }
 
-    function shiftUint224(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint224 element) {
+    function shiftUint224(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint224 element) {
         element = self.shiftUint224();
         return (self, element);
     }
 
-    function unshiftUint224(
-        Bytes32.Builder memory self,
-        uint224 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint224(Bytes32.Builder memory self, uint224 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint224(element);
         return self;
     }
-    function parseBytes29(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes29 element) {
+    function parseBytes29(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes29 element) {
         return self.parseBytes29(offset);
     }
 
-    function insertBytes29(
-        Bytes32.Builder memory self,
-        bytes29 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes29(Bytes32.Builder memory self, bytes29 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes29(element, offset);
         return self;
     }
 
-    function pushBytes29(
-        Bytes32.Builder memory self,
-        bytes29 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes29(Bytes32.Builder memory self, bytes29 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes29(element);
         return self;
     }
 
-    function popBytes29(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes29 element) {
+    function popBytes29(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes29 element) {
         element = self.popBytes29();
         return (self, element);
     }
 
-    function shiftBytes29(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes29 element) {
+    function shiftBytes29(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes29 element) {
         element = self.shiftBytes29();
         return (self, element);
     }
 
-    function unshiftBytes29(
-        Bytes32.Builder memory self,
-        bytes29 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes29(Bytes32.Builder memory self, bytes29 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes29(element);
         return self;
     }
-    function parseInt232(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int232 element) {
+    function parseInt232(Bytes32.Builder memory self, uint256 offset) external pure returns(int232 element) {
         return self.parseInt232(offset);
     }
 
-    function insertInt232(
-        Bytes32.Builder memory self,
-        int232 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt232(Bytes32.Builder memory self, int232 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt232(element, offset);
         return self;
     }
 
-    function pushInt232(
-        Bytes32.Builder memory self,
-        int232 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt232(Bytes32.Builder memory self, int232 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt232(element);
         return self;
     }
 
-    function popInt232(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int232 element) {
+    function popInt232(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int232 element) {
         element = self.popInt232();
         return (self, element);
     }
 
-    function shiftInt232(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int232 element) {
+    function shiftInt232(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int232 element) {
         element = self.shiftInt232();
         return (self, element);
     }
 
-    function unshiftInt232(
-        Bytes32.Builder memory self,
-        int232 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt232(Bytes32.Builder memory self, int232 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt232(element);
         return self;
     }
-    function parseUint232(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint232 element) {
+    function parseUint232(Bytes32.Builder memory self, uint256 offset) external pure returns(uint232 element) {
         return self.parseUint232(offset);
     }
 
-    function insertUint232(
-        Bytes32.Builder memory self,
-        uint232 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint232(Bytes32.Builder memory self, uint232 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint232(element, offset);
         return self;
     }
 
-    function pushUint232(
-        Bytes32.Builder memory self,
-        uint232 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint232(Bytes32.Builder memory self, uint232 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint232(element);
         return self;
     }
 
-    function popUint232(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint232 element) {
+    function popUint232(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint232 element) {
         element = self.popUint232();
         return (self, element);
     }
 
-    function shiftUint232(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint232 element) {
+    function shiftUint232(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint232 element) {
         element = self.shiftUint232();
         return (self, element);
     }
 
-    function unshiftUint232(
-        Bytes32.Builder memory self,
-        uint232 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint232(Bytes32.Builder memory self, uint232 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint232(element);
         return self;
     }
-    function parseBytes30(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes30 element) {
+    function parseBytes30(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes30 element) {
         return self.parseBytes30(offset);
     }
 
-    function insertBytes30(
-        Bytes32.Builder memory self,
-        bytes30 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes30(Bytes32.Builder memory self, bytes30 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes30(element, offset);
         return self;
     }
 
-    function pushBytes30(
-        Bytes32.Builder memory self,
-        bytes30 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes30(Bytes32.Builder memory self, bytes30 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes30(element);
         return self;
     }
 
-    function popBytes30(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes30 element) {
+    function popBytes30(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes30 element) {
         element = self.popBytes30();
         return (self, element);
     }
 
-    function shiftBytes30(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes30 element) {
+    function shiftBytes30(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes30 element) {
         element = self.shiftBytes30();
         return (self, element);
     }
 
-    function unshiftBytes30(
-        Bytes32.Builder memory self,
-        bytes30 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes30(Bytes32.Builder memory self, bytes30 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes30(element);
         return self;
     }
-    function parseInt240(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int240 element) {
+    function parseInt240(Bytes32.Builder memory self, uint256 offset) external pure returns(int240 element) {
         return self.parseInt240(offset);
     }
 
-    function insertInt240(
-        Bytes32.Builder memory self,
-        int240 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt240(Bytes32.Builder memory self, int240 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt240(element, offset);
         return self;
     }
 
-    function pushInt240(
-        Bytes32.Builder memory self,
-        int240 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt240(Bytes32.Builder memory self, int240 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt240(element);
         return self;
     }
 
-    function popInt240(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int240 element) {
+    function popInt240(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int240 element) {
         element = self.popInt240();
         return (self, element);
     }
 
-    function shiftInt240(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int240 element) {
+    function shiftInt240(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int240 element) {
         element = self.shiftInt240();
         return (self, element);
     }
 
-    function unshiftInt240(
-        Bytes32.Builder memory self,
-        int240 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt240(Bytes32.Builder memory self, int240 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt240(element);
         return self;
     }
-    function parseUint240(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint240 element) {
+    function parseUint240(Bytes32.Builder memory self, uint256 offset) external pure returns(uint240 element) {
         return self.parseUint240(offset);
     }
 
-    function insertUint240(
-        Bytes32.Builder memory self,
-        uint240 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint240(Bytes32.Builder memory self, uint240 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint240(element, offset);
         return self;
     }
 
-    function pushUint240(
-        Bytes32.Builder memory self,
-        uint240 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint240(Bytes32.Builder memory self, uint240 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint240(element);
         return self;
     }
 
-    function popUint240(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint240 element) {
+    function popUint240(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint240 element) {
         element = self.popUint240();
         return (self, element);
     }
 
-    function shiftUint240(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint240 element) {
+    function shiftUint240(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint240 element) {
         element = self.shiftUint240();
         return (self, element);
     }
 
-    function unshiftUint240(
-        Bytes32.Builder memory self,
-        uint240 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint240(Bytes32.Builder memory self, uint240 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint240(element);
         return self;
     }
-    function parseBytes31(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes31 element) {
+    function parseBytes31(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes31 element) {
         return self.parseBytes31(offset);
     }
 
-    function insertBytes31(
-        Bytes32.Builder memory self,
-        bytes31 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes31(Bytes32.Builder memory self, bytes31 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes31(element, offset);
         return self;
     }
 
-    function pushBytes31(
-        Bytes32.Builder memory self,
-        bytes31 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes31(Bytes32.Builder memory self, bytes31 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes31(element);
         return self;
     }
 
-    function popBytes31(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes31 element) {
+    function popBytes31(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes31 element) {
         element = self.popBytes31();
         return (self, element);
     }
 
-    function shiftBytes31(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes31 element) {
+    function shiftBytes31(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes31 element) {
         element = self.shiftBytes31();
         return (self, element);
     }
 
-    function unshiftBytes31(
-        Bytes32.Builder memory self,
-        bytes31 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes31(Bytes32.Builder memory self, bytes31 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes31(element);
         return self;
     }
-    function parseInt248(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int248 element) {
+    function parseInt248(Bytes32.Builder memory self, uint256 offset) external pure returns(int248 element) {
         return self.parseInt248(offset);
     }
 
-    function insertInt248(
-        Bytes32.Builder memory self,
-        int248 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt248(Bytes32.Builder memory self, int248 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt248(element, offset);
         return self;
     }
 
-    function pushInt248(
-        Bytes32.Builder memory self,
-        int248 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt248(Bytes32.Builder memory self, int248 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt248(element);
         return self;
     }
 
-    function popInt248(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int248 element) {
+    function popInt248(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int248 element) {
         element = self.popInt248();
         return (self, element);
     }
 
-    function shiftInt248(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int248 element) {
+    function shiftInt248(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int248 element) {
         element = self.shiftInt248();
         return (self, element);
     }
 
-    function unshiftInt248(
-        Bytes32.Builder memory self,
-        int248 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt248(Bytes32.Builder memory self, int248 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt248(element);
         return self;
     }
-    function parseUint248(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint248 element) {
+    function parseUint248(Bytes32.Builder memory self, uint256 offset) external pure returns(uint248 element) {
         return self.parseUint248(offset);
     }
 
-    function insertUint248(
-        Bytes32.Builder memory self,
-        uint248 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint248(Bytes32.Builder memory self, uint248 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint248(element, offset);
         return self;
     }
 
-    function pushUint248(
-        Bytes32.Builder memory self,
-        uint248 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint248(Bytes32.Builder memory self, uint248 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint248(element);
         return self;
     }
 
-    function popUint248(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint248 element) {
+    function popUint248(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint248 element) {
         element = self.popUint248();
         return (self, element);
     }
 
-    function shiftUint248(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint248 element) {
+    function shiftUint248(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint248 element) {
         element = self.shiftUint248();
         return (self, element);
     }
 
-    function unshiftUint248(
-        Bytes32.Builder memory self,
-        uint248 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint248(Bytes32.Builder memory self, uint248 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint248(element);
         return self;
     }
-    function parseBytes32(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (bytes32 element) {
+    function parseBytes32(Bytes32.Builder memory self, uint256 offset) external pure returns(bytes32 element) {
         return self.parseBytes32(offset);
     }
 
-    function insertBytes32(
-        Bytes32.Builder memory self,
-        bytes32 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertBytes32(Bytes32.Builder memory self, bytes32 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertBytes32(element, offset);
         return self;
     }
 
-    function pushBytes32(
-        Bytes32.Builder memory self,
-        bytes32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushBytes32(Bytes32.Builder memory self, bytes32 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushBytes32(element);
         return self;
     }
 
-    function popBytes32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes32 element) {
+    function popBytes32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes32 element) {
         element = self.popBytes32();
         return (self, element);
     }
 
-    function shiftBytes32(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, bytes32 element) {
+    function shiftBytes32(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, bytes32 element) {
         element = self.shiftBytes32();
         return (self, element);
     }
 
-    function unshiftBytes32(
-        Bytes32.Builder memory self,
-        bytes32 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftBytes32(Bytes32.Builder memory self, bytes32 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftBytes32(element);
         return self;
     }
-    function parseInt256(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (int256 element) {
+    function parseInt256(Bytes32.Builder memory self, uint256 offset) external pure returns(int256 element) {
         return self.parseInt256(offset);
     }
 
-    function insertInt256(
-        Bytes32.Builder memory self,
-        int256 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertInt256(Bytes32.Builder memory self, int256 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertInt256(element, offset);
         return self;
     }
 
-    function pushInt256(
-        Bytes32.Builder memory self,
-        int256 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushInt256(Bytes32.Builder memory self, int256 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushInt256(element);
         return self;
     }
 
-    function popInt256(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int256 element) {
+    function popInt256(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int256 element) {
         element = self.popInt256();
         return (self, element);
     }
 
-    function shiftInt256(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, int256 element) {
+    function shiftInt256(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, int256 element) {
         element = self.shiftInt256();
         return (self, element);
     }
 
-    function unshiftInt256(
-        Bytes32.Builder memory self,
-        int256 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftInt256(Bytes32.Builder memory self, int256 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftInt256(element);
         return self;
     }
-    function parseUint256(
-        Bytes32.Builder memory self,
-        uint256 offset
-    ) external pure returns (uint256 element) {
+    function parseUint256(Bytes32.Builder memory self, uint256 offset) external pure returns(uint256 element) {
         return self.parseUint256(offset);
     }
 
-    function insertUint256(
-        Bytes32.Builder memory self,
-        uint256 element,
-        uint256 offset
-    ) external pure returns (Bytes32.Builder memory) {
+    function insertUint256(Bytes32.Builder memory self, uint256 element, uint256 offset) external pure returns (Bytes32.Builder memory self_) {
         self.insertUint256(element, offset);
         return self;
     }
 
-    function pushUint256(
-        Bytes32.Builder memory self,
-        uint256 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function pushUint256(Bytes32.Builder memory self, uint256 element) external pure returns (Bytes32.Builder memory self_) {
         self.pushUint256(element);
         return self;
     }
 
-    function popUint256(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint256 element) {
+    function popUint256(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint256 element) {
         element = self.popUint256();
         return (self, element);
     }
 
-    function shiftUint256(
-        Bytes32.Builder memory self
-    ) external pure returns (Bytes32.Builder memory, uint256 element) {
+    function shiftUint256(Bytes32.Builder memory self) external pure returns (Bytes32.Builder memory self_, uint256 element) {
         element = self.shiftUint256();
         return (self, element);
     }
 
-    function unshiftUint256(
-        Bytes32.Builder memory self,
-        uint256 element
-    ) external pure returns (Bytes32.Builder memory) {
+    function unshiftUint256(Bytes32.Builder memory self, uint256 element) external pure returns (Bytes32.Builder memory self_) {
         self.unshiftUint256(element);
         return self;
     }

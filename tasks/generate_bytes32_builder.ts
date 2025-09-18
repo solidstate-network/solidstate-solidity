@@ -121,27 +121,27 @@ contract <%- libraryName %>Test {
         return self.parse<%- type.nameUpcase %>(offset);
     }
 
-    function insert<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (Bytes32.<%- structName %> memory) {
+    function insert<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element, uint256 offset) external pure returns (Bytes32.<%- structName %> memory self_) {
         self.insert<%- type.nameUpcase %>(element, offset);
         return self;
     }
 
-    function push<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory) {
+    function push<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory self_) {
         self.push<%- type.nameUpcase %>(element);
         return self;
     }
 
-    function pop<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory, <%- type.name %> element) {
+    function pop<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory self_, <%- type.name %> element) {
         element = self.pop<%- type.nameUpcase %>();
         return (self, element);
     }
 
-    function shift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory, <%- type.name %> element) {
+    function shift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self) external pure returns (Bytes32.<%- structName %> memory self_, <%- type.name %> element) {
         element = self.shift<%- type.nameUpcase %>();
         return (self, element);
     }
 
-    function unshift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory) {
+    function unshift<%- type.nameUpcase %>(Bytes32.<%- structName %> memory self, <%- type.name %> element) external pure returns (Bytes32.<%- structName %> memory self_) {
         self.unshift<%- type.nameUpcase %>(element);
         return self;
     }
