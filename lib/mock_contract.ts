@@ -1,16 +1,16 @@
 // MIT-licensed code derived from https://github.com/TrueFiEng/Waffle
 import DoppelgangerContract from './Doppelganger.json';
-import type { JsonFragment } from '@ethersproject/abi';
 import type { JsonRpcProvider } from '@ethersproject/providers';
+import { Signer } from 'ethers';
 import {
   BaseContract,
   Contract,
   ContractFactory,
-  Signer,
+  ContractInterface,
+  Signer as EthersV5Signer,
   utils,
 } from 'ethers5';
-
-type ABI = string | Array<utils.Fragment | JsonFragment | string>;
+import { Interface } from 'ethers5/lib/utils';
 
 interface StubInterface {
   returns(...args: any): StubInterface;
@@ -151,7 +151,7 @@ type DeployOptions = {
   override?: boolean;
 };
 
-async function deploy(signer: Signer, options?: DeployOptions) {
+async function deploy(signer: EthersV5Signer, options?: DeployOptions) {
   if (options) {
     const { address, override } = options;
     const provider = signer.provider as JsonRpcProvider;
@@ -190,7 +190,7 @@ async function deploy(signer: Signer, options?: DeployOptions) {
 }
 
 function createMock<T extends BaseContract>(
-  abi: ABI,
+  abi: Exclude<ContractInterface, Interface>,
   mockContractInstance: Contract,
 ): MockContract<T>['mock'] {
   const { functions } = new utils.Interface(abi);
@@ -229,7 +229,11 @@ function createMock<T extends BaseContract>(
 
 async function deployEthersV5MockContract<
   T extends BaseContract = BaseContract,
->(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract<T>> {
+>(
+  signer: EthersV5Signer,
+  abi: Exclude<ContractInterface, Interface>,
+  options?: DeployOptions,
+): Promise<MockContract<T>> {
   const mockContractInstance = await deploy(signer, options);
 
   const mock = createMock<T>(abi, mockContractInstance);
@@ -288,11 +292,11 @@ async function deployEthersV5MockContract<
 }
 
 export async function deployMockContract(
-  ethersV6Signer: any,
-  abi: any,
+  ethersV6Signer: Signer,
+  abi: Exclude<ContractInterface, Interface>,
   options?: DeployOptions,
 ) {
-  const ethersV5Signer = ethersV6Signer;
+  const ethersV5Signer = ethersV6Signer as any;
 
   ethersV5Signer._isSigner = true;
 
