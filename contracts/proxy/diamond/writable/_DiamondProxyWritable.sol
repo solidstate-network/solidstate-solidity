@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyWritable } from './_IDiamondProxyWritable.sol';
 

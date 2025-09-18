@@ -4,8 +4,9 @@ pragma solidity ^0.8.24;
 
 import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
-import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
-import { _Proxy } from '../_Proxy.sol';
+import {
+    IERC2535DiamondLoupe
+} from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { DiamondProxy } from './DiamondProxy.sol';
 import { _DiamondProxy } from './_DiamondProxy.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';

@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';

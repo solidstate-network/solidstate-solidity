@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import { MultiTokenEnumerable } from './enumerable/MultiTokenEnumerable.sol';
-import { _MultiTokenEnumerable } from './enumerable/_MultiTokenEnumerable.sol';
 import { MultiTokenMetadata } from './metadata/MultiTokenMetadata.sol';
 import { MultiToken } from './MultiToken.sol';
 import { _MultiToken } from './_MultiToken.sol';

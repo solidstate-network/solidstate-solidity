@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import { ERC173Storage } from '../../../storage/ERC173Storage.sol';
-import { Duration, duration } from '../../../utils/time/Duration.sol';
+import { duration } from '../../../utils/time/Duration.sol';
 import { Timelock, timelock } from '../../../utils/time/Timelock.sol';
 import { _Ownable } from '../_Ownable.sol';
 import { _ISafeOwnable } from './_ISafeOwnable.sol';
