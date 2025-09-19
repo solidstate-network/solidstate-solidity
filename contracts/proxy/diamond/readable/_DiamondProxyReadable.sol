@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
+import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
-import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyReadable } from './_IDiamondProxyReadable.sol';
 
 /**
@@ -57,6 +57,7 @@ abstract contract _DiamondProxyReadable is
                             numFacetSelectors[facetIndex]
                         ] = selector;
                         // probably will never have more than 256 functions from one facet contract
+                        // slippy-disable-next-line require-revert-reason
                         require(numFacetSelectors[facetIndex] < 255);
                         numFacetSelectors[facetIndex]++;
                         continueLoop = true;

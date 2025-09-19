@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC1271 } from '../../interfaces/IERC1271.sol';
-import { IContractSigner } from './IContractSigner.sol';
 import { _ContractSigner } from './_ContractSigner.sol';
+import { IContractSigner } from './IContractSigner.sol';
 
 /**
  * @title Base implementation of ERC1721

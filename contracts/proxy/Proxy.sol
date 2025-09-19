@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { Context } from '../meta/Context.sol';
-import { IProxy } from './IProxy.sol';
 import { _Proxy } from './_Proxy.sol';
+import { IProxy } from './IProxy.sol';
 
 /**
  * @title Base proxy contract

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IFungibleTokenSnapshot } from './IFungibleTokenSnapshot.sol';
 import { _FungibleTokenSnapshot } from './_FungibleTokenSnapshot.sol';
+import { IFungibleTokenSnapshot } from './IFungibleTokenSnapshot.sol';
 
 /**
  * @title FungibleToken base implementation with support for token balance and supply snapshots

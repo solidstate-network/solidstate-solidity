@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
+import {
+    IERC2535DiamondLoupe
+} from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
-import { DiamondProxy } from '../DiamondProxy.sol';
-import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
 import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
+import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract

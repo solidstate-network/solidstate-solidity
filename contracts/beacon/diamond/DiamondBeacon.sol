@@ -2,13 +2,16 @@
 
 pragma solidity ^0.8.24;
 
-import { _Ownable } from '../../access/ownable/Ownable.sol';
 import { Ownable } from '../../access/ownable/Ownable.sol';
-import { DiamondProxyWritable } from '../../proxy/diamond/writable/DiamondProxyWritable.sol';
-import { _DiamondProxyWritable } from '../../proxy/diamond/writable/_DiamondProxyWritable.sol';
 import { _DiamondProxy } from '../../proxy/diamond/_DiamondProxy.sol';
-import { IDiamondBeacon } from './IDiamondBeacon.sol';
+import {
+    _DiamondProxyWritable
+} from '../../proxy/diamond/writable/_DiamondProxyWritable.sol';
+import {
+    DiamondProxyWritable
+} from '../../proxy/diamond/writable/DiamondProxyWritable.sol';
 import { _DiamondBeacon } from './_DiamondBeacon.sol';
+import { IDiamondBeacon } from './IDiamondBeacon.sol';
 
 /**
  * @title Beacon contract which imitates the upgrade mechanism of an EIP-2535 diamond proxy.

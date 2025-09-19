@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC4626 } from '../../../interfaces/IERC4626.sol';
-import { IFungibleToken } from '../IFungibleToken.sol';
 import { IFungibleTokenMetadata } from '../../fungible/metadata/IFungibleTokenMetadata.sol';
+import { IFungibleToken } from '../IFungibleToken.sol';
 import { _IFungibleVaultToken } from './_IFungibleVaultToken.sol';
 
 /**

@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC1155Metadata } from '../../../interfaces/IERC1155Metadata.sol';
-import { IMultiTokenMetadata } from './IMultiTokenMetadata.sol';
 import { _MultiTokenMetadata } from './_MultiTokenMetadata.sol';
+import { IMultiTokenMetadata } from './IMultiTokenMetadata.sol';
 
 /**
  * @title MultiToken metadata extensions

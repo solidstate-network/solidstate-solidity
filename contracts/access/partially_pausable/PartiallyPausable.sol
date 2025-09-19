@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IPartiallyPausable } from './IPartiallyPausable.sol';
 import { _PartiallyPausable } from './_PartiallyPausable.sol';
+import { IPartiallyPausable } from './IPartiallyPausable.sol';
 
 /**
  * @title PartiallyPausable security control module.

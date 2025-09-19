@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
-import { _INFTRoyalty } from './_INFTRoyalty.sol';
 import { ERC2981Storage } from '../../../storage/ERC2981Storage.sol';
+import { _INFTRoyalty } from './_INFTRoyalty.sol';
 
 /**
  * @title NFTRoyalty internal functions

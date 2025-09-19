@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { PausableStorage } from '../../storage/PausableStorage.sol';
 import { _Context } from '../../meta/_Context.sol';
+import { PausableStorage } from '../../storage/PausableStorage.sol';
 import { _IPartiallyPausable } from './_IPartiallyPausable.sol';
 
 /**

@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { Proxy } from '../Proxy.sol';
 import { _Proxy } from '../_Proxy.sol';
-import { IBeaconProxy } from './IBeaconProxy.sol';
+import { Proxy } from '../Proxy.sol';
 import { _BeaconProxy } from './_BeaconProxy.sol';
+import { IBeaconProxy } from './IBeaconProxy.sol';
 
 /**
  * @title Proxy with externally controlled implementation

@@ -4,17 +4,18 @@ pragma solidity ^0.8.24;
 
 import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
-import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
-import { _Proxy } from '../_Proxy.sol';
-import { DiamondProxy } from './DiamondProxy.sol';
+import {
+    IERC2535DiamondLoupe
+} from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { _DiamondProxy } from './_DiamondProxy.sol';
+import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
+import { DiamondProxy } from './DiamondProxy.sol';
+import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
-import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
+import { ISolidstateDiamondProxy } from './ISolidstateDiamondProxy.sol';
 import { DiamondProxyReadable } from './readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from './writable/DiamondProxyWritable.sol';
-import { ISolidstateDiamondProxy } from './ISolidstateDiamondProxy.sol';
-import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
 
 /**
  * @title Solidstate "Diamond" proxy reference implementation

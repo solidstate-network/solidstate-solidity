@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { Ownable } from '../Ownable.sol';
 import { _Ownable } from '../_Ownable.sol';
-import { ISafeOwnable } from './ISafeOwnable.sol';
+import { Ownable } from '../Ownable.sol';
 import { _SafeOwnable } from './_SafeOwnable.sol';
+import { ISafeOwnable } from './ISafeOwnable.sol';
 
 /**
  * @title Ownership access control based on ERC173 with ownership transfer safety check

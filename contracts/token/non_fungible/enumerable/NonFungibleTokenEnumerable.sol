@@ -4,11 +4,10 @@ pragma solidity ^0.8.24;
 
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
-import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { IERC721Enumerable } from '../../../interfaces/IERC721Enumerable.sol';
 import { NonFungibleToken } from '../NonFungibleToken.sol';
-import { INonFungibleTokenEnumerable } from './INonFungibleTokenEnumerable.sol';
 import { _NonFungibleTokenEnumerable } from './_NonFungibleTokenEnumerable.sol';
+import { INonFungibleTokenEnumerable } from './INonFungibleTokenEnumerable.sol';
 
 abstract contract NonFungibleTokenEnumerable is
     INonFungibleTokenEnumerable,

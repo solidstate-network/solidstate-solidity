@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { Math } from '../../../utils/Math.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
-import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
+import { Math } from '../../../utils/Math.sol';
+import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
 
 /**
  * @title FungibleTokenSnapshot internal functions
@@ -128,7 +128,7 @@ abstract contract _FungibleTokenSnapshot is
     function _valueAt(
         uint256 snapshotId,
         ERC20Storage.Snapshots storage snapshots
-    ) private view returns (bool, uint256) {
+    ) private view returns (bool snapshotted, uint256 value) {
         if (snapshotId == 0) revert FungibleTokenSnapshot__SnapshotIdIsZero();
         ERC20Storage.Layout storage $ = ERC20Storage.layout(
             ERC20Storage.DEFAULT_STORAGE_SLOT
@@ -139,10 +139,9 @@ abstract contract _FungibleTokenSnapshot is
 
         uint256 index = _findUpperBound(snapshots.ids, snapshotId);
 
-        if (index == snapshots.ids.length) {
-            return (false, 0);
-        } else {
-            return (true, snapshots.values[index]);
+        if (index != snapshots.ids.length) {
+            snapshotted = true;
+            value = snapshots.values[index];
         }
     }
 

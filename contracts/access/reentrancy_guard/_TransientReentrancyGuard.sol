@@ -7,8 +7,8 @@ import { tslot } from '../../data/TransientSlot.sol';
 import { ReentrancyGuardStorage } from '../../storage/ReentrancyGuardStorage.sol';
 import { Bool } from '../../utils/Bool.sol';
 import { Bytes32 } from '../../utils/Bytes32.sol';
-import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
 import { _ITransientReentrancyGuard } from './_ITransientReentrancyGuard.sol';
+import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
 
 abstract contract _TransientReentrancyGuard is
     _ITransientReentrancyGuard,

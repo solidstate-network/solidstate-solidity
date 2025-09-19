@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
+import { _ISolidstateNonFungibleToken } from './_ISolidstateNonFungibleToken.sol';
+import { _NonFungibleToken } from './_NonFungibleToken.sol';
 import { _NonFungibleTokenEnumerable } from './enumerable/_NonFungibleTokenEnumerable.sol';
 import { _NonFungibleTokenMetadata } from './metadata/_NonFungibleTokenMetadata.sol';
-import { _NonFungibleToken } from './_NonFungibleToken.sol';
-import { _ISolidstateNonFungibleToken } from './_ISolidstateNonFungibleToken.sol';
 
 abstract contract _SolidstateNonFungibleToken is
     _ISolidstateNonFungibleToken,

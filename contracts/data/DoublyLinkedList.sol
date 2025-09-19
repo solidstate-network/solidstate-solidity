@@ -472,7 +472,7 @@ library DoublyLinkedList {
     ) private view returns (bytes32[] memory array) {
         array = new bytes32[](count);
 
-        for (uint i; i < count; i++) {
+        for (uint256 i; i < count; i++) {
             bytes32 nextValue = self._nextValues[prevValue];
 
             if (nextValue == 0) {

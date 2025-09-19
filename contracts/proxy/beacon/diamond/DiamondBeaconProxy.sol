@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import { BeaconProxy } from '../BeaconProxy.sol';
-import { _BeaconProxy } from '../_BeaconProxy.sol';
 import { _DiamondBeaconProxy } from './_DiamondBeaconProxy.sol';
 import { IDiamondBeaconProxy } from './IDiamondBeaconProxy.sol';
 

@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 
 import { Ownable } from '../access/ownable/Ownable.sol';
 import { IERC1967Beacon } from '../interfaces/IERC1967Beacon.sol';
-import { IBeacon } from './IBeacon.sol';
 import { _Beacon } from './_Beacon.sol';
+import { IBeacon } from './IBeacon.sol';
 
 contract Beacon is IBeacon, _Beacon, Ownable {
     /**

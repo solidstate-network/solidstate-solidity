@@ -2,10 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
-import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
+import { _IRestrictedFungibleToken } from './_IRestrictedFungibleToken.sol';
 
 /**
  * @title Base ERC1404 internal functions
@@ -50,6 +49,10 @@ abstract contract _RestrictedFungibleToken is
         address to,
         uint256 amount
     ) internal view virtual returns (uint8 restrictionCode) {
+        from;
+        to;
+        amount;
+        
         return 0;
     }
 

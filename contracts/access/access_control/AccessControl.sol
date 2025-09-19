@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IAccessControl } from './IAccessControl.sol';
 import { _AccessControl } from './_AccessControl.sol';
+import { IAccessControl } from './IAccessControl.sol';
 
 /**
  * @title Role-based access control system

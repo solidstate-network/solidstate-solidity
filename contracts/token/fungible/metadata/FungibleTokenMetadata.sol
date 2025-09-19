@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC20Metadata } from '../../../interfaces/IERC20Metadata.sol';
-import { IFungibleTokenMetadata } from './IFungibleTokenMetadata.sol';
 import { _FungibleTokenMetadata } from './_FungibleTokenMetadata.sol';
+import { IFungibleTokenMetadata } from './IFungibleTokenMetadata.sol';
 
 /**
  * @title ERC20 metadata extensions

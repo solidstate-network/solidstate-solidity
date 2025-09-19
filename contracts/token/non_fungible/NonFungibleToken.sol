@@ -5,8 +5,8 @@ pragma solidity ^0.8.24;
 import { IERC721 } from '../../interfaces/IERC721.sol';
 import { Introspectable } from '../../introspection/Introspectable.sol';
 import { Context } from '../../meta/Context.sol';
-import { INonFungibleToken } from './INonFungibleToken.sol';
 import { _NonFungibleToken } from './_NonFungibleToken.sol';
+import { INonFungibleToken } from './INonFungibleToken.sol';
 
 /**
  * @title Base NonFungibleToken implementation, excluding optional extensions

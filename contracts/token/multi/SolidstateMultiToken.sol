@@ -2,13 +2,12 @@
 
 pragma solidity ^0.8.24;
 
+import { _MultiToken } from './_MultiToken.sol';
+import { _SolidstateMultiToken } from './_SolidstateMultiToken.sol';
 import { MultiTokenEnumerable } from './enumerable/MultiTokenEnumerable.sol';
-import { _MultiTokenEnumerable } from './enumerable/_MultiTokenEnumerable.sol';
+import { ISolidstateMultiToken } from './ISolidstateMultiToken.sol';
 import { MultiTokenMetadata } from './metadata/MultiTokenMetadata.sol';
 import { MultiToken } from './MultiToken.sol';
-import { _MultiToken } from './_MultiToken.sol';
-import { ISolidstateMultiToken } from './ISolidstateMultiToken.sol';
-import { _SolidstateMultiToken } from './_SolidstateMultiToken.sol';
 
 /**
  * @title Solidstate MultiToken implementation

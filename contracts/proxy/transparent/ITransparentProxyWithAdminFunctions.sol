@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { ITransparentProxy } from './ITransparentProxy.sol';
 import { _ITransparentProxyWithAdminFunctions } from './_ITransparentProxyWithAdminFunctions.sol';
+import { ITransparentProxy } from './ITransparentProxy.sol';
 
 /**
  * @title Utility interface for TransparentProxy which provides access to transparent admin functions

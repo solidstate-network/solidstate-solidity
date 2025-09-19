@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+// slippy-disable no-global-imports
+// slippy-disable sort-imports
 import './access/access_control/AccessControl.sol';
 import './access/access_control/IAccessControl.sol';
 import './access/access_control/_AccessControl.sol';

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IFungibleTokenExtended } from './IFungibleTokenExtended.sol';
 import { _FungibleTokenExtended } from './_FungibleTokenExtended.sol';
+import { IFungibleTokenExtended } from './IFungibleTokenExtended.sol';
 
 /**
  * @title FungibleToken safe approval extensions

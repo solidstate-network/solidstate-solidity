@@ -4,9 +4,8 @@ pragma solidity ^0.8.24;
 
 import { IERC20 } from '../../interfaces/IERC20.sol';
 import { Context } from '../../meta/Context.sol';
-import { ERC20Storage } from '../../storage/ERC20Storage.sol';
-import { IFungibleToken } from './IFungibleToken.sol';
 import { _FungibleToken } from './_FungibleToken.sol';
+import { IFungibleToken } from './IFungibleToken.sol';
 
 /**
  * @title Base FungibleToken implementation, excluding optional extensions

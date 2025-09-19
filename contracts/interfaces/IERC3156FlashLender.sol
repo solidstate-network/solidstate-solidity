@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC3156FlashBorrower } from './IERC3156FlashBorrower.sol';
 import { _IERC3156FlashLender } from './_IERC3156FlashLender.sol';
+import { IERC3156FlashBorrower } from './IERC3156FlashBorrower.sol';
 
 interface IERC3156FlashLender is _IERC3156FlashLender {
     /**

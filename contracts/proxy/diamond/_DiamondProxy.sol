@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
+import { _Proxy } from '../_Proxy.sol';
 import { ERC2535Storage } from '../../storage/ERC2535Storage.sol';
 import { Address } from '../../utils/Address.sol';
 import { Bool } from '../../utils/Bool.sol';
-import { _Proxy } from '../_Proxy.sol';
 import { _IDiamondProxy } from './_IDiamondProxy.sol';
 
 abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
@@ -138,6 +138,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         uint256 selectorCount,
         bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
+        // slippy-disable-previous-line named-return-params
+        
         unchecked {
             if (facetCut.target.isContract()) {
                 if (facetCut.target == address(this)) {
@@ -198,6 +200,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         uint256 selectorCount,
         bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
+        // slippy-disable-previous-line named-return-params
+        
         unchecked {
             if (facetCut.target != address(0))
                 revert DiamondProxyWritable__RemoveTargetNotZeroAddress();

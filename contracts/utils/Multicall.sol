@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IMulticall } from './IMulticall.sol';
 import { _Multicall } from './_Multicall.sol';
+import { IMulticall } from './IMulticall.sol';
 
 /**
  * @title Utility contract for supporting processing of multiple function calls in a single transaction

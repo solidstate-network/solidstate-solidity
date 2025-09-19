@@ -370,7 +370,7 @@ library PackedDoublyLinkedList {
     ) internal view returns (bytes16[] memory array) {
         array = new bytes16[](count);
 
-        for (uint i; i < count; i++) {
+        for (uint256 i; i < count; i++) {
             (, bytes16 nextValue) = _parseLinks(self._links[prevValue]);
 
             if (nextValue == 0) {
@@ -396,7 +396,7 @@ library PackedDoublyLinkedList {
     ) internal view returns (uint128[] memory array) {
         array = new uint128[](count);
 
-        for (uint i; i < count; i++) {
+        for (uint256 i; i < count; i++) {
             (, bytes16 nextValue) = _parseLinks(
                 self._links[bytes16(prevValue)]
             );

@@ -155,6 +155,8 @@ task(
       '',
       'pragma solidity ^0.8.24;',
       '',
+      '// slippy-disable no-global-imports',
+      '// slippy-disable sort-imports',
       ...contractsBarrel.map(
         (s) =>
           `import './${path.relative(path.dirname(contractsBarrelPath), s)}';`,

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _IOwnable } from '../../ownable/_IOwnable.sol';
 import { _IAccessControl } from '../_IAccessControl.sol';
+import { _IOwnable } from '../../ownable/_IOwnable.sol';
 
 /**
  * @title Partial IAccessControlOwnable interface needed by internal functions

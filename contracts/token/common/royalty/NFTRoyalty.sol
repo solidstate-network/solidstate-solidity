@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 
 import { IERC2981 } from '../../../interfaces/IERC2981.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { INFTRoyalty } from './INFTRoyalty.sol';
 import { _NFTRoyalty } from './_NFTRoyalty.sol';
+import { INFTRoyalty } from './INFTRoyalty.sol';
 
 /**
  * @title NFTRoyalty implementation

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC20 } from './IERC20.sol';
 import { _IERC1404 } from './_IERC1404.sol';
+import { IERC20 } from './IERC20.sol';
 
 /**
  * @title ERC1404 interface

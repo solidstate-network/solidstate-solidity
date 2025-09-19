@@ -3,9 +3,9 @@
 pragma solidity ^0.8.24;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { ERC173Storage } from '../../storage/ERC173Storage.sol';
 import { Address } from '../../utils/Address.sol';
-import { _Context } from '../../meta/_Context.sol';
 import { _IOwnable } from './_IOwnable.sol';
 
 abstract contract _Ownable is _IOwnable, _Context {
