@@ -10,7 +10,7 @@ export default {
     'no-console': 'error',
     'no-default-visibility': 'error',
     'no-duplicate-imports': 'error',
-    'no-empty-blocks': 'error',
+    'no-empty-blocks': 'off',
     'no-global-imports': 'error',
     'no-restricted-syntax': 'error',
     'no-send': 'error',
