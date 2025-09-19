@@ -57,6 +57,7 @@ abstract contract _DiamondProxyReadable is
                             numFacetSelectors[facetIndex]
                         ] = selector;
                         // probably will never have more than 256 functions from one facet contract
+                        // slippy-disable-next-line require-revert-reason
                         require(numFacetSelectors[facetIndex] < 255);
                         numFacetSelectors[facetIndex]++;
                         continueLoop = true;
