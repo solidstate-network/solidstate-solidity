@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { _Proxy } from '../_Proxy.sol';
-import { ITransparentProxyWithAdminFunctions } from './ITransparentProxyWithAdminFunctions.sol';
 import { _ITransparentProxy } from './_ITransparentProxy.sol';
+import { ITransparentProxyWithAdminFunctions } from './ITransparentProxyWithAdminFunctions.sol';
 
 abstract contract _TransparentProxy is _ITransparentProxy, _Proxy {
     /**

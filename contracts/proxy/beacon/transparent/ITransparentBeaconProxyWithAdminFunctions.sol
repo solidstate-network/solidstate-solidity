@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { ITransparentBeaconProxy } from './ITransparentBeaconProxy.sol';
 import { _ITransparentBeaconProxyWithAdminFunctions } from './_ITransparentBeaconProxyWithAdminFunctions.sol';
+import { ITransparentBeaconProxy } from './ITransparentBeaconProxy.sol';
 
 /**
  * @title Utility interface for TransparentBeaconProxy which provides access to transparent admin functions

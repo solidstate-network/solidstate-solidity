@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { IERC165 } from '../interfaces/IERC165.sol';
-import { IIntrospectable } from './IIntrospectable.sol';
 import { _Introspectable } from './_Introspectable.sol';
+import { IIntrospectable } from './IIntrospectable.sol';
 
 /**
  * @title ERC165 implementation

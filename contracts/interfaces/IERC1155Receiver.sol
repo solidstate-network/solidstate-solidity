@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC165 } from './IERC165.sol';
 import { _IERC1155Receiver } from './_IERC1155Receiver.sol';
+import { IERC165 } from './IERC165.sol';
 
 /**
  * @title ERC1155 transfer receiver interface

@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { _Proxy } from '../../_Proxy.sol';
 import { _BeaconProxy } from '../_BeaconProxy.sol';
-import { ITransparentBeaconProxyWithAdminFunctions } from './ITransparentBeaconProxyWithAdminFunctions.sol';
+import { _Proxy } from '../../_Proxy.sol';
 import { _ITransparentBeaconProxy } from './_ITransparentBeaconProxy.sol';
+import { ITransparentBeaconProxyWithAdminFunctions } from './ITransparentBeaconProxyWithAdminFunctions.sol';
 
 abstract contract _TransparentBeaconProxy is
     _ITransparentBeaconProxy,

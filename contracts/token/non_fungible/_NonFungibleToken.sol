@@ -6,9 +6,9 @@ import { EnumerableMap } from '../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { IERC721Receiver } from '../../interfaces/IERC721Receiver.sol';
 import { _Introspectable } from '../../introspection/_Introspectable.sol';
+import { _Context } from '../../meta/_Context.sol';
 import { ERC721Storage } from '../../storage/ERC721Storage.sol';
 import { Address } from '../../utils/Address.sol';
-import { _Context } from '../../meta/_Context.sol';
 import { _INonFungibleToken } from './_INonFungibleToken.sol';
 
 /**

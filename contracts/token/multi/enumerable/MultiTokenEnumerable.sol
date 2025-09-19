@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { MultiToken } from '../MultiToken.sol';
 import { _MultiToken } from '../_MultiToken.sol';
-import { IMultiTokenEnumerable } from './IMultiTokenEnumerable.sol';
+import { MultiToken } from '../MultiToken.sol';
 import { _MultiTokenEnumerable } from './_MultiTokenEnumerable.sol';
+import { IMultiTokenEnumerable } from './IMultiTokenEnumerable.sol';
 
 /**
  * @title MultiToken implementation including enumerable and aggregate functions

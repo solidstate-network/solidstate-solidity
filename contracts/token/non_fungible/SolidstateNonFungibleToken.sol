@@ -2,13 +2,13 @@
 
 pragma solidity ^0.8.24;
 
-import { NonFungibleTokenEnumerable } from './enumerable/NonFungibleTokenEnumerable.sol';
-import { NonFungibleTokenMetadata } from './metadata/NonFungibleTokenMetadata.sol';
-import { _NonFungibleTokenMetadata } from './metadata/_NonFungibleTokenMetadata.sol';
-import { NonFungibleToken } from './NonFungibleToken.sol';
 import { _NonFungibleToken } from './_NonFungibleToken.sol';
-import { ISolidstateNonFungibleToken } from './ISolidstateNonFungibleToken.sol';
 import { _SolidstateNonFungibleToken } from './_SolidstateNonFungibleToken.sol';
+import { NonFungibleTokenEnumerable } from './enumerable/NonFungibleTokenEnumerable.sol';
+import { ISolidstateNonFungibleToken } from './ISolidstateNonFungibleToken.sol';
+import { _NonFungibleTokenMetadata } from './metadata/_NonFungibleTokenMetadata.sol';
+import { NonFungibleTokenMetadata } from './metadata/NonFungibleTokenMetadata.sol';
+import { NonFungibleToken } from './NonFungibleToken.sol';
 
 /**
  * @title Solidstate NonFungibleToken implementation, including recommended extensions

@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { Context } from '../../meta/Context.sol';
-import { IPausable } from './IPausable.sol';
 import { _Pausable } from './_Pausable.sol';
+import { IPausable } from './IPausable.sol';
 
 /**
  * @title Pausable security control module.

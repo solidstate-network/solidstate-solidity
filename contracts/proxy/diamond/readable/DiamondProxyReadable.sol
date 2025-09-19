@@ -6,8 +6,8 @@ import {
     IERC2535DiamondLoupe
 } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
-import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
 import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
+import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy introspection contract

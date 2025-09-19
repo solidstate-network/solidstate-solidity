@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _IERC721Metadata } from '../../../interfaces/_IERC721Metadata.sol';
 import { _INonFungibleToken } from '../_INonFungibleToken.sol';
+import { _IERC721Metadata } from '../../../interfaces/_IERC721Metadata.sol';
 
 /**
  * @title NonFungibleTokenMetadata internal interface

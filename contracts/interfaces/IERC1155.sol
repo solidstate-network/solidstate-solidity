@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC165 } from './IERC165.sol';
 import { _IERC1155 } from './_IERC1155.sol';
+import { IERC165 } from './IERC165.sol';
 
 /**
  * @title ERC1155 interface

@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { ContractSigner } from '../ContractSigner.sol';
 import { _ContractSigner } from '../_ContractSigner.sol';
-import { IContractSignerOwnable } from './IContractSignerOwnable.sol';
+import { ContractSigner } from '../ContractSigner.sol';
 import { _ContractSignerOwnable } from './_ContractSignerOwnable.sol';
+import { IContractSignerOwnable } from './IContractSignerOwnable.sol';
 
 /**
  * @title ERC1271 implementation which delegates signing authority to ERC173 contract owner

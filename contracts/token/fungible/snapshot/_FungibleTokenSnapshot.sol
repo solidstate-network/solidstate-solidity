@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { Math } from '../../../utils/Math.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
-import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
+import { Math } from '../../../utils/Math.sol';
+import { _IFungibleTokenSnapshot } from './_IFungibleTokenSnapshot.sol';
 
 /**
  * @title FungibleTokenSnapshot internal functions

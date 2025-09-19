@@ -3,9 +3,9 @@
 pragma solidity ^0.8.24;
 
 import { _Context } from '../meta/_Context.sol';
+import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { Address } from '../utils/Address.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';
-import { ERC1967Storage } from '../storage/ERC1967Storage.sol';
 import { _IProxy } from './_IProxy.sol';
 
 abstract contract _Proxy is _IProxy, _Context {

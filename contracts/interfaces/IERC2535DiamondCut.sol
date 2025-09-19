@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { IERC165 } from './IERC165.sol';
 import { _IERC2535DiamondCut } from './_IERC2535DiamondCut.sol';
+import { IERC165 } from './IERC165.sol';
 
 /**
  * @title ERC2535 write interface

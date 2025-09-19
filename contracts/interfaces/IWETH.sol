@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
+import { _IWETH } from './_IWETH.sol';
 import { IERC20 } from './IERC20.sol';
 import { IERC20Metadata } from './IERC20Metadata.sol';
-import { _IWETH } from './_IWETH.sol';
 
 /**
  * @title WETH (Wrapped ETH) interface

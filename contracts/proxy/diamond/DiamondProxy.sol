@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { Proxy } from '../Proxy.sol';
 import { _Proxy } from '../_Proxy.sol';
-import { IDiamondProxy } from './IDiamondProxy.sol';
+import { Proxy } from '../Proxy.sol';
 import { _DiamondProxy } from './_DiamondProxy.sol';
+import { IDiamondProxy } from './IDiamondProxy.sol';
 
 /**
  * @title EIP-2535 "Diamond" proxy base contract

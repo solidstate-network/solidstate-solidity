@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { ERC20Storage } from '../../storage/ERC20Storage.sol';
 import { _Context } from '../../meta/_Context.sol';
+import { ERC20Storage } from '../../storage/ERC20Storage.sol';
 import { _IFungibleToken } from './_IFungibleToken.sol';
 
 /**

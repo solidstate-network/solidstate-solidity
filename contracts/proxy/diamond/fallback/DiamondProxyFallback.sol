@@ -3,8 +3,8 @@
 pragma solidity ^0.8.24;
 
 import { DiamondProxy } from '../DiamondProxy.sol';
-import { IDiamondProxyFallback } from './IDiamondProxyFallback.sol';
 import { _DiamondProxyFallback } from './_DiamondProxyFallback.sol';
+import { IDiamondProxyFallback } from './IDiamondProxyFallback.sol';
 
 /**
  * @title Fallback feature for EIP-2535 "Diamond" proxy

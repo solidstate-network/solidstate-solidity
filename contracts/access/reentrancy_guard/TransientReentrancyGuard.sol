@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { ReentrancyGuard } from './ReentrancyGuard.sol';
 import { _ReentrancyGuard } from './_ReentrancyGuard.sol';
-import { ITransientReentrancyGuard } from './ITransientReentrancyGuard.sol';
 import { _TransientReentrancyGuard } from './_TransientReentrancyGuard.sol';
+import { ITransientReentrancyGuard } from './ITransientReentrancyGuard.sol';
+import { ReentrancyGuard } from './ReentrancyGuard.sol';
 
 abstract contract TransientReentrancyGuard is
     ITransientReentrancyGuard,
