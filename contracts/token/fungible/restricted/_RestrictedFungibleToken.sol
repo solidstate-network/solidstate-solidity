@@ -49,6 +49,10 @@ abstract contract _RestrictedFungibleToken is
         address to,
         uint256 amount
     ) internal view virtual returns (uint8 restrictionCode) {
+        from;
+        to;
+        amount;
+        
         return 0;
     }
 
