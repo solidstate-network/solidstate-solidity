@@ -21,21 +21,21 @@ abstract contract AccessControlOwnable is
     function _grantRole(
         bytes32 role,
         address account
-    ) internal override(_AccessControl, _AccessControlOwnable) {
+    ) internal virtual override(_AccessControl, _AccessControlOwnable) {
         super._grantRole(role, account);
     }
 
     function _revokeRole(
         bytes32 role,
         address account
-    ) internal override(_AccessControl, _AccessControlOwnable) {
+    ) internal virtual override(_AccessControl, _AccessControlOwnable) {
         super._revokeRole(role, account);
     }
 
     function _setRoleAdmin(
         bytes32 role,
         bytes32 adminRole
-    ) internal override(_AccessControl, _AccessControlOwnable) {
+    ) internal virtual override(_AccessControl, _AccessControlOwnable) {
         super._setRoleAdmin(role, adminRole);
     }
 

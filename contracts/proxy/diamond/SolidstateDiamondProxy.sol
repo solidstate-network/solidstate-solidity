@@ -93,6 +93,7 @@ abstract contract SolidstateDiamondProxy is
     function _getImplementation()
         internal
         view
+        virtual
         override(
             _DiamondProxy,
             DiamondProxy,
