@@ -50,7 +50,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
      * @notice revert if sender does not have given role
      * @param role role to query
      */
-    function _checkRole(bytes32 role) internal view virtual {
+    function _checkRole(bytes32 role) internal virtual {
         _checkRole(role, _msgSender());
     }
 
