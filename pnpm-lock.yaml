@@ -25,9 +25,6 @@ importers:
       '@nomicfoundation/hardhat-network-helpers':
         specifier: ^1.1.2
         version: 1.1.2(hardhat@2.27.0(ts-node@10.9.2(@types/node@24.10.1)(typescript@5.9.3))(typescript@5.9.3))
-      '@slippy-lint/slippy':
-        specifier: ^0.2.1
-        version: 0.2.1
       '@solidstate/hardhat-4byte-uploader':
         specifier: ^1.2.3
         version: 1.2.3(hardhat@2.27.0(ts-node@10.9.2(@types/node@24.10.1)(typescript@5.9.3))(typescript@5.9.3))
@@ -130,6 +127,9 @@ importers:
       prettier-plugin-solidity:
         specifier: ^2.2.0
         version: 2.2.0(prettier@3.6.2)
+      slippy:
+        specifier: ^0.3.0
+        version: 0.3.0
       solidity-coverage:
         specifier: ^0.8.16
         version: 0.8.16(hardhat@2.27.0(ts-node@10.9.2(@types/node@24.10.1)(typescript@5.9.3))(typescript@5.9.3))
@@ -947,10 +947,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@slippy-lint/slippy@0.2.1':
-    resolution: {integrity: sha512-EshfotrF8bpONybjlyHhItTDHrxLoc7uDAc7aKGzWIsnHBSyikc+AvOtmG+x6D2mh/EuoRT+tddXtNtZrWX4YQ==}
-    hasBin: true
 
   '@solidity-parser/parser@0.16.2':
     resolution: {integrity: sha512-PI9NfoA3P8XK2VBkK5oIfRgKDsicwDZfkVq9ZTBCQYGOP1N2owgY2dyLGyU5/J/hQs8KRk55kdmvTLjy3Mu3vg==}
@@ -3599,6 +3595,10 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
+  slippy@0.3.0:
+    resolution: {integrity: sha512-OtVm7Xa4iA4UWmYO7f27CAfyp/UBCQKFSIKOOVrD6md9xqKrZpjCZzEg8X+BSeVxn0XYEYvELeLEBoU6+cDOqg==}
+    hasBin: true
+
   smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
@@ -5304,20 +5304,6 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@slippy-lint/slippy@0.2.1':
-    dependencies:
-      '@nomicfoundation/slang': 1.3.0
-      chalk: 5.6.2
-      debug: 4.4.3
-      fast-glob: 3.3.3
-      micromatch: 4.0.8
-      minimist: 1.2.8
-      semver: 7.7.3
-      workerpool: 9.3.4
-      zod: 4.1.12
-    transitivePeerDependencies:
-      - supports-color
 
   '@solidity-parser/parser@0.16.2':
     dependencies:
@@ -8352,6 +8338,20 @@ snapshots:
       - supports-color
 
   slash@3.0.0: {}
+
+  slippy@0.3.0:
+    dependencies:
+      '@nomicfoundation/slang': 1.3.0
+      chalk: 5.6.2
+      debug: 4.4.3
+      fast-glob: 3.3.3
+      micromatch: 4.0.8
+      minimist: 1.2.8
+      semver: 7.7.3
+      workerpool: 9.3.4
+      zod: 4.1.12
+    transitivePeerDependencies:
+      - supports-color
 
   smart-buffer@4.2.0: {}
 
