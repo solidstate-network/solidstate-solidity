@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _ContractSigner } from '../_ContractSigner.sol';
 import { _Ownable } from '../../../access/ownable/_Ownable.sol';
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
+import { _ContractSigner } from '../_ContractSigner.sol';
 import { _IContractSignerOwnable } from './_IContractSignerOwnable.sol';
 
 /**

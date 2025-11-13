@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _NonFungibleToken } from '../_NonFungibleToken.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { Uint256 } from '../../../utils/Uint256.sol';
+import { _NonFungibleToken } from '../_NonFungibleToken.sol';
 import { _INonFungibleTokenMetadata } from './_INonFungibleTokenMetadata.sol';
 
 /**

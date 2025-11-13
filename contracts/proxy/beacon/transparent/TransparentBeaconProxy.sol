@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _BeaconProxy } from '../_BeaconProxy.sol';
 import { _Proxy } from '../../_Proxy.sol';
+import { _BeaconProxy } from '../_BeaconProxy.sol';
 import { BeaconProxy } from '../BeaconProxy.sol';
 import { _TransparentBeaconProxy } from './_TransparentBeaconProxy.sol';
 import { ITransparentBeaconProxy } from './ITransparentBeaconProxy.sol';

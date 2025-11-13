@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _IFungibleToken } from '../_IFungibleToken.sol';
 import { _IERC1404 } from '../../../interfaces/_IERC1404.sol';
+import { _IFungibleToken } from '../_IFungibleToken.sol';
 
 /**
  * @title ERC1404 base interface

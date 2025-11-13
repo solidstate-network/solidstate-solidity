@@ -7,15 +7,15 @@ import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
 import {
     IERC2535DiamondLoupe
 } from '../../interfaces/IERC2535DiamondLoupe.sol';
-import { _DiamondProxy } from './_DiamondProxy.sol';
-import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
-import { DiamondProxy } from './DiamondProxy.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';
-import { ISolidstateDiamondProxy } from './ISolidstateDiamondProxy.sol';
 import { DiamondProxyReadable } from './readable/DiamondProxyReadable.sol';
 import { DiamondProxyWritable } from './writable/DiamondProxyWritable.sol';
+import { _DiamondProxy } from './_DiamondProxy.sol';
+import { _SolidstateDiamondProxy } from './_SolidstateDiamondProxy.sol';
+import { DiamondProxy } from './DiamondProxy.sol';
+import { ISolidstateDiamondProxy } from './ISolidstateDiamondProxy.sol';
 
 /**
  * @title Solidstate "Diamond" proxy reference implementation
@@ -93,6 +93,7 @@ abstract contract SolidstateDiamondProxy is
     function _getImplementation()
         internal
         view
+        virtual
         override(
             _DiamondProxy,
             DiamondProxy,

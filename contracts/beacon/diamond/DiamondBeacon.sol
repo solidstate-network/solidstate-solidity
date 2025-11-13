@@ -3,13 +3,13 @@
 pragma solidity ^0.8.24;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
-import { _DiamondProxy } from '../../proxy/diamond/_DiamondProxy.sol';
 import {
     _DiamondProxyWritable
 } from '../../proxy/diamond/writable/_DiamondProxyWritable.sol';
 import {
     DiamondProxyWritable
 } from '../../proxy/diamond/writable/DiamondProxyWritable.sol';
+import { _DiamondProxy } from '../../proxy/diamond/_DiamondProxy.sol';
 import { _DiamondBeacon } from './_DiamondBeacon.sol';
 import { IDiamondBeacon } from './IDiamondBeacon.sol';
 
