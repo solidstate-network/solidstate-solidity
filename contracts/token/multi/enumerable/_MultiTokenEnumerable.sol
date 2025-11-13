@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _MultiToken } from '../_MultiToken.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
+import { _MultiToken } from '../_MultiToken.sol';
 import { _IMultiTokenEnumerable } from './_IMultiTokenEnumerable.sol';
 
 /**

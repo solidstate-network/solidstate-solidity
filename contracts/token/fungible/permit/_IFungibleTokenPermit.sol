@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.24;
 
-import { _IFungibleToken } from '../_IFungibleToken.sol';
 import { _IERC2612 } from '../../../interfaces/_IERC2612.sol';
 import { _IERC5267 } from '../../../interfaces/_IERC5267.sol';
 import { _IFungibleTokenMetadata } from '../metadata/_IFungibleTokenMetadata.sol';
+import { _IFungibleToken } from '../_IFungibleToken.sol';
 
 interface _IFungibleTokenPermit is
     _IFungibleToken,

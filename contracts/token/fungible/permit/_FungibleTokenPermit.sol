@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.24;
 
-import { _FungibleToken } from '../_FungibleToken.sol';
 import { ECDSA } from '../../../cryptography/ECDSA.sol';
 import { EIP712 } from '../../../cryptography/EIP712.sol';
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 import { _FungibleTokenMetadata } from '../metadata/_FungibleTokenMetadata.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { _IFungibleTokenPermit } from './_IFungibleTokenPermit.sol';
 
 /**
