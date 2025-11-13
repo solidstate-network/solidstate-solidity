@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { ERC2535Storage } from '../../../storage/ERC2535Storage.sol';
+import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyFallback } from './_IDiamondProxyFallback.sol';
 
 abstract contract _DiamondProxyFallback is

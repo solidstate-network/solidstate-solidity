@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
+import { _DiamondProxy } from '../_DiamondProxy.sol';
 import { _IDiamondProxyWritable } from './_IDiamondProxyWritable.sol';
 
 abstract contract _DiamondProxyWritable is

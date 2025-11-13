@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _AccessControl } from '../_AccessControl.sol';
 import { _Ownable } from '../../ownable/_Ownable.sol';
 import { Ownable } from '../../ownable/Ownable.sol';
+import { _AccessControl } from '../_AccessControl.sol';
 import { AccessControl } from '../AccessControl.sol';
 import { _AccessControlOwnable } from './_AccessControlOwnable.sol';
 import { IAccessControlOwnable } from './IAccessControlOwnable.sol';

@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _ISolidstateMultiToken } from './_ISolidstateMultiToken.sol';
 import { _MultiTokenEnumerable } from './enumerable/_MultiTokenEnumerable.sol';
 import { _MultiTokenMetadata } from './metadata/_MultiTokenMetadata.sol';
+import { _ISolidstateMultiToken } from './_ISolidstateMultiToken.sol';
 import { _MultiToken } from './MultiToken.sol';
 
 abstract contract _SolidstateMultiToken is

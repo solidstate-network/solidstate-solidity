@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.24;
 
-import { _SolidstateFungibleToken } from './_SolidstateFungibleToken.sol';
 import { FungibleTokenExtended } from './extended/FungibleTokenExtended.sol';
-import { FungibleToken } from './FungibleToken.sol';
-import { ISolidstateFungibleToken } from './ISolidstateFungibleToken.sol';
 import { FungibleTokenMetadata } from './metadata/FungibleTokenMetadata.sol';
 import { FungibleTokenPermit } from './permit/FungibleTokenPermit.sol';
+import { _SolidstateFungibleToken } from './_SolidstateFungibleToken.sol';
+import { FungibleToken } from './FungibleToken.sol';
+import { ISolidstateFungibleToken } from './ISolidstateFungibleToken.sol';
 
 /**
  * @title Solidstate FungibleToken implementation, including recommended extensions

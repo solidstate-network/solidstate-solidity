@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _IProxy } from '../_IProxy.sol';
 import { _IERC2535DiamondCut } from '../../interfaces/_IERC2535DiamondCut.sol';
 import { _IERC2535DiamondLoupe } from '../../interfaces/_IERC2535DiamondLoupe.sol';
+import { _IProxy } from '../_IProxy.sol';
 
 interface _IDiamondProxy is
     _IProxy,

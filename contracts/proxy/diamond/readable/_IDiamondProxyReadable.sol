@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-import { _IDiamondProxy } from '../_IDiamondProxy.sol';
 import { _IERC2535DiamondLoupe } from '../../../interfaces/_IERC2535DiamondLoupe.sol';
 import { _IIntrospectable } from '../../../introspection/_IIntrospectable.sol';
+import { _IDiamondProxy } from '../_IDiamondProxy.sol';
 
 /**
  * @title Diamond proxy introspection interface needed for internal functions

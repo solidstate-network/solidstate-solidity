@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import { _FungibleToken } from '../_FungibleToken.sol';
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
+import { _FungibleToken } from '../_FungibleToken.sol';
 import { FungibleToken } from '../FungibleToken.sol';
 import { _RestrictedFungibleToken } from './_RestrictedFungibleToken.sol';
 import { IRestrictedFungibleToken } from './IRestrictedFungibleToken.sol';
