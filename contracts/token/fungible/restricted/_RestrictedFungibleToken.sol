@@ -52,7 +52,7 @@ abstract contract _RestrictedFungibleToken is
         from;
         to;
         amount;
-        
+
         return 0;
     }
 

@@ -23,7 +23,7 @@ abstract contract _ContractSigner is _IContractSigner {
         bytes memory signature
     ) internal view virtual returns (bytes4 magicValue) {
         signature;
-        
+
         return
             ERC1271Storage.layout(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
                 hash

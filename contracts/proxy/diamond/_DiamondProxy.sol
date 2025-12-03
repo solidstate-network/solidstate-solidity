@@ -139,7 +139,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
         // slippy-disable-previous-line named-return-params
-        
+
         unchecked {
             if (facetCut.target.isContract()) {
                 if (facetCut.target == address(this)) {
@@ -157,8 +157,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
 
                 // for current selector, write facet address and global index to storage
                 $.selectorInfo[selector] =
-                    bytes32(selectorCount) |
-                    bytes20(facetCut.target);
+                    bytes32(selectorCount) | bytes20(facetCut.target);
 
                 // calculate bit position of current selector within 256-bit slug
                 uint256 selectorBitIndexInSlug = (selectorCount & 7) << 5;
@@ -201,7 +200,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         bytes32 lastSlug
     ) internal returns (uint256, bytes32) {
         // slippy-disable-previous-line named-return-params
-        
+
         unchecked {
             if (facetCut.target != address(0))
                 revert DiamondProxyWritable__RemoveTargetNotZeroAddress();

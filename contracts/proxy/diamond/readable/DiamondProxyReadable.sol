@@ -2,9 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import {
-    IERC2535DiamondLoupe
-} from '../../../interfaces/IERC2535DiamondLoupe.sol';
+import { IERC2535DiamondLoupe } from '../../../interfaces/IERC2535DiamondLoupe.sol';
 import { Introspectable } from '../../../introspection/Introspectable.sol';
 import { _DiamondProxyReadable } from './_DiamondProxyReadable.sol';
 import { IDiamondProxyReadable } from './IDiamondProxyReadable.sol';

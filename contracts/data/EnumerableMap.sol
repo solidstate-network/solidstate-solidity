@@ -46,7 +46,7 @@ library EnumerableMap {
         uint256 index
     ) internal view returns (uint256 key, address value) {
         (bytes32 keyBytes, bytes32 valueBytes) = _at(map._inner, index);
-        
+
         key = uint256(keyBytes);
         value = address(uint160(uint256(valueBytes)));
     }
@@ -299,7 +299,7 @@ library EnumerableMap {
             revert EnumerableMap__IndexOutOfBounds();
 
         MapEntry storage entry = map._entries[index];
-        
+
         key = entry._key;
         value = entry._value;
     }

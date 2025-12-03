@@ -281,13 +281,11 @@ library PackedDoublyLinkedList {
 
             bytes32 prevLinks = self._links[prevValue];
             self._links[prevValue] =
-                (prevLinks & MASK_PREV) |
-                _formatLinks(0, newValue);
+                (prevLinks & MASK_PREV) | _formatLinks(0, newValue);
 
             bytes32 nextLinks = self._links[nextValue];
             self._links[nextValue] =
-                (nextLinks & MASK_NEXT) |
-                _formatLinks(newValue, 0);
+                (nextLinks & MASK_NEXT) | _formatLinks(newValue, 0);
 
             status = true;
         }
@@ -330,13 +328,11 @@ library PackedDoublyLinkedList {
 
             bytes32 prevLinks = self._links[prevValue];
             self._links[prevValue] =
-                (prevLinks & MASK_PREV) |
-                _formatLinks(0, nextValue);
+                (prevLinks & MASK_PREV) | _formatLinks(0, nextValue);
 
             bytes32 nextLinks = self._links[nextValue];
             self._links[nextValue] =
-                (nextLinks & MASK_NEXT) |
-                _formatLinks(prevValue, 0);
+                (nextLinks & MASK_NEXT) | _formatLinks(prevValue, 0);
 
             delete self._links[value];
             status = true;
