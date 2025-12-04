@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { IERC1404 } from '../../../interfaces/IERC1404.sol';
 import { IFungibleToken } from '../IFungibleToken.sol';

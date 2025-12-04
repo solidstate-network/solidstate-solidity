@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { IERC1967Proxy } from '../interfaces/IERC1967Proxy.sol';
 import { IContext } from '../meta/IContext.sol';

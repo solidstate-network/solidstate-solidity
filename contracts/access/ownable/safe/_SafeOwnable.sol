@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { ERC173Storage } from '../../../storage/ERC173Storage.sol';
 import { duration } from '../../../utils/time/Duration.sol';

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { IBeacon } from '../../beacon/IBeacon.sol';
 import { ERC1967Storage } from '../../storage/ERC1967Storage.sol';

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 /**
  * @title Procedurally generated EIP-712 typed structured data hashing and signing library
