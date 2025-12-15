@@ -153,7 +153,7 @@ task(
     [
       '// SPDX-License-Identifier: MIT',
       '',
-      'pragma solidity ^0.8.24;',
+      'pragma solidity ^0.8.31;',
       '',
       '// slippy-disable no-global-imports',
       '// slippy-disable sort-imports',

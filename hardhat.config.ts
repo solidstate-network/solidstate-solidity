@@ -25,9 +25,9 @@ const config: HardhatUserConfig = {
   },
 
   solidity: {
-    version: '0.8.29',
+    version: '0.8.31',
     settings: {
-      evmVersion: 'cancun',
+      evmVersion: 'osaka',
       optimizer: {
         enabled: true,
         runs: 200,
