@@ -21,13 +21,7 @@ library ERC1967Storage {
     // }
     //
     // sslot internal constant DEFAULT_STORAGE_SLOT =
-    //     sslot.wrap(
-    //         keccak256(
-    //             abi.encode(
-    //                 uint256(keccak256(bytes('solidstate.layout.ERC1967'))) - 1
-    //             )
-    //         ) & ~bytes32(uint256(0xff))
-    //     );
+    //     sslot.wrap(bytes32(erc7201('solidstate.layout.ERC1967')));
 
     sslot internal constant IMPLEMENTATION_STORAGE_SLOT =
         sslot.wrap(

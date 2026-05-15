@@ -13,15 +13,7 @@ library InitializableStorage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(
-            keccak256(
-                abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.layout.Initializable'))
-                    ) - 1
-                )
-            ) & ~bytes32(uint256(0xff))
-        );
+        sslot.wrap(bytes32(erc7201('solidstate.layout.Initializable')));
 
     function layout() internal pure returns (Layout storage $) {
         $ = layout(DEFAULT_STORAGE_SLOT);
