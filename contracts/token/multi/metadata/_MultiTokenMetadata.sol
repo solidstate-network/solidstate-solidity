@@ -15,7 +15,7 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
     function _uri(
         uint256 tokenId
     ) internal view virtual returns (string memory) {
-        ERC1155Storage.Layout storage $ = ERC1155Storage.layout(
+        ERC1155Storage.Layout storage $ = ERC1155Storage.ref(
             ERC1155Storage.DEFAULT_STORAGE_SLOT
         );
 
@@ -52,7 +52,7 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
      */
     function _setBaseURI(string memory baseURI) internal {
         ERC1155Storage
-            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .baseURI = baseURI;
     }
 
@@ -62,7 +62,7 @@ abstract contract _MultiTokenMetadata is _IMultiTokenMetadata {
      * @param tokenURI per-token URI
      */
     function _setTokenURI(uint256 tokenId, string memory tokenURI) internal {
-        ERC1155Storage.layout(ERC1155Storage.DEFAULT_STORAGE_SLOT).tokenURIs[
+        ERC1155Storage.ref(ERC1155Storage.DEFAULT_STORAGE_SLOT).tokenURIs[
             tokenId
         ] = tokenURI;
         emit URI(tokenURI, tokenId);

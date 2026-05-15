@@ -26,11 +26,11 @@ library ERC173Storage {
             ) & ~bytes32(uint256(0xff))
         );
 
-    function layout() internal pure returns (Layout storage $) {
-        $ = layout(DEFAULT_STORAGE_SLOT);
+    function ref() internal pure returns (Layout storage $) {
+        $ = ref(DEFAULT_STORAGE_SLOT);
     }
 
-    function layout(sslot slot) internal pure returns (Layout storage $) {
+    function ref(sslot slot) internal pure returns (Layout storage $) {
         assembly {
             $.slot := slot
         }

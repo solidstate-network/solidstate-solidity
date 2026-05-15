@@ -22,7 +22,7 @@ abstract contract _ReentrancyGuard is _IReentrancyGuard {
     function _isReentrancyGuardLocked() internal view virtual returns (bool) {
         return
             ReentrancyGuardStorage
-                .layout(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+                .ref(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
                 .status == REENTRANCY_STATUS_LOCKED;
     }
 
@@ -31,7 +31,7 @@ abstract contract _ReentrancyGuard is _IReentrancyGuard {
      */
     function _lockReentrancyGuard() internal virtual {
         ReentrancyGuardStorage
-            .layout(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .ref(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
             .status = REENTRANCY_STATUS_LOCKED;
     }
 
@@ -40,7 +40,7 @@ abstract contract _ReentrancyGuard is _IReentrancyGuard {
      */
     function _unlockReentrancyGuard() internal virtual {
         ReentrancyGuardStorage
-            .layout(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
+            .ref(ReentrancyGuardStorage.DEFAULT_STORAGE_SLOT)
             .status = REENTRANCY_STATUS_UNLOCKED;
     }
 }

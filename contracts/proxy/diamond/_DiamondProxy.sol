@@ -40,7 +40,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         facet = address(
             bytes20(
                 ERC2535Storage
-                    .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
+                    .ref(ERC2535Storage.DEFAULT_STORAGE_SLOT)
                     .selectorInfo[selector]
             )
         );
@@ -57,7 +57,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         address target,
         bytes memory data
     ) internal virtual {
-        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+        ERC2535Storage.Layout storage $ = ERC2535Storage.ref(
             ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 

@@ -22,7 +22,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
     function _totalSupply(uint256 id) internal view virtual returns (uint256) {
         return
             ERC1155Storage
-                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .totalSupply[id];
     }
 
@@ -34,7 +34,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
     function _totalHolders(uint256 id) internal view virtual returns (uint256) {
         return
             ERC1155Storage
-                .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC1155Storage.DEFAULT_STORAGE_SLOT)
                 .accountsByToken[id]
                 .length();
     }
@@ -48,7 +48,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
         uint256 id
     ) internal view virtual returns (address[] memory) {
         EnumerableSet.AddressSet storage accounts = ERC1155Storage
-            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .accountsByToken[id];
 
         address[] memory addresses = new address[](accounts.length());
@@ -71,7 +71,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
         address account
     ) internal view virtual returns (uint256[] memory) {
         EnumerableSet.UintSet storage tokens = ERC1155Storage
-            .layout(ERC1155Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC1155Storage.DEFAULT_STORAGE_SLOT)
             .tokensByAccount[account];
 
         uint256[] memory ids = new uint256[](tokens.length());
@@ -100,7 +100,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 
         if (from != to) {
-            ERC1155Storage.Layout storage $ = ERC1155Storage.layout(
+            ERC1155Storage.Layout storage $ = ERC1155Storage.ref(
                 ERC1155Storage.DEFAULT_STORAGE_SLOT
             );
             mapping(uint256 tokenId => EnumerableSet.AddressSet holders)
