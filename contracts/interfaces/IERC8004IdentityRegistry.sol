@@ -95,20 +95,4 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721 {
      */
     function unsetAgentWallet(uint256 agentId) external;
 
-    /**
-     * @notice query whether an address is the owner of or approved for a given agent
-     * @param spender address to check
-     * @param agentId agent to check against
-     * @return isAuthorized whether spender is owner or approved
-     */
-    function isAuthorizedOrOwner(
-        address spender,
-        uint256 agentId
-    ) external view returns (bool isAuthorized);
-
-    /**
-     * @notice query the contract version
-     * @return version version string
-     */
-    function getVersion() external pure returns (string memory version);
 }
