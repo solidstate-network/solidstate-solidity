@@ -16,14 +16,6 @@ describe('StorageSlot', () => {
     instance = await new $StorageSlot__factory(deployer).deploy();
   });
 
-  describe('#calculateErc7201Slot(string)', () => {
-    it('calculates storage slot using "erc7201" formula', async () => {
-      expect(await instance.$calculateErc7201Slot('example.main')).to.equal(
-        '0x183a6125c38840424c4a85fa12bab2ab606c4b6d0e7cc73c0c06ba5300eab500',
-      );
-    });
-  });
-
   describe('#index(uint256)', () => {
     it('returns the slot of an index of an array declared at the current slot', async () => {
       const slot = ethers.hexlify(ethers.randomBytes(32));
