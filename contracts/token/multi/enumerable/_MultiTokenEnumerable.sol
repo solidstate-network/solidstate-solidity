@@ -55,7 +55,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
 
         unchecked {
             for (uint256 i; i < accounts.length(); i++) {
-                addresses[i] = accounts.at(i);
+                addresses[i] = accounts.valueAt(i);
             }
         }
 
@@ -78,7 +78,7 @@ abstract contract _MultiTokenEnumerable is _IMultiTokenEnumerable, _MultiToken {
 
         unchecked {
             for (uint256 i; i < tokens.length(); i++) {
-                ids[i] = tokens.at(i);
+                ids[i] = tokens.valueAt(i);
             }
         }
 

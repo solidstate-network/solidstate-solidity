@@ -37,7 +37,7 @@ abstract contract _NonFungibleTokenEnumerable is
             ERC721Storage
                 .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .holderTokens[owner]
-                .at(index);
+                .valueAt(index);
     }
 
     /**
@@ -49,6 +49,6 @@ abstract contract _NonFungibleTokenEnumerable is
         (tokenId, ) = ERC721Storage
             .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
-            .at(index);
+            .valueAt(index);
     }
 }

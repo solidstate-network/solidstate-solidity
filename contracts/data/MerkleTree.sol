@@ -51,7 +51,7 @@ library MerkleTree {
      */
     function root(Tree storage self) internal view returns (bytes32 rootHash) {
         unchecked {
-            rootHash = _at(
+            rootHash = _valueAt(
                 _arraySlot(self),
                 ~(type(uint256).max << self.height())
             );
@@ -64,7 +64,7 @@ library MerkleTree {
      * @param index leaf node index to query
      * @return element element stored at index
      */
-    function at(
+    function valueAt(
         Tree storage self,
         uint256 index
     ) internal view returns (bytes32 element) {
@@ -75,7 +75,7 @@ library MerkleTree {
             Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
 
-        element = _at(_arraySlot(self), index);
+        element = _valueAt(_arraySlot(self), index);
     }
 
     /**
@@ -128,7 +128,7 @@ library MerkleTree {
 
         // recalculate branch and root nodes
         // TODO: this involves an unnecessary storage write at depth 0
-        _set(slot, 0, index, index, _at(slot, index));
+        _set(slot, 0, index, index, _valueAt(slot, index));
     }
 
     /**
@@ -171,7 +171,7 @@ library MerkleTree {
      * @param index index to query
      * @return element element stored at index
      */
-    function _at(
+    function _valueAt(
         bytes32 arraySlot,
         uint256 index
     ) private view returns (bytes32 element) {

@@ -162,7 +162,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
                 .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
-                .at(index);
+                .valueAt(index);
     }
 
     /**
