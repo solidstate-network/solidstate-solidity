@@ -10,7 +10,11 @@ import { IERC721Metadata } from './IERC721Metadata.sol';
  * @title ERC8004 Identity Registry interface
  * @dev see https://eips.ethereum.org/EIPS/eip-8004
  */
-interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721, IERC721Metadata {
+interface IERC8004IdentityRegistry is
+    _IERC8004IdentityRegistry,
+    IERC721,
+    IERC721Metadata
+{
     /**
      * @notice register a new agent identity
      * @return agentId id of newly registered agent
@@ -95,5 +99,4 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721, IERC72
      * @param agentId agent to unbind wallet from
      */
     function unsetAgentWallet(uint256 agentId) external;
-
 }

@@ -45,10 +45,7 @@ interface IERC8004ReputationRegistry is _IERC8004ReputationRegistry {
      * @param agentId agent whose feedback to revoke
      * @param feedbackIndex index of feedback to revoke
      */
-    function revokeFeedback(
-        uint256 agentId,
-        uint64 feedbackIndex
-    ) external;
+    function revokeFeedback(uint256 agentId, uint64 feedbackIndex) external;
 
     /**
      * @notice append a response to existing feedback
@@ -84,11 +81,7 @@ interface IERC8004ReputationRegistry is _IERC8004ReputationRegistry {
     )
         external
         view
-        returns (
-            uint64 count,
-            int128 summaryValue,
-            uint8 summaryValueDecimals
-        );
+        returns (uint64 count, int128 summaryValue, uint8 summaryValueDecimals);
 
     /**
      * @notice read a single feedback entry
