@@ -22,7 +22,7 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721 {
      * @return agentId id of newly registered agent
      */
     function register(
-        string memory agentURI
+        string calldata agentURI
     ) external returns (uint256 agentId);
 
     /**
@@ -32,8 +32,8 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721 {
      * @return agentId id of newly registered agent
      */
     function register(
-        string memory agentURI,
-        MetadataEntry[] memory metadata
+        string calldata agentURI,
+        MetadataEntry[] calldata metadata
     ) external returns (uint256 agentId);
 
     /**
