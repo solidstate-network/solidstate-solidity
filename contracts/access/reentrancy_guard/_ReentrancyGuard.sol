@@ -9,7 +9,7 @@ abstract contract _ReentrancyGuard is _IReentrancyGuard {
     uint256 internal constant REENTRANCY_STATUS_LOCKED = 2;
     uint256 internal constant REENTRANCY_STATUS_UNLOCKED = 1;
 
-    modifier nonReentrant() virtual {
+    modifier nonReentrant() {
         if (_isReentrancyGuardLocked()) revert ReentrancyGuard__ReentrantCall();
         _lockReentrancyGuard();
         _;
