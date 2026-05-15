@@ -13,7 +13,7 @@ library ReentrancyGuardStorage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(bytes32(erc7201('solidstate.layout.ReentrancyGuard')));
+        sslot.wrap(erc7201('solidstate.layout.ReentrancyGuard'));
 
     function layout() internal pure returns (Layout storage $) {
         $ = layout(DEFAULT_STORAGE_SLOT);

@@ -29,7 +29,7 @@ library ERC20Storage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(bytes32(erc7201('solidstate.layout.ERC20')));
+        sslot.wrap(erc7201('solidstate.layout.ERC20'));
 
     function layout() internal pure returns (Layout storage $) {
         $ = layout(DEFAULT_STORAGE_SLOT);

@@ -21,14 +21,12 @@ library ERC1967Storage {
     // }
     //
     // sslot internal constant DEFAULT_STORAGE_SLOT =
-    //     sslot.wrap(bytes32(erc7201('solidstate.layout.ERC1967')));
+    //     sslot.wrap(erc7201('solidstate.layout.ERC1967'));
 
     sslot internal constant IMPLEMENTATION_STORAGE_SLOT =
-        sslot.wrap(
-            bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
-        );
+        sslot.wrap(uint256(keccak256('eip1967.proxy.implementation')) - 1);
     sslot internal constant BEACON_STORAGE_SLOT =
-        sslot.wrap(bytes32(uint256(keccak256('eip1967.proxy.beacon')) - 1));
+        sslot.wrap(uint256(keccak256('eip1967.proxy.beacon')) - 1);
     sslot internal constant ADMIN_STORAGE_SLOT =
-        sslot.wrap(bytes32(uint256(keccak256('eip1967.proxy.admin')) - 1));
+        sslot.wrap(uint256(keccak256('eip1967.proxy.admin')) - 1);
 }

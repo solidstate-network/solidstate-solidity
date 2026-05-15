@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.35;
 
-type tslot is bytes32;
+type tslot is uint256;
 
 using TransientSlot for tslot global;
 

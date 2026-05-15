@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.35;
 
-type sslot is bytes32;
+type sslot is uint256;
 
 using StorageSlot for sslot global;
 

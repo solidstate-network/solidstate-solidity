@@ -19,7 +19,7 @@ library AccessControlStorage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(bytes32(erc7201('solidstate.layout.AccessControl')));
+        sslot.wrap(erc7201('solidstate.layout.AccessControl'));
 
     function layout() internal pure returns (Layout storage $) {
         $ = layout(DEFAULT_STORAGE_SLOT);
