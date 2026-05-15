@@ -45,7 +45,7 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721, IERC72
      */
     function getMetadata(
         uint256 agentId,
-        string memory metadataKey
+        string calldata metadataKey
     ) external view returns (bytes memory metadataValue);
 
     /**
@@ -56,8 +56,8 @@ interface IERC8004IdentityRegistry is _IERC8004IdentityRegistry, IERC721, IERC72
      */
     function setMetadata(
         uint256 agentId,
-        string memory metadataKey,
-        bytes memory metadataValue
+        string calldata metadataKey,
+        bytes calldata metadataValue
     ) external;
 
     /**
