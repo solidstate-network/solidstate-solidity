@@ -80,8 +80,8 @@ library Math {
     }
 
     /**
-     * @notice calculate the log base 2 of a number
-     * @dev returns 0 for input of 0
+     * @notice calculate the floor of log base 2 of a number
+     * @dev returns MaxUint256 for input of 0
      * @param x number whose log base 2 to calculate
      * @return result log base 2
      */
