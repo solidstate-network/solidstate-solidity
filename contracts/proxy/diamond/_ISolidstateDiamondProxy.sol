@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _IDiamondProxyFallback } from './fallback/_IDiamondProxyFallback.sol';
 import { _IDiamondProxyReadable } from './readable/_IDiamondProxyReadable.sol';

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { Ownable } from '../../access/ownable/Ownable.sol';
 import { _DiamondProxyWritable } from '../../proxy/diamond/writable/_DiamondProxyWritable.sol';

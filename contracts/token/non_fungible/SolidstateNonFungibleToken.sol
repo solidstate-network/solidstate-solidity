@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { NonFungibleTokenEnumerable } from './enumerable/NonFungibleTokenEnumerable.sol';
 import { _NonFungibleTokenMetadata } from './metadata/_NonFungibleTokenMetadata.sol';

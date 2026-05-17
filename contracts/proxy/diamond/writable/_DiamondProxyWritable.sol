@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _Introspectable } from '../../../introspection/_Introspectable.sol';
 import { _DiamondProxy } from '../_DiamondProxy.sol';

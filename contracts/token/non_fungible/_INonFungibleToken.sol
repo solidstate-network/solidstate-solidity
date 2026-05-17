@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _IERC721 } from '../../interfaces/_IERC721.sol';
 import { _IIntrospectable } from '../../introspection/_IIntrospectable.sol';

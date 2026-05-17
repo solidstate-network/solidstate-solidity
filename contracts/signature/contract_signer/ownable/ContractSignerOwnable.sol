@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _ContractSigner } from '../_ContractSigner.sol';
 import { ContractSigner } from '../ContractSigner.sol';

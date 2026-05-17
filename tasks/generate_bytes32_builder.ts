@@ -8,7 +8,7 @@ const structName = 'Builder';
 const filepath = 'data';
 
 const TEMPLATE_SOL = `
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { Address } from '../utils/Address.sol';
 import { Bool } from '../utils/Bool.sol';
@@ -104,7 +104,7 @@ library <%- libraryName %> {
 `;
 
 const TEMPLATE_SOL_TEST = `
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { <%- libraryName %> } from '../<%- filepath %>/<%- libraryName %>.sol';
 import { Bytes32 } from '../utils/Bytes32.sol';

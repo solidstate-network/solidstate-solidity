@@ -1,6 +1,7 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
 import { $Math, $Math__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import { MaxUint256 } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('Math', () => {
@@ -143,7 +144,7 @@ describe('Math', () => {
   describe('#log2(uint256)', () => {
     it('returns 0 for input of 0', async () => {
       // this is not mathematically correct, but checking within the log2 function would be inefficient
-      expect(await instance.$log2.staticCall(0n)).to.eq(0n);
+      expect(await instance.$log2.staticCall(0n)).to.eq(MaxUint256);
     });
 
     it('returns 0 for input of 1', async () => {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _IMultiTokenEnumerable } from './enumerable/_IMultiTokenEnumerable.sol';
 import { _IMultiTokenMetadata } from './metadata/_IMultiTokenMetadata.sol';

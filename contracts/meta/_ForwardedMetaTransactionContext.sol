@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { ERC2771Storage } from '../storage/ERC2771Storage.sol';
 import { Address } from '../utils/Address.sol';

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { IERC2771 } from '../interfaces/IERC2771.sol';
 import { _IForwardedMetaTransactionContext } from './_IForwardedMetaTransactionContext.sol';

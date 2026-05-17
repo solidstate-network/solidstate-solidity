@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { ERC1155Storage } from '../../../storage/ERC1155Storage.sol';
 import { Uint256 } from '../../../utils/Uint256.sol';

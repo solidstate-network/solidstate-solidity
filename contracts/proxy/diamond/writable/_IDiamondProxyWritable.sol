@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.31;
 
 import { _IERC2535DiamondCut } from '../../../interfaces/_IERC2535DiamondCut.sol';
 import { _IIntrospectable } from '../../../introspection/_IIntrospectable.sol';
