@@ -19,7 +19,7 @@ abstract contract _Introspectable is _IIntrospectable {
     ) internal view virtual returns (bool) {
         return
             ERC165Storage
-                .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC165Storage.DEFAULT_STORAGE_SLOT)
                 .supportedInterfaces[interfaceId];
     }
 
@@ -35,7 +35,7 @@ abstract contract _Introspectable is _IIntrospectable {
         if (interfaceId == 0xffffffff)
             revert Introspectable__InvalidInterfaceId();
         ERC165Storage
-            .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC165Storage.DEFAULT_STORAGE_SLOT)
             .supportedInterfaces[interfaceId] = status;
     }
 }

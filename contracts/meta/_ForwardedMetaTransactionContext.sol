@@ -89,7 +89,7 @@ abstract contract _ForwardedMetaTransactionContext is
         address account
     ) internal view virtual returns (bool trustedStatus) {
         trustedStatus = ERC2771Storage
-            .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2771Storage.DEFAULT_STORAGE_SLOT)
             .trustedForwarders[account];
     }
 
@@ -99,7 +99,7 @@ abstract contract _ForwardedMetaTransactionContext is
      */
     function _addTrustedForwarder(address account) internal virtual {
         ERC2771Storage
-            .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2771Storage.DEFAULT_STORAGE_SLOT)
             .trustedForwarders[account] = true;
     }
 
@@ -109,7 +109,7 @@ abstract contract _ForwardedMetaTransactionContext is
      */
     function _removeTrustedForwarder(address account) internal virtual {
         delete ERC2771Storage
-            .layout(ERC2771Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2771Storage.DEFAULT_STORAGE_SLOT)
             .trustedForwarders[account];
     }
 }

@@ -25,7 +25,7 @@ abstract contract _ContractSigner is _IContractSigner {
         signature;
 
         return
-            ERC1271Storage.layout(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
+            ERC1271Storage.ref(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
                 hash
             ]
                 ? MAGIC_VALUE
@@ -33,7 +33,7 @@ abstract contract _ContractSigner is _IContractSigner {
     }
 
     function _setValidSignature(bytes32 hash, bool status) internal virtual {
-        ERC1271Storage.layout(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
+        ERC1271Storage.ref(ERC1271Storage.DEFAULT_STORAGE_SLOT).hashes[
             hash
         ] = status;
     }

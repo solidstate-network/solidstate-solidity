@@ -27,7 +27,7 @@ abstract contract _RestrictedFungibleToken is
 
         mapping(uint8 restrictionCode => string restrictionMessage)
             storage restrictions = ERC20Storage
-                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .erc1404RestrictionMessages;
 
         unchecked {
@@ -65,7 +65,7 @@ abstract contract _RestrictedFungibleToken is
         uint8 restrictionCode
     ) internal view virtual returns (string memory message) {
         message = ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc1404RestrictionMessages[restrictionCode];
     }
 

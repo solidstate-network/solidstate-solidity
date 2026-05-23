@@ -32,25 +32,25 @@ library EnumerableSet {
         Set _inner;
     }
 
-    function at(
+    function valueAt(
         Bytes32Set storage set,
         uint256 index
     ) internal view returns (bytes32) {
-        return _at(set._inner, index);
+        return _valueAt(set._inner, index);
     }
 
-    function at(
+    function valueAt(
         AddressSet storage set,
         uint256 index
     ) internal view returns (address) {
-        return address(uint160(uint256(_at(set._inner, index))));
+        return address(uint160(uint256(_valueAt(set._inner, index))));
     }
 
-    function at(
+    function valueAt(
         UintSet storage set,
         uint256 index
     ) internal view returns (uint256) {
-        return uint256(_at(set._inner, index));
+        return uint256(_valueAt(set._inner, index));
     }
 
     function contains(
@@ -196,7 +196,7 @@ library EnumerableSet {
         }
     }
 
-    function _at(
+    function _valueAt(
         Set storage set,
         uint256 index
     ) private view returns (bytes32) {

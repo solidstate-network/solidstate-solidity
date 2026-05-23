@@ -21,7 +21,7 @@ abstract contract _DiamondProxyReadable is
      * @return diamondFacets array of structured facet data
      */
     function _facets() internal view returns (Facet[] memory diamondFacets) {
-        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+        ERC2535Storage.Layout storage $ = ERC2535Storage.ref(
             ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
@@ -103,7 +103,7 @@ abstract contract _DiamondProxyReadable is
     function _facetFunctionSelectors(
         address facet
     ) internal view returns (bytes4[] memory selectors) {
-        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+        ERC2535Storage.Layout storage $ = ERC2535Storage.ref(
             ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 
@@ -153,7 +153,7 @@ abstract contract _DiamondProxyReadable is
         view
         returns (address[] memory addresses)
     {
-        ERC2535Storage.Layout storage $ = ERC2535Storage.layout(
+        ERC2535Storage.Layout storage $ = ERC2535Storage.ref(
             ERC2535Storage.DEFAULT_STORAGE_SLOT
         );
 

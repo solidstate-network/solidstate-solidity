@@ -39,7 +39,7 @@ abstract contract _DiamondProxyFallback is
         returns (address fallbackAddress)
     {
         fallbackAddress = ERC2535Storage
-            .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2535Storage.DEFAULT_STORAGE_SLOT)
             .fallbackAddress;
     }
 
@@ -58,7 +58,7 @@ abstract contract _DiamondProxyFallback is
      */
     function _setFallbackAddress(address fallbackAddress) internal virtual {
         ERC2535Storage
-            .layout(ERC2535Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2535Storage.DEFAULT_STORAGE_SLOT)
             .fallbackAddress = fallbackAddress;
     }
 }

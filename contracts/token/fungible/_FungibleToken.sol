@@ -16,7 +16,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
      */
     function _totalSupply() internal view virtual returns (uint256) {
         return
-            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).totalSupply;
+            ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).totalSupply;
     }
 
     /**
@@ -28,7 +28,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
         address account
     ) internal view virtual returns (uint256) {
         return
-            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).balances[
+            ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).balances[
                 account
             ];
     }
@@ -44,7 +44,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
         address spender
     ) internal view virtual returns (uint256) {
         return
-            ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
+            ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
                 holder
             ][spender];
     }
@@ -69,7 +69,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
             revert FungibleToken__ApproveFromZeroAddress();
         if (spender == address(0)) revert FungibleToken__ApproveToZeroAddress();
 
-        ERC20Storage.layout(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
+        ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).allowances[
             holder
         ][spender] = amount;
 
@@ -108,7 +108,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
 
         _beforeTokenTransfer(address(0), account, amount);
 
-        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+        ERC20Storage.Layout storage $ = ERC20Storage.ref(
             ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         $.totalSupply += amount;
@@ -127,7 +127,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
 
         _beforeTokenTransfer(account, address(0), amount);
 
-        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+        ERC20Storage.Layout storage $ = ERC20Storage.ref(
             ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         uint256 balance = $.balances[account];
@@ -166,7 +166,7 @@ abstract contract _FungibleToken is _IFungibleToken, _Context {
 
         _beforeTokenTransfer(holder, recipient, amount);
 
-        ERC20Storage.Layout storage $ = ERC20Storage.layout(
+        ERC20Storage.Layout storage $ = ERC20Storage.ref(
             ERC20Storage.DEFAULT_STORAGE_SLOT
         );
         uint256 holderBalance = $.balances[holder];

@@ -21,7 +21,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
     function _nomineeOwner() internal view virtual returns (address) {
         return
             ERC173Storage
-                .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC173Storage.DEFAULT_STORAGE_SLOT)
                 .nomineeOwner;
     }
 
@@ -36,7 +36,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         returns (duration transferTimelockDuration)
     {
         transferTimelockDuration = ERC173Storage
-            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .transferTimelockDuration;
     }
 
@@ -44,7 +44,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      * @notice accept transfer of contract ownership
      */
     function _acceptOwnership() internal virtual onlyNomineeOwner {
-        ERC173Storage.Layout storage $ = ERC173Storage.layout(
+        ERC173Storage.Layout storage $ = ERC173Storage.ref(
             ERC173Storage.DEFAULT_STORAGE_SLOT
         );
 
@@ -75,7 +75,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
      */
     function _setNomineeOwner(address account) internal virtual {
         ERC173Storage
-            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .nomineeOwner = account;
     }
 
@@ -90,7 +90,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         transferTimelock = Timelock.create(_getTransferTimelockDuration());
 
         ERC173Storage
-            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .transferTimelock = transferTimelock;
     }
 
@@ -102,7 +102,7 @@ abstract contract _SafeOwnable is _ISafeOwnable, _Ownable {
         duration transferTimelockDuration
     ) internal virtual {
         ERC173Storage
-            .layout(ERC173Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC173Storage.DEFAULT_STORAGE_SLOT)
             .transferTimelockDuration = transferTimelockDuration;
     }
 }

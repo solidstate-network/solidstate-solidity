@@ -31,21 +31,21 @@ library EnumerableMap {
         Map _inner;
     }
 
-    function at(
+    function valueAt(
         AddressToAddressMap storage map,
         uint256 index
     ) internal view returns (address key, address value) {
-        (bytes32 keyBytes, bytes32 valueBytes) = _at(map._inner, index);
+        (bytes32 keyBytes, bytes32 valueBytes) = _valueAt(map._inner, index);
 
         key = address(uint160(uint256(keyBytes)));
         value = address(uint160(uint256(valueBytes)));
     }
 
-    function at(
+    function valueAt(
         UintToAddressMap storage map,
         uint256 index
     ) internal view returns (uint256 key, address value) {
-        (bytes32 keyBytes, bytes32 valueBytes) = _at(map._inner, index);
+        (bytes32 keyBytes, bytes32 valueBytes) = _valueAt(map._inner, index);
 
         key = uint256(keyBytes);
         value = address(uint160(uint256(valueBytes)));
@@ -291,7 +291,7 @@ library EnumerableMap {
         }
     }
 
-    function _at(
+    function _valueAt(
         Map storage map,
         uint256 index
     ) private view returns (bytes32 key, bytes32 value) {

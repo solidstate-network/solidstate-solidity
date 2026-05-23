@@ -21,7 +21,7 @@ abstract contract _Initializable is _IInitializable {
     }
 
     function _setInitializedVersion(uint8 version) internal virtual {
-        InitializableStorage.Layout storage $ = InitializableStorage.layout(
+        InitializableStorage.Layout storage $ = InitializableStorage.ref(
             InitializableStorage.DEFAULT_STORAGE_SLOT
         );
 
@@ -39,7 +39,7 @@ abstract contract _Initializable is _IInitializable {
         returns (uint8 version)
     {
         version = InitializableStorage
-            .layout(InitializableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(InitializableStorage.DEFAULT_STORAGE_SLOT)
             .initialized;
     }
 }

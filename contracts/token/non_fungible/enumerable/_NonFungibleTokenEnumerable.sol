@@ -21,7 +21,7 @@ abstract contract _NonFungibleTokenEnumerable is
     function _totalSupply() internal view returns (uint256) {
         return
             ERC721Storage
-                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenOwners
                 .length();
     }
@@ -35,9 +35,9 @@ abstract contract _NonFungibleTokenEnumerable is
     ) internal view returns (uint256) {
         return
             ERC721Storage
-                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .holderTokens[owner]
-                .at(index);
+                .valueAt(index);
     }
 
     /**
@@ -47,8 +47,8 @@ abstract contract _NonFungibleTokenEnumerable is
         uint256 index
     ) internal view returns (uint256 tokenId) {
         (tokenId, ) = ERC721Storage
-            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
-            .at(index);
+            .valueAt(index);
     }
 }

@@ -48,7 +48,7 @@ abstract contract _FungibleTokenPermit is
     function _nonces(address owner) internal view virtual returns (uint256) {
         return
             ERC20Storage
-                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .erc2612Nonces[owner];
     }
 
@@ -118,7 +118,7 @@ abstract contract _FungibleTokenPermit is
             revert FungibleTokenPermit__ExpiredDeadline();
 
         uint256 nonce = ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc2612Nonces[owner]++;
 
         // execute EIP-712 hashStruct procedure

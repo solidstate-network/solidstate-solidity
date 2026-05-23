@@ -40,7 +40,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
     function _getRoyaltyBPS(
         uint256 tokenId
     ) internal view virtual returns (uint16 royaltyBPS) {
-        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+        ERC2981Storage.Layout storage $ = ERC2981Storage.ref(
             ERC2981Storage.DEFAULT_STORAGE_SLOT
         );
         royaltyBPS = $.royaltiesBPS[tokenId];
@@ -59,7 +59,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
     function _getRoyaltyReceiver(
         uint256 tokenId
     ) internal view virtual returns (address royaltyReceiver) {
-        ERC2981Storage.Layout storage $ = ERC2981Storage.layout(
+        ERC2981Storage.Layout storage $ = ERC2981Storage.ref(
             ERC2981Storage.DEFAULT_STORAGE_SLOT
         );
         royaltyReceiver = $.royaltyReceivers[tokenId];
@@ -76,7 +76,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      */
     function _setRoyaltyBPS(uint256 tokenId, uint16 royaltyBPS) internal {
         if (royaltyBPS > MAX_ROYALTY) revert NFTRoyalty__RoyaltyTooHigh();
-        ERC2981Storage.layout(ERC2981Storage.DEFAULT_STORAGE_SLOT).royaltiesBPS[
+        ERC2981Storage.ref(ERC2981Storage.DEFAULT_STORAGE_SLOT).royaltiesBPS[
             tokenId
         ] = royaltyBPS;
     }
@@ -89,7 +89,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
         if (defaultRoyaltyBPS > MAX_ROYALTY)
             revert NFTRoyalty__RoyaltyTooHigh();
         ERC2981Storage
-            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .defaultRoyaltyBPS = defaultRoyaltyBPS;
     }
 
@@ -100,7 +100,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      */
     function _setRoyaltyReceiver(uint256 tokenId, address receiver) internal {
         ERC2981Storage
-            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .royaltyReceivers[tokenId] = receiver;
     }
 
@@ -110,7 +110,7 @@ abstract contract _NFTRoyalty is _INFTRoyalty, _Introspectable {
      */
     function _setDefaultRoyaltyReceiver(address defaultReceiver) internal {
         ERC2981Storage
-            .layout(ERC2981Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC2981Storage.DEFAULT_STORAGE_SLOT)
             .defaultRoyaltyReceiver = defaultReceiver;
     }
 }

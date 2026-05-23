@@ -25,7 +25,7 @@ abstract contract _FungibleVaultToken is
      */
     function _asset() internal view virtual returns (address asset) {
         asset = ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc4626Asset;
     }
 
@@ -392,7 +392,7 @@ abstract contract _FungibleVaultToken is
      */
     function _setAsset(address asset) internal virtual {
         ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc4626Asset = asset;
     }
 }
