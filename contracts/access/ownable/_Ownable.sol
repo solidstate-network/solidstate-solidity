@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { IERC173 } from '../../interfaces/IERC173.sol';
 import { _Context } from '../../meta/_Context.sol';
@@ -23,7 +23,7 @@ abstract contract _Ownable is _IOwnable, _Context {
     }
 
     function _owner() internal view virtual returns (address) {
-        return ERC173Storage.layout(ERC173Storage.DEFAULT_STORAGE_SLOT).owner;
+        return ERC173Storage.ref(ERC173Storage.DEFAULT_STORAGE_SLOT).owner;
     }
 
     function _transitiveOwner() internal view virtual returns (address owner) {
@@ -43,7 +43,7 @@ abstract contract _Ownable is _IOwnable, _Context {
     }
 
     function _setOwner(address account) internal virtual {
-        ERC173Storage.Layout storage $ = ERC173Storage.layout(
+        ERC173Storage.Layout storage $ = ERC173Storage.ref(
             ERC173Storage.DEFAULT_STORAGE_SLOT
         );
         emit OwnershipTransferred($.owner, account);

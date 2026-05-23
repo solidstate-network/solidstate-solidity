@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { Uint256 } from './Uint256.sol';
 
@@ -53,9 +53,9 @@ library Address {
     function functionCall(
         address target,
         bytes memory data,
-        bytes4 error
+        bytes4 errorSelector
     ) internal returns (bytes memory) {
-        return _functionCallWithValue(target, data, 0, error);
+        return _functionCallWithValue(target, data, 0, errorSelector);
     }
 
     function functionCallWithValue(
@@ -76,11 +76,11 @@ library Address {
         address target,
         bytes memory data,
         uint256 value,
-        bytes4 error
+        bytes4 errorSelector
     ) internal returns (bytes memory) {
         if (value > address(this).balance)
             revert Address__InsufficientBalance();
-        return _functionCallWithValue(target, data, value, error);
+        return _functionCallWithValue(target, data, value, errorSelector);
     }
 
     function functionDelegateCall(
@@ -98,10 +98,10 @@ library Address {
     function functionDelegateCall(
         address target,
         bytes memory data,
-        bytes4 error
+        bytes4 errorSelector
     ) internal returns (bytes memory) {
         (bool success, bytes memory returnData) = target.delegatecall(data);
-        _verifyCallResultFromTarget(target, success, returnData, error);
+        _verifyCallResultFromTarget(target, success, returnData, errorSelector);
         return returnData;
     }
 
@@ -156,12 +156,12 @@ library Address {
         address target,
         bytes memory data,
         uint256 value,
-        bytes4 error
+        bytes4 errorSelector
     ) private returns (bytes memory) {
         (bool success, bytes memory returnData) = target.call{ value: value }(
             data
         );
-        _verifyCallResultFromTarget(target, success, returnData, error);
+        _verifyCallResultFromTarget(target, success, returnData, errorSelector);
         return returnData;
     }
 
@@ -169,12 +169,12 @@ library Address {
         address target,
         bool success,
         bytes memory returnData,
-        bytes4 error
+        bytes4 errorSelector
     ) private view {
         if (!success) {
             if (returnData.length == 0) {
                 assembly {
-                    mstore(0, error)
+                    mstore(0, errorSelector)
                     revert(0, 4)
                 }
             } else {

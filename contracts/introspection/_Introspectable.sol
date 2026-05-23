@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { ERC165Storage } from '../storage/ERC165Storage.sol';
 import { _IIntrospectable } from './_IIntrospectable.sol';
@@ -19,7 +19,7 @@ abstract contract _Introspectable is _IIntrospectable {
     ) internal view virtual returns (bool) {
         return
             ERC165Storage
-                .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC165Storage.DEFAULT_STORAGE_SLOT)
                 .supportedInterfaces[interfaceId];
     }
 
@@ -35,7 +35,7 @@ abstract contract _Introspectable is _IIntrospectable {
         if (interfaceId == 0xffffffff)
             revert Introspectable__InvalidInterfaceId();
         ERC165Storage
-            .layout(ERC165Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC165Storage.DEFAULT_STORAGE_SLOT)
             .supportedInterfaces[interfaceId] = status;
     }
 }

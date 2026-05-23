@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { ERC20Storage } from '../../../storage/ERC20Storage.sol';
 import { _FungibleToken } from '../_FungibleToken.sol';
@@ -27,7 +27,7 @@ abstract contract _RestrictedFungibleToken is
 
         mapping(uint8 restrictionCode => string restrictionMessage)
             storage restrictions = ERC20Storage
-                .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
                 .erc1404RestrictionMessages;
 
         unchecked {
@@ -52,7 +52,7 @@ abstract contract _RestrictedFungibleToken is
         from;
         to;
         amount;
-        
+
         return 0;
     }
 
@@ -65,7 +65,7 @@ abstract contract _RestrictedFungibleToken is
         uint8 restrictionCode
     ) internal view virtual returns (string memory message) {
         message = ERC20Storage
-            .layout(ERC20Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
             .erc1404RestrictionMessages[restrictionCode];
     }
 

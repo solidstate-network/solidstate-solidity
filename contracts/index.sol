@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 // slippy-disable no-global-imports
 // slippy-disable sort-imports
@@ -87,6 +87,9 @@ import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
 import './interfaces/IERC721Metadata.sol';
 import './interfaces/IERC721Receiver.sol';
+import './interfaces/IERC8004IdentityRegistry.sol';
+import './interfaces/IERC8004ReputationRegistry.sol';
+import './interfaces/IERC8004ValidationRegistry.sol';
 import './interfaces/IWETH.sol';
 import './interfaces/_IERC1155.sol';
 import './interfaces/_IERC1155Metadata.sol';
@@ -113,6 +116,9 @@ import './interfaces/_IERC721.sol';
 import './interfaces/_IERC721Enumerable.sol';
 import './interfaces/_IERC721Metadata.sol';
 import './interfaces/_IERC721Receiver.sol';
+import './interfaces/_IERC8004IdentityRegistry.sol';
+import './interfaces/_IERC8004ReputationRegistry.sol';
+import './interfaces/_IERC8004ValidationRegistry.sol';
 import './interfaces/_IWETH.sol';
 import './introspection/IIntrospectable.sol';
 import './introspection/Introspectable.sol';

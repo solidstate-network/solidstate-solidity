@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { _Ownable } from '../access/ownable/_Ownable.sol';
 import { BeaconStorage } from '../storage/BeaconStorage.sol';
@@ -18,7 +18,7 @@ abstract contract _Beacon is _IBeacon, _Ownable {
         returns (address implementation)
     {
         implementation = BeaconStorage
-            .layout(BeaconStorage.DEFAULT_STORAGE_SLOT)
+            .ref(BeaconStorage.DEFAULT_STORAGE_SLOT)
             .implementation;
     }
 
@@ -30,7 +30,7 @@ abstract contract _Beacon is _IBeacon, _Ownable {
         address implementation
     ) internal virtual onlyOwner {
         BeaconStorage
-            .layout(BeaconStorage.DEFAULT_STORAGE_SLOT)
+            .ref(BeaconStorage.DEFAULT_STORAGE_SLOT)
             .implementation = implementation;
     }
 }

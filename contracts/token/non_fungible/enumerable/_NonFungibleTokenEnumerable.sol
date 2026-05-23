@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { EnumerableMap } from '../../../data/EnumerableMap.sol';
 import { EnumerableSet } from '../../../data/EnumerableSet.sol';
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { _NonFungibleToken } from '../_NonFungibleToken.sol';
-import {
-    _INonFungibleTokenEnumerable
-} from './_INonFungibleTokenEnumerable.sol';
+import { _INonFungibleTokenEnumerable } from './_INonFungibleTokenEnumerable.sol';
 
 abstract contract _NonFungibleTokenEnumerable is
     _INonFungibleTokenEnumerable,
@@ -23,7 +21,7 @@ abstract contract _NonFungibleTokenEnumerable is
     function _totalSupply() internal view returns (uint256) {
         return
             ERC721Storage
-                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenOwners
                 .length();
     }
@@ -37,9 +35,9 @@ abstract contract _NonFungibleTokenEnumerable is
     ) internal view returns (uint256) {
         return
             ERC721Storage
-                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .holderTokens[owner]
-                .at(index);
+                .valueAt(index);
     }
 
     /**
@@ -49,8 +47,8 @@ abstract contract _NonFungibleTokenEnumerable is
         uint256 index
     ) internal view returns (uint256 tokenId) {
         (tokenId, ) = ERC721Storage
-            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .tokenOwners
-            .at(index);
+            .valueAt(index);
     }
 }

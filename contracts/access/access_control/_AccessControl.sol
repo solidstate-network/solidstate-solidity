@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { EnumerableSet } from '../../data/EnumerableSet.sol';
 import { _Context } from '../../meta/_Context.sol';
@@ -40,7 +40,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     ) internal view virtual returns (bool status) {
         return
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
                 .contains(account);
@@ -75,7 +75,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     ) internal view virtual returns (bytes32) {
         return
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .adminRole;
     }
@@ -88,7 +88,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     function _setRoleAdmin(bytes32 role, bytes32 adminRole) internal virtual {
         bytes32 previousAdminRole = _getRoleAdmin(role);
         AccessControlStorage
-            .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+            .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
             .roles[role]
             .adminRole = adminRole;
         emit RoleAdminChanged(role, previousAdminRole, adminRole);
@@ -133,14 +133,14 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     ) internal virtual {
         if (status) {
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
                 .add(account);
             emit RoleGranted(role, account, _msgSender());
         } else {
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
                 .remove(account);
@@ -159,10 +159,10 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     ) internal view virtual returns (address) {
         return
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
-                .at(index);
+                .valueAt(index);
     }
 
     /**
@@ -174,7 +174,7 @@ abstract contract _AccessControl is _IAccessControl, _Context {
     ) internal view virtual returns (uint256) {
         return
             AccessControlStorage
-                .layout(AccessControlStorage.DEFAULT_STORAGE_SLOT)
+                .ref(AccessControlStorage.DEFAULT_STORAGE_SLOT)
                 .roles[role]
                 .members
                 .length();

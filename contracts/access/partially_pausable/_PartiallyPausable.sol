@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { _Context } from '../../meta/_Context.sol';
 import { PausableStorage } from '../../storage/PausableStorage.sol';
@@ -29,7 +29,7 @@ abstract contract _PartiallyPausable is _IPartiallyPausable, _Context {
         bytes32 key
     ) internal view virtual returns (bool status) {
         status = PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key];
     }
 
@@ -41,7 +41,7 @@ abstract contract _PartiallyPausable is _IPartiallyPausable, _Context {
         bytes32 key
     ) internal virtual whenNotPartiallyPaused(key) {
         PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key] = true;
         emit PartiallyPaused(_msgSender(), key);
     }
@@ -54,7 +54,7 @@ abstract contract _PartiallyPausable is _IPartiallyPausable, _Context {
         bytes32 key
     ) internal virtual whenPartiallyPaused(key) {
         delete PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .partiallyPaused[key];
         emit PartiallyUnpaused(_msgSender(), key);
     }

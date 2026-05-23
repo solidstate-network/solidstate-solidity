@@ -28,6 +28,7 @@
     "clean": "rm -rf dist/"
   },
   "dependencies": {
+    "@ethersproject/providers": "^5.8.0",
     "ethers5": "npm:ethers@^5.8.0"
   },
   "publishConfig": {

@@ -27,7 +27,7 @@ describe('EnumerableMap', () => {
       instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 
-    describe('#at(uint256)', () => {
+    describe('#valueAt(uint256)', () => {
       it('returns value coresponding to index provided', async () => {
         await instance['$set(uint256,address,address)'](
           STORAGE_SLOT,
@@ -36,7 +36,7 @@ describe('EnumerableMap', () => {
         );
 
         const [key, value] =
-          await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_AddressToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );
@@ -48,7 +48,7 @@ describe('EnumerableMap', () => {
       describe('reverts if', () => {
         it('index is out of bounds', async () => {
           await expect(
-            instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
+            instance.$valueAt_EnumerableMap_AddressToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             ),
@@ -233,7 +233,7 @@ describe('EnumerableMap', () => {
           addressThree,
         );
         let [key, value] =
-          await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_AddressToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );
@@ -245,7 +245,7 @@ describe('EnumerableMap', () => {
           addressFour,
         );
         [key, value] =
-          await instance.$at_EnumerableMap_AddressToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_AddressToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );
@@ -486,7 +486,7 @@ describe('EnumerableMap', () => {
       instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 
-    describe('#at(uint256)', () => {
+    describe('#valueAt(uint256)', () => {
       it('returns value coresponding to index provided', async () => {
         await instance['$set(uint256,uint256,address)'](
           STORAGE_SLOT,
@@ -495,7 +495,7 @@ describe('EnumerableMap', () => {
         );
 
         const [key, value] =
-          await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_UintToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );
@@ -507,7 +507,7 @@ describe('EnumerableMap', () => {
       describe('reverts if', () => {
         it('index is out of bounds', async () => {
           await expect(
-            instance.$at_EnumerableMap_UintToAddressMap.staticCall(
+            instance.$valueAt_EnumerableMap_UintToAddressMap.staticCall(
               STORAGE_SLOT,
               0n,
             ),
@@ -689,7 +689,7 @@ describe('EnumerableMap', () => {
           addressThree,
         );
         let [key, value] =
-          await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_UintToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );
@@ -701,7 +701,7 @@ describe('EnumerableMap', () => {
           addressTwo,
         );
         [key, value] =
-          await instance.$at_EnumerableMap_UintToAddressMap.staticCall(
+          await instance.$valueAt_EnumerableMap_UintToAddressMap.staticCall(
             STORAGE_SLOT,
             0n,
           );

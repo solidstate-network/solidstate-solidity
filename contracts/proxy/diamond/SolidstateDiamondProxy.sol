@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { IERC165 } from '../../interfaces/IERC165.sol';
 import { IERC2535DiamondCut } from '../../interfaces/IERC2535DiamondCut.sol';
-import {
-    IERC2535DiamondLoupe
-} from '../../interfaces/IERC2535DiamondLoupe.sol';
+import { IERC2535DiamondLoupe } from '../../interfaces/IERC2535DiamondLoupe.sol';
 import { _DiamondProxyFallback } from './fallback/_DiamondProxyFallback.sol';
 import { DiamondProxyFallback } from './fallback/DiamondProxyFallback.sol';
 import { IDiamondProxyFallback } from './fallback/IDiamondProxyFallback.sol';

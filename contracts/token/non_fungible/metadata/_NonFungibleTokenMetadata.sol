@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { ERC721Storage } from '../../../storage/ERC721Storage.sol';
 import { Uint256 } from '../../../utils/Uint256.sol';
@@ -21,7 +21,7 @@ abstract contract _NonFungibleTokenMetadata is
      * @return name token name
      */
     function _name() internal view virtual returns (string memory name) {
-        name = ERC721Storage.layout(ERC721Storage.DEFAULT_STORAGE_SLOT).name;
+        name = ERC721Storage.ref(ERC721Storage.DEFAULT_STORAGE_SLOT).name;
     }
 
     /**
@@ -30,7 +30,7 @@ abstract contract _NonFungibleTokenMetadata is
      */
     function _symbol() internal view virtual returns (string memory symbol) {
         symbol = ERC721Storage
-            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .symbol;
     }
 
@@ -44,7 +44,7 @@ abstract contract _NonFungibleTokenMetadata is
         if (!_exists(tokenId))
             revert NonFungibleTokenMetadata__NonExistentToken();
 
-        ERC721Storage.Layout storage $ = ERC721Storage.layout(
+        ERC721Storage.Layout storage $ = ERC721Storage.ref(
             ERC721Storage.DEFAULT_STORAGE_SLOT
         );
 
@@ -79,7 +79,7 @@ abstract contract _NonFungibleTokenMetadata is
      * @param name token name
      */
     function _setName(string memory name) internal virtual {
-        ERC721Storage.layout(ERC721Storage.DEFAULT_STORAGE_SLOT).name = name;
+        ERC721Storage.ref(ERC721Storage.DEFAULT_STORAGE_SLOT).name = name;
     }
 
     /**
@@ -88,7 +88,7 @@ abstract contract _NonFungibleTokenMetadata is
      */
     function _setSymbol(string memory symbol) internal virtual {
         ERC721Storage
-            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .symbol = symbol;
     }
 
@@ -101,7 +101,7 @@ abstract contract _NonFungibleTokenMetadata is
         uint256 tokenId,
         string memory tokenURI
     ) internal virtual {
-        ERC721Storage.layout(ERC721Storage.DEFAULT_STORAGE_SLOT).tokenURIs[
+        ERC721Storage.ref(ERC721Storage.DEFAULT_STORAGE_SLOT).tokenURIs[
             tokenId
         ] = tokenURI;
     }
@@ -112,7 +112,7 @@ abstract contract _NonFungibleTokenMetadata is
      */
     function _setBaseURI(string memory baseURI) internal virtual {
         ERC721Storage
-            .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+            .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
             .baseURI = baseURI;
     }
 
@@ -129,7 +129,7 @@ abstract contract _NonFungibleTokenMetadata is
 
         if (to == address(0)) {
             delete ERC721Storage
-                .layout(ERC721Storage.DEFAULT_STORAGE_SLOT)
+                .ref(ERC721Storage.DEFAULT_STORAGE_SLOT)
                 .tokenURIs[tokenId];
         }
     }

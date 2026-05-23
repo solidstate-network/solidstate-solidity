@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { _Context } from '../../meta/_Context.sol';
 import { PausableStorage } from '../../storage/PausableStorage.sol';
@@ -26,7 +26,7 @@ abstract contract _Pausable is _IPausable, _Context {
      */
     function _paused() internal view virtual returns (bool status) {
         status = PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .paused;
     }
 
@@ -35,7 +35,7 @@ abstract contract _Pausable is _IPausable, _Context {
      */
     function _pause() internal virtual whenNotPaused {
         PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .paused = true;
         emit Paused(_msgSender());
     }
@@ -45,7 +45,7 @@ abstract contract _Pausable is _IPausable, _Context {
      */
     function _unpause() internal virtual whenPaused {
         delete PausableStorage
-            .layout(PausableStorage.DEFAULT_STORAGE_SLOT)
+            .ref(PausableStorage.DEFAULT_STORAGE_SLOT)
             .paused;
         emit Unpaused(_msgSender());
     }
