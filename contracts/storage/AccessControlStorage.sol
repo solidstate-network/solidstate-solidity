@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { EnumerableSet } from '../data/EnumerableSet.sol';
 import { sslot } from '../data/StorageSlot.sol';
@@ -19,15 +19,7 @@ library AccessControlStorage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(
-            keccak256(
-                abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.layout.AccessControl'))
-                    ) - 1
-                )
-            ) & ~bytes32(uint256(0xff))
-        );
+        sslot.wrap(erc7201('solidstate.layout.AccessControl'));
 
     function ref() internal pure returns (Layout storage $) {
         $ = ref(DEFAULT_STORAGE_SLOT);

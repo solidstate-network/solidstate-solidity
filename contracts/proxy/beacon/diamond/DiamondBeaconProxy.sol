@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { BeaconProxy } from '../BeaconProxy.sol';
 import { _DiamondBeaconProxy } from './_DiamondBeaconProxy.sol';

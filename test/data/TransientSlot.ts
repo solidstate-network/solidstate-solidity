@@ -17,14 +17,6 @@ describe('TransientSlot', () => {
     instance = await new $TransientSlot__factory(deployer).deploy();
   });
 
-  describe('#calculateErc7201Slot(string)', () => {
-    it('calculates transient slot using "erc7201" formula', async () => {
-      expect(await instance.$calculateErc7201Slot('example.main')).to.equal(
-        '0x183a6125c38840424c4a85fa12bab2ab606c4b6d0e7cc73c0c06ba5300eab500',
-      );
-    });
-  });
-
   describe('#index(uint256)', () => {
     it('returns the slot of an index of an array declared at the current slot', async () => {
       const slot = ethers.hexlify(ethers.randomBytes(32));
@@ -56,7 +48,7 @@ describe('TransientSlot', () => {
     it('returns next slot', async () => {
       const slot = ethers.hexlify(ethers.randomBytes(32));
 
-      expect(await instance['$next(bytes32)'].staticCall(slot)).to.eq(
+      expect(await instance['$next(uint256)'].staticCall(slot)).to.eq(
         BigInt(slot) + 1n,
       );
     });
@@ -68,7 +60,7 @@ describe('TransientSlot', () => {
 
       for (let i = 0n; i < 3n; i++) {
         expect(
-          await instance['$next(bytes32,uint256)'].staticCall(slot, i),
+          await instance['$next(uint256,uint256)'].staticCall(slot, i),
         ).to.eq(BigInt(slot) + i);
       }
     });
@@ -78,7 +70,7 @@ describe('TransientSlot', () => {
     it('returns previous slot', async () => {
       const slot = ethers.hexlify(ethers.randomBytes(32));
 
-      expect(await instance['$prev(bytes32)'].staticCall(slot)).to.eq(
+      expect(await instance['$prev(uint256)'].staticCall(slot)).to.eq(
         BigInt(slot) - 1n,
       );
     });
@@ -90,7 +82,7 @@ describe('TransientSlot', () => {
 
       for (let i = 0n; i < 3n; i++) {
         expect(
-          await instance['$prev(bytes32,uint256)'].staticCall(slot, i),
+          await instance['$prev(uint256,uint256)'].staticCall(slot, i),
         ).to.eq(BigInt(slot) - i);
       }
     });

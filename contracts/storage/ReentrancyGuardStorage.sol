@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
 import { sslot } from '../data/StorageSlot.sol';
 
@@ -13,15 +13,7 @@ library ReentrancyGuardStorage {
     }
 
     sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(
-            keccak256(
-                abi.encode(
-                    uint256(
-                        keccak256(bytes('solidstate.layout.ReentrancyGuard'))
-                    ) - 1
-                )
-            ) & ~bytes32(uint256(0xff))
-        );
+        sslot.wrap(erc7201('solidstate.layout.ReentrancyGuard'));
 
     function ref() internal pure returns (Layout storage $) {
         $ = ref(DEFAULT_STORAGE_SLOT);

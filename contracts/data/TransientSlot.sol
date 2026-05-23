@@ -1,28 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.35;
 
-type tslot is bytes32;
+type tslot is uint256;
 
 using TransientSlot for tslot global;
 
 library TransientSlot {
-    /**
-     * @notice calculate the EIP-7201 slot for a given string id
-     * @dev id parameter should not contain whitespace
-     * @dev see https://eips.ethereum.org/EIPS/eip-7201
-     * @param id namespace id
-     * @return slot EIP-7201 slot
-     */
-    function calculateErc7201Slot(
-        string memory id
-    ) internal pure returns (tslot slot) {
-        slot = tslot.wrap(
-            keccak256(abi.encode(uint256(keccak256(bytes(id))) - 1)) &
-                ~bytes32(uint256(0xff))
-        );
-    }
-
     /**
      * @notice calculate the slot of an index of an array
      * @param slot array declaration slot where its length is stored
