@@ -1,3 +1,0 @@
-ERC2612 inherit ERC20?
-
-stash pop and add safePermit
