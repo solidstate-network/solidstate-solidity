@@ -12,11 +12,11 @@ import {
 } from 'ethers5';
 import { Interface } from 'ethers5/lib/utils';
 
-interface StubInterface {
-  returns(...args: any): StubInterface;
-  reverts(): StubInterface;
-  revertsWithReason(reason: string): StubInterface;
-  withArgs(...args: any[]): StubInterface;
+interface StubInterface extends PromiseLike<void> {
+  returns(...args: any): this;
+  reverts(): this;
+  revertsWithReason(reason: string): this;
+  withArgs(...args: any[]): this;
 }
 
 export interface MockContract<T extends BaseContract = BaseContract>
@@ -126,23 +126,47 @@ class Stub implements StubInterface {
     return this;
   }
 
-  async then(resolve: () => void, reject: (e: any) => void) {
-    for (let i = 0; i < this.stubCalls.length; i++) {
-      try {
-        await this.stubCalls[i]();
-      } catch (e) {
-        this.stubCalls = [];
-        this.argsSet = false;
-        this.revertSet = false;
-        reject(e);
-        return;
-      }
-    }
+  then<TResult1 = void, TResult2 = never>(
+    onfulfilled?:
+      | ((value: void) => TResult1 | PromiseLike<TResult1>)
+      | null
+      | undefined,
+    onrejected?:
+      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+      | null
+      | undefined,
+  ): Promise<TResult1 | TResult2> {
+    return new Promise((resolve, reject) => {
+      const execute = async () => {
+        for (let i = 0; i < this.stubCalls.length; i++) {
+          await this.stubCalls[i]();
+        }
+      };
 
-    this.stubCalls = [];
-    this.argsSet = false;
-    this.revertSet = false;
-    resolve();
+      execute()
+        .then(() => {
+          this.stubCalls = [];
+          this.argsSet = false;
+          this.revertSet = false;
+
+          if (onfulfilled) {
+            resolve(onfulfilled(undefined as void) as TResult1);
+          } else {
+            resolve(undefined as TResult1);
+          }
+        })
+        .catch((e) => {
+          this.stubCalls = [];
+          this.argsSet = false;
+          this.revertSet = false;
+
+          if (onrejected) {
+            resolve(onrejected(e) as TResult2);
+          } else {
+            reject(e);
+          }
+        });
+    });
   }
 }
 
