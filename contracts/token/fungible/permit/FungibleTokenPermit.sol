@@ -4,6 +4,8 @@ pragma solidity ^0.8.35;
 
 import { IERC2612 } from '../../../interfaces/IERC2612.sol';
 import { IERC5267 } from '../../../interfaces/IERC5267.sol';
+import { FungibleTokenMetadata } from '../metadata/FungibleTokenMetadata.sol';
+import { FungibleToken } from '../FungibleToken.sol';
 import { _FungibleTokenPermit } from './_FungibleTokenPermit.sol';
 import { IFungibleTokenPermit } from './IFungibleTokenPermit.sol';
 
@@ -12,7 +14,9 @@ import { IFungibleTokenPermit } from './IFungibleTokenPermit.sol';
  */
 abstract contract FungibleTokenPermit is
     IFungibleTokenPermit,
-    _FungibleTokenPermit
+    _FungibleTokenPermit,
+    FungibleToken,
+    FungibleTokenMetadata
 {
     /**
      * @inheritdoc IERC2612
