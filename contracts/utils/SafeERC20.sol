@@ -122,7 +122,10 @@ library SafeERC20 {
             )
         );
 
-        if (!success && token.allowance(owner, spender) < value)
+        // permit authorizes an exact amount; if the call reverted, the existing
+        // allowance must equal the signed value for the permit to be considered
+        // already executed (e.g., via front-running)
+        if (!success && token.allowance(owner, spender) != value)
             revert SafeERC20__PermitFailed();
     }
 
