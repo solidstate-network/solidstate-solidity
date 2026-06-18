@@ -6,4 +6,3 @@ packages:
 
 patchedDependencies:
   typechain: patches/typechain.patch
-  '@typechain/hardhat': patches/@typechain__hardhat.patch
