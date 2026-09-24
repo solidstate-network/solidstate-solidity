@@ -227,24 +227,18 @@ library MerkleTree {
                 // begin shifting the mask down
                 // its halved value is the bound tested next for the sibling's existence
                 mask >>= 1;
-                uint256 existenceBound;
-
-                unchecked {
-                    existenceBound = maxUsedIndex + mask;
-                }
 
                 // the right sibling exists only if its leftmost descendant leaf
-                // is within the tree (i.e. siblingIndex < maxUsedIndex + mask);
-                // otherwise the current element is passed along to the next
-                // depth unhashed
+                // is within the tree; otherwise the current element is passed
+                // along to the next depth unhashed
                 unchecked {
-                    if (siblingIndex < existenceBound) {
+                    if (siblingIndex < maxUsedIndex + mask) {
                         // the right sibling exists, but if its own subtree is
                         // incomplete it will have been carried upward unhashed
                         // and is therefore not stored at its canonical index -
                         // descend to its left child until a stored node is
                         // reached, which is the case once its right child holds
-                        // a leaf (i.e. siblingIndex <= maxUsedIndex)
+                        // a leaf
                         while (siblingIndex > maxUsedIndex) {
                             // shifting the mask down and subtracting it from an index yields the index of a left child, at a lower depth
                             mask >>= 1;
