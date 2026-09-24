@@ -220,37 +220,26 @@ library MerkleTree {
             } else {
                 // current element is on the left
 
+                // canonical index and mask of the right sibling
+                uint256 siblingIndex = indexRight;
+                uint256 siblingMask = mask;
+
+                // the right sibling exists only if its leftmost descendant leaf
+                // is within the tree; equivalently, its canonical index is less
+                // than maxIndex plus half of its mask - otherwise the current
+                // element is passed along to the next depth unhashed
                 unchecked {
-                    // the tree contains `size` leaf nodes, where maxIndex is the
-                    // internal index of the rightmost leaf (maxIndex == 2 * (size - 1))
-                    uint256 size = (maxIndex >> 1) + 1;
-
-                    // position, at the current depth, of the right sibling
-                    uint256 siblingPosition = (index >> (depth + 1)) + 1;
-
-                    // the right sibling exists only if its leftmost descendant
-                    // leaf is within the tree; otherwise the current element is
-                    // passed along to the next depth unhashed
-                    if ((siblingPosition << depth) < size) {
+                    if (siblingIndex < maxIndex + (siblingMask >> 1)) {
                         // the right sibling exists, but if its own subtree is
                         // incomplete it will have been carried upward unhashed and
-                        // therefore is not stored at its canonical index - descend
-                        // the left spine until the physically stored node is reached
-                        uint256 siblingDepth = depth;
-
-                        while (
-                            siblingDepth > 0 &&
-                            (((siblingPosition << 1) | 1) <<
-                                (siblingDepth - 1)) >=
-                                size
-                        ) {
-                            siblingDepth -= 1;
-                            siblingPosition <<= 1;
+                        // therefore is not stored at its canonical index - step to
+                        // its left child (siblingIndex - (siblingMask >> 2)) until
+                        // a stored node is reached, which is the case once its
+                        // right child holds a leaf (i.e. once siblingIndex <= maxIndex)
+                        while (siblingMask > 2 && siblingIndex > maxIndex) {
+                            siblingIndex -= siblingMask >> 2;
+                            siblingMask >>= 1;
                         }
-
-                        uint256 siblingIndex =
-                            ((1 << siblingDepth) - 1) +
-                                (siblingPosition << (siblingDepth + 1));
 
                         assembly {
                             mstore(0, element)
