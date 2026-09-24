@@ -236,7 +236,7 @@ library MerkleTree {
                         // its left child (siblingIndex - (siblingMask >> 2)) until
                         // a stored node is reached, which is the case once its
                         // right child holds a leaf (i.e. once siblingIndex <= maxIndex)
-                        while (siblingMask > 2 && siblingIndex > maxIndex) {
+                        while (siblingIndex > maxIndex) {
                             siblingIndex -= siblingMask >> 2;
                             siblingMask >>= 1;
                         }
