@@ -208,24 +208,56 @@ library MerkleTree {
         if (mask <= maxIndex) {
             uint256 indexRight = index | mask;
 
-            // if current element is on the left and right element does not exist
-            // pass element along to next depth unhashed
-
             if (index == indexRight) {
                 // current element is on the right
-                // left element is guaranteed to exist
+                // left element is guaranteed to exist and is stored at its
+                // canonical index
                 assembly {
                     mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
-            } else if (indexRight <= maxIndex) {
+            } else {
                 // current element is on the left
-                // right element exists
-                assembly {
-                    mstore(0, element)
-                    mstore(32, sload(add(arraySlot, indexRight)))
-                    element := keccak256(0, 64)
+
+                unchecked {
+                    // the tree contains `size` leaf nodes, where maxIndex is the
+                    // internal index of the rightmost leaf (maxIndex == 2 * (size - 1))
+                    uint256 size = (maxIndex >> 1) + 1;
+
+                    // position, at the current depth, of the right sibling
+                    uint256 siblingPosition = (index >> (depth + 1)) + 1;
+
+                    // the right sibling exists only if its leftmost descendant
+                    // leaf is within the tree; otherwise the current element is
+                    // passed along to the next depth unhashed
+                    if ((siblingPosition << depth) < size) {
+                        // the right sibling exists, but if its own subtree is
+                        // incomplete it will have been carried upward unhashed and
+                        // therefore is not stored at its canonical index - descend
+                        // the left spine until the physically stored node is reached
+                        uint256 siblingDepth = depth;
+
+                        while (
+                            siblingDepth > 0 &&
+                            (((siblingPosition << 1) | 1) <<
+                                (siblingDepth - 1)) >=
+                                size
+                        ) {
+                            siblingDepth -= 1;
+                            siblingPosition <<= 1;
+                        }
+
+                        uint256 siblingIndex =
+                            ((1 << siblingDepth) - 1) +
+                                (siblingPosition << (siblingDepth + 1));
+
+                        assembly {
+                            mstore(0, element)
+                            mstore(32, sload(add(arraySlot, siblingIndex)))
+                            element := keccak256(0, 64)
+                        }
+                    }
                 }
             }
 

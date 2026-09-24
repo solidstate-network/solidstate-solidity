@@ -253,6 +253,35 @@ describe('MerkleTree', () => {
       }
     });
 
+    it('updates Merkle root for trees of unbalanced size', async () => {
+      // exercise every leaf index across a range of tree sizes, including
+      // non-powers-of-two, where an updated leaf's sibling at some depth may be
+      // a node carried upward unhashed from an incomplete right subtree
+      for (let size = 1; size <= 9; size++) {
+        // each size uses an independent storage slot to start from an empty tree
+        const slot = BigInt(size);
+        const hashes: string[] = [];
+
+        for (let i = 0; i < size; i++) {
+          hashes.push(randomHash());
+          await instance.$push(slot, hashes[i]);
+        }
+
+        for (let i = 0; i < size; i++) {
+          const hash = randomHash();
+
+          hashes[i] = hash;
+          await instance.$set(slot, i, hash);
+
+          const tree = new MerkleTree(hashes, keccak256);
+
+          expect(await instance.$root.staticCall(slot)).to.equal(
+            tree.getHexRoot(),
+          );
+        }
+      }
+    });
+
     describe('reverts if', () => {
       it('index is out of bounds', async () => {
         await expect(
