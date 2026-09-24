@@ -192,7 +192,8 @@ library MerkleTree {
     ) private {
         if (index <= maxUsedIndex) {
             assembly {
-                // current index is within bounds of data, so write it to storage
+                // current index is within bounds of data, so write it to
+                // storage
                 sstore(add(arraySlot, index), element)
             }
         }
@@ -202,7 +203,8 @@ library MerkleTree {
 
         // create mask of bit n+1 for depth n
         // flipping this bit of element's index yields the index of its sibling
-        // the mask is equal to 2 ** (n + 1) and is also used to determine end of recursion
+        // the mask is equal to 2 ** (n + 1) and is also used to determine end
+        // of recursion
         uint256 mask = 2 << depth;
 
         if (mask <= maxUsedIndex) {
@@ -219,13 +221,15 @@ library MerkleTree {
                 }
             } else {
                 // current element is on the left
-                // right element is not guaranteed to exist and is not necessarily stored at its canonical index
+                // right element is not guaranteed to exist and is not
+                // necessarily stored at its canonical index
 
                 // canonical index of the right element
                 uint256 siblingIndex = indexRight;
 
                 // begin shifting the mask down
-                // its halved value is the bound tested next for the sibling's existence
+                // its halved value is the bound tested next for the sibling's
+                // existence
                 mask >>= 1;
 
                 // the right sibling exists only if its leftmost descendant leaf
@@ -240,11 +244,13 @@ library MerkleTree {
                         // reached, which is the case once its right child holds
                         // a leaf
                         while (siblingIndex > maxUsedIndex) {
-                            // shifting the mask down and subtracting it from an index yields the index of a left child, at a lower depth
+                            // shifting the mask down and subtracting it from
+                            // an index yields the index of a left child, at a
+                            // lower depth
                             mask >>= 1;
-                                siblingIndex -= mask;
+                            siblingIndex -= mask;
                         }
-    
+
                         assembly {
                             mstore(0, element)
                             mstore(32, sload(add(arraySlot, siblingIndex)))
