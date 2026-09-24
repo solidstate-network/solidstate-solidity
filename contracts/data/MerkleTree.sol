@@ -202,7 +202,7 @@ library MerkleTree {
 
         // create mask of bit n+1 for depth n
         // flipping this bit of element's index yields the index of its sibling
-        // the mask is equal to 2 ** (n + 1) and is also used to determine end of loop
+        // the mask is equal to 2 ** (n + 1) and is also used to determine end of recursion
         uint256 mask = 2 << depth;
 
         if (mask <= maxIndex) {
@@ -219,28 +219,38 @@ library MerkleTree {
                 }
             } else {
                 // current element is on the left
+                // right element is not guaranteed to exist and is not necessarily stored at its canonical index
 
-                // canonical index and mask of the right sibling
+                // canonical index of the right element
                 uint256 siblingIndex = indexRight;
-                uint256 siblingMask = mask;
+
+                // begin shifting the mask down
+                // its halved value is the bound tested next for the sibling's existence
+                mask >>= 1;
+                uint256 existenceBound;
+
+                unchecked {
+                    existenceBound = maxIndex + mask;
+                }
 
                 // the right sibling exists only if its leftmost descendant leaf
-                // is within the tree; equivalently, its canonical index is less
-                // than maxIndex plus half of its mask - otherwise the current
-                // element is passed along to the next depth unhashed
+                // is within the tree (i.e. siblingIndex < maxIndex + mask);
+                // otherwise the current element is passed along to the next
+                // depth unhashed
                 unchecked {
-                    if (siblingIndex < maxIndex + (siblingMask >> 1)) {
+                    if (siblingIndex < existenceBound) {
                         // the right sibling exists, but if its own subtree is
-                        // incomplete it will have been carried upward unhashed and
-                        // therefore is not stored at its canonical index - step to
-                        // its left child (siblingIndex - (siblingMask >> 2)) until
-                        // a stored node is reached, which is the case once its
-                        // right child holds a leaf (i.e. once siblingIndex <= maxIndex)
+                        // incomplete it will have been carried upward unhashed
+                        // and is therefore not stored at its canonical index -
+                        // descend to its left child until a stored node is
+                        // reached, which is the case once its right child holds
+                        // a leaf (i.e. siblingIndex <= maxIndex)
                         while (siblingIndex > maxIndex) {
-                            siblingIndex -= siblingMask >> 2;
-                            siblingMask >>= 1;
+                            // shifting the mask down and subtracting it from an index yields the index of a left child, at a lower depth
+                            mask >>= 1;
+                                siblingIndex -= mask;
                         }
-
+    
                         assembly {
                             mstore(0, element)
                             mstore(32, sload(add(arraySlot, siblingIndex)))
