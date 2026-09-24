@@ -186,11 +186,11 @@ library MerkleTree {
     function _set(
         bytes32 arraySlot,
         uint256 depth,
-        uint256 maxIndex,
+        uint256 maxUsedIndex,
         uint256 index,
         bytes32 element
     ) private {
-        if (index <= maxIndex) {
+        if (index <= maxUsedIndex) {
             assembly {
                 // current index is within bounds of data, so write it to storage
                 sstore(add(arraySlot, index), element)
@@ -205,7 +205,7 @@ library MerkleTree {
         // the mask is equal to 2 ** (n + 1) and is also used to determine end of recursion
         uint256 mask = 2 << depth;
 
-        if (mask <= maxIndex) {
+        if (mask <= maxUsedIndex) {
             uint256 indexRight = index | mask;
 
             if (index == indexRight) {
@@ -230,11 +230,11 @@ library MerkleTree {
                 uint256 existenceBound;
 
                 unchecked {
-                    existenceBound = maxIndex + mask;
+                    existenceBound = maxUsedIndex + mask;
                 }
 
                 // the right sibling exists only if its leftmost descendant leaf
-                // is within the tree (i.e. siblingIndex < maxIndex + mask);
+                // is within the tree (i.e. siblingIndex < maxUsedIndex + mask);
                 // otherwise the current element is passed along to the next
                 // depth unhashed
                 unchecked {
@@ -244,8 +244,8 @@ library MerkleTree {
                         // and is therefore not stored at its canonical index -
                         // descend to its left child until a stored node is
                         // reached, which is the case once its right child holds
-                        // a leaf (i.e. siblingIndex <= maxIndex)
-                        while (siblingIndex > maxIndex) {
+                        // a leaf (i.e. siblingIndex <= maxUsedIndex)
+                        while (siblingIndex > maxUsedIndex) {
                             // shifting the mask down and subtracting it from an index yields the index of a left child, at a lower depth
                             mask >>= 1;
                                 siblingIndex -= mask;
@@ -268,7 +268,7 @@ library MerkleTree {
                 _set(
                     arraySlot,
                     depth + 1,
-                    maxIndex,
+                    maxUsedIndex,
                     indexRight ^ (3 << depth),
                     element
                 );
