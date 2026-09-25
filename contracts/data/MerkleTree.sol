@@ -183,6 +183,20 @@ library MerkleTree {
         }
     }
 
+    /**
+     * @notice write element at given internal index and recalculate the branch
+     * and root nodes on the path to the root
+     * @dev recurses once per tree depth, hashing element with its sibling
+     * before recursing to the next depth up
+     * @param arraySlot cached slot of underlying array
+     * @param depth current tree depth, zero at the leaves
+     * @param maxUsedIndex highest internal index that contains data; nodes with
+     * a greater canonical index may exist but are carried upward unhashed
+     * rather than stored there
+     * @param index internal index at which to write element at current depth
+     * @param element value to write at index; a leaf at depth zero, otherwise
+     * a branch hash, or a lower node carried upward unhashed
+     */
     function _set(
         bytes32 arraySlot,
         uint256 depth,
