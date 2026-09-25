@@ -277,7 +277,6 @@ library MerkleTree {
             unchecked {
                 // calculate the index of next element at depth n+1
                 // midpoint between current left and right index
-                // index = indexRight ^ (3 << depth)
 
                 _set(
                     arraySlot,
