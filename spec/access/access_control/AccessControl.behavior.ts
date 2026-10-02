@@ -129,10 +129,11 @@ export function describeBehaviorOfAccessControl(
       it('removes role from sender', async () => {
         await instance.connect(admin).grantRole(ROLE, nonAdmin.address);
 
-        await instance.connect(nonAdmin).renounceRole(ROLE),
-          expect(
-            await instance.hasRole.staticCall(ROLE, nonAdmin.address),
-          ).to.equal(false);
+        await instance.connect(nonAdmin).renounceRole(ROLE);
+
+        expect(
+          await instance.hasRole.staticCall(ROLE, nonAdmin.address),
+        ).to.equal(false);
       });
 
       it('emits RoleRevoked event', async () => {
