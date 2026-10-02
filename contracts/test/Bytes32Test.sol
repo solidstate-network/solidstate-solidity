@@ -11,13 +11,13 @@ contract Bytes32Test {
         bytes32 inputBytes32;
 
         // contaminate the higher-order bits
-        assembly {
+        assembly ('memory-safe') {
             inputBytes32 := or(input, shl(160, not(1)))
         }
 
         address output = Bytes32.toAddress(inputBytes32);
 
-        assembly {
+        assembly ('memory-safe') {
             outputBytes32 := output
         }
     }
@@ -28,13 +28,13 @@ contract Bytes32Test {
         bytes32 inputBytes32;
 
         // contaminate the higher-order bits
-        assembly {
+        assembly ('memory-safe') {
             inputBytes32 := or(input, shl(1, not(1)))
         }
 
         bool output = Bytes32.toBool(inputBytes32);
 
-        assembly {
+        assembly ('memory-safe') {
             outputBytes32 := output
         }
     }

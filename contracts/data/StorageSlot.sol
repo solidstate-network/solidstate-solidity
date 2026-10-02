@@ -13,7 +13,7 @@ library StorageSlot {
      * @param idx index of array whose slot to calculate
      */
     function index(sslot slot, uint256 idx) internal pure returns (sslot) {
-        assembly {
+        assembly ('memory-safe') {
             mstore(0, slot)
             slot := add(keccak256(0, 32), idx)
         }
@@ -27,7 +27,7 @@ library StorageSlot {
      * @param key index of mapping whose slot to calculate
      */
     function map(sslot slot, bytes32 key) internal pure returns (sslot) {
-        assembly {
+        assembly ('memory-safe') {
             mstore(0, key)
             mstore(32, slot)
             slot := keccak256(0, 64)
@@ -51,7 +51,7 @@ library StorageSlot {
      * @return nth next slot
      */
     function next(sslot slot, uint256 amount) internal pure returns (sslot) {
-        assembly {
+        assembly ('memory-safe') {
             slot := add(slot, amount)
         }
 
@@ -74,7 +74,7 @@ library StorageSlot {
      * @return nth previous slot
      */
     function prev(sslot slot, uint256 amount) internal pure returns (sslot) {
-        assembly {
+        assembly ('memory-safe') {
             slot := sub(slot, amount)
         }
 
@@ -87,7 +87,7 @@ library StorageSlot {
      * @return data contents of storage slot
      */
     function read(sslot slot) internal view returns (bytes32 data) {
-        assembly {
+        assembly ('memory-safe') {
             data := sload(slot)
         }
     }
@@ -98,7 +98,7 @@ library StorageSlot {
      * @param data data to write
      */
     function write(sslot slot, bytes32 data) internal {
-        assembly {
+        assembly ('memory-safe') {
             sstore(slot, data)
         }
     }

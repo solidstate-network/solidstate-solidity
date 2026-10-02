@@ -125,7 +125,7 @@ library Array {
     function toAddressArray(
         bytes32[] storage array
     ) internal pure returns (address[] storage addressArray) {
-        assembly {
+        assembly ('memory-safe') {
             addressArray.slot := array.slot
         }
     }
@@ -138,7 +138,7 @@ library Array {
     function toUint256Array(
         bytes32[] storage array
     ) internal pure returns (uint256[] storage uint256Array) {
-        assembly {
+        assembly ('memory-safe') {
             uint256Array.slot := array.slot
         }
     }
