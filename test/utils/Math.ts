@@ -142,7 +142,7 @@ describe('Math', () => {
   });
 
   describe('#log2(uint256)', () => {
-    it('returns 0 for input of 0', async () => {
+    it('returns MaxUint256 for input of 0', async () => {
       // this is not mathematically correct, but checking within the log2 function would be inefficient
       expect(await instance.$log2.staticCall(0n)).to.eq(MaxUint256);
     });
