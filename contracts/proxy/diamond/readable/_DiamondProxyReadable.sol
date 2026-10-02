@@ -27,7 +27,7 @@ abstract contract _DiamondProxyReadable is
 
         diamondFacets = new Facet[]($.selectorCount);
 
-        uint8[] memory numFacetSelectors = new uint8[]($.selectorCount);
+        uint256[] memory numFacetSelectors = new uint256[]($.selectorCount);
         uint256 numFacets;
         uint256 selectorIndex;
 
@@ -56,9 +56,6 @@ abstract contract _DiamondProxyReadable is
                         diamondFacets[facetIndex].selectors[
                             numFacetSelectors[facetIndex]
                         ] = selector;
-                        // probably will never have more than 255 functions from one facet contract
-                        // slippy-disable-next-line require-revert-reason
-                        require(numFacetSelectors[facetIndex] < 255);
                         numFacetSelectors[facetIndex]++;
                         continueLoop = true;
                         break;
