@@ -107,7 +107,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
 
             // if selector count has changed, update it in storage
             if (selectorCount != originalSelectorCount) {
-                $.selectorCount = uint16(selectorCount);
+                $.selectorCount = selectorCount;
             }
 
             // if final selector count is not a multiple of 8, write the slug to storage
@@ -241,11 +241,14 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
                         bytes20($.selectorInfo[lastSelector]);
                 }
 
+                // derive the global index of the selector being removed
+                uint256 selectorIndex = uint256(
+                    selectorInfo & CLEAR_ADDRESS_MASK
+                );
                 // derive the index of the slug where the selector is stored
-                uint256 slugIndex = uint16(uint256(selectorInfo)) >> 3;
+                uint256 slugIndex = selectorIndex >> 3;
                 // derive the position of the selector within its slug
-                uint256 selectorBitIndexInSlug =
-                    (uint16(uint256(selectorInfo)) & 7) << 5;
+                uint256 selectorBitIndexInSlug = (selectorIndex & 7) << 5;
 
                 // overwrite the selector being deleted with the last selector in the array
 
