@@ -4,6 +4,7 @@ import {
   $DiamondProxyReadable,
   $DiamondProxyReadable__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('DiamondProxyReadable', () => {
@@ -52,5 +53,37 @@ describe('DiamondProxyReadable', () => {
 
   describeBehaviorOfDiamondProxyReadable(async () => instance, {
     facetCuts,
+  });
+
+  describe('#facets()', () => {
+    it('returns facet with more than 255 selectors', async () => {
+      const [deployer] = await ethers.getSigners();
+      const largeFacet = await deployMockContract(deployer, []);
+
+      const selectors = [];
+
+      for (let i = 0; i < 300; i++) {
+        selectors.push(
+          ethers.dataSlice(
+            ethers.solidityPackedKeccak256(['string'], [`large${i}()`]),
+            0,
+            4,
+          ),
+        );
+      }
+
+      await instance.$_diamondCut(
+        [{ target: largeFacet.address, action: 0, selectors }],
+        ethers.ZeroAddress,
+        '0x',
+      );
+
+      expect(
+        Array.from(await instance.facets.staticCall()),
+      ).to.have.deep.members([
+        ...facetCuts.map((fc) => [fc.target, fc.selectors]),
+        [largeFacet.address, selectors],
+      ]);
+    });
   });
 });
