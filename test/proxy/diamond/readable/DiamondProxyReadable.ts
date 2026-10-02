@@ -4,6 +4,7 @@ import {
   $DiamondProxyReadable,
   $DiamondProxyReadable__factory,
 } from '@solidstate/typechain-types';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('DiamondProxyReadable', () => {
@@ -52,5 +53,52 @@ describe('DiamondProxyReadable', () => {
 
   describeBehaviorOfDiamondProxyReadable(async () => instance, {
     facetCuts,
+  });
+
+  describe('#_diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
+    it('removes zero selector from start of slug', async () => {
+      // regression test for diamond-2 bug where a slug containing only the zero selector was treated as empty
+      // see https://github.com/mudgen/diamond-2-hardhat/commit/70bde4dd
+      const existingSelectorCount = facetCuts.reduce(
+        (sum, fc) => sum + fc.selectors.length,
+        0,
+      );
+
+      expect(existingSelectorCount % 8).to.eq(0);
+
+      const zeroSelector = '0x00000000';
+
+      await instance.$_diamondCut(
+        [
+          {
+            target: facetCuts[0].target,
+            action: 0,
+            selectors: [zeroSelector],
+          },
+        ],
+        ethers.ZeroAddress,
+        '0x',
+      );
+
+      await instance.$_diamondCut(
+        [
+          {
+            target: ethers.ZeroAddress,
+            action: 2,
+            selectors: [zeroSelector],
+          },
+        ],
+        ethers.ZeroAddress,
+        '0x',
+      );
+
+      expect(await instance.facetAddress.staticCall(zeroSelector)).to.eq(
+        ethers.ZeroAddress,
+      );
+
+      expect(
+        Array.from(await instance.facets.staticCall()),
+      ).to.have.deep.members(facetCuts.map((fc) => [fc.target, fc.selectors]));
+    });
   });
 });
