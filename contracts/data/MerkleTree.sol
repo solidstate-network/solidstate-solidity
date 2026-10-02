@@ -68,12 +68,13 @@ library MerkleTree {
         Tree storage self,
         uint256 index
     ) internal view returns (bytes32 element) {
-        // convert leaf node index to internal index
-        index <<= 1;
-
-        if (index >= self._elements.length) {
+        // compare input index to max valid index, avoiding bit shift overflow
+        if (index >= self._elements.length >> 1) {
             Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
+
+        // convert leaf node index to internal index
+        index <<= 1;
 
         element = _valueAt(_arraySlot(self), index);
     }
@@ -140,12 +141,13 @@ library MerkleTree {
     function set(Tree storage self, uint256 index, bytes32 element) internal {
         uint256 length = self._elements.length;
 
-        // convert leaf node index to internal index
-        index <<= 1;
-
-        if (index >= length) {
+        // compare input index to max valid index, avoiding bit shift overflow
+        if (index >= length >> 1) {
             Panic.panic(Panic.ARRAY_ACCESS_OUT_OF_BOUNDS);
         }
+
+        // convert leaf node index to internal index
+        index <<= 1;
 
         unchecked {
             // recalculate branch and root nodes
