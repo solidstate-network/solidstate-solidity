@@ -284,6 +284,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         unchecked {
             if (!facetCut.target.isContract())
                 revert DiamondProxyWritable__TargetHasNoCode();
+            if (facetCut.target == address(this))
+                revert DiamondProxyWritable__SelectorIsImmutable();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
