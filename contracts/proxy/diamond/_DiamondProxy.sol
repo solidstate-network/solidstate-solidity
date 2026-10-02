@@ -20,6 +20,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
 
     /**
      * @inheritdoc _Proxy
+     * @dev calls with empty calldata, including plain ether transfers via receive, have msg.sig 0x00000000 and are routed to the facet registered for that selector
      */
     function _getImplementation()
         internal
