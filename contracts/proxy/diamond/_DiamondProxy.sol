@@ -20,6 +20,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
 
     /**
      * @inheritdoc _Proxy
+     * @dev calls with empty calldata, including plain ether transfers via receive, have msg.sig 0x00000000 and are routed to the facet registered for that selector
      */
     function _getImplementation()
         internal
@@ -287,6 +288,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         unchecked {
             if (!facetCut.target.isContract())
                 revert DiamondProxyWritable__TargetHasNoCode();
+            if (facetCut.target == address(this))
+                revert DiamondProxyWritable__SelectorIsImmutable();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
