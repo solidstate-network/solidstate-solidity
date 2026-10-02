@@ -137,19 +137,19 @@ describe('MerkleTree', () => {
     });
   });
 
-  describe('#at', () => {
+  describe('#valueAt', () => {
     it('returns element at given index', async () => {
       const hash = randomHash();
 
       await instance.$push(STORAGE_SLOT, hash);
 
-      expect(await instance.$at.staticCall(STORAGE_SLOT, 0)).to.equal(hash);
+      expect(await instance.$valueAt.staticCall(STORAGE_SLOT, 0)).to.equal(hash);
     });
 
     describe('reverts if', () => {
       it('tree is size zero', async () => {
         await expect(
-          instance.$at.staticCall(STORAGE_SLOT, 0),
+          instance.$valueAt.staticCall(STORAGE_SLOT, 0),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
 
@@ -157,7 +157,7 @@ describe('MerkleTree', () => {
         await instance.$push(STORAGE_SLOT, randomHash());
 
         await expect(
-          instance.$at.staticCall(STORAGE_SLOT, 1),
+          instance.$valueAt.staticCall(STORAGE_SLOT, 1),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });

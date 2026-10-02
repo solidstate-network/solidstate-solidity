@@ -1,6 +1,6 @@
 {
   "name": "@solidstate/library",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0-next.3",
   "description": "Solidstate utility library",
   "keywords": [
     "solidity",
@@ -28,6 +28,7 @@
     "clean": "rm -rf dist/"
   },
   "dependencies": {
+    "@ethersproject/providers": "^5.8.0",
     "ethers5": "npm:ethers@^5.8.0"
   },
   "publishConfig": {

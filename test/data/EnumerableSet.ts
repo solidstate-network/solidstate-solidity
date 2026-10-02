@@ -24,26 +24,26 @@ describe('EnumerableSet', async () => {
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
-    describe('#at(uint256)', () => {
+    describe('#valueAt(uint256)', () => {
       it('returns the value corresponding to index provided', async () => {
         await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
         await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
         await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
 
         expect(
-          await instance.$at_EnumerableSet_Bytes32Set.staticCall(
+          await instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(
             STORAGE_SLOT,
             0n,
           ),
         ).to.equal(zeroBytes32);
         expect(
-          await instance.$at_EnumerableSet_Bytes32Set.staticCall(
+          await instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(
             STORAGE_SLOT,
             1n,
           ),
         ).to.equal(oneBytes32);
         expect(
-          await instance.$at_EnumerableSet_Bytes32Set.staticCall(
+          await instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(
             STORAGE_SLOT,
             2n,
           ),
@@ -53,7 +53,7 @@ describe('EnumerableSet', async () => {
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$at_EnumerableSet_Bytes32Set.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(STORAGE_SLOT, 0n),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',
@@ -347,26 +347,26 @@ describe('EnumerableSet', async () => {
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
-    describe('#at(uint256)', () => {
+    describe('#valueAt(uint256)', () => {
       it('returns the value corresponding to index provided', async () => {
         await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
         await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
         await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
 
         expect(
-          await instance.$at_EnumerableSet_AddressSet.staticCall(
+          await instance.$valueAt_EnumerableSet_AddressSet.staticCall(
             STORAGE_SLOT,
             0n,
           ),
         ).to.equal(zeroAddress);
         expect(
-          await instance.$at_EnumerableSet_AddressSet.staticCall(
+          await instance.$valueAt_EnumerableSet_AddressSet.staticCall(
             STORAGE_SLOT,
             1n,
           ),
         ).to.equal(twoAddress);
         expect(
-          await instance.$at_EnumerableSet_AddressSet.staticCall(
+          await instance.$valueAt_EnumerableSet_AddressSet.staticCall(
             STORAGE_SLOT,
             2n,
           ),
@@ -376,7 +376,7 @@ describe('EnumerableSet', async () => {
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$at_EnumerableSet_AddressSet.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_AddressSet.staticCall(STORAGE_SLOT, 0n),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',
@@ -670,27 +670,27 @@ describe('EnumerableSet', async () => {
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
-    describe('#at(uint256)', () => {
+    describe('#valueAt(uint256)', () => {
       it('returns the value corresponding to index provided', async () => {
         await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
         await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
         await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
         expect(
-          await instance.$at_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
         ).to.equal(zeroUint256);
         expect(
-          await instance.$at_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 1n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 1n),
         ).to.equal(twoUint256);
         expect(
-          await instance.$at_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 2n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 2n),
         ).to.equal(oneUint256);
       });
 
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$at_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',
