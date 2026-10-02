@@ -12,7 +12,7 @@ abstract contract _DiamondProxyFallback is
 {
     /**
      * @inheritdoc _DiamondProxy
-     * @notice query custom fallback address is no implementation is found
+     * @notice query custom fallback address if no implementation is found
      */
     function _getImplementation()
         internal
