@@ -14,6 +14,7 @@ import HardhatLinearization from '@solidstate/hardhat-linearization';
 import HardhatSelectorUploader from '@solidstate/hardhat-selector-uploader';
 import 'hardhat-exposed';
 import { type HardhatUserConfig } from 'hardhat/config';
+import path from 'node:path';
 
 const config: HardhatUserConfig = {
   plugins: [
@@ -43,6 +44,10 @@ const config: HardhatUserConfig = {
         runs: 200,
       },
     },
+  },
+
+  typechain: {
+    outDir: path.resolve(import.meta.dirname, 'typechain-types'),
   },
 
   abiExporter: {
