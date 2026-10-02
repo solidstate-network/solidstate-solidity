@@ -87,7 +87,7 @@ library MerkleTree {
         // index of element being pushed, equal to length of array before operation
         uint256 index = self._elements.length;
 
-        assembly {
+        assembly ('memory-safe') {
             // increase array length by 2
             sstore(self.slot, add(index, 2))
         }
@@ -112,7 +112,7 @@ library MerkleTree {
             // index of element being popped, equal to length of array after operation
             index -= 2;
 
-            assembly {
+            assembly ('memory-safe') {
                 // decrease array length by 2
                 sstore(self.slot, index)
             }
@@ -159,7 +159,7 @@ library MerkleTree {
      * @return slot storage slot
      */
     function _arraySlot(Tree storage self) private pure returns (bytes32 slot) {
-        assembly {
+        assembly ('memory-safe') {
             mstore(0, self.slot)
             slot := keccak256(0, 32)
         }
@@ -175,7 +175,7 @@ library MerkleTree {
         bytes32 arraySlot,
         uint256 index
     ) private view returns (bytes32 element) {
-        assembly {
+        assembly ('memory-safe') {
             // load via assembly to avoid array length check
             element := sload(add(arraySlot, index))
         }
@@ -189,7 +189,7 @@ library MerkleTree {
         bytes32 element
     ) private {
         if (index <= maxIndex) {
-            assembly {
+            assembly ('memory-safe') {
                 // current index is within bounds of data, so write it to storage
                 sstore(add(arraySlot, index), element)
             }
@@ -212,7 +212,7 @@ library MerkleTree {
             if (index == indexRight) {
                 // current element is on the right
                 // left element is guaranteed to exist
-                assembly {
+                assembly ('memory-safe') {
                     mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
                     mstore(32, element)
                     element := keccak256(0, 64)
@@ -220,7 +220,7 @@ library MerkleTree {
             } else if (indexRight <= maxIndex) {
                 // current element is on the left
                 // right element exists
-                assembly {
+                assembly ('memory-safe') {
                     mstore(0, element)
                     mstore(32, sload(add(arraySlot, indexRight)))
                     element := keccak256(0, 64)

@@ -11,10 +11,12 @@ import { _IDiamondProxy } from './_IDiamondProxy.sol';
 abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
     using Address for address;
 
-    bytes32 private constant CLEAR_ADDRESS_MASK =
-        bytes32(uint256(0xffffffffffffffffffffffff));
-    bytes32 private constant CLEAR_SELECTOR_MASK =
-        bytes32(uint256(0xffffffff << 224));
+    bytes32 private constant CLEAR_ADDRESS_MASK = bytes32(
+        uint256(0xffffffffffffffffffffffff)
+    );
+    bytes32 private constant CLEAR_SELECTOR_MASK = bytes32(
+        uint256(0xffffffff << 224)
+    );
 
     /**
      * @inheritdoc _Proxy
@@ -242,9 +244,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
                 // derive the index of the slug where the selector is stored
                 uint256 slugIndex = uint16(uint256(selectorInfo)) >> 3;
                 // derive the position of the selector within its slug
-                uint256 selectorBitIndexInSlug = (uint16(
-                    uint256(selectorInfo)
-                ) & 7) << 5;
+                uint256 selectorBitIndexInSlug =
+                    (uint16(uint256(selectorInfo)) & 7) << 5;
 
                 // overwrite the selector being deleted with the last selector in the array
 
@@ -320,12 +321,11 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
                     revert DiamondProxyWritable__TargetHasNoCode();
             }
 
-            (bool success, ) = target.delegatecall(data);
+            (bool success, bytes memory returndata) = target.delegatecall(data);
 
             if (!success) {
-                assembly {
-                    returndatacopy(0, 0, returndatasize())
-                    revert(0, returndatasize())
+                assembly ('memory-safe') {
+                    revert(add(returndata, 32), mload(returndata))
                 }
             }
         }

@@ -179,7 +179,7 @@ library EnumerableSet {
     ) internal view returns (address[] memory array) {
         bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
 
-        assembly {
+        assembly ('memory-safe') {
             array := bytes32Array
         }
     }
@@ -191,7 +191,7 @@ library EnumerableSet {
     ) internal view returns (uint256[] memory array) {
         bytes32[] memory bytes32Array = _toArray(set._inner, startIndex, count);
 
-        assembly {
+        assembly ('memory-safe') {
             array := bytes32Array
         }
     }
