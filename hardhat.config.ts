@@ -61,7 +61,7 @@ const config: HardhatUserConfig = {
   },
 
   typechain: {
-    outDir: path.resolve(import.meta.dirname, 'typechain-types'),
+    outDir: path.resolve(import.meta.dirname, 'typechain-types', 'src'),
   },
 
   abiExporter: {
