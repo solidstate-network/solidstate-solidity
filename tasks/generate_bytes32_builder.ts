@@ -151,7 +151,7 @@ contract <%- libraryName %>Test {
 `;
 
 const TEMPLATE_TS = `
-import { <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solidstate/typechain-types';
+import { type <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

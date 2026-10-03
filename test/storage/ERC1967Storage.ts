@@ -1,5 +1,5 @@
 import {
-  $ERC1967Storage,
+  type $ERC1967Storage,
   $ERC1967Storage__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -1,7 +1,7 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfContractSigner } from '@solidstate/spec';
-import { IContractSignerOwnable } from '@solidstate/typechain-types';
+import type { IContractSignerOwnable } from '@solidstate/typechain-types';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';
 

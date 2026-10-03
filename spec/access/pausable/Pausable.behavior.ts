@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { Pausable } from '@solidstate/typechain-types';
+import type { Pausable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import type { NetworkConnection } from 'hardhat/types/network';
 

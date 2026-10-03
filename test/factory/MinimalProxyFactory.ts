@@ -1,5 +1,5 @@
 import {
-  $MinimalProxyFactory,
+  type $MinimalProxyFactory,
   $MinimalProxyFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

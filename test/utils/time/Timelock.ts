@@ -1,7 +1,10 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { time } from '@nomicfoundation/hardhat-network-helpers';
-import { $Timelock, $Timelock__factory } from '@solidstate/typechain-types';
+import {
+  type $Timelock,
+  $Timelock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

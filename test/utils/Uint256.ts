@@ -1,4 +1,4 @@
-import { $Uint256, $Uint256__factory } from '@solidstate/typechain-types';
+import { type $Uint256, $Uint256__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

@@ -1,5 +1,5 @@
 import {
-  $CloneFactory,
+  type $CloneFactory,
   $CloneFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

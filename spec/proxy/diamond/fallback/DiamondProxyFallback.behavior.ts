@@ -2,10 +2,10 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
-  DiamondProxyBehaviorArgs,
+  type DiamondProxyBehaviorArgs,
   describeBehaviorOfDiamondProxy,
 } from '@solidstate/spec';
-import { IDiamondProxyFallback } from '@solidstate/typechain-types';
+import type { IDiamondProxyFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

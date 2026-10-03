@@ -1,8 +1,8 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
-import { $Ownable, $Ownable__factory } from '@solidstate/typechain-types';
+import { type $Ownable, $Ownable__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

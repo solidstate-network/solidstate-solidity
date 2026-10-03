@@ -1,11 +1,11 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfTransparentBeaconProxy } from '@solidstate/spec';
 import {
   $Ownable__factory,
-  $TransparentBeaconProxy,
+  type $TransparentBeaconProxy,
   $TransparentBeaconProxy__factory,
-  ITransparentBeaconProxy,
+  type ITransparentBeaconProxy,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

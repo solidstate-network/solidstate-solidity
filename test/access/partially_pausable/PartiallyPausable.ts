@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfPartiallyPausable } from '@solidstate/spec';
 import {
-  $PartiallyPausable,
+  type $PartiallyPausable,
   $PartiallyPausable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -2,10 +2,10 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
-  OwnableBehaviorArgs,
-  DiamondProxyWritableBehaviorArgs,
+  type OwnableBehaviorArgs,
+  type DiamondProxyWritableBehaviorArgs,
 } from '@solidstate/spec';
-import { IDiamondBeacon } from '@solidstate/typechain-types';
+import type { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

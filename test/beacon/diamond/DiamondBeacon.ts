@@ -1,8 +1,8 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBeacon } from '@solidstate/spec';
 import {
-  $DiamondBeacon,
+  type $DiamondBeacon,
   $DiamondBeacon__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

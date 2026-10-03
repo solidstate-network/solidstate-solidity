@@ -1,9 +1,9 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
-  $Ownable,
+  type $Ownable,
   $Ownable__factory,
-  $Proxy,
+  type $Proxy,
   $Proxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

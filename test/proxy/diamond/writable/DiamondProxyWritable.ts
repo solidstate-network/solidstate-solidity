@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondProxyWritable } from '@solidstate/spec';
 import {
-  $DiamondProxyWritable,
+  type $DiamondProxyWritable,
   $DiamondProxyWritable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

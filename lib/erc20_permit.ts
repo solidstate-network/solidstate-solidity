@@ -1,5 +1,5 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
-import { IERC2612, IERC5267 } from '@solidstate/typechain-types';
+import type { IERC2612, IERC5267 } from '@solidstate/typechain-types';
 import { Signature, ethers } from 'ethers';
 
 interface Domain {

@@ -1,8 +1,8 @@
-import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondProxy } from '@solidstate/spec';
 import {
-  $DiamondProxy,
+  type $DiamondProxy,
   $DiamondProxy__factory,
   $Ownable__factory,
 } from '@solidstate/typechain-types';

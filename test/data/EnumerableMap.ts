@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToAddress } from '@solidstate/library';
 import {
-  $EnumerableMap,
+  type $EnumerableMap,
   $EnumerableMap__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

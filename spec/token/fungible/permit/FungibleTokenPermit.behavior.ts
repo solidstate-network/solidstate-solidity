@@ -1,6 +1,6 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
-import { FungibleTokenPermit } from '@solidstate/typechain-types';
+import type { FungibleTokenPermit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

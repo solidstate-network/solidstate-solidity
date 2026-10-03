@@ -1,5 +1,5 @@
 import {
-  $MerkleProof,
+  type $MerkleProof,
   $MerkleProof__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

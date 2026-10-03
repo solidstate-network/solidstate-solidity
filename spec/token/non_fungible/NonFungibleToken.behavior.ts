@@ -2,7 +2,7 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { NonFungibleToken } from '@solidstate/typechain-types';
+import type { NonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'ethers';

@@ -1,9 +1,9 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfBeaconProxy,
-  BeaconProxyBehaviorArgs,
+  type BeaconProxyBehaviorArgs,
 } from '@solidstate/spec';
-import { IDiamondBeaconProxy } from '@solidstate/typechain-types';
+import type { IDiamondBeaconProxy } from '@solidstate/typechain-types';
 import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondBeaconProxyBehaviorArgs extends BeaconProxyBehaviorArgs {}

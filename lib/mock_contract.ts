@@ -1,12 +1,12 @@
 // MIT-licensed code derived from https://github.com/TrueFiEng/Waffle
 import DoppelgangerContract from './Doppelganger.json' with { type: 'json' };
 import type { JsonRpcProvider } from '@ethersproject/providers';
-import { Signer } from 'ethers';
+import type { Signer } from 'ethers';
 import {
   BaseContract,
   Contract,
   ContractFactory,
-  ContractInterface,
+  type ContractInterface,
   Signer as EthersV5Signer,
   utils,
 } from 'ethers5';

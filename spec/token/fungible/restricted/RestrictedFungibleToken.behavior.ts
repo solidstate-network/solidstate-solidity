@@ -1,9 +1,9 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
-  FungibleTokenBehaviorArgs,
+  type FungibleTokenBehaviorArgs,
 } from '@solidstate/spec';
-import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
+import type { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

@@ -1,10 +1,10 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { time } from '@nomicfoundation/hardhat-network-helpers';
 import {
-  $Timestamp,
+  type $Timestamp,
   $Timestamp__factory,
-  TimestampTest,
+  type TimestampTest,
   TimestampTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

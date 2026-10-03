@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfContractSignerOwnable } from '@solidstate/spec';
 import {
-  $ContractSignerOwnable,
+  type $ContractSignerOwnable,
   $ContractSignerOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

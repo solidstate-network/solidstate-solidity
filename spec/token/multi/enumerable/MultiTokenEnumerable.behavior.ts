@@ -1,6 +1,6 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IMultiTokenEnumerable } from '@solidstate/typechain-types';
+import type { IMultiTokenEnumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

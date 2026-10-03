@@ -1,6 +1,9 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfPausable } from '@solidstate/spec';
-import { $Pausable, $Pausable__factory } from '@solidstate/typechain-types';
+import {
+  type $Pausable,
+  $Pausable__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

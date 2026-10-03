@@ -1,11 +1,11 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  $ForwardedMetaTransactionContext,
+  type $ForwardedMetaTransactionContext,
   $ForwardedMetaTransactionContext__factory,
 } from '@solidstate/typechain-types';
-import { TypedContractMethod } from '@solidstate/typechain-types/common';
+import type { TypedContractMethod } from '@solidstate/typechain-types/common';
 import { expect } from 'chai';
-import { BytesLike, ContractMethodArgs } from 'ethers';
+import type { BytesLike, ContractMethodArgs } from 'ethers';
 import { ethers } from 'hardhat';
 
 const callMetaTransaction = async (

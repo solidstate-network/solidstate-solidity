@@ -1,5 +1,5 @@
 import { hashData, signData } from '@solidstate/library';
-import { $ECDSA, $ECDSA__factory } from '@solidstate/typechain-types';
+import { type $ECDSA, $ECDSA__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

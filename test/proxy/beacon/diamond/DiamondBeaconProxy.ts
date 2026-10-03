@@ -1,7 +1,7 @@
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBeaconProxy } from '@solidstate/spec';
 import {
-  $DiamondBeaconProxy,
+  type $DiamondBeaconProxy,
   $DiamondBeaconProxy__factory,
   $Ownable__factory,
 } from '@solidstate/typechain-types';

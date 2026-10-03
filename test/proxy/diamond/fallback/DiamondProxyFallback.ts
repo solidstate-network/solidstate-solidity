@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfDiamondProxyFallback } from '@solidstate/spec';
 import {
-  $DiamondProxyFallback,
+  type $DiamondProxyFallback,
   $DiamondProxyFallback__factory,
   $SafeOwnable__factory,
 } from '@solidstate/typechain-types';

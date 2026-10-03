@@ -1,6 +1,6 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { $Panic, $Panic__factory } from '@solidstate/typechain-types';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { type $Panic, $Panic__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

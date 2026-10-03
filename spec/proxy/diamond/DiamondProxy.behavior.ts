@@ -1,6 +1,9 @@
 import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
-import { IDiamondProxy } from '@solidstate/typechain-types';
+import {
+  describeBehaviorOfProxy,
+  type ProxyBehaviorArgs,
+} from '@solidstate/spec';
+import type { IDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

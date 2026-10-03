@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { NonFungibleTokenEnumerable } from '@solidstate/typechain-types';
+import type { NonFungibleTokenEnumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

@@ -1,4 +1,4 @@
-import { $EIP712, $EIP712__factory } from '@solidstate/typechain-types';
+import { type $EIP712, $EIP712__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

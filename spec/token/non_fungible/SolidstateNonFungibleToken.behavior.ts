@@ -2,13 +2,13 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfNonFungibleToken,
-  NonFungibleTokenBehaviorArgs,
+  type NonFungibleTokenBehaviorArgs,
   describeBehaviorOfNonFungibleTokenEnumerable,
-  NonFungibleTokenEnumerableBehaviorArgs,
+  type NonFungibleTokenEnumerableBehaviorArgs,
   describeBehaviorOfNonFungibleTokenMetadata,
-  NonFungibleTokenMetadataBehaviorArgs,
+  type NonFungibleTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
-import { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
+import type { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

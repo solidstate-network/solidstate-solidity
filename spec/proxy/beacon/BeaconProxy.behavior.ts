@@ -1,6 +1,9 @@
 import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
-import { IBeaconProxy } from '@solidstate/typechain-types';
+import {
+  describeBehaviorOfProxy,
+  type ProxyBehaviorArgs,
+} from '@solidstate/spec';
+import type { IBeaconProxy } from '@solidstate/typechain-types';
 import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface BeaconProxyBehaviorArgs extends ProxyBehaviorArgs {}

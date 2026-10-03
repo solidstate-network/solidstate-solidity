@@ -1,5 +1,5 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { $Context, $Context__factory } from '@solidstate/typechain-types';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { type $Context, $Context__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

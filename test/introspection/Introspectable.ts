@@ -1,6 +1,6 @@
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import {
-  $Introspectable,
+  type $Introspectable,
   $Introspectable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

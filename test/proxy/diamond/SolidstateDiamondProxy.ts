@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfSolidstateDiamondProxy } from '@solidstate/spec';
 import {
-  $SolidstateDiamondProxy,
+  type $SolidstateDiamondProxy,
   $SolidstateDiamondProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

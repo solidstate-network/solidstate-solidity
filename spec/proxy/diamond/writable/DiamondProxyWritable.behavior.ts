@@ -2,7 +2,7 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { IDiamondProxyWritable } from '@solidstate/typechain-types';
+import type { IDiamondProxyWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

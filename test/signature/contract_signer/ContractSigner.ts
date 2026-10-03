@@ -1,6 +1,6 @@
 import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import {
-  $ContractSigner,
+  type $ContractSigner,
   $ContractSigner__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -1,6 +1,6 @@
 import { describeBehaviorOfFungibleTokenMetadata } from '@solidstate/spec';
 import {
-  $FungibleTokenMetadata,
+  type $FungibleTokenMetadata,
   $FungibleTokenMetadata__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

@@ -1,6 +1,6 @@
 import { describeBehaviorOfSolidstateMultiToken } from '@solidstate/spec';
 import {
-  $SolidstateMultiToken,
+  type $SolidstateMultiToken,
   $SolidstateMultiToken__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

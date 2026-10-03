@@ -1,13 +1,13 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfMultiToken,
-  MultiTokenBehaviorArgs,
+  type MultiTokenBehaviorArgs,
   describeBehaviorOfMultiTokenEnumerable,
-  MultiTokenEnumerableBehaviorArgs,
+  type MultiTokenEnumerableBehaviorArgs,
   describeBehaviorOfMultiTokenMetadata,
-  MultiTokenMetadataBehaviorArgs,
+  type MultiTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
-import { ISolidstateMultiToken } from '@solidstate/typechain-types';
+import type { ISolidstateMultiToken } from '@solidstate/typechain-types';
 import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateMultiTokenBehaviorArgs

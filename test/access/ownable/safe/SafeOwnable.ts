@@ -1,8 +1,8 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeBehaviorOfSafeOwnable } from '@solidstate/spec';
 import {
-  $SafeOwnable,
+  type $SafeOwnable,
   $SafeOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

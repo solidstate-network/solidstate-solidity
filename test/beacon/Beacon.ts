@@ -1,6 +1,6 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfBeacon } from '@solidstate/spec';
-import { $Beacon, $Beacon__factory } from '@solidstate/typechain-types';
+import { type $Beacon, $Beacon__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

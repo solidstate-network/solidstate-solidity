@@ -1,8 +1,8 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfTransparentProxy } from '@solidstate/spec';
 import {
   $SafeOwnable__factory,
-  $TransparentProxy,
+  type $TransparentProxy,
   $TransparentProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -1,7 +1,7 @@
-import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { seedToStorageSlot } from '@solidstate/library/storage_layout';
 import {
-  $StorageSlot,
+  type $StorageSlot,
   $StorageSlot__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

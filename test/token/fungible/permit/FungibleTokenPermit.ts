@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfFungibleTokenPermit } from '@solidstate/spec';
 import {
-  $FungibleTokenPermit,
+  type $FungibleTokenPermit,
   $FungibleTokenPermit__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

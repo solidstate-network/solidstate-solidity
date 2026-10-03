@@ -1,6 +1,6 @@
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { IDiamondProxyReadable } from '@solidstate/typechain-types';
+import type { IDiamondProxyReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

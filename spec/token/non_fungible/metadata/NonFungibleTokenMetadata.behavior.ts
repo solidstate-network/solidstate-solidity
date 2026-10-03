@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { INonFungibleTokenMetadata } from '@solidstate/typechain-types';
+import type { INonFungibleTokenMetadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import type { NetworkConnection } from 'hardhat/types/network';
 

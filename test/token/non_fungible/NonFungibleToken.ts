@@ -1,8 +1,8 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfNonFungibleToken } from '@solidstate/spec';
 import {
-  $NonFungibleToken,
+  type $NonFungibleToken,
   $NonFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -394,12 +394,12 @@ describe('NonFungibleToken', () => {
 
     it('decreases balance of owner by one', async () => {
       const tokenId = 2;
-      await instance.$_mint(receiver.address, tokenId),
+      (await instance.$_mint(receiver.address, tokenId),
         await expect(() => instance.$_burn(tokenId)).to.changeTokenBalance(
           instance,
           receiver,
           -1,
-        );
+        ));
     });
 
     it('emits Transfer event', async () => {

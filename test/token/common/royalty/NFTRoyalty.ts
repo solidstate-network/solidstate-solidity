@@ -1,6 +1,9 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfNFTRoyalty } from '@solidstate/spec';
-import { $NFTRoyalty, $NFTRoyalty__factory } from '@solidstate/typechain-types';
+import {
+  type $NFTRoyalty,
+  $NFTRoyalty__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

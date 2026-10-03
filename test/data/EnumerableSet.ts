@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
-  $EnumerableSet,
+  type $EnumerableSet,
   $EnumerableSet__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -53,7 +53,10 @@ describe('EnumerableSet', async () => {
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_Bytes32Set.staticCall(
+              STORAGE_SLOT,
+              0n,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',
@@ -376,7 +379,10 @@ describe('EnumerableSet', async () => {
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$valueAt_EnumerableSet_AddressSet.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_AddressSet.staticCall(
+              STORAGE_SLOT,
+              0n,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',
@@ -677,20 +683,32 @@ describe('EnumerableSet', async () => {
         await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
 
         expect(
-          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(
+            STORAGE_SLOT,
+            0n,
+          ),
         ).to.equal(zeroUint256);
         expect(
-          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 1n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(
+            STORAGE_SLOT,
+            1n,
+          ),
         ).to.equal(twoUint256);
         expect(
-          await instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 2n),
+          await instance.$valueAt_EnumerableSet_UintSet.staticCall(
+            STORAGE_SLOT,
+            2n,
+          ),
         ).to.equal(oneUint256);
       });
 
       describe('reverts if', () => {
         it('index out of bounds', async () => {
           await expect(
-            instance.$valueAt_EnumerableSet_UintSet.staticCall(STORAGE_SLOT, 0n),
+            instance.$valueAt_EnumerableSet_UintSet.staticCall(
+              STORAGE_SLOT,
+              0n,
+            ),
           ).to.be.revertedWithCustomError(
             instance,
             'EnumerableSet__IndexOutOfBounds',

@@ -1,6 +1,9 @@
-import { $Multicall, $Multicall__factory } from '@solidstate/typechain-types';
+import {
+  type $Multicall,
+  $Multicall__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BytesLike } from 'ethers';
+import type { BytesLike } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('Multicall', () => {

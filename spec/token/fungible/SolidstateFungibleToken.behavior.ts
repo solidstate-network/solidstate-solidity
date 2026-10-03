@@ -1,15 +1,15 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
-  FungibleTokenBehaviorArgs,
+  type FungibleTokenBehaviorArgs,
   describeBehaviorOfFungibleTokenExtended,
-  FungibleTokenExtendedBehaviorArgs,
+  type FungibleTokenExtendedBehaviorArgs,
   describeBehaviorOfFungibleTokenMetadata,
-  FungibleTokenMetadataBehaviorArgs,
+  type FungibleTokenMetadataBehaviorArgs,
   describeBehaviorOfFungibleTokenPermit,
-  FungibleTokenPermitBehaviorArgs,
+  type FungibleTokenPermitBehaviorArgs,
 } from '@solidstate/spec';
-import { ISolidstateFungibleToken } from '@solidstate/typechain-types';
+import type { ISolidstateFungibleToken } from '@solidstate/typechain-types';
 import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateFungibleTokenBehaviorArgs

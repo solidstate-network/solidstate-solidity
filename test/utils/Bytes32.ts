@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
   Bytes32Test__factory,
-  $Bytes32,
+  type $Bytes32,
   $Bytes32__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

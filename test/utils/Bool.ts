@@ -1,6 +1,6 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  $Bool,
+  type $Bool,
   $Bool__factory,
   BoolTest__factory,
 } from '@solidstate/typechain-types';

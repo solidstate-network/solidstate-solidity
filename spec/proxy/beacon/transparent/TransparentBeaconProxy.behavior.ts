@@ -3,11 +3,11 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfBeaconProxy,
-  BeaconProxyBehaviorArgs,
+  type BeaconProxyBehaviorArgs,
 } from '@solidstate/spec';
 import {
-  ITransparentBeaconProxy,
-  ITransparentBeaconProxyWithAdminFunctions,
+  type ITransparentBeaconProxy,
+  type ITransparentBeaconProxyWithAdminFunctions,
   ITransparentBeaconProxyWithAdminFunctions__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

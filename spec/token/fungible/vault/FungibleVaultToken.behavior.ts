@@ -2,11 +2,11 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
-  FungibleTokenBehaviorArgs,
+  type FungibleTokenBehaviorArgs,
   describeBehaviorOfFungibleTokenMetadata,
-  FungibleTokenMetadataBehaviorArgs,
+  type FungibleTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
-import {
+import type {
   IFungibleToken,
   IFungibleVaultToken,
 } from '@solidstate/typechain-types';

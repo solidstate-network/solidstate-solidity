@@ -1,6 +1,6 @@
 import { describeBehaviorOfRestrictedFungibleToken } from '@solidstate/spec';
 import {
-  $RestrictedFungibleToken,
+  type $RestrictedFungibleToken,
   $RestrictedFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

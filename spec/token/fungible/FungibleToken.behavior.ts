@@ -1,6 +1,6 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IFungibleToken } from '@solidstate/typechain-types';
+import type { IFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'ethers';

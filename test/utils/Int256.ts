@@ -1,5 +1,5 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { $Int256, $Int256__factory } from '@solidstate/typechain-types';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { type $Int256, $Int256__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

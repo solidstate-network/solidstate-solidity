@@ -1,5 +1,8 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { $MerkleTree, $MerkleTree__factory } from '@solidstate/typechain-types';
+import {
+  type $MerkleTree,
+  $MerkleTree__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import keccak256 from 'keccak256';
@@ -143,7 +146,9 @@ describe('MerkleTree', () => {
 
       await instance.$push(STORAGE_SLOT, hash);
 
-      expect(await instance.$valueAt.staticCall(STORAGE_SLOT, 0)).to.equal(hash);
+      expect(await instance.$valueAt.staticCall(STORAGE_SLOT, 0)).to.equal(
+        hash,
+      );
     });
 
     describe('reverts if', () => {

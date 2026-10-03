@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfFungibleToken } from '@solidstate/spec';
 import {
-  $FungibleToken,
+  type $FungibleToken,
   $FungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -207,9 +207,11 @@ describe('FungibleToken', () => {
 
       await instance
         .connect(holder)
-        [
-          '$_approve(address,address,uint256)'
-        ](holder.address, spender.address, amount);
+        ['$_approve(address,address,uint256)'](
+          holder.address,
+          spender.address,
+          amount,
+        );
       await expect(
         await instance.allowance.staticCall(holder.address, spender.address),
       ).to.equal(amount);
@@ -217,9 +219,11 @@ describe('FungibleToken', () => {
       // approvals are not cumulative
       await instance
         .connect(holder)
-        [
-          '$_approve(address,address,uint256)'
-        ](holder.address, spender.address, amount);
+        ['$_approve(address,address,uint256)'](
+          holder.address,
+          spender.address,
+          amount,
+        );
       await expect(
         await instance.allowance.staticCall(holder.address, spender.address),
       ).to.equal(amount);

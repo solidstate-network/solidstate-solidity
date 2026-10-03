@@ -1,6 +1,6 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import {
-  $AccessControlOwnable,
+  type $AccessControlOwnable,
   $AccessControlOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

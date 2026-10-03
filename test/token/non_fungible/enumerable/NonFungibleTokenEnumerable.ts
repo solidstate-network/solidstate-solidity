@@ -1,6 +1,6 @@
 import { describeBehaviorOfNonFungibleTokenEnumerable } from '@solidstate/spec';
 import {
-  $NonFungibleTokenEnumerable,
+  type $NonFungibleTokenEnumerable,
   $NonFungibleTokenEnumerable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

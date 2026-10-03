@@ -1,5 +1,5 @@
 import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { $Math, $Math__factory } from '@solidstate/typechain-types';
+import { type $Math, $Math__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 

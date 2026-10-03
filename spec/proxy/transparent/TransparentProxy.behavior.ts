@@ -1,10 +1,13 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
 import {
-  ITransparentProxy,
-  ITransparentProxyWithAdminFunctions,
+  describeBehaviorOfProxy,
+  type ProxyBehaviorArgs,
+} from '@solidstate/spec';
+import {
+  type ITransparentProxy,
+  type ITransparentProxyWithAdminFunctions,
   ITransparentProxyWithAdminFunctions__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

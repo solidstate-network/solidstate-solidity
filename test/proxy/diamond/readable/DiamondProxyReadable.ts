@@ -1,7 +1,7 @@
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondProxyReadable } from '@solidstate/spec';
 import {
-  $DiamondProxyReadable,
+  type $DiamondProxyReadable,
   $DiamondProxyReadable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

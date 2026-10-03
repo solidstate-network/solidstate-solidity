@@ -1,9 +1,9 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfFungibleVaultToken } from '@solidstate/spec';
 import {
-  $FungibleVaultToken,
+  type $FungibleVaultToken,
   $FungibleVaultToken__factory,
-  $SolidstateFungibleToken,
+  type $SolidstateFungibleToken,
   $SolidstateFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

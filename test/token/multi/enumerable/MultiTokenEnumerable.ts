@@ -1,6 +1,6 @@
 import { describeBehaviorOfMultiTokenEnumerable } from '@solidstate/spec';
 import {
-  $MultiTokenEnumerable,
+  type $MultiTokenEnumerable,
   $MultiTokenEnumerable__factory,
 } from '@solidstate/typechain-types';
 import { ethers } from 'hardhat';

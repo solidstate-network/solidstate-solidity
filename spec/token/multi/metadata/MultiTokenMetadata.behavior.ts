@@ -1,5 +1,5 @@
 import { describeFilter } from '@solidstate/library';
-import { IMultiTokenMetadata } from '@solidstate/typechain-types';
+import type { IMultiTokenMetadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import type { NetworkConnection } from 'hardhat/types/network';
 

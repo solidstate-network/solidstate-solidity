@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { bigintToBytes16 } from '@solidstate/library';
 import {
-  $PackedDoublyLinkedList,
+  type $PackedDoublyLinkedList,
   $PackedDoublyLinkedList__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

@@ -3,15 +3,15 @@ import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfDiamondProxy,
-  DiamondProxyBehaviorArgs,
+  type DiamondProxyBehaviorArgs,
   describeBehaviorOfDiamondProxyFallback,
-  DiamondProxyFallbackBehaviorArgs,
+  type DiamondProxyFallbackBehaviorArgs,
   describeBehaviorOfDiamondProxyReadable,
-  DiamondProxyReadableBehaviorArgs,
+  type DiamondProxyReadableBehaviorArgs,
   describeBehaviorOfDiamondProxyWritable,
-  DiamondProxyWritableBehaviorArgs,
+  type DiamondProxyWritableBehaviorArgs,
 } from '@solidstate/spec';
-import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
+import type { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
 import type { NetworkConnection } from 'hardhat/types/network';

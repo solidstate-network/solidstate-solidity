@@ -1,7 +1,7 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { describeBehaviorOfMultiTokenMetadata } from '@solidstate/spec';
 import {
-  $MultiTokenMetadata,
+  type $MultiTokenMetadata,
   $MultiTokenMetadata__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';

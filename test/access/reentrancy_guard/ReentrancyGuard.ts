@@ -1,5 +1,5 @@
 import {
-  $ReentrancyGuardTest,
+  type $ReentrancyGuardTest,
   $ReentrancyGuardTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
