@@ -27,7 +27,6 @@ abstract contract ForwardedMetaTransactionContext is
      */
     function _msgSender()
         internal
-        view
         virtual
         override(_Context, _ForwardedMetaTransactionContext)
         returns (address msgSender)
@@ -40,7 +39,6 @@ abstract contract ForwardedMetaTransactionContext is
      */
     function _msgData()
         internal
-        view
         virtual
         override(_Context, _ForwardedMetaTransactionContext)
         returns (bytes calldata msgData)
