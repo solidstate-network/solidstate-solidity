@@ -185,12 +185,16 @@ export default task(TASK_ORGANIZE_TEST_FILES)
     );
 
     const specBarrelContents: string =
-      specBarrel
-        .map(
+      [
+        "import type {} from '@nomicfoundation/hardhat-ethers';",
+        "import type {} from '@nomicfoundation/hardhat-ethers-chai-matchers';",
+        "import type {} from '@nomicfoundation/hardhat-network-helpers';",
+        '',
+        ...specBarrel.map(
           (s) =>
-            `export * from './${path.relative(path.dirname(specBarrelPath), s).replace(path.extname(s), '')}';`,
-        )
-        .join('\n') + '\n';
+            `export * from './${path.relative(path.dirname(specBarrelPath), s)}';`,
+        ),
+      ].join('\n') + '\n';
 
     await fs.promises.writeFile(specBarrelPath, specBarrelContents);
   })

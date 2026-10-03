@@ -153,7 +153,10 @@ contract <%- libraryName %>Test {
 const TEMPLATE_TS = `
 import { type <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const randomIndexNonInclusive = (start: number, end: number) => {
   return Math.ceil(Math.random() * (end - start - 1)) + start;
@@ -163,7 +166,7 @@ describe('<%- libraryName %>', () => {
   let instance: <%- libraryName %>Test;
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new <%- libraryName %>Test__factory(deployer).deploy();
   });
 

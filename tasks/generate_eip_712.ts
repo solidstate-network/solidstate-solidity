@@ -58,9 +58,12 @@ library <%- name %> {
 `;
 
 const TEMPLATE_TS = `
-import { $<%- name %>, $<%- name %>__factory } from '@solidstate/typechain-types';
+import { type $<%- name %>, $<%- name %>__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('<%- name %>', () => {
   let instance: $<%- name %>;
@@ -71,10 +74,10 @@ describe('<%- name %>', () => {
   let salt = ethers.solidityPackedKeccak256(['string'], ['SALT']);
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $<%- name %>__factory(deployer).deploy();
     verifyingContract = await instance.getAddress();
-    chainId = await ethers.provider.send('eth_chainId');
+    chainId = await connection.ethers.provider.send('eth_chainId');
   });
 
   <% for (const el of fieldsConstantDefinitions) { %>
