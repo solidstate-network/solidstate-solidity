@@ -37,7 +37,8 @@
     "@nomicfoundation/hardhat-network-helpers": "^3.0.11",
     "chai": "^5.3.3",
     "ethers": "^6.17.0",
-    "hardhat": "^3.18.1"
+    "hardhat": "^3.18.1",
+    "mocha": "^12.0.3"
   },
   "peerDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.0.0",
@@ -45,7 +46,8 @@
     "@nomicfoundation/hardhat-network-helpers": "^3.0.0",
     "chai": ">=5.1.2 <7",
     "ethers": "^6.0.0",
-    "hardhat": "^3.8.0"
+    "hardhat": "^3.8.0",
+    "mocha": "^12.0.0"
   },
   "publishConfig": {
     "access": "public"

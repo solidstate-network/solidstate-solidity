@@ -167,6 +167,9 @@ importers:
       ethers5:
         specifier: npm:ethers@^5.8.0
         version: ethers@5.8.0
+      mocha:
+        specifier: ^12.0.0
+        version: 12.0.3
 
   spec:
     dependencies:
@@ -192,6 +195,9 @@ importers:
       hardhat:
         specifier: ^3.18.1
         version: 3.18.1
+      mocha:
+        specifier: ^12.0.3
+        version: 12.0.3
 
 packages:
 
