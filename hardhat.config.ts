@@ -4,6 +4,7 @@ import './tasks/generate_eip_712';
 import './tasks/organize_test_files';
 import './tasks/rename_entity';
 import './tasks/scaffold_contract';
+import HardhatExposed from './vendor/hardhat-exposed/plugin.ts';
 import HardhatEthers from '@nomicfoundation/hardhat-ethers';
 import HardhatEthersChaiMatchers from '@nomicfoundation/hardhat-ethers-chai-matchers';
 import HardhatTypechain from '@nomicfoundation/hardhat-typechain';
@@ -12,7 +13,6 @@ import HardhatContractSizer from '@solidstate/hardhat-contract-sizer';
 import HardhatLicenseIdentifier from '@solidstate/hardhat-license-identifier';
 import HardhatLinearization from '@solidstate/hardhat-linearization';
 import HardhatSelectorUploader from '@solidstate/hardhat-selector-uploader';
-import 'hardhat-exposed';
 import { type HardhatUserConfig } from 'hardhat/config';
 import path from 'node:path';
 
@@ -26,11 +26,12 @@ const config: HardhatUserConfig = {
     HardhatLicenseIdentifier,
     HardhatLinearization,
     HardhatSelectorUploader,
+    HardhatExposed,
   ],
 
   networks: {
     hardhat: {
-      type: 'edr',
+      type: 'edr-simulated',
       allowUnlimitedContractSize: true,
     },
   },

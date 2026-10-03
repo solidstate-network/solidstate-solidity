@@ -25,6 +25,9 @@ importers:
       '@nomicfoundation/hardhat-typechain':
         specifier: ^3.0.0
         version: 3.1.1(@nomicfoundation/hardhat-ethers@4.2.0(hardhat@3.18.1))(ethers@6.17.0)(hardhat@3.18.1)(typescript@5.9.3)
+      '@nomicfoundation/hardhat-utils':
+        specifier: ^4.4.0
+        version: 4.4.0
       '@slippy-lint/slippy':
         specifier: ^0.1.3
         version: 0.1.3
@@ -100,9 +103,6 @@ importers:
       hardhat:
         specifier: ^3.0.6
         version: 3.18.1
-      hardhat-exposed:
-        specifier: ^0.3.19
-        version: 0.3.19(hardhat@3.18.1)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -130,6 +130,9 @@ importers:
       slippy:
         specifier: ^0.3.1
         version: 0.3.1
+      solidity-ast:
+        specifier: ^0.4.62
+        version: 0.4.62
       surya:
         specifier: ^0.4.13
         version: 0.4.13
@@ -2385,11 +2388,6 @@ packages:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
 
-  hardhat-exposed@0.3.19:
-    resolution: {integrity: sha512-vVye5TurJu8dWeo4ma+EfLAOQaJyica4uncd0/BGPO2tmexuDwZUmE1vYx81PlP4Iak3wqkNTEPxWQaE2ZnKnw==}
-    peerDependencies:
-      hardhat: ^2.3.0
-
   hardhat@2.28.6:
     resolution: {integrity: sha512-zQze7qe+8ltwHvhX5NQ8sN1N37WWZGw8L63y+2XcPxGwAjc/SMF829z3NS6o1krX0sryhAsVBK/xrwUqlsot4Q==}
     hasBin: true
@@ -3752,9 +3750,6 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
 
-  solidity-ast@0.4.60:
-    resolution: {integrity: sha512-UwhasmQ37ji1ul8cIp0XlrQ/+SVQhy09gGqJH4jnwdo2TgI6YIByzi0PI5QvIGcIdFOs1pbSmJW1pnWB7AVh2w==}
-
   solidity-ast@0.4.62:
     resolution: {integrity: sha512-jSC7msQCkJXIzM8LlDjRZ5cif5w40g6THlXHFk3zchbL5dm3YLoBETvqPGo5KndYkftjhcs5kz1fnTu4d34lVQ==}
 
@@ -4798,7 +4793,7 @@ snapshots:
 
   '@kwsites/file-exists@1.1.1':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5798,7 +5793,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5878,7 +5873,7 @@ snapshots:
 
   axios@1.10.0:
     dependencies:
-      follow-redirects: 1.15.9
+      follow-redirects: 1.15.9(debug@4.4.3)
       form-data: 4.0.3
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -6331,10 +6326,6 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  debug@4.4.3:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.3(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -6742,8 +6733,6 @@ snapshots:
 
   flat@5.0.2: {}
 
-  follow-redirects@1.15.9: {}
-
   follow-redirects@1.15.9(debug@4.4.3):
     optionalDependencies:
       debug: 4.4.3(supports-color@8.1.1)
@@ -6958,12 +6947,6 @@ snapshots:
 
   hard-rejection@2.1.0: {}
 
-  hardhat-exposed@0.3.19(hardhat@3.18.1):
-    dependencies:
-      hardhat: 3.18.1
-      micromatch: 4.0.8
-      solidity-ast: 0.4.60
-
   hardhat@2.28.6(ts-node@10.9.2(@types/node@24.13.6)(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
       '@ethereumjs/util': 9.1.0
@@ -7112,21 +7095,21 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -8501,7 +8484,7 @@ snapshots:
       '@kwsites/promise-deferred': 1.1.1
       '@simple-git/args-pathspec': 1.0.4
       '@simple-git/argv-parser': 1.1.1
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -8511,7 +8494,7 @@ snapshots:
     dependencies:
       '@nomicfoundation/slang': 1.3.5
       chalk: 5.6.2
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
       fast-glob: 3.3.3
       micromatch: 4.0.8
       minimist: 1.2.8
@@ -8528,7 +8511,7 @@ snapshots:
   socks-proxy-agent@8.0.5:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
       socks: 2.8.5
     transitivePeerDependencies:
       - supports-color
@@ -8549,8 +8532,6 @@ snapshots:
       tmp: 0.0.33
     transitivePeerDependencies:
       - debug
-
-  solidity-ast@0.4.60: {}
 
   solidity-ast@0.4.62: {}
 
@@ -8815,7 +8796,7 @@ snapshots:
   tuf-js@2.2.1:
     dependencies:
       '@tufjs/models': 2.0.1
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
       make-fetch-happen: 13.0.1
     transitivePeerDependencies:
       - supports-color
