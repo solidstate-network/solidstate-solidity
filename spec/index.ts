@@ -1,4 +1,5 @@
 import type {} from '@nomicfoundation/hardhat-ethers';
+import type {} from '@nomicfoundation/hardhat-ethers-chai-matchers';
 import type {} from '@nomicfoundation/hardhat-network-helpers';
 
 export * from './access/access_control/AccessControl.behavior.ts';
