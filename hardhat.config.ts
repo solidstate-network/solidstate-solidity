@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
   ],
 
   networks: {
-    hardhat: {
+    default: {
       type: 'edr-simulated',
       allowUnlimitedContractSize: true,
     },
