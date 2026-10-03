@@ -1,7 +1,9 @@
+import { TASK_GENERATE_EIP_712 } from './task_names.ts';
 import ejs from 'ejs';
-import fs from 'fs';
+import { solidityPackedKeccak256 } from 'ethers';
 import { task } from 'hardhat/config';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const name = 'EIP712';
 const filepath = 'cryptography';
@@ -109,141 +111,147 @@ describe('<%- name %>', () => {
 });
 `;
 
-task('generate-eip-712', `Generate ${name}`).setAction(async (args, hre) => {
-  const validFields = [
-    'name',
-    'version',
-    'chainId',
-    'verifyingContract',
-    'salt',
-  ] as const;
+export default task(TASK_GENERATE_EIP_712)
+  .setDescription(`Generate ${name}`)
+  .setInlineAction(async (args, hre) => {
+    const validFields = [
+      'name',
+      'version',
+      'chainId',
+      'verifyingContract',
+      'salt',
+    ] as const;
 
-  const data: {
-    [field: string]: {
-      type: string;
-      packedType?: string;
-      packedName?: string;
-      description?: string;
-      assemblyReference?: string;
+    const data: {
+      [field: string]: {
+        type: string;
+        packedType?: string;
+        packedName?: string;
+        description?: string;
+        assemblyReference?: string;
+      };
+    } = {
+      name: {
+        packedName: 'nameHash',
+        type: 'string',
+        packedType: 'bytes32',
+        description: 'hash of human-readable signing domain name',
+      },
+      version: {
+        packedName: 'versionHash',
+        type: 'string',
+        packedType: 'bytes32',
+        description: 'hash of signing domain version',
+      },
+      chainId: {
+        type: 'uint256',
+        assemblyReference: 'chainid()',
+      },
+      verifyingContract: {
+        type: 'address',
+        assemblyReference: 'address()',
+      },
+      salt: {
+        type: 'bytes32',
+        description: 'disambiguating salt',
+      },
     };
-  } = {
-    name: {
-      packedName: 'nameHash',
-      type: 'string',
-      packedType: 'bytes32',
-      description: 'hash of human-readable signing domain name',
-    },
-    version: {
-      packedName: 'versionHash',
-      type: 'string',
-      packedType: 'bytes32',
-      description: 'hash of signing domain version',
-    },
-    chainId: {
-      type: 'uint256',
-      assemblyReference: 'chainid()',
-    },
-    verifyingContract: {
-      type: 'address',
-      assemblyReference: 'address()',
-    },
-    salt: {
-      type: 'bytes32',
-      description: 'disambiguating salt',
-    },
-  };
 
-  const fieldsConstantDefinitions = [];
-  const constantDefinitions = [];
-  const functionDefinitions = [];
+    const fieldsConstantDefinitions = [];
+    const constantDefinitions = [];
+    const functionDefinitions = [];
 
-  for (let i = 0; i < 2 ** validFields.length; i++) {
-    const binString = i.toString(2).padStart(5, '0');
-    const fields = validFields.filter((f, j) => i & (2 ** j));
+    for (let i = 0; i < 2 ** validFields.length; i++) {
+      const binString = i.toString(2).padStart(5, '0');
+      const fields = validFields.filter((f, j) => i & (2 ** j));
 
-    const constantName = `EIP_712_DOMAIN_HASH_${binString}`;
-    const functionName = `calculateDomainSeparator_${binString}`;
+      const constantName = `EIP_712_DOMAIN_HASH_${binString}`;
+      const functionName = `calculateDomainSeparator_${binString}`;
 
-    const domainString = `EIP712Domain(${fields.map((f) => `${data[f].type} ${f}`).join(',')})`;
-    const keccak = hre.ethers.solidityPackedKeccak256(
-      ['string'],
-      [domainString],
+      const domainString = `EIP712Domain(${fields.map((f) => `${data[f].type} ${f}`).join(',')})`;
+      const keccak = solidityPackedKeccak256(['string'], [domainString]);
+
+      fieldsConstantDefinitions.push({
+        fields,
+        name: `ERC5267_FIELDS_${binString}`,
+        bin: binString,
+        hex: i.toString(16).padStart(2, '0'),
+      });
+
+      constantDefinitions.push({
+        fields,
+        name: constantName,
+        binString,
+        keccak,
+        domainString,
+      });
+
+      functionDefinitions.push({
+        fields,
+        name: functionName,
+        hashName: constantName,
+        parameters: fields
+          .filter((f) => data[f].description)
+          .map(
+            (f) =>
+              `${data[f].packedType ?? data[f].type} ${data[f].packedName ?? f}`,
+          )
+          .join(', '),
+        visibility:
+          fields.includes('chainId') || fields.includes('verifyingContract')
+            ? 'view'
+            : 'pure',
+        assemblyReferences: fields.map(
+          (f) => data[f].assemblyReference ?? data[f].packedName ?? f,
+        ),
+        keccak,
+        sigTypes: fields
+          .filter((f) => data[f].description)
+          .map((f) => data[f].packedType ?? data[f].type),
+        hashTypes: fields
+          .map((f) => data[f].packedType ?? data[f].type)
+          .map((t) => `"${t}"`)
+          .join(', '),
+        hashFields: fields.map((f) => data[f].packedName ?? f).join(', '),
+        callNames: fields
+          .filter((f) => data[f].description)
+          .map((f) => data[f].packedName ?? f),
+      });
+    }
+
+    const templateData = {
+      data,
+      name,
+      fieldsConstantDefinitions,
+      constantDefinitions,
+      functionDefinitions,
+    };
+
+    const contractContent = ejs.render(TEMPLATE_SOL, templateData);
+    const testContent = ejs.render(TEMPLATE_TS, templateData);
+
+    const contractPath = path.resolve(
+      hre.config.paths.root,
+      'contracts',
+      filepath,
+      `${name}.sol`,
+    );
+    const testPath = path.resolve(
+      hre.config.paths.root,
+      'test',
+      filepath,
+      `${name}.ts`,
     );
 
-    fieldsConstantDefinitions.push({
-      fields,
-      name: `ERC5267_FIELDS_${binString}`,
-      bin: binString,
-      hex: i.toString(16).padStart(2, '0'),
+    await fs.promises.mkdir(path.dirname(contractPath), {
+      recursive: true,
     });
 
-    constantDefinitions.push({
-      fields,
-      name: constantName,
-      binString,
-      keccak,
-      domainString,
+    await fs.promises.mkdir(path.dirname(testPath), {
+      recursive: true,
     });
 
-    functionDefinitions.push({
-      fields,
-      name: functionName,
-      hashName: constantName,
-      parameters: fields
-        .filter((f) => data[f].description)
-        .map(
-          (f) =>
-            `${data[f].packedType ?? data[f].type} ${data[f].packedName ?? f}`,
-        )
-        .join(', '),
-      visibility:
-        fields.includes('chainId') || fields.includes('verifyingContract')
-          ? 'view'
-          : 'pure',
-      assemblyReferences: fields.map(
-        (f) => data[f].assemblyReference ?? data[f].packedName ?? f,
-      ),
-      keccak,
-      sigTypes: fields
-        .filter((f) => data[f].description)
-        .map((f) => data[f].packedType ?? data[f].type),
-      hashTypes: fields
-        .map((f) => data[f].packedType ?? data[f].type)
-        .map((t) => `"${t}"`)
-        .join(', '),
-      hashFields: fields.map((f) => data[f].packedName ?? f).join(', '),
-      callNames: fields
-        .filter((f) => data[f].description)
-        .map((f) => data[f].packedName ?? f),
-    });
-  }
-
-  const templateData = {
-    data,
-    name,
-    fieldsConstantDefinitions,
-    constantDefinitions,
-    functionDefinitions,
-  };
-
-  const contractContent = ejs.render(TEMPLATE_SOL, templateData);
-  const testContent = ejs.render(TEMPLATE_TS, templateData);
-
-  const contractPath = path.resolve(
-    hre.config.paths.sources,
-    filepath,
-    `${name}.sol`,
-  );
-  const testPath = path.resolve(hre.config.paths.tests, filepath, `${name}.ts`);
-
-  await fs.promises.mkdir(path.dirname(contractPath), {
-    recursive: true,
-  });
-
-  await fs.promises.mkdir(path.dirname(testPath), {
-    recursive: true,
-  });
-
-  await fs.promises.writeFile(contractPath, contractContent);
-  await fs.promises.writeFile(testPath, testContent);
-});
+    await fs.promises.writeFile(contractPath, contractContent);
+    await fs.promises.writeFile(testPath, testContent);
+  })
+  .build();

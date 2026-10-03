@@ -1,33 +1,35 @@
-import fs from 'fs';
-import { task, types } from 'hardhat/config';
-import path from 'path';
+import { TASK_SCAFFOLD_CONTRACT } from './task_names.ts';
+import { task } from 'hardhat/config';
+import fs from 'node:fs';
+import path from 'node:path';
 
-task('scaffold-contract', 'Batch replace text in local filenames and contents')
-  .addPositionalParam(
-    'name',
-    'name of the external contract',
-    undefined,
-    types.string,
+export default task(TASK_SCAFFOLD_CONTRACT)
+  .setDescription(
+    'Generate external and internal contract and interface files for a new entity, following the layers pattern',
   )
-  .addPositionalParam(
-    'path',
-    'directory within sources directrory to create files',
-    undefined,
-    types.string,
-  )
-  .addOptionalPositionalParam(
-    'pragma',
-    'solidity pragma version',
-    undefined,
-    types.string,
-  )
-  .setAction(async (args, hre) => {
-    const fullpath = path.resolve(hre.config.paths.sources, args.path);
+  .addPositionalArgument({
+    name: 'name',
+    description: 'name of the external contract',
+  })
+  .addPositionalArgument({
+    name: 'path',
+    description: 'directory within sources directrory to create files',
+  })
+  .addPositionalArgument({
+    name: 'pragma',
+    description: 'solidity pragma version',
+    defaultValue: '^0.8.35',
+  })
+  .setInlineAction(async (args, hre) => {
+    const fullpath = path.resolve(
+      hre.config.paths.root,
+      'contracts',
+      args.path,
+    );
 
     await fs.promises.mkdir(fullpath, { recursive: true });
 
-    const { name } = args;
-    const pragma = args.pragma ?? '^0.8.35';
+    const { name, pragma } = args;
 
     const externalContract = `
         pragma solidity ${pragma};
@@ -76,4 +78,5 @@ task('scaffold-contract', 'Batch replace text in local filenames and contents')
       path.resolve(fullpath, `_I${name}.sol`),
       internalInterface,
     );
-  });
+  })
+  .build();

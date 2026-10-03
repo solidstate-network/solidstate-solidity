@@ -1,9 +1,9 @@
-import './tasks/compile';
-import './tasks/generate_bytes32_builder';
-import './tasks/generate_eip_712';
-import './tasks/organize_test_files';
-import './tasks/rename_entity';
-import './tasks/scaffold_contract';
+import taskBuild from './tasks/build.ts';
+import taskGenerateBytes32Builder from './tasks/generate_bytes32_builder.ts';
+import taskGenerateEip712 from './tasks/generate_eip_712.ts';
+import taskOrganizeTestFiles from './tasks/organize_test_files.ts';
+import taskRenameEntity from './tasks/rename_entity.ts';
+import taskScaffoldContract from './tasks/scaffold_contract.ts';
 import HardhatExposed from './vendor/hardhat-exposed/plugin.ts';
 import HardhatEthers from '@nomicfoundation/hardhat-ethers';
 import HardhatEthersChaiMatchers from '@nomicfoundation/hardhat-ethers-chai-matchers';
@@ -27,6 +27,15 @@ const config: HardhatUserConfig = {
     HardhatLinearization,
     HardhatSelectorUploader,
     HardhatExposed,
+  ],
+
+  tasks: [
+    taskBuild,
+    taskGenerateBytes32Builder,
+    taskGenerateEip712,
+    taskOrganizeTestFiles,
+    taskRenameEntity,
+    taskScaffoldContract,
   ],
 
   networks: {
