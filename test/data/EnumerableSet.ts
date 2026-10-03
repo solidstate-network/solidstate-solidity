@@ -320,6 +320,18 @@ describe('EnumerableSet', async () => {
         ).to.deep.equal([oneBytes32]);
       });
 
+      it('truncates result if count exceeds remaining elements', async () => {
+        await instance['$add(uint256,bytes32)'](STORAGE_SLOT, zeroBytes32);
+        await instance['$add(uint256,bytes32)'](STORAGE_SLOT, twoBytes32);
+        await instance['$add(uint256,bytes32)'](STORAGE_SLOT, oneBytes32);
+
+        expect(
+          await instance[
+            '$toArray_EnumerableSet_Bytes32Set(uint256,uint256,uint256)'
+          ].staticCall(STORAGE_SLOT, 2n, 100n),
+        ).to.deep.equal([oneBytes32]);
+      });
+
       describe('reverts if', () => {
         it('start index is out of bounds', async () => {
           await expect(
@@ -643,6 +655,18 @@ describe('EnumerableSet', async () => {
         ).to.deep.equal([oneAddress]);
       });
 
+      it('truncates result if count exceeds remaining elements', async () => {
+        await instance['$add(uint256,address)'](STORAGE_SLOT, zeroAddress);
+        await instance['$add(uint256,address)'](STORAGE_SLOT, twoAddress);
+        await instance['$add(uint256,address)'](STORAGE_SLOT, oneAddress);
+
+        expect(
+          await instance[
+            '$toArray_EnumerableSet_AddressSet(uint256,uint256,uint256)'
+          ].staticCall(STORAGE_SLOT, 2n, 100n),
+        ).to.deep.equal([oneAddress]);
+      });
+
       describe('reverts if', () => {
         it('start index is out of bounds', async () => {
           await expect(
@@ -940,6 +964,18 @@ describe('EnumerableSet', async () => {
           await instance[
             '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
           ].staticCall(STORAGE_SLOT, 2n, 1n),
+        ).to.deep.equal([oneUint256]);
+      });
+
+      it('truncates result if count exceeds remaining elements', async () => {
+        await instance['$add(uint256,uint256)'](STORAGE_SLOT, zeroUint256);
+        await instance['$add(uint256,uint256)'](STORAGE_SLOT, twoUint256);
+        await instance['$add(uint256,uint256)'](STORAGE_SLOT, oneUint256);
+
+        expect(
+          await instance[
+            '$toArray_EnumerableSet_UintSet(uint256,uint256,uint256)'
+          ].staticCall(STORAGE_SLOT, 2n, 100n),
         ).to.deep.equal([oneUint256]);
       });
 
