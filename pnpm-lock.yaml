@@ -28,9 +28,6 @@ importers:
       '@nomicfoundation/hardhat-utils':
         specifier: ^4.4.0
         version: 4.4.0
-      '@slippy-lint/slippy':
-        specifier: ^0.1.3
-        version: 0.1.3
       '@solidstate/hardhat-abi-exporter':
         specifier: ^3.0.0
         version: 3.0.4(@nomicfoundation/hardhat-utils@4.4.0)(hardhat@3.18.1)
@@ -1177,10 +1174,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@slippy-lint/slippy@0.1.3':
-    resolution: {integrity: sha512-bhUt1xTUMHRcvEdJGBYyzR66/ozyFHAEtGpOh3uL2v+f3GOIkt/LBU/X06VqA6N+Lf+B5zODZ1oN+XZPX7UjGQ==}
-    hasBin: true
 
   '@solidity-parser/parser@0.16.2':
     resolution: {integrity: sha512-PI9NfoA3P8XK2VBkK5oIfRgKDsicwDZfkVq9ZTBCQYGOP1N2owgY2dyLGyU5/J/hQs8KRk55kdmvTLjy3Mu3vg==}
@@ -5555,17 +5548,6 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@slippy-lint/slippy@0.1.3':
-    dependencies:
-      '@nomicfoundation/slang': 1.3.8
-      chalk: 5.6.2
-      fast-glob: 3.3.3
-      micromatch: 4.0.8
-      minimist: 1.2.8
-      semver: 7.8.5
-      workerpool: 9.3.4
-      zod: 4.1.12
 
   '@solidity-parser/parser@0.16.2':
     dependencies:
