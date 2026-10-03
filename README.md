@@ -42,7 +42,7 @@ pnpm prepare
 Compile contracts via Hardhat:
 
 ```bash
-pnpm hardhat compile
+pnpm hardhat build
 ```
 
 ### Testing

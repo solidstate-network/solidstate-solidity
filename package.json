@@ -5,7 +5,7 @@
   "author": "Nick Barry",
   "type": "module",
   "scripts": {
-    "build": "pnpm clean && hardhat compile && lerna run build",
+    "build": "pnpm clean && hardhat build && lerna run build",
     "clean": "hardhat clean && lerna run clean",
     "lerna-publish": "pnpm whoami && pnpm build && lerna publish",
     "prepare": "husky",
