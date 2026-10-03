@@ -4,19 +4,22 @@ import {
   $Introspectable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Introspectable', () => {
   let instance: $Introspectable;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $Introspectable__factory(deployer).deploy();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
   });
 
-  describeBehaviorOfIntrospectable(async () => instance, {
+  describeBehaviorOfIntrospectable(connection, async () => instance, {
     interfaceIds: [],
   });
 

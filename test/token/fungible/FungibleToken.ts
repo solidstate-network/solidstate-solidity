@@ -1,29 +1,32 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfFungibleToken } from '@solidstate/spec';
 import {
   type $FungibleToken,
   $FungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('FungibleToken', () => {
-  let sender: SignerWithAddress;
-  let receiver: SignerWithAddress;
-  let holder: SignerWithAddress;
-  let spender: SignerWithAddress;
+  let sender: HardhatEthersSigner;
+  let receiver: HardhatEthersSigner;
+  let holder: HardhatEthersSigner;
+  let spender: HardhatEthersSigner;
   let instance: $FungibleToken;
 
   before(async () => {
-    [sender, receiver, holder, spender] = await ethers.getSigners();
+    [sender, receiver, holder, spender] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $FungibleToken__factory(deployer).deploy();
   });
 
-  describeBehaviorOfFungibleToken(async () => instance, {
+  describeBehaviorOfFungibleToken(connection, async () => instance, {
     supply: 0n,
     mint: (recipient, amount) => instance.$_mint(recipient, amount),
     burn: (recipient, amount) => instance.$_burn(recipient, amount),
@@ -43,7 +46,7 @@ describe('FungibleToken', () => {
 
       await expect(() =>
         instance.$_mint(receiver.address, amount),
-      ).to.changeTokenBalance(instance, receiver, amount);
+      ).to.changeTokenBalance(connection.ethers, instance, receiver, amount);
     });
 
     it('increases total supply by given amount', async () => {
@@ -83,7 +86,7 @@ describe('FungibleToken', () => {
 
       await expect(() =>
         instance.$_burn(receiver.address, amount),
-      ).to.changeTokenBalance(instance, receiver, -amount);
+      ).to.changeTokenBalance(connection.ethers, instance, receiver, -amount);
     });
 
     it('decreases total supply by given amount', async () => {
@@ -139,7 +142,12 @@ describe('FungibleToken', () => {
           receiver.address,
           amount,
         ),
-      ).to.changeTokenBalances(instance, [sender, receiver], [-amount, amount]);
+      ).to.changeTokenBalances(
+        connection.ethers,
+        instance,
+        [sender, receiver],
+        [-amount, amount],
+      );
     });
 
     it('does not modify total supply', async () => {

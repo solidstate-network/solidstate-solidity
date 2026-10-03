@@ -3,13 +3,15 @@ import {
   $SafeCast__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('SafeCast', () => {
   let instance: $SafeCast;
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $SafeCast__factory(deployer).deploy();
   });
 

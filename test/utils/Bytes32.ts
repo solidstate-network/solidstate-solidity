@@ -1,18 +1,21 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import {
   Bytes32Test__factory,
   type $Bytes32,
   $Bytes32__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Bytes32', async () => {
   let instance: $Bytes32;
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Bytes32__factory(deployer).deploy();
   });
 

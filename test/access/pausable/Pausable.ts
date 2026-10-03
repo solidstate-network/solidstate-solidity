@@ -1,25 +1,27 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfPausable } from '@solidstate/spec';
 import {
   type $Pausable,
   $Pausable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Pausable', () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $Pausable;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
     instance = await new $Pausable__factory(deployer).deploy();
   });
 
-  describeBehaviorOfPausable(async () => instance, {});
+  describeBehaviorOfPausable(connection, async () => instance, {});
 
   describe('whenNotPaused() modifier', () => {
     it('does not revert if contract is not paused', async () => {

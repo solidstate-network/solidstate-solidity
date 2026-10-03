@@ -6,7 +6,10 @@ import {
   $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('DiamondBeaconProxy', () => {
   let beacon: any;
@@ -14,13 +17,14 @@ describe('DiamondBeaconProxy', () => {
   let instance: $DiamondBeaconProxy;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
 
     implementation = await new $Ownable__factory(deployer).deploy();
 
-    beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function implementation (bytes4) external view returns (address)',
-    ]);
+    beacon = await deployMockContract(
+      (await connection.ethers.getSigners())[0],
+      ['function implementation (bytes4) external view returns (address)'],
+    );
 
     await beacon.mock.implementation.returns(await implementation.getAddress());
 
@@ -29,7 +33,7 @@ describe('DiamondBeaconProxy', () => {
     await instance.$_setBeacon(await beacon.getAddress());
   });
 
-  describeBehaviorOfDiamondBeaconProxy(async () => instance, {
+  describeBehaviorOfDiamondBeaconProxy(connection, async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

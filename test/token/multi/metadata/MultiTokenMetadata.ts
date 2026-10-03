@@ -1,24 +1,27 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfMultiTokenMetadata } from '@solidstate/spec';
 import {
   type $MultiTokenMetadata,
   $MultiTokenMetadata__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('MultiTokenMetadata', () => {
   const baseURI = 'MultiTokenMetadata.baseURI';
 
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $MultiTokenMetadata;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $MultiTokenMetadata__factory(deployer).deploy();
   });
 
-  describeBehaviorOfMultiTokenMetadata(async () => instance, {
+  describeBehaviorOfMultiTokenMetadata(connection, async () => instance, {
     baseURI,
   });
 

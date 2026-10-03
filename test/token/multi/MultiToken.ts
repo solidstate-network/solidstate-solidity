@@ -1,24 +1,27 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfMultiToken } from '@solidstate/spec';
 import {
   type $MultiToken,
   $MultiToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('MultiToken', () => {
-  let holder: SignerWithAddress;
-  let recipient: SignerWithAddress;
+  let holder: HardhatEthersSigner;
+  let recipient: HardhatEthersSigner;
   let instance: $MultiToken;
   let invalidReceiver: string;
 
   before(async () => {
-    [holder, recipient] = await ethers.getSigners();
+    [holder, recipient] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $MultiToken__factory(deployer).deploy();
     invalidReceiver = await instance.getAddress();
 
@@ -26,7 +29,7 @@ describe('MultiToken', () => {
     await instance.$_setSupportsInterface('0xd9b67a26', true);
   });
 
-  describeBehaviorOfMultiToken(async () => instance, {
+  describeBehaviorOfMultiToken(connection, async () => instance, {
     mint: (recipient, tokenId, amount) =>
       instance.$_mint(recipient, tokenId, amount, '0x'),
     burn: (recipient, tokenId, amount) =>

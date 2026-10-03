@@ -3,7 +3,9 @@ import {
   type $SolidstateNonFungibleToken,
   $SolidstateNonFungibleToken__factory,
 } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const name = 'NonFungibleTokenMetadata.name';
 const symbol = 'NonFungibleTokenMetadata.symbol';
@@ -13,7 +15,7 @@ describe('SolidstateNonFungibleToken', () => {
   let instance: $SolidstateNonFungibleToken;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $SolidstateNonFungibleToken__factory(
       deployer,
     ).deploy();
@@ -26,12 +28,16 @@ describe('SolidstateNonFungibleToken', () => {
     await instance.$_setSupportsInterface('0x80ac58cd', true);
   });
 
-  describeBehaviorOfSolidstateNonFungibleToken(async () => instance, {
-    supply: 0n,
-    mint: async (recipient, tokenId) => instance.$_mint(recipient, tokenId),
-    burn: async (tokenId) => instance.$_burn(tokenId),
-    name,
-    symbol,
-    baseURI,
-  });
+  describeBehaviorOfSolidstateNonFungibleToken(
+    connection,
+    async () => instance,
+    {
+      supply: 0n,
+      mint: async (recipient, tokenId) => instance.$_mint(recipient, tokenId),
+      burn: async (tokenId) => instance.$_burn(tokenId),
+      name,
+      symbol,
+      baseURI,
+    },
+  );
 });

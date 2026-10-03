@@ -1,21 +1,24 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import {
   type $AccessControlOwnable,
   $AccessControlOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 
 describe('AccessControlOwnable', () => {
-  let deployer: SignerWithAddress;
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
+  let owner: HardhatEthersSigner;
+  let nonOwner: HardhatEthersSigner;
   let instance: $AccessControlOwnable;
 
   before(async () => {
-    [deployer, owner, nonOwner] = await ethers.getSigners();
+    [deployer, owner, nonOwner] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {

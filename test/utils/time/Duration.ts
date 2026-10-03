@@ -1,5 +1,5 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import {
   type $Duration,
   $Duration__factory,
@@ -7,7 +7,9 @@ import {
   DurationTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const ONE_SECOND = 1n;
 const ONE_MINUTE = ONE_SECOND * 60n;
@@ -18,12 +20,12 @@ const ONE_WEEK = ONE_DAY * 7n;
 const MAX_UINT48 = 2n ** 48n - 1n;
 
 describe('Duration', async () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $Duration;
   let testInstance: DurationTest;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Duration__factory(deployer).deploy();
     testInstance = await new DurationTest__factory(deployer).deploy();
   });

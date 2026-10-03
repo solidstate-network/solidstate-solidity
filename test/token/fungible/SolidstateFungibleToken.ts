@@ -3,7 +3,10 @@ import {
   type $SolidstateFungibleToken,
   $SolidstateFungibleToken__factory,
 } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const name = 'FungibleTokenMetadata.name';
 const symbol = 'FungibleTokenMetadata.symbol';
@@ -14,7 +17,7 @@ describe('SolidstateFungibleToken', () => {
   let instance: $SolidstateFungibleToken;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $SolidstateFungibleToken__factory(deployer).deploy();
 
     await instance.$_setName(name);
@@ -24,7 +27,7 @@ describe('SolidstateFungibleToken', () => {
     await instance.$_mint(await deployer.getAddress(), supply);
   });
 
-  describeBehaviorOfSolidstateFungibleToken(async () => instance, {
+  describeBehaviorOfSolidstateFungibleToken(connection, async () => instance, {
     mint: async (recipient, amount) => instance.$_mint(recipient, amount),
     burn: async (recipient, amount) => instance.$_burn(recipient, amount),
     allowance: (holder, spender) =>

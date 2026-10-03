@@ -1,29 +1,32 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfNonFungibleTokenMetadata } from '@solidstate/spec';
 import {
   type $NonFungibleTokenMetadata,
   $NonFungibleTokenMetadata__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('NonFungibleTokenMetadata', () => {
   const name = 'NonFungibleTokenMetadata.name';
   const symbol = 'NonFungibleTokenMetadata.symbol';
   const baseURI = 'NonFungibleTokenMetadata.baseURI';
 
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $NonFungibleTokenMetadata;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $NonFungibleTokenMetadata__factory(deployer).deploy();
 
     await instance.$_setName(name);
     await instance.$_setSymbol(symbol);
   });
 
-  describeBehaviorOfNonFungibleTokenMetadata(async () => instance, {
+  describeBehaviorOfNonFungibleTokenMetadata(connection, async () => instance, {
     name,
     symbol,
     baseURI,

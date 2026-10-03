@@ -1,6 +1,5 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { time } from '@nomicfoundation/hardhat-network-helpers';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import {
   type $Timestamp,
   $Timestamp__factory,
@@ -8,17 +7,19 @@ import {
   TimestampTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const MAX_UINT48 = 2n ** 48n - 1n;
 
 describe('Timestamp', async () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $Timestamp;
   let testInstance: TimestampTest;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Timestamp__factory(deployer).deploy();
     testInstance = await new TimestampTest__factory(deployer).deploy();
   });
@@ -106,7 +107,8 @@ describe('Timestamp', async () => {
 
     describe('#durationSince(uint48)', () => {
       it('returns duration representing time elapsed since timestamp', async () => {
-        const timestamp = BigInt(await time.latest()) - 10n;
+        const timestamp =
+          BigInt(await connection.networkHelpers.time.latest()) - 10n;
 
         expect(await instance.$durationSince.staticCall(timestamp)).to.eq(10n);
       });

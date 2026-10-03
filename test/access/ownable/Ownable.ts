@@ -1,18 +1,20 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { impersonateAccount } from '@nomicfoundation/hardhat-network-helpers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfOwnable } from '@solidstate/spec';
 import { type $Ownable, $Ownable__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Ownable', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let owner: HardhatEthersSigner;
+  let nonOwner: HardhatEthersSigner;
   let instance: $Ownable;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [owner, nonOwner] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -21,7 +23,7 @@ describe('Ownable', () => {
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describeBehaviorOfOwnable(async () => instance, {
+  describeBehaviorOfOwnable(connection, async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });
@@ -61,9 +63,13 @@ describe('Ownable', () => {
 
         const intermediateOwnerAddress = await intermediateOwner.getAddress();
 
-        await impersonateAccount(intermediateOwnerAddress);
+        await connection.networkHelpers.impersonateAccount(
+          intermediateOwnerAddress,
+        );
 
-        const signer = await ethers.getSigner(intermediateOwnerAddress);
+        const signer = await connection.ethers.getSigner(
+          intermediateOwnerAddress,
+        );
 
         await expect(
           instance.connect(signer).$onlyTransitiveOwner.staticCall(),

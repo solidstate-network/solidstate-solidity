@@ -6,7 +6,10 @@ import {
   $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('BeaconProxy', () => {
   let beacon: any;
@@ -14,13 +17,14 @@ describe('BeaconProxy', () => {
   let instance: $BeaconProxy;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
 
     implementation = await new $Ownable__factory(deployer).deploy();
 
-    beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function implementation () external view returns (address)',
-    ]);
+    beacon = await deployMockContract(
+      (await connection.ethers.getSigners())[0],
+      ['function implementation () external view returns (address)'],
+    );
 
     await beacon.mock.implementation.returns(await implementation.getAddress());
 
@@ -29,7 +33,7 @@ describe('BeaconProxy', () => {
     await instance.$_setBeacon(await beacon.getAddress());
   });
 
-  describeBehaviorOfBeaconProxy(async () => instance, {
+  describeBehaviorOfBeaconProxy(connection, async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

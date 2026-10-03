@@ -1,13 +1,16 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
 import { type $Math, $Math__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Math', () => {
   let instance: $Math;
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $Math__factory(deployer).deploy();
   });
 

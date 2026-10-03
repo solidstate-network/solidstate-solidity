@@ -1,7 +1,10 @@
 import { hashData, signData } from '@solidstate/library';
 import { type $ECDSA, $ECDSA__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const MAX_S_VALUE =
   '0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0';
@@ -10,13 +13,13 @@ describe('ECDSA', () => {
   let instance: $ECDSA;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $ECDSA__factory(deployer).deploy();
   });
 
   describe('#recover(bytes32,bytes)', () => {
     it('returns message signer', async () => {
-      const [signer] = await ethers.getSigners();
+      const [signer] = await connection.ethers.getSigners();
 
       const data = {
         types: ['uint256'],
@@ -66,7 +69,7 @@ describe('ECDSA', () => {
 
   describe('#recover(bytes32,uint8,bytes32,bytes32)', () => {
     it('returns message signer', async () => {
-      const [signer] = await ethers.getSigners();
+      const [signer] = await connection.ethers.getSigners();
 
       const data = {
         types: ['uint256'],
@@ -163,7 +166,7 @@ describe('ECDSA', () => {
 
   describe('#tryRecover(bytes32,bytes)', () => {
     it('returns message signer', async () => {
-      const [signer] = await ethers.getSigners();
+      const [signer] = await connection.ethers.getSigners();
 
       const data = {
         types: ['uint256'],
@@ -205,7 +208,7 @@ describe('ECDSA', () => {
 
   describe('#tryRecover(bytes32,uint8,bytes32,bytes32)', () => {
     it('returns message signer', async () => {
-      const [signer] = await ethers.getSigners();
+      const [signer] = await connection.ethers.getSigners();
 
       const data = {
         types: ['uint256'],

@@ -1,15 +1,17 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import {
   type $ForwardedMetaTransactionContext,
   $ForwardedMetaTransactionContext__factory,
 } from '@solidstate/typechain-types';
 import type { TypedContractMethod } from '@solidstate/typechain-types/common';
 import { expect } from 'chai';
-import type { BytesLike, ContractMethodArgs } from 'ethers';
-import { ethers } from 'hardhat';
+import { type BytesLike, type ContractMethodArgs, ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const callMetaTransaction = async (
-  signer: SignerWithAddress,
+  signer: HardhatEthersSigner,
   fn: TypedContractMethod<[], [string], 'nonpayable' | 'payable' | 'view'>,
   data: BytesLike,
   args: ContractMethodArgs<[]> = [],
@@ -27,13 +29,13 @@ const callMetaTransaction = async (
 
 describe('ForwardedMetaTransactionContext', () => {
   let instance: $ForwardedMetaTransactionContext;
-  let trustedForwarder: SignerWithAddress;
-  let nonTrustedForwarder: SignerWithAddress;
+  let trustedForwarder: HardhatEthersSigner;
+  let nonTrustedForwarder: HardhatEthersSigner;
 
   beforeEach(async () => {
     let deployer;
     [deployer, trustedForwarder, nonTrustedForwarder] =
-      await ethers.getSigners();
+      await connection.ethers.getSigners();
     instance = await new $ForwardedMetaTransactionContext__factory(
       deployer,
     ).deploy();

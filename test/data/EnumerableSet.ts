@@ -1,11 +1,14 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
   type $EnumerableSet,
   $EnumerableSet__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 // data structures can be defined at any storage slot
 // it doesn't matter which slot is used as long as it's consistent
@@ -14,13 +17,13 @@ const STORAGE_SLOT = 0n;
 describe('EnumerableSet', async () => {
   describe('Bytes32Set', async () => {
     let instance: $EnumerableSet;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroBytes32 = bigintToBytes32(0);
     const oneBytes32 = bigintToBytes32(1);
     const twoBytes32 = bigintToBytes32(2);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
@@ -340,13 +343,13 @@ describe('EnumerableSet', async () => {
 
   describe('AddressSet', async () => {
     let instance: $EnumerableSet;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroAddress = bigintToAddress(0);
     const oneAddress = bigintToAddress(1);
     const twoAddress = bigintToAddress(2);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 
@@ -666,13 +669,13 @@ describe('EnumerableSet', async () => {
 
   describe('UintSet', async () => {
     let instance: $EnumerableSet;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroUint256 = 0n;
     const oneUint256 = 1n;
     const twoUint256 = 2n;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $EnumerableSet__factory(deployer).deploy();
     });
 

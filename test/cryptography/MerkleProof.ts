@@ -3,15 +3,17 @@ import {
   $MerkleProof__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
+
+const connection = await network.create();
 
 describe('MerkleProof', () => {
   let instance: $MerkleProof;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $MerkleProof__factory(deployer).deploy();
   });
 

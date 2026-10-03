@@ -1,20 +1,22 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfFungibleTokenPermit } from '@solidstate/spec';
 import {
   type $FungibleTokenPermit,
   $FungibleTokenPermit__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('FungibleTokenPermit', () => {
   const name = 'FungibleTokenMetadata.name';
 
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $FungibleTokenPermit;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -23,7 +25,7 @@ describe('FungibleTokenPermit', () => {
     await instance.$_setName(name);
   });
 
-  describeBehaviorOfFungibleTokenPermit(async () => instance, {
+  describeBehaviorOfFungibleTokenPermit(connection, async () => instance, {
     allowance: (holder, spender) =>
       instance.$_allowance.staticCall(holder, spender),
   });

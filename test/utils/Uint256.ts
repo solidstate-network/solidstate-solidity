@@ -1,6 +1,9 @@
 import { type $Uint256, $Uint256__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Uint256', () => {
   let instance: $Uint256;
@@ -21,7 +24,7 @@ describe('Uint256', () => {
   ];
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $Uint256__factory(deployer).deploy();
   });
 

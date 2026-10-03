@@ -3,14 +3,16 @@ import {
   $Multicall__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import type { BytesLike } from 'ethers';
-import { ethers } from 'hardhat';
+import { type BytesLike, ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Multicall', () => {
   let instance: $Multicall;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $Multicall__factory(deployer).deploy();
   });
 

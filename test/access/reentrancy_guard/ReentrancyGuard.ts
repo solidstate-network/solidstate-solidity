@@ -3,13 +3,15 @@ import {
   $ReentrancyGuardTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('ReentrancyGuard', () => {
   let instance: $ReentrancyGuardTest;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $ReentrancyGuardTest__factory(deployer).deploy();
   });
 

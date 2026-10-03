@@ -1,11 +1,13 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { bigintToAddress } from '@solidstate/library';
 import {
   type $EnumerableMap,
   $EnumerableMap__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 // data structures can be defined at any storage slot
 // it doesn't matter which slot is used as long as it's consistent
@@ -14,7 +16,7 @@ const STORAGE_SLOT = 0n;
 describe('EnumerableMap', () => {
   describe('AddressToAddressMap', async () => {
     let instance: $EnumerableMap;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const addressOne = bigintToAddress(100);
     const addressTwo = bigintToAddress(200);
     const addressThree = bigintToAddress(300);
@@ -23,7 +25,7 @@ describe('EnumerableMap', () => {
     const addressSix = bigintToAddress(600);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 
@@ -473,7 +475,7 @@ describe('EnumerableMap', () => {
 
   describe('UintToAddressMap', async () => {
     let instance: $EnumerableMap;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const uintOne = 1;
     const uintTwo = 2;
     const uintThree = 3;
@@ -482,7 +484,7 @@ describe('EnumerableMap', () => {
     const addressThree = bigintToAddress(300);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $EnumerableMap__factory(deployer).deploy();
     });
 

@@ -1,6 +1,9 @@
 import { type $EIP712, $EIP712__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('EIP712', () => {
   let instance: $EIP712;
@@ -11,10 +14,10 @@ describe('EIP712', () => {
   let salt = ethers.solidityPackedKeccak256(['string'], ['SALT']);
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $EIP712__factory(deployer).deploy();
     verifyingContract = await instance.getAddress();
-    chainId = await ethers.provider.send('eth_chainId');
+    chainId = await connection.ethers.provider.send('eth_chainId');
   });
 
   describe('#ERC5267_FIELDS_00000()', () => {

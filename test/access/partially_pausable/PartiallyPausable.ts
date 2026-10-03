@@ -1,25 +1,28 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfPartiallyPausable } from '@solidstate/spec';
 import {
   type $PartiallyPausable,
   $PartiallyPausable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('PartiallyPausable', () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $PartiallyPausable;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
     instance = await new $PartiallyPausable__factory(deployer).deploy();
   });
 
-  describeBehaviorOfPartiallyPausable(async () => instance, {});
+  describeBehaviorOfPartiallyPausable(connection, async () => instance, {});
 
   describe('whenNotPartiallyPaused(bytes32) modifier', () => {
     it('does not revert if contract is not paused', async () => {

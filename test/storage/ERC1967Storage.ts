@@ -3,14 +3,16 @@ import {
   $ERC1967Storage__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('ERC1967Storage', () => {
   let instance: $ERC1967Storage;
   let testInstance: $ERC1967Storage;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $ERC1967Storage__factory(deployer).deploy();
     testInstance = await new $ERC1967Storage__factory(deployer).deploy();
   });

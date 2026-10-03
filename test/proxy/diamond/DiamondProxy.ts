@@ -1,4 +1,4 @@
-import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondProxy } from '@solidstate/spec';
 import {
@@ -7,7 +7,10 @@ import {
   $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('DiamondProxy', () => {
   let deployer: HardhatEthersSigner;
@@ -15,7 +18,7 @@ describe('DiamondProxy', () => {
   let instance: $DiamondProxy;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     const facetInstance = await new $Ownable__factory(deployer).deploy();
 
     // empty mock contract used as second facet
@@ -41,7 +44,7 @@ describe('DiamondProxy', () => {
     );
   });
 
-  describeBehaviorOfDiamondProxy(async () => instance, {
+  describeBehaviorOfDiamondProxy(connection, async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
@@ -53,7 +56,7 @@ describe('DiamondProxy', () => {
 
       await expect(() =>
         deployer.sendTransaction({ to, value }),
-      ).to.changeEtherBalance(instance, value);
+      ).to.changeEtherBalance(connection.ethers, instance, value);
     });
   });
 });

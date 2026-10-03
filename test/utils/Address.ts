@@ -1,5 +1,4 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import {
   $Ownable__factory,
@@ -9,12 +8,14 @@ import {
   $Address__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import type { BytesLike } from 'ethers';
-import { ethers } from 'hardhat';
+import { type BytesLike, ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Address', async () => {
   let instance: $Address;
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
 
   // the custom errors are not available on the $Address ABI
   // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
@@ -28,7 +29,7 @@ describe('Address', async () => {
   };
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Address__factory(deployer).deploy();
   });
 
@@ -75,20 +76,30 @@ describe('Address', async () => {
     it('transfers given value to given address', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const target = deployer;
 
       await expect(() =>
         instance.connect(deployer).$sendValue(target.address, value),
-      ).to.changeEtherBalances([instance, target], [-value, value]);
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, target],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
       it('target contract rejects transfer', async () => {
         const value = 2n;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const mock = await deployMockContract(deployer, []);
 
@@ -271,7 +282,10 @@ describe('Address', async () => {
     it('transfers given value to target contract', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const mock = await deployMockContract(deployer, [
         'function fn () external payable returns (bool)',
@@ -291,7 +305,11 @@ describe('Address', async () => {
             data,
             value,
           ),
-      ).to.changeEtherBalances([instance, mock], [-value, value]);
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, mock],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
@@ -323,7 +341,10 @@ describe('Address', async () => {
       it('target function is not payable and value is included', async () => {
         const value = 2n;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const targetContract = await new $Ownable__factory(deployer).deploy();
 
@@ -418,7 +439,10 @@ describe('Address', async () => {
     it('transfers given value to target contract', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const mock = await deployMockContract(deployer, [
         'function fn () external payable returns (bool)',
@@ -440,7 +464,11 @@ describe('Address', async () => {
             value,
             ethers.randomBytes(4),
           ),
-      ).to.changeEtherBalances([instance, mock], [-value, value]);
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, mock],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
@@ -478,7 +506,10 @@ describe('Address', async () => {
         const revertReason =
           placeholder.interface.getError(customError)?.selector!;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const targetContract = await new $Ownable__factory(deployer).deploy();
 

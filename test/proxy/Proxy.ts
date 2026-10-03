@@ -1,4 +1,4 @@
-import type { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
   type $Ownable,
@@ -7,17 +7,19 @@ import {
   $Proxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Proxy', () => {
   let implementation: $Ownable;
   let instance: $Proxy;
-  let deployer: SignerWithAddress;
-  let admin: SignerWithAddress;
-  let nonAdmin: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
+  let admin: HardhatEthersSigner;
+  let nonAdmin: HardhatEthersSigner;
 
   before(async () => {
-    [deployer, admin, nonAdmin] = await ethers.getSigners();
+    [deployer, admin, nonAdmin] = await connection.ethers.getSigners();
     implementation = await new $Ownable__factory(deployer).deploy();
   });
 
@@ -27,7 +29,7 @@ describe('Proxy', () => {
     await instance.$_setProxyAdmin(await admin.getAddress());
   });
 
-  describeBehaviorOfProxy(async () => instance, {
+  describeBehaviorOfProxy(connection, async () => instance, {
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
