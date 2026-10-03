@@ -15,6 +15,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.2.0",
     "@nomicfoundation/hardhat-ethers-chai-matchers": "^3.0.11",
+    "@nomicfoundation/hardhat-mocha": "^4.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^3.0.11",
     "@nomicfoundation/hardhat-typechain": "^3.1.1",
     "@nomicfoundation/hardhat-utils": "^4.4.0",
@@ -47,6 +48,7 @@
     "knip-exec-staged": "^5.63.1",
     "lerna": "^8.2.4",
     "merkletreejs": "^0.5.2",
+    "mocha": "^12.0.3",
     "prettier": "^3.9.9",
     "prettier-plugin-packagejson": "^2.5.22",
     "prettier-plugin-solidity": "^2.4.1",

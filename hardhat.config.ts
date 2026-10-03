@@ -7,6 +7,8 @@ import taskScaffoldContract from './tasks/scaffold_contract.ts';
 import HardhatExposed from './vendor/hardhat-exposed/plugin.ts';
 import HardhatEthers from '@nomicfoundation/hardhat-ethers';
 import HardhatEthersChaiMatchers from '@nomicfoundation/hardhat-ethers-chai-matchers';
+import HardhatMocha from '@nomicfoundation/hardhat-mocha';
+import HardhatNetworkHelpers from '@nomicfoundation/hardhat-network-helpers';
 import HardhatTypechain from '@nomicfoundation/hardhat-typechain';
 import HardhatAbiExporter from '@solidstate/hardhat-abi-exporter';
 import HardhatContractSizer from '@solidstate/hardhat-contract-sizer';
@@ -20,6 +22,8 @@ const config: HardhatUserConfig = {
   plugins: [
     HardhatEthers,
     HardhatEthersChaiMatchers,
+    HardhatMocha,
+    HardhatNetworkHelpers,
     HardhatTypechain,
     HardhatAbiExporter,
     HardhatContractSizer,
