@@ -32,6 +32,10 @@
     "@ethersproject/providers": "^5.8.0",
     "ethers5": "npm:ethers@^5.8.0"
   },
+  "peerDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "ethers": "^6.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },

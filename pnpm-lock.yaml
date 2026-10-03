@@ -158,6 +158,12 @@ importers:
       '@ethersproject/providers':
         specifier: ^5.8.0
         version: 5.8.0
+      '@nomicfoundation/hardhat-ethers':
+        specifier: ^4.0.0
+        version: 4.2.0(hardhat@3.18.1)
+      ethers:
+        specifier: ^6.0.0
+        version: 6.17.0
       ethers5:
         specifier: npm:ethers@^5.8.0
         version: ethers@5.8.0
