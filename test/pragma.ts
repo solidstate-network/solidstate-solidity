@@ -1,28 +1,38 @@
 import { expect } from 'chai';
 import hre from 'hardhat';
-import {
-  TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
-  TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
-  TASK_COMPILE_SOLIDITY_GET_DEPENDENCY_GRAPH,
-} from 'hardhat/builtin-tasks/task-names';
+import path from 'node:path';
 
 describe('Pragma statements', () => {
   it('are consistent across all files', async () => {
-    const sourcePaths = await hre.run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
-    const sourceNames = await hre.run(TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES, {
-      sourcePaths,
+    const sourcesPath = path.resolve(hre.config.paths.root, 'contracts');
+
+    expect(hre.config.paths.sources.solidity).to.include(sourcesPath);
+
+    const rootFilePaths = (await hre.solidity.getRootFilePaths()).filter(
+      (rootFilePath) => rootFilePath.startsWith(sourcesPath + path.sep),
+    );
+
+    const result = await hre.solidity.getCompilationJobs(rootFilePaths, {
+      force: true,
+      quiet: true,
     });
-    const graph = await hre.run(TASK_COMPILE_SOLIDITY_GET_DEPENDENCY_GRAPH, {
-      sourceNames,
-    });
-    const files = graph.getResolvedFiles();
+
+    if (!result.success) {
+      throw new Error(result.formattedReason);
+    }
+
+    const files = new Set(
+      [...new Set(result.compilationJobsPerFile.values())].flatMap((job) => [
+        ...job.dependencyGraph.getAllFiles(),
+      ]),
+    );
 
     const versions = new Set();
 
     for (const file of files) {
       if (file.content.versionPragmas.length === 0) {
         throw new Error(
-          `Missing pragma statement for file: ${file.sourceName}`,
+          `Missing pragma statement for file: ${file.inputSourceName}`,
         );
       }
 
