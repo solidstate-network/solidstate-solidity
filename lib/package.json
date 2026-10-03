@@ -18,6 +18,7 @@
   "repository": "github:solidstate-network/solidstate-solidity",
   "license": "MIT",
   "author": "Nick Barry",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [

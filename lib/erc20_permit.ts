@@ -1,7 +1,6 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { IERC2612, IERC5267 } from '@solidstate/typechain-types';
-import { Signature } from 'ethers';
-import { ethers } from 'hardhat';
+import { Signature, ethers } from 'ethers';
 
 interface Domain {
   fields?: string;
@@ -68,8 +67,8 @@ const buildBasicDomain = (
 
 const signERC2612Permit = async (
   instance: IERC2612 & IERC5267,
-  owner: SignerWithAddress,
-  spender: SignerWithAddress,
+  owner: HardhatEthersSigner,
+  spender: HardhatEthersSigner,
   amount: bigint,
   deadline: bigint = ethers.MaxUint256,
 ): Promise<Signature> => {

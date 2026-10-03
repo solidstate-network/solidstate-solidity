@@ -1,5 +1,5 @@
 // MIT-licensed code derived from https://github.com/TrueFiEng/Waffle
-import DoppelgangerContract from './Doppelganger.json';
+import DoppelgangerContract from './Doppelganger.json' with { type: 'json' };
 import type { JsonRpcProvider } from '@ethersproject/providers';
 import { Signer } from 'ethers';
 import {
@@ -10,7 +10,7 @@ import {
   Signer as EthersV5Signer,
   utils,
 } from 'ethers5';
-import { Interface } from 'ethers5/lib/utils';
+import { Interface } from 'ethers5/lib/utils.js';
 
 interface StubInterface extends PromiseLike<void> {
   returns(...args: any): this;
@@ -19,8 +19,9 @@ interface StubInterface extends PromiseLike<void> {
   withArgs(...args: any[]): this;
 }
 
-export interface MockContract<T extends BaseContract = BaseContract>
-  extends Contract {
+export interface MockContract<
+  T extends BaseContract = BaseContract,
+> extends Contract {
   mock: {
     [key in keyof T['functions'] | 'receive']: StubInterface;
   };
@@ -128,13 +129,9 @@ class Stub implements StubInterface {
 
   then<TResult1 = void, TResult2 = never>(
     onfulfilled?:
-      | ((value: void) => TResult1 | PromiseLike<TResult1>)
-      | null
-      | undefined,
+      ((value: void) => TResult1 | PromiseLike<TResult1>) | null | undefined,
     onrejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
-      | null
-      | undefined,
+      ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined,
   ): Promise<TResult1 | TResult2> {
     return new Promise((resolve, reject) => {
       const execute = async () => {
