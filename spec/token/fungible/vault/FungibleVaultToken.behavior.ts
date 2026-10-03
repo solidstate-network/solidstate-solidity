@@ -12,7 +12,8 @@ import {
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleVaultTokenBehaviorArgs
   extends FungibleTokenBehaviorArgs, FungibleTokenMetadataBehaviorArgs {
@@ -24,6 +25,7 @@ export interface FungibleVaultTokenBehaviorArgs
 }
 
 export function describeBehaviorOfFungibleVaultToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleVaultToken>,
   args: FungibleVaultTokenBehaviorArgs,
   skips?: string[],
@@ -38,7 +40,7 @@ export function describeBehaviorOfFungibleVaultToken(
     let instance: IFungibleVaultToken;
 
     before(async () => {
-      [caller, depositor, recipient] = await ethers.getSigners();
+      [caller, depositor, recipient] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -46,9 +48,9 @@ export function describeBehaviorOfFungibleVaultToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleToken(deploy, args, skips);
+    describeBehaviorOfFungibleToken(connection, deploy, args, skips);
 
-    describeBehaviorOfFungibleTokenMetadata(deploy, args, skips);
+    describeBehaviorOfFungibleTokenMetadata(connection, deploy, args, skips);
 
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {

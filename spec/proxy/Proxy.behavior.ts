@@ -2,7 +2,8 @@ import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types'
 import { describeFilter } from '@solidstate/library';
 import { IProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface ProxyBehaviorArgs {
   getProxyAdmin: () => Promise<HardhatEthersSigner>;
@@ -12,6 +13,7 @@ export interface ProxyBehaviorArgs {
 }
 
 export function describeBehaviorOfProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<IProxy>,
   args: ProxyBehaviorArgs,
   skips?: string[],
@@ -30,7 +32,7 @@ export function describeBehaviorOfProxy(
         let contract = new ethers.Contract(
           await instance.getAddress(),
           [`function ${args.implementationFunction}`],
-          (await ethers.getSigners())[0],
+          (await connection.ethers.getSigners())[0],
         );
 
         await expect(
@@ -44,7 +46,7 @@ export function describeBehaviorOfProxy(
     describe('receive()', () => {
       it('forwards value to implementation via delegatecall', async () => {
         // TODO: receive tests pass because hardhat-exposed functions used as implementations are payable
-        const [signer] = await ethers.getSigners();
+        const [signer] = await connection.ethers.getSigners();
 
         await expect(
           signer.sendTransaction({

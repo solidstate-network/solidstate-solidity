@@ -4,7 +4,8 @@ import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { IDiamondProxyWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondProxyWritableBehaviorArgs {
   getProxyAdmin: () => Promise<HardhatEthersSigner>;
@@ -13,6 +14,7 @@ export interface DiamondProxyWritableBehaviorArgs {
 }
 
 export function describeBehaviorOfDiamondProxyWritable(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondProxyWritable>,
   args: DiamondProxyWritableBehaviorArgs,
   skips?: string[],
@@ -61,6 +63,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy as any,
       {
         interfaceIds: ['0x1f931c1c'],
@@ -96,7 +99,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           for (let fn of functions) {
@@ -193,7 +196,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           await instance
@@ -333,7 +336,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           await instance

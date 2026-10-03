@@ -5,7 +5,8 @@ import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { IMultiToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface MultiTokenBehaviorArgs {
   mint: (
@@ -22,6 +23,7 @@ export interface MultiTokenBehaviorArgs {
 }
 
 export function describeBehaviorOfMultiToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IMultiToken>,
   args: MultiTokenBehaviorArgs,
   skips?: string[],
@@ -34,7 +36,7 @@ export function describeBehaviorOfMultiToken(
     let instance: IMultiToken;
 
     before(async () => {
-      [holder, spender] = await ethers.getSigners();
+      [holder, spender] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -43,6 +45,7 @@ export function describeBehaviorOfMultiToken(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy,
       {
         interfaceIds: ['0xd9b67a26'],

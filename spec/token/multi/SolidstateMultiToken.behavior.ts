@@ -8,13 +8,16 @@ import {
   MultiTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
 import { ISolidstateMultiToken } from '@solidstate/typechain-types';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateMultiTokenBehaviorArgs
-  extends MultiTokenBehaviorArgs,
+  extends
+    MultiTokenBehaviorArgs,
     MultiTokenEnumerableBehaviorArgs,
     MultiTokenMetadataBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateMultiToken(
+  connection: NetworkConnection,
   deploy: () => Promise<ISolidstateMultiToken>,
   args: SolidstateMultiTokenBehaviorArgs,
   skips?: string[],
@@ -22,10 +25,10 @@ export function describeBehaviorOfSolidstateMultiToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateMultiToken', () => {
-    describeBehaviorOfMultiToken(deploy, args, skips);
+    describeBehaviorOfMultiToken(connection, deploy, args, skips);
 
-    describeBehaviorOfMultiTokenEnumerable(deploy, args, skips);
+    describeBehaviorOfMultiTokenEnumerable(connection, deploy, args, skips);
 
-    describeBehaviorOfMultiTokenMetadata(deploy, args, skips);
+    describeBehaviorOfMultiTokenMetadata(connection, deploy, args, skips);
   });
 }

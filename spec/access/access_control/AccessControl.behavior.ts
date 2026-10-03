@@ -3,6 +3,7 @@ import { describeFilter } from '@solidstate/library';
 import { AccessControl } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
@@ -14,6 +15,7 @@ interface AccessControlBehaviorArgs {
 }
 
 export function describeBehaviorOfAccessControl(
+  connection: NetworkConnection,
   args: AccessControlBehaviorArgs,
   skips?: string[],
 ) {

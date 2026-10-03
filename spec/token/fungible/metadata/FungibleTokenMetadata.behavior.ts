@@ -1,6 +1,7 @@
 import { describeFilter } from '@solidstate/library';
 import { IFungibleTokenMetadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleTokenMetadataBehaviorArgs {
   name: string;
@@ -9,6 +10,7 @@ export interface FungibleTokenMetadataBehaviorArgs {
 }
 
 export function describeBehaviorOfFungibleTokenMetadata(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleTokenMetadata>,
   args: FungibleTokenMetadataBehaviorArgs,
   skips?: string[],

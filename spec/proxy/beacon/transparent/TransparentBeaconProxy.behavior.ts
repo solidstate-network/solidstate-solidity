@@ -11,7 +11,8 @@ import {
   ITransparentBeaconProxyWithAdminFunctions__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 interface TransparentBeaconProxyArgs extends BeaconProxyBehaviorArgs {
   getProxyAdmin: () => Promise<HardhatEthersSigner>;
@@ -19,6 +20,7 @@ interface TransparentBeaconProxyArgs extends BeaconProxyBehaviorArgs {
 }
 
 export function describeBehaviorOfTransparentBeaconProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<ITransparentBeaconProxy>,
   args: TransparentBeaconProxyArgs,
   skips?: string[],
@@ -43,7 +45,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
       nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
-    describeBehaviorOfBeaconProxy(deploy, args, skips);
+    describeBehaviorOfBeaconProxy(connection, deploy, args, skips);
 
     describe('#setProxyAdmin(address', () => {
       it('updates the admin address', async () => {
@@ -51,7 +53,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
           .connect(proxyAdmin)
           .setProxyAdmin(await nonProxyAdmin.getAddress());
 
-        const adminSlotContents = await ethers.provider.send(
+        const adminSlotContents = await connection.ethers.provider.send(
           'eth_getStorageAt',
           [
             await instanceWithAdminFunctions.getAddress(),

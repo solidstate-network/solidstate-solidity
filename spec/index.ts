@@ -1,3 +1,6 @@
+import type {} from '@nomicfoundation/hardhat-ethers';
+import type {} from '@nomicfoundation/hardhat-network-helpers';
+
 export * from './access/access_control/AccessControl.behavior.ts';
 export * from './access/ownable/Ownable.behavior.ts';
 export * from './access/ownable/safe/SafeOwnable.behavior.ts';

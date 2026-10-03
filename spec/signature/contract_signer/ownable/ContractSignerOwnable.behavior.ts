@@ -3,6 +3,7 @@ import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import { IContractSignerOwnable } from '@solidstate/typechain-types';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface ContractSignerOwnableBehaviorArgs {
   getOwner: () => Promise<HardhatEthersSigner>;
@@ -10,6 +11,7 @@ export interface ContractSignerOwnableBehaviorArgs {
 }
 
 export function describeBehaviorOfContractSignerOwnable(
+  connection: NetworkConnection,
   deploy: () => Promise<IContractSignerOwnable>,
   args: ContractSignerOwnableBehaviorArgs,
   skips?: string[],
@@ -27,6 +29,7 @@ export function describeBehaviorOfContractSignerOwnable(
 
     // TODO: nonstandard usage
     describeBehaviorOfContractSigner(
+      connection,
       deploy,
       {
         getValidParams: async () => {

@@ -7,10 +7,12 @@ import {
 import { IBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface BeaconBehaviorArgs extends OwnableBehaviorArgs {}
 
 export function describeBehaviorOfBeacon(
+  connection: NetworkConnection,
   deploy: () => Promise<IBeacon>,
   args: BeaconBehaviorArgs,
   skips?: string[],
@@ -28,7 +30,7 @@ export function describeBehaviorOfBeacon(
       instance = await deploy();
     });
 
-    describeBehaviorOfOwnable(deploy, args, skips);
+    describeBehaviorOfOwnable(connection, deploy, args, skips);
 
     describe('#implementation()', () => {
       it('returns implementation address', async () => {

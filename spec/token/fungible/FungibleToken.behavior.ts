@@ -3,7 +3,8 @@ import { describeFilter } from '@solidstate/library';
 import { IFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleTokenBehaviorArgs {
   supply: bigint;
@@ -18,6 +19,7 @@ export interface FungibleTokenBehaviorArgs {
 }
 
 export function describeBehaviorOfFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleToken>,
   args: FungibleTokenBehaviorArgs,
   skips?: string[],
@@ -33,7 +35,8 @@ export function describeBehaviorOfFungibleToken(
     let instance: IFungibleToken;
 
     before(async () => {
-      [holder, spender, receiver, sender] = await ethers.getSigners();
+      [holder, spender, receiver, sender] =
+        await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {

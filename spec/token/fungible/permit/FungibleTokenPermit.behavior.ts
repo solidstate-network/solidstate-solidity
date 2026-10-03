@@ -1,15 +1,16 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
-import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { FungibleTokenPermit } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleTokenPermitBehaviorArgs {
   allowance: (holder: string, spender: string) => Promise<bigint>;
 }
 
 export function describeBehaviorOfFungibleTokenPermit(
+  connection: NetworkConnection,
   deploy: () => Promise<FungibleTokenPermit>,
   args: FungibleTokenPermitBehaviorArgs,
   skips?: string[],
@@ -23,7 +24,7 @@ export function describeBehaviorOfFungibleTokenPermit(
     let instance: FungibleTokenPermit;
 
     beforeEach(async () => {
-      [holder, spender, thirdParty] = await ethers.getSigners();
+      [holder, spender, thirdParty] = await connection.ethers.getSigners();
       instance = await deploy();
     });
 
@@ -41,7 +42,7 @@ export function describeBehaviorOfFungibleTokenPermit(
 
     describe('#permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', () => {
       it('increases allowance using permit', async () => {
-        const timestamp = BigInt(await time.latest());
+        const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
         const amount = 2n;
         const deadline = timestamp + 100n;
@@ -54,7 +55,7 @@ export function describeBehaviorOfFungibleTokenPermit(
           deadline,
         );
 
-        await time.setNextBlockTimestamp(deadline);
+        await connection.networkHelpers.time.setNextBlockTimestamp(deadline);
 
         await instance
           .connect(thirdParty)
@@ -105,7 +106,9 @@ export function describeBehaviorOfFungibleTokenPermit(
 
       describe('reverts if', () => {
         it('deadline has passed', async () => {
-          const timestamp = BigInt(await time.latest());
+          const timestamp = BigInt(
+            await connection.networkHelpers.time.latest(),
+          );
 
           const amount = 2n;
           const deadline = timestamp + 100n;
@@ -118,7 +121,9 @@ export function describeBehaviorOfFungibleTokenPermit(
             deadline,
           );
 
-          await time.setNextBlockTimestamp(deadline + 1n);
+          await connection.networkHelpers.time.setNextBlockTimestamp(
+            deadline + 1n,
+          );
 
           await expect(
             instance
@@ -139,7 +144,9 @@ export function describeBehaviorOfFungibleTokenPermit(
         });
 
         it('signature is invalid', async () => {
-          const timestamp = BigInt(await time.latest());
+          const timestamp = BigInt(
+            await connection.networkHelpers.time.latest(),
+          );
 
           const amount = 2n;
           const deadline = timestamp + 100n;
@@ -152,7 +159,7 @@ export function describeBehaviorOfFungibleTokenPermit(
             deadline,
           );
 
-          await time.setNextBlockTimestamp(deadline);
+          await connection.networkHelpers.time.setNextBlockTimestamp(deadline);
 
           await expect(
             instance
@@ -170,7 +177,9 @@ export function describeBehaviorOfFungibleTokenPermit(
         });
 
         it('signature has already been used', async () => {
-          const timestamp = BigInt(await time.latest());
+          const timestamp = BigInt(
+            await connection.networkHelpers.time.latest(),
+          );
 
           const amount = 2n;
           const deadline = timestamp + 100n;
@@ -183,7 +192,9 @@ export function describeBehaviorOfFungibleTokenPermit(
             deadline,
           );
 
-          await time.setNextBlockTimestamp(deadline - 1n);
+          await connection.networkHelpers.time.setNextBlockTimestamp(
+            deadline - 1n,
+          );
 
           await instance
             .connect(thirdParty)
@@ -197,7 +208,7 @@ export function describeBehaviorOfFungibleTokenPermit(
               permit.s,
             );
 
-          await time.setNextBlockTimestamp(deadline);
+          await connection.networkHelpers.time.setNextBlockTimestamp(deadline);
 
           await expect(
             instance

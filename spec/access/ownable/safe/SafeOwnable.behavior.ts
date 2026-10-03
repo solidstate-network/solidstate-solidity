@@ -7,12 +7,14 @@ import {
 import { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SafeOwnableBehaviorArgs extends OwnableBehaviorArgs {
   getNomineeOwner: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfSafeOwnable(
+  connection: NetworkConnection,
   deploy: () => Promise<ISafeOwnable>,
   args: SafeOwnableBehaviorArgs,
   skips?: string[],
@@ -32,7 +34,7 @@ export function describeBehaviorOfSafeOwnable(
       nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfOwnable(deploy, args, [
+    describeBehaviorOfOwnable(connection, deploy, args, [
       '#transferOwnership(address)',
       ...(skips ?? []),
     ]);

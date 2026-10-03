@@ -8,11 +8,13 @@ import {
 import { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondBeaconBehaviorArgs
   extends OwnableBehaviorArgs, DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondBeacon>,
   args: DiamondBeaconBehaviorArgs,
   skips?: string[],
@@ -28,10 +30,10 @@ export function describeBehaviorOfDiamondBeacon(
       owner = await args.getOwner();
     });
 
-    describeBehaviorOfOwnable(deploy, args, skips);
+    describeBehaviorOfOwnable(connection, deploy, args, skips);
 
     // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on external DiamondProxy contract
-    // describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
+    // describeBehaviorOfDiamondProxyWritable(connection, deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       describe('reverts if', () => {

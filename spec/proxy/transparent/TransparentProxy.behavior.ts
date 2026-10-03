@@ -8,11 +8,13 @@ import {
   ITransparentProxyWithAdminFunctions__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 interface TransparentProxyArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfTransparentProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<ITransparentProxy>,
   args: TransparentProxyArgs,
   skips?: string[],
@@ -37,7 +39,7 @@ export function describeBehaviorOfTransparentProxy(
       nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
-    describeBehaviorOfProxy(deploy, args, skips);
+    describeBehaviorOfProxy(connection, deploy, args, skips);
 
     describe('#setProxyAdmin(address', () => {
       it('updates the admin address', async () => {
@@ -45,7 +47,7 @@ export function describeBehaviorOfTransparentProxy(
           .connect(proxyAdmin)
           .setProxyAdmin(await nonProxyAdmin.getAddress());
 
-        const adminSlotContents = await ethers.provider.send(
+        const adminSlotContents = await connection.ethers.provider.send(
           'eth_getStorageAt',
           [
             await instanceWithAdminFunctions.getAddress(),

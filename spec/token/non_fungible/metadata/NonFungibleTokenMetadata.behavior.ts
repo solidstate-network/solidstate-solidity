@@ -1,6 +1,7 @@
 import { describeFilter } from '@solidstate/library';
 import { INonFungibleTokenMetadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface NonFungibleTokenMetadataBehaviorArgs {
   name: string;
@@ -9,6 +10,7 @@ export interface NonFungibleTokenMetadataBehaviorArgs {
 }
 
 export function describeBehaviorOfNonFungibleTokenMetadata(
+  connection: NetworkConnection,
   deploy: () => Promise<INonFungibleTokenMetadata>,
   args: NonFungibleTokenMetadataBehaviorArgs,
   skips?: string[],
@@ -24,6 +26,7 @@ export function describeBehaviorOfNonFungibleTokenMetadata(
 
     // TODO: enable for compositions that include ERC165
     // describeBehaviorOfIntrospectable(
+    //   connection,
     //   deploy,
     //   {
     //     interfaceIds: ['0x5b5e139f'],

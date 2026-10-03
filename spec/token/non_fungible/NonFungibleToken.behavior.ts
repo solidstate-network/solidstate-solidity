@@ -5,7 +5,8 @@ import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { NonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface NonFungibleTokenBehaviorArgs {
   supply: bigint;
@@ -17,6 +18,7 @@ export interface NonFungibleTokenBehaviorArgs {
 }
 
 export function describeBehaviorOfNonFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<NonFungibleToken>,
   args: NonFungibleTokenBehaviorArgs,
   skips?: string[],
@@ -32,7 +34,8 @@ export function describeBehaviorOfNonFungibleToken(
 
     before(async () => {
       // TODO: move to behavior args
-      [holder, spender, receiver, sender] = await ethers.getSigners();
+      [holder, spender, receiver, sender] =
+        await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -41,6 +44,7 @@ export function describeBehaviorOfNonFungibleToken(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy,
       {
         interfaceIds: ['0x80ac58cd'],

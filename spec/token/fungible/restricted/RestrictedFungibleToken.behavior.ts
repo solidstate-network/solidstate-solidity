@@ -6,12 +6,14 @@ import {
 import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface RestrictedFungibleTokenBehaviorArgs extends FungibleTokenBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
 }
 
 export function describeBehaviorOfRestrictedFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IRestrictedFungibleToken>,
   args: RestrictedFungibleTokenBehaviorArgs,
   skips?: string[],
@@ -25,7 +27,7 @@ export function describeBehaviorOfRestrictedFungibleToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleToken(deploy, args, skips);
+    describeBehaviorOfFungibleToken(connection, deploy, args, skips);
 
     describe('#detectTransferRestriction(address,address,uint256)', () => {
       it('returns zero if no restriction exists', async () => {

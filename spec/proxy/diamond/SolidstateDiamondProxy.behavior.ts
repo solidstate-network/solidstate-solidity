@@ -14,6 +14,7 @@ import {
 import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateDiamondProxyBehaviorArgs
   extends
@@ -23,6 +24,7 @@ export interface SolidstateDiamondProxyBehaviorArgs
     DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateDiamondProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<ISolidstateDiamondProxy>,
   args: SolidstateDiamondProxyBehaviorArgs,
   skips?: string[],
@@ -44,17 +46,17 @@ export function describeBehaviorOfSolidstateDiamondProxy(
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondProxy(deploy, args, skips);
+    describeBehaviorOfDiamondProxy(connection, deploy, args, skips);
 
-    describeBehaviorOfDiamondProxyFallback(deploy, args, [
+    describeBehaviorOfDiamondProxyFallback(connection, deploy, args, [
       '::DiamondProxy',
       '::Ownable',
       ...(skips ?? []),
     ]);
 
-    describeBehaviorOfDiamondProxyReadable(deploy, args, skips);
+    describeBehaviorOfDiamondProxyReadable(connection, deploy, args, skips);
 
-    describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
+    describeBehaviorOfDiamondProxyWritable(connection, deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       const selectors: string[] = [];

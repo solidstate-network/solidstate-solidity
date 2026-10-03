@@ -10,7 +10,8 @@ import {
 } from '@solidstate/spec';
 import { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateNonFungibleTokenBehaviorArgs
   extends
@@ -19,6 +20,7 @@ export interface SolidstateNonFungibleTokenBehaviorArgs
     NonFungibleTokenMetadataBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateNonFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<SolidstateNonFungibleToken>,
   args: SolidstateNonFungibleTokenBehaviorArgs,
   skips?: string[],
@@ -31,18 +33,23 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
     let instance: SolidstateNonFungibleToken;
 
     before(async () => {
-      [holder] = await ethers.getSigners();
+      [holder] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfNonFungibleToken(deploy, args, skips);
+    describeBehaviorOfNonFungibleToken(connection, deploy, args, skips);
 
-    describeBehaviorOfNonFungibleTokenEnumerable(deploy, args, skips);
+    describeBehaviorOfNonFungibleTokenEnumerable(
+      connection,
+      deploy,
+      args,
+      skips,
+    );
 
-    describeBehaviorOfNonFungibleTokenMetadata(deploy, args, skips);
+    describeBehaviorOfNonFungibleTokenMetadata(connection, deploy, args, skips);
 
     describe('#transferFrom(address,address,uint256)', () => {
       describe('reverts if', () => {

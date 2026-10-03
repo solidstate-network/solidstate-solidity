@@ -8,12 +8,14 @@ import {
 import { IDiamondProxyFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondProxyFallbackBehaviorArgs extends DiamondProxyBehaviorArgs {
   fallbackAddress: string;
 }
 
 export function describeBehaviorOfDiamondProxyFallback(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondProxyFallback>,
   args: DiamondProxyFallbackBehaviorArgs,
   skips?: string[],
@@ -31,7 +33,7 @@ export function describeBehaviorOfDiamondProxyFallback(
       nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
-    describeBehaviorOfDiamondProxy(async () => instance, args, [
+    describeBehaviorOfDiamondProxy(connection, async () => instance, args, [
       'receive()',
       ...(skips ?? []),
     ]);
