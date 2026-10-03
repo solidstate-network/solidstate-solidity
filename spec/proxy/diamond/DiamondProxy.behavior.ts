@@ -39,7 +39,7 @@ export function describeBehaviorOfDiamondProxy(
           contract[args.implementationFunction].staticCall(
             ...args.implementationFunctionArgs,
           ),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
 
       describe('reverts if', () => {

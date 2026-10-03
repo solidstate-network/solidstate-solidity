@@ -456,7 +456,7 @@ export function describeBehaviorOfDiamondProxyWritable(
               ethers.ZeroAddress,
               '0x',
             ),
-          ).to.be.revertedWithoutReason();
+          ).to.be.revertedWithoutReason(connection.ethers);
         });
 
         it('passed selector array is empty', async () => {

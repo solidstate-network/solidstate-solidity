@@ -60,9 +60,10 @@ export function describeBehaviorOfNonFungibleToken(
 
         await expect(() =>
           args.mint(holder.address, tokenId),
-        ).to.changeTokenBalance(instance, holder, 1);
+        ).to.changeTokenBalance(connection.ethers, instance, holder, 1);
 
         await expect(() => args.burn(tokenId)).to.changeTokenBalance(
+          connection.ethers,
           instance,
           holder,
           -1,
@@ -179,7 +180,12 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(spender)
             .transferFrom(holder.address, receiver.address, tokenId),
-        ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
+        ).to.changeTokenBalances(
+          connection.ethers,
+          instance,
+          [holder, receiver],
+          [-1, 1],
+        );
       });
 
       it('updates owner of token', async () => {
@@ -226,7 +232,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(holder)
             .transferFrom(holder.address, await instance.getAddress(), tokenId),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
 
       it('does not revert if recipient is ERC721Receiver implementer but does not accept transfer', async () => {
@@ -245,7 +251,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(holder)
             .transferFrom(holder.address, receiverContract.address, tokenId),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
 
       describe('reverts if', () => {
@@ -296,7 +302,12 @@ export function describeBehaviorOfNonFungibleToken(
               receiver.address,
               tokenId,
             ),
-        ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
+        ).to.changeTokenBalances(
+          connection.ethers,
+          instance,
+          [holder, receiver],
+          [-1, 1],
+        );
       });
 
       it('updates owner of token', async () => {
@@ -444,7 +455,12 @@ export function describeBehaviorOfNonFungibleToken(
               tokenId,
               '0x',
             ),
-        ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
+        ).to.changeTokenBalances(
+          connection.ethers,
+          instance,
+          [holder, receiver],
+          [-1, 1],
+        );
       });
 
       it('updates owner of token', async () => {
@@ -601,7 +617,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(spender)
             .transferFrom.staticCall(holder.address, spender.address, tokenId),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
 
         await instance.connect(holder).approve(ethers.ZeroAddress, tokenId);
 
@@ -609,7 +625,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(spender)
             .transferFrom.staticCall(holder.address, spender.address, tokenId),
-        ).to.be.reverted;
+        ).to.revert(connection.ethers);
       });
 
       it('emits Approval event', async () => {
@@ -631,7 +647,7 @@ export function describeBehaviorOfNonFungibleToken(
 
         await expect(
           instance.connect(receiver).approve(receiver.address, tokenId),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
 
       describe('reverts if', () => {
@@ -672,7 +688,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(spender)
             .transferFrom.staticCall(holder.address, spender.address, tokenId),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
 
         await instance
           .connect(holder)
@@ -682,7 +698,7 @@ export function describeBehaviorOfNonFungibleToken(
           instance
             .connect(spender)
             .transferFrom.staticCall(holder.address, spender.address, tokenId),
-        ).to.be.reverted;
+        ).to.revert(connection.ethers);
       });
 
       it('emits ApprovalForAll event', async () => {

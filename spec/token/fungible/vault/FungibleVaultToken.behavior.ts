@@ -237,6 +237,7 @@ export function describeBehaviorOfFungibleVaultToken(
         await expect(() =>
           instance.connect(depositor).deposit(assetAmount, depositor.address),
         ).to.changeTokenBalances(
+          connection.ethers,
           assetInstance,
           [depositor, instance],
           [-assetAmount, assetAmount],
@@ -358,7 +359,12 @@ export function describeBehaviorOfFungibleVaultToken(
 
         await expect(() =>
           instance.connect(depositor).mint(shareAmount, depositor.address),
-        ).to.changeTokenBalance(instance, depositor, shareAmount);
+        ).to.changeTokenBalance(
+          connection.ethers,
+          instance,
+          depositor,
+          shareAmount,
+        );
       });
 
       it('emits Deposit event', async () => {
@@ -418,6 +424,7 @@ export function describeBehaviorOfFungibleVaultToken(
             .connect(depositor)
             .withdraw(assetAmountOut, recipient.address, depositor.address),
         ).to.changeTokenBalances(
+          connection.ethers,
           assetInstance,
           [recipient, instance],
           [assetAmountOut, -assetAmountOut],
@@ -609,7 +616,12 @@ export function describeBehaviorOfFungibleVaultToken(
           instance
             .connect(depositor)
             .redeem(shareAmount, recipient.address, depositor.address),
-        ).to.changeTokenBalance(instance, depositor, -shareAmount);
+        ).to.changeTokenBalance(
+          connection.ethers,
+          instance,
+          depositor,
+          -shareAmount,
+        );
       });
 
       it('emits Withdraw event', async () => {

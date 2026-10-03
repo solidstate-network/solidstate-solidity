@@ -71,11 +71,11 @@ export function describeBehaviorOfFungibleToken(
 
         await expect(() =>
           args.mint(holder.address, amount),
-        ).to.changeTokenBalance(instance, holder, amount);
+        ).to.changeTokenBalance(connection.ethers, instance, holder, amount);
 
         await expect(() =>
           args.burn(holder.address, amount),
-        ).to.changeTokenBalance(instance, holder, -amount);
+        ).to.changeTokenBalance(connection.ethers, instance, holder, -amount);
       });
     });
 
@@ -141,6 +141,7 @@ export function describeBehaviorOfFungibleToken(
         await expect(() =>
           instance.connect(holder).transfer(receiver.address, amount),
         ).to.changeTokenBalances(
+          connection.ethers,
           instance,
           [holder, receiver],
           [-amount, amount],
@@ -181,6 +182,7 @@ export function describeBehaviorOfFungibleToken(
             .connect(spender)
             .transferFrom(holder.address, receiver.address, amount),
         ).to.changeTokenBalances(
+          connection.ethers,
           instance,
           [holder, receiver],
           [-amount, amount],

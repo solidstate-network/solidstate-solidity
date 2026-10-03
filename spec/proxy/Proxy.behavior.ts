@@ -39,7 +39,7 @@ export function describeBehaviorOfProxy(
           contract[args.implementationFunction].staticCall(
             ...args.implementationFunctionArgs,
           ),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
     });
 
@@ -53,7 +53,7 @@ export function describeBehaviorOfProxy(
             to: await instance.getAddress(),
             value: 1n,
           }),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
     });
   });
