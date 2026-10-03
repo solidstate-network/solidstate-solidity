@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
@@ -7,8 +7,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface DiamondProxyWritableBehaviorArgs {
-  getProxyAdmin: () => Promise<SignerWithAddress>;
-  getNonProxyAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<HardhatEthersSigner>;
+  getNonProxyAdmin: () => Promise<HardhatEthersSigner>;
   immutableSelectors: string[];
 }
 
@@ -20,8 +20,8 @@ export function describeBehaviorOfDiamondProxyWritable(
   const describe = describeFilter(skips);
 
   describe('::DiamondProxyWritable', () => {
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     const functions: string[] = [];
     const selectors: string[] = [];

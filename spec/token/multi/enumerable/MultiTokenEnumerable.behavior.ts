@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { IMultiTokenEnumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -7,8 +7,8 @@ import { ethers } from 'hardhat';
 
 export interface MultiTokenEnumerableBehaviorArgs {
   transfer: (
-    from: SignerWithAddress,
-    to: SignerWithAddress,
+    from: HardhatEthersSigner,
+    to: HardhatEthersSigner,
     id: bigint,
     amount: bigint,
   ) => Promise<ContractTransactionResponse>;

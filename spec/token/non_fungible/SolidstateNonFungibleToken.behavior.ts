@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfNonFungibleToken,
@@ -13,7 +13,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface SolidstateNonFungibleTokenBehaviorArgs
-  extends NonFungibleTokenBehaviorArgs,
+  extends
+    NonFungibleTokenBehaviorArgs,
     NonFungibleTokenEnumerableBehaviorArgs,
     NonFungibleTokenMetadataBehaviorArgs {}
 
@@ -25,7 +26,7 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateNonFungibleToken', () => {
-    let holder: SignerWithAddress;
+    let holder: HardhatEthersSigner;
 
     let instance: SolidstateNonFungibleToken;
 
@@ -72,9 +73,12 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, holder.address, tokenId, { value: 1 }),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                { value: 1 },
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidstateNonFungibleToken__PayableTransferNotSupported',
@@ -92,9 +96,13 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, holder.address, tokenId, '0x', { value: 1 }),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                '0x',
+                { value: 1 },
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidstateNonFungibleToken__PayableTransferNotSupported',

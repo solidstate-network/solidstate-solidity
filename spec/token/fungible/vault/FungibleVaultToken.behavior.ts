@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
@@ -15,8 +15,7 @@ import { ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 
 export interface FungibleVaultTokenBehaviorArgs
-  extends FungibleTokenBehaviorArgs,
-    FungibleTokenMetadataBehaviorArgs {
+  extends FungibleTokenBehaviorArgs, FungibleTokenMetadataBehaviorArgs {
   getAsset: () => Promise<IFungibleToken>;
   mintAsset: (
     address: string,
@@ -32,9 +31,9 @@ export function describeBehaviorOfFungibleVaultToken(
   const describe = describeFilter(skips);
 
   describe('::FungibleVaultToken', () => {
-    let caller: SignerWithAddress;
-    let depositor: SignerWithAddress;
-    let recipient: SignerWithAddress;
+    let caller: HardhatEthersSigner;
+    let depositor: HardhatEthersSigner;
+    let recipient: HardhatEthersSigner;
     let assetInstance: IFungibleToken;
     let instance: IFungibleVaultToken;
 

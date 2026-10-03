@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
@@ -14,8 +14,8 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 interface TransparentBeaconProxyArgs extends BeaconProxyBehaviorArgs {
-  getProxyAdmin: () => Promise<SignerWithAddress>;
-  getNonProxyAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<HardhatEthersSigner>;
+  getNonProxyAdmin: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfTransparentBeaconProxy(
@@ -28,8 +28,8 @@ export function describeBehaviorOfTransparentBeaconProxy(
   describe('::TransparentBeaconProxy', () => {
     let instance: ITransparentBeaconProxy;
     let instanceWithAdminFunctions: ITransparentBeaconProxyWithAdminFunctions;
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();

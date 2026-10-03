@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
@@ -13,10 +13,11 @@ import {
 } from '@solidstate/spec';
 import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 export interface SolidstateDiamondProxyBehaviorArgs
-  extends DiamondProxyBehaviorArgs,
+  extends
+    DiamondProxyBehaviorArgs,
     DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs {}
@@ -29,8 +30,8 @@ export function describeBehaviorOfSolidstateDiamondProxy(
   const describe = describeFilter(skips);
 
   describe('::SolidstateDiamondProxy', () => {
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     let instance: ISolidstateDiamondProxy;
 

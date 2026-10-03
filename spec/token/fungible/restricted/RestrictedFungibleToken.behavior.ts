@@ -5,10 +5,9 @@ import {
 } from '@solidstate/spec';
 import { IRestrictedFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
-export interface RestrictedFungibleTokenBehaviorArgs
-  extends FungibleTokenBehaviorArgs {
+export interface RestrictedFungibleTokenBehaviorArgs extends FungibleTokenBehaviorArgs {
   restrictions: { code: bigint; message: string }[];
 }
 

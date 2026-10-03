@@ -1,12 +1,12 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import { IContractSignerOwnable } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 export interface ContractSignerOwnableBehaviorArgs {
-  getOwner: () => Promise<SignerWithAddress>;
-  getNonOwner: () => Promise<SignerWithAddress>;
+  getOwner: () => Promise<HardhatEthersSigner>;
+  getNonOwner: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfContractSignerOwnable(
@@ -17,8 +17,8 @@ export function describeBehaviorOfContractSignerOwnable(
   const describe = describeFilter(skips);
 
   describe('::ContractSignerOwnable', () => {
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
 
     beforeEach(async () => {
       owner = await args.getOwner();

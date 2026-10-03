@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { IFungibleTokenExtended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
@@ -26,9 +26,9 @@ export function describeBehaviorOfFungibleTokenExtended(
   const describe = describeFilter(skips);
 
   describe('::FungibleTokenExtended', () => {
-    let deployer: SignerWithAddress;
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
     let instance: IFungibleTokenExtended;
 
     before(async () => {

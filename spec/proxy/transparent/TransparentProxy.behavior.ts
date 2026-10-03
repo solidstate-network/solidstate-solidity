@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
@@ -22,8 +22,8 @@ export function describeBehaviorOfTransparentProxy(
   describe('::TransparentProxy', () => {
     let instance: ITransparentProxy;
     let instanceWithAdminFunctions: ITransparentProxyWithAdminFunctions;
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();

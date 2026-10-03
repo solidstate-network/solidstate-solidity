@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
 import { INFTRoyalty } from '@solidstate/typechain-types';
@@ -19,7 +19,7 @@ export function describeBehaviorOfNFTRoyalty(
     let tokenIdTwo = 2;
     let tokenIdThree = 3;
 
-    let receiver: SignerWithAddress;
+    let receiver: HardhatEthersSigner;
     let instance: INFTRoyalty;
 
     beforeEach(async () => {

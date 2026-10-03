@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
@@ -24,10 +24,10 @@ export function describeBehaviorOfNonFungibleToken(
   const describe = describeFilter(skips);
 
   describe('::NonFungibleToken', () => {
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
-    let receiver: SignerWithAddress;
-    let sender: SignerWithAddress;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
+    let receiver: HardhatEthersSigner;
+    let sender: HardhatEthersSigner;
     let instance: NonFungibleToken;
 
     before(async () => {
@@ -287,9 +287,11 @@ export function describeBehaviorOfNonFungibleToken(
         await expect(() =>
           instance
             .connect(spender)
-            [
-              'safeTransferFrom(address,address,uint256)'
-            ](holder.address, receiver.address, tokenId),
+            ['safeTransferFrom(address,address,uint256)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+            ),
         ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
       });
 
@@ -305,9 +307,11 @@ export function describeBehaviorOfNonFungibleToken(
 
         await instance
           .connect(spender)
-          [
-            'safeTransferFrom(address,address,uint256)'
-          ](holder.address, receiver.address, tokenId);
+          ['safeTransferFrom(address,address,uint256)'](
+            holder.address,
+            receiver.address,
+            tokenId,
+          );
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
@@ -323,9 +327,11 @@ export function describeBehaviorOfNonFungibleToken(
         await expect(
           instance
             .connect(spender)
-            [
-              'safeTransferFrom(address,address,uint256)'
-            ](holder.address, receiver.address, tokenId),
+            ['safeTransferFrom(address,address,uint256)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+            ),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(holder.address, receiver.address, tokenId);
@@ -339,9 +345,11 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, ethers.ZeroAddress, tokenId),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                ethers.ZeroAddress,
+                tokenId,
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__NotOwnerOrApproved',
@@ -357,9 +365,11 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, ethers.ZeroAddress, tokenId),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                ethers.ZeroAddress,
+                tokenId,
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__TransferToZeroAddress',
@@ -375,9 +385,11 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, await instance.getAddress(), tokenId),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                await instance.getAddress(),
+                tokenId,
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__ERC721ReceiverNotImplemented',
@@ -399,9 +411,11 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, receiverContract.address, tokenId),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                receiverContract.address,
+                tokenId,
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__ERC721ReceiverNotImplemented',
@@ -420,9 +434,12 @@ export function describeBehaviorOfNonFungibleToken(
         await expect(() =>
           instance
             .connect(spender)
-            [
-              'safeTransferFrom(address,address,uint256,bytes)'
-            ](holder.address, receiver.address, tokenId, '0x'),
+            ['safeTransferFrom(address,address,uint256,bytes)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+              '0x',
+            ),
         ).to.changeTokenBalances(instance, [holder, receiver], [-1, 1]);
       });
 
@@ -438,9 +455,12 @@ export function describeBehaviorOfNonFungibleToken(
 
         await instance
           .connect(spender)
-          [
-            'safeTransferFrom(address,address,uint256,bytes)'
-          ](holder.address, receiver.address, tokenId, '0x');
+          ['safeTransferFrom(address,address,uint256,bytes)'](
+            holder.address,
+            receiver.address,
+            tokenId,
+            '0x',
+          );
 
         expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
           receiver.address,
@@ -456,9 +476,12 @@ export function describeBehaviorOfNonFungibleToken(
         await expect(
           instance
             .connect(spender)
-            [
-              'safeTransferFrom(address,address,uint256,bytes)'
-            ](holder.address, receiver.address, tokenId, '0x'),
+            ['safeTransferFrom(address,address,uint256,bytes)'](
+              holder.address,
+              receiver.address,
+              tokenId,
+              '0x',
+            ),
         )
           .to.emit(instance, 'Transfer')
           .withArgs(holder.address, receiver.address, tokenId);
@@ -472,9 +495,12 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                ethers.ZeroAddress,
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__NotOwnerOrApproved',
@@ -490,9 +516,12 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(spender)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, ethers.ZeroAddress, tokenId, '0x'),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                ethers.ZeroAddress,
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__TransferToZeroAddress',
@@ -508,9 +537,12 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, await instance.getAddress(), tokenId, '0x'),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                await instance.getAddress(),
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__ERC721ReceiverNotImplemented',
@@ -532,9 +564,12 @@ export function describeBehaviorOfNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, receiverContract.address, tokenId, '0x'),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                receiverContract.address,
+                tokenId,
+                '0x',
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'NonFungibleToken__ERC721ReceiverNotImplemented',

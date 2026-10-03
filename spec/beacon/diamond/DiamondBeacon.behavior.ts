@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
@@ -10,8 +10,7 @@ import { expect } from 'chai';
 import { ethers } from 'ethers';
 
 export interface DiamondBeaconBehaviorArgs
-  extends OwnableBehaviorArgs,
-    DiamondProxyWritableBehaviorArgs {}
+  extends OwnableBehaviorArgs, DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(
   deploy: () => Promise<IDiamondBeacon>,
@@ -22,7 +21,7 @@ export function describeBehaviorOfDiamondBeacon(
 
   describe('::DiamondBeacon', () => {
     let instance: IDiamondBeacon;
-    let owner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
@@ -6,10 +6,10 @@ import {
 } from '@solidstate/spec';
 import { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 export interface SafeOwnableBehaviorArgs extends OwnableBehaviorArgs {
-  getNomineeOwner: () => Promise<SignerWithAddress>;
+  getNomineeOwner: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfSafeOwnable(
@@ -21,9 +21,9 @@ export function describeBehaviorOfSafeOwnable(
 
   describe('::SafeOwnable', () => {
     let instance: ISafeOwnable;
-    let owner: SignerWithAddress;
-    let nomineeOwner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nomineeOwner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();

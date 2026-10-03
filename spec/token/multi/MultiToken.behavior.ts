@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
@@ -29,8 +29,8 @@ export function describeBehaviorOfMultiToken(
   const describe = describeFilter(skips);
 
   describe('::MultiToken', () => {
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
     let instance: IMultiToken;
 
     before(async () => {
@@ -225,9 +225,7 @@ export function describeBehaviorOfMultiToken(
         });
 
         it('receiver is invalid ERC1155Receiver', async () => {
-          const mock = await deployMockContract(holder, [
-            /* no functions */
-          ]);
+          const mock = await deployMockContract(holder, [/* no functions */]);
 
           await expect(
             instance
@@ -341,9 +339,7 @@ export function describeBehaviorOfMultiToken(
         });
 
         it('receiver is invalid ERC1155Receiver', async () => {
-          const mock = await deployMockContract(holder, [
-            /* no functions */
-          ]);
+          const mock = await deployMockContract(holder, [/* no functions */]);
 
           await expect(
             instance

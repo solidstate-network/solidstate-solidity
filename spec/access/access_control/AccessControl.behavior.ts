@@ -1,16 +1,16 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { AccessControl } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 interface AccessControlBehaviorArgs {
   deploy: () => Promise<AccessControl>;
-  getAdmin: () => Promise<SignerWithAddress>;
-  getNonAdmin: () => Promise<SignerWithAddress>;
+  getAdmin: () => Promise<HardhatEthersSigner>;
+  getNonAdmin: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfAccessControl(
@@ -21,8 +21,8 @@ export function describeBehaviorOfAccessControl(
 
   describe('::AccessControl', () => {
     let instance: AccessControl;
-    let admin: SignerWithAddress;
-    let nonAdmin: SignerWithAddress;
+    let admin: HardhatEthersSigner;
+    let nonAdmin: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await args.deploy();

@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
@@ -6,7 +6,7 @@ import {
 } from '@solidstate/spec';
 import { IBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 export interface BeaconBehaviorArgs extends OwnableBehaviorArgs {}
 
@@ -18,8 +18,8 @@ export function describeBehaviorOfBeacon(
   const describe = describeFilter(skips);
 
   describe('::Beacon', () => {
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
     let instance: IBeacon;
 
     beforeEach(async () => {

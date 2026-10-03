@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { time } from '@nomicfoundation/hardhat-network-helpers';
 import { describeFilter, signERC2612Permit } from '@solidstate/library';
 import { FungibleTokenPermit } from '@solidstate/typechain-types';
@@ -17,9 +17,9 @@ export function describeBehaviorOfFungibleTokenPermit(
   const describe = describeFilter(skips);
 
   describe('::FungibleTokenPermit', () => {
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
-    let thirdParty: SignerWithAddress;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
+    let thirdParty: HardhatEthersSigner;
     let instance: FungibleTokenPermit;
 
     beforeEach(async () => {

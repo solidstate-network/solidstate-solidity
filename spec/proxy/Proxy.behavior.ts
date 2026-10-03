@@ -1,12 +1,12 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { IProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 export interface ProxyBehaviorArgs {
-  getProxyAdmin: () => Promise<SignerWithAddress>;
-  getNonProxyAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<HardhatEthersSigner>;
+  getNonProxyAdmin: () => Promise<HardhatEthersSigner>;
   implementationFunction: string;
   implementationFunctionArgs: any[];
 }
