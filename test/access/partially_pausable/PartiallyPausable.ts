@@ -28,7 +28,9 @@ describe('PartiallyPausable', () => {
     it('does not revert if contract is not paused', async () => {
       const key = ethers.randomBytes(32);
 
-      await expect(instance.$whenNotPartiallyPaused(key)).not.to.be.reverted;
+      await expect(instance.$whenNotPartiallyPaused(key)).not.to.revert(
+        connection.ethers,
+      );
     });
 
     describe('reverts if', () => {
@@ -53,7 +55,9 @@ describe('PartiallyPausable', () => {
 
       await instance.$_partiallyPause(key);
 
-      await expect(instance.$whenPartiallyPaused(key)).not.to.be.reverted;
+      await expect(instance.$whenPartiallyPaused(key)).not.to.revert(
+        connection.ethers,
+      );
     });
 
     describe('reverts if', () => {

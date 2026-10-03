@@ -36,8 +36,9 @@ describe('Proxy', () => {
 
   describe('onlyProxyAdmin() modifier', () => {
     it('does not revert if sender is proxy admin', async () => {
-      await expect(instance.connect(admin).$onlyProxyAdmin.staticCall()).not.to
-        .be.reverted;
+      await expect(
+        instance.connect(admin).$onlyProxyAdmin.staticCall(),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

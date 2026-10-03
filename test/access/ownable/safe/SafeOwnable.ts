@@ -39,8 +39,9 @@ describe('SafeOwnable', () => {
     it('does not revert if sender is nominee owner', async () => {
       await instance.$_setNomineeOwner(nomineeOwner.address);
 
-      await expect(instance.connect(nomineeOwner).$onlyNomineeOwner()).not.to.be
-        .reverted;
+      await expect(
+        instance.connect(nomineeOwner).$onlyNomineeOwner(),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

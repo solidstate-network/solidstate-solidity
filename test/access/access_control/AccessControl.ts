@@ -49,8 +49,9 @@ describe('AccessControl', () => {
 
   describe('onlyRole(bytes32) modifier', () => {
     it('does not revert if sender has role', async () => {
-      await expect(instance.connect(admin).$onlyRole(DEFAULT_ADMIN_ROLE)).not.to
-        .be.reverted;
+      await expect(
+        instance.connect(admin).$onlyRole(DEFAULT_ADMIN_ROLE),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -71,7 +72,7 @@ describe('AccessControl', () => {
 
       await expect(
         instance.connect(nonAdmin)['$_checkRole(bytes32)'].staticCall(ROLE),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -97,7 +98,7 @@ describe('AccessControl', () => {
           ROLE,
           nonAdmin.address,
         ),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

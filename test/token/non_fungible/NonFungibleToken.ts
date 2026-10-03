@@ -110,7 +110,9 @@ describe('NonFungibleToken', () => {
   describe('#_mint(address,uint256)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance.$_mint(holder.address, tokenId);
       expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
@@ -161,7 +163,9 @@ describe('NonFungibleToken', () => {
   describe('#_safeMint(address,uint256)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance['$_safeMint(address,uint256)'](holder.address, tokenId);
       expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
@@ -196,7 +200,7 @@ describe('NonFungibleToken', () => {
 
       await expect(
         instance['$_safeMint(address,uint256)'](receiverContract.address, 2),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -260,7 +264,9 @@ describe('NonFungibleToken', () => {
   describe('#_safeMint(address,uint256,bytes)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance['$_safeMint(address,uint256,bytes)'](
         holder.address,
@@ -311,7 +317,7 @@ describe('NonFungibleToken', () => {
           2,
           '0x',
         ),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -392,7 +398,9 @@ describe('NonFungibleToken', () => {
       );
 
       await instance.$_burn(tokenId);
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
     });
 
     it('decreases balance of owner by one', async () => {

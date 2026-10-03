@@ -44,7 +44,7 @@ describe('Multicall', () => {
               .data as BytesLike,
             ethers.randomBytes(4),
           ]),
-        ).to.be.reverted;
+        ).to.revert(connection.ethers);
       });
     });
   });

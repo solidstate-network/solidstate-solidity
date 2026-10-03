@@ -88,8 +88,9 @@ describe('Timelock', async () => {
 
       const timelock = createTimelock(timestamp, timestamp + 1n);
 
-      await expect(instance.$requireLocked.staticCall(timelock)).not.to.be
-        .reverted;
+      await expect(instance.$requireLocked.staticCall(timelock)).not.to.revert(
+        connection.ethers,
+      );
     });
 
     describe('reverts if', () => {
@@ -111,8 +112,9 @@ describe('Timelock', async () => {
 
       const timelock = createTimelock(timestamp + 1n, timestamp + 2n);
 
-      await expect(instance.$requireUnlocked.staticCall(timelock)).not.to.be
-        .reverted;
+      await expect(
+        instance.$requireUnlocked.staticCall(timelock),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

@@ -49,7 +49,9 @@ describe('BeaconProxy', () => {
       it('beacon is non-contract address', async () => {
         await instance.$_setBeacon(ethers.ZeroAddress);
 
-        await expect(instance.$_getImplementation.staticCall()).to.be.reverted;
+        await expect(instance.$_getImplementation.staticCall()).to.revert(
+          connection.ethers,
+        );
       });
     });
   });

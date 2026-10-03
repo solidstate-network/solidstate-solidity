@@ -30,7 +30,9 @@ describe('Ownable', () => {
 
   describe('onlyOwner() modifier', () => {
     it('does not revert if sender is owner', async () => {
-      await expect(instance.connect(owner).$onlyOwner()).not.to.be.reverted;
+      await expect(instance.connect(owner).$onlyOwner()).not.to.revert(
+        connection.ethers,
+      );
     });
 
     describe('reverts if', () => {
@@ -44,16 +46,18 @@ describe('Ownable', () => {
 
   describe('onlyTransitiveOwner() modifier', () => {
     it('does not revert if sender is transitive owner', async () => {
-      await expect(instance.connect(owner).$onlyTransitiveOwner()).not.to.be
-        .reverted;
+      await expect(
+        instance.connect(owner).$onlyTransitiveOwner(),
+      ).not.to.revert(connection.ethers);
 
       const intermediateOwner = await new $Ownable__factory(owner).deploy();
       await intermediateOwner.$_setOwner(await owner.getAddress());
 
       await instance.$_setOwner(await intermediateOwner.getAddress());
 
-      await expect(instance.connect(owner).$onlyTransitiveOwner()).not.to.be
-        .reverted;
+      await expect(
+        instance.connect(owner).$onlyTransitiveOwner(),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
