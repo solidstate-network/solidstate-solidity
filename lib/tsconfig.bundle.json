@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@solidstate/typechain-types": ["../typechain-types/src/index.ts"],
+      "@solidstate/typechain-types/*": ["../typechain-types/src/*.ts"]
+    }
+  },
+  "files": ["index.ts"]
+}

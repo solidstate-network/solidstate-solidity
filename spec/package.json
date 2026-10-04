@@ -25,7 +25,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "pnpm clean && tsc --build tsconfig.json",
+    "build": "pnpm clean && tsc --build tsconfig.json && dts-bundle-generator --silent --project tsconfig.bundle.json -o dist/index.d.ts index.ts",
     "clean": "rm -rf dist/"
   },
   "dependencies": {
