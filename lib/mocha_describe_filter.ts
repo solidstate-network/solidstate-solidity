@@ -1,4 +1,4 @@
-import { Suite } from 'mocha';
+import type { Suite } from 'mocha';
 
 export function describeFilter(skips?: string[]) {
   let set = new Set(skips);
