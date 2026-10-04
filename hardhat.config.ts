@@ -60,6 +60,11 @@ const config: HardhatUserConfig = {
     },
   },
 
+  coverage: {
+    // exclude generated hardhat-exposed wrappers and test helpers; library code they call is still measured
+    skipFiles: ['contracts-exposed/**', 'contracts/test/**'],
+  },
+
   typechain: {
     outDir: path.resolve(import.meta.dirname, 'typechain-types', 'src'),
   },
