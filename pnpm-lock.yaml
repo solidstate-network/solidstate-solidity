@@ -174,8 +174,8 @@ importers:
   spec:
     dependencies:
       '@solidstate/library':
-        specifier: ^1.0.0-next.3
-        version: 1.0.0-next.3
+        specifier: workspace:^
+        version: link:../lib
     devDependencies:
       '@nomicfoundation/hardhat-ethers':
         specifier: ^4.2.0
@@ -1129,9 +1129,6 @@ packages:
     peerDependencies:
       '@nomicfoundation/hardhat-utils': ^4.0.0
       hardhat: ^3.8.0
-
-  '@solidstate/library@1.0.0-next.3':
-    resolution: {integrity: sha512-XTiduzwNbJiu+0C8pSGRatxDVl37oibWr7OMRQ1onu0KiuEkGYF/q7umnNESycPx+TCJNK6qBkFp8L+Fut+ZOw==}
 
   '@streamparser/json-node@0.0.26':
     resolution: {integrity: sha512-9OxH3oyILbxiHxNfhvfVpyWgaiLDxreWLk6t6xdSZxJlzKciXReMN6w446+lu+cgdpJxJlwNoyfBLPtTrCUJgA==}
@@ -5032,14 +5029,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
       - supports-color
-
-  '@solidstate/library@1.0.0-next.3':
-    dependencies:
-      '@ethersproject/providers': 5.8.0
-      ethers5: ethers@5.8.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
 
   '@streamparser/json-node@0.0.26':
     dependencies:
