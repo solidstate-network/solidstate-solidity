@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 // TODO: rename to indicate that formula is from EIP-7201
 export function seedToStorageSlot(seed: string): string {

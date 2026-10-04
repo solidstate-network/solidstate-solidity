@@ -1,15 +1,18 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfSolidstateDiamondProxy } from '@solidstate/spec';
 import {
-  $SolidstateDiamondProxy,
+  type $SolidstateDiamondProxy,
   $SolidstateDiamondProxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('SolidstateDiamondProxy', () => {
-  let proxyAdmin: SignerWithAddress;
-  let nonProxyAdmin: SignerWithAddress;
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
 
   let instance: $SolidstateDiamondProxy;
 
@@ -17,11 +20,11 @@ describe('SolidstateDiamondProxy', () => {
   let immutableSelectors: string[] = [];
 
   before(async () => {
-    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $SolidstateDiamondProxy__factory(deployer).deploy();
 
     const facets = await instance.facets.staticCall();
@@ -42,6 +45,7 @@ describe('SolidstateDiamondProxy', () => {
   });
 
   describeBehaviorOfSolidstateDiamondProxy(
+    connection,
     async () => instance,
     {
       getProxyAdmin: async () => proxyAdmin,

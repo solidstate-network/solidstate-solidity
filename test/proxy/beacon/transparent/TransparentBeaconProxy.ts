@@ -1,26 +1,28 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfTransparentBeaconProxy } from '@solidstate/spec';
 import {
   $Ownable__factory,
-  $TransparentBeaconProxy,
+  type $TransparentBeaconProxy,
   $TransparentBeaconProxy__factory,
-  ITransparentBeaconProxy,
+  type ITransparentBeaconProxy,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('TransparentBeaconProxy', () => {
-  let proxyAdmin: SignerWithAddress;
-  let nonProxyAdmin: SignerWithAddress;
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
   let instance: $TransparentBeaconProxy;
 
   before(async () => {
-    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
 
     const implementationInstance = await new $Ownable__factory(
       deployer,
@@ -42,7 +44,7 @@ describe('TransparentBeaconProxy', () => {
     await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
   });
 
-  describeBehaviorOfTransparentBeaconProxy(async () => instance, {
+  describeBehaviorOfTransparentBeaconProxy(connection, async () => instance, {
     getProxyAdmin: async () => proxyAdmin,
     getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'owner()',

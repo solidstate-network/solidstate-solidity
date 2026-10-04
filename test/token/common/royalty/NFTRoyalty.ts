@@ -1,8 +1,13 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfNFTRoyalty } from '@solidstate/spec';
-import { $NFTRoyalty, $NFTRoyalty__factory } from '@solidstate/typechain-types';
+import {
+  type $NFTRoyalty,
+  $NFTRoyalty__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('NFTRoyalty', () => {
   let royalty = 10000n; // 10000 / 10000 = 100%
@@ -13,12 +18,12 @@ describe('NFTRoyalty', () => {
     10000n, // 1000 / 10000 = 10%
   ];
 
-  let deployer: SignerWithAddress;
-  let receiver: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
+  let receiver: HardhatEthersSigner;
   let instance: $NFTRoyalty;
 
   beforeEach(async () => {
-    [deployer, receiver] = await ethers.getSigners();
+    [deployer, receiver] = await connection.ethers.getSigners();
 
     instance = await new $NFTRoyalty__factory(deployer).deploy();
 
@@ -34,7 +39,7 @@ describe('NFTRoyalty', () => {
     await instance.$_setSupportsInterface('0x2a55205a', true);
   });
 
-  describeBehaviorOfNFTRoyalty(async () => instance, {});
+  describeBehaviorOfNFTRoyalty(connection, async () => instance, {});
 
   describe('#_getRoyaltyBPS(uint256)', () => {
     it('returns royalty for single token', async () => {

@@ -1,10 +1,13 @@
 import { describeBehaviorOfContractSigner } from '@solidstate/spec';
 import {
-  $ContractSigner,
+  type $ContractSigner,
   $ContractSigner__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const validParams: [Uint8Array, Uint8Array] = [
   ethers.randomBytes(32),
@@ -20,12 +23,12 @@ describe('ContractSigner', () => {
   let instance: $ContractSigner;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $ContractSigner__factory(deployer).deploy();
     await instance.$_setValidSignature(validParams[0], true);
   });
 
-  describeBehaviorOfContractSigner(async () => instance as any, {
+  describeBehaviorOfContractSigner(connection, async () => instance as any, {
     getValidParams: async () => validParams,
     getInvalidParams: async () => invalidParams,
   });

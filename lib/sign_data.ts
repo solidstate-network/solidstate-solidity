@@ -1,5 +1,5 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { ethers } from 'hardhat';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import { ethers } from 'ethers';
 
 export interface SignDataArgs {
   types: string[];
@@ -17,7 +17,10 @@ export function hashData({ types, values, nonce, address }: SignDataArgs) {
   return ethers.getBytes(hash);
 }
 
-export async function signData(signer: SignerWithAddress, data: SignDataArgs) {
+export async function signData(
+  signer: HardhatEthersSigner,
+  data: SignDataArgs,
+) {
   const signature = await signer.signMessage(hashData(data));
 
   return ethers.getBytes(signature);

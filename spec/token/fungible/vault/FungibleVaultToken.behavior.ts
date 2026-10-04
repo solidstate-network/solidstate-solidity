@@ -1,22 +1,22 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
-  FungibleTokenBehaviorArgs,
+  type FungibleTokenBehaviorArgs,
   describeBehaviorOfFungibleTokenMetadata,
-  FungibleTokenMetadataBehaviorArgs,
+  type FungibleTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
-import {
+import type {
   IFungibleToken,
   IFungibleVaultToken,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleVaultTokenBehaviorArgs
-  extends FungibleTokenBehaviorArgs,
-    FungibleTokenMetadataBehaviorArgs {
+  extends FungibleTokenBehaviorArgs, FungibleTokenMetadataBehaviorArgs {
   getAsset: () => Promise<IFungibleToken>;
   mintAsset: (
     address: string,
@@ -25,6 +25,7 @@ export interface FungibleVaultTokenBehaviorArgs
 }
 
 export function describeBehaviorOfFungibleVaultToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleVaultToken>,
   args: FungibleVaultTokenBehaviorArgs,
   skips?: string[],
@@ -32,14 +33,14 @@ export function describeBehaviorOfFungibleVaultToken(
   const describe = describeFilter(skips);
 
   describe('::FungibleVaultToken', () => {
-    let caller: SignerWithAddress;
-    let depositor: SignerWithAddress;
-    let recipient: SignerWithAddress;
+    let caller: HardhatEthersSigner;
+    let depositor: HardhatEthersSigner;
+    let recipient: HardhatEthersSigner;
     let assetInstance: IFungibleToken;
     let instance: IFungibleVaultToken;
 
     before(async () => {
-      [caller, depositor, recipient] = await ethers.getSigners();
+      [caller, depositor, recipient] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -47,9 +48,9 @@ export function describeBehaviorOfFungibleVaultToken(
       instance = await deploy();
     });
 
-    describeBehaviorOfFungibleToken(deploy, args, skips);
+    describeBehaviorOfFungibleToken(connection, deploy, args, skips);
 
-    describeBehaviorOfFungibleTokenMetadata(deploy, args, skips);
+    describeBehaviorOfFungibleTokenMetadata(connection, deploy, args, skips);
 
     describe('#asset()', () => {
       it('returns the address of the base asset', async () => {
@@ -236,6 +237,7 @@ export function describeBehaviorOfFungibleVaultToken(
         await expect(() =>
           instance.connect(depositor).deposit(assetAmount, depositor.address),
         ).to.changeTokenBalances(
+          connection.ethers,
           assetInstance,
           [depositor, instance],
           [-assetAmount, assetAmount],
@@ -357,7 +359,12 @@ export function describeBehaviorOfFungibleVaultToken(
 
         await expect(() =>
           instance.connect(depositor).mint(shareAmount, depositor.address),
-        ).to.changeTokenBalance(instance, depositor, shareAmount);
+        ).to.changeTokenBalance(
+          connection.ethers,
+          instance,
+          depositor,
+          shareAmount,
+        );
       });
 
       it('emits Deposit event', async () => {
@@ -417,6 +424,7 @@ export function describeBehaviorOfFungibleVaultToken(
             .connect(depositor)
             .withdraw(assetAmountOut, recipient.address, depositor.address),
         ).to.changeTokenBalances(
+          connection.ethers,
           assetInstance,
           [recipient, instance],
           [assetAmountOut, -assetAmountOut],
@@ -608,7 +616,12 @@ export function describeBehaviorOfFungibleVaultToken(
           instance
             .connect(depositor)
             .redeem(shareAmount, recipient.address, depositor.address),
-        ).to.changeTokenBalance(instance, depositor, -shareAmount);
+        ).to.changeTokenBalance(
+          connection.ethers,
+          instance,
+          depositor,
+          -shareAmount,
+        );
       });
 
       it('emits Withdraw event', async () => {

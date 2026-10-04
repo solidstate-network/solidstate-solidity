@@ -1,24 +1,28 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfAccessControl } from '@solidstate/spec';
 import {
-  $AccessControl,
+  type $AccessControl,
   $AccessControl__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
 const ROLE = ethers.solidityPackedKeccak256(['string'], ['ROLE']);
 
 describe('AccessControl', () => {
-  let admin: SignerWithAddress;
-  let nonAdmin: SignerWithAddress;
-  let nonAdmin2: SignerWithAddress;
-  let nonAdmin3: SignerWithAddress;
+  let admin: HardhatEthersSigner;
+  let nonAdmin: HardhatEthersSigner;
+  let nonAdmin2: HardhatEthersSigner;
+  let nonAdmin3: HardhatEthersSigner;
   let instance: $AccessControl;
 
   before(async () => {
-    [admin, nonAdmin, nonAdmin2, nonAdmin3] = await ethers.getSigners();
+    [admin, nonAdmin, nonAdmin2, nonAdmin3] =
+      await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -31,7 +35,7 @@ describe('AccessControl', () => {
     );
   });
 
-  describeBehaviorOfAccessControl({
+  describeBehaviorOfAccessControl(connection, {
     deploy: async () => instance as any,
     getAdmin: async () => admin,
     getNonAdmin: async () => nonAdmin,
@@ -45,8 +49,9 @@ describe('AccessControl', () => {
 
   describe('onlyRole(bytes32) modifier', () => {
     it('does not revert if sender has role', async () => {
-      await expect(instance.connect(admin).$onlyRole(DEFAULT_ADMIN_ROLE)).not.to
-        .be.reverted;
+      await expect(
+        instance.connect(admin).$onlyRole(DEFAULT_ADMIN_ROLE),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -67,7 +72,7 @@ describe('AccessControl', () => {
 
       await expect(
         instance.connect(nonAdmin)['$_checkRole(bytes32)'].staticCall(ROLE),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -93,7 +98,7 @@ describe('AccessControl', () => {
           ROLE,
           nonAdmin.address,
         ),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

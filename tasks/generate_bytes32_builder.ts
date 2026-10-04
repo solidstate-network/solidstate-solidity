@@ -1,7 +1,8 @@
+import { TASK_GENERATE_BYTES32_BUILDER } from './task_names.ts';
 import ejs from 'ejs';
-import fs from 'fs';
 import { task } from 'hardhat/config';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const libraryName = 'Bytes32Builder';
 const structName = 'Builder';
@@ -150,9 +151,12 @@ contract <%- libraryName %>Test {
 `;
 
 const TEMPLATE_TS = `
-import { <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solidstate/typechain-types';
+import { type <%- libraryName %>Test, <%- libraryName %>Test__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const randomIndexNonInclusive = (start: number, end: number) => {
   return Math.ceil(Math.random() * (end - start - 1)) + start;
@@ -162,7 +166,7 @@ describe('<%- libraryName %>', () => {
   let instance: <%- libraryName %>Test;
 
   before(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new <%- libraryName %>Test__factory(deployer).deploy();
   });
 
@@ -420,8 +424,9 @@ describe('<%- libraryName %>', () => {
 });
 `;
 
-task('generate-bytes32-builder', `Generate ${libraryName}`).setAction(
-  async (args, hre) => {
+export default task(TASK_GENERATE_BYTES32_BUILDER)
+  .setDescription(`Generate ${libraryName}`)
+  .setInlineAction(async (args, hre) => {
     const typesBySize = Array(32)
       .fill(0)
       .map((el, i) => [
@@ -494,18 +499,33 @@ task('generate-bytes32-builder', `Generate ${libraryName}`).setAction(
     };
 
     await generate(
-      path.resolve(hre.config.paths.sources, filepath, `${libraryName}.sol`),
+      path.resolve(
+        hre.config.paths.root,
+        'contracts',
+        filepath,
+        `${libraryName}.sol`,
+      ),
       ejs.render(TEMPLATE_SOL, templateData),
     );
 
     await generate(
-      path.resolve(hre.config.paths.sources, 'test', `${libraryName}Test.sol`),
+      path.resolve(
+        hre.config.paths.root,
+        'contracts',
+        'test',
+        `${libraryName}Test.sol`,
+      ),
       ejs.render(TEMPLATE_SOL_TEST, templateData),
     );
 
     await generate(
-      path.resolve(hre.config.paths.tests, filepath, `${libraryName}.ts`),
+      path.resolve(
+        hre.config.paths.root,
+        'test',
+        filepath,
+        `${libraryName}.ts`,
+      ),
       ejs.render(TEMPLATE_TS, templateData),
     );
-  },
-);
+  })
+  .build();

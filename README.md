@@ -42,21 +42,27 @@ pnpm prepare
 Compile contracts via Hardhat:
 
 ```bash
-pnpm hardhat compile
+pnpm hardhat build
 ```
 
 ### Testing
 
-Test contracts with Hardhat and generate gas report using `hardhat-gas-reporter`:
+Test contracts with Hardhat:
 
 ```bash
 pnpm hardhat test
 ```
 
-Generate a code coverage report using `solidity-coverage`:
+Generate a gas usage report:
 
 ```bash
-pnpm hardhat coverage
+pnpm hardhat test --gas-stats
+```
+
+Generate a code coverage report:
+
+```bash
+pnpm hardhat test --coverage
 ```
 
 ### Publication

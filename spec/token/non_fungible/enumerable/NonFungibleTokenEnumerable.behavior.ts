@@ -1,7 +1,8 @@
 import { describeFilter } from '@solidstate/library';
-import { NonFungibleTokenEnumerable } from '@solidstate/typechain-types';
+import type { NonFungibleTokenEnumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface NonFungibleTokenEnumerableBehaviorArgs {
   mint: (
@@ -13,6 +14,7 @@ export interface NonFungibleTokenEnumerableBehaviorArgs {
 }
 
 export function describeBehaviorOfNonFungibleTokenEnumerable(
+  connection: NetworkConnection,
   deploy: () => Promise<NonFungibleTokenEnumerable>,
   args: NonFungibleTokenEnumerableBehaviorArgs,
   skips?: string[],
@@ -28,6 +30,7 @@ export function describeBehaviorOfNonFungibleTokenEnumerable(
 
     // TODO: enable for compositions that include ERC165
     // describeBehaviorOfIntrospectable(
+    //   connection,
     //   deploy,
     //   {
     //     interfaceIds: ['0x780e9d63'],

@@ -1,23 +1,26 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfFungibleToken,
-  FungibleTokenBehaviorArgs,
+  type FungibleTokenBehaviorArgs,
   describeBehaviorOfFungibleTokenExtended,
-  FungibleTokenExtendedBehaviorArgs,
+  type FungibleTokenExtendedBehaviorArgs,
   describeBehaviorOfFungibleTokenMetadata,
-  FungibleTokenMetadataBehaviorArgs,
+  type FungibleTokenMetadataBehaviorArgs,
   describeBehaviorOfFungibleTokenPermit,
-  FungibleTokenPermitBehaviorArgs,
+  type FungibleTokenPermitBehaviorArgs,
 } from '@solidstate/spec';
-import { ISolidstateFungibleToken } from '@solidstate/typechain-types';
+import type { ISolidstateFungibleToken } from '@solidstate/typechain-types';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateFungibleTokenBehaviorArgs
-  extends FungibleTokenBehaviorArgs,
+  extends
+    FungibleTokenBehaviorArgs,
     FungibleTokenExtendedBehaviorArgs,
     FungibleTokenMetadataBehaviorArgs,
     FungibleTokenPermitBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<ISolidstateFungibleToken>,
   args: SolidstateFungibleTokenBehaviorArgs,
   skips?: string[],
@@ -25,12 +28,12 @@ export function describeBehaviorOfSolidstateFungibleToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateFungibleToken', () => {
-    describeBehaviorOfFungibleToken(deploy, args, skips);
+    describeBehaviorOfFungibleToken(connection, deploy, args, skips);
 
-    describeBehaviorOfFungibleTokenExtended(deploy, args, skips);
+    describeBehaviorOfFungibleTokenExtended(connection, deploy, args, skips);
 
-    describeBehaviorOfFungibleTokenMetadata(deploy, args, skips);
+    describeBehaviorOfFungibleTokenMetadata(connection, deploy, args, skips);
 
-    describeBehaviorOfFungibleTokenPermit(deploy, args, skips);
+    describeBehaviorOfFungibleTokenPermit(connection, deploy, args, skips);
   });
 }

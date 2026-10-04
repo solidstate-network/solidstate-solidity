@@ -1,27 +1,30 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfDiamondProxy,
-  DiamondProxyBehaviorArgs,
+  type DiamondProxyBehaviorArgs,
   describeBehaviorOfDiamondProxyFallback,
-  DiamondProxyFallbackBehaviorArgs,
+  type DiamondProxyFallbackBehaviorArgs,
   describeBehaviorOfDiamondProxyReadable,
-  DiamondProxyReadableBehaviorArgs,
+  type DiamondProxyReadableBehaviorArgs,
   describeBehaviorOfDiamondProxyWritable,
-  DiamondProxyWritableBehaviorArgs,
+  type DiamondProxyWritableBehaviorArgs,
 } from '@solidstate/spec';
-import { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
+import type { ISolidstateDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateDiamondProxyBehaviorArgs
-  extends DiamondProxyBehaviorArgs,
+  extends
+    DiamondProxyBehaviorArgs,
     DiamondProxyFallbackBehaviorArgs,
     DiamondProxyReadableBehaviorArgs,
     DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateDiamondProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<ISolidstateDiamondProxy>,
   args: SolidstateDiamondProxyBehaviorArgs,
   skips?: string[],
@@ -29,8 +32,8 @@ export function describeBehaviorOfSolidstateDiamondProxy(
   const describe = describeFilter(skips);
 
   describe('::SolidstateDiamondProxy', () => {
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     let instance: ISolidstateDiamondProxy;
 
@@ -43,17 +46,17 @@ export function describeBehaviorOfSolidstateDiamondProxy(
       instance = await deploy();
     });
 
-    describeBehaviorOfDiamondProxy(deploy, args, skips);
+    describeBehaviorOfDiamondProxy(connection, deploy, args, skips);
 
-    describeBehaviorOfDiamondProxyFallback(deploy, args, [
+    describeBehaviorOfDiamondProxyFallback(connection, deploy, args, [
       '::DiamondProxy',
       '::Ownable',
       ...(skips ?? []),
     ]);
 
-    describeBehaviorOfDiamondProxyReadable(deploy, args, skips);
+    describeBehaviorOfDiamondProxyReadable(connection, deploy, args, skips);
 
-    describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
+    describeBehaviorOfDiamondProxyWritable(connection, deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       const selectors: string[] = [];

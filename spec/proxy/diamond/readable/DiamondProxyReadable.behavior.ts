@@ -1,14 +1,16 @@
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { IDiamondProxyReadable } from '@solidstate/typechain-types';
+import type { IDiamondProxyReadable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondProxyReadableBehaviorArgs {
   facetCuts: any[];
 }
 
 export function describeBehaviorOfDiamondProxyReadable(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondProxyReadable>,
   args: DiamondProxyReadableBehaviorArgs,
   skips?: string[],
@@ -25,6 +27,7 @@ export function describeBehaviorOfDiamondProxyReadable(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy as any,
       {
         interfaceIds: ['0x48e2b093'],

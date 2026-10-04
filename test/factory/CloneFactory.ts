@@ -1,15 +1,18 @@
 import {
-  $CloneFactory,
+  type $CloneFactory,
   $CloneFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('CloneFactory', () => {
   let instance: $CloneFactory;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $CloneFactory__factory(deployer).deploy();
   });
 
@@ -20,8 +23,8 @@ describe('CloneFactory', () => {
 
       await instance['$deployClone()']();
 
-      expect(await ethers.provider.getCode(address)).to.equal(
-        await ethers.provider.getCode(await instance.getAddress()),
+      expect(await connection.ethers.provider.getCode(address)).to.equal(
+        await connection.ethers.provider.getCode(await instance.getAddress()),
       );
     });
 
@@ -39,8 +42,8 @@ describe('CloneFactory', () => {
 
       await instance['$deployClone(bytes32)'](salt);
 
-      expect(await ethers.provider.getCode(address)).to.equal(
-        await ethers.provider.getCode(await instance.getAddress()),
+      expect(await connection.ethers.provider.getCode(address)).to.equal(
+        await connection.ethers.provider.getCode(await instance.getAddress()),
       );
     });
 

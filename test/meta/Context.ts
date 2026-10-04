@@ -1,14 +1,17 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { $Context, $Context__factory } from '@solidstate/typechain-types';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import { type $Context, $Context__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Context', () => {
   let instance: $Context;
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Context__factory(deployer).deploy();
   });
 

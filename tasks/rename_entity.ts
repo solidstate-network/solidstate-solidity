@@ -1,19 +1,28 @@
+import { TASK_RENAME_ENTITY } from './task_names.ts';
 import deleteEmpty from 'delete-empty';
-import fs from 'fs';
 import gitDiff from 'git-diff';
-import { task, types } from 'hardhat/config';
-import path from 'path';
+import { task } from 'hardhat/config';
+import fs from 'node:fs';
+import path from 'node:path';
 
-task('rename-entity', 'Batch replace text in local filenames and contents')
-  .addPositionalParam('oldText', 'text to to replace', undefined, types.string)
-  .addPositionalParam('newText', 'new text to insert', undefined, types.string)
-  .addFlag(
-    'global',
-    'search for text occurrences in all files (rather than only those with matching names)',
-  )
-  .addFlag('noDiff', 'skip printing file diffs')
-  .addFlag('write', 'write changes to disk')
-  .setAction(async (args, hre) => {
+export default task(TASK_RENAME_ENTITY)
+  .setDescription('Batch replace text in local filenames and contents')
+  .addPositionalArgument({
+    name: 'oldText',
+    description: 'text to to replace',
+  })
+  .addPositionalArgument({
+    name: 'newText',
+    description: 'new text to insert',
+  })
+  .addFlag({
+    name: 'global',
+    description:
+      'search for text occurrences in all files (rather than only those with matching names)',
+  })
+  .addFlag({ name: 'noDiff', description: 'skip printing file diffs' })
+  .addFlag({ name: 'write', description: 'write changes to disk' })
+  .setInlineAction(async (args, hre) => {
     const directories = ['./contracts', './test', './spec'];
 
     const files = (
@@ -56,7 +65,7 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
       const contentsChanged = newContents !== oldContents;
 
       if (nameChanged || contentsChanged) {
-        if (!args.skipDiff) {
+        if (!args.noDiff) {
           console.log(`diff --git a/${oldName} b/${newName}`);
 
           if (oldName !== newName) {
@@ -98,4 +107,5 @@ task('rename-entity', 'Batch replace text in local filenames and contents')
     if (!args.write) {
       console.log('No changes written to disk (use --write flag)');
     }
-  });
+  })
+  .build();

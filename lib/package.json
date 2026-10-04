@@ -18,6 +18,7 @@
   "repository": "github:solidstate-network/solidstate-solidity",
   "license": "MIT",
   "author": "Nick Barry",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -30,6 +31,11 @@
   "dependencies": {
     "@ethersproject/providers": "^5.8.0",
     "ethers5": "npm:ethers@^5.8.0"
+  },
+  "peerDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "ethers": "^6.0.0",
+    "mocha": "^12.0.0"
   },
   "publishConfig": {
     "access": "public"

@@ -1,15 +1,17 @@
 import {
-  $TransientReentrancyGuardTest,
+  type $TransientReentrancyGuardTest,
   $TransientReentrancyGuardTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('TransientReentrancyGuard', () => {
   let instance: $TransientReentrancyGuardTest;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $TransientReentrancyGuardTest__factory(
       deployer,
     ).deploy();
@@ -17,11 +19,15 @@ describe('TransientReentrancyGuard', () => {
 
   describe('nonReentrant() modifier', () => {
     it('does not revert non-reentrant call', async () => {
-      await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
+      await expect(instance.modifier_nonReentrant()).not.to.revert(
+        connection.ethers,
+      );
 
       // test subsequent calls
 
-      await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
+      await expect(instance.modifier_nonReentrant()).not.to.revert(
+        connection.ethers,
+      );
 
       await expect(instance.reentrancyTest()).to.be.revertedWithCustomError(
         instance,
@@ -47,7 +53,9 @@ describe('TransientReentrancyGuard', () => {
 
         // call function again with different contract state to avoid false-negative test coverage
         await instance.$_lockReentrancyGuard();
-        await expect(instance.crossFunctionReentrancyTest()).to.be.reverted;
+        await expect(instance.crossFunctionReentrancyTest()).to.revert(
+          connection.ethers,
+        );
       });
     });
   });
@@ -65,7 +73,9 @@ describe('TransientReentrancyGuard', () => {
 
   describe('#_unlockReentrancyGuard()', () => {
     it('causes nonReentrant functions to pass', async () => {
-      await expect(instance.unlockReentrancyGuardTest()).not.to.be.reverted;
+      await expect(instance.unlockReentrancyGuardTest()).not.to.revert(
+        connection.ethers,
+      );
     });
   });
 });

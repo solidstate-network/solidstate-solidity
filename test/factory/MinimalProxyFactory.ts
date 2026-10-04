@@ -1,15 +1,18 @@
 import {
-  $MinimalProxyFactory,
+  type $MinimalProxyFactory,
   $MinimalProxyFactory__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('MinimalProxyFactory', () => {
   let instance: $MinimalProxyFactory;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $MinimalProxyFactory__factory(deployer).deploy();
   });
 
@@ -23,7 +26,7 @@ describe('MinimalProxyFactory', () => {
 
       await instance['$deployMinimalProxy(address)'](target);
 
-      expect(await ethers.provider.getCode(address)).to.equal(
+      expect(await connection.ethers.provider.getCode(address)).to.equal(
         '0x' +
           [
             '363d3d373d3d3d363d73',
@@ -46,7 +49,7 @@ describe('MinimalProxyFactory', () => {
 
       await instance['$deployMinimalProxy(address,bytes32)'](target, salt);
 
-      expect(await ethers.provider.getCode(address)).to.equal(
+      expect(await connection.ethers.provider.getCode(address)).to.equal(
         '0x' +
           [
             '363d3d373d3d3d363d73',

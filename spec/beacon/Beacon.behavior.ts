@@ -1,16 +1,18 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
-  OwnableBehaviorArgs,
+  type OwnableBehaviorArgs,
 } from '@solidstate/spec';
-import { IBeacon } from '@solidstate/typechain-types';
+import type { IBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface BeaconBehaviorArgs extends OwnableBehaviorArgs {}
 
 export function describeBehaviorOfBeacon(
+  connection: NetworkConnection,
   deploy: () => Promise<IBeacon>,
   args: BeaconBehaviorArgs,
   skips?: string[],
@@ -18,8 +20,8 @@ export function describeBehaviorOfBeacon(
   const describe = describeFilter(skips);
 
   describe('::Beacon', () => {
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
     let instance: IBeacon;
 
     beforeEach(async () => {
@@ -28,7 +30,7 @@ export function describeBehaviorOfBeacon(
       instance = await deploy();
     });
 
-    describeBehaviorOfOwnable(deploy, args, skips);
+    describeBehaviorOfOwnable(connection, deploy, args, skips);
 
     describe('#implementation()', () => {
       it('returns implementation address', async () => {

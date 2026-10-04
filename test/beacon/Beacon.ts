@@ -1,27 +1,29 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfBeacon } from '@solidstate/spec';
-import { $Beacon, $Beacon__factory } from '@solidstate/typechain-types';
+import { type $Beacon, $Beacon__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Beacon', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let owner: HardhatEthersSigner;
+  let nonOwner: HardhatEthersSigner;
   let instance: $Beacon;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [owner, nonOwner] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
 
     instance = await new $Beacon__factory(deployer).deploy();
 
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describeBehaviorOfBeacon(async () => instance, {
+  describeBehaviorOfBeacon(connection, async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
   });

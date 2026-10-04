@@ -2,6 +2,8 @@ import { seedToStorageSlot } from '@solidstate/library';
 import { expect } from 'chai';
 import hre from 'hardhat';
 
+const connection = await hre.network.create();
+
 const STORAGE_LIBRARY = /\b(([I][a-z])|([A-HJ-Z]))\w*Storage$/;
 
 describe('Storage Libraries', () => {
@@ -10,14 +12,16 @@ describe('Storage Libraries', () => {
 
     const fullNames = await hre.artifacts.getAllFullyQualifiedNames();
 
-    const allEntityNames = fullNames.map((name) => name.split(':')[1]);
+    const allEntityNames = [...fullNames].map((name) => name.split(':')[1]);
 
     const storageLibraryNames = allEntityNames
       .filter((name) => !name.startsWith(prefix))
       .filter((name) => STORAGE_LIBRARY.test(name));
 
     for (const name of storageLibraryNames) {
-      const instance = await hre.ethers.deployContract(`${prefix}${name}`);
+      const instance = await connection.ethers.deployContract(
+        `${prefix}${name}`,
+      );
 
       const slot = seedToStorageSlot(
         `solidstate.layout.${name.replace('Storage', '')}`,

@@ -1,16 +1,17 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IOwnable } from '@solidstate/typechain-types';
+import type { IOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface OwnableBehaviorArgs {
-  getOwner: () => Promise<SignerWithAddress>;
-  getNonOwner: () => Promise<SignerWithAddress>;
+  getOwner: () => Promise<HardhatEthersSigner>;
+  getNonOwner: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfOwnable(
+  connection: NetworkConnection,
   deploy: () => Promise<IOwnable>,
   args: OwnableBehaviorArgs,
   skips?: string[],
@@ -19,16 +20,19 @@ export function describeBehaviorOfOwnable(
 
   describe('::Ownable', () => {
     let instance: IOwnable;
-    let owner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();
       // TODO: must impersonate and set balance in case of owners who are contracts, but this might break third-party tests
-      owner = await ethers.getImpersonatedSigner(
+      owner = await connection.ethers.getImpersonatedSigner(
         await (await args.getOwner()).getAddress(),
       );
-      await setBalance(await owner.getAddress(), ethers.parseEther('1'));
+      await connection.networkHelpers.setBalance(
+        await owner.getAddress(),
+        ethers.parseEther('1'),
+      );
       nonOwner = await args.getNonOwner();
     });
 

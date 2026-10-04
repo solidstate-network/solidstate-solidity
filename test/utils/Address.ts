@@ -1,20 +1,21 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { setBalance } from '@nomicfoundation/hardhat-network-helpers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import {
   $Ownable__factory,
   Address__factory,
   AddressTest__factory,
-  $Address,
+  type $Address,
   $Address__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { BytesLike } from 'ethers';
-import { ethers } from 'hardhat';
+import { type BytesLike, ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Address', async () => {
   let instance: $Address;
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
 
   // the custom errors are not available on the $Address ABI
   // a placeholder interface is needed in order to expose them to revertedWithCustomError matcher
@@ -28,7 +29,7 @@ describe('Address', async () => {
   };
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Address__factory(deployer).deploy();
   });
 
@@ -75,20 +76,30 @@ describe('Address', async () => {
     it('transfers given value to given address', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const target = deployer;
 
       await expect(() =>
         instance.connect(deployer).$sendValue(target.address, value),
-      ).to.changeEtherBalances([instance, target], [-value, value]);
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, target],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
       it('target contract rejects transfer', async () => {
         const value = 2n;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const mock = await deployMockContract(deployer, []);
 
@@ -155,9 +166,10 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCall(address,bytes)'
-            ](await targetContract.getAddress(), '0x'),
+            ['$functionCall(address,bytes)'](
+              await targetContract.getAddress(),
+              '0x',
+            ),
         ).to.be.revertedWithCustomError(placeholder, 'Address__FailedCall');
       });
     });
@@ -178,9 +190,11 @@ describe('Address', async () => {
       expect(
         await instance
           .connect(deployer)
-          [
-            '$functionCall(address,bytes,bytes4)'
-          ].staticCall(target, data, ethers.randomBytes(4)),
+          ['$functionCall(address,bytes,bytes4)'].staticCall(
+            target,
+            data,
+            ethers.randomBytes(4),
+          ),
       ).to.equal(ethers.zeroPadValue('0x01', 32));
     });
 
@@ -212,9 +226,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCall(address,bytes,bytes4)'
-            ](target, data, ethers.randomBytes(4)),
+            ['$functionCall(address,bytes,bytes4)'](
+              target,
+              data,
+              ethers.randomBytes(4),
+            ),
         ).to.be.revertedWith(revertReason);
       });
 
@@ -229,9 +245,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCall(address,bytes,bytes4)'
-            ](await targetContract.getAddress(), '0x', revertReason),
+            ['$functionCall(address,bytes,bytes4)'](
+              await targetContract.getAddress(),
+              '0x',
+              revertReason,
+            ),
         ).to.be.revertedWithCustomError(placeholder, customError);
       });
     });
@@ -253,16 +271,21 @@ describe('Address', async () => {
       expect(
         await instance
           .connect(deployer)
-          [
-            '$functionCallWithValue(address,bytes,uint256)'
-          ].staticCall(target, data, 0),
+          ['$functionCallWithValue(address,bytes,uint256)'].staticCall(
+            target,
+            data,
+            0,
+          ),
       ).to.equal(ethers.zeroPadValue('0x01', 32));
     });
 
     it('transfers given value to target contract', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const mock = await deployMockContract(deployer, [
         'function fn () external payable returns (bool)',
@@ -277,10 +300,16 @@ describe('Address', async () => {
       await expect(() =>
         instance
           .connect(deployer)
-          [
-            '$functionCallWithValue(address,bytes,uint256)'
-          ](target, data, value),
-      ).to.changeEtherBalances([instance, mock], [-value, value]);
+          ['$functionCallWithValue(address,bytes,uint256)'](
+            target,
+            data,
+            value,
+          ),
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, mock],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
@@ -298,9 +327,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256)'
-            ](await instance.getAddress(), '0x', 1),
+            ['$functionCallWithValue(address,bytes,uint256)'](
+              await instance.getAddress(),
+              '0x',
+              1,
+            ),
         ).to.be.revertedWithCustomError(
           instance,
           'Address__InsufficientBalance',
@@ -310,7 +341,10 @@ describe('Address', async () => {
       it('target function is not payable and value is included', async () => {
         const value = 2n;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const targetContract = await new $Ownable__factory(deployer).deploy();
 
@@ -326,9 +360,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256)'
-            ](await targetContract.getAddress(), data, value),
+            ['$functionCallWithValue(address,bytes,uint256)'](
+              await targetContract.getAddress(),
+              data,
+              value,
+            ),
         ).to.be.revertedWithCustomError(
           placeholder,
           'Address__FailedCallWithValue',
@@ -362,9 +398,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256)'
-            ](await targetContract.getAddress(), '0x', 0),
+            ['$functionCallWithValue(address,bytes,uint256)'](
+              await targetContract.getAddress(),
+              '0x',
+              0,
+            ),
         ).to.be.revertedWithCustomError(
           placeholder,
           'Address__FailedCallWithValue',
@@ -389,16 +427,22 @@ describe('Address', async () => {
       expect(
         await instance
           .connect(deployer)
-          [
-            '$functionCallWithValue(address,bytes,uint256,bytes4)'
-          ].staticCall(target, data, 0, ethers.randomBytes(4)),
+          ['$functionCallWithValue(address,bytes,uint256,bytes4)'].staticCall(
+            target,
+            data,
+            0,
+            ethers.randomBytes(4),
+          ),
       ).to.equal(ethers.zeroPadValue('0x01', 32));
     });
 
     it('transfers given value to target contract', async () => {
       const value = 2n;
 
-      await setBalance(await instance.getAddress(), value);
+      await connection.networkHelpers.setBalance(
+        await instance.getAddress(),
+        value,
+      );
 
       const mock = await deployMockContract(deployer, [
         'function fn () external payable returns (bool)',
@@ -414,10 +458,17 @@ describe('Address', async () => {
       await expect(() =>
         instance
           .connect(deployer)
-          [
-            '$functionCallWithValue(address,bytes,uint256,bytes4)'
-          ](target, data, value, ethers.randomBytes(4)),
-      ).to.changeEtherBalances([instance, mock], [-value, value]);
+          ['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+            target,
+            data,
+            value,
+            ethers.randomBytes(4),
+          ),
+      ).to.changeEtherBalances(
+        connection.ethers,
+        [instance, mock],
+        [-value, value],
+      );
     });
 
     describe('reverts if', () => {
@@ -436,9 +487,12 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ](await instance.getAddress(), '0x', 1, ethers.randomBytes(4)),
+            ['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+              await instance.getAddress(),
+              '0x',
+              1,
+              ethers.randomBytes(4),
+            ),
         ).to.be.revertedWithCustomError(
           instance,
           'Address__InsufficientBalance',
@@ -452,7 +506,10 @@ describe('Address', async () => {
         const revertReason =
           placeholder.interface.getError(customError)?.selector!;
 
-        await setBalance(await instance.getAddress(), value);
+        await connection.networkHelpers.setBalance(
+          await instance.getAddress(),
+          value,
+        );
 
         const targetContract = await new $Ownable__factory(deployer).deploy();
 
@@ -468,9 +525,12 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ](await targetContract.getAddress(), data, value, revertReason),
+            ['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+              await targetContract.getAddress(),
+              data,
+              value,
+              revertReason,
+            ),
         ).to.be.revertedWithCustomError(placeholder, customError);
       });
 
@@ -491,9 +551,12 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ](target, data, 0, ethers.randomBytes(4)),
+            ['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+              target,
+              data,
+              0,
+              ethers.randomBytes(4),
+            ),
         ).to.be.revertedWith(revertReason);
       });
 
@@ -508,9 +571,12 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionCallWithValue(address,bytes,uint256,bytes4)'
-            ](await targetContract.getAddress(), '0x', 0, revertReason),
+            ['$functionCallWithValue(address,bytes,uint256,bytes4)'](
+              await targetContract.getAddress(),
+              '0x',
+              0,
+              revertReason,
+            ),
         ).to.be.revertedWithCustomError(placeholder, customError);
       });
     });
@@ -567,9 +633,10 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionDelegateCall(address,bytes)'
-            ](await targetContract.getAddress(), data),
+            ['$functionDelegateCall(address,bytes)'](
+              await targetContract.getAddress(),
+              data,
+            ),
         ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
       });
 
@@ -579,9 +646,10 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionDelegateCall(address,bytes)'
-            ](await targetContract.getAddress(), '0x'),
+            ['$functionDelegateCall(address,bytes)'](
+              await targetContract.getAddress(),
+              '0x',
+            ),
         ).to.be.revertedWithCustomError(
           placeholder,
           'Address__FailedDelegatecall',
@@ -642,9 +710,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionDelegateCall(address,bytes,bytes4)'
-            ](await targetContract.getAddress(), data, ethers.randomBytes(4)),
+            ['$functionDelegateCall(address,bytes,bytes4)'](
+              await targetContract.getAddress(),
+              data,
+              ethers.randomBytes(4),
+            ),
         ).to.be.revertedWithCustomError(targetContract, 'Ownable__NotOwner');
       });
 
@@ -659,9 +729,11 @@ describe('Address', async () => {
         await expect(
           instance
             .connect(deployer)
-            [
-              '$functionDelegateCall(address,bytes,bytes4)'
-            ](await targetContract.getAddress(), '0x', revertReason),
+            ['$functionDelegateCall(address,bytes,bytes4)'](
+              await targetContract.getAddress(),
+              '0x',
+              revertReason,
+            ),
         ).to.be.revertedWithCustomError(placeholder, customError);
       });
     });

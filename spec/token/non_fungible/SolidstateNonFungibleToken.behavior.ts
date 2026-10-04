@@ -1,23 +1,26 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfNonFungibleToken,
-  NonFungibleTokenBehaviorArgs,
+  type NonFungibleTokenBehaviorArgs,
   describeBehaviorOfNonFungibleTokenEnumerable,
-  NonFungibleTokenEnumerableBehaviorArgs,
+  type NonFungibleTokenEnumerableBehaviorArgs,
   describeBehaviorOfNonFungibleTokenMetadata,
-  NonFungibleTokenMetadataBehaviorArgs,
+  type NonFungibleTokenMetadataBehaviorArgs,
 } from '@solidstate/spec';
-import { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
+import type { SolidstateNonFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SolidstateNonFungibleTokenBehaviorArgs
-  extends NonFungibleTokenBehaviorArgs,
+  extends
+    NonFungibleTokenBehaviorArgs,
     NonFungibleTokenEnumerableBehaviorArgs,
     NonFungibleTokenMetadataBehaviorArgs {}
 
 export function describeBehaviorOfSolidstateNonFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<SolidstateNonFungibleToken>,
   args: SolidstateNonFungibleTokenBehaviorArgs,
   skips?: string[],
@@ -25,23 +28,28 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
   const describe = describeFilter(skips);
 
   describe('::SolidstateNonFungibleToken', () => {
-    let holder: SignerWithAddress;
+    let holder: HardhatEthersSigner;
 
     let instance: SolidstateNonFungibleToken;
 
     before(async () => {
-      [holder] = await ethers.getSigners();
+      [holder] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
       instance = await deploy();
     });
 
-    describeBehaviorOfNonFungibleToken(deploy, args, skips);
+    describeBehaviorOfNonFungibleToken(connection, deploy, args, skips);
 
-    describeBehaviorOfNonFungibleTokenEnumerable(deploy, args, skips);
+    describeBehaviorOfNonFungibleTokenEnumerable(
+      connection,
+      deploy,
+      args,
+      skips,
+    );
 
-    describeBehaviorOfNonFungibleTokenMetadata(deploy, args, skips);
+    describeBehaviorOfNonFungibleTokenMetadata(connection, deploy, args, skips);
 
     describe('#transferFrom(address,address,uint256)', () => {
       describe('reverts if', () => {
@@ -72,9 +80,12 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256)'
-              ](holder.address, holder.address, tokenId, { value: 1 }),
+              ['safeTransferFrom(address,address,uint256)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                { value: 1 },
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidstateNonFungibleToken__PayableTransferNotSupported',
@@ -92,9 +103,13 @@ export function describeBehaviorOfSolidstateNonFungibleToken(
           await expect(
             instance
               .connect(holder)
-              [
-                'safeTransferFrom(address,address,uint256,bytes)'
-              ](holder.address, holder.address, tokenId, '0x', { value: 1 }),
+              ['safeTransferFrom(address,address,uint256,bytes)'](
+                holder.address,
+                holder.address,
+                tokenId,
+                '0x',
+                { value: 1 },
+              ),
           ).to.be.revertedWithCustomError(
             instance,
             'SolidstateNonFungibleToken__PayableTransferNotSupported',

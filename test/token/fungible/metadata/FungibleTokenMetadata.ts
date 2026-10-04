@@ -1,9 +1,11 @@
 import { describeBehaviorOfFungibleTokenMetadata } from '@solidstate/spec';
 import {
-  $FungibleTokenMetadata,
+  type $FungibleTokenMetadata,
   $FungibleTokenMetadata__factory,
 } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('FungibleTokenMetadata', () => {
   const name = 'FungibleTokenMetadata.name';
@@ -12,7 +14,7 @@ describe('FungibleTokenMetadata', () => {
   let instance: $FungibleTokenMetadata;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $FungibleTokenMetadata__factory(deployer).deploy();
 
     await instance.$_setName(name);
@@ -20,7 +22,7 @@ describe('FungibleTokenMetadata', () => {
     await instance.$_setDecimals(decimals);
   });
 
-  describeBehaviorOfFungibleTokenMetadata(async () => instance, {
+  describeBehaviorOfFungibleTokenMetadata(connection, async () => instance, {
     name,
     symbol,
     decimals,

@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
 
 export function bigintToAddress(bn: any) {
   return ethers.getAddress(ethers.zeroPadValue(ethers.toBeHex(bn), 20));

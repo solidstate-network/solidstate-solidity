@@ -1,33 +1,37 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfBeaconProxy } from '@solidstate/spec';
 import {
-  $BeaconProxy,
+  type $BeaconProxy,
   $BeaconProxy__factory,
   $Ownable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('BeaconProxy', () => {
-  let proxyAdmin: SignerWithAddress;
-  let nonProxyAdmin: SignerWithAddress;
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
   let beacon: any;
   let implementation: any;
   let instance: $BeaconProxy;
 
   before(async () => {
-    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
 
     implementation = await new $Ownable__factory(deployer).deploy();
 
-    beacon = await deployMockContract((await ethers.getSigners())[0], [
-      'function implementation () external view returns (address)',
-    ]);
+    beacon = await deployMockContract(
+      (await connection.ethers.getSigners())[0],
+      ['function implementation () external view returns (address)'],
+    );
 
     await beacon.mock.implementation.returns(await implementation.getAddress());
 
@@ -37,7 +41,7 @@ describe('BeaconProxy', () => {
     await instance.$_setBeacon(await beacon.getAddress());
   });
 
-  describeBehaviorOfBeaconProxy(async () => instance, {
+  describeBehaviorOfBeaconProxy(connection, async () => instance, {
     getProxyAdmin: async () => proxyAdmin,
     getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'owner()',
@@ -55,7 +59,9 @@ describe('BeaconProxy', () => {
       it('beacon is non-contract address', async () => {
         await instance.$_setBeacon(ethers.ZeroAddress);
 
-        await expect(instance.$_getImplementation.staticCall()).to.be.reverted;
+        await expect(instance.$_getImplementation.staticCall()).to.revert(
+          connection.ethers,
+        );
       });
     });
   });

@@ -1,14 +1,15 @@
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfBeaconProxy,
-  BeaconProxyBehaviorArgs,
+  type BeaconProxyBehaviorArgs,
 } from '@solidstate/spec';
-import { IDiamondBeaconProxy } from '@solidstate/typechain-types';
+import type { IDiamondBeaconProxy } from '@solidstate/typechain-types';
+import type { NetworkConnection } from 'hardhat/types/network';
 
-export interface DiamondBeaconProxyBehaviorArgs
-  extends BeaconProxyBehaviorArgs {}
+export interface DiamondBeaconProxyBehaviorArgs extends BeaconProxyBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeaconProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondBeaconProxy>,
   args: DiamondBeaconProxyBehaviorArgs,
   skips?: string[],
@@ -16,6 +17,6 @@ export function describeBehaviorOfDiamondBeaconProxy(
   const describe = describeFilter(skips);
 
   describe('::DiamondBeaconProxy', () => {
-    describeBehaviorOfBeaconProxy(deploy, args, skips);
+    describeBehaviorOfBeaconProxy(connection, deploy, args, skips);
   });
 }
