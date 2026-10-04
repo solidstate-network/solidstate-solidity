@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@solidstate/abi": "workspace:^",
-    "@solidstate/library": "workspace:^"
+    "@solidstate/library": "workspace:^",
+    "@solidstate/typechain-types": "workspace:^"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.2.0",

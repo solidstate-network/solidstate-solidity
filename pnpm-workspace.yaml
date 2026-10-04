@@ -3,6 +3,7 @@ packages:
   - ./contracts/
   - ./lib/
   - ./spec/
+  - ./typechain-types/
 
 patchedDependencies:
   typechain: patches/typechain.patch

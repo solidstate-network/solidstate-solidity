@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@ethersproject/providers": "^5.8.0",
+    "@solidstate/typechain-types": "workspace:^",
     "ethers5": "npm:ethers@^5.8.0"
   },
   "peerDependencies": {
