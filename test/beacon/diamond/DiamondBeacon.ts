@@ -58,6 +58,8 @@ describe('DiamondBeacon', () => {
   describeBehaviorOfDiamondBeacon(connection, async () => instance, {
     getOwner: async () => owner,
     getNonOwner: async () => nonOwner,
+    getProxyAdmin: async () => owner,
+    getNonProxyAdmin: async () => nonOwner,
     // facetCuts,
     immutableSelectors: [],
   });

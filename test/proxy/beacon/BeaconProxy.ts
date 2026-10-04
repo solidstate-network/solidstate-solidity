@@ -1,3 +1,4 @@
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfBeaconProxy } from '@solidstate/spec';
 import {
@@ -12,9 +13,15 @@ import { network } from 'hardhat';
 const connection = await network.create();
 
 describe('BeaconProxy', () => {
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
   let beacon: any;
   let implementation: any;
   let instance: $BeaconProxy;
+
+  before(async () => {
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
+  });
 
   beforeEach(async () => {
     const [deployer] = await connection.ethers.getSigners();
@@ -30,10 +37,13 @@ describe('BeaconProxy', () => {
 
     instance = await new $BeaconProxy__factory(deployer).deploy();
 
+    await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
     await instance.$_setBeacon(await beacon.getAddress());
   });
 
   describeBehaviorOfBeaconProxy(connection, async () => instance, {
+    getProxyAdmin: async () => proxyAdmin,
+    getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });

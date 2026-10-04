@@ -14,8 +14,14 @@ const connection = await network.create();
 
 describe('DiamondProxy', () => {
   let deployer: HardhatEthersSigner;
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
   let receiver;
   let instance: $DiamondProxy;
+
+  before(async () => {
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
+  });
 
   beforeEach(async () => {
     [deployer] = await connection.ethers.getSigners();
@@ -25,6 +31,8 @@ describe('DiamondProxy', () => {
     receiver = await deployMockContract(deployer, []);
 
     instance = await new $DiamondProxy__factory(deployer).deploy();
+
+    await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
 
     await instance.$_diamondCut(
       [
@@ -45,6 +53,8 @@ describe('DiamondProxy', () => {
   });
 
   describeBehaviorOfDiamondProxy(connection, async () => instance, {
+    getProxyAdmin: async () => proxyAdmin,
+    getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
