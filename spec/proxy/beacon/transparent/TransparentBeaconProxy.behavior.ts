@@ -5,10 +5,9 @@ import {
   describeBehaviorOfBeaconProxy,
   type BeaconProxyBehaviorArgs,
 } from '@solidstate/spec';
-import {
-  type ITransparentBeaconProxy,
-  type ITransparentBeaconProxyWithAdminFunctions,
-  ITransparentBeaconProxyWithAdminFunctions__factory,
+import type {
+  ITransparentBeaconProxy,
+  ITransparentBeaconProxyWithAdminFunctions,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
@@ -35,11 +34,18 @@ export function describeBehaviorOfTransparentBeaconProxy(
 
     beforeEach(async () => {
       instance = await deploy();
-      instanceWithAdminFunctions =
-        ITransparentBeaconProxyWithAdminFunctions__factory.connect(
-          await instance.getAddress(),
-          instance.runner,
-        );
+      // events and errors are inherited from the base interface; only the admin functions are added
+      instanceWithAdminFunctions = new ethers.Contract(
+        await instance.getAddress(),
+        [
+          ...instance.interface.fragments.filter(
+            (fragment) => fragment.type !== 'function',
+          ),
+          'function setProxyAdmin(address)',
+          'function setBeacon(address)',
+        ],
+        instance.runner,
+      ) as unknown as ITransparentBeaconProxyWithAdminFunctions;
 
       proxyAdmin = await args.getProxyAdmin();
       nonProxyAdmin = await args.getNonProxyAdmin();

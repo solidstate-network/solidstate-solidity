@@ -5,10 +5,9 @@ import {
   describeBehaviorOfProxy,
   type ProxyBehaviorArgs,
 } from '@solidstate/spec';
-import {
-  type ITransparentProxy,
-  type ITransparentProxyWithAdminFunctions,
-  ITransparentProxyWithAdminFunctions__factory,
+import type {
+  ITransparentProxy,
+  ITransparentProxyWithAdminFunctions,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
@@ -32,11 +31,18 @@ export function describeBehaviorOfTransparentProxy(
 
     beforeEach(async () => {
       instance = await deploy();
-      instanceWithAdminFunctions =
-        ITransparentProxyWithAdminFunctions__factory.connect(
-          await instance.getAddress(),
-          instance.runner,
-        );
+      // events and errors are inherited from the base interface; only the admin functions are added
+      instanceWithAdminFunctions = new ethers.Contract(
+        await instance.getAddress(),
+        [
+          ...instance.interface.fragments.filter(
+            (fragment) => fragment.type !== 'function',
+          ),
+          'function setProxyAdmin(address)',
+          'function setImplementation(address)',
+        ],
+        instance.runner,
+      ) as unknown as ITransparentProxyWithAdminFunctions;
 
       proxyAdmin = await args.getProxyAdmin();
       nonProxyAdmin = await args.getNonProxyAdmin();
