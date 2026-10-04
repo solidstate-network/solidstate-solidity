@@ -4,4 +4,4 @@ Hardhat 3 port of [`hardhat-exposed`](https://github.com/OpenZeppelin/hardhat-ex
 
 The upstream `hardhat-exposed` npm package does not support Hardhat 3. Replace this directory with the npm package once a compatible version is released.
 
-Files are kept unmodified to simplify syncing with upstream. See `LICENSE` for the original copyright notice.
+Files are kept unmodified to simplify syncing with upstream, with one exception: `plugin.ts` casts the lazily imported `build` override action to `TaskOverrideActionFunction`, because Hardhat cannot type the arguments of the task being overridden. Reapply this change when syncing. See `LICENSE` for the original copyright notice.
