@@ -29,6 +29,7 @@
     "clean": "rm -rf dist/"
   },
   "dependencies": {
+    "@solidstate/abi": "workspace:^",
     "@solidstate/library": "workspace:^"
   },
   "devDependencies": {

@@ -173,6 +173,9 @@ importers:
 
   spec:
     dependencies:
+      '@solidstate/abi':
+        specifier: workspace:^
+        version: link:../abi
       '@solidstate/library':
         specifier: workspace:^
         version: link:../lib

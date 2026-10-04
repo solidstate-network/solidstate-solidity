@@ -1,4 +1,5 @@
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import ITransparentProxyWithAdminFunctionsABI from '@solidstate/abi/ITransparentProxyWithAdminFunctions.json' with { type: 'json' };
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
@@ -31,16 +32,9 @@ export function describeBehaviorOfTransparentProxy(
 
     beforeEach(async () => {
       instance = await deploy();
-      // events and errors are inherited from the base interface; only the admin functions are added
       instanceWithAdminFunctions = new ethers.Contract(
         await instance.getAddress(),
-        [
-          ...instance.interface.fragments.filter(
-            (fragment) => fragment.type !== 'function',
-          ),
-          'function setProxyAdmin(address)',
-          'function setImplementation(address)',
-        ],
+        ITransparentProxyWithAdminFunctionsABI,
         instance.runner,
       ) as unknown as ITransparentProxyWithAdminFunctions;
 
