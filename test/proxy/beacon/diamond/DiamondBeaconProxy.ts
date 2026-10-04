@@ -1,3 +1,4 @@
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfDiamondBeaconProxy } from '@solidstate/spec';
 import {
@@ -9,9 +10,15 @@ import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('DiamondBeaconProxy', () => {
+  let proxyAdmin: SignerWithAddress;
+  let nonProxyAdmin: SignerWithAddress;
   let beacon: any;
   let implementation: any;
   let instance: $DiamondBeaconProxy;
+
+  before(async () => {
+    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
+  });
 
   beforeEach(async () => {
     const [deployer] = await ethers.getSigners();
@@ -26,10 +33,13 @@ describe('DiamondBeaconProxy', () => {
 
     instance = await new $DiamondBeaconProxy__factory(deployer).deploy();
 
+    await instance.$_setProxyAdmin(await proxyAdmin.getAddress());
     await instance.$_setBeacon(await beacon.getAddress());
   });
 
   describeBehaviorOfDiamondBeaconProxy(async () => instance, {
+    getProxyAdmin: async () => proxyAdmin,
+    getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
