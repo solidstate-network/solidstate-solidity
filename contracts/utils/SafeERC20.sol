@@ -88,8 +88,8 @@ library SafeERC20 {
     /**
      * @notice approve spender to transfer tokens held by owner via ERC-2612 permit signature
      * @dev tolerates reverts so that a front-run or already-executed permit does not block
-     * the caller. If the permit call reverts, the existing allowance is checked; execution
-     * continues only if the spender already has sufficient allowance.
+     * the caller. If the permit call reverts, execution continues only if the existing
+     * allowance equals the permitted value.
      * @param token ERC-2612 permit token interface
      * @param owner holder of tokens and signer of permit
      * @param spender beneficiary of approval
