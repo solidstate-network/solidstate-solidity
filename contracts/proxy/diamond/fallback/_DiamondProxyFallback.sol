@@ -12,7 +12,7 @@ abstract contract _DiamondProxyFallback is
 {
     /**
      * @inheritdoc _DiamondProxy
-     * @notice query custom fallback address is no implementation is found
+     * @notice query custom fallback address if no implementation is found
      */
     function _getImplementation()
         internal
@@ -57,8 +57,14 @@ abstract contract _DiamondProxyFallback is
      * @param fallbackAddress address of fallback implementation
      */
     function _setFallbackAddress(address fallbackAddress) internal virtual {
+        // fallback calls are delegated to the fallback address, so the diamond itself would recurse until out of gas
+        if (fallbackAddress == address(this))
+            revert DiamondProxyFallback__FallbackAddressIsDiamond();
+
         ERC2535Storage
             .ref(ERC2535Storage.DEFAULT_STORAGE_SLOT)
             .fallbackAddress = fallbackAddress;
+
+        emit FallbackAddressSet(fallbackAddress);
     }
 }

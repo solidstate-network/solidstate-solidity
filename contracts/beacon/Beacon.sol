@@ -7,7 +7,7 @@ import { IERC1967Beacon } from '../interfaces/IERC1967Beacon.sol';
 import { _Beacon } from './_Beacon.sol';
 import { IBeacon } from './IBeacon.sol';
 
-contract Beacon is IBeacon, _Beacon, Ownable {
+abstract contract Beacon is IBeacon, _Beacon, Ownable {
     /**
      * @inheritdoc IERC1967Beacon
      */

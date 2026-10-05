@@ -13,7 +13,7 @@ import { IDiamondBeacon } from './IDiamondBeacon.sol';
  * @title Beacon contract which imitates the upgrade mechanism of an EIP-2535 diamond proxy.
  * @dev Configure this beacon using diamondCut as if it were a diamond proxy.
  */
-contract DiamondBeacon is
+abstract contract DiamondBeacon is
     IDiamondBeacon,
     _DiamondBeacon,
     DiamondProxyWritable,
