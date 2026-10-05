@@ -276,9 +276,10 @@ library EnumerableSet {
 
             if (startIndex >= size) revert EnumerableSet__IndexOutOfBounds();
 
-            array = new bytes32[](Math.min(count, size - startIndex));
+            uint256 outputSize = Math.min(count, size - startIndex);
+            array = new bytes32[](outputSize);
 
-            for (uint256 i; i < count; i++) {
+            for (uint256 i; i < outputSize; i++) {
                 array[i] = set._values[startIndex + i];
             }
         }
