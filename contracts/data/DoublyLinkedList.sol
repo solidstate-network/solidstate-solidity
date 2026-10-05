@@ -309,7 +309,7 @@ library DoublyLinkedList {
             count
         );
 
-        assembly {
+        assembly ('memory-safe') {
             array := bytes32Array
         }
     }
@@ -325,7 +325,7 @@ library DoublyLinkedList {
             count
         );
 
-        assembly {
+        assembly ('memory-safe') {
             array := bytes32Array
         }
     }
@@ -480,7 +480,7 @@ library DoublyLinkedList {
                     revert DoublyLinkedList__NonExistentEntry();
 
                 // truncate the array if end of list is reached
-                assembly {
+                assembly ('memory-safe') {
                     mstore(array, i)
                 }
 

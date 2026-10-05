@@ -21,7 +21,7 @@ library Address {
      */
     function toBytes32(address account) internal pure returns (bytes32 result) {
         // sanitization is required because address(uint160([uint256 value])) cast does not sanitize
-        assembly {
+        assembly ('memory-safe') {
             result := and(account, shr(96, not(0)))
         }
     }
@@ -32,7 +32,7 @@ library Address {
 
     function isContract(address account) internal view returns (bool) {
         uint256 size;
-        assembly {
+        assembly ('memory-safe') {
             size := extcodesize(account)
         }
         return size > 0;
@@ -125,7 +125,7 @@ library Address {
     ) internal returns (bool success, bytes memory returnData) {
         returnData = new bytes(maxCopy);
 
-        assembly {
+        assembly ('memory-safe') {
             // execute external call via assembly to avoid automatic copying of return data
             success := call(
                 gasAmount,
@@ -173,12 +173,12 @@ library Address {
     ) private view {
         if (!success) {
             if (returnData.length == 0) {
-                assembly {
+                assembly ('memory-safe') {
                     mstore(0, errorSelector)
                     revert(0, 4)
                 }
             } else {
-                assembly {
+                assembly ('memory-safe') {
                     let returnData_size := mload(returnData)
                     revert(add(32, returnData), returnData_size)
                 }

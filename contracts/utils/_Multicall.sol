@@ -18,9 +18,8 @@ abstract contract _Multicall is _IMulticall {
                 if (success) {
                     results[i] = returndata;
                 } else {
-                    assembly {
-                        returndatacopy(0, 0, returndatasize())
-                        revert(0, returndatasize())
+                    assembly ('memory-safe') {
+                        revert(add(returndata, 32), mload(returndata))
                     }
                 }
             }
