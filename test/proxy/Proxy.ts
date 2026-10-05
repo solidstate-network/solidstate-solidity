@@ -28,6 +28,8 @@ describe('Proxy', () => {
   });
 
   describeBehaviorOfProxy(async () => instance, {
+    getProxyAdmin: async () => admin,
+    getNonProxyAdmin: async () => nonAdmin,
     implementationFunction: 'owner()',
     implementationFunctionArgs: [],
   });
