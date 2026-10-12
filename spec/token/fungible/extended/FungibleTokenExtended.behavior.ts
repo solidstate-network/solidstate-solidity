@@ -1,9 +1,10 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IFungibleTokenExtended } from '@solidstate/typechain-types';
+import type { IFungibleTokenExtended } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleTokenExtendedBehaviorArgs {
   mint: (
@@ -19,6 +20,7 @@ export interface FungibleTokenExtendedBehaviorArgs {
 }
 
 export function describeBehaviorOfFungibleTokenExtended(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleTokenExtended>,
   args: FungibleTokenExtendedBehaviorArgs,
   skips?: string[],
@@ -26,13 +28,13 @@ export function describeBehaviorOfFungibleTokenExtended(
   const describe = describeFilter(skips);
 
   describe('::FungibleTokenExtended', () => {
-    let deployer: SignerWithAddress;
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
     let instance: IFungibleTokenExtended;
 
     before(async () => {
-      [deployer, holder, spender] = await ethers.getSigners();
+      [deployer, holder, spender] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {

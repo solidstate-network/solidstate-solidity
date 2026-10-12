@@ -1,9 +1,12 @@
 import { describeBehaviorOfSolidstateMultiToken } from '@solidstate/spec';
 import {
-  $SolidstateMultiToken,
+  type $SolidstateMultiToken,
   $SolidstateMultiToken__factory,
 } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const baseURI = 'MultiTokenMetadata.baseURI';
 
@@ -11,14 +14,14 @@ describe('SolidstateMultiToken', () => {
   let instance: $SolidstateMultiToken;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $SolidstateMultiToken__factory(deployer).deploy();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0xd9b67a26', true);
   });
 
-  describeBehaviorOfSolidstateMultiToken(async () => instance, {
+  describeBehaviorOfSolidstateMultiToken(connection, async () => instance, {
     transfer: (from, to, tokenId, amount) =>
       instance
         .connect(from)

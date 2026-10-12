@@ -1,10 +1,12 @@
 import { describeFilter } from '@solidstate/library';
-import { Pausable } from '@solidstate/typechain-types';
+import type { Pausable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface PausableBehaviorArgs {}
 
 export function describeBehaviorOfPausable(
+  connection: NetworkConnection,
   deploy: () => Promise<Pausable>,
   args: PausableBehaviorArgs,
   skips?: string[],

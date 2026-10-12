@@ -1,11 +1,13 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { bigintToBytes16 } from '@solidstate/library';
 import {
-  $PackedDoublyLinkedList,
+  type $PackedDoublyLinkedList,
   $PackedDoublyLinkedList__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 // data structures can be defined at any storage slot
 // it doesn't matter which slot is used as long as it's consistent
@@ -14,14 +16,14 @@ const STORAGE_SLOT = 0n;
 describe('PackedDoublyLinkedList', async () => {
   describe('Bytes16List', async () => {
     let instance: $PackedDoublyLinkedList;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroBytes16 = bigintToBytes16(0);
     const oneBytes16 = bigintToBytes16(1);
     const twoBytes16 = bigintToBytes16(2);
     const threeBytes16 = bigintToBytes16(3);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $PackedDoublyLinkedList__factory(deployer).deploy();
     });
 
@@ -832,14 +834,14 @@ describe('PackedDoublyLinkedList', async () => {
 
   describe('Uint128List', async () => {
     let instance: $PackedDoublyLinkedList;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroUint128 = 0n;
     const oneUint128 = 1n;
     const twoUint128 = 2n;
     const threeUint128 = 3n;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $PackedDoublyLinkedList__factory(deployer).deploy();
     });
 

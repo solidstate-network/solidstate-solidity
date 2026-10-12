@@ -1,15 +1,17 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { $Panic, $Panic__factory } from '@solidstate/typechain-types';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import { type $Panic, $Panic__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Panic', async () => {
   let instance: $Panic;
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Panic__factory(deployer).deploy();
   });
 

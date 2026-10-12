@@ -1,23 +1,25 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfProxy } from '@solidstate/spec';
 import {
-  $Ownable,
+  type $Ownable,
   $Ownable__factory,
-  $Proxy,
+  type $Proxy,
   $Proxy__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Proxy', () => {
   let implementation: $Ownable;
   let instance: $Proxy;
-  let deployer: SignerWithAddress;
-  let admin: SignerWithAddress;
-  let nonAdmin: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
+  let admin: HardhatEthersSigner;
+  let nonAdmin: HardhatEthersSigner;
 
   before(async () => {
-    [deployer, admin, nonAdmin] = await ethers.getSigners();
+    [deployer, admin, nonAdmin] = await connection.ethers.getSigners();
     implementation = await new $Ownable__factory(deployer).deploy();
   });
 
@@ -27,7 +29,7 @@ describe('Proxy', () => {
     await instance.$_setProxyAdmin(await admin.getAddress());
   });
 
-  describeBehaviorOfProxy(async () => instance, {
+  describeBehaviorOfProxy(connection, async () => instance, {
     getProxyAdmin: async () => admin,
     getNonProxyAdmin: async () => nonAdmin,
     implementationFunction: 'owner()',
@@ -36,8 +38,9 @@ describe('Proxy', () => {
 
   describe('onlyProxyAdmin() modifier', () => {
     it('does not revert if sender is proxy admin', async () => {
-      await expect(instance.connect(admin).$onlyProxyAdmin.staticCall()).not.to
-        .be.reverted;
+      await expect(
+        instance.connect(admin).$onlyProxyAdmin.staticCall(),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {

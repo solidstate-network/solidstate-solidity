@@ -1,8 +1,10 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import hre from 'hardhat';
+import { createRequire } from 'node:module';
 import path from 'path';
 
+const require = createRequire(import.meta.url);
 const surya = require('surya');
 
 const EXTERNAL_CONTRACT = /\b(([I][a-z])|([A-HJ-Z]))\w*$/;
@@ -25,25 +27,29 @@ describe('Inheritance Graph', () => {
   const directAncestors: { [key: string]: string[] } = {};
 
   before(async () => {
-    const allFullyQualifiedNames = (
-      await hre.artifacts.getAllFullyQualifiedNames()
-    )
+    const sourcesPath = path.resolve(hre.config.paths.root, 'contracts');
+
+    expect(hre.config.paths.sources.solidity).to.include(sourcesPath);
+
+    const allFullyQualifiedNames = [
+      ...(await hre.artifacts.getAllFullyQualifiedNames()),
+    ]
       .filter(
         (name) =>
           !path
-            .resolve(name)
-            .startsWith(path.resolve(hre.config.paths.sources, 'test')),
+            .resolve(hre.config.paths.root, name)
+            .startsWith(path.resolve(sourcesPath, 'test')),
       )
       .filter(
         (name) =>
           !path
-            .resolve(name)
-            .startsWith(path.resolve(hre.config.paths.sources, 'storage')),
+            .resolve(hre.config.paths.root, name)
+            .startsWith(path.resolve(sourcesPath, 'storage')),
       )
       .filter(
         (name) =>
           !path
-            .resolve(name)
+            .resolve(hre.config.paths.root, name)
             .startsWith(path.resolve(hre.config.exposed.outDir)),
       );
 
