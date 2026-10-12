@@ -172,7 +172,7 @@ library EnumerableMap {
         keysOut = new address[](outputSize);
         valuesOut = new address[](outputSize);
 
-        for (uint256 i; i < count; i++) {
+        for (uint256 i; i < outputSize; i++) {
             keysOut[i] = address(
                 uint160(uint256(map._inner._entries[startIndex + i]._key))
             );
@@ -221,7 +221,7 @@ library EnumerableMap {
         keysOut = new uint256[](outputSize);
         valuesOut = new address[](outputSize);
 
-        for (uint256 i; i < count; i++) {
+        for (uint256 i; i < outputSize; i++) {
             keysOut[i] = uint256(map._inner._entries[startIndex + i]._key);
             valuesOut[i] = address(
                 uint160(uint256(map._inner._entries[startIndex + i]._value))

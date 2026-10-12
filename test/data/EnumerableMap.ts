@@ -402,6 +402,30 @@ describe('EnumerableMap', () => {
         ).to.deep.equal([[addressThree], [addressSix]]);
       });
 
+      it('truncates result if count exceeds remaining entries', async () => {
+        await instance['$set(uint256,address,address)'](
+          STORAGE_SLOT,
+          addressOne,
+          addressFour,
+        );
+        await instance['$set(uint256,address,address)'](
+          STORAGE_SLOT,
+          addressTwo,
+          addressFive,
+        );
+        await instance['$set(uint256,address,address)'](
+          STORAGE_SLOT,
+          addressThree,
+          addressSix,
+        );
+
+        expect(
+          await instance[
+            '$toArray_EnumerableMap_AddressToAddressMap(uint256,uint256,uint256)'
+          ].staticCall(STORAGE_SLOT, 2n, 100n),
+        ).to.deep.equal([[addressThree], [addressSix]]);
+      });
+
       describe('reverts if', () => {
         it('index is out of bounds', async () => {
           await expect(
@@ -847,6 +871,30 @@ describe('EnumerableMap', () => {
           await instance[
             '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
           ].staticCall(STORAGE_SLOT, 2n, 1n),
+        ).to.deep.equal([[uintThree], [addressThree]]);
+      });
+
+      it('truncates result if count exceeds remaining entries', async () => {
+        await instance['$set(uint256,uint256,address)'](
+          STORAGE_SLOT,
+          uintOne,
+          addressOne,
+        );
+        await instance['$set(uint256,uint256,address)'](
+          STORAGE_SLOT,
+          uintTwo,
+          addressTwo,
+        );
+        await instance['$set(uint256,uint256,address)'](
+          STORAGE_SLOT,
+          uintThree,
+          addressThree,
+        );
+
+        expect(
+          await instance[
+            '$toArray_EnumerableMap_UintToAddressMap(uint256,uint256,uint256)'
+          ].staticCall(STORAGE_SLOT, 2n, 100n),
         ).to.deep.equal([[uintThree], [addressThree]]);
       });
 
