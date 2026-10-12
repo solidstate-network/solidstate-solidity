@@ -22,7 +22,7 @@ library Bytes32 {
      * @return result address result
      */
     function toAddress(bytes32 data) internal pure returns (address result) {
-        assembly {
+        assembly ('memory-safe') {
             result := and(data, shr(96, not(0)))
         }
     }
@@ -34,7 +34,7 @@ library Bytes32 {
      * @return result bool result
      */
     function toBool(bytes32 data) internal pure returns (bool result) {
-        assembly {
+        assembly ('memory-safe') {
             result := iszero(iszero(data))
         }
     }
@@ -45,7 +45,7 @@ library Bytes32 {
      * @return result int256 result
      */
     function toInt256(bytes32 data) internal pure returns (int256 result) {
-        assembly {
+        assembly ('memory-safe') {
             result := data
         }
     }

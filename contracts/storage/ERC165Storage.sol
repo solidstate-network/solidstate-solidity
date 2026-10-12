@@ -12,15 +12,16 @@ library ERC165Storage {
         mapping(bytes4 interfaceId => bool supportStatus) supportedInterfaces;
     }
 
-    sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(erc7201('solidstate.layout.ERC165'));
+    sslot internal constant DEFAULT_STORAGE_SLOT = sslot.wrap(
+        erc7201('solidstate.layout.ERC165')
+    );
 
     function ref() internal pure returns (Layout storage $) {
         $ = ref(DEFAULT_STORAGE_SLOT);
     }
 
     function ref(sslot slot) internal pure returns (Layout storage $) {
-        assembly {
+        assembly ('memory-safe') {
             $.slot := slot
         }
     }

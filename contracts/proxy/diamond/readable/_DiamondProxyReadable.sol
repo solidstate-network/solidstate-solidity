@@ -84,13 +84,13 @@ abstract contract _DiamondProxyReadable is
             bytes4[] memory selectors = diamondFacets[facetIndex].selectors;
 
             // setting the number of selectors
-            assembly {
+            assembly ('memory-safe') {
                 mstore(selectors, numSelectors)
             }
         }
 
         // setting the number of facets
-        assembly {
+        assembly ('memory-safe') {
             mstore(diamondFacets, numFacets)
         }
     }
@@ -139,7 +139,7 @@ abstract contract _DiamondProxyReadable is
         }
 
         // set the number of selectors in the array
-        assembly {
+        assembly ('memory-safe') {
             mstore(selectors, numSelectors)
         }
     }
@@ -197,7 +197,7 @@ abstract contract _DiamondProxyReadable is
         }
 
         // set the number of facet addresses in the array
-        assembly {
+        assembly ('memory-safe') {
             mstore(addresses, numFacets)
         }
     }

@@ -20,10 +20,9 @@ abstract contract _FungibleTokenPermit is
 {
     using ECDSA for bytes32;
 
-    bytes32 internal constant EIP712_TYPE_HASH =
-        keccak256(
-            'Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)'
-        );
+    bytes32 internal constant EIP712_TYPE_HASH = keccak256(
+        'Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)'
+    );
 
     /**
      * @notice return the EIP-712 domain separator unique to contract and chain
@@ -47,9 +46,9 @@ abstract contract _FungibleTokenPermit is
      */
     function _nonces(address owner) internal view virtual returns (uint256) {
         return
-            ERC20Storage
-                .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
-                .erc2612Nonces[owner];
+            ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).erc2612Nonces[
+                owner
+            ];
     }
 
     /**
@@ -117,15 +116,16 @@ abstract contract _FungibleTokenPermit is
         if (deadline < block.timestamp)
             revert FungibleTokenPermit__ExpiredDeadline();
 
-        uint256 nonce = ERC20Storage
-            .ref(ERC20Storage.DEFAULT_STORAGE_SLOT)
-            .erc2612Nonces[owner]++;
+        uint256 nonce =
+            ERC20Storage.ref(ERC20Storage.DEFAULT_STORAGE_SLOT).erc2612Nonces[
+                owner
+            ]++;
 
         // execute EIP-712 hashStruct procedure
 
         bytes32 structHash;
 
-        assembly {
+        assembly ('memory-safe') {
             // assembly block equavalent to:
             //
             // structHash = keccak256(

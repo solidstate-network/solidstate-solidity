@@ -69,7 +69,7 @@ library Timelock {
         timestamp endTimestamp
     ) internal pure returns (timelock lock) {
         if (startTimestamp > endTimestamp) Panic.panic(Panic.ASSERTION_ERROR);
-        assembly {
+        assembly ('memory-safe') {
             lock := or(shl(208, endTimestamp), shl(160, startTimestamp))
         }
     }

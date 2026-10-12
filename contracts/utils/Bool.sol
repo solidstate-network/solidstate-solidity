@@ -9,19 +9,19 @@ library Bool {
      * @return result bytes32 representation of bool
      */
     function toBytes32(bool value) internal pure returns (bytes32 result) {
-        assembly {
+        assembly ('memory-safe') {
             result := iszero(iszero(value))
         }
     }
 
     function toUint256(bool value) internal pure returns (uint256 result) {
-        assembly {
+        assembly ('memory-safe') {
             result := iszero(iszero(value))
         }
     }
 
     function xor(bool value0, bool value1) internal pure returns (bool result) {
-        assembly {
+        assembly ('memory-safe') {
             result := xor(value0, value1)
         }
     }

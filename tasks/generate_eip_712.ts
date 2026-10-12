@@ -40,7 +40,7 @@ library <%- name %> {
     function <%- el.name %>(<%- el.parameters %>) internal <%- el.visibility %> returns (bytes32 domainSeparator) {
         bytes32 typeHash = <%- el.hashName %>;
 
-        assembly {
+        assembly ('memory-safe') {
             let pointer := mload(64)
 
             mstore(pointer, typeHash)

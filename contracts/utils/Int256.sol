@@ -9,7 +9,7 @@ library Int256 {
      * @return result bytes32 representation of int256
      */
     function toBytes32(int256 value) internal pure returns (bytes32 result) {
-        assembly {
+        assembly ('memory-safe') {
             result := value
         }
     }

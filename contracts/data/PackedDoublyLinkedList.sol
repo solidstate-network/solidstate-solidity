@@ -374,7 +374,7 @@ library PackedDoublyLinkedList {
                     revert PackedDoublyLinkedList__NonExistentEntry();
 
                 // truncate the array if end of list is reached
-                assembly {
+                assembly ('memory-safe') {
                     mstore(array, i)
                 }
 
@@ -402,7 +402,7 @@ library PackedDoublyLinkedList {
                     revert PackedDoublyLinkedList__NonExistentEntry();
 
                 // truncate the array if end of list is reached
-                assembly {
+                assembly ('memory-safe') {
                     mstore(array, i)
                 }
 
