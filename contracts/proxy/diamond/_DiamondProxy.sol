@@ -11,13 +11,16 @@ import { _IDiamondProxy } from './_IDiamondProxy.sol';
 abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
     using Address for address;
 
-    bytes32 private constant CLEAR_ADDRESS_MASK =
-        bytes32(uint256(0xffffffffffffffffffffffff));
-    bytes32 private constant CLEAR_SELECTOR_MASK =
-        bytes32(uint256(0xffffffff << 224));
+    bytes32 private constant CLEAR_ADDRESS_MASK = bytes32(
+        uint256(0xffffffffffffffffffffffff)
+    );
+    bytes32 private constant CLEAR_SELECTOR_MASK = bytes32(
+        uint256(0xffffffff << 224)
+    );
 
     /**
      * @inheritdoc _Proxy
+     * @dev calls with empty calldata, including plain ether transfers via receive, have msg.sig 0x00000000 and are routed to the facet registered for that selector
      */
     function _getImplementation()
         internal
@@ -124,7 +127,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
      * @notice add to the diamond a set of selectors associated with a particular facet
      * @dev selectors are added one-by-one to lastSlug, which is written to storage and updated to represent the subsequent slug when full
      * @dev lastSlug may be initialized with "dirty" higher-index bits, but these are ignored because they are out of range
-     * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
+     * @dev selectorCount and lastSlug are modified in place and returned to avoid redundant storage access
      * @param $ storage pointer to the ERC2535Storage Layout struct
      * @param facetCut structured data representing facet address and selectors to add
      * @param selectorCount total number of selectors registered on the diamond proxy
@@ -183,9 +186,9 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
 
     /**
      * @notice remove from the diamond a set of selectors associated with a particular facet
-     * @dev selectors are removed one-by-one from lastSlug, which is updated to represent the preceeding slug when empty
+     * @dev selectors are removed one-by-one from lastSlug, which is updated to represent the preceding slug when empty
      * @dev lastSlug is not updated in storage when modified or removed, leaving "dirty" higher-index bits, but these are ignored because they are out of range
-     * @dev selectorCount and lastSlug are modified in place and returned to avoid reundant storage access
+     * @dev selectorCount and lastSlug are modified in place and returned to avoid redundant storage access
      * @param $ storage pointer to the ERC2535Storage Layout struct
      * @param facetCut structured data representing facet address and selectors to remove
      * @param selectorCount total number of selectors registered on the diamond proxy
@@ -242,9 +245,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
                 // derive the index of the slug where the selector is stored
                 uint256 slugIndex = uint16(uint256(selectorInfo)) >> 3;
                 // derive the position of the selector within its slug
-                uint256 selectorBitIndexInSlug = (uint16(
-                    uint256(selectorInfo)
-                ) & 7) << 5;
+                uint256 selectorBitIndexInSlug =
+                    (uint16(uint256(selectorInfo)) & 7) << 5;
 
                 // overwrite the selector being deleted with the last selector in the array
 
@@ -283,6 +285,8 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
         unchecked {
             if (!facetCut.target.isContract())
                 revert DiamondProxyWritable__TargetHasNoCode();
+            if (facetCut.target == address(this))
+                revert DiamondProxyWritable__SelectorIsImmutable();
 
             for (uint256 i; i < facetCut.selectors.length; i++) {
                 bytes4 selector = facetCut.selectors[i];
@@ -305,7 +309,7 @@ abstract contract _DiamondProxy is _IDiamondProxy, _Proxy {
     }
 
     /**
-     * @notice run an optional post-diamond-cut initialization transation via delegatecall
+     * @notice run an optional post-diamond-cut initialization transaction via delegatecall
      * @dev the target and data parameters must both be zero, or both be non-zero
      * @param target contract address to which call shall be delegated
      * @param data encoded delegatecall transaction data

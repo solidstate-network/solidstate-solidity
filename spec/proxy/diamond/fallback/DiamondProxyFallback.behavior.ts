@@ -9,8 +9,7 @@ import { IDiamondProxyFallback } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-export interface DiamondProxyFallbackBehaviorArgs
-  extends DiamondProxyBehaviorArgs {
+export interface DiamondProxyFallbackBehaviorArgs extends DiamondProxyBehaviorArgs {
   fallbackAddress: string;
 }
 
@@ -91,6 +90,16 @@ export function describeBehaviorOfDiamondProxyFallback(
         ).to.be.revertedWith('Mock on the method is not initialized');
       });
 
+      it('emits FallbackAddressSet event', async () => {
+        const fallback = await deployMockContract(proxyAdmin, []);
+
+        await expect(
+          instance.connect(proxyAdmin).setFallbackAddress(fallback.address),
+        )
+          .to.emit(instance, 'FallbackAddressSet')
+          .withArgs(fallback.address);
+      });
+
       describe('reverts if', () => {
         it('sender is not proxy admin', async () => {
           await expect(
@@ -98,6 +107,17 @@ export function describeBehaviorOfDiamondProxyFallback(
               .connect(nonProxyAdmin)
               .setFallbackAddress(ethers.ZeroAddress),
           ).to.be.revertedWithCustomError(instance, 'Proxy__SenderIsNotAdmin');
+        });
+
+        it('fallback address is diamond itself', async () => {
+          await expect(
+            instance
+              .connect(proxyAdmin)
+              .setFallbackAddress(await instance.getAddress()),
+          ).to.be.revertedWithCustomError(
+            instance,
+            'DiamondProxyFallback__FallbackAddressIsDiamond',
+          );
         });
       });
     });

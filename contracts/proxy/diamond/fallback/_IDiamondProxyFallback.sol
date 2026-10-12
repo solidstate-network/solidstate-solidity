@@ -5,4 +5,8 @@ pragma solidity ^0.8.35;
 import { _IOwnable } from '../../../access/ownable/_IOwnable.sol';
 import { _IDiamondProxy } from '../_IDiamondProxy.sol';
 
-interface _IDiamondProxyFallback is _IDiamondProxy, _IOwnable {}
+interface _IDiamondProxyFallback is _IDiamondProxy, _IOwnable {
+    error DiamondProxyFallback__FallbackAddressIsDiamond();
+
+    event FallbackAddressSet(address indexed fallbackAddress);
+}

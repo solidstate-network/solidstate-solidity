@@ -253,6 +253,39 @@ export function describeBehaviorOfDiamondProxyWritable(
             );
           });
 
+          it('target facet is diamond itself', async () => {
+            const selector = ethers.randomBytes(4);
+
+            await instance.connect(proxyAdmin).diamondCut(
+              [
+                {
+                  target: facet.address,
+                  action: 0,
+                  selectors: [selector],
+                },
+              ],
+              ethers.ZeroAddress,
+              '0x',
+            );
+
+            await expect(
+              instance.connect(proxyAdmin).diamondCut(
+                [
+                  {
+                    target: await instance.getAddress(),
+                    action: 1,
+                    selectors: [selector],
+                  },
+                ],
+                ethers.ZeroAddress,
+                '0x',
+              ),
+            ).to.be.revertedWithCustomError(
+              instance,
+              'DiamondProxyWritable__SelectorIsImmutable',
+            );
+          });
+
           it('selector has not been added', async () => {
             await expect(
               instance.connect(proxyAdmin).diamondCut(
