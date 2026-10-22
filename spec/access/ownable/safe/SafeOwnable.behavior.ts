@@ -1,18 +1,20 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
-  OwnableBehaviorArgs,
+  type OwnableBehaviorArgs,
 } from '@solidstate/spec';
-import { ISafeOwnable } from '@solidstate/typechain-types';
+import type { ISafeOwnable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface SafeOwnableBehaviorArgs extends OwnableBehaviorArgs {
-  getNomineeOwner: () => Promise<SignerWithAddress>;
+  getNomineeOwner: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfSafeOwnable(
+  connection: NetworkConnection,
   deploy: () => Promise<ISafeOwnable>,
   args: SafeOwnableBehaviorArgs,
   skips?: string[],
@@ -21,9 +23,9 @@ export function describeBehaviorOfSafeOwnable(
 
   describe('::SafeOwnable', () => {
     let instance: ISafeOwnable;
-    let owner: SignerWithAddress;
-    let nomineeOwner: SignerWithAddress;
-    let nonOwner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
+    let nomineeOwner: HardhatEthersSigner;
+    let nonOwner: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();
@@ -32,7 +34,7 @@ export function describeBehaviorOfSafeOwnable(
       nonOwner = await args.getNonOwner();
     });
 
-    describeBehaviorOfOwnable(deploy, args, [
+    describeBehaviorOfOwnable(connection, deploy, args, [
       '#transferOwnership(address)',
       ...(skips ?? []),
     ]);

@@ -1,24 +1,26 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import ITransparentBeaconProxyWithAdminFunctionsABI from '@solidstate/abi/ITransparentBeaconProxyWithAdminFunctions.json' with { type: 'json' };
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfBeaconProxy,
-  BeaconProxyBehaviorArgs,
+  type BeaconProxyBehaviorArgs,
 } from '@solidstate/spec';
-import {
+import type {
   ITransparentBeaconProxy,
   ITransparentBeaconProxyWithAdminFunctions,
-  ITransparentBeaconProxyWithAdminFunctions__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 interface TransparentBeaconProxyArgs extends BeaconProxyBehaviorArgs {
-  getProxyAdmin: () => Promise<SignerWithAddress>;
-  getNonProxyAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<HardhatEthersSigner>;
+  getNonProxyAdmin: () => Promise<HardhatEthersSigner>;
 }
 
 export function describeBehaviorOfTransparentBeaconProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<ITransparentBeaconProxy>,
   args: TransparentBeaconProxyArgs,
   skips?: string[],
@@ -28,22 +30,22 @@ export function describeBehaviorOfTransparentBeaconProxy(
   describe('::TransparentBeaconProxy', () => {
     let instance: ITransparentBeaconProxy;
     let instanceWithAdminFunctions: ITransparentBeaconProxyWithAdminFunctions;
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();
-      instanceWithAdminFunctions =
-        ITransparentBeaconProxyWithAdminFunctions__factory.connect(
-          await instance.getAddress(),
-          instance.runner,
-        );
+      instanceWithAdminFunctions = new ethers.Contract(
+        await instance.getAddress(),
+        ITransparentBeaconProxyWithAdminFunctionsABI,
+        instance.runner,
+      ) as unknown as ITransparentBeaconProxyWithAdminFunctions;
 
       proxyAdmin = await args.getProxyAdmin();
       nonProxyAdmin = await args.getNonProxyAdmin();
     });
 
-    describeBehaviorOfBeaconProxy(deploy, args, skips);
+    describeBehaviorOfBeaconProxy(connection, deploy, args, skips);
 
     describe('#setProxyAdmin(address', () => {
       it('updates the admin address', async () => {
@@ -51,7 +53,7 @@ export function describeBehaviorOfTransparentBeaconProxy(
           .connect(proxyAdmin)
           .setProxyAdmin(await nonProxyAdmin.getAddress());
 
-        const adminSlotContents = await ethers.provider.send(
+        const adminSlotContents = await connection.ethers.provider.send(
           'eth_getStorageAt',
           [
             await instanceWithAdminFunctions.getAddress(),

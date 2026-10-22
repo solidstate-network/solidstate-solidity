@@ -1,11 +1,12 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { IMultiToken } from '@solidstate/typechain-types';
+import type { IMultiToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface MultiTokenBehaviorArgs {
   mint: (
@@ -22,6 +23,7 @@ export interface MultiTokenBehaviorArgs {
 }
 
 export function describeBehaviorOfMultiToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IMultiToken>,
   args: MultiTokenBehaviorArgs,
   skips?: string[],
@@ -29,12 +31,12 @@ export function describeBehaviorOfMultiToken(
   const describe = describeFilter(skips);
 
   describe('::MultiToken', () => {
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
     let instance: IMultiToken;
 
     before(async () => {
-      [holder, spender] = await ethers.getSigners();
+      [holder, spender] = await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -43,6 +45,7 @@ export function describeBehaviorOfMultiToken(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy,
       {
         interfaceIds: ['0xd9b67a26'],
@@ -225,9 +228,7 @@ export function describeBehaviorOfMultiToken(
         });
 
         it('receiver is invalid ERC1155Receiver', async () => {
-          const mock = await deployMockContract(holder, [
-            /* no functions */
-          ]);
+          const mock = await deployMockContract(holder, [/* no functions */]);
 
           await expect(
             instance
@@ -341,9 +342,7 @@ export function describeBehaviorOfMultiToken(
         });
 
         it('receiver is invalid ERC1155Receiver', async () => {
-          const mock = await deployMockContract(holder, [
-            /* no functions */
-          ]);
+          const mock = await deployMockContract(holder, [/* no functions */]);
 
           await expect(
             instance

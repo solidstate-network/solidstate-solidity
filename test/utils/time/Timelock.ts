@@ -1,9 +1,14 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { time } from '@nomicfoundation/hardhat-network-helpers';
-import { $Timelock, $Timelock__factory } from '@solidstate/typechain-types';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import {
+  type $Timelock,
+  $Timelock__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const createTimelock = (startTimestamp: bigint, endTimestamp: bigint) => {
   return ethers.concat([
@@ -13,11 +18,11 @@ const createTimelock = (startTimestamp: bigint, endTimestamp: bigint) => {
 };
 
 describe('Timelock', async () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $Timelock;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Timelock__factory(deployer).deploy();
   });
 
@@ -49,7 +54,7 @@ describe('Timelock', async () => {
 
   describe('#isLocked(timelock)', () => {
     it('returns lock status of timelock', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
       expect(
         await instance.$isLocked.staticCall(
@@ -79,17 +84,18 @@ describe('Timelock', async () => {
 
   describe('#requireLocked(timelock)', () => {
     it('does not revert if timelock is locked', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
       const timelock = createTimelock(timestamp, timestamp + 1n);
 
-      await expect(instance.$requireLocked.staticCall(timelock)).not.to.be
-        .reverted;
+      await expect(instance.$requireLocked.staticCall(timelock)).not.to.revert(
+        connection.ethers,
+      );
     });
 
     describe('reverts if', () => {
       it('timelock is unlocked', async () => {
-        const timestamp = BigInt(await time.latest());
+        const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
         const timelock = createTimelock(timestamp + 1n, timestamp + 2n);
 
@@ -102,17 +108,18 @@ describe('Timelock', async () => {
 
   describe('#requireUnlocked(timelock)', () => {
     it('does not revert if timelock is not locked', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
       const timelock = createTimelock(timestamp + 1n, timestamp + 2n);
 
-      await expect(instance.$requireUnlocked.staticCall(timelock)).not.to.be
-        .reverted;
+      await expect(
+        instance.$requireUnlocked.staticCall(timelock),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
       it('timelock is locked', async () => {
-        const timestamp = BigInt(await time.latest());
+        const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
         const timelock = createTimelock(timestamp, timestamp + 1n);
 
@@ -125,7 +132,7 @@ describe('Timelock', async () => {
 
   describe('#create(duration)', () => {
     it('returns timelock of given duration starting at current time', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
       const lockDuration = 3n;
 
       const startTimestamp = timestamp;
@@ -139,7 +146,7 @@ describe('Timelock', async () => {
 
   describe('#create(duration,duration)', () => {
     it('returns timelock with start delay and of given duration', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
       const startDelay = 3n;
       const lockDuration = 7n;
 

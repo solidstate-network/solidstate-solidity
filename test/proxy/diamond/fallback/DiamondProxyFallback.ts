@@ -1,23 +1,26 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfDiamondProxyFallback } from '@solidstate/spec';
 import {
-  $DiamondProxyFallback,
+  type $DiamondProxyFallback,
   $DiamondProxyFallback__factory,
   $SafeOwnable__factory,
 } from '@solidstate/typechain-types';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('DiamondProxyFallback', () => {
-  let proxyAdmin: SignerWithAddress;
-  let nonProxyAdmin: SignerWithAddress;
+  let proxyAdmin: HardhatEthersSigner;
+  let nonProxyAdmin: HardhatEthersSigner;
   let instance: $DiamondProxyFallback;
 
   before(async () => {
-    [proxyAdmin, nonProxyAdmin] = await ethers.getSigners();
+    [proxyAdmin, nonProxyAdmin] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     const facetInstance = await new $SafeOwnable__factory(deployer).deploy();
 
     instance = await new $DiamondProxyFallback__factory(deployer).deploy();
@@ -39,7 +42,7 @@ describe('DiamondProxyFallback', () => {
     );
   });
 
-  describeBehaviorOfDiamondProxyFallback(async () => instance, {
+  describeBehaviorOfDiamondProxyFallback(connection, async () => instance, {
     getProxyAdmin: async () => proxyAdmin,
     getNonProxyAdmin: async () => nonProxyAdmin,
     implementationFunction: 'nomineeOwner()',

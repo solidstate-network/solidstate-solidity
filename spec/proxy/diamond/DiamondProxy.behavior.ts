@@ -1,12 +1,17 @@
 import { describeFilter } from '@solidstate/library';
-import { describeBehaviorOfProxy, ProxyBehaviorArgs } from '@solidstate/spec';
-import { IDiamondProxy } from '@solidstate/typechain-types';
+import {
+  describeBehaviorOfProxy,
+  type ProxyBehaviorArgs,
+} from '@solidstate/spec';
+import type { IDiamondProxy } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondProxyBehaviorArgs extends ProxyBehaviorArgs {}
 
 export function describeBehaviorOfDiamondProxy(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondProxy>,
   args: DiamondProxyBehaviorArgs,
   skips?: string[],
@@ -20,7 +25,7 @@ export function describeBehaviorOfDiamondProxy(
       instance = await deploy();
     });
 
-    describeBehaviorOfProxy(deploy, args, skips);
+    describeBehaviorOfProxy(connection, deploy, args, skips);
 
     describe('fallback()', () => {
       it('forwards data with matching selector call to facet', async () => {
@@ -30,14 +35,14 @@ export function describeBehaviorOfDiamondProxy(
         let contract = new ethers.Contract(
           await instance.getAddress(),
           [`function ${args.implementationFunction}`],
-          ethers.provider,
+          connection.ethers.provider,
         );
 
         await expect(
           contract[args.implementationFunction].staticCall(
             ...args.implementationFunctionArgs,
           ),
-        ).not.to.be.reverted;
+        ).not.to.revert(connection.ethers);
       });
 
       describe('reverts if', () => {
@@ -45,7 +50,7 @@ export function describeBehaviorOfDiamondProxy(
           let contract = new ethers.Contract(
             await instance.getAddress(),
             ['function __function()'],
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           await expect(

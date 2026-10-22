@@ -1,22 +1,24 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { time } from '@nomicfoundation/hardhat-network-helpers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfSafeOwnable } from '@solidstate/spec';
 import {
-  $SafeOwnable,
+  type $SafeOwnable,
   $SafeOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('SafeOwnable', () => {
-  let owner: SignerWithAddress;
-  let nomineeOwner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let owner: HardhatEthersSigner;
+  let nomineeOwner: HardhatEthersSigner;
+  let nonOwner: HardhatEthersSigner;
   let instance: $SafeOwnable;
   let transferTimelockDuration: bigint;
 
   before(async () => {
-    [owner, nomineeOwner, nonOwner] = await ethers.getSigners();
+    [owner, nomineeOwner, nonOwner] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -27,7 +29,7 @@ describe('SafeOwnable', () => {
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describeBehaviorOfSafeOwnable(async () => instance, {
+  describeBehaviorOfSafeOwnable(connection, async () => instance, {
     getOwner: async () => owner,
     getNomineeOwner: async () => nomineeOwner,
     getNonOwner: async () => nonOwner,
@@ -37,8 +39,9 @@ describe('SafeOwnable', () => {
     it('does not revert if sender is nominee owner', async () => {
       await instance.$_setNomineeOwner(nomineeOwner.address);
 
-      await expect(instance.connect(nomineeOwner).$onlyNomineeOwner()).not.to.be
-        .reverted;
+      await expect(
+        instance.connect(nomineeOwner).$onlyNomineeOwner(),
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -126,8 +129,9 @@ describe('SafeOwnable', () => {
     it('emits OwnershipTransferInitiated event', async () => {
       await instance.$_setTransferTimelockDuration(transferTimelockDuration);
 
-      const timestamp = BigInt(await time.latest()) + 1n;
-      await time.setNextBlockTimestamp(timestamp);
+      const timestamp =
+        BigInt(await connection.networkHelpers.time.latest()) + 1n;
+      await connection.networkHelpers.time.setNextBlockTimestamp(timestamp);
 
       await expect(instance.$_transferOwnership(nomineeOwner.address))
         .to.emit(instance, 'OwnershipTransferInitiated')

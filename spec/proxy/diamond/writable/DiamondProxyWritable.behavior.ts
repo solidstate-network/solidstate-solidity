@@ -1,18 +1,20 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { IDiamondProxyWritable } from '@solidstate/typechain-types';
+import type { IDiamondProxyWritable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondProxyWritableBehaviorArgs {
-  getProxyAdmin: () => Promise<SignerWithAddress>;
-  getNonProxyAdmin: () => Promise<SignerWithAddress>;
+  getProxyAdmin: () => Promise<HardhatEthersSigner>;
+  getNonProxyAdmin: () => Promise<HardhatEthersSigner>;
   immutableSelectors: string[];
 }
 
 export function describeBehaviorOfDiamondProxyWritable(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondProxyWritable>,
   args: DiamondProxyWritableBehaviorArgs,
   skips?: string[],
@@ -20,8 +22,8 @@ export function describeBehaviorOfDiamondProxyWritable(
   const describe = describeFilter(skips);
 
   describe('::DiamondProxyWritable', () => {
-    let proxyAdmin: SignerWithAddress;
-    let nonProxyAdmin: SignerWithAddress;
+    let proxyAdmin: HardhatEthersSigner;
+    let nonProxyAdmin: HardhatEthersSigner;
 
     const functions: string[] = [];
     const selectors: string[] = [];
@@ -61,6 +63,7 @@ export function describeBehaviorOfDiamondProxyWritable(
 
     // TODO: nonstandard usage
     describeBehaviorOfIntrospectable(
+      connection,
       deploy as any,
       {
         interfaceIds: ['0x1f931c1c'],
@@ -96,7 +99,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           for (let fn of functions) {
@@ -193,7 +196,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           await instance
@@ -333,7 +336,7 @@ export function describeBehaviorOfDiamondProxyWritable(
           const contract = new ethers.Contract(
             await instance.getAddress(),
             abi,
-            ethers.provider,
+            connection.ethers.provider,
           );
 
           await instance
@@ -453,7 +456,7 @@ export function describeBehaviorOfDiamondProxyWritable(
               ethers.ZeroAddress,
               '0x',
             ),
-          ).to.be.revertedWithoutReason();
+          ).to.be.revertedWithoutReason(connection.ethers);
         });
 
         it('passed selector array is empty', async () => {

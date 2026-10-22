@@ -1,11 +1,13 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { bigintToBytes32, bigintToAddress } from '@solidstate/library';
 import {
-  $DoublyLinkedList,
+  type $DoublyLinkedList,
   $DoublyLinkedList__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 // data structures can be defined at any storage slot
 // it doesn't matter which slot is used as long as it's consistent
@@ -14,14 +16,14 @@ const STORAGE_SLOT = 0n;
 describe('DoublyLinkedList', async () => {
   describe('Bytes32List', async () => {
     let instance: $DoublyLinkedList;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroBytes32 = bigintToBytes32(0);
     const oneBytes32 = bigintToBytes32(1);
     const twoBytes32 = bigintToBytes32(2);
     const threeBytes32 = bigintToBytes32(3);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $DoublyLinkedList__factory(deployer).deploy();
     });
 
@@ -832,14 +834,14 @@ describe('DoublyLinkedList', async () => {
 
   describe('AddressList', async () => {
     let instance: $DoublyLinkedList;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroAddress = bigintToAddress(0);
     const oneAddress = bigintToAddress(1);
     const twoAddress = bigintToAddress(2);
     const threeAddress = bigintToAddress(3);
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $DoublyLinkedList__factory(deployer).deploy();
     });
 
@@ -1650,14 +1652,14 @@ describe('DoublyLinkedList', async () => {
 
   describe('Uint256List', async () => {
     let instance: $DoublyLinkedList;
-    let deployer: SignerWithAddress;
+    let deployer: HardhatEthersSigner;
     const zeroUint256 = 0;
     const oneUint256 = 1;
     const twoUint256 = 2;
     const threeUint256 = 3;
 
     beforeEach(async () => {
-      [deployer] = await ethers.getSigners();
+      [deployer] = await connection.ethers.getSigners();
       instance = await new $DoublyLinkedList__factory(deployer).deploy();
     });
 
