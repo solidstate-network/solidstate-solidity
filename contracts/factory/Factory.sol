@@ -16,7 +16,7 @@ library Factory {
     function deploy(
         bytes memory initCode
     ) internal returns (address deployment) {
-        assembly {
+        assembly ('memory-safe') {
             let encoded_data := add(32, initCode)
             let encoded_size := mload(initCode)
             deployment := create(0, encoded_data, encoded_size)
@@ -36,7 +36,7 @@ library Factory {
         bytes memory initCode,
         bytes32 salt
     ) internal returns (address deployment) {
-        assembly {
+        assembly ('memory-safe') {
             let encoded_data := add(32, initCode)
             let encoded_size := mload(initCode)
             deployment := create2(0, encoded_data, encoded_size, salt)

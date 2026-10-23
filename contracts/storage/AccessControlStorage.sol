@@ -18,15 +18,16 @@ library AccessControlStorage {
         mapping(bytes32 roleId => RoleData roleData) roles;
     }
 
-    sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(erc7201('solidstate.layout.AccessControl'));
+    sslot internal constant DEFAULT_STORAGE_SLOT = sslot.wrap(
+        erc7201('solidstate.layout.AccessControl')
+    );
 
     function ref() internal pure returns (Layout storage $) {
         $ = ref(DEFAULT_STORAGE_SLOT);
     }
 
     function ref(sslot slot) internal pure returns (Layout storage $) {
-        assembly {
+        assembly ('memory-safe') {
             $.slot := slot
         }
     }

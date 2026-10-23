@@ -9,7 +9,7 @@ contract BoolTest {
         bool input
     ) external pure returns (bytes32 output) {
         // contaminate the higher-order bits
-        assembly {
+        assembly ('memory-safe') {
             input := or(input, shl(1, not(1)))
         }
 
@@ -20,7 +20,7 @@ contract BoolTest {
         bool input
     ) external pure returns (uint256 output) {
         // contaminate the higher-order bits
-        assembly {
+        assembly ('memory-safe') {
             input := or(input, shl(1, not(1)))
         }
 

@@ -10,7 +10,7 @@ library Block {
      * @return blockTimestamp current timestamp
      */
     function timestamp() internal view returns (_timestamp blockTimestamp) {
-        assembly {
+        assembly ('memory-safe') {
             blockTimestamp := timestamp()
         }
     }
