@@ -164,21 +164,14 @@ library EnumerableMap {
         view
         returns (address[] memory keysOut, address[] memory valuesOut)
     {
-        uint256 size = length(map);
+        (
+            bytes32[] memory keysBytes32,
+            bytes32[] memory valuesBytes32
+        ) = _toArray(map._inner, startIndex, count);
 
-        if (startIndex >= size) revert EnumerableMap__IndexOutOfBounds();
-
-        uint256 outputSize = Math.min(count, size - startIndex);
-        keysOut = new address[](outputSize);
-        valuesOut = new address[](outputSize);
-
-        for (uint256 i; i < outputSize; i++) {
-            keysOut[i] = address(
-                uint160(uint256(map._inner._entries[startIndex + i]._key))
-            );
-            valuesOut[i] = address(
-                uint160(uint256(map._inner._entries[startIndex + i]._value))
-            );
+        assembly {
+            keysOut := keysBytes32
+            valuesOut := valuesBytes32
         }
     }
 
@@ -213,19 +206,14 @@ library EnumerableMap {
         view
         returns (uint256[] memory keysOut, address[] memory valuesOut)
     {
-        uint256 size = length(map);
+        (
+            bytes32[] memory keysBytes32,
+            bytes32[] memory valuesBytes32
+        ) = _toArray(map._inner, startIndex, count);
 
-        if (startIndex >= size) revert EnumerableMap__IndexOutOfBounds();
-
-        uint256 outputSize = Math.min(count, size - startIndex);
-        keysOut = new uint256[](outputSize);
-        valuesOut = new address[](outputSize);
-
-        for (uint256 i; i < outputSize; i++) {
-            keysOut[i] = uint256(map._inner._entries[startIndex + i]._key);
-            valuesOut[i] = address(
-                uint160(uint256(map._inner._entries[startIndex + i]._value))
-            );
+        assembly {
+            keysOut := keysBytes32
+            valuesOut := valuesBytes32
         }
     }
 
@@ -361,6 +349,32 @@ library EnumerableMap {
             return true;
         } else {
             return false;
+        }
+    }
+
+    function _toArray(
+        Map storage map,
+        uint256 startIndex,
+        uint256 count
+    )
+        private
+        view
+        returns (bytes32[] memory keysOut, bytes32[] memory valuesOut)
+    {
+        unchecked {
+            uint256 size = _length(map);
+
+            if (startIndex >= size) revert EnumerableMap__IndexOutOfBounds();
+
+            uint256 outputSize = Math.min(count, size - startIndex);
+            keysOut = new bytes32[](outputSize);
+            valuesOut = new bytes32[](outputSize);
+
+            for (uint256 i; i < outputSize; ++i) {
+                MapEntry storage entry = map._entries[startIndex + i];
+                keysOut[i] = entry._key;
+                valuesOut[i] = entry._value;
+            }
         }
     }
 }
