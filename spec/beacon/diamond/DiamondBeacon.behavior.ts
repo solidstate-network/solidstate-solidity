@@ -1,19 +1,20 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import {
   describeBehaviorOfOwnable,
-  OwnableBehaviorArgs,
-  DiamondProxyWritableBehaviorArgs,
+  type OwnableBehaviorArgs,
+  type DiamondProxyWritableBehaviorArgs,
 } from '@solidstate/spec';
-import { IDiamondBeacon } from '@solidstate/typechain-types';
+import type { IDiamondBeacon } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface DiamondBeaconBehaviorArgs
-  extends OwnableBehaviorArgs,
-    DiamondProxyWritableBehaviorArgs {}
+  extends OwnableBehaviorArgs, DiamondProxyWritableBehaviorArgs {}
 
 export function describeBehaviorOfDiamondBeacon(
+  connection: NetworkConnection,
   deploy: () => Promise<IDiamondBeacon>,
   args: DiamondBeaconBehaviorArgs,
   skips?: string[],
@@ -22,17 +23,17 @@ export function describeBehaviorOfDiamondBeacon(
 
   describe('::DiamondBeacon', () => {
     let instance: IDiamondBeacon;
-    let owner: SignerWithAddress;
+    let owner: HardhatEthersSigner;
 
     beforeEach(async () => {
       instance = await deploy();
       owner = await args.getOwner();
     });
 
-    describeBehaviorOfOwnable(deploy, args, skips);
+    describeBehaviorOfOwnable(connection, deploy, args, skips);
 
     // TODO: can't use DiamondProxyWritable spec because it's incorrectly designed to rely on external DiamondProxy contract
-    // describeBehaviorOfDiamondProxyWritable(deploy, args, skips);
+    // describeBehaviorOfDiamondProxyWritable(connection, deploy, args, skips);
 
     describe('#diamondCut((address,enum,bytes4[])[],address,bytes)', () => {
       describe('reverts if', () => {

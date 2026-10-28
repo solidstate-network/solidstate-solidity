@@ -1,10 +1,12 @@
 import { describeBehaviorOfRestrictedFungibleToken } from '@solidstate/spec';
 import {
-  $RestrictedFungibleToken,
+  type $RestrictedFungibleToken,
   $RestrictedFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 const restrictions = [
   { code: 1n, message: 'one' },
@@ -15,7 +17,7 @@ describe('RestrictedFungibleToken', () => {
   let instance: $RestrictedFungibleToken;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $RestrictedFungibleToken__factory(deployer).deploy();
     await instance.$_setRestrictions(
       restrictions.map((e) => e.code),
@@ -23,7 +25,7 @@ describe('RestrictedFungibleToken', () => {
     );
   });
 
-  describeBehaviorOfRestrictedFungibleToken(async () => instance, {
+  describeBehaviorOfRestrictedFungibleToken(connection, async () => instance, {
     restrictions,
     supply: 0n,
     mint: (recipient: string, amount: bigint) =>

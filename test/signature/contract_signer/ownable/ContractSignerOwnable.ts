@@ -1,19 +1,22 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeBehaviorOfContractSignerOwnable } from '@solidstate/spec';
 import {
-  $ContractSignerOwnable,
+  type $ContractSignerOwnable,
   $ContractSignerOwnable__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('ContractSignerOwnable', () => {
-  let owner: SignerWithAddress;
-  let nonOwner: SignerWithAddress;
+  let owner: HardhatEthersSigner;
+  let nonOwner: HardhatEthersSigner;
   let instance: $ContractSignerOwnable;
 
   before(async () => {
-    [owner, nonOwner] = await ethers.getSigners();
+    [owner, nonOwner] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
@@ -21,10 +24,14 @@ describe('ContractSignerOwnable', () => {
     await instance.$_setOwner(await owner.getAddress());
   });
 
-  describeBehaviorOfContractSignerOwnable(async () => instance as any, {
-    getOwner: async () => owner,
-    getNonOwner: async () => nonOwner,
-  });
+  describeBehaviorOfContractSignerOwnable(
+    connection,
+    async () => instance as any,
+    {
+      getOwner: async () => owner,
+      getNonOwner: async () => nonOwner,
+    },
+  );
 
   describe('#_isValidSignature(bytes32,bytes)', () => {
     it('returns magic value for signature created by owner', async () => {

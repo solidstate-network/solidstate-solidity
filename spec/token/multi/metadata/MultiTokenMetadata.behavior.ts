@@ -1,12 +1,14 @@
 import { describeFilter } from '@solidstate/library';
-import { IMultiTokenMetadata } from '@solidstate/typechain-types';
+import type { IMultiTokenMetadata } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface MultiTokenMetadataBehaviorArgs {
   baseURI: string;
 }
 
 export function describeBehaviorOfMultiTokenMetadata(
+  connection: NetworkConnection,
   deploy: () => Promise<IMultiTokenMetadata>,
   args: MultiTokenMetadataBehaviorArgs,
   skips?: string[],
@@ -22,6 +24,7 @@ export function describeBehaviorOfMultiTokenMetadata(
 
     // TODO: enable for compositions that include ERC165
     // describeBehaviorOfIntrospectable(
+    //   connection,
     //   deploy,
     //   {
     //     interfaceIds: ['0x0e89341c'],

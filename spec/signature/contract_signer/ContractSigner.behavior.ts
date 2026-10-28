@@ -1,6 +1,7 @@
 import { describeFilter } from '@solidstate/library';
-import { IContractSigner } from '@solidstate/typechain-types';
+import type { IContractSigner } from '@solidstate/typechain-types';
 import { expect } from 'chai';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface ContractSignerBehaviorArgs {
   getValidParams: () => Promise<[Uint8Array, Uint8Array]>;
@@ -8,6 +9,7 @@ export interface ContractSignerBehaviorArgs {
 }
 
 export function describeBehaviorOfContractSigner(
+  connection: NetworkConnection,
   deploy: () => Promise<IContractSigner>,
   args: ContractSignerBehaviorArgs,
   skips?: string[],

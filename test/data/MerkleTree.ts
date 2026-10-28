@@ -1,9 +1,15 @@
-import { PANIC_CODES } from '@nomicfoundation/hardhat-chai-matchers/panic';
-import { $MerkleTree, $MerkleTree__factory } from '@solidstate/typechain-types';
+import { PANIC_CODES } from '@nomicfoundation/hardhat-ethers-chai-matchers/panic';
+import {
+  type $MerkleTree,
+  $MerkleTree__factory,
+} from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
 import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
+
+const connection = await network.create();
 
 // data structures can be defined at any storage slot
 // it doesn't matter which slot is used as long as it's consistent
@@ -15,7 +21,7 @@ describe('MerkleTree', () => {
   let instance: $MerkleTree;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $MerkleTree__factory(deployer).deploy();
   });
 
@@ -143,7 +149,9 @@ describe('MerkleTree', () => {
 
       await instance.$push(STORAGE_SLOT, hash);
 
-      expect(await instance.$valueAt.staticCall(STORAGE_SLOT, 0)).to.equal(hash);
+      expect(await instance.$valueAt.staticCall(STORAGE_SLOT, 0)).to.equal(
+        hash,
+      );
     });
 
     describe('reverts if', () => {
@@ -158,6 +166,19 @@ describe('MerkleTree', () => {
 
         await expect(
           instance.$valueAt.staticCall(STORAGE_SLOT, 1),
+        ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
+      });
+
+      it('index is out of bounds and overflows when doubled', async () => {
+        await instance.$push(STORAGE_SLOT, randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
+
+        // index << 1 overflows back into the range of valid internal
+        // indexes, aliasing an out-of-bounds leaf index to leaf index 1
+        const overflowingIndex = 2n ** 255n + 1n;
+
+        await expect(
+          instance.$valueAt.staticCall(STORAGE_SLOT, overflowingIndex),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });
@@ -248,6 +269,23 @@ describe('MerkleTree', () => {
 
         await expect(
           instance.$set.staticCall(STORAGE_SLOT, 1, ethers.ZeroHash),
+        ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
+      });
+
+      it('index is out of bounds and overflows when doubled', async () => {
+        await instance.$push(STORAGE_SLOT, randomHash());
+        await instance.$push(STORAGE_SLOT, randomHash());
+
+        // index << 1 overflows back into the range of valid internal
+        // indexes, aliasing an out-of-bounds leaf index to leaf index 1
+        const overflowingIndex = 2n ** 255n + 1n;
+
+        await expect(
+          instance.$set.staticCall(
+            STORAGE_SLOT,
+            overflowingIndex,
+            randomHash(),
+          ),
         ).to.be.revertedWithPanic(PANIC_CODES.ARRAY_ACCESS_OUT_OF_BOUNDS);
       });
     });

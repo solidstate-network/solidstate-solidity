@@ -1,13 +1,14 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
 import { describeBehaviorOfIntrospectable } from '@solidstate/spec';
-import { INFTRoyalty } from '@solidstate/typechain-types';
+import type { INFTRoyalty } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface NFTRoyaltyBehaviorArgs {}
 
 export function describeBehaviorOfNFTRoyalty(
+  connection: NetworkConnection,
   deploy: () => Promise<INFTRoyalty>,
   args: NFTRoyaltyBehaviorArgs,
   skips?: string[],
@@ -19,15 +20,16 @@ export function describeBehaviorOfNFTRoyalty(
     let tokenIdTwo = 2;
     let tokenIdThree = 3;
 
-    let receiver: SignerWithAddress;
+    let receiver: HardhatEthersSigner;
     let instance: INFTRoyalty;
 
     beforeEach(async () => {
-      receiver = (await ethers.getSigners())[1];
+      receiver = (await connection.ethers.getSigners())[1];
       instance = await deploy();
     });
 
     describeBehaviorOfIntrospectable(
+      connection,
       deploy,
       {
         interfaceIds: ['0x2a55205a'],

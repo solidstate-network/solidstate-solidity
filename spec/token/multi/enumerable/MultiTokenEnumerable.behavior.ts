@@ -1,14 +1,14 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IMultiTokenEnumerable } from '@solidstate/typechain-types';
+import type { IMultiTokenEnumerable } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface MultiTokenEnumerableBehaviorArgs {
   transfer: (
-    from: SignerWithAddress,
-    to: SignerWithAddress,
+    from: HardhatEthersSigner,
+    to: HardhatEthersSigner,
     id: bigint,
     amount: bigint,
   ) => Promise<ContractTransactionResponse>;
@@ -26,6 +26,7 @@ export interface MultiTokenEnumerableBehaviorArgs {
 }
 
 export function describeBehaviorOfMultiTokenEnumerable(
+  connection: NetworkConnection,
   deploy: () => Promise<IMultiTokenEnumerable>,
   args: MultiTokenEnumerableBehaviorArgs,
   skips?: string[],
@@ -41,7 +42,7 @@ export function describeBehaviorOfMultiTokenEnumerable(
 
     describe('#totalSupply(uint256)', () => {
       it('returns supply of given token', async () => {
-        const [holder0, holder1] = await ethers.getSigners();
+        const [holder0, holder1] = await connection.ethers.getSigners();
         const id = args.tokenId ?? 0n;
         const amount = 2n;
 
@@ -63,7 +64,7 @@ export function describeBehaviorOfMultiTokenEnumerable(
 
     describe('#totalHolders(uint256)', () => {
       it('returns number of holders of given token', async () => {
-        const [holder0, holder1] = await ethers.getSigners();
+        const [holder0, holder1] = await connection.ethers.getSigners();
         const id = args.tokenId ?? 0n;
         const amount = 2n;
 
@@ -85,7 +86,7 @@ export function describeBehaviorOfMultiTokenEnumerable(
 
     describe('#accountsByToken(uint256)', () => {
       it('returns list of addresses holding given token', async () => {
-        const [holder0, holder1] = await ethers.getSigners();
+        const [holder0, holder1] = await connection.ethers.getSigners();
         const id = args.tokenId ?? 0n;
         const amount = 2n;
 
@@ -111,7 +112,7 @@ export function describeBehaviorOfMultiTokenEnumerable(
 
     describe('#tokensByAccount(address)', () => {
       it('returns list of tokens held by given address', async () => {
-        const [holder0, holder1] = await ethers.getSigners();
+        const [holder0, holder1] = await connection.ethers.getSigners();
         const id = args.tokenId ?? 0n;
         const amount = 2n;
 

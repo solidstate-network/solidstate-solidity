@@ -1,25 +1,31 @@
 import {
-  $ReentrancyGuardTest,
+  type $ReentrancyGuardTest,
   $ReentrancyGuardTest__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('ReentrancyGuard', () => {
   let instance: $ReentrancyGuardTest;
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $ReentrancyGuardTest__factory(deployer).deploy();
   });
 
   describe('nonReentrant() modifier', () => {
     it('does not revert non-reentrant call', async () => {
-      await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
+      await expect(instance.modifier_nonReentrant()).not.to.revert(
+        connection.ethers,
+      );
 
       // test subsequent calls
 
-      await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
+      await expect(instance.modifier_nonReentrant()).not.to.revert(
+        connection.ethers,
+      );
 
       await expect(instance.reentrancyTest()).to.be.revertedWithCustomError(
         instance,
@@ -45,7 +51,9 @@ describe('ReentrancyGuard', () => {
 
         // call function again with different contract state to avoid false-negative test coverage
         await instance.$_lockReentrancyGuard();
-        await expect(instance.crossFunctionReentrancyTest()).to.be.reverted;
+        await expect(instance.crossFunctionReentrancyTest()).to.revert(
+          connection.ethers,
+        );
       });
     });
   });
@@ -69,7 +77,9 @@ describe('ReentrancyGuard', () => {
 
       await instance.$_unlockReentrancyGuard();
 
-      await expect(instance.modifier_nonReentrant()).not.to.be.reverted;
+      await expect(instance.modifier_nonReentrant()).not.to.revert(
+        connection.ethers,
+      );
     });
   });
 });

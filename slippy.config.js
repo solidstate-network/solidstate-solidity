@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   rules: {
     curly: 'off',
     'explicit-types': 'error',
