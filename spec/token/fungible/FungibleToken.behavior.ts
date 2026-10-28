@@ -1,9 +1,10 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { describeFilter } from '@solidstate/library';
-import { IFungibleToken } from '@solidstate/typechain-types';
+import type { IFungibleToken } from '@solidstate/typechain-types';
 import { expect } from 'chai';
 import { ContractTransactionResponse } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import type { NetworkConnection } from 'hardhat/types/network';
 
 export interface FungibleTokenBehaviorArgs {
   supply: bigint;
@@ -18,6 +19,7 @@ export interface FungibleTokenBehaviorArgs {
 }
 
 export function describeBehaviorOfFungibleToken(
+  connection: NetworkConnection,
   deploy: () => Promise<IFungibleToken>,
   args: FungibleTokenBehaviorArgs,
   skips?: string[],
@@ -26,14 +28,15 @@ export function describeBehaviorOfFungibleToken(
 
   describe('::FungibleToken', () => {
     // note: holder gets supply (1e18) amount of tokens so use spender/receiver for easier testing
-    let holder: SignerWithAddress;
-    let spender: SignerWithAddress;
-    let receiver: SignerWithAddress;
-    let sender: SignerWithAddress;
+    let holder: HardhatEthersSigner;
+    let spender: HardhatEthersSigner;
+    let receiver: HardhatEthersSigner;
+    let sender: HardhatEthersSigner;
     let instance: IFungibleToken;
 
     before(async () => {
-      [holder, spender, receiver, sender] = await ethers.getSigners();
+      [holder, spender, receiver, sender] =
+        await connection.ethers.getSigners();
     });
 
     beforeEach(async () => {
@@ -68,11 +71,11 @@ export function describeBehaviorOfFungibleToken(
 
         await expect(() =>
           args.mint(holder.address, amount),
-        ).to.changeTokenBalance(instance, holder, amount);
+        ).to.changeTokenBalance(connection.ethers, instance, holder, amount);
 
         await expect(() =>
           args.burn(holder.address, amount),
-        ).to.changeTokenBalance(instance, holder, -amount);
+        ).to.changeTokenBalance(connection.ethers, instance, holder, -amount);
       });
     });
 
@@ -138,6 +141,7 @@ export function describeBehaviorOfFungibleToken(
         await expect(() =>
           instance.connect(holder).transfer(receiver.address, amount),
         ).to.changeTokenBalances(
+          connection.ethers,
           instance,
           [holder, receiver],
           [-amount, amount],
@@ -178,6 +182,7 @@ export function describeBehaviorOfFungibleToken(
             .connect(spender)
             .transferFrom(holder.address, receiver.address, amount),
         ).to.changeTokenBalances(
+          connection.ethers,
           instance,
           [holder, receiver],
           [-amount, amount],

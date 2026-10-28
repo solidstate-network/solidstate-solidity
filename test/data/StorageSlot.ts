@@ -1,18 +1,21 @@
-import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
-import { seedToStorageSlot } from '@solidstate/library/storage_layout';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import { seedToStorageSlot } from '@solidstate/library';
 import {
-  $StorageSlot,
+  type $StorageSlot,
   $StorageSlot__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('StorageSlot', () => {
   let deployer: HardhatEthersSigner;
   let instance: $StorageSlot;
 
   beforeEach(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $StorageSlot__factory(deployer).deploy();
   });
 

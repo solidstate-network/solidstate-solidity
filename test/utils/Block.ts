@@ -1,21 +1,22 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
-import { time } from '@nomicfoundation/hardhat-network-helpers';
-import { $Block, $Block__factory } from '@solidstate/typechain-types';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
+import { type $Block, $Block__factory } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('Block', async () => {
-  let deployer: SignerWithAddress;
+  let deployer: HardhatEthersSigner;
   let instance: $Block;
 
   before(async () => {
-    [deployer] = await ethers.getSigners();
+    [deployer] = await connection.ethers.getSigners();
     instance = await new $Block__factory(deployer).deploy();
   });
 
   describe('#timestamp()', () => {
     it('returns current timestamp', async () => {
-      const timestamp = BigInt(await time.latest());
+      const timestamp = BigInt(await connection.networkHelpers.time.latest());
 
       expect(await instance.$timestamp.staticCall()).to.eq(timestamp);
     });

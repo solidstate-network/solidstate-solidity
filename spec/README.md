@@ -26,19 +26,22 @@ contract CustomToken is FungibleToken {
 }
 ```
 
-Rather than rewrite the `FungibleToken` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation:
+Rather than rewrite the `FungibleToken` tests or assume that all core behavior remains untouched, one can import the included tests and run them against the custom implementation. Each `describeBehaviorOf*` function takes the Hardhat network connection used to deploy the contract as its first argument:
 
 ```javascript
+import { network } from 'hardhat';
+
+const connection = await network.create();
+
 describe('CustomToken', () => {
   let instance;
 
   beforeEach(async () => {
-    const factory = await ethers.getContractFactory('CustomToken');
-    instance = await factory.deploy();
-    await instance.deployed();
+    instance = await connection.ethers.deployContract('CustomToken');
   });
 
   describeBehaviorOfFungibleToken(
+    connection,
     async () => instance,
     {
       args: ...,
@@ -53,6 +56,7 @@ If parts of the base implementation are changed intentionally, tests can be sele
 
 ```javascript
 describeBehaviorOfFungibleToken(
+  connection,
   async () => instance,
   {
     args: ...

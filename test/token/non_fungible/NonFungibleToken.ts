@@ -1,33 +1,36 @@
-import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
+import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/types';
 import { deployMockContract } from '@solidstate/library';
 import { describeBehaviorOfNonFungibleToken } from '@solidstate/spec';
 import {
-  $NonFungibleToken,
+  type $NonFungibleToken,
   $NonFungibleToken__factory,
 } from '@solidstate/typechain-types';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { ethers } from 'ethers';
+import { network } from 'hardhat';
+
+const connection = await network.create();
 
 describe('NonFungibleToken', () => {
-  let sender: SignerWithAddress;
-  let receiver: SignerWithAddress;
-  let holder: SignerWithAddress;
-  let spender: SignerWithAddress;
+  let sender: HardhatEthersSigner;
+  let receiver: HardhatEthersSigner;
+  let holder: HardhatEthersSigner;
+  let spender: HardhatEthersSigner;
   let instance: $NonFungibleToken;
 
   before(async () => {
-    [sender, receiver, holder, spender] = await ethers.getSigners();
+    [sender, receiver, holder, spender] = await connection.ethers.getSigners();
   });
 
   beforeEach(async () => {
-    const [deployer] = await ethers.getSigners();
+    const [deployer] = await connection.ethers.getSigners();
     instance = await new $NonFungibleToken__factory(deployer).deploy();
 
     await instance.$_setSupportsInterface('0x01ffc9a7', true);
     await instance.$_setSupportsInterface('0x80ac58cd', true);
   });
 
-  describeBehaviorOfNonFungibleToken(async () => instance, {
+  describeBehaviorOfNonFungibleToken(connection, async () => instance, {
     supply: 0n,
     mint: (recipient, tokenId) => instance.$_mint(recipient, tokenId),
     burn: (tokenId) => instance.$_burn(tokenId),
@@ -107,7 +110,9 @@ describe('NonFungibleToken', () => {
   describe('#_mint(address,uint256)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance.$_mint(holder.address, tokenId);
       expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
@@ -120,7 +125,7 @@ describe('NonFungibleToken', () => {
 
       await expect(() =>
         instance.$_mint(receiver.address, tokenId),
-      ).to.changeTokenBalance(instance, receiver, 1);
+      ).to.changeTokenBalance(connection.ethers, instance, receiver, 1);
     });
 
     it('emits Transfer event', async () => {
@@ -158,7 +163,9 @@ describe('NonFungibleToken', () => {
   describe('#_safeMint(address,uint256)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance['$_safeMint(address,uint256)'](holder.address, tokenId);
       expect(await instance.ownerOf.staticCall(tokenId)).to.equal(
@@ -171,7 +178,7 @@ describe('NonFungibleToken', () => {
 
       await expect(() =>
         instance['$_safeMint(address,uint256)'](receiver.address, tokenId),
-      ).to.changeTokenBalance(instance, receiver, 1);
+      ).to.changeTokenBalance(connection.ethers, instance, receiver, 1);
     });
 
     it('emits Transfer event', async () => {
@@ -193,7 +200,7 @@ describe('NonFungibleToken', () => {
 
       await expect(
         instance['$_safeMint(address,uint256)'](receiverContract.address, 2),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -257,7 +264,9 @@ describe('NonFungibleToken', () => {
   describe('#_safeMint(address,uint256,bytes)', () => {
     it('creates token with given id for given account', async () => {
       const tokenId = 2;
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
 
       await instance['$_safeMint(address,uint256,bytes)'](
         holder.address,
@@ -278,7 +287,7 @@ describe('NonFungibleToken', () => {
           tokenId,
           '0x',
         ),
-      ).to.changeTokenBalance(instance, receiver, 1);
+      ).to.changeTokenBalance(connection.ethers, instance, receiver, 1);
     });
 
     it('emits Transfer event', async () => {
@@ -308,7 +317,7 @@ describe('NonFungibleToken', () => {
           2,
           '0x',
         ),
-      ).not.to.be.reverted;
+      ).not.to.revert(connection.ethers);
     });
 
     describe('reverts if', () => {
@@ -389,17 +398,20 @@ describe('NonFungibleToken', () => {
       );
 
       await instance.$_burn(tokenId);
-      await expect(instance.ownerOf.staticCall(tokenId)).to.be.reverted;
+      await expect(instance.ownerOf.staticCall(tokenId)).to.revert(
+        connection.ethers,
+      );
     });
 
     it('decreases balance of owner by one', async () => {
       const tokenId = 2;
-      await instance.$_mint(receiver.address, tokenId),
+      (await instance.$_mint(receiver.address, tokenId),
         await expect(() => instance.$_burn(tokenId)).to.changeTokenBalance(
+          connection.ethers,
           instance,
           receiver,
           -1,
-        );
+        ));
     });
 
     it('emits Transfer event', async () => {
@@ -419,7 +431,12 @@ describe('NonFungibleToken', () => {
 
       await expect(() =>
         instance.$_transfer(sender.address, receiver.address, tokenId),
-      ).to.changeTokenBalances(instance, [sender, receiver], [-1, 1]);
+      ).to.changeTokenBalances(
+        connection.ethers,
+        instance,
+        [sender, receiver],
+        [-1, 1],
+      );
     });
 
     it('updates owner of token', async () => {
@@ -493,7 +510,12 @@ describe('NonFungibleToken', () => {
           tokenId,
           '0x',
         ),
-      ).to.changeTokenBalances(instance, [sender, receiver], [-1, 1]);
+      ).to.changeTokenBalances(
+        connection.ethers,
+        instance,
+        [sender, receiver],
+        [-1, 1],
+      );
     });
 
     it('updates owner of token', async () => {

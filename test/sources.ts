@@ -1,8 +1,5 @@
 import hre from 'hardhat';
-import {
-  TASK_FLATTEN_GET_FLATTENED_SOURCE,
-  TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
-} from 'hardhat/builtin-tasks/task-names';
+import type { ResolvedFile } from 'hardhat/types/solidity';
 
 describe('Sources', () => {
   it('contain only one contract per file', async () => {
@@ -22,44 +19,58 @@ describe('Sources', () => {
   });
 
   it('do not contain cyclic dependencies', async () => {
-    const sourcePaths = await hre.run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
+    const rootFilePaths = await hre.solidity.getRootFilePaths();
+    const result = await hre.solidity.getCompilationJobs(rootFilePaths, {
+      force: true,
+      quiet: true,
+    });
 
-    // first, pass all files to the flatten task to quickly check for errors
-
-    let hasFailures = false;
-
-    try {
-      await hre.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, {
-        files: sourcePaths,
-      });
-    } catch (error) {
-      hasFailures = true;
+    if (!result.success) {
+      throw new Error(result.formattedReason);
     }
 
-    if (!hasFailures) return;
+    const failures = new Set<string>();
 
-    // if errors are found, pass each file individually to the flatten task to get more detail
+    for (const job of new Set(result.compilationJobsPerFile.values())) {
+      const graph = job.dependencyGraph;
 
-    const failures = [];
+      // depth-first search, tracking the current import chain to detect cycles
 
-    for (const sourcePath of sourcePaths) {
-      try {
-        await hre.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, {
-          files: [sourcePath],
-        });
-      } catch (error) {
-        // errors other than HH603 are possible
-        // (such as `FileNotFoundError: File hardhat/console.sol`)
-        // but these are out of scope of this test and are ignored
-        if (String(error).includes('HardhatError: HH603')) {
-          failures.push(sourcePath);
+      // all files that have been checked, tracked persistently to avoid duplicate searches
+      const visited = new Set<ResolvedFile>();
+      // list of files in the current path, dynamically updated as the graph is traversed
+      const importChain: ResolvedFile[] = [];
+
+      const visit = (file: ResolvedFile) => {
+        const cycleStart = importChain.indexOf(file);
+
+        if (cycleStart !== -1) {
+          for (const el of importChain.slice(cycleStart)) {
+            failures.add(el.inputSourceName);
+          }
+          return;
         }
+
+        if (visited.has(file)) return;
+        visited.add(file);
+
+        importChain.push(file);
+
+        for (const { file: dependency } of graph.getDependencies(file)) {
+          visit(dependency);
+        }
+
+        importChain.pop();
+      };
+
+      for (const file of graph.getAllFiles()) {
+        visit(file);
       }
     }
 
-    if (failures.length > 0) {
+    if (failures.size > 0) {
       throw new Error(
-        `cyclic dependencies found in files: ${failures.map(
+        `cyclic dependencies found in files: ${[...failures].map(
           (el) => `\n${el}`,
         )}`,
       );
