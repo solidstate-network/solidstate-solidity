@@ -183,16 +183,31 @@ library MerkleTree {
         }
     }
 
+    /**
+     * @notice write element at given internal index and recalculate the branch
+     * and root nodes on the path to the root
+     * @dev recurses once per tree depth, hashing element with its sibling
+     * before recursing to the next depth up
+     * @param arraySlot cached slot of underlying array
+     * @param depth current tree depth, zero at the leaves
+     * @param maxUsedIndex highest internal index that contains data; nodes with
+     * a greater canonical index may exist but are carried upward unhashed
+     * rather than stored there
+     * @param index internal index at which to write element at current depth
+     * @param element value to write at index; a leaf at depth zero, otherwise
+     * a branch hash, or a lower node carried upward unhashed
+     */
     function _set(
         bytes32 arraySlot,
         uint256 depth,
-        uint256 maxIndex,
+        uint256 maxUsedIndex,
         uint256 index,
         bytes32 element
     ) private {
-        if (index <= maxIndex) {
+        if (index <= maxUsedIndex) {
             assembly {
-                // current index is within bounds of data, so write it to storage
+                // current index is within bounds of data, so write it to
+                // storage
                 sstore(add(arraySlot, index), element)
             }
         }
@@ -202,42 +217,71 @@ library MerkleTree {
 
         // create mask of bit n+1 for depth n
         // flipping this bit of element's index yields the index of its sibling
-        // the mask is equal to 2 ** (n + 1) and is also used to determine end of loop
+        // the mask is equal to 2 ** (n + 1) and is also used to determine end
+        // of recursion
         uint256 mask = 2 << depth;
 
-        if (mask <= maxIndex) {
+        if (mask <= maxUsedIndex) {
             uint256 indexRight = index | mask;
-
-            // if current element is on the left and right element does not exist
-            // pass element along to next depth unhashed
 
             if (index == indexRight) {
                 // current element is on the right
-                // left element is guaranteed to exist
+                // left element is guaranteed to exist and is stored at its
+                // canonical index
                 assembly {
                     mstore(0, sload(add(arraySlot, xor(indexRight, mask))))
                     mstore(32, element)
                     element := keccak256(0, 64)
                 }
-            } else if (indexRight <= maxIndex) {
+            } else {
                 // current element is on the left
-                // right element exists
-                assembly {
-                    mstore(0, element)
-                    mstore(32, sload(add(arraySlot, indexRight)))
-                    element := keccak256(0, 64)
+                // right element is not guaranteed to exist and is not
+                // necessarily stored at its canonical index
+
+                // canonical index of the right element
+                uint256 siblingIndex = indexRight;
+
+                // begin shifting the mask down
+                // its halved value is the bound tested next for the sibling's
+                // existence
+                mask >>= 1;
+
+                // the right sibling exists only if its leftmost descendant leaf
+                // is within the tree; otherwise the current element is passed
+                // along to the next depth unhashed
+                unchecked {
+                    if (siblingIndex < maxUsedIndex + mask) {
+                        // the right sibling exists, but if its own subtree is
+                        // incomplete it will have been carried upward unhashed
+                        // and is therefore not stored at its canonical index -
+                        // descend to its left child until a stored node is
+                        // reached, which is the case once its right child holds
+                        // a leaf
+                        while (siblingIndex > maxUsedIndex) {
+                            // shifting the mask down and subtracting it from
+                            // an index yields the index of a left child, at a
+                            // lower depth
+                            mask >>= 1;
+                            siblingIndex -= mask;
+                        }
+
+                        assembly {
+                            mstore(0, element)
+                            mstore(32, sload(add(arraySlot, siblingIndex)))
+                            element := keccak256(0, 64)
+                        }
+                    }
                 }
             }
 
             unchecked {
                 // calculate the index of next element at depth n+1
                 // midpoint between current left and right index
-                // index = indexRight ^ (3 << depth)
 
                 _set(
                     arraySlot,
                     depth + 1,
-                    maxIndex,
+                    maxUsedIndex,
                     indexRight ^ (3 << depth),
                     element
                 );
