@@ -13,7 +13,7 @@ library TransientSlot {
      * @param idx index of array whose slot to calculate
      */
     function index(tslot slot, uint256 idx) internal pure returns (tslot) {
-        assembly {
+        assembly ('memory-safe') {
             mstore(0, slot)
             slot := add(keccak256(0, 32), idx)
         }
@@ -27,7 +27,7 @@ library TransientSlot {
      * @param key index of mapping whose slot to calculate
      */
     function map(tslot slot, bytes32 key) internal pure returns (tslot) {
-        assembly {
+        assembly ('memory-safe') {
             mstore(0, key)
             mstore(32, slot)
             slot := keccak256(0, 64)
@@ -51,7 +51,7 @@ library TransientSlot {
      * @return nth next slot
      */
     function next(tslot slot, uint256 amount) internal pure returns (tslot) {
-        assembly {
+        assembly ('memory-safe') {
             slot := add(slot, amount)
         }
 
@@ -74,7 +74,7 @@ library TransientSlot {
      * @return nth previous slot
      */
     function prev(tslot slot, uint256 amount) internal pure returns (tslot) {
-        assembly {
+        assembly ('memory-safe') {
             slot := sub(slot, amount)
         }
 
@@ -87,7 +87,7 @@ library TransientSlot {
      * @return data contents of transient storage slot
      */
     function read(tslot slot) internal view returns (bytes32 data) {
-        assembly {
+        assembly ('memory-safe') {
             data := tload(slot)
         }
     }
@@ -98,7 +98,7 @@ library TransientSlot {
      * @param data data to write
      */
     function write(tslot slot, bytes32 data) internal {
-        assembly {
+        assembly ('memory-safe') {
             tstore(slot, data)
         }
     }

@@ -9,7 +9,7 @@ contract AddressTest {
         address input
     ) external pure returns (bytes32 output) {
         // contaminate the higher-order bits
-        assembly {
+        assembly ('memory-safe') {
             input := or(input, shl(160, not(1)))
         }
 

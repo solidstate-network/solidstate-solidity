@@ -154,7 +154,7 @@ library ECDSA {
     function toEthSignRecoverableHash(
         bytes32 payloadHash
     ) internal pure returns (bytes32 recoverableHash) {
-        assembly {
+        assembly ('memory-safe') {
             // assembly block equivalent to:
             //
             // recoverableHash = keccak256(
@@ -184,7 +184,7 @@ library ECDSA {
         bytes32 domainSeparator,
         bytes32 structHash
     ) internal pure returns (bytes32 recoverableHash) {
-        assembly {
+        assembly ('memory-safe') {
             // assembly block equivalent to:
             //
             // recoverableHash = keccak256(

@@ -70,36 +70,38 @@ abstract contract _Proxy is _IProxy, _Context {
 
     /**
      * @notice delegate all calls to implementation contract
-     * @dev memory location in use by assembly may be unsafe in other contexts
      * @dev function declares no return value, but data is returned via assembly
      */
     function _fallback() internal virtual {
         address implementation = _getImplementation();
 
-        assembly {
-            calldatacopy(0, 0, calldatasize())
+        assembly ('memory-safe') {
+            // load free memory pointer
+            let pointer := mload(64)
+
+            calldatacopy(pointer, 0, calldatasize())
 
             let result := delegatecall(
                 gas(),
                 implementation,
-                0,
+                pointer,
                 calldatasize(),
                 0,
                 0
             )
 
-            returndatacopy(0, 0, returndatasize())
+            returndatacopy(pointer, 0, returndatasize())
 
             if iszero(result) {
-                revert(0, returndatasize())
+                revert(pointer, returndatasize())
             }
 
             if returndatasize() {
-                return(0, returndatasize())
+                return(pointer, returndatasize())
             }
 
             if extcodesize(implementation) {
-                return(0, returndatasize())
+                return(pointer, returndatasize())
             }
         }
 

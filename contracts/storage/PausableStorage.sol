@@ -13,15 +13,16 @@ library PausableStorage {
         mapping(bytes32 key => bool pausedStatus) partiallyPaused;
     }
 
-    sslot internal constant DEFAULT_STORAGE_SLOT =
-        sslot.wrap(erc7201('solidstate.layout.Pausable'));
+    sslot internal constant DEFAULT_STORAGE_SLOT = sslot.wrap(
+        erc7201('solidstate.layout.Pausable')
+    );
 
     function ref() internal pure returns (Layout storage $) {
         $ = ref(DEFAULT_STORAGE_SLOT);
     }
 
     function ref(sslot slot) internal pure returns (Layout storage $) {
-        assembly {
+        assembly ('memory-safe') {
             $.slot := slot
         }
     }
